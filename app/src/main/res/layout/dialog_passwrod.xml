@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y100"
+        app:cardCornerRadius="@dimen/x20">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:text="请输入支付密码"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x32"/>
+
+                <ImageView
+                    android:id="@+id/bark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/x10"
+                    android:padding="@dimen/x15"
+                    android:src="@mipmap/icon_topbar_cancel"/>
+
+            </RelativeLayout>
+
+            <TextView
+                style="@style/HCutOffRule"/>
+
+            <TextView
+                android:id="@+id/tv_coin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/y30"
+                android:text="比特币红包"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/x30"/>
+
+            <TextView
+                android:id="@+id/tv_count_coin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/y40"
+                android:text="0.1BTC"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/x45"/>
+
+            <TextView
+                style="@style/HCutOffRule"
+                android:layout_marginTop="@dimen/y40"/>
+
+            <com.maning.pswedittextlibrary.MNPasswordEditText
+                android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y110"
+                android:layout_marginBottom="@dimen/y20"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_marginRight="@dimen/x20"
+                android:layout_marginTop="@dimen/y20"
+                android:focusableInTouchMode="true"
+                android:inputType="numberPassword"
+                android:maxLength="6"
+                android:textSize="20sp"
+                app:mnPsw_background_color="@color/light"
+                app:mnPsw_border_color="#7e7e7e"
+                app:mnPsw_border_radius="@dimen/x10"
+                app:mnPsw_border_width="@dimen/x2"
+                app:mnPsw_cover_circle_color="@color/black"
+                app:mnPsw_item_margin="@dimen/x10"
+                app:mnPsw_style="StyleOneself"
+                app:mnPsw_text_color="@android:color/black"/>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <com.dashiji.biyun.ui.widget.VirtualKeyboardView
+        android:id="@+id/virtualKeyboardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"/>
+
+</RelativeLayout>

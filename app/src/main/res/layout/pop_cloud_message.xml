@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img_four_bg"
+    android:orientation="vertical"
+    android:padding="@dimen/x20">
+
+    <TextView
+        android:id="@+id/pop_bit"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/y15"
+        android:layout_weight="1"
+        android:drawableLeft="@mipmap/icon_scrode"
+        android:gravity="center"
+        android:text="扫一扫"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/x28"/>
+
+    <TextView
+        android:id="@+id/pop_eth"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:drawableLeft="@mipmap/icon_redpocket"
+        android:gravity="center"
+        android:text="二维码红包"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/x28"/>
+
+    <TextView
+        android:id="@+id/pop_etc"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:drawableLeft="@mipmap/icon_add"
+        android:gravity="center"
+        android:text="添加好友"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/x28"/>
+
+    <TextView
+        android:id="@+id/pop_ltc"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:drawableLeft="@mipmap/icon_push"
+        android:gravity="center"
+        android:text="发布动态"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/x28"/>
+
+</LinearLayout>

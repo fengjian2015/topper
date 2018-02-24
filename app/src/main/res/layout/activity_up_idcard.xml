@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/light"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="实名验证"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+        <ImageView
+            android:id="@+id/help"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_bg_btc"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y80"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="@dimen/x25"
+            android:layout_height="@dimen/x25"
+            android:src="@mipmap/icon_card_step2"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x10"
+            android:text="填写资料"
+            android:textSize="@dimen/x28"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.CardView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        app:cardCornerRadius="@dimen/x15">
+
+        <RelativeLayout
+            android:id="@+id/zhengmian"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y260">
+
+            <ImageView
+                android:id="@+id/zhengmian_iv"
+                android:layout_width="@dimen/x300"
+                android:layout_height="@dimen/y180"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x38"
+                android:src="@mipmap/img_check_addphotos"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/zhengmian_iv"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x36"
+                    android:text="上传身份证正面照片"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x26"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/text1"
+                    android:layout_marginLeft="@dimen/x36"
+                    android:layout_marginTop="@dimen/y20"
+                    android:text="请保持照片中身份证显示完整，"
+                    android:textSize="@dimen/x22"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/text2"
+                    android:layout_marginLeft="@dimen/x36"
+                    android:layout_marginTop="@dimen/y20"
+                    android:text="字体清晰可见，亮度均匀"
+                    android:textSize="@dimen/x22"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y20"
+        app:cardCornerRadius="@dimen/x15">
+
+        <RelativeLayout
+            android:id="@+id/fanmian"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y260">
+
+            <ImageView
+                android:id="@+id/fanmian_iv"
+                android:layout_width="@dimen/x300"
+                android:layout_height="@dimen/y180"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x38"
+                android:src="@mipmap/img_check_addphotos"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/fanmian_iv"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x36"
+                    android:text="上传身份证反面照片"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x26"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/text1"
+                    android:layout_marginLeft="@dimen/x36"
+                    android:layout_marginTop="@dimen/y20"
+                    android:text="请保持照片中身份证显示完整，"
+                    android:textSize="@dimen/x22"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/text2"
+                    android:layout_marginLeft="@dimen/x36"
+                    android:layout_marginTop="@dimen/y20"
+                    android:text="字体清晰可见，亮度均匀"
+                    android:textSize="@dimen/x22"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y20"
+        app:cardCornerRadius="@dimen/x15">
+
+        <RelativeLayout
+            android:id="@+id/shouchi"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y260">
+
+            <ImageView
+                android:id="@+id/shouchi_iv"
+                android:layout_width="@dimen/x300"
+                android:layout_height="@dimen/y180"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x38"
+                android:src="@mipmap/img_check_addphotos"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/shouchi_iv"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x36"
+                    android:text="上传手持身份证照片"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x26"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/text1"
+                    android:layout_marginLeft="@dimen/x36"
+                    android:layout_marginTop="@dimen/y20"
+                    android:text="请保持照片中身份证显示完整，"
+                    android:textSize="@dimen/x22"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/text2"
+                    android:layout_marginLeft="@dimen/x36"
+                    android:layout_marginTop="@dimen/y20"
+                    android:text="字体清晰可见，亮度均匀"
+                    android:textSize="@dimen/x22"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <Button
+        android:id="@+id/up_check"
+        android:layout_width="@dimen/x450"
+        android:layout_height="@dimen/y80"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/y100"
+        android:background="@drawable/btn_blue_selector"
+        android:text="提交审核"
+        android:textColor="@color/white"/>
+
+</LinearLayout>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/light"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="发布动态"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+        <TextView
+            android:id="@+id/publish"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:padding="@dimen/x20"
+            android:text="发布"
+            android:textSize="@dimen/x28"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y10">
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y220"
+            android:fillViewport="true"
+            android:padding="@dimen/x20"
+            android:scrollbars="none">
+
+            <EditText
+                android:id="@+id/text_et"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:textCursorDrawable="@null"
+                android:gravity="top"
+                android:hint="写点什么...."
+                android:padding="@dimen/x20"
+                android:textSize="@dimen/x24"/>
+
+        </ScrollView>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/scrollView"
+            android:layout_marginTop="@dimen/x10"
+            android:overScrollMode="never"
+            android:paddingBottom="@dimen/x20"
+            android:paddingLeft="@dimen/x20"
+            android:paddingRight="@dimen/x5"
+            android:paddingTop="@dimen/x20"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_site"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_marginTop="@dimen/y20"
+        android:background="@color/white"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="@dimen/x25"
+            android:layout_height="@dimen/x25"
+            android:layout_marginLeft="@dimen/x20"
+            android:src="@mipmap/icon_writing_address"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x20"
+            android:text="位置"
+            android:textSize="@dimen/x24"/>
+
+
+    </LinearLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <LinearLayout
+        android:id="@+id/ll_synchronization"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="@dimen/x23"
+            android:layout_height="@dimen/x23"
+            android:layout_marginLeft="@dimen/x20"
+            android:src="@mipmap/icon_writing_sync"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x20"
+            android:text="同步到"
+            android:textSize="@dimen/x24"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

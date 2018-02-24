@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/light"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_remark"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_marginTop="@dimen/y20"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imageview"
+            android:layout_width="@dimen/x33"
+            android:layout_height="@dimen/x33"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x35"
+            android:src="@mipmap/iocn_person_dynamics"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x44"
+            android:layout_toRightOf="@+id/imageview"
+            android:text="备注"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+        <ImageView
+            android:layout_width="@dimen/x15"
+            android:layout_height="@dimen/x25"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x25"
+            android:src="@mipmap/icon_aboutus_turninto"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_zhuanzhang"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imageview2"
+            android:layout_width="@dimen/x33"
+            android:layout_height="@dimen/x33"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x35"
+            android:src="@mipmap/iocn_person_dynamics"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x44"
+            android:layout_toRightOf="@+id/imageview2"
+            android:text="转账"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+        <ImageView
+            android:layout_width="@dimen/x15"
+            android:layout_height="@dimen/x25"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x25"
+            android:src="@mipmap/icon_aboutus_turninto"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_group_chat"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imageview3"
+            android:layout_width="@dimen/x33"
+            android:layout_height="@dimen/x33"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x35"
+            android:src="@mipmap/iocn_person_dynamics"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x44"
+            android:layout_toRightOf="@+id/imageview3"
+            android:text="群聊"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+        <ImageView
+            android:layout_width="@dimen/x15"
+            android:layout_height="@dimen/x25"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x25"
+            android:src="@mipmap/icon_aboutus_turninto"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_message_remind"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_marginTop="@dimen/y20"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imageview4"
+            android:layout_width="@dimen/x33"
+            android:layout_height="@dimen/x33"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x35"
+            android:src="@mipmap/iocn_person_dynamics"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x44"
+            android:layout_toRightOf="@+id/imageview4"
+            android:text="消息提醒"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+        <ImageView
+            android:id="@+id/msg_remind"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/x25"
+            android:src="@drawable/set_disturb_seletor"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_shield_message"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imageview5"
+            android:layout_width="@dimen/x33"
+            android:layout_height="@dimen/x33"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x35"
+            android:src="@mipmap/iocn_person_dynamics"/>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x44"
+            android:layout_toRightOf="@+id/imageview5"
+            android:text="屏蔽消息"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+        <ImageView
+            android:id="@+id/shield_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/x25"
+            android:src="@drawable/set_disturb_seletor"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

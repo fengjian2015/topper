@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical">
+
+    <cn.bingoogolapple.qrcode.zxing.ZXingView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/zxingview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:qrcv_animTime="1000"
+        app:qrcv_borderColor="@android:color/white"
+        app:qrcv_borderSize="0dp"
+        app:qrcv_cornerColor="@color/blue"
+        app:qrcv_cornerLength="@dimen/x60"
+        app:qrcv_cornerSize="@dimen/x8"
+        app:qrcv_isBarcode="false"
+        app:qrcv_isCenterVertical="false"
+        app:qrcv_isOnlyDecodeScanBoxArea="false"
+        app:qrcv_isScanLineReverse="true"
+        app:qrcv_isShowDefaultGridScanLineDrawable="false"
+        app:qrcv_isShowDefaultScanLineDrawable="true"
+        app:qrcv_isShowTipBackground="true"
+        app:qrcv_isShowTipTextAsSingleLine="false"
+        app:qrcv_isTipTextBelowRect="false"
+        app:qrcv_rectWidth="@dimen/x450"
+        app:qrcv_scanLineColor="@color/blue"
+        app:qrcv_scanLineMargin="0dp"
+        app:qrcv_scanLineSize="@dimen/x1"
+        app:qrcv_tipTextColor="@android:color/white"
+        app:qrcv_tipTextSize="@dimen/x28"
+        app:qrcv_toolbarHeight="@dimen/y100"
+        app:qrcv_topOffset="@dimen/y200"/>
+
+
+    <ImageView
+        android:id="@+id/bark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/x20"
+        android:src="@mipmap/icon_where_renturn"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/y230"
+        android:text="将二维码放入框内，即可自动扫描"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"/>
+
+    <RelativeLayout
+        android:id="@+id/flashlight_rl"
+        android:layout_width="@dimen/x120"
+        android:layout_height="@dimen/x120"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/y400"
+        android:background="@drawable/bg_oval_shape">
+
+        <ImageView
+            android:id="@+id/flashlight"
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/x80"
+            android:layout_centerInParent="true"
+            android:src="@drawable/flashlight_selector"/>
+
+    </RelativeLayout>
+
+</FrameLayout>

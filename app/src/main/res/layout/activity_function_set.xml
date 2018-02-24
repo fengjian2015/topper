@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/light"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="功能设置"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y30"
+        app:cardCornerRadius="@dimen/x15">
+
+        <RelativeLayout
+            android:id="@+id/rl_save_password"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:text="保存登录密码"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+
+
+            <ImageView
+                android:id="@+id/on_off"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/x25"
+                android:src="@drawable/set_disturb_seletor"/>
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y60"
+        android:layout_marginLeft="@dimen/x23"
+        android:gravity="center"
+        android:text="不必重新输入密码即可登录"
+        android:textSize="@dimen/x24"/>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        app:cardCornerRadius="@dimen/x15">
+
+        <RelativeLayout
+            android:id="@+id/rl_self_motion"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:text="自动下载安装包"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+
+
+            <ImageView
+                android:id="@+id/on_off2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/x25"
+                android:src="@drawable/set_disturb_seletor"/>
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y60"
+        android:layout_marginLeft="@dimen/x23"
+        android:gravity="center"
+        android:text="仅WIFI状态下"
+        android:textSize="@dimen/x24"/>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        app:cardCornerRadius="@dimen/x15">
+
+        <RelativeLayout
+            android:id="@+id/rl_multi_language"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:text="多语言"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+
+
+            <ImageView
+                android:id="@+id/on_off3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/x25"
+                android:src="@drawable/set_disturb_seletor"/>
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y60"
+        android:layout_marginLeft="@dimen/x23"
+        android:gravity="center"
+        android:text="跟随系统"
+        android:textSize="@dimen/x24"/>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        app:cardCornerRadius="@dimen/x15">
+
+        <RelativeLayout
+            android:id="@+id/rl_new_msg_hint"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:text="新消息提示"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+
+
+            <ImageView
+                android:id="@+id/on_off4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/x25"
+                android:src="@drawable/set_disturb_seletor"/>
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y60"
+        android:layout_marginLeft="@dimen/x23"
+        android:gravity="center"
+        android:text="提示音跟随系统"
+        android:textSize="@dimen/x24"/>
+
+</LinearLayout>

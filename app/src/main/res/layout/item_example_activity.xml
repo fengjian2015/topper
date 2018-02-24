@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rl_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/x20"
+        android:visibility="gone">
+
+        <!--头像-->
+        <ImageView
+            android:id="@+id/iea_headImg"
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/x80"
+            android:scaleType="fitXY"
+            android:src="@mipmap/img_nfriend_headshot1"/>
+
+        <io.github.rockerhieu.emojicon.EmojiconTextView
+            android:id="@+id/tv_messamge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_toRightOf="@+id/iea_headImg"
+            android:background="@drawable/img_chat2_bg"
+            android:gravity="center"
+            android:lineSpacingExtra="@dimen/y10"
+            android:maxWidth="@dimen/x400"
+            android:text="哈喽！"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"
+            emojicon:emojiconSize="@dimen/x50"/>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_redpacket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_toRightOf="@+id/iea_headImg"
+            app:cardBackgroundColor="#FE5419"
+            app:cardCornerRadius="@dimen/x20">
+
+            <RelativeLayout
+                android:layout_width="@dimen/x450"
+                android:layout_height="@dimen/y200">
+
+                <TextView
+                    android:id="@+id/tv_remark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x10"
+                    android:layout_marginTop="@dimen/y20"
+                    android:layout_toRightOf="@+id/iv_redPacket"
+                    android:gravity="center_vertical"
+                    android:text="恭喜发财，大吉大利"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/x30"/>
+
+                <TextView
+                    android:id="@+id/tv_examine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_remark"
+                    android:layout_marginLeft="@dimen/x10"
+                    android:layout_marginTop="@dimen/y20"
+                    android:layout_toRightOf="@+id/iv_redPacket"
+                    android:gravity="center_vertical"
+                    android:text="查看紅包"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/x26"/>
+
+                <ImageView
+                    android:id="@+id/iv_redPacket"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:layout_marginTop="@dimen/y30"
+                    android:src="@mipmap/icon_rp_tt"/>
+
+                <TextView
+                    android:id="@+id/tv_coin_redpacket"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y60"
+                    android:layout_alignParentBottom="true"
+                    android:background="#90ffffff"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/x30"
+                    android:text="比特币红包"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/x22"/>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_message2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:padding="@dimen/x20"
+        android:visibility="visible">
+
+        <io.github.rockerhieu.emojicon.EmojiconTextView
+            android:id="@+id/tv_messamge2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_toLeftOf="@+id/iea_headImg2"
+            android:background="@drawable/img_chat_bg"
+            android:gravity="center"
+            android:lineSpacingExtra="@dimen/y10"
+            android:maxWidth="@dimen/x400"
+            android:text="哈喽！"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"
+            android:visibility="visible"
+            emojicon:emojiconSize="@dimen/x50"/>
+
+        <ImageView
+            android:id="@+id/iea_headImg2"
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/x80"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitXY"
+            android:src="@mipmap/img_nfriend_headshot1"/>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_redpacket2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_toLeftOf="@+id/iea_headImg2"
+            android:visibility="gone"
+            app:cardBackgroundColor="#FE5419"
+            app:cardCornerRadius="@dimen/x20">
+
+            <RelativeLayout
+                android:layout_width="@dimen/x450"
+                android:layout_height="@dimen/y200">
+
+                <TextView
+                    android:id="@+id/tv_remark2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x10"
+                    android:layout_marginTop="@dimen/y20"
+                    android:layout_toRightOf="@+id/iv_redPacket2"
+                    android:gravity="center"
+                    android:text="恭喜发财，大吉大利"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/x30"/>
+
+                <TextView
+                    android:id="@+id/tv_examine2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_remark2"
+                    android:layout_marginLeft="@dimen/x10"
+                    android:layout_marginTop="@dimen/y20"
+                    android:layout_toRightOf="@+id/iv_redPacket2"
+                    android:text="查看紅包"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/x26"/>
+
+                <ImageView
+                    android:id="@+id/iv_redPacket2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:layout_marginTop="@dimen/y30"
+                    android:src="@mipmap/icon_rp_tt"/>
+
+                <TextView
+                    android:id="@+id/tv_coin_redpacket2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y60"
+                    android:layout_alignParentBottom="true"
+                    android:background="#90ffffff"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/x20"
+                    android:text="比特币红包"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/x22"/>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+
+</RelativeLayout>

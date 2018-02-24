@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/x15"
+    android:layout_marginLeft="@dimen/x30"
+    android:layout_marginRight="@dimen/x30"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y245"
+    android:layout_marginBottom="@dimen/y20"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/x80"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginTop="@dimen/y30"
+            android:src="@mipmap/logo_bankcard_boc"/>
+
+        <TextView
+            android:id="@+id/bank_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginTop="@dimen/y30"
+            android:layout_toRightOf="@+id/image"
+            android:text="中国银行"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+        <TextView
+            android:id="@+id/card_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bank_name"
+            android:layout_marginLeft="@dimen/x32"
+            android:layout_toRightOf="@+id/image"
+            android:text="储蓄卡"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x28"/>
+
+        <TextView
+            android:id="@+id/bank_card_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/y30"
+            android:layout_marginLeft="@dimen/x35"
+            android:text="* * * *    * * * *    * * * *    1 2 3 4"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x36"/>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

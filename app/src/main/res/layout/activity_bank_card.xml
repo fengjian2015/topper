@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/light"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/my_bank_card"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:descendantFocusability="blocksDescendants"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginRight="@dimen/x30"
+                android:layout_marginTop="@dimen/y20"
+                android:descendantFocusability="beforeDescendants"
+                android:fastScrollEnabled="false">
+            </android.support.v7.widget.RecyclerView>
+
+            <Button
+                android:id="@+id/add_bank_card"
+                android:layout_width="@dimen/x450"
+                android:layout_height="@dimen/y80"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/y60"
+                android:layout_marginTop="@dimen/y60"
+                android:background="@drawable/btn_blue_selector"
+                android:text="@string/add_bank_card"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x32"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

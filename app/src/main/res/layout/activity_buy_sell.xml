@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100">
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="购买BTC"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+        <TextView
+            android:id="@+id/tv_help"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:paddingRight="@dimen/x20"
+            android:text="帮助"
+            android:textColor="@color/blue2"
+            android:textSize="@dimen/x30"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_touxiang"
+            android:layout_width="@dimen/x120"
+            android:layout_height="@dimen/x120"
+            android:layout_marginBottom="@dimen/y20"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x25"
+            android:layout_marginTop="@dimen/y20"
+            android:nextFocusRight="@dimen/x20"
+            android:src="@mipmap/img_nfriend_headshot1"/>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y25"
+            android:layout_toRightOf="@+id/iv_touxiang"
+            android:text="安子"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+        <TextView
+            android:id="@+id/tv_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_name"
+            android:layout_marginTop="@dimen/y5"
+            android:layout_toRightOf="@+id/iv_touxiang"
+            android:text="ID:123456"
+            android:textSize="@dimen/x26"/>
+
+        <TextView
+            android:id="@+id/tv_reputation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_id"
+            android:layout_marginTop="@dimen/y5"
+            android:layout_toRightOf="@+id/iv_touxiang"
+            android:text="交易10 | 數量 0.241628 BTC"
+            android:textSize="@dimen/x24"/>
+
+        <Button
+            android:id="@+id/btn_add_friend"
+            android:layout_width="@dimen/y180"
+            android:layout_height="@dimen/y60"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_marginTop="@dimen/y30"
+            android:background="@drawable/bg_buysell_shape"
+            android:text="加为好友"
+            android:textAllCaps="false"
+            android:textColor="@color/blue2"
+            android:textSize="@dimen/x28"/>
+
+    </RelativeLayout>
+
+
+    <TextView
+        style="@style/HCutOffRule"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/y20">
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x25"
+            android:layout_marginTop="@dimen/y20"
+            android:text="交易限额："
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+        <TextView
+            android:id="@+id/tv_quota"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20"
+            android:layout_toRightOf="@+id/tv2"
+            android:text="2000-364555CNY"
+            android:textColor="@color/bar_grey"
+            android:textSize="@dimen/x28"/>
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x10"
+            android:layout_marginTop="@dimen/y20"
+            android:layout_toLeftOf="@+id/tv"
+            android:text="121355"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_price"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x25"
+            android:layout_marginTop="@dimen/y20"
+            android:text="CNY"
+            android:textColor="@color/bar_grey"
+            android:textSize="@dimen/x28"/>
+
+        <TextView
+            android:id="@+id/tv3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv2"
+            android:layout_marginLeft="@dimen/x25"
+            android:layout_marginTop="@dimen/y20"
+            android:text="备注："
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/x30"/>
+
+        <TextView
+            android:id="@+id/tv_remark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv3"
+            android:layout_below="@+id/tv2"
+            android:layout_marginTop="@dimen/y20"
+            android:layout_toRightOf="@+id/tv3"
+            android:text="非诚勿扰"
+            android:textSize="@dimen/x26"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y20"
+        android:background="@color/light"/>
+
+    <TextView
+        android:id="@+id/tv_buysell_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginTop="@dimen/y30"
+        android:text="购买数量："
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/x30"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y20">
+
+        <TextView
+            android:id="@+id/tv_cny_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:textSize="@dimen/x26"/>
+
+        <TextView
+            android:id="@+id/tv_coin_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/red"
+            android:textSize="@dimen/x26"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x25"
+            android:layout_marginTop="@dimen/y20"
+            android:text="CNY"
+            android:textColor="@color/black"/>
+
+        <EditText
+            android:id="@+id/et_cny"
+            android:layout_width="@dimen/x315"
+            android:layout_height="@dimen/y100"
+            android:layout_below="@+id/tv4"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginTop="@dimen/y10"
+            android:background="@drawable/bg_blue_border"
+            android:hint="2000-561435CNY"
+            android:inputType="numberDecimal"
+            android:paddingLeft="@dimen/x20"
+            android:paddingRight="@dimen/x20"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x28"/>
+
+        <ImageView
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
+            android:layout_alignTop="@+id/et_cny"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_marginTop="@dimen/y30"
+            android:layout_toRightOf="@+id/et_cny"
+            android:src="@mipmap/icon_exchange_bg"/>
+
+        <TextView
+            android:id="@+id/tv_coin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/et_coin"
+            android:layout_marginLeft="@dimen/x5"
+            android:layout_marginTop="@dimen/y20"
+            android:text="BTC"
+            android:textColor="@color/black"/>
+
+        <EditText
+            android:id="@+id/et_coin"
+            android:layout_width="@dimen/x315"
+            android:layout_height="@dimen/y100"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tv4"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_marginTop="@dimen/y10"
+            android:background="@drawable/bg_blue_border"
+            android:hint="买入数量"
+            android:inputType="numberDecimal"
+            android:paddingLeft="@dimen/x20"
+            android:paddingRight="@dimen/x20"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x28"/>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_sell_buy"
+        android:layout_width="@dimen/x500"
+        android:layout_height="@dimen/y80"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/y50"
+        android:background="@drawable/bg_blue_shape"
+        android:text="购买"
+        android:textAllCaps="false"
+        android:textColor="@color/white"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y280"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y50"
+        android:background="@drawable/bg_pop_shape"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/x20"
+        android:paddingRight="@dimen/x20">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="温馨提示："
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20"
+            android:text="1、交易前请详细了解卖家的交易信息"
+            android:textSize="@dimen/x28"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20"
+            android:text="2、请通过平台进行沟通协定，并保存好相关聊天信息"
+            android:textSize="@dimen/x28"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20"
+            android:text="3、如遇到交易纠纷，请通过平台解决问题"
+            android:textSize="@dimen/x28"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

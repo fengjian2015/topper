@@ -1,0 +1,501 @@
+package com.dashiji.biyun.ui.activity;
+
+import android.app.Dialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.Spanned;
+import android.text.TextWatcher;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.dashiji.biyun.Presenter.BuySellPresenter;
+import com.dashiji.biyun.R;
+import com.dashiji.biyun.base.BaseActivity;
+import com.dashiji.biyun.model.DealListInfo;
+import com.dashiji.biyun.model.OrderInfo;
+import com.dashiji.biyun.ui.widget.VirtualKeyboardView;
+import com.maning.pswedittextlibrary.MNPasswordEditText;
+
+import java.lang.reflect.Method;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Map;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+import static com.dashiji.biyun.R.style.BottomDialog;
+
+/**
+ * Created by GA on 2018/1/11.
+ */
+
+public class BuySellActivity extends BaseActivity {
+
+
+    @Bind(R.id.bark)
+    ImageView mBark;
+    @Bind(R.id.tv_help)
+    TextView mTvHelp;
+    @Bind(R.id.iv_touxiang)
+    ImageView mIvTouxiang;
+    @Bind(R.id.tv_name)
+    TextView mTvName;
+    @Bind(R.id.tv_id)
+    TextView mTvId;
+    @Bind(R.id.tv_reputation)
+    TextView mTvReputation;
+    @Bind(R.id.btn_add_friend)
+    Button mBtnAddFriend;
+    @Bind(R.id.tv2)
+    TextView mTv2;
+    @Bind(R.id.tv_quota)
+    TextView mTvQuota;
+    @Bind(R.id.tv_price)
+    TextView mTvPrice;
+    @Bind(R.id.tv)
+    TextView mTv;
+    @Bind(R.id.tv3)
+    TextView mTv3;
+    @Bind(R.id.tv_buysell_count)
+    TextView mTvBuysellCount;
+    @Bind(R.id.tv4)
+    TextView mTv4;
+    @Bind(R.id.et_cny)
+    EditText mEtCny;
+    @Bind(R.id.tv_coin)
+    TextView mTvCoin;
+    @Bind(R.id.et_coin)
+    EditText mEtCoin;
+    @Bind(R.id.btn_sell_buy)
+    Button mBtnSellBuy;
+    @Bind(R.id.tv_title)
+    TextView mTvTitle;
+    @Bind(R.id.tv_remark)
+    TextView mTvRemark;
+    @Bind(R.id.tv_cny_hint)
+    TextView mTvCnyHint;
+    @Bind(R.id.tv_coin_hint)
+    TextView mTvCoinHint;
+    private boolean mType;
+    private DealListInfo.DataBean mData;
+    private double mPrice;
+    private int mId;
+    private Animation mEnterAnim;
+    private Animation mExitAnim;
+    private Dialog mRedDialog;
+    private MNPasswordEditText mEtPassword;
+    private ArrayList<Map<String, String>> valueList;
+    private GridView mGridView;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_buy_sell);
+        ButterKnife.bind(this);
+        initInterface();
+        setListener();
+    }
+
+    private void setListener() {
+        mEtCny.setFilters(new InputFilter[]{lengthFilter});
+        mEtCoin.setFilters(new InputFilter[]{lengthFilter2});
+        mEtCoin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    mEtCoin.addTextChangedListener(mTextWatcher);
+                } else {
+                    mEtCoin.removeTextChangedListener(mTextWatcher);
+                    mTvCoinHint.setText("");
+                }
+            }
+        });
+
+        mEtCny.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    mEtCny.addTextChangedListener(mTextWatcher2);
+                } else {
+                    mEtCny.removeTextChangedListener(mTextWatcher2);
+                    mTvCnyHint.setText("");
+                }
+            }
+        });
+    }
+
+    TextWatcher mTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            String s = mEtCoin.getText().toString();
+            if (!s.isEmpty()) {
+                double count = Float.parseFloat(s);
+                double min_amount = mData.getMin_amount();
+                double max_amount = mData.getMax_amount();
+                double money = count * mPrice;
+                if (money < min_amount) {
+                    mTvCoinHint.setText("不能低于限额");
+                } else if (money > max_amount) {
+                    mTvCoinHint.setText("不能高于限额");
+                } else {
+                    mTvCoinHint.setText("");
+                }
+                DecimalFormat df = new DecimalFormat("#.##");
+                String str = df.format(money);
+                mEtCny.setText(str);
+            } else {
+                mEtCny.setText("0.00");
+            }
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            String s = mEtCoin.getText().toString();
+            if (!s.isEmpty()) {
+                double count = Float.parseFloat(s);
+                double min_amount = mData.getMin_amount();
+                double max_amount = mData.getMax_amount();
+                double money = count * mPrice;
+                if (money < min_amount) {
+                    mTvCoinHint.setText("不能低于限额");
+                } else if (money > max_amount) {
+                    mTvCoinHint.setText("不能高于限额");
+                } else {
+                    mTvCoinHint.setText("");
+                }
+                DecimalFormat df = new DecimalFormat("#.##");
+                String str = df.format(money);
+                mEtCny.setText(str);
+            } else {
+                mEtCny.setText("0.00");
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    };
+
+    TextWatcher mTextWatcher2 = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            String s = mEtCny.getText().toString();
+            if (!s.isEmpty()) {
+                double money = Float.parseFloat(s);
+                double min_amount = mData.getMin_amount();
+                double max_amount = mData.getMax_amount();
+                if (money < min_amount) {
+                    mTvCnyHint.setText("不能低于限额");
+                } else if (money > max_amount) {
+                    mTvCnyHint.setText("不能高于限额");
+                } else {
+                    mTvCnyHint.setText("");
+                }
+                double count = money / mPrice;
+                DecimalFormat df = new DecimalFormat("#.######");
+                String str = df.format(count);
+                mEtCoin.setText(str);
+            } else {
+                mEtCoin.setText("0.00");
+            }
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            String s = mEtCny.getText().toString();
+            if (!s.isEmpty()) {
+                double money = Float.parseFloat(s);
+                double min_amount = mData.getMin_amount();
+                double max_amount = mData.getMax_amount();
+                if (money < min_amount) {
+                    mTvCnyHint.setText("不能低于限额");
+                } else if (money > max_amount) {
+                    mTvCnyHint.setText("不能高于限额");
+                } else {
+                    mTvCnyHint.setText("");
+                }
+                double count = money / mPrice;
+                DecimalFormat df = new DecimalFormat("#.######");
+                String str = df.format(count);
+                mEtCoin.setText(str);
+            } else {
+                mEtCoin.setText("0.00");
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    };
+
+    private InputFilter lengthFilter = new InputFilter() {
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end,
+                                   Spanned dest, int dstart, int dend) {
+            // source:当前输入的字符
+            // start:输入字符的开始位置
+            // end:输入字符的结束位置
+            // dest：当前已显示的内容
+            // dstart:当前光标开始位置
+            // dent:当前光标结束位置
+            if (dest.length() == 0 && source.equals(".")) {
+                return "0.";
+            }
+            String dValue = dest.toString();
+            String[] splitArray = dValue.split("\\.");
+            if (splitArray.length > 1) {
+                String dotValue = splitArray[1];
+                if (dotValue.length() == 2) {
+                    return "";
+                }
+            }
+            return null;
+        }
+
+    };
+
+    private InputFilter lengthFilter2 = new InputFilter() {
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end,
+                                   Spanned dest, int dstart, int dend) {
+            // source:当前输入的字符
+            // start:输入字符的开始位置
+            // end:输入字符的结束位置
+            // dest：当前已显示的内容
+            // dstart:当前光标开始位置
+            // dent:当前光标结束位置
+            if (dest.length() == 0 && source.equals(".")) {
+                return "0.";
+            }
+            String dValue = dest.toString();
+            String[] splitArray = dValue.split("\\.");
+            if (splitArray.length > 1) {
+                String dotValue = splitArray[1];
+                if (dotValue.length() == 6) {
+                    return "";
+                }
+            }
+            return null;
+        }
+
+    };
+
+    private void initInterface() {
+        Bundle bundle = getIntent().getExtras();
+        mType = bundle.getBoolean("type", false);
+        mData = (DealListInfo.DataBean) bundle.getSerializable("data");
+        mPrice = Double.parseDouble(mData.getPrice());
+        mId = mData.getId();
+        mTvName.setText(mData.getUsername());
+        mTvCoin.setText(mData.getCoin_name());
+        mTvId.setText("ID：" + mData.getUser_id() + "");
+        mTvQuota.setText(mData.getMin_amount() + "-" + mData.getMax_amount() + " " + mData.getCurrency());
+        mTv4.setText(mData.getCurrency());
+        mTvRemark.setText(mData.getRemark());
+        mTvPrice.setText(mPrice + "");
+        mTvReputation.setText("交易 " + mData.getCount_trans_number() + " | 数量 " + mData.getNumber() + " " + mData.getCoin_name());
+        mTvTitle.setText("购买" + mData.getCoin_name());
+        if (mType) {
+            mTvBuysellCount.setText("售出数量");
+            mBtnSellBuy.setText("售出");
+            mEtCoin.setHint("售出数量");
+            mTvTitle.setText("售出" + mData.getCoin_name());
+            mEtCoin.setBackground(getResources().getDrawable(R.drawable.bg_blue_border2));
+            mEtCny.setBackground(getResources().getDrawable(R.drawable.bg_blue_border2));
+            mBtnSellBuy.setBackground(getResources().getDrawable(R.drawable.bg_green_shape2));
+        }
+    }
+
+    @OnClick({R.id.bark, R.id.tv_help, R.id.btn_add_friend, R.id.btn_sell_buy})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.bark:
+                finish();
+                break;
+            case R.id.tv_help:
+                break;
+            case R.id.btn_add_friend:
+                break;
+            case R.id.btn_sell_buy:
+                String moneys = mEtCny.getText().toString();
+                String count = mEtCoin.getText().toString();
+                if (!moneys.isEmpty() && !count.isEmpty()) {
+                    int money = Integer.parseInt(moneys);
+                    if (money >= mData.getMin_amount() && money <= mData.getMax_amount()) {
+                        if (!mType)
+                            createOrder("");
+                        else
+                            showPWDialog();
+                    }
+                } else {
+                    Toast.makeText(this, "金额或者数量不能为空", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+
+    private void showPWDialog() {
+        mEnterAnim = AnimationUtils.loadAnimation(this, R.anim.dialog_enter);
+        mExitAnim = AnimationUtils.loadAnimation(this, R.anim.dialog_exit);
+        mRedDialog = new Dialog(this, R.style.BottomDialog2);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_passwrod, null);
+        //获得dialog的window窗口
+        Window window = mRedDialog.getWindow();
+        window.getDecorView().setPadding(0, 0, 0, 0);
+        //获得window窗口的属性
+        WindowManager.LayoutParams lp = window.getAttributes();
+        //设置窗口宽度为充满全屏
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        //将设置好的属性set回去
+        window.setAttributes(lp);
+        window.setGravity(Gravity.CENTER);
+        window.setWindowAnimations(BottomDialog);
+        mRedDialog.setContentView(contentView);
+        mRedDialog.show();
+        mRedDialog.setCanceledOnTouchOutside(false);
+        initDialog();
+    }
+
+    private void initDialog() {
+        String count = mEtCoin.getText().toString();
+        TextView coin = (TextView) mRedDialog.findViewById(R.id.tv_coin);
+        TextView countCoin = (TextView) mRedDialog.findViewById(R.id.tv_count_coin);
+        mEtPassword = (MNPasswordEditText) mRedDialog.findViewById(R.id.et_password);
+        // 设置不调用系统键盘
+        if (android.os.Build.VERSION.SDK_INT <= 10) {
+            mEtPassword.setInputType(InputType.TYPE_NULL);
+        } else {
+            this.getWindow().setSoftInputMode(
+                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+            try {
+                Class<EditText> cls = EditText.class;
+                Method setShowSoftInputOnFocus;
+                setShowSoftInputOnFocus = cls.getMethod("setShowSoftInputOnFocus",
+                        boolean.class);
+                setShowSoftInputOnFocus.setAccessible(true);
+                setShowSoftInputOnFocus.invoke(mEtPassword, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        final VirtualKeyboardView virtualKeyboardView = (VirtualKeyboardView) mRedDialog.findViewById(R.id.virtualKeyboardView);
+        ImageView bark = (ImageView) mRedDialog.findViewById(R.id.bark);
+        bark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRedDialog.dismiss();
+                mEtPassword.setText("");
+            }
+        });
+        valueList = virtualKeyboardView.getValueList();
+        countCoin.setText(count + mData.getCoin_name());
+        coin.setText("售出" + mData.getCoin_name());
+        virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                virtualKeyboardView.startAnimation(mExitAnim);
+                virtualKeyboardView.setVisibility(View.GONE);
+            }
+        });
+        mGridView = virtualKeyboardView.getGridView();
+        mGridView.setOnItemClickListener(onItemClickListener);
+        mEtPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                virtualKeyboardView.setFocusable(true);
+                virtualKeyboardView.setFocusableInTouchMode(true);
+                virtualKeyboardView.startAnimation(mEnterAnim);
+                virtualKeyboardView.setVisibility(View.VISIBLE);
+            }
+        });
+
+        mEtPassword.setOnPasswordChangeListener(new MNPasswordEditText.OnPasswordChangeListener() {
+            @Override
+            public void onPasswordChange(String password) {
+                if (password.length() == 6) {
+                    mRedDialog.dismiss();
+                    mEtPassword.setText("");
+                    createOrder(password);
+                }
+            }
+        });
+    }
+
+    private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+            if (position < 11 && position != 9) {    //点击0~9按钮
+
+                String amount = mEtPassword.getText().toString().trim();
+                amount = amount + valueList.get(position).get("name");
+
+                mEtPassword.setText(amount);
+
+                Editable ea = mEtPassword.getText();
+                mEtPassword.setSelection(ea.length());
+            } else {
+
+                if (position == 9) {      //点击退格键
+                    String amount = mEtPassword.getText().toString().trim();
+                    if (!amount.contains(".")) {
+                        amount = amount + valueList.get(position).get("name");
+                        mEtPassword.setText(amount);
+
+                        Editable ea = mEtPassword.getText();
+                        mEtPassword.setSelection(ea.length());
+                    }
+                }
+
+                if (position == 11) {      //点击退格键
+                    String amount = mEtPassword.getText().toString().trim();
+                    if (amount.length() > 0) {
+                        amount = amount.substring(0, amount.length() - 1);
+                        mEtPassword.setText(amount);
+
+                        Editable ea = mEtPassword.getText();
+                        mEtPassword.setSelection(ea.length());
+                    }
+                }
+            }
+        }
+    };
+
+    private void createOrder(String password) {
+        BuySellPresenter buySellPresenter = new BuySellPresenter(this);
+        buySellPresenter.createOrder(mData.getId(), mEtCoin.getText().toString(), mData.getPrice(), mEtCny.getText().toString(), new BuySellPresenter.CallBack2() {
+            @Override
+            public void send(OrderInfo.DataBean data) {
+                Intent intent = new Intent(BuySellActivity.this, OrderDetailsActivity.class);
+                if (mType)
+                    intent.putExtra("type", "卖");
+                else
+                    intent.putExtra("type", "买");
+                intent.putExtra("data", data);
+                startActivity(intent);
+            }
+        }, password);
+    }
+}

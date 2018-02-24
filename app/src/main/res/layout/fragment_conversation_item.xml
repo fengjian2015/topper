@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/rl_item"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y150"
+                android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/tab1_item_img"
+        android:layout_width="@dimen/x110"
+        android:layout_height="@dimen/x110"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/x20"
+        android:src="@mipmap/img_nfriend_headshot1"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_toRightOf="@+id/tab1_item_img">
+
+        <TextView
+            android:id="@+id/tab1_item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:text="安子"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x35"
+            android:textStyle="bold"/>
+
+        <io.github.rockerhieu.emojicon.EmojiconTextView
+            android:id="@+id/tab1_item_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tab1_item_name"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="@dimen/y10"
+            android:ellipsize="end"
+            android:maxEms="8"
+            android:singleLine="true"
+            android:text=""
+            android:textSize="@dimen/x28"
+            emojicon:emojiconSize="@dimen/x35"/>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x20"
+            android:text="17:42:00"
+            android:textSize="@dimen/x26"/>
+
+        <TextView
+            android:id="@+id/number"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/x35"
+            android:layout_alignBottom="@+id/tab1_item_text"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/y5"
+            android:layout_marginRight="@dimen/x20"
+            android:background="@drawable/bg_add_card_shape"
+            android:gravity="center"
+            android:paddingLeft="@dimen/x15"
+            android:paddingRight="@dimen/x15"
+            android:text="99+"
+            android:textColor="#FFF"
+            android:textSize="@dimen/x26"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

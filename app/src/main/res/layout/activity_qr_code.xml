@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="二维码"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+        <ImageView
+            android:id="@+id/more"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_notice_more"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y835"
+        android:layout_marginTop="@dimen/y30"
+        android:background="@color/light"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/touxiang"
+            android:layout_width="@dimen/x100"
+            android:layout_height="@dimen/x100"
+            android:src="@mipmap/img_nfriend_headshot1"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="安子"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x28"/>
+
+            <ImageView
+                android:id="@+id/gender_iv"
+                android:layout_width="@dimen/x24"
+                android:layout_height="@dimen/x24"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/name"
+                android:src="@mipmap/icon_friends_girls"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/site"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20"
+            android:text="中国/深圳"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x28"/>
+
+        <ImageView
+            android:id="@+id/qr_code_iv"
+            android:layout_width="@dimen/x450"
+            android:layout_height="@dimen/y450"
+            android:layout_marginTop="@dimen/y30"
+            android:src="@mipmap/qr_code1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y15"
+            android:text="扫描二维码，添加为好友"
+            android:textSize="@dimen/x28"/>
+
+    </LinearLayout>
+
+</LinearLayout>

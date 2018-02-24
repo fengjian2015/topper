@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y550"
+        android:background="@mipmap/bg_img_person"
+        android:fitsSystemWindows="true">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y310"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_marginTop="@dimen/y200"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="@dimen/x20"
+            app:cardElevation="@dimen/x5">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/touxiang"
+                        android:layout_width="@dimen/x150"
+                        android:layout_height="@dimen/x150"
+                        android:layout_marginLeft="@dimen/x48"
+                        android:layout_marginTop="@dimen/y40"
+                        android:src="@mipmap/img_nfriend_headshot1"/>
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_marginTop="@dimen/y20"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/x30"
+                        android:layout_alignTop="@+id/touxiang"
+                        android:layout_toRightOf="@+id/touxiang"
+                        android:text="安子"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/x40"/>
+<!--
+                    <ImageView
+                        android:layout_width="@dimen/x15"
+                        android:layout_height="@dimen/y25"
+                        android:layout_marginLeft="@dimen/x20"
+                        android:layout_marginTop="@dimen/y60"
+                        android:layout_toRightOf="@+id/name"
+                        android:src="@mipmap/icon_nfriend_boys"/>-->
+
+                    <TextView
+                        android:id="@+id/id"
+                        android:layout_width="wrap_content"
+                        android:layout_marginBottom="@dimen/y20"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/touxiang"
+                        android:layout_marginLeft="@dimen/x30"
+                        android:layout_marginTop="@dimen/y20"
+                        android:layout_toRightOf="@+id/touxiang"
+                        android:text="ID:33446"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/x30"/>
+
+                    <!--<FrameLayout
+                        android:id="@+id/edit"
+                        android:layout_width="@dimen/x126"
+                        android:layout_height="@dimen/y60"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/x48"
+                        android:layout_marginTop="@dimen/y70"
+                        android:background="@drawable/bg_buysell_shape">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/x20"
+                            android:text="@string/edit"
+                            android:textColor="@color/blue2"
+                            android:textSize="@dimen/x28"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/x85"
+                            android:src="@mipmap/iocn_person_compile"/>
+
+                    </FrameLayout>-->
+
+                </RelativeLayout>
+
+                <!--<LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/x48"
+                        android:layout_marginTop="@dimen/y30"
+                        android:text="9"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/x26"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/x10"
+                        android:layout_marginTop="@dimen/y30"
+                        android:text="@string/attention"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/x26"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/x30"
+                        android:layout_marginTop="@dimen/y30"
+                        android:text="56416"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/x26"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/x10"
+                        android:layout_marginTop="@dimen/y30"
+                        android:text="@string/fans"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/x26"/>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/x48"
+                        android:layout_marginTop="@dimen/y30"
+                        android:text="@string/signature"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/x26"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/x10"
+                        android:layout_marginTop="@dimen/y30"
+                        android:maxLength="11"
+                        android:text="心已决堤，泪如潮水。愿"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/x26"/>
+
+
+                </LinearLayout>-->
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y15"
+        android:background="@color/light"/>
+
+    <!--<RelativeLayout
+        android:id="@+id/rl_my_move"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imageview"
+            android:layout_width="@dimen/x30"
+            android:layout_height="@dimen/x30"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x35"
+            android:src="@mipmap/iocn_person_dynamics"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x44"
+            android:layout_toRightOf="@+id/imageview"
+            android:text="@string/my_dynamic"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+        <ImageView
+            android:layout_width="@dimen/x15"
+            android:layout_height="@dimen/x25"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x25"
+            android:src="@mipmap/icon_aboutus_turninto"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>-->
+
+    <RelativeLayout
+        android:id="@+id/rl_my_assets"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imageview2"
+            android:layout_width="@dimen/x30"
+            android:layout_height="@dimen/x30"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x35"
+            android:src="@mipmap/iocn_person_assets"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x44"
+            android:layout_toRightOf="@+id/imageview2"
+            android:text="@string/my_address"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+        <ImageView
+            android:layout_width="@dimen/x15"
+            android:layout_height="@dimen/x25"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x25"
+            android:src="@mipmap/icon_aboutus_turninto"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_shenfen_verify"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imageview3"
+            android:layout_width="@dimen/x30"
+            android:layout_height="@dimen/x30"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x35"
+            android:src="@mipmap/iocn_person_credit"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x40"
+            android:layout_toRightOf="@+id/imageview3"
+            android:text="@string/authentication"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+        <ImageView
+            android:layout_width="@dimen/x15"
+            android:layout_height="@dimen/x25"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x25"
+            android:src="@mipmap/icon_aboutus_turninto"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_guanyu_me"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imageview4"
+            android:layout_width="@dimen/x30"
+            android:layout_height="@dimen/x30"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x35"
+            android:src="@mipmap/iocn_person_aboutus"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x44"
+            android:layout_toRightOf="@+id/imageview4"
+            android:text="@string/about_us"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+        <ImageView
+            android:layout_width="@dimen/x15"
+            android:layout_height="@dimen/x25"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x25"
+            android:src="@mipmap/icon_aboutus_turninto"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_system_set"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imageview5"
+            android:layout_width="@dimen/x30"
+            android:layout_height="@dimen/x30"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x35"
+            android:src="@mipmap/iocn_person_setting"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x44"
+            android:layout_toRightOf="@+id/imageview5"
+            android:text="@string/system_set"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+        <ImageView
+            android:layout_width="@dimen/x15"
+            android:layout_height="@dimen/x25"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x25"
+            android:src="@mipmap/icon_aboutus_turninto"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_delete_cache"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imageview6"
+            android:layout_width="@dimen/x30"
+            android:layout_height="@dimen/x30"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x35"
+            android:src="@mipmap/iocn_person_clean"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x44"
+            android:layout_toRightOf="@+id/imageview6"
+            android:text="@string/clear_cache"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+        <TextView
+            android:id="@+id/cache_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x25"
+            android:text="325M"
+            android:textColor="@color/blue2"
+            android:textSize="@dimen/x30"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+
+</LinearLayout>

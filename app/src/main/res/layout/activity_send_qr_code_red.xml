@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@mipmap/img_red_bg"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_alignParentTop="true"
+        android:background="@color/redpacket3">
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/notice_icon_return"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="生成红包"
+            android:textColor="@color/white"
+            android:textSize="@dimen/x32"/>
+
+        <TextView
+            android:id="@+id/tv_redpacket_record"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:paddingRight="@dimen/x20"
+            android:text="紅包記錄"
+            android:textColor="@color/white"
+            android:textSize="@dimen/x26"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x90"
+        android:layout_marginTop="@dimen/y250"
+        android:text="币种"
+        android:textColor="@color/redpacket"
+        android:textSize="@dimen/x30"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_selector_coin"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_marginLeft="@dimen/x50"
+        android:layout_marginRight="@dimen/x50"
+        android:layout_marginTop="@dimen/y20"
+        android:background="@drawable/bg_qr_red_shape"
+        android:paddingLeft="@dimen/x30"
+        android:paddingRight="@dimen/x40">
+
+        <TextView
+            android:id="@+id/tv_coin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="选择币种"
+            android:textColor="@color/red"
+            android:textSize="@dimen/x30"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_click_triangle_selected"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x90"
+        android:layout_marginTop="@dimen/y30"
+        android:text="金额"
+        android:textColor="@color/redpacket"
+        android:textSize="@dimen/x30"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_marginLeft="@dimen/x50"
+        android:layout_marginRight="@dimen/x50"
+        android:layout_marginTop="@dimen/y20"
+        android:background="@drawable/bg_qr_red_shape"
+        android:paddingLeft="@dimen/x30"
+        android:paddingRight="@dimen/x40">
+
+        <EditText
+            android:id="@+id/et_money_count"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/tv_cny"
+            android:background="@android:color/transparent"
+            android:hint="输入金额数量"
+            android:inputType="numberDecimal"
+            android:textColor="@color/black"
+            android:textColorHint="@color/red"
+            android:textSize="@dimen/x30"/>
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x90"
+        android:layout_marginTop="@dimen/y30"
+        android:text="数量"
+        android:textColor="@color/redpacket"
+        android:textSize="@dimen/x30"/>
+
+    <EditText
+        android:id="@+id/et_red_count"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_marginLeft="@dimen/x50"
+        android:layout_marginRight="@dimen/x50"
+        android:layout_marginTop="@dimen/y20"
+        android:background="@drawable/bg_qr_red_shape"
+        android:hint="输入红包个数"
+        android:inputType="number"
+        android:paddingLeft="@dimen/x30"
+        android:paddingRight="@dimen/x30"
+        android:textColor="@color/black"
+        android:textColorHint="@color/red"
+        android:textSize="@dimen/x30"/>
+
+    <Button
+        android:id="@+id/btn_send"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y80"
+        android:layout_marginLeft="@dimen/x50"
+        android:layout_marginRight="@dimen/x50"
+        android:layout_marginTop="@dimen/y80"
+        android:background="@drawable/bg_orange_shape"
+        android:text="发送"
+        android:textColor="@color/red"
+        android:textSize="@dimen/x30"/>
+
+</LinearLayout>

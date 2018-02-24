@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginTop="@dimen/y30"
+        android:text="谷歌验证"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/x30"/>
+
+
+    <EditText
+        android:id="@+id/et_google_code"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y110"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y30"
+        android:background="@drawable/bg_blue_border"
+        android:hint="@string/et_google_code"
+        android:inputType="number"
+        android:maxLength="6"
+        android:paddingLeft="@dimen/x20"
+        android:textCursorDrawable="@null"
+        android:textSize="@dimen/x28"/>
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="@dimen/x450"
+        android:layout_height="@dimen/y80"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/y60"
+        android:layout_marginTop="@dimen/y60"
+        android:background="@drawable/btn_blue_selector"
+        android:text="@string/confirm"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/x32"/>
+
+</LinearLayout>

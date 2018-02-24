@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y120"
+                android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/x20">
+
+        <TextView
+            android:id="@+id/tv_site"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tv_count"
+            android:text="JLasdf555sdfaFGA4Gfgasd555fsadAGD2"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/x26"/>
+
+        <TextView
+            android:id="@+id/tv_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_site"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/y10"
+            android:layout_toRightOf="@+id/tv_count"
+            android:text="其他平台btc地址"
+            android:textSize="@dimen/x22"/>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:padding="@dimen/x20"
+        android:src="@mipmap/icon_get_copy"/>
+
+
+    <TextView
+        style="@style/HCutOffRule"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

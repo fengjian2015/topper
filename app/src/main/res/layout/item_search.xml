@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y120"
+                android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/iv_touxiang"
+        android:layout_width="@dimen/x80"
+        android:layout_height="@dimen/x80"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/x20"/>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/x50"
+        android:layout_toRightOf="@+id/iv_touxiang"
+        android:text="name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x30"/>
+
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="@dimen/x200"
+        android:layout_height="@dimen/y80"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="right"
+        android:layout_marginRight="@dimen/x20"
+        android:background="@drawable/bg_blue_border"
+        android:text="添加"/>
+
+</RelativeLayout>

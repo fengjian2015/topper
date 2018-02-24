@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:gravity="center"
+        android:text="疑问"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/x36"/>
+
+    <TextView
+        android:id="@+id/xx"
+        style="@style/HCutOffRule"
+        android:layout_below="@+id/tv_title"/>
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/xx"
+        android:padding="@dimen/y30"
+        android:text="昨天,某小官为了巴结林大将军,特意来邀请林大将军到闻名全国的宝物湖一游.本来对这个兴趣缺缺的林枫就要拒绝,刘佳却抢先答应了而後刘佳用会说话的大眼睛对林枫发电,游湖的事情就这样定下来了今天早上,两人就出去了聪明的某小官为了进一步讨好林大将军,特意为他安排了一名美女导游"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/x30"/>
+
+    <Button
+        android:id="@+id/btn_query"
+        android:layout_width="@dimen/x70"
+        android:layout_height="@dimen/x70"
+        android:layout_below="@+id/tv_content"
+        android:layout_marginBottom="@dimen/y30"
+        android:layout_marginLeft="@dimen/x30"
+        android:background="@mipmap/icon_prompt_tibi"/>
+
+</RelativeLayout>

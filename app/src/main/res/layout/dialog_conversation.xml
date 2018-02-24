@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_help"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:background="@drawable/click_selector">
+
+        <ImageView
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/x30"
+            android:src="@mipmap/icon_bg_btc"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/x20"
+            android:text="帮助"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+    </LinearLayout>
+
+    <TextView
+        style="@style/HCutOffRule"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"/>
+
+    <LinearLayout
+        android:id="@+id/ll_group_chat"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:background="@drawable/click_selector">
+
+        <ImageView
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/x30"
+            android:src="@mipmap/icon_groupchat"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/x20"
+            android:text="群聊"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+    </LinearLayout>
+
+    <TextView
+        style="@style/HCutOffRule"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"/>
+
+    <LinearLayout
+        android:id="@+id/ll_delete"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:background="@drawable/click_selector">
+
+        <ImageView
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/x30"
+            android:src="@mipmap/icon_delete"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/x20"
+            android:text="删除"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+    </LinearLayout>
+
+    <TextView
+        style="@style/HCutOffRule"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"/>
+
+    <LinearLayout
+        android:id="@+id/ll_complain"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:background="@drawable/click_selector">
+
+        <ImageView
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/x30"
+            android:src="@mipmap/icon_complaints"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/x20"
+            android:text="投诉"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+    </LinearLayout>
+
+    <TextView
+        style="@style/HCutOffRule"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"/>
+</LinearLayout>

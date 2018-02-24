@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="@dimen/x300"
+              android:layout_height="@dimen/y800"
+              android:background="@android:color/transparent"
+              android:orientation="vertical">
+
+
+    <Button
+        android:id="@+id/tpc"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_btc_shape"
+        android:text="TPC"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x24"/>
+
+    <Button
+        android:id="@+id/btc"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/y10"
+        android:layout_weight="1"
+        android:background="@drawable/bg_btc2_shape"
+        android:text="BTC"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x24"/>
+
+    <Button
+        android:id="@+id/ltc"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/y10"
+        android:layout_weight="1"
+        android:background="@drawable/bg_btc3_shape"
+        android:text="LTC"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x24"/>
+
+    <Button
+        android:id="@+id/dogo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/y10"
+        android:layout_weight="1"
+        android:background="@drawable/bg_btc5_shape"
+        android:text="DOGO"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x24"/>
+
+    <Button
+        android:id="@+id/zec"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/y10"
+        android:layout_weight="1"
+        android:background="@drawable/bg_btc4_shape"
+        android:text="ZEC"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x24"/>
+
+    <Button
+        android:id="@+id/lsk"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/y10"
+        android:layout_marginTop="@dimen/y10"
+        android:layout_weight="1"
+        android:background="@drawable/bg_add_card_shape"
+        android:text="LSk"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x24"/>
+
+    <Button
+        android:id="@+id/maid"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/y10"
+        android:layout_marginTop="@dimen/y10"
+        android:layout_weight="1"
+        android:background="@drawable/bg_btc_shape"
+        android:text="MAID"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x24"/>
+
+    <Button
+        android:id="@+id/shc"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/y10"
+        android:layout_marginTop="@dimen/y10"
+        android:layout_weight="1"
+        android:background="@drawable/bg_btc2_shape"
+        android:text="SHC"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x24"/>
+
+    <Button
+        android:id="@+id/ans"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/y10"
+        android:layout_marginTop="@dimen/y10"
+        android:layout_weight="1"
+        android:background="@drawable/bg_btc3_shape"
+        android:text="ANS"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x24"/>
+
+</LinearLayout>

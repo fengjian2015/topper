@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/light"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="手机实名"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <LinearLayout
+        android:id="@+id/ll_binding_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            android:layout_marginTop="@dimen/y25"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x30"
+                android:text="填写真实手机号"
+                android:textSize="@dimen/x25"/>
+
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="@dimen/x500"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/x33"
+                android:background="@color/transparent"
+                android:gravity="right|center_vertical"
+                android:hint="请输入号码"
+                android:inputType="phone"
+                android:maxLength="15"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/x25"/>
+
+        </RelativeLayout>
+
+        <TextView
+            style="@style/HCutOffRule"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            android:background="@color/white">
+
+            <EditText
+                android:id="@+id/yz_code"
+                android:layout_width="@dimen/x500"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginRight="@dimen/x30"
+                android:background="@color/transparent"
+                android:hint="填写验证码"
+                android:inputType="number"
+                android:maxLength="6"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/x25"/>
+
+            <Button
+                android:id="@+id/send_message"
+                android:layout_width="@dimen/x162"
+                android:layout_height="@dimen/y68"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x30"
+                android:background="@drawable/bg_login_shape"
+                android:text="发送验证码"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x24"/>
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="@dimen/x450"
+            android:layout_height="@dimen/y80"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y100"
+            android:background="@drawable/bg_next_shape"
+            android:text="提交"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_change_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/x20"
+        android:paddingRight="@dimen/x20">
+
+        <TextView
+            android:id="@+id/binding_phone_number"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y80"
+            android:gravity="center_vertical"
+            android:text="当前绑定手机号：18317964322"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x28"/>
+
+        <Button
+            android:id="@+id/change_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            android:background="@drawable/bg_white_shape"
+            android:gravity="center"
+            android:text="更换手机号"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x28"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20"
+            android:text="一个手机号只能绑定一个币云账号"
+            android:textSize="@dimen/x22"/>
+
+    </LinearLayout>
+
+</LinearLayout>

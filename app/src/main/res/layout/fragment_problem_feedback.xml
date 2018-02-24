@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/light"
+              android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y60"
+        android:layout_marginLeft="@dimen/x20"
+        android:gravity="center"
+        android:text="问题和意见"
+        android:textSize="@dimen/x26"/>
+
+    <EditText
+        android:id="@+id/feedback_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y200"
+        android:background="@color/white"
+        android:gravity="top"
+        android:hint="请填写10个字以上的问题描述以便我们提供更好的帮助服务。"
+        android:maxLength="150"
+        android:paddingLeft="@dimen/x20"
+        android:paddingRight="@dimen/x20"
+        android:paddingTop="@dimen/y10"
+        android:textCursorDrawable="@null"
+        android:textSize="@dimen/x25"/>
+
+    <TextView
+        android:id="@+id/text_count"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y50"
+        android:layout_marginLeft="@dimen/x20"
+        android:gravity="center"
+        android:text="0/150"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y220"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginTop="@dimen/y20"
+            android:text="图片(截图上传)"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x26"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y130"
+            android:layout_below="@+id/text"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_marginTop="@dimen/y20"
+            android:overScrollMode="never">
+        </android.support.v7.widget.RecyclerView>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_marginTop="@dimen/y30"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:text="联系方式"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x26"/>
+
+        <EditText
+            android:id="@+id/contact_way"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/x50"
+            android:layout_marginRight="@dimen/x20"
+            android:background="@color/transparent"
+            android:hint="币云ID、号码选填，便于我们与您联系"
+            android:inputType="number"
+            android:maxLength="20"
+            android:textCursorDrawable="@null"
+            android:textSize="@dimen/x26"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginTop="@dimen/y10"
+        android:text="十分感谢您的反馈！"
+        android:textSize="@dimen/y26"/>
+
+    <Button
+        android:id="@+id/finish"
+        android:layout_width="@dimen/x400"
+        android:layout_height="@dimen/y80"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/y30"
+        android:background="@drawable/bg_login_shape"
+        android:text="完成"
+        android:textColor="@color/white"
+        android:textSize="@dimen/x28"/>
+
+</LinearLayout>

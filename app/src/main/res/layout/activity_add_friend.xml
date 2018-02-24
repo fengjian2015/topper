@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center_horizontal"
+              android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100">
+
+        <ImageView
+            android:id="@+id/imageview"
+            android:layout_width="@dimen/x25"
+            android:layout_height="@dimen/x25"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:src="@mipmap/search_icon_find"/>
+
+        <TextView
+            android:layout_width="@dimen/x618"
+            android:layout_height="@dimen/y2"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/y20"
+            android:layout_marginLeft="@dimen/x20"
+            android:background="@color/black"/>
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="@dimen/x100"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="取消"
+            android:textSize="@dimen/x24"/>
+
+        <TextView
+            android:id="@+id/tv_search"
+            android:layout_width="@dimen/x100"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="搜索"
+            android:textSize="@dimen/x24"
+            android:visibility="gone"/>
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="@dimen/x550"
+            android:layout_height="@dimen/y80"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x24"
+            android:layout_toRightOf="@+id/imageview"
+            android:background="@color/transparent"
+            android:hint="搜索"
+            android:textCursorDrawable="@null"
+            android:textSize="@dimen/x24"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_hot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y65"
+            android:text="热门搜索"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+        <TextView
+            android:layout_width="@dimen/x300"
+            android:layout_height="@dimen/y2"
+            android:layout_marginTop="@dimen/y50"
+            android:background="@color/black"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y50"
+            android:text="如何理解数字货币"
+            android:textSize="@dimen/x24"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y45"
+            android:text="第二代加密货币"
+            android:textSize="@dimen/x24"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y45"
+            android:text="区块链"
+            android:textSize="@dimen/x24"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y45"
+            android:text="虚拟货币"
+            android:textSize="@dimen/x24"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y45"
+            android:text="比特币"
+            android:textSize="@dimen/x24"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y45"
+            android:text="以太坊"
+            android:textSize="@dimen/x24"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y45"
+            android:text="区块链资产便捷交易平台"
+            android:textSize="@dimen/x24"/>
+
+        <TextView
+            android:layout_width="@dimen/x300"
+            android:layout_height="@dimen/y2"
+            android:layout_marginTop="@dimen/y45"
+            android:background="@color/black"/>
+
+        <TextView
+            android:id="@+id/clear_away"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y45"
+            android:text="清空历史记录"
+            android:textColor="#9CD8E2"
+            android:textSize="@dimen/x24"/>
+
+        <TextView
+            android:layout_width="@dimen/x140"
+            android:layout_height="@dimen/y2"
+            android:background="#9CD8E2"/>
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+    </ListView>
+
+</LinearLayout>

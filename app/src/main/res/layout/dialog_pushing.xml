@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@android:color/transparent"
+              android:gravity="center"
+              android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn_buy"
+        android:layout_width="@dimen/x150"
+        android:layout_height="@dimen/x150"
+        android:layout_marginTop="@dimen/y10"
+        android:background="@mipmap/icon_push_buy"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/x40"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y10"
+        android:text="Push of Buying"
+        android:textColor="@color/white"
+        android:textSize="@dimen/x26"/>
+
+    <Button
+        android:id="@+id/btn_sell"
+        android:layout_width="@dimen/x150"
+        android:layout_height="@dimen/x150"
+        android:layout_marginTop="@dimen/y80"
+        android:background="@mipmap/icon_push_sell"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/x40"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y10"
+        android:text="Push of Selling"
+        android:textColor="@color/white"
+        android:textSize="@dimen/x26"/>
+</LinearLayout>

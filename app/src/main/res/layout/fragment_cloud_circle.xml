@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <View
+        android:id="@+id/status_bar_fix"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#00000000"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/status_bar_fix">
+
+        <RelativeLayout
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100">
+
+            <RelativeLayout
+                android:id="@+id/rl_selector_state"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tv_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="China"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x28"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_toRightOf="@+id/tv_state"
+                    android:src="@mipmap/icon_wallet_more_selected"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_order_selector"
+                android:layout_width="@dimen/x150"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_proceed"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_order_selector"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/y10"
+                    android:paddingTop="@dimen/y10"
+                    android:text="进行"
+                    android:textColor="@drawable/yunxin_text_color_seletor"
+                    android:textSize="@dimen/x26"/>
+
+                <TextView
+                    android:id="@+id/tv_finish"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_order_selector2"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/y10"
+                    android:paddingTop="@dimen/y10"
+                    android:text="完成"
+                    android:textColor="@drawable/yunxin_text_color_seletor"
+                    android:textSize="@dimen/x26"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cloud_circle_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/buy"
+                        android:textColor="@drawable/menu_text_color_selector"
+                        android:textSize="@dimen/x32"/>
+
+                    <TextView
+                        android:id="@+id/zixun_xx"
+                        android:layout_width="@dimen/x65"
+                        android:layout_height="@dimen/y2"
+                        android:layout_marginTop="@dimen/y8"
+                        android:background="@color/black"
+                        android:visibility="invisible"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/x70"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sell"
+                        android:textColor="@drawable/menu_text_color_selector"
+                        android:textSize="@dimen/x32"/>
+
+                    <TextView
+                        android:id="@+id/tongzhi_xx"
+                        android:layout_width="@dimen/x65"
+                        android:layout_height="@dimen/y2"
+                        android:layout_marginTop="@dimen/y8"
+                        android:background="@color/black"
+                        android:visibility="invisible"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/x70"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="訂單"
+                        android:textColor="@drawable/menu_text_color_selector"
+                        android:textSize="@dimen/x32"/>
+
+                    <TextView
+                        android:id="@+id/dingdan_xx3"
+                        android:layout_width="@dimen/x65"
+                        android:layout_height="@dimen/y2"
+                        android:layout_marginTop="@dimen/y8"
+                        android:background="@color/black"
+                        android:visibility="invisible"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_pushing"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:paddingLeft="@dimen/x20"
+                android:paddingRight="@dimen/x20"
+                android:text="+"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x60"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/xx"
+            style="@style/HCutOffRule"
+            android:layout_below="@+id/title"/>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/cloud_circle_vp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/xx">
+        </android.support.v4.view.ViewPager>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray"
+        android:gravity="center"
+        android:text="开发当中敬请期待"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/x50"/>
+
+</RelativeLayout>
+

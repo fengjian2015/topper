@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/dynamic_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/xx"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/touxiang"
+            android:layout_width="@dimen/x66"
+            android:layout_height="@dimen/x66"
+            android:layout_marginLeft="@dimen/x35"
+            android:layout_marginTop="@dimen/x36"
+            android:src="@mipmap/img_nfriend_headshot1"/>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x40"
+            android:layout_marginTop="@dimen/x36"
+            android:layout_toRightOf="@+id/touxiang"
+            android:text="安子"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+        <ImageView
+            android:id="@+id/time_tv"
+            android:layout_width="@dimen/x20"
+            android:layout_height="@dimen/x20"
+            android:layout_below="@+id/name"
+            android:layout_marginLeft="@dimen/x40"
+            android:layout_marginTop="@dimen/y20"
+            android:layout_toRightOf="@+id/touxiang"
+            android:src="@mipmap/bg_reply_time"/>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
+            android:layout_marginLeft="@dimen/x10"
+            android:layout_marginTop="@dimen/y20"
+            android:layout_toRightOf="@+id/time_tv"
+            android:text="3小时前"
+            android:textSize="@dimen/x18"/>
+
+        <TextView
+            android:id="@+id/comment_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/time"
+            android:layout_marginBottom="@dimen/y40"
+            android:layout_marginLeft="@dimen/x40"
+            android:layout_marginTop="@dimen/y20"
+            android:layout_toRightOf="@+id/touxiang"
+            android:text="文字文字文字文字文字文字"
+            android:textSize="@dimen/x26"/>
+
+        <LinearLayout
+            android:id="@+id/ll_zan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x25"
+            android:layout_marginTop="@dimen/y50"
+            android:padding="@dimen/x20">
+
+            <ImageView
+                android:layout_width="@dimen/x25"
+                android:layout_height="@dimen/y25"
+                android:src="@drawable/zan_selector"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x10"
+                android:text="7489"
+                android:textColor="@drawable/text_blue_selector"
+                android:textSize="@dimen/x22"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+</LinearLayout>
