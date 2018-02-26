@@ -2,14 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        KeyStore {
+        release {
             keyAlias 'key'
             keyPassword '123456'
-            storeFile file('G:/KeyStore.jks')
+            storeFile file('D:/KeyStore.jks')
             storePassword '123456'
         }
     }
-
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
     aaptOptions.cruncherEnabled = false
@@ -42,7 +41,7 @@ android {
 
         }
     }
-    buildTypes {
+    /*buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -50,7 +49,7 @@ android {
         debug {
             signingConfig signingConfigs.KeyStore
         }
-    }
+    }*/
     /*signingConfigs {
         release {
             keyAlias 'test'
@@ -70,6 +69,10 @@ android {
             minifyEnabled true
         }
     }*/
+    buildTypes {
+        release {
+        }
+    }
 }
 
 configurations.all {

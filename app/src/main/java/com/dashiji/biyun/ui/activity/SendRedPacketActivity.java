@@ -27,9 +27,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dashiji.biyun.Presenter.CoinPresenter;
 import com.dashiji.biyun.Presenter.RedPacketPresenter;
 import com.dashiji.biyun.R;
 import com.dashiji.biyun.history.DBManager;
+import com.dashiji.biyun.model.CoinInfo;
 import com.dashiji.biyun.model.ConversationInfo;
 import com.dashiji.biyun.model.MessageInfo;
 import com.dashiji.biyun.ui.adapter.BottomDialogRVAdapter2;
@@ -38,6 +40,7 @@ import com.dashiji.biyun.ui.widget.VirtualKeyboardView;
 import com.dashiji.biyun.utils.AnimatorTool;
 import com.dashiji.biyun.utils.Constants;
 import com.dashiji.biyun.utils.MessageEvent;
+import com.dashiji.biyun.utils.UtilTool;
 import com.dashiji.biyun.xmpp.XmppConnection;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
@@ -49,6 +52,7 @@ import org.jxmpp.jid.impl.JidCreate;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -104,6 +108,20 @@ public class SendRedPacketActivity extends AppCompatActivity {
         setContentView(R.layout.activity_send_red_packet);
         mUser = getIntent().getStringExtra("user");
         ButterKnife.bind(this);
+        initData();
+    }
+
+    private void initData() {
+        CoinPresenter coinPresenter = new CoinPresenter(this);
+        coinPresenter.getCoin(new CoinPresenter.CallBack() {
+            @Override
+            public void send(List<CoinInfo.DataBean> address) {
+                for(CoinInfo.DataBean dataBean : address){
+                    UtilTool.Log("日志1", dataBean.getCoin_over());
+                    UtilTool.Log("日志1", dataBean.getName());
+                }
+            }
+        });
     }
 
     @OnClick({R.id.bark, R.id.rl_selector_currency, R.id.btn_send})

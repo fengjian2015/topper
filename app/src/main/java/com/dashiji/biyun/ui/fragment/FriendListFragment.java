@@ -17,7 +17,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.dashiji.biyun.Presenter.CloudMessagePresenter;
 import com.dashiji.biyun.R;
@@ -30,6 +33,7 @@ import com.dashiji.biyun.ui.adapter.FriendListVPAdapter;
 import com.dashiji.biyun.utils.Constants;
 import com.dashiji.biyun.utils.FullyLinearLayoutManager;
 import com.dashiji.biyun.utils.MessageEvent;
+import com.dashiji.biyun.utils.MySharedPreferences;
 import com.dashiji.biyun.utils.UtilTool;
 import com.dashiji.biyun.xmpp.XmppConnection;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -68,18 +72,24 @@ import butterknife.OnClick;
 
 public class FriendListFragment extends Fragment {
 
+    private static final String NEWFRIEND = "new_friend";
     public static FriendListFragment instance = null;
     String response, acceptAdd, alertName, alertSubName;
     @Bind(R.id.ll_search)
     LinearLayout mLlSearch;
+    @Bind(R.id.iv)
+    ImageView mIv;
+    @Bind(R.id.number)
+    TextView mNumber;
     @Bind(R.id.news_friend)
-    LinearLayout mNewsFriend;
+    RelativeLayout mNewsFriend;
     @Bind(R.id.my_group)
     LinearLayout mMyGroup;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
+
     private Map<String, Boolean> mFromMap = new HashMap<>();
     private List<UserInfo> mUsers = new ArrayList<>();
     Handler myHandler = new Handler() {
@@ -92,6 +102,7 @@ public class FriendListFragment extends Fragment {
     private FriendListVPAdapter mFriendListVPAdapter;
     private DBManager mMgr;
     private int mId;
+    private int mNewFriend;
 
     public static FriendListFragment getInstance() {
 
@@ -109,6 +120,11 @@ public class FriendListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_friend_list, container, false);
         ButterKnife.bind(this, view);
+        mNewFriend = MySharedPreferences.getInstance().getInteger(NEWFRIEND);
+        if (mNewFriend != 0) {
+            mNumber.setText(mNewFriend + "");
+            mNumber.setVisibility(View.VISIBLE);
+        }
         mMgr = new DBManager(getContext());
         queryUser();
         initRecylerView();
@@ -217,6 +233,11 @@ public class FriendListFragment extends Fragment {
                 }
                 if (acceptAdd.equals("收到添加请求！")) {
                     //弹出一个对话框，包含同意和拒绝按钮
+                    UtilTool.playHint(getContext());
+                    mNewFriend += 1;
+                    MySharedPreferences.getInstance().setInteger(NEWFRIEND, mNewFriend);
+                    mNumber.setText(mNewFriend + "");
+                    mNumber.setVisibility(View.VISIBLE);
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     builder.setTitle("添加好友请求");
                     builder.setMessage("用户" + alertSubName + "请求添加你为好友");
@@ -285,13 +306,17 @@ public class FriendListFragment extends Fragment {
                 String to = presence.getTo().toString();//接收方
                 if (presence.getType().equals(Presence.Type.subscribe)) {
                     //发送广播传递发送方的JIDfrom及字符串
-                    acceptAdd = "收到添加请求！";
-                    Intent intent = new Intent();
-                    intent.putExtra("fromName", from);
-                    intent.putExtra("acceptAdd", acceptAdd);
-                    intent.setAction("com.example.eric_jqm_chat.SearchActivity");
-                    getContext().sendBroadcast(intent);
-                    mId = mMgr.addRequest(from, 0);
+                    UtilTool.Log("日志1", mMgr.findUser(from) + "");
+                    UtilTool.Log("日志1", mMgr.findRequest(from) + "");
+                    if (!mMgr.findUser(from)) {
+                        acceptAdd = "收到添加请求！";
+                        Intent intent = new Intent();
+                        intent.putExtra("fromName", from);
+                        intent.putExtra("acceptAdd", acceptAdd);
+                        intent.setAction("com.example.eric_jqm_chat.SearchActivity");
+                        getContext().sendBroadcast(intent);
+                        mId = mMgr.addRequest(from, 0);
+                    }
                 } else if (presence.getType().equals(
                         Presence.Type.subscribed)) {
                     //发送广播传递response字符串
@@ -441,9 +466,10 @@ public class FriendListFragment extends Fragment {
 
                 break;
             case R.id.news_friend:
-
                 startActivity(new Intent(getActivity(), NewFriendActivity.class));
-
+                MySharedPreferences.getInstance().setInteger(NEWFRIEND, 0);
+                mNumber.setVisibility(View.GONE);
+                mNewFriend = 0;
                 break;
             case R.id.my_group:
 

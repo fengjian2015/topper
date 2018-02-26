@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="@color/white"
               android:orientation="vertical">
 
     <RelativeLayout
@@ -42,7 +43,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/y835"
         android:layout_marginTop="@dimen/y30"
-        android:background="@color/light"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -65,24 +65,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 
-            <ImageView
-                android:id="@+id/gender_iv"
-                android:layout_width="@dimen/x24"
-                android:layout_height="@dimen/x24"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/name"
-                android:src="@mipmap/icon_friends_girls"/>
         </RelativeLayout>
-
-        <TextView
-            android:id="@+id/site"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/y20"
-            android:text="中国/深圳"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x28"/>
 
         <ImageView
             android:id="@+id/qr_code_iv"

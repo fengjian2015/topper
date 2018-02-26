@@ -175,6 +175,16 @@ public class DBManager {
         return id;
     }
 
+    public boolean findRequest(String user) {
+        db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from ConversationRecord where user=? and my_user=?",
+                new String[]{user, UtilTool.getMyUser()});
+        boolean result = cursor.moveToNext();
+        cursor.close();
+        db.close();
+        return result;
+    }
+
     public void updateRequest(int id, int type) {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();

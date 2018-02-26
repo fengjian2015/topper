@@ -20,6 +20,7 @@ import com.dashiji.biyun.R;
 import com.dashiji.biyun.history.DBManager;
 import com.dashiji.biyun.ui.activity.GuanYuMeActivity;
 import com.dashiji.biyun.ui.activity.MyAssetsActivity;
+import com.dashiji.biyun.ui.activity.QRCodeActivity;
 import com.dashiji.biyun.ui.activity.ShenFenVerifyActivity;
 import com.dashiji.biyun.ui.activity.SystemSetActivity;
 import com.dashiji.biyun.ui.widget.DeleteCacheDialog;
@@ -124,9 +125,12 @@ public class MyFragment extends Fragment {
     }
 
     //点击事件处理
-    @OnClick({R.id.touxiang, R.id.rl_my_assets, R.id.rl_shenfen_verify, R.id.rl_guanyu_me, R.id.rl_system_set, R.id.rl_delete_cache})
+    @OnClick({R.id.iv_my_qr, R.id.touxiang, R.id.rl_my_assets, R.id.rl_shenfen_verify, R.id.rl_guanyu_me, R.id.rl_system_set, R.id.rl_delete_cache})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.iv_my_qr:
+                startActivity(new Intent(getActivity(), QRCodeActivity.class));
+                break;
             case R.id.touxiang:
 
 //                startActivity(new Intent(getActivity(), LoginActivity.class));

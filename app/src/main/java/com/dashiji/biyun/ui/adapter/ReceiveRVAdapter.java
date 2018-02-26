@@ -98,7 +98,7 @@ public class ReceiveRVAdapter extends RecyclerView.Adapter {
                             mContext.startActivity(intent);
                         } else {
                             Intent intent = new Intent(mContext, QRCodeRedActivity.class);
-                            intent.putExtra("code", UtilTool.base64Encrypt(mLogBean.getId() + ""));
+                            intent.putExtra("code", UtilTool.base64PetToJson("id", mLogBean.getId() + "", "红包"));
                             intent.putExtra("type", false);
                             mContext.startActivity(intent);
                         }

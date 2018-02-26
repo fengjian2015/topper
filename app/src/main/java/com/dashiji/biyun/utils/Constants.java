@@ -14,4 +14,5 @@ public class Constants {
     public static final String REDDEFAULT = "恭喜發財，大吉大利";
     public static final String MYUSER = UtilTool.getMyUser();
     public static final String DOMAINNAME = "xmpp.bclould.com";
+    public static final String ADDFRIEND = "add_friend";
 }

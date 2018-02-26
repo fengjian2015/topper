@@ -2,6 +2,7 @@ package com.dashiji.biyun.network;
 
 
 import com.dashiji.biyun.model.BaseInfo;
+import com.dashiji.biyun.model.CoinInfo;
 import com.dashiji.biyun.model.DealListInfo;
 import com.dashiji.biyun.model.GoogleInfo;
 import com.dashiji.biyun.model.GrabRedInfo;
@@ -364,6 +365,12 @@ public interface MyService {
     Observable<BaseInfo> checkVersion(
             @Header("Authorization") String token,
             @Field("version") String version
+    );
+
+    //检测版本号
+    @POST("finance/AssetName")
+    Observable<CoinInfo> AssetName(
+            @Header("Authorization") String token
     );
 
 }

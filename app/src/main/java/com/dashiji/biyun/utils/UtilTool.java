@@ -32,6 +32,9 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smackx.vcardtemp.packet.VCard;
 import org.jivesoftware.smackx.vcardtemp.provider.VCardProvider;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jxmpp.jid.impl.JidCreate;
 
 import java.io.File;
@@ -341,9 +344,18 @@ public class UtilTool {
 
     }
 
-    public static String base64Encrypt(String id) {
-        String str = Base64.encodeToString(id.getBytes(), Base64.DEFAULT);
-        return Constants.BASE64PW + str;
+    public static String base64PetToJson(String key, String value, String message) {
+        String jsonresult = "";//定义返回字符串
+        JSONObject object = new JSONObject();//创建一个总的对象，这个对象对整个json串
+        try {
+            object.put(key, value);
+            object.put("message", message);
+            jsonresult = object.toString();//生成返回字符串
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String str = Base64.encodeToString(jsonresult.getBytes(), Base64.DEFAULT);
+        return str;
     }
 
     public static Bitmap getMyImage(DBManager mgr, String myUser) {
@@ -367,7 +379,7 @@ public class UtilTool {
             mediaPlayer.prepare();//缓冲
             mediaPlayer.start();//开始或恢复播放
         } catch (IOException e) {
-            Log("日志","没有找到这个文件");
+            Log("日志", "没有找到这个文件");
             e.printStackTrace();
         }
     }

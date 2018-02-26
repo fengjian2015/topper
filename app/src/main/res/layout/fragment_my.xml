@@ -36,7 +36,6 @@
                         android:layout_width="@dimen/x150"
                         android:layout_height="@dimen/x150"
                         android:layout_marginLeft="@dimen/x48"
-                        android:layout_marginTop="@dimen/y40"
                         android:src="@mipmap/img_nfriend_headshot1"/>
 
                     <TextView
@@ -71,6 +70,15 @@
                         android:text="ID:33446"
                         android:textColor="@color/gray"
                         android:textSize="@dimen/x30"/>
+
+                    <ImageView
+                        android:id="@+id/iv_my_qr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/x30"
+                        android:src="@mipmap/qr_code"
+                        android:layout_alignParentRight="true"
+                        />
 
                     <!--<FrameLayout
                         android:id="@+id/edit"
