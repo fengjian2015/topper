@@ -14,6 +14,11 @@ import com.dashiji.biyun.R;
 import com.dashiji.biyun.base.MyApp;
 import com.dashiji.biyun.ui.fragment.CloudMessageFragment;
 import com.dashiji.biyun.utils.UtilTool;
+import com.dashiji.biyun.xmpp.XmppConnection;
+
+import org.jivesoftware.smack.roster.Roster;
+import org.jivesoftware.smack.util.stringencoder.Base64;
+import org.jxmpp.jid.impl.JidCreate;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -94,10 +99,23 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
             UtilTool.Log("日志", result);
             finish();
         } else {
+            String jsonresult = Base64.decodeToString(result);
+            UtilTool.Log("日志", jsonresult);
+            if (jsonresult.contains("message") && jsonresult.contains("名片")) {
+                try {
+                    String name = jsonresult.substring(jsonresult.indexOf(":") + 2, jsonresult.indexOf(",")- 1);
+                    UtilTool.Log("日志", name);
+                    Roster.getInstanceFor(XmppConnection.getInstance().getConnection()).createEntry(JidCreate.entityBareFrom(name), null, new String[]{"Friends"});
+                    Toast.makeText(this, "发送请求成功", Toast.LENGTH_SHORT).show();
+                    finish();
+                } catch (Exception e) {
+                    Toast.makeText(this, "发送请求失败", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
             Intent intent = new Intent(ScanQRCodeActivity.this, CloudMessageFragment.class);
             intent.putExtra("result", result);
             setResult(RESULT_OK, intent);
-            UtilTool.Log("日志", result);
             finish();
         }
         //再次延时1.5秒后启动

@@ -8,11 +8,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.Spannable;
@@ -96,6 +98,7 @@ import static com.dashiji.biyun.R.style.BottomDialog;
  * Created by GA on 2017/9/20.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class ConversationActivity extends AppCompatActivity implements FuncLayout.OnFuncKeyBoardListener {
 
     private static final int CODE_TAKE_PHOTO = 1;
@@ -166,6 +169,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     ImageView mIvJiantou;
     @Bind(R.id.ll_chat)
     LinearLayout mLlChat;
+    @Bind(R.id.rl_outer)
+    RelativeLayout mRlOuter;
     private ExampleAdapter mExampleAdapter;
     private String mUser;
     private String mName;
@@ -191,6 +196,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         mMgr.updateNumber(mUser, 0);
         EventBus.getDefault().post(new MessageEvent("处理未读消息"));
     }
+
 
     //初始化表情盘
     private void initEmoticonsKeyboard() {
@@ -346,7 +352,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 mEkbEmoticonsKeyboard.getEtChat().setText("");
             }
         });
-
     }
 
     @Override
@@ -663,11 +668,18 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     boolean isClick = false;
 
-    @OnClick({R.id.bark, R.id.iv_else, R.id.ll_details, R.id.btn_look_order, R.id.btn_cancel_order2, R.id.btn_confirm_send_coin, R.id.btn_cancel_order, R.id.btn_confirm_pay})
+    @OnClick({R.id.rl_outer, R.id.bark, R.id.iv_else, R.id.ll_details, R.id.btn_look_order, R.id.btn_cancel_order2, R.id.btn_confirm_send_coin, R.id.btn_cancel_order, R.id.btn_confirm_pay})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.rl_outer:
+                /*InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                boolean isOpen = imm.isActive();//isOpen若返回true，则表示输入法打开
+                if (isOpen) {
+                    imm.hideSoftInputFromWindow(mEkbEmoticonsKeyboard.getEtChat().getWindowToken(), 0);
+                }*/
                 break;
             case R.id.iv_else:
                 showDialog();
@@ -747,8 +759,9 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
-            if (isShouldHideInput(v, ev)) {
-
+            boolean b = v instanceof Editable;
+            boolean b2 = v instanceof Button;
+            if (!b && !b2) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
@@ -761,25 +774,5 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             return true;
         }
         return onTouchEvent(ev);
-    }
-
-    public boolean isShouldHideInput(View v, MotionEvent event) {
-        if (v != null && (v instanceof EditText)) {
-            int[] leftTop = {0, 0};
-            //获取输入框当前的location位置
-            v.getLocationInWindow(leftTop);
-            int left = leftTop[0];
-            int top = leftTop[1];
-            int bottom = top + v.getHeight();
-            int right = left + v.getWidth();
-            if (event.getX() > left && event.getX() < right
-                    && event.getY() > top && event.getY() < bottom) {
-                // 点击的是输入框区域，保留点击EditText的事件
-                return false;
-            } else {
-                return true;
-            }
-        }
-        return false;
     }
 }

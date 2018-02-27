@@ -23,7 +23,6 @@ import com.dashiji.biyun.ui.activity.PublicshDynamicActivity;
 import com.dashiji.biyun.ui.activity.ScanQRCodeActivity;
 import com.dashiji.biyun.ui.activity.SendQRCodeRedActivity;
 import com.dashiji.biyun.ui.adapter.CloudMessageVPAdapter;
-import com.dashiji.biyun.utils.Constants;
 import com.dashiji.biyun.utils.StatusBarCompat;
 
 import butterknife.Bind;
@@ -256,10 +255,10 @@ public class CloudMessageFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             String result = data.getStringExtra("result");
-            if (!result.isEmpty() && result.contains(Constants.BASE64PW)) {
-                String code = result.substring(Constants.BASE64PW.length(), result.length());
-                byte[] bytes = Base64.decode(code, Base64.DEFAULT);
-                String id = new String(bytes);
+            byte[] bytes = Base64.decode(result, Base64.DEFAULT);
+            String jsonresult = new String(bytes);
+            if (!jsonresult.isEmpty() && jsonresult.contains("id") && jsonresult.contains("红包")) {
+                String id = jsonresult.substring(jsonresult.indexOf(":") + 2, jsonresult.indexOf(",") - 1);
                 Intent intent = new Intent(getActivity(), GrabQRCodeRedActivity.class);
                 intent.putExtra("id", id);
                 intent.putExtra("type", true);

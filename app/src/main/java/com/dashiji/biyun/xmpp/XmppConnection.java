@@ -15,6 +15,7 @@ import com.dashiji.biyun.utils.Constants;
 import com.dashiji.biyun.utils.UtilTool;
 
 import org.jivesoftware.smack.AbstractXMPPConnection;
+import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.SmackException;
@@ -61,6 +62,7 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -70,7 +72,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.TrustManager;
 
 import static org.jivesoftware.smack.provider.ProviderManager.addIQProvider;
 
@@ -121,7 +123,6 @@ public class XmppConnection {
     public boolean openConnection() {
 
         try {
-
             if (null == connection || !connection.isAuthenticated()) {
                 SmackConfiguration.DEBUG = true;
                 XMPPTCPConnectionConfiguration.Builder config = XMPPTCPConnectionConfiguration.builder();
@@ -132,16 +133,18 @@ public class XmppConnection {
                 //设置端口号：默认5222
                 config.setPort(SERVER_PORT);
                 //禁用SSL连接
-                SSLContext sc = SSLContext.getInstance("TLS");
+                /*SSLContext sc = SSLContext.getInstance("TLS");
                 MemorizingTrustManager mtm = new MemorizingTrustManager(mContext);
                 sc.init(null, new X509TrustManager[]{mtm}, new java.security.SecureRandom());
                 config.setCustomSSLContext(sc);
                 config.setHostnameVerifier(
-                        mtm.wrapHostnameVerifier(new org.apache.http.conn.ssl.StrictHostnameVerifier()));
-                /*config.setKeystoreType(null);
-
-                config.setCustomSSLContext(SSLContext.getInstance("TLS"));
-                config.setSecurityMode(ConnectionConfiguration.SecurityMode.disabled);*/
+                        mtm.wrapHostnameVerifier(new org.apache.http.conn.ssl.StrictHostnameVerifier()));*/
+                SSLContext sslContext = SSLContext.getInstance("TLS");
+                MyX509TrustManager myX509TrustManager = new MyX509TrustManager(mContext.getResources().getAssets().open("keystore.bks"), "changeit");
+                sslContext.init(null, new TrustManager[]{myX509TrustManager},
+                        new SecureRandom());
+                config.setCustomSSLContext(sslContext);
+                config.setSecurityMode(ConnectionConfiguration.SecurityMode.required);
 //                设置Debug
                 config.setDebuggerEnabled(true);
                 //设置离线状态

@@ -71,16 +71,16 @@ public class RedPacketPresenter {
                                 callBack.send(baseInfo.getData().getId());
                                 Toast.makeText(mContext, "已发送", Toast.LENGTH_SHORT).show();
                             } else if (baseInfo.getMessage().equals("交易密码不正确")) {
-                                if(mContext instanceof SendRedPacketActivity) {
+                                if (mContext instanceof SendRedPacketActivity) {
                                     SendRedPacketActivity activity = (SendRedPacketActivity) mContext;
                                     activity.showHintDialog();
-                                }else {
+                                } else {
                                     SendQRCodeRedActivity activity = (SendQRCodeRedActivity) mContext;
                                     activity.showHintDialog();
                                 }
                             } else if (baseInfo.getMessage().equals("尚未设置交易密码")) {
                                 showSetPwDialog();
-                            }else {
+                            } else {
                                 Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                             hideDialog();
