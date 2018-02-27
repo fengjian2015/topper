@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y120"
+                android:background="@drawable/click_selector"
+                android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/tv_coin_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/x50"/>
 
     <TextView
         android:id="@+id/tv_name"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
-        android:background="@drawable/click_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:gravity="center"
         android:textColor="@android:color/black"
         android:textSize="@dimen/x30"/>
 
     <TextView
         style="@style/HCutOffRule"
+        android:layout_alignParentBottom="true"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"/>
-</LinearLayout>
+</RelativeLayout>

@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y30">
 
-            <com.dashiji.biyun.ui.widget.ChangeTextSpaceView
+            <com.bclould.tocotalk.ui.widget.ChangeTextSpaceView
                 android:id="@+id/tv_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

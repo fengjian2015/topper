@@ -443,12 +443,12 @@
 
             </LinearLayout>
 
-            <com.dashiji.biyun.ui.widget.LoadMoreListView
+            <com.bclould.tocotalk.ui.widget.LoadMoreListView
                 android:id="@+id/lv_message"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:divider="@null">
-            </com.dashiji.biyun.ui.widget.LoadMoreListView>
+            </com.bclould.tocotalk.ui.widget.LoadMoreListView>
 
 
         </LinearLayout>

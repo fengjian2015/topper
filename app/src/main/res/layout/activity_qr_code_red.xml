@@ -44,6 +44,7 @@
         style="@style/HCutOffRule"/>
 
     <RelativeLayout
+        android:id="@+id/rl_red"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -67,6 +68,7 @@
             android:layout_marginTop="@dimen/y366"/>
 
         <TextView
+            android:id="@+id/tv_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_qr_code"
@@ -74,6 +76,16 @@
             android:layout_marginTop="@dimen/y60"
             android:text="扫一扫上面的二维码图案，领取红包"
             android:textColor="@android:color/black"/>
+
+        <Button
+            android:id="@+id/btn_save_qr"
+            android:layout_width="@dimen/x200"
+            android:layout_height="@dimen/y80"
+            android:layout_below="@+id/tv_hint"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y30"
+            android:background="@drawable/bg_register_shape"
+            android:text="保存二维码"/>
 
     </RelativeLayout>
 

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y120"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/iv_coin"
+        android:layout_width="@dimen/x40"
+        android:layout_height="@dimen/x40"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/x30"/>
+
+    <TextView
+        android:id="@+id/tv_coin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/x15"
+        android:layout_toRightOf="@+id/iv_coin"
+        android:textSize="@dimen/x28"/>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/x30"
+        app:cardCornerRadius="@dimen/x25">
+
+        <Button
+            android:id="@+id/btc_add"
+            android:layout_width="@dimen/x130"
+            android:layout_height="@dimen/y60"
+            android:background="@drawable/bg_buysell_shape"
+            android:text="@string/add"
+            android:textAllCaps="false"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/x28"/>
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_alignParentBottom="true"
+        style="@style/HCutOffRule"/>
+
+</RelativeLayout>

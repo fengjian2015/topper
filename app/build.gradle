@@ -5,7 +5,7 @@ android {
         release {
             keyAlias 'key'
             keyPassword '123456'
-            storeFile file('D:/KeyStore.jks')
+            storeFile file('D:/AndroidStudio/Project/TocoTalk/app/src/main/assets/KeyStore.jks')
             storePassword '123456'
         }
     }
@@ -22,11 +22,11 @@ android {
         jumboMode = true
     }
     defaultConfig {
-        applicationId "com.dashiji.biyun"
+        applicationId "com.bclould.tocotalk"
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 2
-        versionName "2.7"
+        versionName "2.8"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
