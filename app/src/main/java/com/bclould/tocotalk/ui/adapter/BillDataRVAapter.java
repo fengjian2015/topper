@@ -1,6 +1,9 @@
 package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +11,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.model.TransferInfo;
+import com.bclould.tocotalk.ui.activity.BillDetailsActivity;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -19,11 +26,11 @@ import butterknife.ButterKnife;
 public class BillDataRVAapter extends RecyclerView.Adapter {
 
     private final Context mContext;
+    private final List<TransferInfo.DataBean> mData;
 
-    public BillDataRVAapter(Context context) {
-
+    public BillDataRVAapter(Context context, List<TransferInfo.DataBean> data) {
         mContext = context;
-
+        mData = data;
     }
 
     @Override
@@ -36,15 +43,18 @@ public class BillDataRVAapter extends RecyclerView.Adapter {
         return holder;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
-
+        ViewHolder viewHolder = (ViewHolder) holder;
+        viewHolder.setData(mData.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 20;
+        if (mData.size() == 0)
+            return 0;
+        return mData.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -52,9 +62,9 @@ public class BillDataRVAapter extends RecyclerView.Adapter {
         TextView mTypeName;
         @Bind(R.id.time)
         TextView mTime;
-        @Bind(R.id.money_count)
-        TextView mMoneyCount;
-        private int mPosition;
+        @Bind(R.id.coin_count)
+        TextView mCoinCount;
+        private TransferInfo.DataBean mDataBean;
 
         ViewHolder(View view) {
             super(view);
@@ -63,12 +73,38 @@ public class BillDataRVAapter extends RecyclerView.Adapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    mContext.startActivity(new Intent(mContext, BillDetailsActivity.class));
+                    Intent intent = new Intent(mContext, BillDetailsActivity.class);
+                    if (mDataBean.getDesc().equals("转入")) {
+                        intent.putExtra("name", mDataBean.getSend_name());
+                        intent.putExtra("type", true);
+                    } else {
+                        intent.putExtra("name", mDataBean.getReceive_name());
+                        intent.putExtra("type", false);
+                    }
+                    intent.putExtra("time", mDataBean.getCreated_at());
+                    intent.putExtra("coin", mDataBean.getCoin_name());
+                    intent.putExtra("coinCount", mDataBean.getNumber());
+                    intent.putExtra("id", mDataBean.getTo_id());
+                    mContext.startActivity(intent);
                 }
             });
 
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.M)
+        public void setData(TransferInfo.DataBean dataBean) {
+            mDataBean = dataBean;
+            if (dataBean.getDesc().equals("转入")) {
+                mTypeName.setText(dataBean.getSend_name());
+                mCoinCount.setText("+" + dataBean.getNumber() + " " + dataBean.getCoin_name());
+                mCoinCount.setTextColor(mContext.getColor(R.color.red));
+            } else {
+                mTypeName.setText(dataBean.getReceive_name());
+                mCoinCount.setText("-" + dataBean.getNumber() + " " + dataBean.getCoin_name());
+                mCoinCount.setTextColor(mContext.getColor(R.color.green));
+            }
+            mTime.setText(dataBean.getCreated_at());
+        }
     }
 
 

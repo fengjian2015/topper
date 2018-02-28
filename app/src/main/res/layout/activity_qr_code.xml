@@ -67,12 +67,26 @@
 
         </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/qr_code_iv"
-            android:layout_width="@dimen/x450"
-            android:layout_height="@dimen/y450"
-            android:layout_marginTop="@dimen/y30"
-            android:src="@mipmap/qr_code1"/>
+        <RelativeLayout
+            android:id="@+id/rl_qr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y30">
+
+            <ImageView
+                android:id="@+id/qr_code_iv"
+                android:layout_width="@dimen/x450"
+                android:layout_height="@dimen/y450"
+                android:src="@mipmap/qr_code1"/>
+
+            <ImageView
+                android:id="@+id/iv_qr_touxiang"
+                android:layout_width="@dimen/x100"
+                android:layout_height="@dimen/x100"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/img_nfriend_headshot1"/>
+
+        </RelativeLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -83,4 +97,14 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btn_save_qr"
+        android:layout_width="@dimen/x200"
+        android:layout_height="@dimen/y80"
+        android:layout_below="@+id/tv_hint"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/y30"
+        android:background="@drawable/bg_register_shape"
+        android:text="保存二维码"/>
 </LinearLayout>

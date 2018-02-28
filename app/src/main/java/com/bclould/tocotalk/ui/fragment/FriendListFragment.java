@@ -58,9 +58,8 @@ import org.jxmpp.jid.impl.JidCreate;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.TreeMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -89,11 +88,16 @@ public class FriendListFragment extends Fragment {
     RecyclerView mRecyclerView;
     @Bind(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
-    private Map<String, Boolean> mFromMap = new HashMap<>();
+    private TreeMap<String, Boolean> mFromMap = new TreeMap<>();
     private List<UserInfo> mUsers = new ArrayList<>();
     Handler myHandler = new Handler() {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            switch (msg.what){
+                case 0:
+                    queryUser();
+                    break;
+            }
             mFriendListVPAdapter.notifyDataSetChanged();
         }
     };
@@ -154,7 +158,16 @@ public class FriendListFragment extends Fragment {
             rosterListener();
         } else if (msg.equals("新的好友")) {
             initData();
+        } else if (msg.equals("新的好友")) {
+            updateData();
         }
+    }
+
+    private void updateData() {
+        mUsers.clear();
+        List<UserInfo> userInfos = mMgr.queryAllUser();
+        mUsers.addAll(userInfos);
+        mFriendListVPAdapter.notifyDataSetChanged();
     }
 
     private void getMyImage() {
@@ -166,10 +179,6 @@ public class FriendListFragment extends Fragment {
                     UtilTool.saveImages(bitmap, Constants.MYUSER, getContext(), mMgr);
                 } else {
                     Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.img_nfriend_headshot1);
-                    /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                    byte[] bytes = baos.toByteArray();
-                    XmppConnection.getInstance().changeImage(bytes);*/
                     UtilTool.saveImages(bitmap, Constants.MYUSER, getContext(), mMgr);
                 }
             }
@@ -302,6 +311,9 @@ public class FriendListFragment extends Fragment {
             if (packet instanceof Presence) {
                 Presence presence = (Presence) packet;
                 String from = presence.getFrom().toString();//发送方
+                if (from.contains("/")) {
+                    from = from.substring(0, from.indexOf("/"));
+                }
                 String to = presence.getTo().toString();//接收方
                 if (presence.getType().equals(Presence.Type.subscribe)) {
                     //发送广播传递发送方的JIDfrom及字符串
@@ -365,14 +377,16 @@ public class FriendListFragment extends Fragment {
                         Presence.Type.unavailable)) {
                     String user = from.substring(0, from.indexOf("@"));
                     UtilTool.Log("fsdafa", user + "离线");
-                    mFromMap.put(user, false);
+                    mMgr.updateUser(from, 0);
                     Message message = new Message();
+                    message.what = 0;
                     myHandler.sendMessage(message);
                 } else {
                     String user = from.substring(0, from.indexOf("@"));
                     UtilTool.Log("fsdafa", user + "上线");
-                    mFromMap.put(user, true);
+                    mMgr.updateUser(from, 1);
                     Message message = new Message();
+                    message.what = 0;
                     myHandler.sendMessage(message);
                 }
             }
@@ -390,7 +404,6 @@ public class FriendListFragment extends Fragment {
     }
 
     private void initData() {
-        mUsers.removeAll(mUsers);
         final CloudMessagePresenter cloudMessagePresenter = new CloudMessagePresenter();
         new Thread(new Runnable() {
             @Override
@@ -402,7 +415,6 @@ public class FriendListFragment extends Fragment {
                             List<RosterEntry> entries = group.getEntries();
                             for (RosterEntry rosterEntry : entries) {
                                 if (!mMgr.findUser(rosterEntry.getUser())) {
-
                                     byte[] bytes = UtilTool.getUserImage(XmppConnection.getInstance().getConnection(), rosterEntry.getUser());
                                     Bitmap bitmap = null;
                                     if (bytes != null) {
@@ -416,11 +428,6 @@ public class FriendListFragment extends Fragment {
                                     UserInfo userInfo = new UserInfo();
                                     userInfo.setUser(rosterEntry.getUser());
                                     userInfo.setPath(path);
-                                    mUsers.add(userInfo);
-
-                                } else {
-                                    List<UserInfo> userInfos = mMgr.queryUser(rosterEntry.getUser());
-                                    UserInfo userInfo = userInfos.get(0);
                                     mUsers.add(userInfo);
                                 }
                             }
@@ -439,17 +446,12 @@ public class FriendListFragment extends Fragment {
     private void queryUser() {
         mUsers.removeAll(mUsers);
         List<UserInfo> userInfos = mMgr.queryAllUser();
-        for (UserInfo info : userInfos) {
-            String name = info.getUser().substring(0, info.getUser().indexOf("@"));
-            mFromMap.put(name, false);
-        }
         mUsers.addAll(userInfos);
     }
 
     private void initRecylerView() {
-//        mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setLayoutManager(new FullyLinearLayoutManager(getContext()));
-        mFriendListVPAdapter = new FriendListVPAdapter(getContext(), mUsers, mFromMap, mMgr);
+        mFriendListVPAdapter = new FriendListVPAdapter(getContext(), mUsers, mMgr);
         mRecyclerView.setAdapter(mFriendListVPAdapter);
     }
 

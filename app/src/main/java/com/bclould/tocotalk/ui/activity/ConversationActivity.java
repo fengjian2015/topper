@@ -364,6 +364,23 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 mEkbEmoticonsKeyboard.getEtChat().setText("");
             }
         });
+
+        mEkbEmoticonsKeyboard.getBtnVoice().setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        break;
+                }
+
+                return false;
+            }
+        });
     }
 
     @Override
@@ -633,7 +650,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                     Toast.makeText(ConversationActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
                     mMgr.deleteConversation(mUser);
                     mMgr.deleteMessage(mUser);
-                    EventBus.getDefault().post(new MessageEvent("新的好友"));
+                    mMgr.deleteUser(mUser);
+                    EventBus.getDefault().post(new MessageEvent("删除好友"));
                     deleteCacheDialog.dismiss();
                     finish();
                 } catch (Exception e) {
@@ -685,6 +703,11 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                boolean isOpen = imm.isActive();//isOpen若返回true，则表示输入法打开
+                if (isOpen) {
+                    imm.hideSoftInputFromWindow(mEkbEmoticonsKeyboard.getEtChat().getWindowToken(), 0);
+                }
                 break;
             case R.id.rl_outer:
                 /*InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -766,25 +789,4 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     @Override
     public void OnFuncClose() {
     }
-
-   /* @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            View v = getCurrentFocus();
-            boolean b = v instanceof Editable;
-            boolean b2 = v instanceof Button;
-            if (!b && !b2) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }
-            }
-            return super.dispatchTouchEvent(ev);
-        }
-        // 必不可少，否则所有的组件都不会有TouchEvent了
-        if (getWindow().superDispatchTouchEvent(ev)) {
-            return true;
-        }
-        return onTouchEvent(ev);
-    }*/
 }

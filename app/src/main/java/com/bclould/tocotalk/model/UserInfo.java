@@ -7,6 +7,15 @@ package com.bclould.tocotalk.model;
 public class UserInfo {
     private String user;
     private String path;
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public String getUser() {
         return user;

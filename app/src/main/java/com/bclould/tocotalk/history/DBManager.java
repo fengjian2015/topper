@@ -298,6 +298,7 @@ public class DBManager {
         values.put("my_user", UtilTool.getMyUser());
         values.put("user", user);
         values.put("path", path);
+        values.put("status", 0);
         db.insert("UserImage", null, values);
         db.close();
     }
@@ -327,10 +328,11 @@ public class DBManager {
             UserInfo userInfo = new UserInfo();
             userInfo.setUser(c.getString(c.getColumnIndex("user")));
             userInfo.setPath(c.getString(c.getColumnIndex("path")));
+            userInfo.setStatus(c.getInt(c.getColumnIndex("status")));
             userInfos.add(userInfo);
         }
         c.close();
-        db.close();
+//        db.close();
         return userInfos;
     }
 
@@ -340,8 +342,21 @@ public class DBManager {
                 new String[]{user, UtilTool.getMyUser()});
         boolean result = cursor.moveToNext();
         cursor.close();
-        db.close();
+//        db.close();
         return result;
     }
 
+    public void deleteUser(String user) {
+        db = helper.getWritableDatabase();
+        db.delete("UserImage", "user=? and my_user=?", new String[]{user, UtilTool.getMyUser()});
+        db.close();
+    }
+
+    public void updateUser(String user, int status) {
+        db = helper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("status", status);
+        db.update("UserImage", cv, "user=? and my_user=?", new String[]{user, UtilTool.getMyUser()});
+//        db.close();
+    }
 }

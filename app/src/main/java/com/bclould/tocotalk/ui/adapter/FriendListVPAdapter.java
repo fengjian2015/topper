@@ -25,7 +25,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,12 +38,12 @@ public class FriendListVPAdapter extends RecyclerView.Adapter {
     private final Context mContext;
     private final List<UserInfo> mUsers;
     private final DBManager mMgr;
-    private final Map<String, Boolean> mFromMap;
 
-    public FriendListVPAdapter(Context context, List<UserInfo> users, Map<String, Boolean> fromMap, DBManager mgr) {
+    public FriendListVPAdapter(Context context, List<UserInfo> users, DBManager mgr) {
         mContext = context;
+        /*UtilTool.sortList(users, "status", "ASC");
+        UtilTool.sortList(users, "user", "ASC");*/
         mUsers = users;
-        mFromMap = fromMap;
         mMgr = mgr;
     }
 
@@ -119,18 +118,12 @@ public class FriendListVPAdapter extends RecyclerView.Adapter {
             }
             mFriendChildTouxiang.setImageBitmap(bitmap);
             mFriendChildName.setText(user.substring(0, user.indexOf("@")));
-            if (mFromMap.size() != 0) {
-                for (String key : mFromMap.keySet()) {
-                    if (mFriendChildName.getText().equals(key)) {
-                        if (mFromMap.get(key)) {
-                            mFriendChildType.setText("在线");
-                            mFriendChildType.setTextColor(mContext.getColor(R.color.green));
-                        } else {
-                            mFriendChildType.setText("离线");
-                            mFriendChildType.setTextColor(mContext.getColor(R.color.red));
-                        }
-                    }
-                }
+            if (userInfo.getStatus() == 1) {
+                mFriendChildType.setText("在线");
+                mFriendChildType.setTextColor(mContext.getColor(R.color.green));
+            } else {
+                mFriendChildType.setText("离线");
+                mFriendChildType.setTextColor(mContext.getColor(R.color.red));
             }
         }
     }

@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/y120"
     android:layout_marginBottom="@dimen/y30"
-    android:layout_marginLeft="@dimen/x30"
-    android:layout_marginRight="@dimen/x30"
     android:background="@color/white"
     android:orientation="vertical"
     app:cardCornerRadius="@dimen/x15">
@@ -41,14 +39,14 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/money_count"
+            android:id="@+id/coin_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x40"
             android:layout_marginRight="@dimen/x20"
             android:layout_toLeftOf="@+id/imageview"
-            android:text="+$4561"
+            android:text="+4561"
             android:textColor="@color/red"
             android:textSize="@dimen/x28"/>
 

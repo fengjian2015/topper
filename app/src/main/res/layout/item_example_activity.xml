@@ -118,7 +118,6 @@
             android:layout_marginRight="@dimen/x30"
             android:layout_toLeftOf="@+id/iea_headImg2"
             android:background="@drawable/img_chat_bg"
-            android:gravity="center"
             android:lineSpacingExtra="@dimen/y10"
             android:maxWidth="@dimen/x400"
             android:text="哈喽！"

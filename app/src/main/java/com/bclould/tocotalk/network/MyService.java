@@ -11,6 +11,7 @@ import com.bclould.tocotalk.model.MyAssetsInfo;
 import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.model.OutCoinSiteInfo;
 import com.bclould.tocotalk.model.RedRecordInfo;
+import com.bclould.tocotalk.model.TransferInfo;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -371,6 +372,20 @@ public interface MyService {
     @POST("finance/AssetName")
     Observable<CoinInfo> AssetName(
             @Header("Authorization") String token
+    );
+
+    //账单列表
+    @POST("finance/transferDetails")
+    Observable<TransferInfo> getTransfer(
+            @Header("Authorization") String token
+    );
+
+    //账单明细
+    @POST("finance/transferDetailsLog")
+    @FormUrlEncoded
+    Observable<TransferInfo> getTransferLog(
+            @Header("Authorization") String token,
+            @Field("to_id") int to_id
     );
 
 }

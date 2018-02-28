@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -240,6 +241,14 @@ public class ConversationFragment extends Fragment {
             super.handleMessage(msg);
             //获取接收的好友名及聊天消息
             Message message = (Message) msg.obj;
+            String msgXML = message.toXML().toString();
+            String startTag = "<attachment xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'>";
+            String endTag = "</attachment>'";
+            UtilTool.Log("语音", msgXML);
+            if (msgXML.contains(startTag)) {
+                String voiceBase64 = msgXML.substring(msgXML.indexOf(startTag) + startTag.length(), msgXML.length());
+                byte[] bytes = Base64.decode(voiceBase64, Base64.DEFAULT);
+            }
             String chatMsg = message.getBody();
             String remark = null;
             String coin = null;

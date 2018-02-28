@@ -5,7 +5,9 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
@@ -39,6 +41,12 @@ public class QRCodeActivity extends BaseActivity {
     TextView mName;
     @Bind(R.id.qr_code_iv)
     ImageView mQrCodeIv;
+    @Bind(R.id.iv_qr_touxiang)
+    ImageView mIvQrTouxiang;
+    @Bind(R.id.rl_qr)
+    RelativeLayout mRlQr;
+    @Bind(R.id.btn_save_qr)
+    Button mBtnSaveQr;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +70,7 @@ public class QRCodeActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.bark, R.id.more})
+    @OnClick({R.id.bark, R.id.more, R.id.btn_save_qr})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -70,9 +78,10 @@ public class QRCodeActivity extends BaseActivity {
                 finish();
 
                 break;
+            case R.id.btn_save_qr:
+                UtilTool.saveBitmap(mRlQr);
+                break;
             case R.id.more:
-
-
                 break;
         }
     }

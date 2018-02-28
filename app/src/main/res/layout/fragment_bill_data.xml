@@ -14,13 +14,29 @@
         android:paddingTop="@dimen/y30">
     </android.support.v7.widget.RecyclerView>
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/ll_no_data"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/gray"
+        android:layout_below="@+id/rl_ununited"
         android:gravity="center"
-        android:text="开发当中敬请期待"
-        android:textColor="@color/gray"
-        android:textSize="@dimen/x50"/>
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/icon_nothing_img"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="收到转账记录"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/x30"/>
+
+    </LinearLayout>
 
 </RelativeLayout>
