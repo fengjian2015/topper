@@ -145,15 +145,15 @@ public class CloudCoinFragment extends Fragment {
         subscribeCoinPresenter.getMyAssets(new SubscribeCoinPresenter.CallBack() {
             @Override
             public void send(List<MyAssetsInfo.DataBean> info) {
-                if (info.size() != 0) {
+                List<MyAssetsInfo.DataBean> dataBeanList = new ArrayList<>();
+                for (int i = 0; i < info.size(); i++) {
+                    if (info.get(i).getStatus() == 1) {
+                        dataBeanList.add(info.get(i));
+                    }
+                }
+                if (dataBeanList.size() != 0) {
                     mRecyclerView.setVisibility(View.VISIBLE);
                     mRlSubscribeCoin.setVisibility(View.GONE);
-                    List<MyAssetsInfo.DataBean> dataBeanList = new ArrayList<>();
-                    for (int i = 0; i < info.size(); i++) {
-                        if (info.get(i).getStatus() == 1) {
-                            dataBeanList.add(info.get(i));
-                        }
-                    }
                     initRecyclerView(dataBeanList);
                 } else {
                     mRlSubscribeCoin.setVisibility(View.VISIBLE);

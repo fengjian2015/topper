@@ -258,8 +258,9 @@ public class ConversationFragment extends Fragment {
                 redpacket = chatMsg;
             }
             String from = message.getFrom().toString();
-            String user = from.substring(0, from.indexOf("/"));
-            String friend = user.substring(0, user.indexOf("@"));
+            if (from.contains("/"))
+                from = from.substring(0, from.indexOf("/"));
+            String friend = from.substring(0, from.indexOf("@"));
 
             //获取当前时间
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -268,7 +269,7 @@ public class ConversationFragment extends Fragment {
 
             //添加数据库
             MessageInfo messageInfo = new MessageInfo();
-            messageInfo.setUsername(user);
+            messageInfo.setUsername(from);
             messageInfo.setMessage(chatMsg);
             messageInfo.setTime(time);
             messageInfo.setType(1);
@@ -278,14 +279,14 @@ public class ConversationFragment extends Fragment {
             messageInfo.setState(0);
             messageInfo.setRedId(redId);
             mgr.addMessage(messageInfo);
-            int number = mgr.queryNumber(user);
-            if (mgr.findConversation(user)) {
-                mgr.updateConversation(user, number + 1, redpacket, time);
+            int number = mgr.queryNumber(from);
+            if (mgr.findConversation(from)) {
+                mgr.updateConversation(from, number + 1, redpacket, time);
             } else {
                 ConversationInfo info = new ConversationInfo();
                 info.setTime(time);
                 info.setFriend(friend);
-                info.setUser(user);
+                info.setUser(from);
                 info.setNumber(1);
                 info.setMessage(redpacket);
                 mgr.addConversation(info);

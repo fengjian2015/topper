@@ -111,6 +111,7 @@ public class CloudMessageFragment extends Fragment {
         CloudMessageVPAdapter cloudMessageVPAdapter = new CloudMessageVPAdapter(getChildFragmentManager());
 
         mCloudCircleVp.setAdapter(cloudMessageVPAdapter);
+        mCloudCircleVp.setOffscreenPageLimit(3);
 
         mCloudCircleVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

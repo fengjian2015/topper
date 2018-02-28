@@ -273,10 +273,24 @@ public class SendQRCodeRedActivity extends AppCompatActivity {
         mBottomDialog.show();
         RecyclerView recyclerView = (RecyclerView) mBottomDialog.findViewById(R.id.recycler_view);
         TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
+        Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
+        addCoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SendQRCodeRedActivity.this, MyAssetsActivity.class));
+                mBottomDialog.dismiss();
+            }
+        });
         tvTitle.setText("选择币种");
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new BottomDialogRVAdapter3(this, mDataBeanList));
-
+        if (mDataBeanList.size() != 0) {
+            recyclerView.setVisibility(View.VISIBLE);
+            addCoin.setVisibility(View.GONE);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(new BottomDialogRVAdapter3(this, mDataBeanList));
+        } else {
+            recyclerView.setVisibility(View.GONE);
+            addCoin.setVisibility(View.VISIBLE);
+        }
     }
 
     public void hideDialog(String name) {

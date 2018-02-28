@@ -439,6 +439,10 @@ public class FriendListFragment extends Fragment {
     private void queryUser() {
         mUsers.removeAll(mUsers);
         List<UserInfo> userInfos = mMgr.queryAllUser();
+        for (UserInfo info : userInfos) {
+            String name = info.getUser().substring(0, info.getUser().indexOf("@"));
+            mFromMap.put(name, false);
+        }
         mUsers.addAll(userInfos);
     }
 
