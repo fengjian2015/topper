@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
@@ -35,14 +34,10 @@ public class QRCodeActivity extends BaseActivity {
     ImageView mBark;
     @Bind(R.id.more)
     ImageView mMore;
-    @Bind(R.id.touxiang)
-    ImageView mTouxiang;
-    @Bind(R.id.name)
-    TextView mName;
     @Bind(R.id.qr_code_iv)
     ImageView mQrCodeIv;
-    @Bind(R.id.iv_qr_touxiang)
-    ImageView mIvQrTouxiang;
+    @Bind(R.id.touxiang)
+    ImageView mTouxiang;
     @Bind(R.id.rl_qr)
     RelativeLayout mRlQr;
     @Bind(R.id.btn_save_qr)
@@ -60,7 +55,6 @@ public class QRCodeActivity extends BaseActivity {
     private void init() {
         try {
             DBManager mgr = new DBManager(this);
-            mName.setText(UtilTool.getMyUser().substring(0, UtilTool.getMyUser().lastIndexOf("@")));
             List<UserInfo> userInfos = mgr.queryUser(UtilTool.getMyUser());
             mTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfos.get(0).getPath()));
             Bitmap bitmap = UtilTool.createQRImage(UtilTool.base64PetToJson(Constants.BUSINESSCARD, "name", UtilTool.getMyUser(), "名片"));

@@ -6,7 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bclould.tocotalk.Presenter.GrabRedPresenter;
 import com.bclould.tocotalk.R;
@@ -28,6 +31,11 @@ import com.bclould.tocotalk.ui.activity.RedPacketActivity;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
+import com.bclould.tocotalk.xmpp.XmppConnection;
+
+import org.jivesoftware.smack.chat.Chat;
+import org.jivesoftware.smack.chat.ChatManager;
+import org.jxmpp.jid.impl.JidCreate;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -41,6 +49,7 @@ import io.github.rockerhieu.emojicon.EmojiconTextView;
  * 邮箱：wgyscsf@163.com
  * 博客：http://blog.csdn.net/wgyscsf
  */
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class ExampleAdapter extends BaseAdapter {
 
     private final Context mContext;
@@ -109,6 +118,19 @@ public class ExampleAdapter extends BaseAdapter {
                 viewHolder.mCvRedpacket2.setVisibility(View.GONE);
                 String message = mMessageList.get(position).getMessage();
                 viewHolder.mTvMessamge2.setText(message);
+                if (mMessageList.get(position).getSendStatus() == 1) {
+                    viewHolder.mIvWarning2.setVisibility(View.VISIBLE);
+                } else {
+                    viewHolder.mIvWarning2.setVisibility(View.GONE);
+                }
+                if (viewHolder.mIvWarning2.getVisibility() == View.VISIBLE) {
+                    viewHolder.mIvWarning2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            anewSendMessage(mUser, mMessageList.get(position).getMessage(), viewHolder2.mIvWarning2, mMessageList.get(position).getId());
+                        }
+                    });
+                }
             } else {
                 final String coin = mMessageList.get(position).getCoin();
                 final String remark = mMessageList.get(position).getRemark();
@@ -134,6 +156,7 @@ public class ExampleAdapter extends BaseAdapter {
                     viewHolder.mTvExamine2.setText("查看红包");
                 }
             }
+
         } else {
             viewHolder.mIeaHeadImg.setImageBitmap(mUserImage);
             viewHolder.mRlMessage2.setVisibility(View.GONE);
@@ -176,6 +199,20 @@ public class ExampleAdapter extends BaseAdapter {
             }
         }
         return convertView;
+    }
+
+    private void anewSendMessage(String user, String message, ImageView ivWarning, int id) {
+        try {
+            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
+            chat.sendMessage(message);
+            ivWarning.setVisibility(View.GONE);
+            mMgr.updateMessageHint(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ivWarning.setVisibility(View.VISIBLE);
+            Toast.makeText(mContext, "发送失败", Toast.LENGTH_SHORT).show();
+        }
     }
 
     //显示币种弹框
@@ -240,17 +277,19 @@ public class ExampleAdapter extends BaseAdapter {
             skip(baseInfo, mUserImage, 1, mUser);
         else
             skip(baseInfo, mBitmap, 1, Constants.MYUSER);
-        mMgr.updateMessage(id, 1);
+        mMgr.updateMessageState(id, 1);
         mMessageList.get(position).setState(1);
         notifyDataSetChanged();
     }
 
 
-    class ViewHolder {
+    static class ViewHolder {
         @Bind(R.id.iea_headImg)
         ImageView mIeaHeadImg;
         @Bind(R.id.tv_messamge)
         EmojiconTextView mTvMessamge;
+        @Bind(R.id.iv_warning)
+        ImageView mIvWarning;
         @Bind(R.id.tv_remark)
         TextView mTvRemark;
         @Bind(R.id.tv_examine)
@@ -263,6 +302,8 @@ public class ExampleAdapter extends BaseAdapter {
         CardView mCvRedpacket;
         @Bind(R.id.rl_message)
         RelativeLayout mRlMessage;
+        @Bind(R.id.iv_warning2)
+        ImageView mIvWarning2;
         @Bind(R.id.tv_messamge2)
         EmojiconTextView mTvMessamge2;
         @Bind(R.id.iea_headImg2)

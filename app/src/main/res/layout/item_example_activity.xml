@@ -22,21 +22,36 @@
             android:scaleType="fitXY"
             android:src="@mipmap/img_nfriend_headshot1"/>
 
-        <io.github.rockerhieu.emojicon.EmojiconTextView
-            android:id="@+id/tv_messamge"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/x30"
-            android:layout_toRightOf="@+id/iea_headImg"
-            android:background="@drawable/img_chat2_bg"
-            android:gravity="center"
-            android:lineSpacingExtra="@dimen/y10"
-            android:maxWidth="@dimen/x400"
-            android:text="哈喽！"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"
-            emojicon:emojiconSize="@dimen/x50"/>
+            android:layout_toRightOf="@+id/iea_headImg">
+
+            <io.github.rockerhieu.emojicon.EmojiconTextView
+                android:id="@+id/tv_messamge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/x30"
+                android:background="@drawable/img_chat2_bg"
+                android:gravity="center"
+                android:lineSpacingExtra="@dimen/y10"
+                android:maxWidth="@dimen/x400"
+                android:text="哈喽！"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x32"
+                emojicon:emojiconSize="@dimen/x50"/>
+
+            <ImageView
+                android:id="@+id/iv_warning"
+                android:layout_width="@dimen/x60"
+                android:layout_height="@dimen/x60"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/x20"
+                android:src="@mipmap/icon_fail"
+                android:visibility="gone"/>
+
+        </LinearLayout>
 
         <android.support.v7.widget.CardView
             android:id="@+id/cv_redpacket"
@@ -44,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x30"
             android:layout_toRightOf="@+id/iea_headImg"
+            android:visibility="visible"
             app:cardBackgroundColor="#FE5419"
             app:cardCornerRadius="@dimen/x20">
 
@@ -110,21 +126,36 @@
         android:padding="@dimen/x20"
         android:visibility="visible">
 
-        <io.github.rockerhieu.emojicon.EmojiconTextView
-            android:id="@+id/tv_messamge2"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/x30"
-            android:layout_toLeftOf="@+id/iea_headImg2"
-            android:background="@drawable/img_chat_bg"
-            android:lineSpacingExtra="@dimen/y10"
-            android:maxWidth="@dimen/x400"
-            android:text="哈喽！"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"
-            android:visibility="visible"
-            emojicon:emojiconSize="@dimen/x50"/>
+            android:layout_toLeftOf="@+id/iea_headImg2">
+
+            <ImageView
+                android:id="@+id/iv_warning2"
+                android:layout_width="@dimen/x60"
+                android:layout_height="@dimen/x60"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/x20"
+                android:src="@mipmap/icon_fail"
+                android:visibility="gone"/>
+
+            <io.github.rockerhieu.emojicon.EmojiconTextView
+                android:id="@+id/tv_messamge2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/x30"
+                android:background="@drawable/img_chat_bg"
+                android:lineSpacingExtra="@dimen/y10"
+                android:maxWidth="@dimen/x400"
+                android:text="哈喽！"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x32"
+                android:visibility="visible"
+                emojicon:emojiconSize="@dimen/x50"/>
+
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/iea_headImg2"

@@ -16,6 +16,42 @@ public class MessageInfo {
     private int state;
     private int id;
     private int redId;
+    private String voice;
+    private int voiceStatus;
+    private String voiceTime;
+    private int sendStatus;
+
+    public int getSendStatus() {
+        return sendStatus;
+    }
+
+    public void setSendStatus(int sendStatus) {
+        this.sendStatus = sendStatus;
+    }
+
+    public String getVoice() {
+        return voice;
+    }
+
+    public void setVoice(String voice) {
+        this.voice = voice;
+    }
+
+    public int getVoiceStatus() {
+        return voiceStatus;
+    }
+
+    public void setVoiceStatus(int voiceStatus) {
+        this.voiceStatus = voiceStatus;
+    }
+
+    public String getVoiceTime() {
+        return voiceTime;
+    }
+
+    public void setVoiceTime(String voiceTime) {
+        this.voiceTime = voiceTime;
+    }
 
     public String getMessage() {
         return message;

@@ -47,6 +47,7 @@ import com.bclould.tocotalk.ui.widget.LoadMoreListView;
 import com.bclould.tocotalk.ui.widget.SimpleAppsGridView;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.RecordUtil;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.luck.picture.lib.PictureSelector;
@@ -83,6 +84,7 @@ import sj.keyboard.adpater.EmoticonsAdapter;
 import sj.keyboard.adpater.PageSetAdapter;
 import sj.keyboard.data.EmoticonPageEntity;
 import sj.keyboard.data.EmoticonPageSetEntity;
+import sj.keyboard.data.PageSetEntity;
 import sj.keyboard.interfaces.EmoticonClickListener;
 import sj.keyboard.interfaces.EmoticonDisplayListener;
 import sj.keyboard.interfaces.EmoticonFilter;
@@ -91,6 +93,7 @@ import sj.keyboard.utils.EmoticonsKeyboardUtils;
 import sj.keyboard.widget.EmoticonPageView;
 import sj.keyboard.widget.EmoticonsEditText;
 import sj.keyboard.widget.FuncLayout;
+import sj.keyboard.widget.RecordIndicator;
 
 import static com.bclould.tocotalk.R.style.BottomDialog;
 
@@ -98,7 +101,7 @@ import static com.bclould.tocotalk.R.style.BottomDialog;
  * Created by GA on 2017/9/20.
  */
 
-@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class ConversationActivity extends AppCompatActivity implements FuncLayout.OnFuncKeyBoardListener {
 
     private static final int CODE_TAKE_PHOTO = 1;
@@ -180,6 +183,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private Bitmap mUserImage;
     private List<LocalMedia> selectList = new ArrayList<>();
     private String mType;
+    private RecordIndicator recordIndicator;
+    private RecordUtil recordUtil;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -297,8 +302,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         };
 
         // build
-        EmoticonPageSetEntity xhsPageSetEntity
-                = new EmoticonPageSetEntity.Builder()
+        PageSetEntity xhsPageSetEntity = new EmoticonPageSetEntity.Builder()
                 .setLine(3)
                 .setRow(7)
                 .setEmoticonList(emojiArray)
@@ -365,22 +369,81 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             }
         });
 
-        mEkbEmoticonsKeyboard.getBtnVoice().setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        break;
+        recordIndicator = new RecordIndicator(this);
+        mEkbEmoticonsKeyboard.setRecordIndicator(recordIndicator);
+        try {
+            recordIndicator.setOnRecordListener(new RecordIndicator.OnRecordListener() {
+                @Override
+                public void recordStart() {
+                    startRecord();
                 }
 
-                return false;
+                @Override
+                public void recordFinish() {
+                    finishRecord();
+                }
+
+                @Override
+                public void recordCancel() {
+                    cancelRecord();
+                }
+
+                @Override
+                public long getRecordTime() {
+                    if (null == recordUtil) {
+                        return 0;
+                    }
+                    return recordUtil.getVoiceDuration() * 1000;
+                }
+
+                @Override
+                public int getRecordDecibel() {
+                    if (null == recordUtil) {
+                        return 0;
+                    }
+                    return recordUtil.getRecordDecibel();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void startRecord() {
+        if (null == recordUtil) {
+            recordUtil = new RecordUtil(this);
+        }
+        recordUtil.start();
+    }
+
+    private void finishRecord() {
+        recordUtil.finish();
+        int duration = recordUtil.getVoiceDuration();
+        Toast.makeText(this, "发送了" + duration + "s的录音", Toast.LENGTH_SHORT).show();
+        String fileName = recordUtil.getFileName();
+        MessageInfo messageInfo = new MessageInfo();
+        messageInfo.setUsername(mUser);
+        messageInfo.setVoice(fileName);
+        messageInfo.setVoiceTime(duration + "");
+        messageInfo.setVoiceStatus(1);
+        mMgr.addMessage(messageInfo);
+
+       /* MediaPlayer mediaPlayer = new MediaPlayer();
+        try {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.reset();    //如果正在播放，则重置为初始状态
             }
-        });
+            mediaPlayer.setDataSource(fileName);
+            mediaPlayer.prepare();//缓冲
+            mediaPlayer.start();//开始或恢复播放
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+    }
+
+    private void cancelRecord() {
+        recordUtil.cancel();
+        Toast.makeText(this, "取消录音", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -693,6 +756,31 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             EventBus.getDefault().post(new MessageEvent("自己发了消息"));
         } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(this, "发送失败，请检查当前网络连接", Toast.LENGTH_SHORT).show();
+            MessageInfo messageInfo = new MessageInfo();
+            messageInfo.setUsername(mUser);
+            messageInfo.setMessage(message);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setSendStatus(1);
+            mMgr.addMessage(messageInfo);
+            mMessageList.add(messageInfo);
+            mExampleAdapter.notifyDataSetChanged();
+            scrollToBottom();
+            if (mMgr.findConversation(mUser)) {
+                mMgr.updateConversation(mUser, 0, message, time);
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                info.setFriend(mName);
+                info.setUser(mUser);
+                info.setMessage(message);
+                mMgr.addConversation(info);
+            }
+            EventBus.getDefault().post(new MessageEvent("自己发了消息"));
         }
     }
 

@@ -44,6 +44,10 @@ public class DBManager {
         values.put("coin", messageInfo.getCoin());
         values.put("state", messageInfo.getState());
         values.put("redId", messageInfo.getRedId());
+        values.put("voice", messageInfo.getVoice());
+        values.put("voiceStatus", messageInfo.getVoiceStatus());
+        values.put("voiceTime", messageInfo.getVoiceTime());
+        values.put("sendStatus", messageInfo.getSendStatus());
         db.insert("MessageRecord", null, values);
         UtilTool.Log("日志", "添加成功" + messageInfo.toString());
         db.close();
@@ -79,6 +83,10 @@ public class DBManager {
                 messageInfo.setState(c.getInt(c.getColumnIndex("state")));
                 messageInfo.setId(c.getInt(c.getColumnIndex("id")));
                 messageInfo.setRedId(c.getInt(c.getColumnIndex("redId")));
+                messageInfo.setVoiceStatus(c.getInt(c.getColumnIndex("voiceStatus")));
+                messageInfo.setVoice(c.getString(c.getColumnIndex("voice")));
+                messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
+                messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -135,6 +143,10 @@ public class DBManager {
                 messageInfo.setState(c.getInt(c.getColumnIndex("state")));
                 messageInfo.setId(c.getInt(c.getColumnIndex("id")));
                 messageInfo.setRedId(c.getInt(c.getColumnIndex("redId")));
+                messageInfo.setVoiceStatus(c.getInt(c.getColumnIndex("voiceStatus")));
+                messageInfo.setVoice(c.getString(c.getColumnIndex("voice")));
+                messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
+                messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
                 messageInfos.add(messageInfo);
             }
 
@@ -151,7 +163,7 @@ public class DBManager {
         db.close();
     }
 
-    public void updateMessage(String id, int state) {
+    public void updateMessageState(String id, int state) {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("state", state);
@@ -358,5 +370,13 @@ public class DBManager {
         cv.put("status", status);
         db.update("UserImage", cv, "user=? and my_user=?", new String[]{user, UtilTool.getMyUser()});
 //        db.close();
+    }
+
+    public void updateMessageHint(int id) {
+        db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("sendStatus", 0);
+        db.update("MessageRecord", values, "id=?", new String[]{id + ""});
+        db.close();
     }
 }

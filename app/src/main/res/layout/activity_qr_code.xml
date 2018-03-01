@@ -46,27 +46,6 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/touxiang"
-            android:layout_width="@dimen/x100"
-            android:layout_height="@dimen/x100"
-            android:src="@mipmap/img_nfriend_headshot1"/>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/y20">
-
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="安子"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
-
-        </RelativeLayout>
-
         <RelativeLayout
             android:id="@+id/rl_qr"
             android:layout_width="wrap_content"
@@ -80,7 +59,7 @@
                 android:src="@mipmap/qr_code1"/>
 
             <ImageView
-                android:id="@+id/iv_qr_touxiang"
+                android:id="@+id/touxiang"
                 android:layout_width="@dimen/x100"
                 android:layout_height="@dimen/x100"
                 android:layout_centerInParent="true"

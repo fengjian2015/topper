@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +40,10 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smackx.offline.OfflineMessageManager;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -242,12 +245,32 @@ public class ConversationFragment extends Fragment {
             //获取接收的好友名及聊天消息
             Message message = (Message) msg.obj;
             String msgXML = message.toXML().toString();
-            String startTag = "<attachment xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'>";
-            String endTag = "</attachment>'";
+            String startTag = "<attachment xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'>&lt;";
+            String endTag = "</attachment>";
             UtilTool.Log("语音", msgXML);
-            if (msgXML.contains(startTag)) {
-                String voiceBase64 = msgXML.substring(msgXML.indexOf(startTag) + startTag.length(), msgXML.length());
-                byte[] bytes = Base64.decode(voiceBase64, Base64.DEFAULT);
+            try {
+                if (msgXML.contains(startTag)) {
+                    String voiceBase64 = msgXML.substring(msgXML.indexOf(startTag) + startTag.length(), msgXML.length());
+//                    byte[] bytes = Base64.decode(voiceBase64, Base64.DEFAULT);
+                    byte[] bytes = voiceBase64.getBytes();
+                    if (bytes != null && bytes.length != 0) {
+                        InputStream in = new ByteArrayInputStream(bytes);
+                        String path = UtilTool.createtFileName() + ".wav";
+                        File file = new File("/sdcard/", path);
+                        FileOutputStream fos = new FileOutputStream(file);
+
+                        byte[] b = new byte[1024];
+                        int nRead = 0;
+                        while ((nRead = in.read(b)) != -1) {
+                            fos.write(b, 0, nRead);
+                        }
+                        fos.flush();
+                        fos.close();
+                        in.close();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             String chatMsg = message.getBody();
             String remark = null;

@@ -75,12 +75,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    /*//网络请求图形验证码
-    public void showCaptcha() {
-        mLoginPresenter = new LoginPresenter(this);
-        mLoginPresenter.getCaptcha();
-    }*/
-
     //监听返回键
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -182,16 +176,4 @@ public class LoginActivity extends AppCompatActivity {
         }
         return false;
     }
-
-   /* //请求图形验证码的返回处理
-    public void setData(Response<ResponseBody> response) {
-        Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
-        mIvCaptcha.setImageBitmap(bitmap);
-        Headers headers = response.headers();
-        String cookie = headers.get("set-cookie");
-        if (cookie != null) {
-            mCookie = cookie.substring(0, cookie.indexOf(";"));
-        }
-    }*/
-
 }

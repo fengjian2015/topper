@@ -1,6 +1,8 @@
 package com.bclould.tocotalk.Presenter;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
@@ -19,6 +21,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2018/1/16.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class GrabRedPresenter {
 
     private final ExampleAdapter mExampleAdapter;

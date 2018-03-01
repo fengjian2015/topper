@@ -10,7 +10,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.AudioFormat;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -45,6 +44,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -67,6 +67,14 @@ public class UtilTool {
     private static final int QR_HEIGHT = 1000;
     private static final int QR_WIDTH = 1000;
     private static MediaPlayer mediaPlayer;
+
+
+    public static synchronized String createtFileName() {
+        java.util.Date dt = new java.util.Date(System.currentTimeMillis());
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        String fileName= fmt.format(dt);
+        return fileName;
+    }
 
     /**
      * 保存View为图片的方法
