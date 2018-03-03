@@ -17,6 +17,7 @@ import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +36,8 @@ import com.bclould.tocotalk.xmpp.XmppConnection;
 
 import org.jivesoftware.smack.chat.Chat;
 import org.jivesoftware.smack.chat.ChatManager;
+import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.util.stringencoder.Base64;
 import org.jxmpp.jid.impl.JidCreate;
 
 import java.io.ByteArrayOutputStream;
@@ -90,6 +93,7 @@ public class ExampleAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup viewGroup) {
+        //设置ViewHolder
         ViewHolder viewHolder = null;
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_example_activity, viewGroup, false);
@@ -99,8 +103,10 @@ public class ExampleAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         final ViewHolder viewHolder2 = viewHolder;
-        UtilTool.Log("日志", mMessageList.get(position).getRedId() + " ");
-        if (mMessageList.get(position).getType() == 0) {
+        final MessageInfo messageInfo = mMessageList.get(position);
+        //判断是谁的消息
+        if (messageInfo.getType() == 0) {
+            //头像设置
             List<UserInfo> userInfos = mMgr.queryUser(Constants.MYUSER);
             if (userInfos.size() != 0) {
                 mBitmap = BitmapFactory.decodeFile(userInfos.get(0).getPath());
@@ -111,94 +117,168 @@ public class ExampleAdapter extends BaseAdapter {
                 mBitmap = bd.getBitmap();
                 viewHolder.mIeaHeadImg2.setImageDrawable(drawable);
             }
+            //显示哪个消息
             viewHolder.mRlMessage2.setVisibility(View.VISIBLE);
             viewHolder.mRlMessage.setVisibility(View.GONE);
-            if (mMessageList.get(position).getRemark() == null) {
-                viewHolder.mTvMessamge2.setVisibility(View.VISIBLE);
-                viewHolder.mCvRedpacket2.setVisibility(View.GONE);
-                String message = mMessageList.get(position).getMessage();
-                viewHolder.mTvMessamge2.setText(message);
-                if (mMessageList.get(position).getSendStatus() == 1) {
-                    viewHolder.mIvWarning2.setVisibility(View.VISIBLE);
-                } else {
-                    viewHolder.mIvWarning2.setVisibility(View.GONE);
-                }
-                if (viewHolder.mIvWarning2.getVisibility() == View.VISIBLE) {
-                    viewHolder.mIvWarning2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            anewSendMessage(mUser, mMessageList.get(position).getMessage(), viewHolder2.mIvWarning2, mMessageList.get(position).getId());
-                        }
-                    });
-                }
-            } else {
-                final String coin = mMessageList.get(position).getCoin();
-                final String remark = mMessageList.get(position).getRemark();
-                final String count = mMessageList.get(position).getCount();
-                final String id = mMessageList.get(position).getId() + "";
-                final int redId = mMessageList.get(position).getRedId();
-                final int type = mMessageList.get(position).getType();
-                viewHolder.mTvMessamge2.setVisibility(View.GONE);
-                viewHolder.mCvRedpacket2.setVisibility(View.VISIBLE);
-                viewHolder.mTvCoinRedpacket2.setText(coin + "红包");
-                viewHolder.mTvRemark2.setText(remark);
-                viewHolder.mCvRedpacket2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mGrabRedPresenter.grabRedPacket(redId, id, position, type);
-                    }
-                });
-                if (mMessageList.get(position).getState() == 1) {
-                    viewHolder.mCvRedpacket2.setCardBackgroundColor(mContext.getColor(R.color.redpacket));
-                    viewHolder.mTvExamine2.setText("已領取紅包");
-                } else {
-                    viewHolder.mCvRedpacket2.setCardBackgroundColor(mContext.getColor(R.color.redpacket2));
-                    viewHolder.mTvExamine2.setText("查看红包");
-                }
-            }
 
-        } else {
-            viewHolder.mIeaHeadImg.setImageBitmap(mUserImage);
-            viewHolder.mRlMessage2.setVisibility(View.GONE);
-            viewHolder.mRlMessage.setVisibility(View.VISIBLE);
-            if (mMessageList.get(position).getRemark() == null) {
-                viewHolder.mTvMessamge.setVisibility(View.VISIBLE);
-                viewHolder.mCvRedpacket.setVisibility(View.GONE);
-                String message = mMessageList.get(position).getMessage();
-                viewHolder.mTvMessamge.setText(message);
-            } else {
-                final String coin = mMessageList.get(position).getCoin();
-                final String remark = mMessageList.get(position).getRemark();
-                final String count = mMessageList.get(position).getCount();
-                final String id = mMessageList.get(position).getId() + "";
-                final int redId = mMessageList.get(position).getRedId();
-                final int type = mMessageList.get(position).getType();
-                viewHolder.mTvMessamge.setVisibility(View.GONE);
-                viewHolder.mCvRedpacket.setVisibility(View.VISIBLE);
-                viewHolder.mTvCoinRedpacket.setText(coin + "红包");
-                viewHolder.mTvRemark.setText(remark);
-                if (mMessageList.get(position).getState() == 1) {
-                    viewHolder.mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket));
-                    viewHolder.mTvExamine.setText("已領取紅包");
-                    viewHolder.mCvRedpacket.setOnClickListener(new View.OnClickListener() {
+            //消息类型
+            switch (messageInfo.getMsgType()) {
+                case 0:
+                    viewHolder.mLlTextMsg.setVisibility(View.VISIBLE);
+                    viewHolder.mCvRedpacket2.setVisibility(View.GONE);
+                    viewHolder.mLlVoice2.setVisibility(View.GONE);
+                    final String message = messageInfo.getMessage();
+                    viewHolder.mTvMessamge2.setText(message);
+                    if (messageInfo.getSendStatus() == 1) {
+                        viewHolder.mIvWarning2.setVisibility(View.VISIBLE);
+                    } else {
+                        viewHolder.mIvWarning2.setVisibility(View.GONE);
+                    }
+                    if (viewHolder.mIvWarning2.getVisibility() == View.VISIBLE) {
+                        viewHolder.mIvWarning2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                anewSendMessage(mUser, messageInfo.getMessage(), viewHolder2.mIvWarning2, messageInfo.getId());
+                            }
+                        });
+                    }
+                    break;
+                case 1:
+                    final String coin = messageInfo.getCoin();
+                    final String remark = messageInfo.getRemark();
+                    final String count = messageInfo.getCount();
+                    final String id = messageInfo.getId() + "";
+                    final int redId = messageInfo.getRedId();
+                    final int type = messageInfo.getType();
+                    viewHolder.mTvMessamge2.setVisibility(View.GONE);
+                    viewHolder.mCvRedpacket2.setVisibility(View.VISIBLE);
+                    viewHolder.mLlVoice2.setVisibility(View.GONE);
+                    viewHolder.mTvCoinRedpacket2.setText(coin + "红包");
+                    viewHolder.mTvRemark2.setText(remark);
+                    viewHolder.mCvRedpacket2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             mGrabRedPresenter.grabRedPacket(redId, id, position, type);
                         }
                     });
-                } else {
-                    viewHolder.mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket2));
-                    viewHolder.mTvExamine.setText("查看红包");
-                    viewHolder.mCvRedpacket.setOnClickListener(new View.OnClickListener() {
+                    if (mMessageList.get(position).getState() == 1) {
+                        viewHolder.mCvRedpacket2.setCardBackgroundColor(mContext.getColor(R.color.redpacket));
+                        viewHolder.mTvExamine2.setText("已領取紅包");
+                    } else {
+                        viewHolder.mCvRedpacket2.setCardBackgroundColor(mContext.getColor(R.color.redpacket2));
+                        viewHolder.mTvExamine2.setText("查看红包");
+                    }
+                    break;
+                case 2:
+                    viewHolder.mTvMessamge2.setVisibility(View.GONE);
+                    viewHolder.mLlVoice2.setVisibility(View.VISIBLE);
+                    viewHolder.mCvRedpacket2.setVisibility(View.GONE);
+                    viewHolder.mTvVoiceTime2.setText(messageInfo.getVoiceTime() + "''");
+                    if (messageInfo.getSendStatus() == 1) {
+                        viewHolder.mIvVoiceHint2.setVisibility(View.VISIBLE);
+                    } else {
+                        viewHolder.mIvVoiceHint2.setVisibility(View.VISIBLE);
+                    }
+                    viewHolder.mIvVoice2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            showDialog(mUserImage, coin, remark, count, viewHolder2, id, position, redId);
+                            UtilTool.playVoice(mContext, messageInfo.getVoice());
                         }
                     });
-                }
+                    viewHolder.mIvVoiceHint2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            anewSendVoiceMsg(messageInfo, viewHolder2.mIvVoiceHint2);
+                        }
+                    });
+                    break;
+            }
+        } else {
+            //设置头像
+            viewHolder.mIeaHeadImg.setImageBitmap(mUserImage);
+            //显示哪个消息
+            viewHolder.mRlMessage2.setVisibility(View.GONE);
+            viewHolder.mRlMessage.setVisibility(View.VISIBLE);
+            //消息类型
+            switch (messageInfo.getMsgType()) {
+                case 0:
+                    viewHolder.mTvMessamge.setVisibility(View.VISIBLE);
+                    viewHolder.mCvRedpacket.setVisibility(View.GONE);
+                    viewHolder.mLlVoice.setVisibility(View.GONE);
+                    String message = messageInfo.getMessage();
+                    viewHolder.mTvMessamge.setText(message);
+                    break;
+                case 1:
+                    final String coin = messageInfo.getCoin();
+                    final String remark = messageInfo.getRemark();
+                    final String count = messageInfo.getCount();
+                    final String id = messageInfo.getId() + "";
+                    final int redId = messageInfo.getRedId();
+                    final int type = messageInfo.getType();
+                    viewHolder.mTvMessamge.setVisibility(View.GONE);
+                    viewHolder.mLlVoice.setVisibility(View.GONE);
+                    viewHolder.mCvRedpacket.setVisibility(View.VISIBLE);
+                    viewHolder.mTvCoinRedpacket.setText(coin + "红包");
+                    viewHolder.mTvRemark.setText(remark);
+                    if (mMessageList.get(position).getState() == 1) {
+                        viewHolder.mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket));
+                        viewHolder.mTvExamine.setText("已領取紅包");
+                        viewHolder.mCvRedpacket.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                mGrabRedPresenter.grabRedPacket(redId, id, position, type);
+                            }
+                        });
+                    } else {
+                        viewHolder.mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket2));
+                        viewHolder.mTvExamine.setText("查看红包");
+                        viewHolder.mCvRedpacket.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                showDialog(mUserImage, coin, remark, count, viewHolder2, id, position, redId);
+                            }
+                        });
+                    }
+                    break;
+                case 2:
+                    viewHolder.mTvMessamge.setVisibility(View.GONE);
+                    viewHolder.mLlVoice.setVisibility(View.VISIBLE);
+                    viewHolder.mCvRedpacket.setVisibility(View.GONE);
+                    viewHolder.mTvVoiceTime.setText(messageInfo.getVoiceTime() + "''");
+                    if (messageInfo.getVoiceStatus() == 1) {
+                        viewHolder.mIvStatus.setVisibility(View.GONE);
+                    } else {
+                        viewHolder.mIvStatus.setVisibility(View.VISIBLE);
+                    }
+                    viewHolder.mIvVoice.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            UtilTool.playVoice(mContext, messageInfo.getVoice());
+                            mMgr.updateMessageStatus(messageInfo.getId());
+                            viewHolder2.mIvStatus.setVisibility(View.GONE);
+                        }
+                    });
+                    break;
             }
         }
         return convertView;
+    }
+
+    private void anewSendVoiceMsg(MessageInfo messageInfo, ImageView ivVoiceHint2) {
+        try {
+            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
+            Message message = new Message();
+            byte[] bytes = UtilTool.readStream(messageInfo.getVoice());
+            String base64 = Base64.encodeToString(bytes);
+            chat.sendMessage(message);
+            ivVoiceHint2.setVisibility(View.GONE);
+            mMgr.updateMessageStatus(messageInfo.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            ivVoiceHint2.setVisibility(View.VISIBLE);
+            Toast.makeText(mContext, "发送失败", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void anewSendMessage(String user, String message, ImageView ivWarning, int id) {
@@ -286,10 +366,20 @@ public class ExampleAdapter extends BaseAdapter {
     static class ViewHolder {
         @Bind(R.id.iea_headImg)
         ImageView mIeaHeadImg;
+        @Bind(R.id.tv_voice_time)
+        TextView mTvVoiceTime;
+        @Bind(R.id.iv_status)
+        ImageView mIvStatus;
+        @Bind(R.id.iv_voice)
+        TextView mIvVoice;
+        @Bind(R.id.iv_anim)
+        ImageView mIvAnim;
+        @Bind(R.id.rl_voice)
+        RelativeLayout mRlVoice;
+        @Bind(R.id.ll_voice)
+        RelativeLayout mLlVoice;
         @Bind(R.id.tv_messamge)
         EmojiconTextView mTvMessamge;
-        @Bind(R.id.iv_warning)
-        ImageView mIvWarning;
         @Bind(R.id.tv_remark)
         TextView mTvRemark;
         @Bind(R.id.tv_examine)
@@ -302,12 +392,26 @@ public class ExampleAdapter extends BaseAdapter {
         CardView mCvRedpacket;
         @Bind(R.id.rl_message)
         RelativeLayout mRlMessage;
+        @Bind(R.id.iea_headImg2)
+        ImageView mIeaHeadImg2;
+        @Bind(R.id.iv_voice_hint2)
+        ImageView mIvVoiceHint2;
+        @Bind(R.id.tv_voice_time2)
+        TextView mTvVoiceTime2;
+        @Bind(R.id.iv_voice2)
+        TextView mIvVoice2;
+        @Bind(R.id.iv_anim2)
+        ImageView mIvAnim2;
+        @Bind(R.id.rl_voice2)
+        RelativeLayout mRlVoice2;
+        @Bind(R.id.ll_voice2)
+        LinearLayout mLlVoice2;
         @Bind(R.id.iv_warning2)
         ImageView mIvWarning2;
         @Bind(R.id.tv_messamge2)
         EmojiconTextView mTvMessamge2;
-        @Bind(R.id.iea_headImg2)
-        ImageView mIeaHeadImg2;
+        @Bind(R.id.ll_text_msg)
+        LinearLayout mLlTextMsg;
         @Bind(R.id.tv_remark2)
         TextView mTvRemark2;
         @Bind(R.id.tv_examine2)

@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ import com.bclould.tocotalk.utils.UtilTool;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class DBManager {
     private final Context mContext;
     private DBHelper helper;
@@ -48,6 +51,7 @@ public class DBManager {
         values.put("voiceStatus", messageInfo.getVoiceStatus());
         values.put("voiceTime", messageInfo.getVoiceTime());
         values.put("sendStatus", messageInfo.getSendStatus());
+        values.put("msgType", messageInfo.getMsgType());
         db.insert("MessageRecord", null, values);
         UtilTool.Log("日志", "添加成功" + messageInfo.toString());
         db.close();
@@ -87,6 +91,7 @@ public class DBManager {
                 messageInfo.setVoice(c.getString(c.getColumnIndex("voice")));
                 messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
                 messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
+                messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -147,6 +152,7 @@ public class DBManager {
                 messageInfo.setVoice(c.getString(c.getColumnIndex("voice")));
                 messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
                 messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
+                messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
                 messageInfos.add(messageInfo);
             }
 
@@ -376,6 +382,14 @@ public class DBManager {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("sendStatus", 0);
+        db.update("MessageRecord", values, "id=?", new String[]{id + ""});
+        db.close();
+    }
+
+    public void updateMessageStatus(int id) {
+        db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("voiceStatus", 1);
         db.update("MessageRecord", values, "id=?", new String[]{id + ""});
         db.close();
     }

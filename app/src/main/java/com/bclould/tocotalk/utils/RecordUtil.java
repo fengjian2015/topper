@@ -4,6 +4,8 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +16,7 @@ import java.io.IOException;
  * Created by CodeBear on 2017/7/10.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class RecordUtil {
     private String outPutFileName;
 
@@ -48,8 +51,8 @@ public class RecordUtil {
         if (!dir.exists()) {
             dir.mkdirs();
         }
-//        outPutFileName = outPutFileName + File.separator + UtilTool.createtFileName() + ".amr";
-        outPutFileName = "/sdcard/" + UtilTool.createtFileName() + ".amr";
+        outPutFileName = outPutFileName + File.separator + UtilTool.createtFileName() + ".amr";
+//        outPutFileName = "/sdcard/" + UtilTool.createtFileName() + ".amr";
         try {
             recorder = new MediaRecorder();
             recorder.setAudioSource(MediaRecorder.AudioSource.MIC);

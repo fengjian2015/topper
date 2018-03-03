@@ -22,7 +22,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table ConversationRecord(id integer primary key autoincrement, my_user varchar, number Integer, message varchar(225), time varchar(225), user varchar(225), friend varchar(225))");
-        db.execSQL("create table MessageRecord(id integer primary key autoincrement, my_user varchar, user varchar, message varchar, time varchar, type Integer, coin varchar, count varchar, remark varchar, state Integer, redId Integer, voice varchar, voiceStatus integer, voiceTime varchar, sendStatus integer)");
+        db.execSQL("create table MessageRecord(id integer primary key autoincrement, my_user varchar, user varchar, message varchar, time varchar, type Integer, coin varchar, count varchar, remark varchar, state Integer, redId Integer, voice varchar, voiceStatus integer, voiceTime varchar, sendStatus integer, msgType integer)");
         db.execSQL("create table AddRequest(id integer primary key autoincrement, my_user varchar, user varchar(225), type Integer)");
         db.execSQL("create table UserImage(id integer primary key autoincrement, my_user varchar, user varchar(225), path varchar, status Integer)");
     }

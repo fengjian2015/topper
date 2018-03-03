@@ -4,14 +4,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,8 +64,12 @@ import butterknife.OnClick;
  * Created by GA on 2017/12/12.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class ConversationFragment extends Fragment {
 
+    public static final int VOICEMESSAGE = 2;
+    public static final int TEXTMESSAGE = 0;
+    public static final int REDMESSAGE = 1;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.iv)
@@ -244,21 +251,44 @@ public class ConversationFragment extends Fragment {
             super.handleMessage(msg);
             //获取接收的好友名及聊天消息
             Message message = (Message) msg.obj;
+            int msgType = TEXTMESSAGE;
+            /*if (message.hasExtension(VoiceInfo.ELEMENT_NAME, VoiceInfo.NAME_SPACE)) {
+                DefaultExtensionElement defaultExtensionElement = message.getExtension(VoiceInfo.ELEMENT_NAME, VoiceInfo.NAME_SPACE);
+                String attachment = defaultExtensionElement.getValue("attachment");
+                UtilTool.Log("语音", attachment);
+            }*/
+
+            String chatMsg = message.getBody();
+
+            String remark = null;
+            String coin = null;
+            String count = null;
+            int redId = 0;
+            String redpacket = null;
+            redpacket = chatMsg;
             String msgXML = message.toXML().toString();
-            String startTag = "<attachment xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'>&lt;";
+            String startTag = "<attachment xmlns='jabber:client' xmlns:stream='http://etherx.jabber.org/streams'>";
             String endTag = "</attachment>";
             UtilTool.Log("语音", msgXML);
+            File file = null;
             try {
                 if (msgXML.contains(startTag)) {
-                    String voiceBase64 = msgXML.substring(msgXML.indexOf(startTag) + startTag.length(), msgXML.length());
-//                    byte[] bytes = Base64.decode(voiceBase64, Base64.DEFAULT);
-                    byte[] bytes = voiceBase64.getBytes();
+                    String voiceBase64 = msgXML.substring(msgXML.indexOf(startTag) + startTag.length(), msgXML.indexOf(endTag));
+                    UtilTool.Log("语音", voiceBase64);
+                    byte[] bytes = Base64.decode(voiceBase64, Base64.DEFAULT);
                     if (bytes != null && bytes.length != 0) {
+                        msgType = VOICEMESSAGE;
+                        redpacket = "[语音]";
                         InputStream in = new ByteArrayInputStream(bytes);
-                        String path = UtilTool.createtFileName() + ".wav";
-                        File file = new File("/sdcard/", path);
+                        String fileName = UtilTool.createtFileName() + ".amr";
+                        String path = getContext().getFilesDir().getAbsolutePath() + File.separator
+                                + "RecordRemDir";
+                        File dir = new File(path);
+                        if (!dir.exists()) {
+                            dir.mkdirs();
+                        }
+                        file = new File(dir, fileName);
                         FileOutputStream fos = new FileOutputStream(file);
-
                         byte[] b = new byte[1024];
                         int nRead = 0;
                         while ((nRead = in.read(b)) != -1) {
@@ -268,26 +298,23 @@ public class ConversationFragment extends Fragment {
                         fos.close();
                         in.close();
                     }
+                } else {
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            String chatMsg = message.getBody();
-            String remark = null;
-            String coin = null;
-            String count = null;
-            int redId = 0;
-            String redpacket = "";
+
+
             if (chatMsg.contains(Constants.CHUANCODE)) {
                 String s = chatMsg.replace(Constants.CHUANCODE, ",");
                 String[] split = s.split(",");
                 remark = split[1];
                 coin = split[2];
                 count = split[3];
+                msgType = REDMESSAGE;
                 redId = Integer.parseInt(split[4]);
                 redpacket = "[" + coin + "红包]" + remark;
-            } else {
-                redpacket = chatMsg;
             }
             String from = message.getFrom().toString();
             if (from.contains("/"))
@@ -307,9 +334,14 @@ public class ConversationFragment extends Fragment {
             messageInfo.setType(1);
             messageInfo.setCount(count);
             messageInfo.setCoin(coin);
+            messageInfo.setMsgType(msgType);
             messageInfo.setRemark(remark);
             messageInfo.setState(0);
             messageInfo.setRedId(redId);
+            if (file != null) {
+                messageInfo.setVoice(file.getAbsolutePath());
+                messageInfo.setVoiceTime(UtilTool.getFileDuration(file.getAbsolutePath(), getContext()) + "");
+            }
             mgr.addMessage(messageInfo);
             int number = mgr.queryNumber(from);
             if (mgr.findConversation(from)) {

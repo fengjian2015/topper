@@ -60,6 +60,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.bclould.tocotalk.R.style.BottomDialog;
+import static com.bclould.tocotalk.ui.fragment.ConversationFragment.REDMESSAGE;
 
 /**
  * Created by GA on 2017/12/28.
@@ -378,6 +379,7 @@ public class SendRedPacketActivity extends AppCompatActivity {
             messageInfo.setType(0);
             messageInfo.setRemark(mRemark);
             messageInfo.setCoin(mCoin);
+            messageInfo.setMsgType(REDMESSAGE);
             messageInfo.setCount(mCount + "");
             messageInfo.setState(0);
             messageInfo.setRedId(id);

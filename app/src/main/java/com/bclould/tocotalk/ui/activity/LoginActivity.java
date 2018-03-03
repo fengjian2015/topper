@@ -61,18 +61,20 @@ public class LoginActivity extends AppCompatActivity {
 
     //不能回车
     private void setEdit() {
-        mEtEmily.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return true;
-            }
-        });
-        mEtPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return true;
-            }
-        });
+		if(mEtEmily == null){
+			mEtEmily.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+				@Override
+				public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+					return true;
+				}
+			});
+			mEtPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+				@Override
+				public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+					return true;
+				}
+			});
+		}
     }
 
     //监听返回键

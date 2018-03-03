@@ -20,6 +20,15 @@ public class MessageInfo {
     private int voiceStatus;
     private String voiceTime;
     private int sendStatus;
+    private int msgType;
+
+    public int getMsgType() {
+        return msgType;
+    }
+
+    public void setMsgType(int msgType) {
+        this.msgType = msgType;
+    }
 
     public int getSendStatus() {
         return sendStatus;
@@ -146,6 +155,10 @@ public class MessageInfo {
                 ", state=" + state +
                 ", id=" + id +
                 ", redId=" + redId +
+                ", voice='" + voice + '\'' +
+                ", voiceStatus=" + voiceStatus +
+                ", voiceTime='" + voiceTime + '\'' +
+                ", sendStatus=" + sendStatus +
                 '}';
     }
 }

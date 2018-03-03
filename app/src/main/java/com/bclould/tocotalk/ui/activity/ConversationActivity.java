@@ -41,6 +41,7 @@ import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
+import com.bclould.tocotalk.model.VoiceInfo;
 import com.bclould.tocotalk.ui.adapter.ExampleAdapter;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.LoadMoreListView;
@@ -67,6 +68,7 @@ import org.jivesoftware.smack.chat.Chat;
 import org.jivesoftware.smack.chat.ChatManager;
 import org.jivesoftware.smack.roster.Roster;
 import org.jivesoftware.smack.roster.RosterEntry;
+import org.jivesoftware.smack.util.stringencoder.Base64;
 import org.jxmpp.jid.impl.JidCreate;
 
 import java.text.SimpleDateFormat;
@@ -96,6 +98,8 @@ import sj.keyboard.widget.FuncLayout;
 import sj.keyboard.widget.RecordIndicator;
 
 import static com.bclould.tocotalk.R.style.BottomDialog;
+import static com.bclould.tocotalk.ui.fragment.ConversationFragment.TEXTMESSAGE;
+import static com.bclould.tocotalk.ui.fragment.ConversationFragment.VOICEMESSAGE;
 
 /**
  * Created by GA on 2017/9/20.
@@ -418,17 +422,9 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     private void finishRecord() {
         recordUtil.finish();
-        int duration = recordUtil.getVoiceDuration();
-        Toast.makeText(this, "发送了" + duration + "s的录音", Toast.LENGTH_SHORT).show();
-        String fileName = recordUtil.getFileName();
-        MessageInfo messageInfo = new MessageInfo();
-        messageInfo.setUsername(mUser);
-        messageInfo.setVoice(fileName);
-        messageInfo.setVoiceTime(duration + "");
-        messageInfo.setVoiceStatus(1);
-        mMgr.addMessage(messageInfo);
-
-       /* MediaPlayer mediaPlayer = new MediaPlayer();
+//        Toast.makeText(this, "发送了" + duration + "s的录音", Toast.LENGTH_SHORT).show();
+        sendVoice();
+        /*MediaPlayer mediaPlayer = new MediaPlayer();
         try {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.reset();    //如果正在播放，则重置为初始状态
@@ -439,6 +435,82 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         } catch (IOException e) {
             e.printStackTrace();
         }*/
+    }
+
+    private void sendVoice() {
+        int duration = recordUtil.getVoiceDuration();
+        String fileName = recordUtil.getFileName();
+        try {
+            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
+            org.jivesoftware.smack.packet.Message message = new org.jivesoftware.smack.packet.Message();
+            VoiceInfo voiceInfo = new VoiceInfo();
+            byte[] bytes = UtilTool.readStream(fileName);
+            String base64 = Base64.encodeToString(bytes);
+            voiceInfo.setElementText(base64);
+            message.setBody("[audio]:" + duration + "秒");
+            message.addExtension(voiceInfo);
+            chat.sendMessage(message);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            MessageInfo messageInfo = new MessageInfo();
+            messageInfo.setMessage(message.getBody());
+            messageInfo.setType(0);
+            messageInfo.setUsername(mUser);
+            messageInfo.setVoice(fileName);
+            messageInfo.setTime(time);
+            messageInfo.setMsgType(VOICEMESSAGE);
+            messageInfo.setVoiceTime(duration + "");
+            messageInfo.setVoiceStatus(1);
+            mMgr.addMessage(messageInfo);
+            mMessageList.add(messageInfo);
+            mExampleAdapter.notifyDataSetChanged();
+            scrollToBottom();
+            if (mMgr.findConversation(mUser)) {
+                mMgr.updateConversation(mUser, 0, "[语音]", time);
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                info.setFriend(mName);
+                info.setUser(mUser);
+                info.setMessage("[语音]");
+                mMgr.addConversation(info);
+            }
+            EventBus.getDefault().post(new MessageEvent("自己发了消息"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "发送失败，请检查当前网络连接", Toast.LENGTH_SHORT).show();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            MessageInfo messageInfo = new MessageInfo();
+            messageInfo.setMessage("[audio]:" + duration + "秒");
+            messageInfo.setType(0);
+            messageInfo.setUsername(mUser);
+            messageInfo.setVoice(fileName);
+            messageInfo.setTime(time);
+            messageInfo.setMsgType(VOICEMESSAGE);
+            messageInfo.setVoiceTime(duration + "");
+            messageInfo.setVoiceStatus(1);
+            messageInfo.setSendStatus(1);
+            mMgr.addMessage(messageInfo);
+            mMessageList.add(messageInfo);
+            mExampleAdapter.notifyDataSetChanged();
+            scrollToBottom();
+            if (mMgr.findConversation(mUser)) {
+                mMgr.updateConversation(mUser, 0, "[语音]", time);
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                info.setFriend(mName);
+                info.setUser(mUser);
+                info.setMessage("[语音]");
+                mMgr.addConversation(info);
+            }
+            EventBus.getDefault().post(new MessageEvent("自己发了消息"));
+        }
+
     }
 
     private void cancelRecord() {
@@ -739,6 +811,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             String time = formatter.format(curDate);
             messageInfo.setTime(time);
             messageInfo.setType(0);
+            messageInfo.setMsgType(TEXTMESSAGE);
             mMgr.addMessage(messageInfo);
             mMessageList.add(messageInfo);
             mExampleAdapter.notifyDataSetChanged();
@@ -765,6 +838,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             String time = formatter.format(curDate);
             messageInfo.setTime(time);
             messageInfo.setType(0);
+            messageInfo.setMsgType(TEXTMESSAGE);
             messageInfo.setSendStatus(1);
             mMgr.addMessage(messageInfo);
             mMessageList.add(messageInfo);
