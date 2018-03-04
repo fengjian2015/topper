@@ -57,6 +57,7 @@
 
                 <TextView
                     android:id="@+id/iv_voice"
+                    android:maxLength="60"
                     android:layout_centerInParent="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -79,7 +80,6 @@
             android:layout_marginLeft="@dimen/x30"
             android:layout_toRightOf="@+id/iea_headImg"
             android:background="@drawable/img_chat2_bg"
-            android:gravity="center"
             android:lineSpacingExtra="@dimen/y10"
             android:maxWidth="@dimen/x500"
             android:text="哈喽！"
@@ -184,7 +184,6 @@
                 android:layout_height="@dimen/x60"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/x20"
-                android:maxWidth="@dimen/x500"
                 android:src="@mipmap/icon_fail"/>
 
             <TextView
@@ -206,6 +205,7 @@
                     android:id="@+id/iv_voice2"
                     android:layout_centerInParent="true"
                     android:layout_width="wrap_content"
+                    android:maxLength="60"
                     android:layout_height="wrap_content"
                     android:text=""/>
 
@@ -224,7 +224,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/iea_headImg2"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/iv_warning2"

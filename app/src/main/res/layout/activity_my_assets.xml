@@ -76,7 +76,7 @@
         <RelativeLayout
             android:layout_width="@dimen/x120"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/x150">
+            android:layout_marginLeft="@dimen/x120">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -96,7 +96,32 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="@dimen/x120"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/x120">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="充提记录"
+                android:textColor="@drawable/text_blue_selector"
+                android:textSize="@dimen/x26"/>
+
+            <TextView
+                android:id="@+id/xx3"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y4"
+                android:layout_alignParentBottom="true"
+                android:background="@color/blue2"
+                android:visibility="gone"/>
+
+
+        </RelativeLayout>
+
     </LinearLayout>
+
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"

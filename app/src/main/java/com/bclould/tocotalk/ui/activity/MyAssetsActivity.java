@@ -1,7 +1,9 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,6 +23,7 @@ import butterknife.OnClick;
  * Created by GA on 2017/9/22.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class MyAssetsActivity extends BaseActivity {
 
 
@@ -34,6 +37,8 @@ public class MyAssetsActivity extends BaseActivity {
     LinearLayout mTopMenu;
     @Bind(R.id.viewPager)
     ViewPager mViewPager;
+    @Bind(R.id.xx3)
+    TextView mXx3;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -123,13 +128,25 @@ public class MyAssetsActivity extends BaseActivity {
         if (index == 0) {
             mTopMenu.getChildAt(index).setSelected(true);
             mTopMenu.getChildAt(1).setSelected(false);
+            mTopMenu.getChildAt(2).setSelected(false);
             mXx.setVisibility(View.VISIBLE);
             mXx2.setVisibility(View.GONE);
+            mXx3.setVisibility(View.GONE);
+        }
+        if (index == 1) {
+            mTopMenu.getChildAt(index).setSelected(true);
+            mTopMenu.getChildAt(0).setSelected(false);
+            mTopMenu.getChildAt(2).setSelected(false);
+            mXx.setVisibility(View.GONE);
+            mXx2.setVisibility(View.VISIBLE);
+            mXx3.setVisibility(View.GONE);
         } else {
             mTopMenu.getChildAt(index).setSelected(true);
             mTopMenu.getChildAt(0).setSelected(false);
+            mTopMenu.getChildAt(1).setSelected(false);
             mXx.setVisibility(View.GONE);
-            mXx2.setVisibility(View.VISIBLE);
+            mXx2.setVisibility(View.GONE);
+            mXx3.setVisibility(View.VISIBLE);
 
         }
 

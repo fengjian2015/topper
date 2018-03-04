@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -189,6 +190,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private String mType;
     private RecordIndicator recordIndicator;
     private RecordUtil recordUtil;
+    private MediaPlayer mediaPlayer = new MediaPlayer();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -518,9 +520,19 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         Toast.makeText(this, "取消录音", Toast.LENGTH_SHORT).show();
     }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mediaPlayer.stop();
+        mediaPlayer.reset();
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mediaPlayer.release();
+        mediaPlayer = null;
         EventBus.getDefault().unregister(this);
     }
 
@@ -593,9 +605,65 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
             } else if (requestCode == PictureConfig.CHOOSE_REQUEST) {
                 selectList = PictureSelector.obtainMultipleResult(data);
+                if (selectList.size() != 0) {
+                    for (int i = 0; i < selectList.size(); i++) {
+//                        uploadData(selectList.get(i).getPath());
+                    }
+                }
             }
         }
     }
+
+    //上传文件
+    /*public void uploadData(String path) {
+
+
+
+        // Initialize AWSMobileClient if not initialized upon the app startup.
+        // AWSMobileClient.getInstance().initialize(this).execute();
+
+        TransferUtility transferUtility =
+                TransferUtility.builder()
+                        .context(getApplicationContext())
+                        .awsConfiguration(AWSMobileClient .getInstance().getConfiguration())
+                        .s3Client(new AmazonS3Client(AWSMobileClient.getInstance().getCredentialsProvider()))
+                        .build();
+
+
+        TransferObserver uploadObserver =
+                transferUtility.upload(
+                        "s3Folder/s3Key.txt",
+                        new File(path));
+
+        uploadObserver.setTransferListener(new TransferListener() {
+
+            @Override
+            public void onStateChanged(int id, TransferState state) {
+                if (TransferState.COMPLETED == state) {
+                    // Handle a completed upload.
+                }
+            }
+
+            @Override
+            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                float percentDonef = ((float) bytesCurrent / (float) bytesTotal) * 100;
+                int percentDone = (int) percentDonef;
+
+            }
+
+            @Override
+            public void onError(int id, Exception ex) {
+                // Handle errors
+            }
+
+        });
+
+        // If your upload does not trigger the onStateChanged method inside your
+        // TransferListener, you can directly check the transfer state as shown here.
+        if (TransferState.COMPLETED == uploadObserver.getState()) {
+            // Handle a completed upload.
+        }
+    }*/
 
     //调用文件选择软件来选择文件
     private void showFileChooser() {
@@ -672,7 +740,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     }
 
     private void initAdapter() {
-        mExampleAdapter = new ExampleAdapter(this, mMessageList, mUserImage, mUser, mMgr);
+        mExampleAdapter = new ExampleAdapter(this, mMessageList, mUserImage, mUser, mMgr, mediaPlayer);
         mLvMessage.setAdapter(mExampleAdapter);
         mLvMessage.setonRefreshListener(new LoadMoreListView.OnRefreshListener() {
 
@@ -729,6 +797,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         mBottomDialog.show();
         dialogClick();
     }
+
 
     private void dialogClick() {
         LinearLayout help = (LinearLayout) mBottomDialog.findViewById(R.id.ll_help);

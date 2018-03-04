@@ -2,6 +2,8 @@ package com.bclould.tocotalk.base;
 
 import android.app.Activity;
 import android.app.Application;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.utils.MySharedPreferences;
@@ -17,6 +19,7 @@ import java.util.List;
  * Created by GA on 2017/9/18.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class MyApp extends Application {
 
     public static MyApp instance = null;
@@ -46,6 +49,8 @@ public class MyApp extends Application {
         XmppConnection.getInstance().setDB(new DBManager(this));
 
         XmppConnection.getInstance().setContext(this);
+
+//        AWSMobileClient.getInstance().initialize(this).execute();
 
     }
 

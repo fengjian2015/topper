@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -41,11 +42,15 @@ import org.jivesoftware.smack.util.stringencoder.Base64;
 import org.jxmpp.jid.impl.JidCreate;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.github.rockerhieu.emojicon.EmojiconTextView;
+
+import static com.bclould.tocotalk.utils.UtilTool.Log;
+
 
 /**
  * 作者：wgyscsf on 2017/1/2 18:46
@@ -61,16 +66,19 @@ public class ExampleAdapter extends BaseAdapter {
     private final String mUser;
     private final DBManager mMgr;
     private final GrabRedPresenter mGrabRedPresenter;
+    private final MediaPlayer mMediaPlayer;
     private Bitmap mBitmap;
     private CurrencyDialog mCurrencyDialog;
+    private String mFileName;
 
-    public ExampleAdapter(Context context, List<MessageInfo> messageList, Bitmap userImage, String user, DBManager mgr) {
+    public ExampleAdapter(Context context, List<MessageInfo> messageList, Bitmap userImage, String user, DBManager mgr, MediaPlayer mediaPlayer) {
         mContext = context;
         mMessageList = messageList;
         mUserImage = userImage;
         mUser = user;
         mMgr = mgr;
         mGrabRedPresenter = new GrabRedPresenter(this, mContext);
+        mMediaPlayer = mediaPlayer;
     }
 
     @Override
@@ -127,8 +135,7 @@ public class ExampleAdapter extends BaseAdapter {
                     viewHolder.mLlTextMsg.setVisibility(View.VISIBLE);
                     viewHolder.mCvRedpacket2.setVisibility(View.GONE);
                     viewHolder.mLlVoice2.setVisibility(View.GONE);
-                    final String message = messageInfo.getMessage();
-                    viewHolder.mTvMessamge2.setText(message);
+                    viewHolder.mTvMessamge2.setText(messageInfo.getMessage());
                     if (messageInfo.getSendStatus() == 1) {
                         viewHolder.mIvWarning2.setVisibility(View.VISIBLE);
                     } else {
@@ -174,15 +181,21 @@ public class ExampleAdapter extends BaseAdapter {
                     viewHolder.mLlVoice2.setVisibility(View.VISIBLE);
                     viewHolder.mCvRedpacket2.setVisibility(View.GONE);
                     viewHolder.mTvVoiceTime2.setText(messageInfo.getVoiceTime() + "''");
+                    int wide = Integer.parseInt(messageInfo.getVoiceTime()) * 2;
+                    String blank = " ";
+                    for (int i = 0; i < wide; i++) {
+                        blank += " ";
+                    }
+                    viewHolder.mIvVoice2.setText(blank);
                     if (messageInfo.getSendStatus() == 1) {
                         viewHolder.mIvVoiceHint2.setVisibility(View.VISIBLE);
                     } else {
-                        viewHolder.mIvVoiceHint2.setVisibility(View.VISIBLE);
+                        viewHolder.mIvVoiceHint2.setVisibility(View.GONE);
                     }
-                    viewHolder.mIvVoice2.setOnClickListener(new View.OnClickListener() {
+                    viewHolder.mRlVoice2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            UtilTool.playVoice(mContext, messageInfo.getVoice());
+                            playVoice(mMediaPlayer, messageInfo.getVoice());
                         }
                     });
                     viewHolder.mIvVoiceHint2.setOnClickListener(new View.OnClickListener() {
@@ -245,15 +258,21 @@ public class ExampleAdapter extends BaseAdapter {
                     viewHolder.mLlVoice.setVisibility(View.VISIBLE);
                     viewHolder.mCvRedpacket.setVisibility(View.GONE);
                     viewHolder.mTvVoiceTime.setText(messageInfo.getVoiceTime() + "''");
+                    int wide = Integer.parseInt(messageInfo.getVoiceTime()) * 2;
+                    String blank = " ";
+                    for (int i = 0; i < wide; i++) {
+                        blank += " ";
+                    }
+                    viewHolder.mIvVoice.setText(blank);
                     if (messageInfo.getVoiceStatus() == 1) {
                         viewHolder.mIvStatus.setVisibility(View.GONE);
                     } else {
                         viewHolder.mIvStatus.setVisibility(View.VISIBLE);
                     }
-                    viewHolder.mIvVoice.setOnClickListener(new View.OnClickListener() {
+                    viewHolder.mRlVoice.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            UtilTool.playVoice(mContext, messageInfo.getVoice());
+                            playVoice(mMediaPlayer, messageInfo.getVoice());
                             mMgr.updateMessageStatus(messageInfo.getId());
                             viewHolder2.mIvStatus.setVisibility(View.GONE);
                         }
@@ -362,6 +381,38 @@ public class ExampleAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void playVoice(MediaPlayer mediaPlayer, String fileName) {
+        try {
+            //对mediaPlayer进行实例化
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    mediaPlayer.reset();
+                }
+            });
+            if (mediaPlayer.isPlaying()) {
+                if (mFileName.equals(fileName)) {
+                    mediaPlayer.stop();
+                    mediaPlayer.reset();
+                } else {
+                    mediaPlayer.stop();
+                    mediaPlayer.reset();
+                    mediaPlayer.setDataSource(fileName);     //设置资源目录
+                    mediaPlayer.prepare();//缓冲
+                    mediaPlayer.start();
+                }
+            } else {
+                mediaPlayer.reset();
+                mediaPlayer.setDataSource(fileName);     //设置资源目录
+                mediaPlayer.prepare();//缓冲
+                mediaPlayer.start();//开始或恢复播放
+            }
+            mFileName = fileName;
+        } catch (IOException e) {
+            Log("日志", "没有找到这个文件");
+            e.printStackTrace();
+        }
+    }
 
     static class ViewHolder {
         @Bind(R.id.iea_headImg)

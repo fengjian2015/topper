@@ -451,23 +451,5 @@ public class UtilTool {
         }
     }
 
-    public static void playVoice(Context context, String fileName) {
-        try {
-            //对mediaPlayer进行实例化
-            if (mediaPlayer == null)
-                mediaPlayer = new MediaPlayer();
-            if (!mediaPlayer.isPlaying()) {
-                mediaPlayer.setDataSource(fileName);     //设置资源目录
-                mediaPlayer.prepare();//缓冲
-                mediaPlayer.start();//开始或恢复播放
-            } else {
-                mediaPlayer.stop();
-                mediaPlayer.release();
-                mediaPlayer = null;
-            }
-        } catch (IOException e) {
-            Log("日志", "没有找到这个文件");
-            e.printStackTrace();
-        }
-    }
+
 }

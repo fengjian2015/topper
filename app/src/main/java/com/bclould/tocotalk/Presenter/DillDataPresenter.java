@@ -1,9 +1,12 @@
 package com.bclould.tocotalk.Presenter;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.model.InOutInfo;
 import com.bclould.tocotalk.model.TransferInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
@@ -21,6 +24,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2018/2/28.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class DillDataPresenter {
 
     private final Context mContext;
@@ -83,8 +87,49 @@ public class DillDataPresenter {
         }
     }
 
+    public void getInOutData(final CallBack2 callBack) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .coinOutLog(UtilTool.getToken(), "提币")
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<InOutInfo>() {
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(@NonNull InOutInfo inOutInfo) {
+                            if(inOutInfo.getStatus() == 1){
+                                callBack.send(inOutInfo.getData());
+                            }
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     //定义接口
     public interface CallBack {
         void send(List<TransferInfo.DataBean> data);
+    }
+
+    //定义接口
+    public interface CallBack2 {
+        void send(List<InOutInfo.DataBean> data);
     }
 }

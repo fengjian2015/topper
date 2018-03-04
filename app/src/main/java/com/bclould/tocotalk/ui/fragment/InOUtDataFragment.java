@@ -14,8 +14,8 @@ import android.widget.LinearLayout;
 
 import com.bclould.tocotalk.Presenter.DillDataPresenter;
 import com.bclould.tocotalk.R;
-import com.bclould.tocotalk.model.TransferInfo;
-import com.bclould.tocotalk.ui.adapter.BillDataRVAapter;
+import com.bclould.tocotalk.model.InOutInfo;
+import com.bclould.tocotalk.ui.adapter.InOutDataRVAapter;
 
 import java.util.List;
 
@@ -23,24 +23,24 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by GA on 2017/9/22.
+ * Created by GA on 2018/3/4.
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class BillDataFragment extends Fragment {
+public class InOUtDataFragment extends Fragment {
 
-    public static BillDataFragment instance = null;
+    public static InOUtDataFragment instance = null;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
 
     //对外提供方法获取对象
-    public static BillDataFragment getInstance() {
+    public static InOUtDataFragment getInstance() {
 
         if (instance == null) {
 
-            instance = new BillDataFragment();
+            instance = new InOUtDataFragment();
 
         }
 
@@ -59,9 +59,9 @@ public class BillDataFragment extends Fragment {
 
     private void initData() {
         DillDataPresenter dillDataPresenter = new DillDataPresenter(getContext());
-        dillDataPresenter.getDillList(new DillDataPresenter.CallBack() {
+        dillDataPresenter.getInOutData(new DillDataPresenter.CallBack2() {
             @Override
-            public void send(List<TransferInfo.DataBean> data) {
+            public void send(List<InOutInfo.DataBean> data) {
                 if (data.size() == 0) {
                     mLlNoData.setVisibility(View.VISIBLE);
                     mRecyclerView.setVisibility(View.GONE);
@@ -75,11 +75,11 @@ public class BillDataFragment extends Fragment {
     }
 
     //初始化条目
-    private void initListView(List<TransferInfo.DataBean> data) {
+    private void initListView(List<InOutInfo.DataBean> data) {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mRecyclerView.setAdapter(new BillDataRVAapter(getActivity(), data));
+        mRecyclerView.setAdapter(new InOutDataRVAapter(getContext(), data));
 
     }
 

@@ -1,11 +1,13 @@
 package com.bclould.tocotalk.network;
 
 
+import com.bclould.tocotalk.model.AwsInfo;
 import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.CoinInfo;
 import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.model.GoogleInfo;
 import com.bclould.tocotalk.model.GrabRedInfo;
+import com.bclould.tocotalk.model.InOutInfo;
 import com.bclould.tocotalk.model.LoginInfo;
 import com.bclould.tocotalk.model.MyAssetsInfo;
 import com.bclould.tocotalk.model.OrderInfo;
@@ -388,4 +390,16 @@ public interface MyService {
             @Field("to_id") int to_id
     );
 
+    //aws
+    @POST("finance/transferDetails")
+    Observable<AwsInfo> getSessionToken(
+            @Header("Authorization") String token
+    );
+    //充币提币
+    @POST("finance/coinOutLog")
+    @FormUrlEncoded
+    Observable<InOutInfo> coinOutLog(
+            @Header("Authorization") String token,
+            @Field("opt_type") String opt_type
+    );
 }
