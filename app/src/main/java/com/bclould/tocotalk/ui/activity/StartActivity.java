@@ -1,10 +1,12 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -28,6 +30,7 @@ import static com.bclould.tocotalk.Presenter.LoginPresenter.TOKEN;
  * Created by GA on 2017/11/8.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class StartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,5 +90,6 @@ public class StartActivity extends AppCompatActivity {
             }
         }.sendEmptyMessageDelayed(0, 2000);
         MyApp.getInstance().addActivity(this);
+
     }
 }

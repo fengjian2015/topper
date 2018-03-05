@@ -391,7 +391,7 @@ public interface MyService {
     );
 
     //aws
-    @POST("finance/transferDetails")
+    @POST("awsS3/getSessionToken")
     Observable<AwsInfo> getSessionToken(
             @Header("Authorization") String token
     );

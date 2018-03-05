@@ -50,8 +50,6 @@ public class MyApp extends Application {
 
         XmppConnection.getInstance().setContext(this);
 
-//        AWSMobileClient.getInstance().initialize(this).execute();
-
     }
 
     public void RestartApp() {

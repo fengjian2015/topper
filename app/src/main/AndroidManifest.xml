@@ -440,10 +440,14 @@
         <!--監聽APK安装广播-->
         <receiver android:name="com.bclould.tocotalk.network.ApkInstallReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
             </intent-filter>
         </receiver>
 
     </application>
+
+    <service
+        android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
+        android:enabled="true"/>
 
 </manifest>

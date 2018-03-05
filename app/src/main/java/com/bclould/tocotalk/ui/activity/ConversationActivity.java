@@ -37,9 +37,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.SdkClientException;
+import com.amazonaws.auth.BasicSessionCredentials;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.bclould.tocotalk.Presenter.DillDataPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.model.AwsInfo;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.VoiceInfo;
@@ -49,6 +56,7 @@ import com.bclould.tocotalk.ui.widget.LoadMoreListView;
 import com.bclould.tocotalk.ui.widget.SimpleAppsGridView;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.RecordUtil;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
@@ -101,6 +109,9 @@ import sj.keyboard.widget.RecordIndicator;
 import static com.bclould.tocotalk.R.style.BottomDialog;
 import static com.bclould.tocotalk.ui.fragment.ConversationFragment.TEXTMESSAGE;
 import static com.bclould.tocotalk.ui.fragment.ConversationFragment.VOICEMESSAGE;
+import static com.bclould.tocotalk.utils.Constants.ACCESS_KEY_ID;
+import static com.bclould.tocotalk.utils.Constants.SECRET_ACCESS_KEY;
+import static com.bclould.tocotalk.utils.Constants.SESSION_TOKEN;
 
 /**
  * Created by GA on 2017/9/20.
@@ -111,6 +122,9 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     private static final int CODE_TAKE_PHOTO = 1;
     private static final int FILE_SELECT_CODE = 2;
+    public static final String ACCESSKEYID = "access_key_id";
+    public static final String SECRETACCESSKEY = "secret_access_key";
+    public static final String SESSIONTOKEN = "session_token";
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.title_name)
@@ -424,19 +438,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     private void finishRecord() {
         recordUtil.finish();
-//        Toast.makeText(this, "发送了" + duration + "s的录音", Toast.LENGTH_SHORT).show();
         sendVoice();
-        /*MediaPlayer mediaPlayer = new MediaPlayer();
-        try {
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.reset();    //如果正在播放，则重置为初始状态
-            }
-            mediaPlayer.setDataSource(fileName);
-            mediaPlayer.prepare();//缓冲
-            mediaPlayer.start();//开始或恢复播放
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
     }
 
     private void sendVoice() {
@@ -449,6 +451,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             VoiceInfo voiceInfo = new VoiceInfo();
             byte[] bytes = UtilTool.readStream(fileName);
             String base64 = Base64.encodeToString(bytes);
+            UtilTool.Log("日志", base64);
             voiceInfo.setElementText(base64);
             message.setBody("[audio]:" + duration + "秒");
             message.addExtension(voiceInfo);
@@ -606,64 +609,45 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             } else if (requestCode == PictureConfig.CHOOSE_REQUEST) {
                 selectList = PictureSelector.obtainMultipleResult(data);
                 if (selectList.size() != 0) {
+                    DillDataPresenter dillDataPresenter = new DillDataPresenter(this);
+                    dillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
+                        @Override
+                        public void send(AwsInfo.DataBean data) {
+                            MySharedPreferences.getInstance().setString(ACCESSKEYID, data.getAccessKeyId());
+                            MySharedPreferences.getInstance().setString(SECRETACCESSKEY, data.getSecretAccessKey());
+                            MySharedPreferences.getInstance().setString(SESSIONTOKEN, data.getSessionToken());
+                        }
+                    });
                     for (int i = 0; i < selectList.size(); i++) {
-//                        uploadData(selectList.get(i).getPath());
+                        Upload(selectList.get(i).getPath());
                     }
                 }
             }
         }
     }
 
-    //上传文件
-    /*public void uploadData(String path) {
+    public void Upload(final String path) {
 
-
-
-        // Initialize AWSMobileClient if not initialized upon the app startup.
-        // AWSMobileClient.getInstance().initialize(this).execute();
-
-        TransferUtility transferUtility =
-                TransferUtility.builder()
-                        .context(getApplicationContext())
-                        .awsConfiguration(AWSMobileClient .getInstance().getConfiguration())
-                        .s3Client(new AmazonS3Client(AWSMobileClient.getInstance().getCredentialsProvider()))
-                        .build();
-
-
-        TransferObserver uploadObserver =
-                transferUtility.upload(
-                        "s3Folder/s3Key.txt",
-                        new File(path));
-
-        uploadObserver.setTransferListener(new TransferListener() {
-
+        new Thread(new Runnable() {
             @Override
-            public void onStateChanged(int id, TransferState state) {
-                if (TransferState.COMPLETED == state) {
-                    // Handle a completed upload.
+            public void run() {
+                try {
+                    BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
+                            ACCESS_KEY_ID,
+                            SECRET_ACCESS_KEY,
+                            SESSION_TOKEN);
+
+                    AmazonS3Client s3Client = new AmazonS3Client(
+                            sessionCredentials);
+                    TransferManager manager = new TransferManager(s3Client);
+                    PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, UtilTool.createtFileName() + ".png", path);
+                    manager.upload(por);
+                } catch (SdkClientException e) {
+                    e.printStackTrace();
                 }
             }
-
-            @Override
-            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                float percentDonef = ((float) bytesCurrent / (float) bytesTotal) * 100;
-                int percentDone = (int) percentDonef;
-
-            }
-
-            @Override
-            public void onError(int id, Exception ex) {
-                // Handle errors
-            }
-
-        });
-
-        // If your upload does not trigger the onStateChanged method inside your
-        // TransferListener, you can directly check the transfer state as shown here.
-        if (TransferState.COMPLETED == uploadObserver.getState()) {
-            // Handle a completed upload.
-        }
-    }*/
+        }).start();
+    }
 
     //调用文件选择软件来选择文件
     private void showFileChooser() {
@@ -709,12 +693,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private void initIntent() {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        /*Drawable drawable = getDrawable(R.mipmap.img_nfriend_headshot1);
-        BitmapDrawable bd = (BitmapDrawable) drawable;
-        mUserImage = bd.getBitmap();
-        mName = "tester_001";
-        mUser = Constants.MYUSER;
-        mType = intent.getStringExtra("type");*/
         if (bundle == null) {
             Drawable drawable = getDrawable(R.mipmap.img_nfriend_headshot1);
             BitmapDrawable bd = (BitmapDrawable) drawable;
