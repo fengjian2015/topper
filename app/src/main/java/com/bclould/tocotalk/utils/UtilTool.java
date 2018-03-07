@@ -8,6 +8,7 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
@@ -99,6 +100,33 @@ public class UtilTool {
         SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         String fileName = fmt.format(dt);
         return fileName;
+    }
+
+    public static void sizeCompress(Bitmap bmp, File file) {
+        ByteArrayOutputStream baos = null;
+        if (bmp.getByteCount() < 800000) {
+            // 尺寸压缩倍数,值越大，图片尺寸越小
+            int ratio = 6;
+            // 压缩Bitmap到对应尺寸
+            Bitmap result = Bitmap.createBitmap(bmp.getWidth() / ratio, bmp.getHeight() / ratio, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(result);
+            Rect rect = new Rect(0, 0, bmp.getWidth() / ratio, bmp.getHeight() / ratio);
+            canvas.drawBitmap(bmp, null, rect, null);
+
+            baos = new ByteArrayOutputStream();
+            // 把压缩后的数据存放到baos中
+            result.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+        } else {
+            bmp.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+        }
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(baos.toByteArray());
+            fos.flush();
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -451,5 +479,14 @@ public class UtilTool {
         }
     }
 
-
+    public static String getPostfix(String fileName) {
+        String postfix = fileName.substring(fileName.lastIndexOf("."));
+        if (postfix.equals(".png") || postfix.equals(".jpg")) {
+            return "Image";
+        } else if (postfix.equals(".mp4") || postfix.equals(".mov")) {
+            return "Video";
+        } else {
+            return "File";
+        }
+    }
 }

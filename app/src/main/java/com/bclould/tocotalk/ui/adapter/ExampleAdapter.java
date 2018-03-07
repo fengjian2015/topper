@@ -29,7 +29,9 @@ import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.GrabRedInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.UserInfo;
+import com.bclould.tocotalk.ui.activity.ImageViewActivity;
 import com.bclould.tocotalk.ui.activity.RedPacketActivity;
+import com.bclould.tocotalk.ui.widget.BubbleImageView;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
@@ -43,12 +45,14 @@ import org.jxmpp.jid.impl.JidCreate;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.github.rockerhieu.emojicon.EmojiconTextView;
 
+import static com.bclould.tocotalk.ui.fragment.ConversationFragment.IMGMESSAGE;
 import static com.bclould.tocotalk.utils.UtilTool.Log;
 
 
@@ -67,9 +71,11 @@ public class ExampleAdapter extends BaseAdapter {
     private final DBManager mMgr;
     private final GrabRedPresenter mGrabRedPresenter;
     private final MediaPlayer mMediaPlayer;
+
     private Bitmap mBitmap;
     private CurrencyDialog mCurrencyDialog;
     private String mFileName;
+    ArrayList<String> mImageList = new ArrayList<>();
 
     public ExampleAdapter(Context context, List<MessageInfo> messageList, Bitmap userImage, String user, DBManager mgr, MediaPlayer mediaPlayer) {
         mContext = context;
@@ -79,6 +85,23 @@ public class ExampleAdapter extends BaseAdapter {
         mMgr = mgr;
         mGrabRedPresenter = new GrabRedPresenter(this, mContext);
         mMediaPlayer = mediaPlayer;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        mImageList.clear();
+        for (MessageInfo info : mMessageList) {
+            if (info.getMsgType() == IMGMESSAGE) {
+                if (info.getType() == 0) {
+                    mImageList.add(info.getMessage());
+                } else {
+                    String message = info.getMessage();
+                    String url = message.substring(message.indexOf(":") + 1, message.length());
+                    mImageList.add(url);
+                }
+            }
+        }
     }
 
     @Override
@@ -135,6 +158,7 @@ public class ExampleAdapter extends BaseAdapter {
                     viewHolder.mLlTextMsg.setVisibility(View.VISIBLE);
                     viewHolder.mCvRedpacket2.setVisibility(View.GONE);
                     viewHolder.mLlVoice2.setVisibility(View.GONE);
+                    viewHolder.mBivImg2.setVisibility(View.GONE);
                     viewHolder.mTvMessamge2.setText(messageInfo.getMessage());
                     if (messageInfo.getSendStatus() == 1) {
                         viewHolder.mIvWarning2.setVisibility(View.VISIBLE);
@@ -158,6 +182,7 @@ public class ExampleAdapter extends BaseAdapter {
                     final int redId = messageInfo.getRedId();
                     final int type = messageInfo.getType();
                     viewHolder.mTvMessamge2.setVisibility(View.GONE);
+                    viewHolder.mBivImg2.setVisibility(View.GONE);
                     viewHolder.mCvRedpacket2.setVisibility(View.VISIBLE);
                     viewHolder.mLlVoice2.setVisibility(View.GONE);
                     viewHolder.mTvCoinRedpacket2.setText(coin + "红包");
@@ -179,6 +204,7 @@ public class ExampleAdapter extends BaseAdapter {
                 case 2:
                     viewHolder.mTvMessamge2.setVisibility(View.GONE);
                     viewHolder.mLlVoice2.setVisibility(View.VISIBLE);
+                    viewHolder.mBivImg2.setVisibility(View.GONE);
                     viewHolder.mCvRedpacket2.setVisibility(View.GONE);
                     viewHolder.mTvVoiceTime2.setText(messageInfo.getVoiceTime() + "''");
                     int wide = Integer.parseInt(messageInfo.getVoiceTime()) * 2;
@@ -205,6 +231,29 @@ public class ExampleAdapter extends BaseAdapter {
                         }
                     });
                     break;
+                case 3:
+                    viewHolder.mTvMessamge2.setVisibility(View.GONE);
+                    viewHolder.mLlVoice2.setVisibility(View.GONE);
+                    viewHolder.mBivImg2.setVisibility(View.VISIBLE);
+                    viewHolder.mCvRedpacket2.setVisibility(View.GONE);
+                    final Bitmap bitmap = BitmapFactory.decodeFile(messageInfo.getVoice());
+                    viewHolder.mBivImg2.setLocalImageBitmap(bitmap, R.drawable.img_chat_bg);
+                    viewHolder.mBivImg2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(mContext, ImageViewActivity.class);
+                            intent.putStringArrayListExtra("images", mImageList);
+                            int position = 0;
+                            for (int i = 0; i < mImageList.size(); i++) {
+                                if (messageInfo.getMessage().equals(mImageList.get(i))) {
+                                    position = i;
+                                }
+                            }
+                            intent.putExtra("clickedIndex", position);
+                            mContext.startActivity(intent);
+                        }
+                    });
+                    break;
             }
         } else {
             //设置头像
@@ -217,6 +266,7 @@ public class ExampleAdapter extends BaseAdapter {
                 case 0:
                     viewHolder.mTvMessamge.setVisibility(View.VISIBLE);
                     viewHolder.mCvRedpacket.setVisibility(View.GONE);
+                    viewHolder.mBivImg.setVisibility(View.GONE);
                     viewHolder.mLlVoice.setVisibility(View.GONE);
                     String message = messageInfo.getMessage();
                     viewHolder.mTvMessamge.setText(message);
@@ -230,6 +280,7 @@ public class ExampleAdapter extends BaseAdapter {
                     final int type = messageInfo.getType();
                     viewHolder.mTvMessamge.setVisibility(View.GONE);
                     viewHolder.mLlVoice.setVisibility(View.GONE);
+                    viewHolder.mBivImg.setVisibility(View.GONE);
                     viewHolder.mCvRedpacket.setVisibility(View.VISIBLE);
                     viewHolder.mTvCoinRedpacket.setText(coin + "红包");
                     viewHolder.mTvRemark.setText(remark);
@@ -257,6 +308,7 @@ public class ExampleAdapter extends BaseAdapter {
                     viewHolder.mTvMessamge.setVisibility(View.GONE);
                     viewHolder.mLlVoice.setVisibility(View.VISIBLE);
                     viewHolder.mCvRedpacket.setVisibility(View.GONE);
+                    viewHolder.mBivImg.setVisibility(View.GONE);
                     viewHolder.mTvVoiceTime.setText(messageInfo.getVoiceTime() + "''");
                     int wide = Integer.parseInt(messageInfo.getVoiceTime()) * 2;
                     String blank = " ";
@@ -275,6 +327,31 @@ public class ExampleAdapter extends BaseAdapter {
                             playVoice(mMediaPlayer, messageInfo.getVoice());
                             mMgr.updateMessageStatus(messageInfo.getId());
                             viewHolder2.mIvStatus.setVisibility(View.GONE);
+                        }
+                    });
+                    break;
+                case 3:
+                    viewHolder.mTvMessamge.setVisibility(View.GONE);
+                    viewHolder.mLlVoice.setVisibility(View.GONE);
+                    viewHolder.mCvRedpacket.setVisibility(View.GONE);
+                    viewHolder.mBivImg.setVisibility(View.VISIBLE);
+                    final Bitmap bitmap = BitmapFactory.decodeFile(messageInfo.getVoice());
+                    viewHolder.mBivImg.setLocalImageBitmap(bitmap, R.drawable.img_chat2_bg);
+                    viewHolder.mBivImg.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(mContext, ImageViewActivity.class);
+                            intent.putStringArrayListExtra("images", mImageList);
+                            int position = 0;
+                            String msg = messageInfo.getMessage();
+                            for (int i = 0; i < mImageList.size(); i++) {
+                                String url = msg.substring(msg.indexOf(":") + 1, msg.length());
+                                if (url.equals(mImageList.get(i))) {
+                                    position = i;
+                                }
+                            }
+                            intent.putExtra("clickedIndex", position);
+                            mContext.startActivity(intent);
                         }
                     });
                     break;
@@ -303,7 +380,7 @@ public class ExampleAdapter extends BaseAdapter {
     private void anewSendMessage(String user, String message, ImageView ivWarning, int id) {
         try {
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
+            Chat chat = manager.createChat(JidCreate.entityBareFrom(user), null);
             chat.sendMessage(message);
             ivWarning.setVisibility(View.GONE);
             mMgr.updateMessageHint(id);
@@ -417,6 +494,8 @@ public class ExampleAdapter extends BaseAdapter {
     static class ViewHolder {
         @Bind(R.id.iea_headImg)
         ImageView mIeaHeadImg;
+        @Bind(R.id.biv_img)
+        BubbleImageView mBivImg;
         @Bind(R.id.tv_voice_time)
         TextView mTvVoiceTime;
         @Bind(R.id.iv_status)
@@ -445,6 +524,8 @@ public class ExampleAdapter extends BaseAdapter {
         RelativeLayout mRlMessage;
         @Bind(R.id.iea_headImg2)
         ImageView mIeaHeadImg2;
+        @Bind(R.id.biv_img2)
+        BubbleImageView mBivImg2;
         @Bind(R.id.iv_voice_hint2)
         ImageView mIvVoiceHint2;
         @Bind(R.id.tv_voice_time2)

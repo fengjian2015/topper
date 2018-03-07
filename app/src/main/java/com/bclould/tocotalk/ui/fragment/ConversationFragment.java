@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
@@ -22,6 +23,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.amazonaws.auth.BasicSessionCredentials;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.ConversationInfo;
@@ -60,6 +67,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tocotalk.utils.Constants.ACCESS_KEY_ID;
+import static com.bclould.tocotalk.utils.Constants.SECRET_ACCESS_KEY;
+import static com.bclould.tocotalk.utils.Constants.SESSION_TOKEN;
+
 /**
  * Created by GA on 2017/12/12.
  */
@@ -70,6 +81,9 @@ public class ConversationFragment extends Fragment {
     public static final int VOICEMESSAGE = 2;
     public static final int TEXTMESSAGE = 0;
     public static final int REDMESSAGE = 1;
+    public static final int IMGMESSAGE = 3;
+    public static final int VIDEOMESSAGE = 4;
+    public static final int FILEMESSAGE = 5;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.iv)
@@ -252,12 +266,8 @@ public class ConversationFragment extends Fragment {
             //获取接收的好友名及聊天消息
             Message message = (Message) msg.obj;
             int msgType = TEXTMESSAGE;
-            /*if (message.hasExtension(VoiceInfo.ELEMENT_NAME, VoiceInfo.NAME_SPACE)) {
-                DefaultExtensionElement defaultExtensionElement = message.getExtension(VoiceInfo.ELEMENT_NAME, VoiceInfo.NAME_SPACE);
-                String attachment = defaultExtensionElement.getValue("attachment");
-                UtilTool.Log("语音", attachment);
-            }*/
 
+            MessageInfo messageInfo = new MessageInfo();
             String chatMsg = message.getBody();
 
             String remark = null;
@@ -277,12 +287,22 @@ public class ConversationFragment extends Fragment {
                     UtilTool.Log("语音", voiceBase64);
                     byte[] bytes = Base64.decode(voiceBase64, Base64.DEFAULT);
                     if (bytes != null && bytes.length != 0) {
-                        msgType = VOICEMESSAGE;
-                        redpacket = "[语音]";
                         InputStream in = new ByteArrayInputStream(bytes);
-                        String fileName = UtilTool.createtFileName() + ".amr";
-                        String path = getContext().getFilesDir().getAbsolutePath() + File.separator
-                                + "RecordRemDir";
+                        String fileName = "";
+                        String path = "";
+                        if (chatMsg.contains("[audio]")) {
+                            redpacket = "[语音]";
+                            msgType = VOICEMESSAGE;
+                            fileName = UtilTool.createtFileName() + ".amr";
+                            path = getContext().getFilesDir().getAbsolutePath() + File.separator
+                                    + "RecordRemDir";
+                        } else if (chatMsg.contains("[Image]")) {
+                            redpacket = "[图片]";
+                            msgType = IMGMESSAGE;
+                            fileName = UtilTool.createtFileName() + ".jpg";
+                            path = getContext().getFilesDir().getAbsolutePath() + File.separator
+                                    + "images";
+                        }
                         File dir = new File(path);
                         if (!dir.exists()) {
                             dir.mkdirs();
@@ -298,12 +318,44 @@ public class ConversationFragment extends Fragment {
                         fos.close();
                         in.close();
                     }
-                } else {
-
+                    if (file != null) {
+                        messageInfo.setVoice(file.getAbsolutePath());
+                        if (msgType == VOICEMESSAGE)
+                            messageInfo.setVoiceTime(UtilTool.getFileDuration(file.getAbsolutePath(), getContext()) + "");
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            /*if (chatMsg.contains("[Image]") || chatMsg.contains("[Video]") || chatMsg.contains("File")) {
+                try {
+                    if (chatMsg.contains("[Image]")) {
+                        redpacket = "[图片]";
+                    } else if (chatMsg.contains("[Video]")) {
+                        redpacket = "[视频]";
+                    } else {
+                        redpacket = "[文件]";
+                    }
+                    String url = chatMsg.substring(chatMsg.indexOf("]") + 1, chatMsg.length());
+                    UtilTool.Log("图片", url);
+                    messageInfo.setVoice(url);
+                    *//*String path = Environment.getExternalStorageDirectory().getPath() + File.separator
+                            + "file";
+                    File dir = new File(path);
+                    if (!dir.exists()) {
+                        dir.mkdirs();
+                    }
+                    downloadFile(chatMsg, fileName, path);
+                    file = new File(dir, fileName);
+                    if (file != null) {
+                        messageInfo.setVoice(file.getAbsolutePath());
+                    }*//*
+                    msgType = IMGMESSAGE;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+        }*/
 
 
             if (chatMsg.contains(Constants.CHUANCODE)) {
@@ -316,10 +368,13 @@ public class ConversationFragment extends Fragment {
                 redId = Integer.parseInt(split[4]);
                 redpacket = "[" + coin + "红包]" + remark;
             }
+
             String from = message.getFrom().toString();
+            String friend = from;
             if (from.contains("/"))
                 from = from.substring(0, from.indexOf("/"));
-            String friend = from.substring(0, from.indexOf("@"));
+            if (from.contains("@"))
+                friend = from.substring(0, from.indexOf("@"));
 
             //获取当前时间
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -327,7 +382,6 @@ public class ConversationFragment extends Fragment {
             String time = formatter.format(curDate);
 
             //添加数据库
-            MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(from);
             messageInfo.setMessage(chatMsg);
             messageInfo.setTime(time);
@@ -338,15 +392,19 @@ public class ConversationFragment extends Fragment {
             messageInfo.setRemark(remark);
             messageInfo.setState(0);
             messageInfo.setRedId(redId);
-            if (file != null) {
+            /*if (file != null) {
                 messageInfo.setVoice(file.getAbsolutePath());
                 messageInfo.setVoiceTime(UtilTool.getFileDuration(file.getAbsolutePath(), getContext()) + "");
-            }
+            }*/
             mgr.addMessage(messageInfo);
             int number = mgr.queryNumber(from);
-            if (mgr.findConversation(from)) {
+            if (mgr.findConversation(from))
+
+            {
                 mgr.updateConversation(from, number + 1, redpacket, time);
-            } else {
+            } else
+
+            {
                 ConversationInfo info = new ConversationInfo();
                 info.setTime(time);
                 info.setFriend(friend);
@@ -355,9 +413,39 @@ public class ConversationFragment extends Fragment {
                 info.setMessage(redpacket);
                 mgr.addConversation(info);
             }
-            EventBus.getDefault().post(new MessageEvent("消息数据库更新"));
+            EventBus.getDefault().
+
+                    post(new MessageEvent("消息数据库更新"));
+
             initData();
         }
+
+    }
+
+    private void downloadFile(final String key, final String fileName, final String path) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
+                            ACCESS_KEY_ID,
+                            SECRET_ACCESS_KEY,
+                            SESSION_TOKEN);
+
+                    AmazonS3Client s3Client = new AmazonS3Client(
+                            sessionCredentials);
+                    Regions regions = Regions.fromName("ap-northeast-2");
+                    Region region = Region.getRegion(regions);
+                    s3Client.setRegion(region);
+                    GetObjectRequest gor = new GetObjectRequest(Constants.BUCKET_NAME, key);
+                    File file = new File(Environment.getExternalStorageDirectory().getPath(), fileName);
+                    ObjectMetadata object = s3Client.getObject(gor, file);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
     }
 
     private void sort() {

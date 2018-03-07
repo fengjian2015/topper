@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +17,7 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.Spannable;
@@ -37,11 +39,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.BasicSessionCredentials;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.Upload;
 import com.bclould.tocotalk.Presenter.DillDataPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
@@ -56,7 +61,6 @@ import com.bclould.tocotalk.ui.widget.LoadMoreListView;
 import com.bclould.tocotalk.ui.widget.SimpleAppsGridView;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
-import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.RecordUtil;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
@@ -80,6 +84,7 @@ import org.jivesoftware.smack.roster.RosterEntry;
 import org.jivesoftware.smack.util.stringencoder.Base64;
 import org.jxmpp.jid.impl.JidCreate;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -107,11 +112,9 @@ import sj.keyboard.widget.FuncLayout;
 import sj.keyboard.widget.RecordIndicator;
 
 import static com.bclould.tocotalk.R.style.BottomDialog;
+import static com.bclould.tocotalk.ui.fragment.ConversationFragment.IMGMESSAGE;
 import static com.bclould.tocotalk.ui.fragment.ConversationFragment.TEXTMESSAGE;
 import static com.bclould.tocotalk.ui.fragment.ConversationFragment.VOICEMESSAGE;
-import static com.bclould.tocotalk.utils.Constants.ACCESS_KEY_ID;
-import static com.bclould.tocotalk.utils.Constants.SECRET_ACCESS_KEY;
-import static com.bclould.tocotalk.utils.Constants.SESSION_TOKEN;
 
 /**
  * Created by GA on 2017/9/20.
@@ -205,6 +208,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private RecordIndicator recordIndicator;
     private RecordUtil recordUtil;
     private MediaPlayer mediaPlayer = new MediaPlayer();
+    private DillDataPresenter mDillDataPresenter;
+    private String mImagePath;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -451,7 +456,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             VoiceInfo voiceInfo = new VoiceInfo();
             byte[] bytes = UtilTool.readStream(fileName);
             String base64 = Base64.encodeToString(bytes);
-            UtilTool.Log("日志", base64);
             voiceInfo.setElementText(base64);
             message.setBody("[audio]:" + duration + "秒");
             message.addExtension(voiceInfo);
@@ -537,6 +541,11 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         mediaPlayer.release();
         mediaPlayer = null;
         EventBus.getDefault().unregister(this);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        boolean isOpen = imm.isActive();//isOpen若返回true，则表示输入法打开
+        if (isOpen) {
+            imm.hideSoftInputFromWindow(mEkbEmoticonsKeyboard.getEtChat().getWindowToken(), 0);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -593,8 +602,13 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     //调用相机
     private void photograph() {
+        mImagePath = getFilesDir().getAbsolutePath() + "/images/" + UtilTool.createtFileName() + ".jpg";
+        File file = new File(mImagePath);
+        Uri uri = FileProvider.getUriForFile(this, "com.bclould.tocotalk.provider", file);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // 启动相机
+        //添加权限
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         startActivityForResult(intent, CODE_TAKE_PHOTO);
     }
 
@@ -602,52 +616,176 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
+            mDillDataPresenter = new DillDataPresenter(this);
             if (requestCode == CODE_TAKE_PHOTO) {
-
+                mDillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
+                    @Override
+                    public void send(AwsInfo.DataBean data) {
+                        Upload(mImagePath, data);
+                    }
+                });
             } else if (requestCode == FILE_SELECT_CODE) {
-
+                Uri uri = data.getData();
+                if (uri != null) {
+                    final String path = uri.getPath();
+                    mDillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
+                        @Override
+                        public void send(AwsInfo.DataBean data) {
+                            Upload(path, data);
+                        }
+                    });
+                }
             } else if (requestCode == PictureConfig.CHOOSE_REQUEST) {
                 selectList = PictureSelector.obtainMultipleResult(data);
                 if (selectList.size() != 0) {
-                    DillDataPresenter dillDataPresenter = new DillDataPresenter(this);
-                    dillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
+                    mDillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
                         @Override
                         public void send(AwsInfo.DataBean data) {
-                            MySharedPreferences.getInstance().setString(ACCESSKEYID, data.getAccessKeyId());
-                            MySharedPreferences.getInstance().setString(SECRETACCESSKEY, data.getSecretAccessKey());
-                            MySharedPreferences.getInstance().setString(SESSIONTOKEN, data.getSessionToken());
+                            for (int i = 0; i < selectList.size(); i++) {
+                                Upload(selectList.get(i).getPath(), data);
+                            }
                         }
                     });
-                    for (int i = 0; i < selectList.size(); i++) {
-                        Upload(selectList.get(i).getPath());
-                    }
+
                 }
             }
         }
     }
 
-    public void Upload(final String path) {
+    public void Upload(final String path, AwsInfo.DataBean data) {
+        final File file = new File(path);
+        String fileName = file.getName();
+        String myUser = UtilTool.getMyUser();
+        String name = myUser.substring(0, myUser.indexOf("@"));
+        final String postfix = UtilTool.getPostfix(fileName);
+        final String key = name + UtilTool.createtFileName() + fileName;
+        Bitmap bitmap = BitmapFactory.decodeFile(path);
+        File newFile = new File("/sdcard/" + key);
+        UtilTool.sizeCompress(bitmap, newFile);
+        try {
+            BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
+                    data.getAccessKeyId(),
+                    data.getSecretAccessKey(),
+                    data.getSessionToken());
+            AmazonS3Client s3Client = new AmazonS3Client(
+                    sessionCredentials);
+            Regions regions = Regions.fromName("ap-northeast-2");
+            Region region = Region.getRegion(regions);
+            s3Client.setRegion(region);
+            TransferManager manager = new TransferManager(s3Client);
+            PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
+            Upload upload = manager.upload(por);
+            //获取一个request
+            GeneratePresignedUrlRequest urlRequest = new GeneratePresignedUrlRequest(
+                    Constants.BUCKET_NAME, key);
+            Date expirationDate = new SimpleDateFormat("yyyy-MM-dd").parse("2018-3-10");
+            //设置过期时间
+            urlRequest.setExpiration(expirationDate);
+            //生成公用的url
+            String url = s3Client.generatePresignedUrl(urlRequest).toString();
+            Message message = new Message();
+            Bundle bundle = new Bundle();
+            bundle.putString("url", url);
+            bundle.putString("newFile", newFile.getPath());
+            bundle.putString("path", path);
+            bundle.putString("postfix", postfix);
+            message.obj = bundle;
+            message.what = 1;
+            handler.sendMessage(message);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
-                            ACCESS_KEY_ID,
-                            SECRET_ACCESS_KEY,
-                            SESSION_TOKEN);
 
-                    AmazonS3Client s3Client = new AmazonS3Client(
-                            sessionCredentials);
-                    TransferManager manager = new TransferManager(s3Client);
-                    PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, UtilTool.createtFileName() + ".png", path);
-                    manager.upload(por);
-                } catch (SdkClientException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+    private void sendFileMessage(String path, String postfix, String url, String newFile) {
+        try {
+            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
+            org.jivesoftware.smack.packet.Message message = new org.jivesoftware.smack.packet.Message();
+            VoiceInfo voiceInfo = new VoiceInfo();
+            byte[] bytes = UtilTool.readStream(newFile);
+            String base64 = Base64.encodeToString(bytes);
+            voiceInfo.setElementText(base64);
+            message.addExtension(voiceInfo);
+            message.setBody("[" + postfix + "]:" + url);
+            chat.sendMessage(message);
+            MessageInfo messageInfo = new MessageInfo();
+            messageInfo.setUsername(mUser);
+            messageInfo.setVoice(newFile);
+            messageInfo.setMessage(path);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setMsgType(IMGMESSAGE);
+            mMgr.addMessage(messageInfo);
+            mMessageList.add(messageInfo);
+            mExampleAdapter.notifyDataSetChanged();
+            scrollToBottom();
+            if (mMgr.findConversation(mUser)) {
+                if (postfix.equals("Image"))
+                    mMgr.updateConversation(mUser, 0, "[图片]", time);
+                else if (postfix.equals("Video"))
+                    mMgr.updateConversation(mUser, 0, "[视频]", time);
+                else
+                    mMgr.updateConversation(mUser, 0, "[文件]", time);
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                info.setFriend(mName);
+                info.setUser(mUser);
+                if (postfix.equals("Image"))
+                    info.setMessage("图片");
+                else if (postfix.equals("Video"))
+                    info.setMessage("视频");
+                else
+                    info.setMessage("文件");
+                mMgr.addConversation(info);
+            }
+            EventBus.getDefault().post(new MessageEvent("自己发了消息"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "发送失败，请检查当前网络连接", Toast.LENGTH_SHORT).show();
+            MessageInfo messageInfo = new MessageInfo();
+            messageInfo.setUsername(mUser);
+            messageInfo.setVoice(path);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setMsgType(IMGMESSAGE);
+            mMgr.addMessage(messageInfo);
+            mMessageList.add(messageInfo);
+            mExampleAdapter.notifyDataSetChanged();
+            scrollToBottom();
+            if (mMgr.findConversation(mUser)) {
+                if (postfix.equals("Image"))
+                    mMgr.updateConversation(mUser, 0, "图片", time);
+                else if (postfix.equals("Video"))
+                    mMgr.updateConversation(mUser, 0, "视频", time);
+                else
+                    mMgr.updateConversation(mUser, 0, "文件", time);
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                info.setFriend(mName);
+                info.setUser(mUser);
+                if (postfix.equals("Image"))
+                    info.setMessage("图片");
+                else if (postfix.equals("Video"))
+                    info.setMessage("视频");
+                else
+                    info.setMessage("文件");
+                mMgr.addConversation(info);
+            }
+            EventBus.getDefault().post(new MessageEvent("自己发了消息"));
+        }
+    }
+
 
     //调用文件选择软件来选择文件
     private void showFileChooser() {
@@ -667,16 +805,26 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what == 0) {
-                mLvMessage.onRefreshComplete();
-                List<MessageInfo> messageInfos = mMgr.pagingQueryMessage(mUser);
-                List<MessageInfo> MessageList2 = new ArrayList<MessageInfo>();
-                MessageList2.addAll(messageInfos);
-                MessageList2.addAll(mMessageList);
-                mMessageList.removeAll(mMessageList);
-                mMessageList.addAll(MessageList2);
-                mExampleAdapter.notifyDataSetChanged();
-                mLvMessage.setSelection(4);
+            switch (msg.what) {
+                case 0:
+                    mLvMessage.onRefreshComplete();
+                    List<MessageInfo> messageInfos = mMgr.pagingQueryMessage(mUser);
+                    List<MessageInfo> MessageList2 = new ArrayList<MessageInfo>();
+                    MessageList2.addAll(messageInfos);
+                    MessageList2.addAll(mMessageList);
+                    mMessageList.removeAll(mMessageList);
+                    mMessageList.addAll(MessageList2);
+                    mExampleAdapter.notifyDataSetChanged();
+                    mLvMessage.setSelection(4);
+                    break;
+                case 1:
+                    Bundle bundle = (Bundle) msg.obj;
+                    String url = bundle.getString("url");
+                    String path = bundle.getString("path");
+                    String postfix = bundle.getString("postfix");
+                    String newFile = bundle.getString("newFile");
+                    sendFileMessage(path, postfix, url, newFile);
+                    break;
             }
         }
     };

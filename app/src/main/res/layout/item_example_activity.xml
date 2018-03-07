@@ -22,6 +22,12 @@
             android:scaleType="fitXY"
             android:src="@mipmap/img_nfriend_headshot1"/>
 
+        <com.bclould.tocotalk.ui.widget.BubbleImageView
+            android:id="@+id/biv_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_toRightOf="@+id/iea_headImg"/>
 
         <RelativeLayout
             android:id="@+id/ll_voice"
@@ -57,10 +63,11 @@
 
                 <TextView
                     android:id="@+id/iv_voice"
-                    android:maxLength="60"
-                    android:layout_centerInParent="true"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:maxLength="60"
                     android:text=""/>
 
                 <ImageView
@@ -157,11 +164,11 @@
         android:id="@+id/rl_message2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/x20"
-        android:visibility="visible"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:padding="@dimen/x20"
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/iea_headImg2"
@@ -170,6 +177,13 @@
             android:layout_alignParentRight="true"
             android:scaleType="fitXY"
             android:src="@mipmap/img_nfriend_headshot1"/>
+
+        <com.bclould.tocotalk.ui.widget.BubbleImageView
+            android:id="@+id/biv_img2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_toLeftOf="@+id/iea_headImg2"/>
 
         <LinearLayout
             android:id="@+id/ll_voice2"
@@ -203,10 +217,10 @@
 
                 <TextView
                     android:id="@+id/iv_voice2"
-                    android:layout_centerInParent="true"
                     android:layout_width="wrap_content"
-                    android:maxLength="60"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:maxLength="60"
                     android:text=""/>
 
                 <ImageView
@@ -224,7 +238,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/iea_headImg2"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_warning2"

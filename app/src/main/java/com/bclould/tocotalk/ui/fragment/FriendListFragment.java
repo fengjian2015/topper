@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -69,6 +71,7 @@ import butterknife.OnClick;
  * Created by GA on 2017/9/19.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class FriendListFragment extends Fragment {
 
     private static final String NEWFRIEND = "new_friend";

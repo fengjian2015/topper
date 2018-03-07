@@ -1,7 +1,6 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -52,6 +51,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+@android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
 public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.main_fl)
@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
         return instance;
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
         initBottomMenu();
         UtilTool.getPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, "获取储存权限失败");
         UtilTool.getPermissions(this, Manifest.permission.CAMERA, "", "获取相机权限失败");
+        UtilTool.getPermissions(this, Manifest.permission.RECORD_AUDIO, "", "获取语音权限失败");
         loginIM();
         checkVersion();
     }
