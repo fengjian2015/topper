@@ -48,8 +48,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.TimeZone;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -82,6 +84,10 @@ public class UtilTool {
         return outStream.toByteArray();
     }
 
+    public static File getVideoCacheDir(Context context) {
+        return new File(context.getExternalCacheDir(), "video-cache");
+    }
+
     public static int getFileDuration(String fileName, Context context) {
         try {
             if (fileName != null) {
@@ -103,8 +109,8 @@ public class UtilTool {
     }
 
     public static void sizeCompress(Bitmap bmp, File file) {
-        ByteArrayOutputStream baos = null;
-        if (bmp.getByteCount() < 800000) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        if (bmp.getByteCount() > 800000) {
             // 尺寸压缩倍数,值越大，图片尺寸越小
             int ratio = 6;
             // 压缩Bitmap到对应尺寸
@@ -112,8 +118,6 @@ public class UtilTool {
             Canvas canvas = new Canvas(result);
             Rect rect = new Rect(0, 0, bmp.getWidth() / ratio, bmp.getHeight() / ratio);
             canvas.drawBitmap(bmp, null, rect, null);
-
-            baos = new ByteArrayOutputStream();
             // 把压缩后的数据存放到baos中
             result.compress(Bitmap.CompressFormat.JPEG, 50, baos);
         } else {
@@ -481,12 +485,43 @@ public class UtilTool {
 
     public static String getPostfix(String fileName) {
         String postfix = fileName.substring(fileName.lastIndexOf("."));
-        if (postfix.equals(".png") || postfix.equals(".jpg")) {
+        if (postfix.equals(".png") || postfix.equals(".jpg") || postfix.equals(".jpeg") || postfix.equals(".JPEG") || postfix.equals(".PNG") || postfix.equals(".JPG")) {
             return "Image";
-        } else if (postfix.equals(".mp4") || postfix.equals(".mov")) {
+        } else if (postfix.equals(".mp4") || postfix.equals(".mov") || postfix.equals(".MP4") || postfix.equals(".MOV")) {
             return "Video";
         } else {
             return "File";
         }
+    }
+
+    public static String getTitles() {
+        String deadline = "";
+        String mYear; // 当前年
+        String mMonth; // 月
+        String mDay;
+        int current_day;
+        int current_month;
+        int current_year;
+
+        final Calendar c = Calendar.getInstance();
+        c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        current_day = c.get(Calendar.DAY_OF_MONTH);
+        current_month = c.get(Calendar.MONTH);
+        current_year = c.get(Calendar.YEAR);
+        for (int i = 0; i < 7; i++) {
+            c.clear();//记住一定要clear一次
+            c.set(Calendar.MONTH, current_month);
+            c.set(Calendar.DAY_OF_MONTH, current_day);
+            c.set(Calendar.YEAR, current_year);
+            c.add(Calendar.DATE, +i);//j记住是DATE
+            mMonth = String.valueOf(c.get(Calendar.MONTH) + 1);// 获取当前月份
+            mDay = String.valueOf(c.get(Calendar.DAY_OF_MONTH));// 获取当前日份的日期号码
+            mYear = String.valueOf(c.get(Calendar.YEAR));// 获取当前年份
+            String date = mYear + "-" + mMonth + "-" + mDay;
+            if (i == 6) {
+                deadline = date;
+            }
+        }
+        return deadline;
     }
 }

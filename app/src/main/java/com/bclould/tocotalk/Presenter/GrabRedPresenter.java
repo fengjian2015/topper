@@ -8,7 +8,6 @@ import android.widget.Toast;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.GrabRedInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
-import com.bclould.tocotalk.ui.adapter.ExampleAdapter;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.UtilTool;
 
@@ -23,13 +22,10 @@ import io.reactivex.schedulers.Schedulers;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class GrabRedPresenter {
-
-    private final ExampleAdapter mExampleAdapter;
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
 
-    public GrabRedPresenter(ExampleAdapter exampleAdapter, Context context) {
-        mExampleAdapter = exampleAdapter;
+    public GrabRedPresenter(Context context) {
         mContext = context;
     }
 
@@ -49,7 +45,7 @@ public class GrabRedPresenter {
         }
     }
 
-    public void grabRedPacket(int redId, final String id, final int position, final int type) {
+    public void grabRedPacket(int redId, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
             RetrofitUtil.getInstance(mContext)
@@ -66,7 +62,7 @@ public class GrabRedPresenter {
                         @Override
                         public void onNext(GrabRedInfo baseInfo) {
                             if (baseInfo.getStatus() != 2)
-                                mExampleAdapter.setData(baseInfo, id, position, type);
+                                callBack.send(baseInfo);
                             if (baseInfo.getStatus() == 4)
                                 Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             hideDialog();
@@ -86,5 +82,10 @@ public class GrabRedPresenter {
         } else {
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    //定义接口
+    public interface CallBack {
+        void send(GrabRedInfo info);
     }
 }

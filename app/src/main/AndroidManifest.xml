@@ -201,6 +201,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
+        <!--备注页面-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.LoginSetActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
         <!--发布动态页面-->
         <activity
             android:name="com.bclould.tocotalk.ui.activity.PublicshDynamicActivity"
@@ -385,6 +391,9 @@
             android:name="com.bclould.tocotalk.ui.activity.GroupChatActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--视频播放页面-->
+        <activity android:name=".ui.activity.VideoActivity"/>
 
         <!--紅包页面-->
         <activity

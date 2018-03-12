@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.bclould.tocotalk.R;
@@ -79,6 +81,7 @@ import static org.jivesoftware.smack.provider.ProviderManager.addIQProvider;
 /**
  * XmppConnection 工具类
  */
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class XmppConnection {
     private int SERVER_PORT = Constants.OPENFIRE_PORT;
     private String SERVER_HOST = Constants.OPENFIRE_IP;

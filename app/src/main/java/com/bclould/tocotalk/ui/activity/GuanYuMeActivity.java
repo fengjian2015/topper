@@ -1,14 +1,14 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
+import com.bclould.tocotalk.base.MyApp;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -18,18 +18,11 @@ import butterknife.OnClick;
  * Created by GA on 2017/9/22.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class GuanYuMeActivity extends BaseActivity {
 
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.versions)
-    TextView mVersions;
-    @Bind(R.id.rl_function_introduce)
-    RelativeLayout mRlFunctionIntroduce;
-    @Bind(R.id.rl_versions_number)
-    RelativeLayout mRlVersionsNumber;
-    @Bind(R.id.rl_versions_update)
-    RelativeLayout mRlVersionsUpdate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

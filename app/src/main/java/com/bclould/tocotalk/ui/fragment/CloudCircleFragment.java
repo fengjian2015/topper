@@ -20,7 +20,6 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.ui.activity.PushBuyingActivity;
 import com.bclould.tocotalk.ui.adapter.CloudCircleVPAdapter;
 import com.bclould.tocotalk.ui.widget.PushingDialog;
-import com.bclould.tocotalk.utils.StatusBarCompat;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -91,7 +90,7 @@ public class CloudCircleFragment extends Fragment {
     //初始化界面
     private void initInterface() {
 
-        mStatusBarFix.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, StatusBarCompat.getStateBarHeight(getActivity())));//填充状态栏
+//        mStatusBarFix.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, StatusBarCompat.getStateBarHeight(getActivity())));//填充状态栏
 
         mTvProceed.setSelected(true);
 

@@ -10,11 +10,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.MyAssetsInfo;
 import com.bclould.tocotalk.ui.activity.CurrencyInOutActivity;
-import com.bclould.tocotalk.utils.UtilTool;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -94,7 +93,7 @@ public class MyWalletRVAapter extends RecyclerView.Adapter {
             mLtcBean = ltcBean;
             Glide.with(mContext).load(ltcBean.getLogo()).into(mIvCoin);
             mTvCoinCount.setText(ltcBean.getTotal());
-            mCoinName.setText(UtilTool.exChange(ltcBean.getName()));
+            mCoinName.setText(ltcBean.getName());
         }
     }
 }

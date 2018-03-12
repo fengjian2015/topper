@@ -3,4 +3,6 @@
     <files-path
         name="images"
         path="images/"/>
+
+    <external-path name="ext_root" path="/" />
 </resources>

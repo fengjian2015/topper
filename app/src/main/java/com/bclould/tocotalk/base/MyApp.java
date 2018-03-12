@@ -2,6 +2,7 @@ package com.bclould.tocotalk.base;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
@@ -9,6 +10,7 @@ import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.TestImageLoader;
 import com.bclould.tocotalk.xmpp.XmppConnection;
+import com.danikula.videocache.HttpProxyCacheServer;
 import com.previewlibrary.ZoomMediaLoader;
 
 import java.util.ArrayList;
@@ -51,12 +53,18 @@ public class MyApp extends Application {
         XmppConnection.getInstance().setContext(this);
 
     }
+    private HttpProxyCacheServer proxy;
+
+    public static HttpProxyCacheServer getProxy(Context context) {
+        MyApp app = (MyApp) context.getApplicationContext();
+        return app.proxy == null ? (app.proxy = app.newProxy()) : app.proxy;
+    }
+
+    private HttpProxyCacheServer newProxy() {
+        return new HttpProxyCacheServer(this);
+    }
 
     public void RestartApp() {
-        /*Intent i = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        UtilTool.Log("日志", "重启APP");
-        startActivity(i);*/
         exit();
     }
 

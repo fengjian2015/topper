@@ -40,25 +40,25 @@
         app:cardCornerRadius="@dimen/x15">
 
         <RelativeLayout
-            android:id="@+id/rl_id_safety"
+            android:id="@+id/rl_concern_we"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y120">
 
             <ImageView
-                android:src="@mipmap/icon_security_system"
-                android:id="@+id/iv_id_safety"
+                android:id="@+id/iv_concern_we"
                 android:layout_width="@dimen/x40"
                 android:layout_height="@dimen/x40"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"/>
+                android:layout_marginLeft="@dimen/x20"
+                android:src="@mipmap/iocn_aboutus"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/iv_id_safety"
-                android:text="账号安全"
+                android:layout_toRightOf="@+id/iv_concern_we"
+                android:text="关于我们"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
 
@@ -74,7 +74,6 @@
 
     </android.support.v7.widget.CardView>
 
-
     <android.support.v7.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -84,75 +83,40 @@
         app:cardCornerRadius="@dimen/x15">
 
         <RelativeLayout
-            android:id="@+id/rl_function_set"
+            android:id="@+id/rl_inform"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y120">
 
             <ImageView
-                android:id="@+id/iv_function_set"
+                android:id="@+id/iv_inform"
                 android:layout_width="@dimen/x40"
-                android:src="@mipmap/icon_function_system"
                 android:layout_height="@dimen/x40"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"/>
+                android:layout_marginLeft="@dimen/x20"
+                android:src="@mipmap/iocn_notice"/>
+
+            <TextView
+                android:id="@+id/tv_inform"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/iv_inform"
+                android:text="通知"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/iv_function_set"
-                android:text="功能设置"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
+                android:layout_marginLeft="@dimen/x50"
+                android:layout_toRightOf="@+id/tv_inform"
+                android:text="有新消息时接受语音提示"
+                android:textSize="@dimen/x26"/>
 
             <ImageView
-                android:layout_width="@dimen/x15"
-                android:layout_height="@dimen/x25"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x25"
-                android:src="@mipmap/iocn_person_turninto"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
-
-        <RelativeLayout
-            android:id="@+id/rl_disturb"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
-
-            <ImageView
-                android:id="@+id/iv_disturb"
-                android:src="@mipmap/icon_quiet_system"
-                android:layout_width="@dimen/x40"
-                android:layout_height="@dimen/x40"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/iv_disturb"
-                android:text="勿扰模式"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
-
-
-            <ImageView
-                android:id="@+id/on_off"
+                android:id="@+id/on_off_inform"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
@@ -160,6 +124,169 @@
                 android:padding="@dimen/x25"
                 android:src="@drawable/set_disturb_seletor"/>
 
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y30"
+        app:cardCornerRadius="@dimen/x15">
+
+        <RelativeLayout
+            android:id="@+id/rl_private"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120">
+
+            <ImageView
+                android:id="@+id/iv_private"
+                android:layout_width="@dimen/x40"
+                android:layout_height="@dimen/x40"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:src="@mipmap/icon_privacy"/>
+
+            <TextView
+                android:id="@+id/tv_private"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/iv_private"
+                android:text="隐私"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x50"
+                android:layout_toRightOf="@+id/tv_private"
+                android:text="保存登录密码"
+                android:textSize="@dimen/x26"/>
+
+            <ImageView
+                android:id="@+id/on_off_private"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/x25"
+                android:src="@drawable/set_disturb_seletor"/>
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y30"
+        app:cardCornerRadius="@dimen/x15">
+
+        <RelativeLayout
+            android:id="@+id/rl_help"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120">
+
+            <ImageView
+                android:id="@+id/iv_help"
+                android:layout_width="@dimen/x40"
+                android:layout_height="@dimen/x40"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:src="@mipmap/icon_help"/>
+
+            <TextView
+                android:id="@+id/tv_help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/iv_help"
+                android:text="帮助"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x50"
+                android:layout_toRightOf="@+id/tv_help"
+                android:text="问题反馈"
+                android:textSize="@dimen/x26"/>
+
+            <ImageView
+                android:layout_width="@dimen/x15"
+                android:layout_height="@dimen/x25"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x25"
+                android:src="@mipmap/iocn_person_turninto"/>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y30"
+        app:cardCornerRadius="@dimen/x15">
+
+        <RelativeLayout
+            android:id="@+id/rl_cache"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120">
+
+            <ImageView
+                android:id="@+id/iv_cache"
+                android:layout_width="@dimen/x40"
+                android:layout_height="@dimen/x40"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:src="@mipmap/icon_save"/>
+
+            <TextView
+                android:id="@+id/tv_cache"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/iv_cache"
+                android:text="缓存"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x50"
+                android:layout_toRightOf="@+id/tv_cache"
+                android:text="清除缓存"
+                android:textSize="@dimen/x26"/>
+
+            <TextView
+                android:id="@+id/tv_cache_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x25"
+                android:text="335M"
+                android:textColor="@color/blue2"/>
 
         </RelativeLayout>
 

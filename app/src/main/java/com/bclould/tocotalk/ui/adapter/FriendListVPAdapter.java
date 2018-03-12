@@ -33,6 +33,7 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/9/29.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class FriendListVPAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;
@@ -73,8 +74,6 @@ public class FriendListVPAdapter extends RecyclerView.Adapter {
         ImageView mFriendChildTouxiang;
         @Bind(R.id.friend_child_name)
         TextView mFriendChildName;
-        @Bind(R.id.friend_child_type)
-        TextView mFriendChildType;
         UserInfo mUserInfo;
         private byte[] mDatas;
 
@@ -100,7 +99,6 @@ public class FriendListVPAdapter extends RecyclerView.Adapter {
             });
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.M)
         public void setData(UserInfo userInfo) {
             mUserInfo = userInfo;
             String user = userInfo.getUser();
@@ -118,13 +116,13 @@ public class FriendListVPAdapter extends RecyclerView.Adapter {
             }
             mFriendChildTouxiang.setImageBitmap(bitmap);
             mFriendChildName.setText(user.substring(0, user.indexOf("@")));
-            if (userInfo.getStatus() == 1) {
+            /*if (userInfo.getStatus() == 1) {
                 mFriendChildType.setText("在线");
                 mFriendChildType.setTextColor(mContext.getColor(R.color.green));
             } else {
                 mFriendChildType.setText("离线");
                 mFriendChildType.setTextColor(mContext.getColor(R.color.red));
-            }
+            }*/
         }
     }
 

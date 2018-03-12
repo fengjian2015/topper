@@ -30,11 +30,77 @@
             android:layout_toRightOf="@+id/iea_headImg"/>
 
         <RelativeLayout
-            android:id="@+id/ll_voice"
+            android:id="@+id/rl_video"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x20"
             android:layout_toRightOf="@+id/iea_headImg">
+
+            <ImageView
+                android:id="@+id/iv_video_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="matrix"/>
+
+            <ImageView
+                android:id="@+id/iv_video_play"
+                android:layout_width="@dimen/x50"
+                android:layout_height="@dimen/x50"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/icon_news_play"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_file_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_toRightOf="@+id/iea_headImg"
+            android:background="@drawable/img_chat2_bg">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/iv_file_photo"
+                android:layout_alignTop="@+id/iv_file_photo"
+                android:layout_marginLeft="@dimen/x10"
+                android:layout_toRightOf="@+id/iv_file_photo"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_file_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/x400"
+                    android:text="春夏秋冬.mp3"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/tv_file_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:text="1.4M"/>
+
+            </RelativeLayout>
+
+            <ImageView
+
+                android:id="@+id/iv_file_photo"
+                android:layout_width="@dimen/x100"
+                android:layout_height="@dimen/x100"
+                android:src="@mipmap/ic_launcher_round"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ll_voice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_toRightOf="@+id/iea_headImg"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/tv_voice_time"
@@ -178,12 +244,78 @@
             android:scaleType="fitXY"
             android:src="@mipmap/img_nfriend_headshot1"/>
 
+        <RelativeLayout
+            android:id="@+id/rl_file_msg2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_toLeftOf="@+id/iea_headImg2"
+            android:background="@drawable/img_chat_bg">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/iv_file_photo2"
+                android:layout_alignTop="@+id/iv_file_photo2"
+                android:layout_marginLeft="@dimen/x10"
+                android:layout_toRightOf="@+id/iv_file_photo2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_file_name2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/x400"
+                    android:text="春夏秋冬.mp3"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/tv_file_size2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:text="1.4M"/>
+
+            </RelativeLayout>
+
+            <ImageView
+
+                android:id="@+id/iv_file_photo2"
+                android:layout_width="@dimen/x100"
+                android:layout_height="@dimen/x100"
+                android:src="@mipmap/ic_launcher_round"/>
+
+        </RelativeLayout>
+
         <com.bclould.tocotalk.ui.widget.BubbleImageView
             android:id="@+id/biv_img2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/x20"
             android:layout_toLeftOf="@+id/iea_headImg2"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_video2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_toLeftOf="@+id/iea_headImg2">
+
+            <ImageView
+                android:id="@+id/iv_video_one2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="matrix"/>
+
+            <ImageView
+                android:id="@+id/iv_video_play2"
+                android:layout_width="@dimen/x50"
+                android:layout_height="@dimen/x50"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/icon_news_play"/>
+
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/ll_voice2"
@@ -195,6 +327,7 @@
             <ImageView
                 android:id="@+id/iv_voice_hint2"
                 android:layout_width="@dimen/x60"
+                android:visibility="gone"
                 android:layout_height="@dimen/x60"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/x20"

@@ -2,8 +2,10 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,10 +28,8 @@ import butterknife.OnClick;
 /**
  * Created by GA on 2017/11/29.
  */
-
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class GoogleVerificationActivity extends BaseActivity {
-
-
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.tv)

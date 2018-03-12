@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Spannable;
 import android.view.Gravity;
@@ -30,7 +33,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -43,10 +45,8 @@ import com.amazonaws.auth.BasicSessionCredentials;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.transfer.TransferManager;
-import com.amazonaws.services.s3.transfer.Upload;
 import com.bclould.tocotalk.Presenter.DillDataPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
@@ -55,9 +55,8 @@ import com.bclould.tocotalk.model.AwsInfo;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.VoiceInfo;
-import com.bclould.tocotalk.ui.adapter.ExampleAdapter;
+import com.bclould.tocotalk.ui.adapter.ChatAdapter;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
-import com.bclould.tocotalk.ui.widget.LoadMoreListView;
 import com.bclould.tocotalk.ui.widget.SimpleAppsGridView;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -69,6 +68,9 @@ import com.luck.picture.lib.compress.Luban;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.sj.emoji.DefEmoticons;
 import com.sj.emoji.EmojiBean;
 import com.sj.emoji.EmojiDisplay;
@@ -112,9 +114,11 @@ import sj.keyboard.widget.FuncLayout;
 import sj.keyboard.widget.RecordIndicator;
 
 import static com.bclould.tocotalk.R.style.BottomDialog;
-import static com.bclould.tocotalk.ui.fragment.ConversationFragment.IMGMESSAGE;
-import static com.bclould.tocotalk.ui.fragment.ConversationFragment.TEXTMESSAGE;
-import static com.bclould.tocotalk.ui.fragment.ConversationFragment.VOICEMESSAGE;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_FILE_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_IMG_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_TEXT_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_VIDEO_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_VOICE_MSG;
 
 /**
  * Created by GA on 2017/9/20.
@@ -128,6 +132,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     public static final String ACCESSKEYID = "access_key_id";
     public static final String SECRETACCESSKEY = "secret_access_key";
     public static final String SESSIONTOKEN = "session_token";
+    private static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 3;
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.title_name)
@@ -138,10 +143,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     RelativeLayout mRlTitle;
     @Bind(R.id.xx)
     TextView mXx;
-    @Bind(R.id.lv_message)
-    LoadMoreListView mLvMessage;
-    @Bind(R.id.ekb_emoticons_keyboard)
-    XhsEmoticonsKeyBoard mEkbEmoticonsKeyboard;
     @Bind(R.id.tv_order_number)
     TextView mTvOrderNumber;
     @Bind(R.id.tv_pay_type)
@@ -170,6 +171,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     TextView mTv3;
     @Bind(R.id.ll_order_details)
     LinearLayout mLlOrderDetails;
+    @Bind(R.id.iv_jiantou)
+    ImageView mIvJiantou;
     @Bind(R.id.ll_details)
     LinearLayout mLlDetails;
     @Bind(R.id.btn_look_order)
@@ -190,13 +193,16 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     RelativeLayout mRlOperability;
     @Bind(R.id.ll_order)
     LinearLayout mLlOrder;
-    @Bind(R.id.iv_jiantou)
-    ImageView mIvJiantou;
+    @Bind(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+    @Bind(R.id.refresh_layout)
+    SmartRefreshLayout mRefreshLayout;
     @Bind(R.id.ll_chat)
     LinearLayout mLlChat;
     @Bind(R.id.rl_outer)
     RelativeLayout mRlOuter;
-    private ExampleAdapter mExampleAdapter;
+    @Bind(R.id.ekb_emoticons_keyboard)
+    XhsEmoticonsKeyBoard mEkbEmoticonsKeyboard;
     private String mUser;
     private String mName;
     private List<MessageInfo> mMessageList = new ArrayList<>();
@@ -210,12 +216,15 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private MediaPlayer mediaPlayer = new MediaPlayer();
     private DillDataPresenter mDillDataPresenter;
     private String mImagePath;
+    private ChatAdapter mChatAdapter;
+    private LinearLayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_chat);
         ButterKnife.bind(this);
+        mDillDataPresenter = new DillDataPresenter(this);
         mMgr = new DBManager(this);//开始获取数据库数据
         EventBus.getDefault().register(this);
         initIntent();
@@ -225,7 +234,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         initData();
         mMgr.updateNumber(mUser, 0);
         EventBus.getDefault().post(new MessageEvent("处理未读消息"));
-        mLvMessage.setOnTouchListener(new View.OnTouchListener() {
+        mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
 
@@ -469,12 +478,12 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             messageInfo.setUsername(mUser);
             messageInfo.setVoice(fileName);
             messageInfo.setTime(time);
-            messageInfo.setMsgType(VOICEMESSAGE);
+            messageInfo.setMsgType(TO_VOICE_MSG);
             messageInfo.setVoiceTime(duration + "");
             messageInfo.setVoiceStatus(1);
             mMgr.addMessage(messageInfo);
             mMessageList.add(messageInfo);
-            mExampleAdapter.notifyDataSetChanged();
+            mChatAdapter.notifyDataSetChanged();
             scrollToBottom();
             if (mMgr.findConversation(mUser)) {
                 mMgr.updateConversation(mUser, 0, "[语音]", time);
@@ -499,13 +508,13 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             messageInfo.setUsername(mUser);
             messageInfo.setVoice(fileName);
             messageInfo.setTime(time);
-            messageInfo.setMsgType(VOICEMESSAGE);
+            messageInfo.setMsgType(TO_VOICE_MSG);
             messageInfo.setVoiceTime(duration + "");
             messageInfo.setVoiceStatus(1);
             messageInfo.setSendStatus(1);
             mMgr.addMessage(messageInfo);
             mMessageList.add(messageInfo);
-            mExampleAdapter.notifyDataSetChanged();
+            mChatAdapter.notifyDataSetChanged();
             scrollToBottom();
             if (mMgr.findConversation(mUser)) {
                 mMgr.updateConversation(mUser, 0, "[语音]", time);
@@ -563,7 +572,25 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             photograph();
         } else if (msg.equals("打开文件管理")) {
             showFileChooser();
+        } else if (msg.equals("打开摄像机")) {
+            openCameraShooting();
         }
+    }
+
+    private void openCameraShooting() {
+        Uri uri = null;
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 15);
+        intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 1024 * 6000);
+        try {
+            mImagePath = getFilesDir().getAbsolutePath() + "/images/" + UtilTool.createtFileName() + ".mp4";
+            File file = new File(mImagePath);
+            uri = FileProvider.getUriForFile(this, "com.bclould.tocotalk.provider", file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
     }
 
     //选择图片
@@ -571,7 +598,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
         // 进入相册 以下是例子：不需要的api可以不写
         PictureSelector.create(this)
-                .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+                .openGallery(PictureMimeType.ofAll())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
 //                    .theme(R.style.picture_white_style)
                 .maxSelectNum(9)// 最大图片 选择数量
                 .minSelectNum(1)// 最小选择数量
@@ -602,21 +629,25 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     //调用相机
     private void photograph() {
-        mImagePath = getFilesDir().getAbsolutePath() + "/images/" + UtilTool.createtFileName() + ".jpg";
-        File file = new File(mImagePath);
-        Uri uri = FileProvider.getUriForFile(this, "com.bclould.tocotalk.provider", file);
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //添加权限
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        startActivityForResult(intent, CODE_TAKE_PHOTO);
+        if (Build.VERSION.SDK_INT >= 24) {
+            mImagePath = getFilesDir().getAbsolutePath() + "/images/" + UtilTool.createtFileName() + ".jpg";
+            File file = new File(mImagePath);
+            Uri uri = FileProvider.getUriForFile(this, "com.bclould.tocotalk.provider", file);
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            //添加权限
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+            startActivityForResult(intent, CODE_TAKE_PHOTO);
+        } else {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent, CODE_TAKE_PHOTO);
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            mDillDataPresenter = new DillDataPresenter(this);
             if (requestCode == CODE_TAKE_PHOTO) {
                 mDillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
                     @Override
@@ -626,15 +657,15 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 });
             } else if (requestCode == FILE_SELECT_CODE) {
                 Uri uri = data.getData();
-                if (uri != null) {
-                    final String path = uri.getPath();
-                    mDillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
-                        @Override
-                        public void send(AwsInfo.DataBean data) {
-                            Upload(path, data);
-                        }
-                    });
-                }
+//                if (uri != null) {
+                final String path = uri.getPath();
+                mDillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
+                    @Override
+                    public void send(AwsInfo.DataBean data) {
+                        Upload(path, data);
+                    }
+                });
+//                }
             } else if (requestCode == PictureConfig.CHOOSE_REQUEST) {
                 selectList = PictureSelector.obtainMultipleResult(data);
                 if (selectList.size() != 0) {
@@ -648,6 +679,13 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                     });
 
                 }
+            } else if (requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE) {
+                mDillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
+                    @Override
+                    public void send(AwsInfo.DataBean data) {
+                        Upload(mImagePath, data);
+                    }
+                });
             }
         }
     }
@@ -659,7 +697,13 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         String name = myUser.substring(0, myUser.indexOf("@"));
         final String postfix = UtilTool.getPostfix(fileName);
         final String key = name + UtilTool.createtFileName() + fileName;
-        Bitmap bitmap = BitmapFactory.decodeFile(path);
+        Bitmap bitmap = null;
+        if (postfix.equals("Video")) {
+            bitmap = ThumbnailUtils.createVideoThumbnail(path  //url的参数
+                    , MediaStore.Video.Thumbnails.MINI_KIND);
+        } else {
+            bitmap = BitmapFactory.decodeFile(path);
+        }
         File newFile = new File("/sdcard/" + key);
         UtilTool.sizeCompress(bitmap, newFile);
         try {
@@ -674,18 +718,10 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             s3Client.setRegion(region);
             TransferManager manager = new TransferManager(s3Client);
             PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
-            Upload upload = manager.upload(por);
-            //获取一个request
-            GeneratePresignedUrlRequest urlRequest = new GeneratePresignedUrlRequest(
-                    Constants.BUCKET_NAME, key);
-            Date expirationDate = new SimpleDateFormat("yyyy-MM-dd").parse("2018-3-10");
-            //设置过期时间
-            urlRequest.setExpiration(expirationDate);
-            //生成公用的url
-            String url = s3Client.generatePresignedUrl(urlRequest).toString();
+            manager.upload(por);
             Message message = new Message();
             Bundle bundle = new Bundle();
-            bundle.putString("url", url);
+            bundle.putString("key", key);
             bundle.putString("newFile", newFile.getPath());
             bundle.putString("path", path);
             bundle.putString("postfix", postfix);
@@ -699,8 +735,9 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         }
     }
 
-    private void sendFileMessage(String path, String postfix, String url, String newFile) {
+    private void sendFileMessage(String path, String postfix, String key, String newFile) {
         try {
+
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
             Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
             org.jivesoftware.smack.packet.Message message = new org.jivesoftware.smack.packet.Message();
@@ -709,7 +746,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             String base64 = Base64.encodeToString(bytes);
             voiceInfo.setElementText(base64);
             message.addExtension(voiceInfo);
-            message.setBody("[" + postfix + "]:" + url);
+            message.setBody("[" + postfix + "]:" + key);
             chat.sendMessage(message);
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(mUser);
@@ -720,10 +757,16 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             String time = formatter.format(curDate);
             messageInfo.setTime(time);
             messageInfo.setType(0);
-            messageInfo.setMsgType(IMGMESSAGE);
+            if (postfix.equals("Image")) {
+                messageInfo.setMsgType(TO_IMG_MSG);
+            } else if (postfix.equals("Video")) {
+                messageInfo.setMsgType(TO_VIDEO_MSG);
+            } else {
+                messageInfo.setMsgType(TO_FILE_MSG);
+            }
             mMgr.addMessage(messageInfo);
             mMessageList.add(messageInfo);
-            mExampleAdapter.notifyDataSetChanged();
+            mChatAdapter.notifyDataSetChanged();
             scrollToBottom();
             if (mMgr.findConversation(mUser)) {
                 if (postfix.equals("Image"))
@@ -757,10 +800,17 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             String time = formatter.format(curDate);
             messageInfo.setTime(time);
             messageInfo.setType(0);
-            messageInfo.setMsgType(IMGMESSAGE);
+            messageInfo.setSendStatus(1);
+            if (postfix.equals("Image")) {
+                messageInfo.setMsgType(TO_IMG_MSG);
+            } else if (postfix.equals("Video")) {
+                messageInfo.setMsgType(TO_VIDEO_MSG);
+            } else {
+                messageInfo.setMsgType(TO_FILE_MSG);
+            }
             mMgr.addMessage(messageInfo);
             mMessageList.add(messageInfo);
-            mExampleAdapter.notifyDataSetChanged();
+            mChatAdapter.notifyDataSetChanged();
             scrollToBottom();
             if (mMgr.findConversation(mUser)) {
                 if (postfix.equals("Image"))
@@ -789,16 +839,20 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     //调用文件选择软件来选择文件
     private void showFileChooser() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("*/*");
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        try {
-            startActivityForResult(Intent.createChooser(intent, "请选择一个要上传的文件"),
-                    FILE_SELECT_CODE);
-        } catch (ActivityNotFoundException ex) {
-            // Potentially direct the user to the Market with a Dialog
-            Toast.makeText(this, "请安装文件管理器", Toast.LENGTH_SHORT)
-                    .show();
+        if (Build.VERSION.SDK_INT >= 24) {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setType("*/*");
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            try {
+                startActivityForResult(Intent.createChooser(intent, "请选择一个要上传的文件"),
+                        FILE_SELECT_CODE);
+            } catch (ActivityNotFoundException ex) {
+                Toast.makeText(this, "请安装文件管理器", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        } else {
+
         }
     }
 
@@ -807,23 +861,22 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    mLvMessage.onRefreshComplete();
                     List<MessageInfo> messageInfos = mMgr.pagingQueryMessage(mUser);
                     List<MessageInfo> MessageList2 = new ArrayList<MessageInfo>();
                     MessageList2.addAll(messageInfos);
                     MessageList2.addAll(mMessageList);
-                    mMessageList.removeAll(mMessageList);
+                    mMessageList.clear();
                     mMessageList.addAll(MessageList2);
-                    mExampleAdapter.notifyDataSetChanged();
-                    mLvMessage.setSelection(4);
+                    mChatAdapter.notifyDataSetChanged();
+                    mLayoutManager.scrollToPositionWithOffset(4, 0);
                     break;
                 case 1:
                     Bundle bundle = (Bundle) msg.obj;
-                    String url = bundle.getString("url");
+                    String key = bundle.getString("key");
                     String path = bundle.getString("path");
                     String postfix = bundle.getString("postfix");
                     String newFile = bundle.getString("newFile");
-                    sendFileMessage(path, postfix, url, newFile);
+                    sendFileMessage(path, postfix, key, newFile);
                     break;
             }
         }
@@ -831,10 +884,10 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     private void initData() {
         List<MessageInfo> messageInfos = mMgr.queryMessage(mUser);
-        mMessageList.removeAll(mMessageList);
+        mMessageList.clear();
         mMessageList.addAll(messageInfos);
-        mExampleAdapter.notifyDataSetChanged();
-        mLvMessage.setSelection(mExampleAdapter.getCount());
+        mChatAdapter.notifyDataSetChanged();
+        mLayoutManager.scrollToPositionWithOffset(mChatAdapter.getItemCount() - 1, 0);
     }
 
     //设置title
@@ -866,12 +919,14 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     }
 
     private void initAdapter() {
-        mExampleAdapter = new ExampleAdapter(this, mMessageList, mUserImage, mUser, mMgr, mediaPlayer);
-        mLvMessage.setAdapter(mExampleAdapter);
-        mLvMessage.setonRefreshListener(new LoadMoreListView.OnRefreshListener() {
-
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mChatAdapter = new ChatAdapter(this, mMessageList, mUserImage, mUser, mMgr, mediaPlayer);
+        mRecyclerView.setAdapter(mChatAdapter);
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRefresh() {
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh(1000);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -883,24 +938,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                         handler.sendEmptyMessage(0);
                     }
                 }).start();
-            }
-        });
-        mLvMessage.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                switch (scrollState) {
-                    case SCROLL_STATE_FLING:
-                        break;
-                    case SCROLL_STATE_IDLE:
-                        break;
-                    case SCROLL_STATE_TOUCH_SCROLL:
-                        mEkbEmoticonsKeyboard.reset();
-                        break;
-                }
-            }
 
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
             }
         });
     }
@@ -1006,10 +1044,10 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             String time = formatter.format(curDate);
             messageInfo.setTime(time);
             messageInfo.setType(0);
-            messageInfo.setMsgType(TEXTMESSAGE);
+            messageInfo.setMsgType(TO_TEXT_MSG);
             mMgr.addMessage(messageInfo);
             mMessageList.add(messageInfo);
-            mExampleAdapter.notifyDataSetChanged();
+            mChatAdapter.notifyDataSetChanged();
             scrollToBottom();
             if (mMgr.findConversation(mUser)) {
                 mMgr.updateConversation(mUser, 0, message, time);
@@ -1033,11 +1071,11 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             String time = formatter.format(curDate);
             messageInfo.setTime(time);
             messageInfo.setType(0);
-            messageInfo.setMsgType(TEXTMESSAGE);
+            messageInfo.setMsgType(TO_TEXT_MSG);
             messageInfo.setSendStatus(1);
             mMgr.addMessage(messageInfo);
             mMessageList.add(messageInfo);
-            mExampleAdapter.notifyDataSetChanged();
+            mChatAdapter.notifyDataSetChanged();
             scrollToBottom();
             if (mMgr.findConversation(mUser)) {
                 mMgr.updateConversation(mUser, 0, message, time);
@@ -1134,13 +1172,14 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     }
 
     private void scrollToBottom() {
-        mLvMessage.requestLayout();
+        /*mLvMessage.requestLayout();
         mLvMessage.post(new Runnable() {
             @Override
             public void run() {
                 mLvMessage.setSelection(mLvMessage.getBottom());
             }
-        });
+        });*/
+        mLayoutManager.scrollToPositionWithOffset(mChatAdapter.getItemCount() - 1, 0);
     }
 
     @Override

@@ -3,29 +3,31 @@ package com.bclould.tocotalk.ui.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.bigkoo.pickerview.OptionsPickerView;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
-import com.bclould.tocotalk.model.ProvinceInfo;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.utils.Constants;
-import com.bclould.tocotalk.utils.MySharedPreferences;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.compress.Luban;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.entity.LocalMedia;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -41,6 +43,7 @@ import static com.luck.picture.lib.config.PictureMimeType.ofImage;
  * Created by GA on 2017/9/27.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class PersonalDetailsActivity extends BaseActivity {
 
     private static final String GENDER = "gender";
@@ -50,28 +53,20 @@ public class PersonalDetailsActivity extends BaseActivity {
     ImageView mTouxiang;
     @Bind(R.id.rl_touxiang)
     RelativeLayout mRlTouxiang;
-    @Bind(R.id.nickname)
-    TextView mNickname;
-    @Bind(R.id.rl_nickname)
-    RelativeLayout mRlNickname;
-    @Bind(R.id.rl_gender)
-    RelativeLayout mRlGender;
-    @Bind(R.id.rl_region)
-    RelativeLayout mRlRegion;
-    @Bind(R.id.currency)
-    TextView mCurrency;
-    @Bind(R.id.rl_signature)
-    RelativeLayout mRlSignature;
-    @Bind(R.id.rl_qr_code)
-    RelativeLayout mRlQrCode;
-    @Bind(R.id.rl_site)
-    RelativeLayout mRlSite;
-    @Bind(R.id.site)
-    TextView mSite;
-    @Bind(R.id.gender_iv)
-    ImageView mGenderIv;
-    @Bind(R.id.gender_tv)
-    TextView mGenderTv;
+    @Bind(R.id.tv_username)
+    TextView mTvUsername;
+    @Bind(R.id.rl_username)
+    RelativeLayout mRlUsername;
+    @Bind(R.id.tv_userid)
+    TextView mTvUserid;
+    @Bind(R.id.rl_userid)
+    RelativeLayout mRlUserid;
+    @Bind(R.id.rl_qr_card)
+    RelativeLayout mRlQrCard;
+    @Bind(R.id.tv_location)
+    TextView mTvLocation;
+    @Bind(R.id.rl_location)
+    RelativeLayout mRlLocation;
     private List<LocalMedia> selectList = new ArrayList<>();
     private DBManager mMgr;
 
@@ -94,14 +89,6 @@ public class PersonalDetailsActivity extends BaseActivity {
         } else {
             mTouxiang.setImageBitmap(UtilTool.setDefaultimage(this));
         }
-        //添加数据
-        initOptionData();
-
-        String gender = MySharedPreferences.getInstance().getString(GENDER);
-
-        //性别选择器
-        setGender(gender);
-
     }
 
     //拿到选择的图片
@@ -114,62 +101,29 @@ public class PersonalDetailsActivity extends BaseActivity {
                     // 图片选择结果回调
                     selectList = PictureSelector.obtainMultipleResult(data);
                     Bitmap bitmap = BitmapFactory.decodeFile(selectList.get(0).getPath());
-//                    UtilTool.saveImages(bitmap, Constants.MYUSER, this, mMgr);
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                     byte[] bytes = baos.toByteArray();
-                    boolean b = XmppConnection.getInstance().changeImage(bytes);
-                    UtilTool.Log("日志", b + "");
+                    boolean type = XmppConnection.getInstance().changeImage(bytes);
+                    if (type) {
+                        List<UserInfo> userInfos = mMgr.queryUser(UtilTool.getMyUser());
+                        mTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfos.get(0).getPath()));
+                        EventBus.getDefault().post(new MessageEvent("修改头像"));
+                    } else {
+                        Toast.makeText(this, "修改失败", Toast.LENGTH_SHORT).show();
+                    }
                     break;
             }
         }
     }
 
-    //给地址选择器添加数据
-    private ArrayList<ProvinceInfo> options1Items = new ArrayList<>();
-    private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
-
-    private void initOptionData() {
-
-        /**
-         * 注意：如果是添加JavaBean实体数据，则实体类需要实现 IPickerViewData 接口，
-         * PickerView会通过getPickerViewText方法获取字符串显示出来。
-         */
-
-        //选项1
-        options1Items.add(new ProvinceInfo(0, "广东", "描述部分", "其他数据"));
-        options1Items.add(new ProvinceInfo(1, "湖南", "描述部分", "其他数据"));
-        options1Items.add(new ProvinceInfo(2, "广西", "描述部分", "其他数据"));
-
-        //选项2
-        ArrayList<String> options2Items_01 = new ArrayList<>();
-        options2Items_01.add("广州");
-        options2Items_01.add("佛山");
-        options2Items_01.add("东莞");
-        options2Items_01.add("珠海");
-        ArrayList<String> options2Items_02 = new ArrayList<>();
-        options2Items_02.add("长沙");
-        options2Items_02.add("岳阳");
-        options2Items_02.add("株洲");
-        options2Items_02.add("衡阳");
-        ArrayList<String> options2Items_03 = new ArrayList<>();
-        options2Items_03.add("桂林");
-        options2Items_03.add("玉林");
-        options2Items.add(options2Items_01);
-        options2Items.add(options2Items_02);
-        options2Items.add(options2Items_03);
-
-        /*--------数据源添加完毕---------*/
-    }
-
-    @OnClick({R.id.bark, R.id.rl_touxiang, R.id.rl_nickname, R.id.rl_gender, R.id.rl_region, R.id.rl_signature, R.id.rl_qr_code, R.id.rl_site})
+    @OnClick({R.id.bark, R.id.rl_touxiang, R.id.rl_qr_card})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
             case R.id.rl_touxiang:
-
                 PictureSelector.create(this)
                         .openGallery(ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()
 //                        .theme(R.style.picture_white_style)
@@ -200,105 +154,10 @@ public class PersonalDetailsActivity extends BaseActivity {
                         .rotateEnabled(true) // 裁剪是否可旋转图片 true or false
                         .scaleEnabled(true)// 裁剪是否可放大缩小图片 true or false
                         .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
-
                 break;
-            case R.id.rl_nickname:
-
-                startActivity(new Intent(this, NickNameActivity.class));
-
-                break;
-            case R.id.rl_gender:
-
-                final List<String> gender1Items = new ArrayList();
-
-                gender1Items.add("男");
-                gender1Items.add("女");
-                gender1Items.add("保密");
-
-                OptionsPickerView gender = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
-                    @Override
-                    public void onOptionsSelect(int options1, int option2, int options3, View v) {
-
-
-                        String tx = gender1Items.get(options1);
-
-                        setGender(tx);
-
-                    }
-                }).build();
-                gender.setPicker(gender1Items);
-                gender.show();
-
-                break;
-            case R.id.rl_region:
-
-
-                OptionsPickerView region = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
-                    @Override
-                    public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                        //返回的分别是三个级别的选中位置
-
-                        String tx = options1Items.get(options1).getPickerViewText() + "/"
-                                + options2Items.get(options1).get(options2);
-                        mSite.setText(tx);
-                    }
-                }).build();
-
-                region.setPicker(options1Items, options2Items);
-                region.show();
-
-                break;
-            case R.id.rl_signature:
-
-                //跳转签名页面
-                startActivity(new Intent(this, SignatureActivity.class));
-
-                break;
-            case R.id.rl_qr_code:
-
-                //跳转二维码页面
+            case R.id.rl_qr_card:
                 startActivity(new Intent(this, QRCodeActivity.class));
-
-                break;
-            case R.id.rl_site:
-
-                //跳转地址页面
-                startActivity(new Intent(this, SiteActivity.class));
-
                 break;
         }
-    }
-
-    //设置性别
-    private void setGender(String tx) {
-        if (tx.equals("男")) {
-
-            mGenderTv.setText(tx);
-
-            mGenderTv.setTextColor(getResources().getColor(R.color.blue));
-
-            mGenderIv.setImageResource(R.mipmap.icon_nfriend_boys);
-
-        } else if (tx.equals("女")) {
-
-            mGenderTv.setText(tx);
-
-            mGenderTv.setTextColor(getResources().getColor(R.color.red));
-
-            mGenderIv.setImageResource(R.mipmap.icon_nfriend_igirls);
-
-        } else {
-
-            mGenderTv.setText(tx);
-
-            mGenderTv.setTextColor(Color.BLACK);
-
-            mGenderIv.setImageResource(R.mipmap.icon_full_selected);
-
-        }
-
-        //存储性别sp
-        MySharedPreferences.getInstance().setString(GENDER, tx);
-
     }
 }

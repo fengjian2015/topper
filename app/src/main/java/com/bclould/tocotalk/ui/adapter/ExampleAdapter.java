@@ -1,3 +1,4 @@
+/*
 package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
@@ -23,20 +25,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bclould.tocotalk.Presenter.DillDataPresenter;
 import com.bclould.tocotalk.Presenter.GrabRedPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.GrabRedInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.UserInfo;
+import com.bclould.tocotalk.model.VoiceInfo;
 import com.bclould.tocotalk.ui.activity.ImageViewActivity;
 import com.bclould.tocotalk.ui.activity.RedPacketActivity;
+import com.bclould.tocotalk.ui.activity.VideoActivity;
 import com.bclould.tocotalk.ui.widget.BubbleImageView;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.chat.Chat;
 import org.jivesoftware.smack.chat.ChatManager;
 import org.jivesoftware.smack.packet.Message;
@@ -52,15 +59,16 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.github.rockerhieu.emojicon.EmojiconTextView;
 
-import static com.bclould.tocotalk.ui.fragment.ConversationFragment.IMGMESSAGE;
 import static com.bclould.tocotalk.utils.UtilTool.Log;
 
 
+*/
 /**
  * 作者：wgyscsf on 2017/1/2 18:46
  * 邮箱：wgyscsf@163.com
  * 博客：http://blog.csdn.net/wgyscsf
- */
+ *//*
+
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class ExampleAdapter extends BaseAdapter {
 
@@ -71,35 +79,47 @@ public class ExampleAdapter extends BaseAdapter {
     private final DBManager mMgr;
     private final GrabRedPresenter mGrabRedPresenter;
     private final MediaPlayer mMediaPlayer;
-
     private Bitmap mBitmap;
     private CurrencyDialog mCurrencyDialog;
     private String mFileName;
     ArrayList<String> mImageList = new ArrayList<>();
 
-    public ExampleAdapter(Context context, List<MessageInfo> messageList, Bitmap userImage, String user, DBManager mgr, MediaPlayer mediaPlayer) {
+    public ExampleAdapter(Context context, List<MessageInfo> messageList, Bitmap userImage, String user, DBManager mgr, MediaPlayer mediaPlayer, DillDataPresenter dillDataPresenter) {
         mContext = context;
         mMessageList = messageList;
         mUserImage = userImage;
         mUser = user;
         mMgr = mgr;
-        mGrabRedPresenter = new GrabRedPresenter(this, mContext);
+        mGrabRedPresenter = new GrabRedPresenter(mContext);
         mMediaPlayer = mediaPlayer;
     }
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            super.handleMessage(msg);
+            Bundle bundle = (Bundle) msg.obj;
+            int id = bundle.getInt("id");
+            String url = bundle.getString("url");
+            mMgr.updateMessage(url, id);
+            mImageList.add(url);
+            for (MessageInfo info : mMessageList) {
+                if (info.getId() == id) {
+                    info.setMessage(url);
+                }
+            }
+//            EventBus.getDefault().post(new MessageEvent("消息数据库更新"));
+        }
+    };
+
 
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
         mImageList.clear();
-        for (MessageInfo info : mMessageList) {
+        for (final MessageInfo info : mMessageList) {
             if (info.getMsgType() == IMGMESSAGE) {
-                if (info.getType() == 0) {
-                    mImageList.add(info.getMessage());
-                } else {
-                    String message = info.getMessage();
-                    String url = message.substring(message.indexOf(":") + 1, message.length());
-                    mImageList.add(url);
-                }
+                mImageList.add(info.getMessage());
             }
         }
     }
@@ -159,6 +179,7 @@ public class ExampleAdapter extends BaseAdapter {
                     viewHolder.mCvRedpacket2.setVisibility(View.GONE);
                     viewHolder.mLlVoice2.setVisibility(View.GONE);
                     viewHolder.mBivImg2.setVisibility(View.GONE);
+                    viewHolder.mRlVideo2.setVisibility(View.GONE);
                     viewHolder.mTvMessamge2.setText(messageInfo.getMessage());
                     if (messageInfo.getSendStatus() == 1) {
                         viewHolder.mIvWarning2.setVisibility(View.VISIBLE);
@@ -183,6 +204,8 @@ public class ExampleAdapter extends BaseAdapter {
                     final int type = messageInfo.getType();
                     viewHolder.mTvMessamge2.setVisibility(View.GONE);
                     viewHolder.mBivImg2.setVisibility(View.GONE);
+                    viewHolder.mRlVideo2.setVisibility(View.GONE);
+                    viewHolder.mRlFileMsg2.setVisibility(View.GONE);
                     viewHolder.mCvRedpacket2.setVisibility(View.VISIBLE);
                     viewHolder.mLlVoice2.setVisibility(View.GONE);
                     viewHolder.mTvCoinRedpacket2.setText(coin + "红包");
@@ -204,6 +227,8 @@ public class ExampleAdapter extends BaseAdapter {
                 case 2:
                     viewHolder.mTvMessamge2.setVisibility(View.GONE);
                     viewHolder.mLlVoice2.setVisibility(View.VISIBLE);
+                    viewHolder.mRlVideo2.setVisibility(View.GONE);
+                    viewHolder.mRlFileMsg2.setVisibility(View.GONE);
                     viewHolder.mBivImg2.setVisibility(View.GONE);
                     viewHolder.mCvRedpacket2.setVisibility(View.GONE);
                     viewHolder.mTvVoiceTime2.setText(messageInfo.getVoiceTime() + "''");
@@ -235,6 +260,8 @@ public class ExampleAdapter extends BaseAdapter {
                     viewHolder.mTvMessamge2.setVisibility(View.GONE);
                     viewHolder.mLlVoice2.setVisibility(View.GONE);
                     viewHolder.mBivImg2.setVisibility(View.VISIBLE);
+                    viewHolder.mRlFileMsg2.setVisibility(View.GONE);
+                    viewHolder.mRlVideo2.setVisibility(View.GONE);
                     viewHolder.mCvRedpacket2.setVisibility(View.GONE);
                     final Bitmap bitmap = BitmapFactory.decodeFile(messageInfo.getVoice());
                     viewHolder.mBivImg2.setLocalImageBitmap(bitmap, R.drawable.img_chat_bg);
@@ -254,6 +281,31 @@ public class ExampleAdapter extends BaseAdapter {
                         }
                     });
                     break;
+                case 4:
+                    viewHolder.mTvMessamge2.setVisibility(View.GONE);
+                    viewHolder.mLlVoice2.setVisibility(View.GONE);
+                    viewHolder.mBivImg2.setVisibility(View.GONE);
+                    viewHolder.mRlVideo2.setVisibility(View.VISIBLE);
+                    viewHolder.mRlFileMsg2.setVisibility(View.GONE);
+                    viewHolder.mCvRedpacket2.setVisibility(View.GONE);
+                    viewHolder.mIvVideoOne2.setImageBitmap(BitmapFactory.decodeFile(messageInfo.getVoice()));
+                    viewHolder.mRlVideo2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(mContext, VideoActivity.class);
+                            intent.putExtra("url", messageInfo.getMessage());
+                            mContext.startActivity(intent);
+                        }
+                    });
+                    break;
+                case 5:
+                    viewHolder.mTvMessamge2.setVisibility(View.GONE);
+                    viewHolder.mLlVoice2.setVisibility(View.GONE);
+                    viewHolder.mBivImg2.setVisibility(View.GONE);
+                    viewHolder.mRlVideo2.setVisibility(View.GONE);
+                    viewHolder.mCvRedpacket2.setVisibility(View.GONE);
+                    viewHolder.mRlFileMsg2.setVisibility(View.VISIBLE);
+                    break;
             }
         } else {
             //设置头像
@@ -267,6 +319,8 @@ public class ExampleAdapter extends BaseAdapter {
                     viewHolder.mTvMessamge.setVisibility(View.VISIBLE);
                     viewHolder.mCvRedpacket.setVisibility(View.GONE);
                     viewHolder.mBivImg.setVisibility(View.GONE);
+                    viewHolder.mRlFileMsg.setVisibility(View.GONE);
+                    viewHolder.mRlVideo.setVisibility(View.GONE);
                     viewHolder.mLlVoice.setVisibility(View.GONE);
                     String message = messageInfo.getMessage();
                     viewHolder.mTvMessamge.setText(message);
@@ -281,6 +335,8 @@ public class ExampleAdapter extends BaseAdapter {
                     viewHolder.mTvMessamge.setVisibility(View.GONE);
                     viewHolder.mLlVoice.setVisibility(View.GONE);
                     viewHolder.mBivImg.setVisibility(View.GONE);
+                    viewHolder.mRlFileMsg.setVisibility(View.GONE);
+                    viewHolder.mRlVideo.setVisibility(View.GONE);
                     viewHolder.mCvRedpacket.setVisibility(View.VISIBLE);
                     viewHolder.mTvCoinRedpacket.setText(coin + "红包");
                     viewHolder.mTvRemark.setText(remark);
@@ -307,6 +363,8 @@ public class ExampleAdapter extends BaseAdapter {
                 case 2:
                     viewHolder.mTvMessamge.setVisibility(View.GONE);
                     viewHolder.mLlVoice.setVisibility(View.VISIBLE);
+                    viewHolder.mRlVideo.setVisibility(View.GONE);
+                    viewHolder.mRlFileMsg.setVisibility(View.GONE);
                     viewHolder.mCvRedpacket.setVisibility(View.GONE);
                     viewHolder.mBivImg.setVisibility(View.GONE);
                     viewHolder.mTvVoiceTime.setText(messageInfo.getVoiceTime() + "''");
@@ -326,6 +384,7 @@ public class ExampleAdapter extends BaseAdapter {
                         public void onClick(View view) {
                             playVoice(mMediaPlayer, messageInfo.getVoice());
                             mMgr.updateMessageStatus(messageInfo.getId());
+                            EventBus.getDefault().post(new MessageEvent("自己发了消息"));
                             viewHolder2.mIvStatus.setVisibility(View.GONE);
                         }
                     });
@@ -334,6 +393,8 @@ public class ExampleAdapter extends BaseAdapter {
                     viewHolder.mTvMessamge.setVisibility(View.GONE);
                     viewHolder.mLlVoice.setVisibility(View.GONE);
                     viewHolder.mCvRedpacket.setVisibility(View.GONE);
+                    viewHolder.mRlFileMsg.setVisibility(View.GONE);
+                    viewHolder.mRlVideo.setVisibility(View.GONE);
                     viewHolder.mBivImg.setVisibility(View.VISIBLE);
                     final Bitmap bitmap = BitmapFactory.decodeFile(messageInfo.getVoice());
                     viewHolder.mBivImg.setLocalImageBitmap(bitmap, R.drawable.img_chat2_bg);
@@ -345,8 +406,7 @@ public class ExampleAdapter extends BaseAdapter {
                             int position = 0;
                             String msg = messageInfo.getMessage();
                             for (int i = 0; i < mImageList.size(); i++) {
-                                String url = msg.substring(msg.indexOf(":") + 1, msg.length());
-                                if (url.equals(mImageList.get(i))) {
+                                if (mImageList.get(i).equals(msg)) {
                                     position = i;
                                 }
                             }
@@ -354,6 +414,24 @@ public class ExampleAdapter extends BaseAdapter {
                             mContext.startActivity(intent);
                         }
                     });
+                    break;
+                case 4:
+                    viewHolder.mTvMessamge.setVisibility(View.GONE);
+                    viewHolder.mLlVoice.setVisibility(View.GONE);
+                    viewHolder.mBivImg.setVisibility(View.GONE);
+                    viewHolder.mRlFileMsg.setVisibility(View.GONE);
+                    viewHolder.mRlVideo.setVisibility(View.VISIBLE);
+                    viewHolder.mCvRedpacket.setVisibility(View.GONE);
+                    viewHolder.mIvVideoOne.setImageBitmap(BitmapFactory.decodeFile(messageInfo.getVoice()));
+
+                    break;
+                case 5:
+                    viewHolder.mTvMessamge.setVisibility(View.GONE);
+                    viewHolder.mLlVoice.setVisibility(View.GONE);
+                    viewHolder.mBivImg.setVisibility(View.GONE);
+                    viewHolder.mRlVideo.setVisibility(View.GONE);
+                    viewHolder.mCvRedpacket.setVisibility(View.GONE);
+                    viewHolder.mRlFileMsg.setVisibility(View.VISIBLE);
                     break;
             }
         }
@@ -367,9 +445,15 @@ public class ExampleAdapter extends BaseAdapter {
             Message message = new Message();
             byte[] bytes = UtilTool.readStream(messageInfo.getVoice());
             String base64 = Base64.encodeToString(bytes);
+            VoiceInfo voiceInfo = new VoiceInfo();
+            voiceInfo.setElementText(base64);
+            int duration = UtilTool.getFileDuration(messageInfo.getVoice(), mContext);
+            message.setBody("[audio]:" + duration + "秒");
+            message.addExtension(voiceInfo);
             chat.sendMessage(message);
             ivVoiceHint2.setVisibility(View.GONE);
-            mMgr.updateMessageStatus(messageInfo.getId());
+            mMgr.updateMessageHint(messageInfo.getId());
+            EventBus.getDefault().post(new MessageEvent("自己发了消息"));
         } catch (Exception e) {
             e.printStackTrace();
             ivVoiceHint2.setVisibility(View.VISIBLE);
@@ -428,7 +512,7 @@ public class ExampleAdapter extends BaseAdapter {
         });
     }
 
-    private void skip(GrabRedInfo baseInfo, Bitmap userImage, int type, String user) {
+    private void skip(GrabRedInfo baseInfo, Bitmap userImage, String user) {
         Intent intent = new Intent(mContext, RedPacketActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("user", user);
@@ -450,9 +534,9 @@ public class ExampleAdapter extends BaseAdapter {
         }
 
         if (type != 0)
-            skip(baseInfo, mUserImage, 1, mUser);
+            skip(baseInfo, mUserImage, mUser);
         else
-            skip(baseInfo, mBitmap, 1, Constants.MYUSER);
+            skip(baseInfo, mBitmap, Constants.MYUSER);
         mMgr.updateMessageState(id, 1);
         mMessageList.get(position).setState(1);
         notifyDataSetChanged();
@@ -496,6 +580,20 @@ public class ExampleAdapter extends BaseAdapter {
         ImageView mIeaHeadImg;
         @Bind(R.id.biv_img)
         BubbleImageView mBivImg;
+        @Bind(R.id.iv_video_one)
+        ImageView mIvVideoOne;
+        @Bind(R.id.iv_video_play)
+        ImageView mIvVideoPlay;
+        @Bind(R.id.rl_video)
+        RelativeLayout mRlVideo;
+        @Bind(R.id.tv_file_name)
+        TextView mTvFileName;
+        @Bind(R.id.tv_file_size)
+        TextView mTvFileSize;
+        @Bind(R.id.iv_file_photo)
+        ImageView mIvFilePhoto;
+        @Bind(R.id.rl_file_msg)
+        RelativeLayout mRlFileMsg;
         @Bind(R.id.tv_voice_time)
         TextView mTvVoiceTime;
         @Bind(R.id.iv_status)
@@ -524,8 +622,22 @@ public class ExampleAdapter extends BaseAdapter {
         RelativeLayout mRlMessage;
         @Bind(R.id.iea_headImg2)
         ImageView mIeaHeadImg2;
+        @Bind(R.id.tv_file_name2)
+        TextView mTvFileName2;
+        @Bind(R.id.tv_file_size2)
+        TextView mTvFileSize2;
+        @Bind(R.id.iv_file_photo2)
+        ImageView mIvFilePhoto2;
+        @Bind(R.id.rl_file_msg2)
+        RelativeLayout mRlFileMsg2;
         @Bind(R.id.biv_img2)
         BubbleImageView mBivImg2;
+        @Bind(R.id.iv_video_one2)
+        ImageView mIvVideoOne2;
+        @Bind(R.id.iv_video_play2)
+        ImageView mIvVideoPlay2;
+        @Bind(R.id.rl_video2)
+        RelativeLayout mRlVideo2;
         @Bind(R.id.iv_voice_hint2)
         ImageView mIvVoiceHint2;
         @Bind(R.id.tv_voice_time2)
@@ -562,3 +674,4 @@ public class ExampleAdapter extends BaseAdapter {
         }
     }
 }
+*/

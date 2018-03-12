@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +25,6 @@ import com.bclould.tocotalk.ui.activity.SubscribeCoinActivity;
 import com.bclould.tocotalk.ui.adapter.CloudCoinRVAdapter;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
 import com.bclould.tocotalk.utils.MessageEvent;
-import com.bclould.tocotalk.utils.StatusBarCompat;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -109,7 +107,7 @@ public class CloudCoinFragment extends Fragment {
 
         EventBus.getDefault().register(this);
 
-        mStatusBarFix.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, StatusBarCompat.getStateBarHeight(getActivity())));//填充状态栏
+//        mStatusBarFix.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, StatusBarCompat.getStateBarHeight(getActivity())));//填充状态栏
 
         getMyAssets();
 
