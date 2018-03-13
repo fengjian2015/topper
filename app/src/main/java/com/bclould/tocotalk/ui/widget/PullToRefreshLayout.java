@@ -68,6 +68,7 @@ public class PullToRefreshLayout extends LinearLayout {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        if(pullText == null) return;
         if (pullText.getTop() == 0) {
             viewHeight = pullText.getMeasuredHeight();
             pullText.layout(l, 0, r, viewHeight);
