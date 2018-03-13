@@ -46,12 +46,10 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.transfer.TransferManager;
 import com.bclould.tocotalk.Presenter.DillDataPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
-import com.bclould.tocotalk.model.AwsInfo;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.VoiceInfo;
@@ -649,48 +647,23 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == CODE_TAKE_PHOTO) {
-                mDillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
-                    @Override
-                    public void send(AwsInfo.DataBean data) {
-                        Upload(mImagePath, data);
-                    }
-                });
+                Upload(mImagePath);
             } else if (requestCode == FILE_SELECT_CODE) {
-                Uri uri = data.getData();
-//                if (uri != null) {
-                final String path = uri.getPath();
-                mDillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
-                    @Override
-                    public void send(AwsInfo.DataBean data) {
-                        Upload(path, data);
-                    }
-                });
-//                }
+
             } else if (requestCode == PictureConfig.CHOOSE_REQUEST) {
                 selectList = PictureSelector.obtainMultipleResult(data);
                 if (selectList.size() != 0) {
-                    mDillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
-                        @Override
-                        public void send(AwsInfo.DataBean data) {
-                            for (int i = 0; i < selectList.size(); i++) {
-                                Upload(selectList.get(i).getPath(), data);
-                            }
-                        }
-                    });
-
+                    for (int i = 0; i < selectList.size(); i++) {
+                        Upload(selectList.get(i).getPath());
+                    }
                 }
             } else if (requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE) {
-                mDillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
-                    @Override
-                    public void send(AwsInfo.DataBean data) {
-                        Upload(mImagePath, data);
-                    }
-                });
+                Upload(mImagePath);
             }
         }
     }
 
-    public void Upload(final String path, AwsInfo.DataBean data) {
+    public void Upload(final String path) {
         final File file = new File(path);
         String fileName = file.getName();
         String myUser = UtilTool.getMyUser();
@@ -704,35 +677,39 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         } else {
             bitmap = BitmapFactory.decodeFile(path);
         }
-        File newFile = new File("/sdcard/" + key);
+        final File newFile = new File("/sdcard/" + key);
         UtilTool.sizeCompress(bitmap, newFile);
-        try {
-            BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
-                    data.getAccessKeyId(),
-                    data.getSecretAccessKey(),
-                    data.getSessionToken());
-            AmazonS3Client s3Client = new AmazonS3Client(
-                    sessionCredentials);
-            Regions regions = Regions.fromName("ap-northeast-2");
-            Region region = Region.getRegion(regions);
-            s3Client.setRegion(region);
-            TransferManager manager = new TransferManager(s3Client);
-            PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
-            manager.upload(por);
-            Message message = new Message();
-            Bundle bundle = new Bundle();
-            bundle.putString("key", key);
-            bundle.putString("newFile", newFile.getPath());
-            bundle.putString("path", path);
-            bundle.putString("postfix", postfix);
-            message.obj = bundle;
-            message.what = 1;
-            handler.sendMessage(message);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
+                            Constants.ACCESS_KEY_ID,
+                            Constants.SECRET_ACCESS_KEY,
+                            Constants.SESSION_TOKEN);
+                    AmazonS3Client s3Client = new AmazonS3Client(
+                            sessionCredentials);
+                    Regions regions = Regions.fromName("ap-northeast-2");
+                    Region region = Region.getRegion(regions);
+                    s3Client.setRegion(region);
+//            TransferManager manager = new TransferManager(s3Client);
+                    PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
+                    s3Client.putObject(por);
+                    Message message = new Message();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("key", key);
+                    bundle.putString("newFile", newFile.getPath());
+                    bundle.putString("path", path);
+                    bundle.putString("postfix", postfix);
+                    message.obj = bundle;
+                    message.what = 1;
+                    handler.sendMessage(message);
 
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     private void sendFileMessage(String path, String postfix, String key, String newFile) {

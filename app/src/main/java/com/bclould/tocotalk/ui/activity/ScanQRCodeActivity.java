@@ -1,9 +1,11 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -34,6 +36,7 @@ import cn.bingoogolapple.qrcode.zxing.ZXingView;
  * Created by GA on 2017/9/15.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.Delegate {
 
     @Bind(R.id.zxingview)

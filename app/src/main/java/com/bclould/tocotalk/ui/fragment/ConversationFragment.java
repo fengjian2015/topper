@@ -183,6 +183,8 @@ public class ConversationFragment extends Fragment {
             initData();
         } else if (msg.equals("新的好友")) {
             initData();
+        }else if(msg.equals("登录失败")){
+            mRlUnunited.setVisibility(View.VISIBLE);
         }
 
     }

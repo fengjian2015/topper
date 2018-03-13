@@ -4,638 +4,336 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/light"
     android:orientation="vertical">
 
 
-    <View
-        android:id="@+id/status_bar_fix"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="#00000000"/>
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@android:color/white">
-
-        <TextView
-            android:id="@+id/tv_add_coin"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:drawableLeft="@mipmap/icon_add_ex"
-            android:drawablePadding="@dimen/x10"
-            android:gravity="center"
-            android:padding="@dimen/x20"
-            android:text="@string/add"
-            android:textColor="@color/blue"
-            android:textSize="@dimen/x28"/>
+        android:layout_height="@dimen/y120"
+        android:background="#243042">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/pocket"
-            android:textColor="@android:color/black"
+            android:text="钱包"
+            android:textColor="@color/white"
             android:textSize="@dimen/x32"/>
 
-        <!--<TextView
-            android:id="@+id/tv_date"
+        <ImageView
+            android:id="@+id/iv_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/x20"
-            android:text="Today,Otc 09"
-            android:textSize="@dimen/x26"/>-->
+            android:padding="@dimen/x30"
+            android:src="@mipmap/icon_cen"/>
 
     </RelativeLayout>
-
-    <TextView
-        style="@style/HCutOffRule"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/y30"
-        android:layout_marginTop="@dimen/y50">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/x20"
-            android:text="@string/total_assets"
-            android:layout_centerInParent="true"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
-
-
-       <!-- <TextView
-            android:id="@+id/tv_assets"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/x20"
-            android:text="0.00"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_assets"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginTop="@dimen/y20"
-            android:text="Available"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x24"/>
-
-        <TextView
-            android:id="@+id/tv_avilable"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_assets"
-            android:layout_marginRight="@dimen/x40"
-            android:layout_marginTop="@dimen/y20"
-            android:layout_toLeftOf="@+id/xx"
-            android:text="0.000000000"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x24"/>
-
-        <TextView
-            android:id="@+id/xx"
-            android:layout_width="@dimen/x2"
-            android:layout_height="@dimen/x20"
-            android:layout_below="@+id/tv_assets"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="@dimen/y25"
-            android:background="@color/gray"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_assets"
-            android:layout_marginLeft="@dimen/x40"
-            android:layout_marginTop="@dimen/y20"
-            android:layout_toRightOf="@+id/xx"
-            android:text="Available"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x24"/>
-
-        <TextView
-            android:id="@+id/tv_locked"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tv_assets"
-            android:layout_marginRight="@dimen/x20"
-            android:layout_marginTop="@dimen/y20"
-            android:text="0.00000000000"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x24"/>-->
-
-    </RelativeLayout>
-
-    <TextView
-        style="@style/HCutOffRule"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/light"
-        android:orientation="vertical">
+        android:layout_height="@dimen/y250"
+        android:background="#243042"
+        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_refresh"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/y60"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/y30"
-            android:background="@drawable/bg_pop_shape"
-            android:text="@string/refresh"
-            android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x28"/>
+        <LinearLayout
+            android:id="@+id/ll_inout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/rl_subscribe_coin"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y250"
-            android:layout_marginTop="@dimen/y15"
-            android:visibility="visible">
-
-            <android.support.v7.widget.CardView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                app:cardCornerRadius="@dimen/x60">
+                android:src="@mipmap/icon_pg"/>
 
-                <Button
-                    android:id="@+id/btn_subscribe_coin"
-                    android:layout_width="@dimen/x120"
-                    android:layout_height="@dimen/x120"
-                    android:background="@mipmap/icon_add_enter"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20"
+                android:text="收付款"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x32"/>
 
-            </android.support.v7.widget.CardView>
+        </LinearLayout>
 
-        </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/ll_usdt"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y250"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginRight="@dimen/x20"
-            android:layout_marginTop="@dimen/y15"
-            android:descendantFocusability="beforeDescendants"
-            android:fastScrollEnabled="false"
-            android:scrollbars="none"
-            android:visibility="gone">
-        </android.support.v7.widget.RecyclerView>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_usdt"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20"
+                android:text="USDT"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x32"/>
+
+            <TextView
+                android:id="@+id/tv_usdt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20"
+                android:text="$ 12346.00"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x26"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_bank_card"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_card"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20"
+                android:text="银行卡"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x32"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
     <TextView
-        style="@style/HCutOffRule"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/y20"
-        android:background="@color/white">
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginTop="@dimen/y30"
+        android:text="TocoTalk服务"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x28"/>
 
-        <TextView
-            android:id="@+id/tv_conversion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginTop="@dimen/y20"
-            android:text="@string/conversion"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x28"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y220"
+        android:layout_marginTop="@dimen/y30"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/x20"
+        android:paddingRight="@dimen/x20">
 
-        <!--<android.support.v7.widget.CardView
-            android:id="@+id/selector_currency"
-            android:layout_width="@dimen/x370"
-            android:layout_height="@dimen/y300"
-            android:layout_above="@+id/exchange"
-            android:layout_marginBottom="@dimen/y40"
-            android:layout_marginLeft="@dimen/x20"
-            app:cardBackgroundColor="@color/blue"
-            app:cardCornerRadius="@dimen/x20">
+        <android.support.v7.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/y20"
+            android:layout_weight="1"
+            app:cardCornerRadius="@dimen/x15">
 
             <LinearLayout
+                android:id="@+id/ll_asserts"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="@dimen/x40">
+                android:gravity="center"
+                android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_asserts"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="DIGICCY"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/x24"/>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/currency_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="BTC"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/x24"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/y2"
-                            android:background="@android:color/black"/>
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentLeft="true"
-                        android:gravity="center"
-                        android:text="NUM"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/x24"/>
-
-                    <EditText
-                        android:id="@+id/et_count"
-                        android:layout_width="@dimen/x200"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:background="@color/transparent"
-                        android:gravity="right|center"
-                        android:hint="请输入数量"
-                        android:inputType="number"
-                        android:maxLength="10"
-                        android:textColor="@color/white"
-                        android:textColorHint="@color/white"
-                        android:textCursorDrawable="@null"
-                        android:textSize="@dimen/x20"
-                        android:theme="@style/MyEditText"/>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:gravity="bottom">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="bottom"
-                        android:text="VALUE"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/x24"/>
-
-
-                    <TextView
-                        android:id="@+id/price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:text=" =  $0.00"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/x24"/>
-
-
-                </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y20"
+                    android:text="数字资产"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x32"/>
 
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/selector_currency2"
-            android:layout_width="@dimen/x370"
-            android:layout_height="@dimen/y300"
-            android:layout_above="@+id/exchange"
-            android:layout_alignParentRight="true"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/y20"
             android:layout_marginLeft="@dimen/x20"
-            android:layout_marginRight="@dimen/x20"
-            app:cardBackgroundColor="@color/ltc"
-            app:cardCornerRadius="@dimen/x20">
+            android:layout_weight="1"
+            app:cardCornerRadius="@dimen/x15">
 
             <LinearLayout
+                android:id="@+id/ll_exchange"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="@dimen/x40">
+                android:gravity="center"
+                android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_ex"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="DIGICCY"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/x24"/>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/currency_tv2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="LTC"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/x24"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/y2"
-                            android:background="@color/white"/>
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:text="NUM"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/x24"/>
-
-
-                    <TextView
-                        android:id="@+id/count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:text="0.00"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/x24"/>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:gravity="bottom">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="VALUE"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/x24"/>
-
-
-                    <TextView
-                        android:id="@+id/price2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:text=" =  $0.00"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/x24"/>
-
-
-                </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y20"
+                    android:text="兑换"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x32"/>
 
             </LinearLayout>
 
-        </android.support.v7.widget.CardView>-->
-
+        </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_conversion"
-            android:layout_marginLeft="@dimen/x40"
-            android:layout_marginTop="@dimen/y30"
-            app:cardCornerRadius="@dimen/x35">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/y20"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_weight="1"
+            app:cardCornerRadius="@dimen/x15">
 
-            <Button
-                android:id="@+id/btn_selector_currency"
-                android:layout_width="@dimen/x130"
-                android:layout_height="@dimen/y80"
-                android:background="@drawable/bg_buysell_shape"
-                android:text="BTC"
-                android:textSize="@dimen/x28"/>
+            <LinearLayout
+                android:id="@+id/ll_otc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_otc"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y20"
+                    android:text="OTC"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x32"/>
+
+            </LinearLayout>
 
         </android.support.v7.widget.CardView>
 
-        <TextView
-            android:id="@+id/xx2"
-            android:layout_width="@dimen/x350"
-            android:layout_height="@dimen/y1"
-            android:layout_marginLeft="@dimen/x30"
-            android:layout_marginTop="@dimen/y195"
-            android:layout_toLeftOf="@+id/card_view"
-            android:background="@color/gray"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y220"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/x20"
+        android:paddingRight="@dimen/x20">
 
         <android.support.v7.widget.CardView
-            android:id="@+id/card_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="@dimen/x10"
-            android:layout_marginRight="@dimen/x10"
-            android:layout_marginTop="@dimen/y140"
-            app:cardCornerRadius="@dimen/x55">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/y20"
+            android:layout_weight="1"
+            app:cardCornerRadius="@dimen/x15">
 
-            <Button
-                android:id="@+id/tv_exchange"
-                android:layout_width="@dimen/x110"
-                android:layout_height="@dimen/x110"
-                android:background="@mipmap/icon_ex_img"/>
+            <LinearLayout
+                android:id="@+id/ll_financing"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_financing"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y20"
+                    android:text="理财"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x32"/>
+
+            </LinearLayout>
 
         </android.support.v7.widget.CardView>
 
-        <TextView
-            android:id="@+id/xx3"
-            android:layout_width="@dimen/x350"
-            android:layout_height="@dimen/y1"
-            android:layout_marginRight="@dimen/x30"
-            android:layout_marginTop="@dimen/y195"
-            android:layout_toRightOf="@+id/card_view"
-            android:background="@color/gray"/>
-
-        <EditText
-            android:id="@+id/et_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tv_conversion"
-            android:layout_marginRight="@dimen/x50"
-            android:layout_marginTop="@dimen/y15"
-            android:background="@color/transparent"
-            android:gravity="right|center"
-            android:hint="@string/et_count"
-            android:inputType="number"
-            android:maxLength="10"
-            android:textColor="@color/black"
-            android:textCursorDrawable="@null"
-            android:textSize="@dimen/x30"/>
-
-        <TextView
-            android:id="@+id/tv_have_currency"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/et_count"
-            android:layout_marginRight="@dimen/x50"
-            android:layout_marginTop="@dimen/y5"
-            android:text="0.00BTC"
-            android:textSize="@dimen/x20"/>
-
-        <TextView
-            android:id="@+id/tv_all_exchange"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tv_have_currency"
-            android:layout_marginRight="@dimen/x50"
-            android:layout_marginTop="@dimen/y5"
-            android:text="@string/total_exchange"
-            android:textColor="#4ECEF1"
-            android:textSize="@dimen/x20"/>
-
         <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/xx2"
-            android:layout_marginLeft="@dimen/x40"
-            android:layout_marginTop="@dimen/y30"
-            app:cardCornerRadius="@dimen/x35">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/y20"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_weight="1"
+            app:cardCornerRadius="@dimen/x15">
 
-            <Button
-                android:id="@+id/btn_selector_currency2"
-                android:layout_width="@dimen/x130"
-                android:layout_height="@dimen/y80"
-                android:background="@drawable/bg_buysell_shape"
-                android:text="BTC"
-                android:textSize="@dimen/x28"/>
+            <LinearLayout
+                android:id="@+id/ll_pawn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_pawn"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y20"
+                    android:text="典当"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x32"/>
+
+            </LinearLayout>
+
         </android.support.v7.widget.CardView>
 
-        <TextView
-            android:id="@+id/tv_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/xx3"
-            android:layout_marginRight="@dimen/x50"
-            android:layout_marginTop="@dimen/y30"
-            android:text="0.00"
-            android:textSize="@dimen/x30"/>
-
-        <TextView
-            android:id="@+id/tv_have_currency2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tv_count"
-            android:layout_marginRight="@dimen/x50"
-            android:layout_marginTop="@dimen/y5"
-            android:text="0.00BTC"
-            android:textSize="@dimen/x20"/>
-
-        <TextView
-            android:id="@+id/xx4"
-            style="@style/HCutOffRule"
-            android:layout_below="@+id/tv_have_currency2"
-            android:layout_marginLeft="@dimen/x30"
-            android:layout_marginRight="@dimen/x30"
-            android:layout_marginTop="@dimen/y30"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/xx4"
-            android:layout_marginLeft="@dimen/x30"
-            android:layout_marginTop="@dimen/y10"
-            android:text="100.00CNY = 0.22BTC"
-            android:textSize="@dimen/x22"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/xx4"
-            android:layout_marginRight="@dimen/x30"
-            android:layout_marginTop="@dimen/y10"
-            android:text="100.00CNY = 0.22BTC"
-            android:textSize="@dimen/x22"/>
-
         <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/xx4"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/y10"
-            android:layout_marginTop="@dimen/y80"
-            app:cardCornerRadius="@dimen/x40">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/y20"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_weight="1"
+            app:cardCornerRadius="@dimen/x15">
 
-            <Button
-                android:id="@+id/btn_exchange"
-                android:layout_width="@dimen/x400"
-                android:layout_height="@dimen/y80"
-                android:background="@mipmap/btn_click_button"
-                android:text="@string/exchange"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="@dimen/x32"/>
+            <LinearLayout
+                android:id="@+id/ll_safe"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_safe"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y20"
+                    android:text="保险"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x32"/>
+
+            </LinearLayout>
+
         </android.support.v7.widget.CardView>
 
-    </RelativeLayout>
-
-        <TextView
-            android:background="@color/gray"
-            android:textColor="@color/gray"
-            android:textSize="@dimen/x45"
-            android:text="开发当中敬请期待"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

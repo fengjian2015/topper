@@ -127,7 +127,6 @@ public class DillDataPresenter {
 
     public void getSessionToken(final CallBack3 callBack3) {
         if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .getSessionToken(UtilTool.getToken())
@@ -141,7 +140,6 @@ public class DillDataPresenter {
 
                         @Override
                         public void onNext(@NonNull AwsInfo awsInfo) {
-                            hideDialog();
                             if(awsInfo.getStatus() == 1){
                                 callBack3.send(awsInfo.getData());
                                 UtilTool.Log("日志", awsInfo.getData().getAccessKeyId());
@@ -152,7 +150,6 @@ public class DillDataPresenter {
 
                         @Override
                         public void onError(@NonNull Throwable e) {
-                            hideDialog();
                         }
 
                         @Override

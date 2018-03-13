@@ -3,9 +3,10 @@ package com.bclould.tocotalk.base;
 
 import android.support.v4.app.Fragment;
 
-import com.bclould.tocotalk.ui.fragment.CloudCircleFragment;
+import com.bclould.tocotalk.ui.activity.MainActivity;
 import com.bclould.tocotalk.ui.fragment.CloudCoinFragment;
 import com.bclould.tocotalk.ui.fragment.CloudMessageFragment;
+import com.bclould.tocotalk.ui.fragment.DynamicStateFragment;
 import com.bclould.tocotalk.ui.fragment.MyFragment;
 
 import java.util.HashMap;
@@ -20,11 +21,13 @@ public class FragmentFactory {
     private static FragmentFactory fragmentFactory;
 
     public static Map<Integer, Fragment> mMainMap = new HashMap<>();
+    private static MainActivity sMainActivity;
 
     private FragmentFactory() {
     }
 
-    public static FragmentFactory getInstanes() {
+    public static FragmentFactory getInstanes(MainActivity mainActivity) {
+        sMainActivity = mainActivity;
         if (fragmentFactory == null) {
             synchronized (FragmentFactory.class) {
                 if (fragmentFactory == null) {
@@ -54,10 +57,10 @@ public class FragmentFactory {
                 fragment = new CloudMessageFragment();
                 break;
             case 1:// 云币页面
-                fragment = new CloudCircleFragment();
+                fragment = DynamicStateFragment.getInstance();
                 break;
             case 2:// 云圈页面
-                fragment = new CloudCoinFragment();
+                fragment = CloudCoinFragment.getInstance(sMainActivity);
                 break;
             case 3:// 我的页面
                 fragment = new MyFragment();

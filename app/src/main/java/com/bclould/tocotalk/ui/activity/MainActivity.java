@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -86,6 +87,7 @@ public class MainActivity extends BaseActivity {
         }
 
 //        StatusBarCompat.setImmersionStateMode(this);
+
 
         setContentView(R.layout.activity_main);
 
@@ -283,7 +285,7 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
         hideDialog();
         Map<Integer, Fragment> map = FragmentFactory.mMainMap;
-        FragmentFactory.getInstanes().setNull();
+        FragmentFactory.getInstanes(this).setNull();
         for (int i : map.keySet()) {
             mSupportFragmentManager.beginTransaction().remove(map.get(i));
             mSupportFragmentManager.beginTransaction().hide(map.get(i));
@@ -357,7 +359,7 @@ public class MainActivity extends BaseActivity {
 
         FragmentTransaction ft = mSupportFragmentManager.beginTransaction();
 
-        FragmentFactory fragmentFactory = FragmentFactory.getInstanes();
+        FragmentFactory fragmentFactory = FragmentFactory.getInstanes(this);
 
         Fragment LastFragment = fragmentFactory.createMainFragment(lastIndex);
 
@@ -447,4 +449,5 @@ public class MainActivity extends BaseActivity {
             startActivity(home);
         }
     }
+
 }

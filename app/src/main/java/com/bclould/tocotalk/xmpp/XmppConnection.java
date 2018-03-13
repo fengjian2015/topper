@@ -14,8 +14,10 @@ import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.AbstractXMPPConnection;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.MessageListener;
@@ -169,6 +171,7 @@ public class XmppConnection {
                 return true;
             }
         } catch (Exception xe) {
+            EventBus.getDefault().post(new MessageEvent("登录失败"));
             UtilTool.Log("fsdafa", "连接失败");
             xe.printStackTrace();
             connection = null;

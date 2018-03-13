@@ -54,14 +54,17 @@
 
             <ImageView
                 android:id="@+id/qr_code_iv"
-                android:layout_width="@dimen/x450"
-                android:layout_height="@dimen/y450"
-                android:src="@mipmap/qr_code1"/>
+                android:layout_width="@dimen/x600"
+                android:layout_height="@dimen/y600"
+                android:src="@mipmap/qr_code1"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
 
             <ImageView
                 android:id="@+id/touxiang"
-                android:layout_width="@dimen/x100"
-                android:layout_height="@dimen/x100"
+                android:layout_width="@dimen/x80"
+                android:layout_height="@dimen/x80"
                 android:layout_centerInParent="true"
                 android:src="@mipmap/img_nfriend_headshot1"/>
 

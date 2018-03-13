@@ -139,7 +139,7 @@
 
         <!--实名验证页面-->
         <activity
-            android:name="com.bclould.tocotalk.ui.activity.RealNameActivity"
+            android:name="com.bclould.tocotalk.ui.activity.RealNameC1Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 

@@ -1,18 +1,19 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
-import com.bclould.tocotalk.utils.MySharedPreferences;
+import com.bclould.tocotalk.base.MyApp;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,6 +23,7 @@ import butterknife.OnClick;
  * Created by GA on 2017/9/26.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class BankCardBindingActivity extends BaseActivity {
 
     public static final String BANKCARDNUMBER = "bank_card_number";
@@ -41,7 +43,7 @@ public class BankCardBindingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank_card_binding);
         ButterKnife.bind(this);
-        mRealNames = MySharedPreferences.getInstance().getString(RealNameActivity.REALNAME);
+//        mRealNames = MySharedPreferences.getInstance().getString(RealNameC1Activity.REALNAME);
         mRealName.setHint(mRealNames);
         MyApp.getInstance().addActivity(this);
     }
