@@ -41,12 +41,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.Request;
+import com.amazonaws.Response;
 import com.amazonaws.auth.BasicSessionCredentials;
+import com.amazonaws.handlers.RequestHandler2;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.bclould.tocotalk.Presenter.DillDataPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
@@ -212,7 +214,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private RecordIndicator recordIndicator;
     private RecordUtil recordUtil;
     private MediaPlayer mediaPlayer = new MediaPlayer();
-    private DillDataPresenter mDillDataPresenter;
     private String mImagePath;
     private ChatAdapter mChatAdapter;
     private LinearLayoutManager mLayoutManager;
@@ -222,7 +223,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_chat);
         ButterKnife.bind(this);
-        mDillDataPresenter = new DillDataPresenter(this);
         mMgr = new DBManager(this);//开始获取数据库数据
         EventBus.getDefault().register(this);
         initIntent();
@@ -669,7 +669,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         String myUser = UtilTool.getMyUser();
         String name = myUser.substring(0, myUser.indexOf("@"));
         final String postfix = UtilTool.getPostfix(fileName);
-        final String key = name + UtilTool.createtFileName() + fileName;
+        final String key = name + UtilTool.createtFileName() + ".AN." + fileName;
         Bitmap bitmap = null;
         if (postfix.equals("Video")) {
             bitmap = ThumbnailUtils.createVideoThumbnail(path  //url的参数
@@ -692,18 +692,40 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                     Regions regions = Regions.fromName("ap-northeast-2");
                     Region region = Region.getRegion(regions);
                     s3Client.setRegion(region);
-//            TransferManager manager = new TransferManager(s3Client);
+                    s3Client.addRequestHandler(new RequestHandler2() {
+                        @Override
+                        public void beforeRequest(Request<?> request) {
+                            UtilTool.Log("aws", "之前");
+                            Message message = new Message();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("key", key);
+                            bundle.putString("newFile", newFile.getPath());
+                            bundle.putString("path", path);
+                            bundle.putString("postfix", postfix);
+                            message.obj = bundle;
+                            message.what = 1;
+                            handler.sendMessage(message);
+                        }
+
+                        @Override
+                        public void afterResponse(Request<?> request, Response<?> response) {
+                            Message message = new Message();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("key", key);
+                            bundle.putString("newFile", newFile.getPath());
+                            bundle.putString("postfix", postfix);
+                            message.obj = bundle;
+                            message.what = 2;
+                            handler.sendMessage(message);
+                        }
+
+                        @Override
+                        public void afterError(Request<?> request, Response<?> response, Exception e) {
+                            UtilTool.Log("aws", "错误");
+                        }
+                    });
                     PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
                     s3Client.putObject(por);
-                    Message message = new Message();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("key", key);
-                    bundle.putString("newFile", newFile.getPath());
-                    bundle.putString("path", path);
-                    bundle.putString("postfix", postfix);
-                    message.obj = bundle;
-                    message.what = 1;
-                    handler.sendMessage(message);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -714,17 +736,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     private void sendFileMessage(String path, String postfix, String key, String newFile) {
         try {
-
-            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
-            org.jivesoftware.smack.packet.Message message = new org.jivesoftware.smack.packet.Message();
-            VoiceInfo voiceInfo = new VoiceInfo();
-            byte[] bytes = UtilTool.readStream(newFile);
-            String base64 = Base64.encodeToString(bytes);
-            voiceInfo.setElementText(base64);
-            message.addExtension(voiceInfo);
-            message.setBody("[" + postfix + "]:" + key);
-            chat.sendMessage(message);
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(mUser);
             messageInfo.setVoice(newFile);
@@ -741,7 +752,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             } else {
                 messageInfo.setMsgType(TO_FILE_MSG);
             }
-            mMgr.addMessage(messageInfo);
+            int id = mMgr.addMessage(messageInfo);
+            messageInfo.setId(id);
             mMessageList.add(messageInfo);
             mChatAdapter.notifyDataSetChanged();
             scrollToBottom();
@@ -854,6 +866,38 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                     String postfix = bundle.getString("postfix");
                     String newFile = bundle.getString("newFile");
                     sendFileMessage(path, postfix, key, newFile);
+                    break;
+                case 2:
+                    Bundle bundle2 = (Bundle) msg.obj;
+                    String key2 = bundle2.getString("key");
+                    String postfix2 = bundle2.getString("postfix");
+                    String newFile2 = bundle2.getString("newFile");
+                    for (MessageInfo info : mMessageList) {
+                        if (info.getVoice() != null) {
+                            if (info.getVoice().equals(newFile2)) {
+                                try {
+                                    ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+                                    Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
+                                    org.jivesoftware.smack.packet.Message message = new org.jivesoftware.smack.packet.Message();
+                                    VoiceInfo voiceInfo = new VoiceInfo();
+                                    byte[] bytes = UtilTool.readStream(newFile2);
+                                    String base64 = Base64.encodeToString(bytes);
+                                    voiceInfo.setElementText(base64);
+                                    message.addExtension(voiceInfo);
+                                    message.setBody("[" + postfix2 + "]:" + key2);
+                                    chat.sendMessage(message);
+                                    info.setSendStatus(1);
+                                    mMgr.updateMessageHint(info.getId(), 1);
+                                    mChatAdapter.notifyDataSetChanged();
+                                    return;
+                                } catch (Exception e) {
+                                    info.setSendStatus(2);
+                                    mMgr.updateMessageHint(info.getId(), 2);
+                                    mChatAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        }
+                    }
                     break;
             }
         }

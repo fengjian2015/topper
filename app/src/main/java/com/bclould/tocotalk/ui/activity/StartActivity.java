@@ -84,6 +84,7 @@ public class StartActivity extends AppCompatActivity {
                                     }
                                 });
                     } else {
+                        startActivity(new Intent(StartActivity.this, MainActivity.class));
                         Toast.makeText(StartActivity.this, StartActivity.this.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                     }
                 }

@@ -3,6 +3,13 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.bclould.tocotalk">
 
+    <!-- 通过GPS得到精确位置 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!-- 修改WiFi状态，发起WiFi扫描, 需要WiFi信息用于网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <!-- 访问网络的变化, 需要某些信息用于网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -33,6 +40,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:theme">
+        <meta-data
+            android:name="TencentMapSDK"
+            android:value="VKMBZ-GAMWJ-UA5FV-KAXJS-IEHET-QABI7"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -255,6 +265,11 @@
         <activity
             android:name="com.bclould.tocotalk.ui.activity.AddFriendSetActivity"
             android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.activity.LocationActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustPan"/>
 
         <!--账号安全页面-->
         <activity

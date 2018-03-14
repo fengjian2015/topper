@@ -26,7 +26,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 2
-        versionName "2.8"
+        versionName "2.7"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
@@ -90,6 +90,9 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':library')
     compile project(':keyboard')
+    compile files('libs/TencentLocationSdk_v6.2.5.3_r15b3b3cc_20171103_115903.jar')
+    compile files('libs/TencentMapSDK_Raster_v_1.2.8.1.c02ec64.jar')
+    compile files('libs/TencentMapSearch_v1.1.7.1.3e04ee1.jar')
     compile 'com.android.support:appcompat-v7:25.+'
     compile 'com.android.support:cardview-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -117,8 +120,10 @@ dependencies {
     compile 'org.igniterealtime.smack:smack-android:4.2.0'
     compile 'org.igniterealtime.smack:smack-tcp:4.2.0'
     compile 'org.igniterealtime.smack:smack-im:4.2.0'
-    //    compile 'com.codebear.keyboard:emoticons-keyboard:1.0.7'
-//    compile 'com.github.w446108264:XhsEmoticonsKeyboard:2.0.4'
+    compile 'com.jude:easyrecyclerview:4.0.2'
+    compile 'jp.wasabeef:recyclerview-animators:2.2.3'
+    compile 'org.xutils:xutils:3.3.34'
+    compile 'com.mylhyl:acp:1.0.0'
     compile 'com.github.w446108264:AndroidEmoji:1.3-withsource'
     compile 'com.luffykou:android-common-utils:1.1.3'
     compile 'com.github.maning0303:MNPasswordEditText:V1.0.1'

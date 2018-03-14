@@ -39,7 +39,7 @@ public class SimpleAppsGridView extends RelativeLayout {
         mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_photo, "图片"));
         mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_camera, "拍照"));
         mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_video, "视频"));
-        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_file, "文件"));
+//        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_file, "文件"));
         mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_transfer, "转账"));
         mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_red_envelope, "红包"));
         mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_position, "位置"));

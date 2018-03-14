@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.QrCardInfo;
 import com.bclould.tocotalk.ui.fragment.CloudMessageFragment;
 import com.bclould.tocotalk.utils.Constants;
@@ -48,6 +49,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
     @Bind(R.id.bark)
     ImageView mBark;
     private int mCode;
+    private DBManager mMgr;
 
 
     @Override
@@ -56,6 +58,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
         setContentView(R.layout.activity_scan_qr_code);
         ButterKnife.bind(this);
         initView();
+        mMgr = new DBManager(this);
         MyApp.getInstance().addActivity(this);
         Intent intent = getIntent();
         mCode = intent.getIntExtra("code", 0);
@@ -116,9 +119,12 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                     if (!qrCardInfo.getName().contains(Constants.DOMAINNAME)) {
                         name = name + "@" + Constants.DOMAINNAME;
                     }
-                    UtilTool.Log("日志", name);
-                    Roster.getInstanceFor(XmppConnection.getInstance().getConnection()).createEntry(JidCreate.entityBareFrom(name), null, new String[]{"Friends"});
-                    Toast.makeText(this, "发送请求成功", Toast.LENGTH_SHORT).show();
+                    if (!mMgr.findUser(name)) {
+                        Roster.getInstanceFor(XmppConnection.getInstance().getConnection()).createEntry(JidCreate.entityBareFrom(name), null, new String[]{"Friends"});
+                        Toast.makeText(this, "发送请求成功", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "已在好友列表", Toast.LENGTH_SHORT).show();
+                    }
                     finish();
                 } catch (Exception e) {
                     Toast.makeText(this, "发送请求失败", Toast.LENGTH_SHORT).show();

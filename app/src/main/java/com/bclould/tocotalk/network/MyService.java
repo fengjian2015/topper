@@ -5,6 +5,7 @@ import com.bclould.tocotalk.model.AwsInfo;
 import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.CoinInfo;
 import com.bclould.tocotalk.model.DealListInfo;
+import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.model.GoogleInfo;
 import com.bclould.tocotalk.model.GrabRedInfo;
 import com.bclould.tocotalk.model.InOutInfo;
@@ -364,11 +365,9 @@ public interface MyService {
     );
 
     //检测版本号
-    @POST("checkVersion")
-    @FormUrlEncoded
-    Observable<BaseInfo> checkVersion(
-            @Header("Authorization") String token,
-            @Field("version") String version
+    @GET
+    Observable<GitHubInfo> checkVersion(
+            @Url String url
     );
 
     //检测版本号

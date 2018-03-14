@@ -12,7 +12,7 @@
         android:scaleType="fitXY"
         android:src="@mipmap/img_nfriend_headshot1"/>
 
-    <ImageView
+    <com.bclould.tocotalk.ui.widget.BubbleImageView
         android:id="@+id/iv_img"
         android:layout_width="wrap_content"
         android:layout_marginLeft="@dimen/x20"
