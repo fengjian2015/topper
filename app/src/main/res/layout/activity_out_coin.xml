@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/light"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="提币"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+        <TextView
+            android:id="@+id/tv_record"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:paddingRight="@dimen/x20"
+            android:text="记录"
+            android:textColor="@color/blue2"
+            android:textSize="@dimen/x28"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x40"
+        android:layout_marginTop="@dimen/y25"
+        android:text="发送地址"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x28"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/y110"
+            android:layout_marginBottom="@dimen/y15"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_marginTop="@dimen/y20"
+            android:layout_weight="8"
+            app:cardCornerRadius="@dimen/x15">
+
+            <EditText
+                android:id="@+id/et_out_coin_site"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:hint="输入提币地址"
+                android:paddingLeft="@dimen/x20"
+                android:paddingRight="@dimen/x20"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x28"/>
+
+        </android.support.v7.widget.CardView>
+
+        <Button
+            android:id="@+id/btn_selector_site"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/y90"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_weight="3"
+            android:background="@drawable/bg_out_coin_shape"
+            android:text="选择地址"
+            android:textColor="@color/white"
+            android:textSize="@dimen/x28"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x40"
+        android:text="货币数量"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x28"/>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_marginBottom="@dimen/y15"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y15"
+        app:cardCornerRadius="@dimen/x15">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/et_coin_count"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/tv_yu_e"
+                android:background="@android:color/transparent"
+                android:hint="输入货币数量"
+                android:inputType="numberDecimal"
+                android:paddingLeft="@dimen/x20"
+                android:paddingRight="@dimen/x20"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x28"/>
+
+            <TextView
+                android:id="@+id/tv_yu_e"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/tv_coin_count"
+                android:text="余额"
+                android:textSize="@dimen/x28"/>
+
+            <TextView
+                android:id="@+id/tv_coin_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/tv_coin_name"
+                android:text="0"
+                android:textColor="#FF8721"
+                android:textSize="@dimen/x28"/>
+
+            <TextView
+                android:id="@+id/tv_coin_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x20"
+                android:text="BTC"
+                android:textSize="@dimen/x28"/>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x40"
+        android:text="谷歌验证"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x28"/>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_marginBottom="@dimen/y15"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y15"
+        app:cardCornerRadius="@dimen/x15">
+
+        <EditText
+            android:id="@+id/et_google_code"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/tv_yu_e"
+            android:background="@android:color/transparent"
+            android:hint="输入谷歌验证码"
+            android:inputType="number"
+            android:maxLength="6"
+            android:paddingLeft="@dimen/x20"
+            android:paddingRight="@dimen/x20"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x28"/>
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x40"
+        android:text="备注"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x28"/>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_marginBottom="@dimen/y15"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y15"
+        app:cardCornerRadius="@dimen/x15">
+
+        <EditText
+            android:id="@+id/et_remark"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/tv_yu_e"
+            android:background="@android:color/transparent"
+            android:hint="输入备注信息"
+            android:inputType="number"
+            android:maxLength="6"
+            android:paddingLeft="@dimen/x20"
+            android:paddingRight="@dimen/x20"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x28"/>
+
+    </android.support.v7.widget.CardView>
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="@dimen/x450"
+        android:layout_height="@dimen/y80"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/y30"
+        android:background="@drawable/btn_blue_selector"
+        android:text="确认"
+        android:textColor="@color/white"/>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y45"
+        app:cardCornerRadius="@dimen/x15">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/y50"
+            android:layout_marginTop="@dimen/y50"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/x20"
+            android:paddingRight="@dimen/x20">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/icon_remind"
+                android:drawablePadding="@dimen/x10"
+                android:text="1.提币手续费为0.5%，请仔细确认后再确认"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x26"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y10"
+                android:layout_marginLeft="@dimen/x40"
+                android:text="2.每笔转出最小限额100个币，最大限额100000个币，每天转出限额500000个币"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x26"/>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+</LinearLayout>

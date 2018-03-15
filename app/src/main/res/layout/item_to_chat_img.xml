@@ -13,7 +13,7 @@
         android:scaleType="fitXY"
         android:src="@mipmap/img_nfriend_headshot1"/>
 
-    <ImageView
+    <com.bclould.tocotalk.ui.widget.BubbleImageView
         android:id="@+id/iv_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,6 +30,17 @@
         android:layout_marginRight="@dimen/x20"
         android:layout_toLeftOf="@+id/iv_img"
         android:src="@mipmap/icon_fail"
+        android:visibility="visible"/>
+
+    <ImageView
+        android:id="@+id/iv_load"
+        android:layout_width="@dimen/x60"
+        android:layout_height="@dimen/x60"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_toLeftOf="@+id/iv_img"
+        android:background="@drawable/anim_progress"
         android:visibility="visible"/>
 
 </RelativeLayout>

@@ -5,6 +5,7 @@ import com.bclould.tocotalk.model.AwsInfo;
 import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.CoinInfo;
 import com.bclould.tocotalk.model.DealListInfo;
+import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.model.GoogleInfo;
 import com.bclould.tocotalk.model.GrabRedInfo;
 import com.bclould.tocotalk.model.InOutInfo;
@@ -171,7 +172,7 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("coin_id") int id,
             @Field("coinout_address_id") int coinout_address_id,
-            @Field("coinout_number") int number,
+            @Field("coinout_number") float number,
             @Field("google_code") String google_code
     );
 
@@ -364,11 +365,9 @@ public interface MyService {
     );
 
     //检测版本号
-    @POST("checkVersion")
-    @FormUrlEncoded
-    Observable<BaseInfo> checkVersion(
-            @Header("Authorization") String token,
-            @Field("version") String version
+    @GET
+    Observable<GitHubInfo> checkVersion(
+            @Url String url
     );
 
     //检测版本号

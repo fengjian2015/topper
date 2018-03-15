@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
@@ -32,6 +33,7 @@ import com.bclould.tocotalk.model.VoiceInfo;
 import com.bclould.tocotalk.ui.activity.ImageViewActivity;
 import com.bclould.tocotalk.ui.activity.RedPacketActivity;
 import com.bclould.tocotalk.ui.activity.VideoActivity;
+import com.bclould.tocotalk.ui.widget.BubbleImageView;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -258,7 +260,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             Chat chat = manager.createChat(JidCreate.entityBareFrom(user), null);
             chat.sendMessage(message);
             ivWarning.setVisibility(View.GONE);
-            mMgr.updateMessageHint(id);
+            mMgr.updateMessageHint(id, 1);
         } catch (Exception e) {
             e.printStackTrace();
             ivWarning.setVisibility(View.VISIBLE);
@@ -500,7 +502,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             message.addExtension(voiceInfo);
             chat.sendMessage(message);
             ivWarning.setVisibility(View.GONE);
-            mMgr.updateMessageHint(messageInfo.getId());
+            mMgr.updateMessageHint(messageInfo.getId(), 1);
             EventBus.getDefault().post(new MessageEvent("自己发了消息"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -591,9 +593,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
         @Bind(R.id.iv_touxiang)
         ImageView mIvTouxiang;
         @Bind(R.id.iv_img)
-        ImageView mIvImg;
+        BubbleImageView mIvImg;
         @Bind(R.id.iv_warning)
         ImageView mIvWarning;
+        @Bind(R.id.iv_load)
+        ImageView mIvLoad;
 
         ToImgHolder(View view) {
             super(view);
@@ -605,8 +609,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
             Bitmap bitmap = BitmapFactory.decodeFile(messageInfo.getVoice());
             mIvImg.setImageBitmap(bitmap);
             if (messageInfo.getSendStatus() == 1) {
+                mIvWarning.setVisibility(View.GONE);
+                mIvLoad.setVisibility(View.GONE);
+            } else if (messageInfo.getSendStatus() == 2) {
                 mIvWarning.setVisibility(View.VISIBLE);
+                mIvLoad.setVisibility(View.GONE);
             } else {
+                mIvLoad.setVisibility(View.VISIBLE);
                 mIvWarning.setVisibility(View.GONE);
             }
             mIvWarning.setOnClickListener(new View.OnClickListener() {
@@ -615,6 +624,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
 //                    anewSendImg();
                 }
             });
+            AnimationDrawable animationDrawable = (AnimationDrawable) mIvLoad.getBackground();
+            animationDrawable.start();
             mIvImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -637,7 +648,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         @Bind(R.id.iv_touxiang)
         ImageView mIvTouxiang;
         @Bind(R.id.iv_img)
-        ImageView mIvImg;
+        BubbleImageView mIvImg;
 
         FromImgHolder(View view) {
             super(view);
@@ -677,6 +688,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         RelativeLayout mRlVideo;
         @Bind(R.id.iv_warning)
         ImageView mIvWarning;
+        @Bind(R.id.iv_load)
+        ImageView mIvLoad;
 
         ToVideoHolder(View view) {
             super(view);
@@ -686,11 +699,18 @@ public class ChatAdapter extends RecyclerView.Adapter {
         public void setData(final MessageInfo messageInfo) {
             mIvTouxiang.setImageBitmap(mToBitmap);
             mIvVideo.setImageBitmap(BitmapFactory.decodeFile(messageInfo.getVoice()));
-            if (messageInfo.getSendStatus() == 1) {
+            if (messageInfo.getSendStatus() == 0) {
+                mIvLoad.setVisibility(View.VISIBLE);
+                mIvWarning.setVisibility(View.GONE);
+            } else if (messageInfo.getSendStatus() == 2) {
                 mIvWarning.setVisibility(View.VISIBLE);
+                mIvLoad.setVisibility(View.GONE);
             } else {
                 mIvWarning.setVisibility(View.GONE);
+                mIvLoad.setVisibility(View.GONE);
             }
+            AnimationDrawable animationDrawable = (AnimationDrawable) mIvLoad.getBackground();
+            animationDrawable.start();
             mRlVideo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

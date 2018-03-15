@@ -3,7 +3,7 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/light"
+              android:background="#EEEEEE"
               android:orientation="vertical">
 
     <RelativeLayout
@@ -23,109 +23,71 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="我的资产"
+            android:text="资产"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
-        <!--<TextView
-            android:id="@+id/tv_bank_card"
+        <TextView
+            android:id="@+id/tv_subscription"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:gravity="center"
-            android:padding="@dimen/x20"
-            android:text="银行卡"
+            android:paddingRight="@dimen/x20"
+            android:text="期望币种"
             android:textColor="@color/blue2"
-            android:textSize="@dimen/x24"/>-->
+            android:textSize="@dimen/x28"/>
 
     </RelativeLayout>
 
     <TextView
         style="@style/HCutOffRule"/>
 
-    <LinearLayout
-        android:id="@+id/top_menu"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white"
-        android:gravity="center"
-        android:orientation="horizontal">
+    <android.support.v7.widget.CardView
+        android:layout_width="@dimen/x500"
+        android:layout_height="@dimen/y90"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/y30"
+        app:cardBackgroundColor="#CCCFD2"
+        app:cardCornerRadius="@dimen/x40">
 
-        <RelativeLayout
-            android:layout_width="@dimen/x120"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="我的钱包"
-                android:textColor="@drawable/text_blue_selector"
-                android:textSize="@dimen/x26"/>
-
-            <TextView
-                android:id="@+id/xx"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y4"
-                android:layout_alignParentBottom="true"
-                android:background="@color/blue2"/>
-
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="@dimen/x120"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/x120">
+            android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/et_coin_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:background="@android:color/transparent"
+                android:hint="输入币种名称"
+                android:maxLength="25"
+                android:paddingLeft="@dimen/x30"
+                android:paddingRight="@dimen/x30"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x35"/>
+
+            <ImageView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="账单明细"
-                android:textColor="@drawable/text_blue_selector"
-                android:textSize="@dimen/x26"/>
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/x40"
+                android:layout_weight="1"
+                android:src="@mipmap/icon_seek"/>
 
-            <TextView
-                android:id="@+id/xx2"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y4"
-                android:layout_alignParentBottom="true"
-                android:background="@color/blue2"
-                android:visibility="gone"/>
+        </LinearLayout>
 
-        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 
-        <RelativeLayout
-            android:layout_width="@dimen/x120"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/x120">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="充提记录"
-                android:textColor="@drawable/text_blue_selector"
-                android:textSize="@dimen/x26"/>
-
-            <TextView
-                android:id="@+id/xx3"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y4"
-                android:layout_alignParentBottom="true"
-                android:background="@color/blue2"
-                android:visibility="gone"/>
-
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v4.view.ViewPager>
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/y10">
+    </android.support.v7.widget.RecyclerView>
+
 
 </LinearLayout>

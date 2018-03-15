@@ -10,8 +10,7 @@ import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.MyAssetsInfo;
-import com.bclould.tocotalk.ui.activity.CurrencyInOutActivity;
-import com.bclould.tocotalk.utils.UtilTool;
+import com.bclould.tocotalk.ui.activity.OutCoinActivity;
 
 import java.util.List;
 
@@ -184,7 +183,7 @@ public class CloudCoinRVAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent();
-                    intent.setClass(mActivity, CurrencyInOutActivity.class);
+                    intent.setClass(mActivity, OutCoinActivity.class);
                     intent.putExtra("id", mLtcBean.getId());
                     intent.putExtra("name", mLtcBean.getName());
                     intent.putExtra("total", mLtcBean.getTotal());
@@ -216,7 +215,7 @@ public class CloudCoinRVAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent();
-                    intent.setClass(mActivity, CurrencyInOutActivity.class);
+                    intent.setClass(mActivity, OutCoinActivity.class);
                     intent.putExtra("id", mLtcBean.getId());
                     intent.putExtra("name", mLtcBean.getName());
                     intent.putExtra("total", mLtcBean.getTotal());
@@ -246,7 +245,7 @@ public class CloudCoinRVAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent();
-                    intent.setClass(mActivity, CurrencyInOutActivity.class);
+                    intent.setClass(mActivity, OutCoinActivity.class);
                     intent.putExtra("id", mLtcBean.getId());
                     intent.putExtra("name", mLtcBean.getName());
                     intent.putExtra("total", mLtcBean.getTotal());
@@ -276,7 +275,7 @@ public class CloudCoinRVAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent();
-                    intent.setClass(mActivity, CurrencyInOutActivity.class);
+                    intent.setClass(mActivity, OutCoinActivity.class);
                     intent.putExtra("id", mLtcBean.getId());
                     intent.putExtra("name", mLtcBean.getDisplay());
                     intent.putExtra("total", mLtcBean.getTotal());
@@ -306,7 +305,7 @@ public class CloudCoinRVAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent();
-                    intent.setClass(mActivity, CurrencyInOutActivity.class);
+                    intent.setClass(mActivity, OutCoinActivity.class);
                     intent.putExtra("id", mLtcBean.getId());
                     intent.putExtra("name", mLtcBean.getName());
                     intent.putExtra("total", mLtcBean.getTotal());
@@ -336,7 +335,7 @@ public class CloudCoinRVAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent();
-                    intent.setClass(mActivity, CurrencyInOutActivity.class);
+                    intent.setClass(mActivity, OutCoinActivity.class);
                     intent.putExtra("id", mLtcBean.getId());
                     intent.putExtra("name", mLtcBean.getName());
                     intent.putExtra("total", mLtcBean.getTotal());
@@ -366,7 +365,7 @@ public class CloudCoinRVAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent();
-                    intent.setClass(mActivity, CurrencyInOutActivity.class);
+                    intent.setClass(mActivity, OutCoinActivity.class);
                     intent.putExtra("id", mLtcBean.getId());
                     intent.putExtra("name", mLtcBean.getName());
                     intent.putExtra("total", mLtcBean.getTotal());
@@ -396,7 +395,7 @@ public class CloudCoinRVAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent();
-                    intent.setClass(mActivity, CurrencyInOutActivity.class);
+                    intent.setClass(mActivity, OutCoinActivity.class);
                     intent.putExtra("id", mLtcBean.getId());
                     intent.putExtra("name", mLtcBean.getName());
                     intent.putExtra("total", mLtcBean.getTotal());

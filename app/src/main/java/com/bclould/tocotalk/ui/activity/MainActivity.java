@@ -27,6 +27,7 @@ import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.FragmentFactory;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.BaseInfo;
+import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.network.DownLoadApk;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
@@ -177,20 +178,21 @@ public class MainActivity extends BaseActivity {
         if (UtilTool.isNetworkAvailable(this)) {
             RetrofitUtil.getInstance(this)
                     .getServer()
-                    .checkVersion(UtilTool.getToken(), UtilTool.getVersionCode(this))
+                    .checkVersion("https://api.github.com/repos/bclould/tocotalk/releases/latest")
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
+                    .subscribe(new Observer<GitHubInfo>() {
                         @Override
                         public void onSubscribe(Disposable d) {
 
                         }
 
                         @Override
-                        public void onNext(BaseInfo baseInfo) {
-                            if (baseInfo.getStatus() == 1) {
-                                showUpdateDialog(baseInfo.getData().getUrl());
-                            }
+                        public void onNext(GitHubInfo baseInfo) {
+                            float version = Float.parseFloat(UtilTool.getVersionCode(MainActivity.this));
+                            float tag = Float.parseFloat(baseInfo.getTag_name());
+                            if (version < tag)
+                                showUpdateDialog(baseInfo);
                         }
 
                         @Override
@@ -211,7 +213,10 @@ public class MainActivity extends BaseActivity {
     }
 
     //显示Dialog
-    private void showUpdateDialog(final String url) {
+    private void showUpdateDialog(GitHubInfo gitHubInfo) {
+        final String url = gitHubInfo.getAssets().get(0).getBrowser_download_url();
+        final String appName = gitHubInfo.getName();
+        final String body = gitHubInfo.getBody();
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle("检测到有新版本！");
@@ -232,7 +237,7 @@ public class MainActivity extends BaseActivity {
                     return;
                 }
 
-                DownLoadApk.download(MainActivity.this, url, "修复二维码红包闪退", "TocoTalk");
+                DownLoadApk.download(MainActivity.this, url, body, appName);
                 deleteCacheDialog.dismiss();
             }
         });
@@ -271,7 +276,7 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
-    private void showDialog() {
+    public void showDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(this);
             mProgressDialog.setCanceledOnTouchOutside(false);
@@ -281,7 +286,7 @@ public class MainActivity extends BaseActivity {
         mProgressDialog.show();
     }
 
-    private void hideDialog() {
+    public void hideDialog() {
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
             mProgressDialog = null;
@@ -334,6 +339,7 @@ public class MainActivity extends BaseActivity {
                         mHandler.sendMessage(message);
                     }
                 } catch (Exception e) {
+                    EventBus.getDefault().post(new MessageEvent("登录失败"));
                     Message message = new Message();
                     mHandler.sendMessage(message);
                     message.what = 0;

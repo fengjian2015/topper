@@ -13,6 +13,7 @@ import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.UserInfo;
+import com.bclould.tocotalk.ui.activity.MainActivity;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
@@ -172,6 +173,7 @@ public class XmppConnection {
             }
         } catch (Exception xe) {
             EventBus.getDefault().post(new MessageEvent("登录失败"));
+            MainActivity.getInstance().hideDialog();
             UtilTool.Log("fsdafa", "连接失败");
             xe.printStackTrace();
             connection = null;

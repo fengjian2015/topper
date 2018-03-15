@@ -2,8 +2,10 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -29,9 +31,8 @@ import butterknife.OnClick;
  * Created by GA on 2017/11/3.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class OutCoinSiteActivity extends BaseActivity {
-
-
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.tv_coins)

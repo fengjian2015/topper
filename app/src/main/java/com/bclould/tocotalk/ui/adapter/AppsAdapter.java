@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.AppInfo;
+import com.bclould.tocotalk.ui.activity.LocationActivity;
 import com.bclould.tocotalk.ui.activity.SendRedPacketActivity;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.luck.picture.lib.entity.LocalMedia;
@@ -87,8 +88,10 @@ public class AppsAdapter extends BaseAdapter {
                         EventBus.getDefault().post(new MessageEvent("打开相机"));
                     } else if (name.equals("文件")) {
                         EventBus.getDefault().post(new MessageEvent("打开文件管理"));
-                    }else if(name.equals("视频")){
+                    } else if (name.equals("视频")) {
                         EventBus.getDefault().post(new MessageEvent("打开摄像机"));
+                    } else if (name.equals("位置")) {
+                        mContext.startActivity(new Intent(mContext, LocationActivity.class));
                     }
                 }
             });

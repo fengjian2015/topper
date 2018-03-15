@@ -34,7 +34,7 @@ public class DBManager {
     }
 
 
-    public void addMessage(MessageInfo messageInfo) {
+    public int addMessage(MessageInfo messageInfo) {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("count", messageInfo.getCount());
@@ -52,9 +52,10 @@ public class DBManager {
         values.put("voiceTime", messageInfo.getVoiceTime());
         values.put("sendStatus", messageInfo.getSendStatus());
         values.put("msgType", messageInfo.getMsgType());
-        db.insert("MessageRecord", null, values);
+        int id = (int) db.insert("MessageRecord", null, values);
         UtilTool.Log("日志", "添加成功" + messageInfo.toString());
         db.close();
+        return id;
     }
 
     public long queryMessageCount(String user) {
@@ -382,10 +383,10 @@ public class DBManager {
 //        db.close();
     }
 
-    public void updateMessageHint(int id) {
+    public void updateMessageHint(int id, int status) {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("sendStatus", 0);
+        values.put("sendStatus", 1);
         db.update("MessageRecord", values, "id=?", new String[]{id + ""});
         db.close();
     }

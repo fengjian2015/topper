@@ -1,23 +1,40 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.bclould.tocotalk.Presenter.SubscribeCoinPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
-import com.bclould.tocotalk.ui.adapter.MyAssetsVPAdapter;
+import com.bclould.tocotalk.model.MyAssetsInfo;
+import com.bclould.tocotalk.ui.adapter.MyWalletRVAapter;
+import com.bclould.tocotalk.utils.UtilTool;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 
 /**
  * Created by GA on 2017/9/22.
@@ -26,162 +43,130 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class MyAssetsActivity extends BaseActivity {
 
-
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.xx)
-    TextView mXx;
-    @Bind(R.id.xx2)
-    TextView mXx2;
-    @Bind(R.id.top_menu)
-    LinearLayout mTopMenu;
-    @Bind(R.id.viewPager)
-    ViewPager mViewPager;
-    @Bind(R.id.xx3)
-    TextView mXx3;
+    @Bind(R.id.tv_subscription)
+    TextView mTvSubscription;
+    @Bind(R.id.et_coin_name)
+    EditText mEtCoinName;
+    @Bind(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+    List<MyAssetsInfo.DataBean> mDataList = new ArrayList();
+    private MyWalletRVAapter mMyWalletRVAapter;
+    private ViewGroup mPopupWindowView;
+    private PopupWindow mPopupWindow;
 
     @Override
+
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_my_assets);
-
         ButterKnife.bind(this);
-
-        //初始化界面
-        initInterface();
-
         MyApp.getInstance().addActivity(this);
-
+        initRecyclerView();
+        initData();
     }
 
-
-    //初始化界面
-    private void initInterface() {
-        mViewPager.setCurrentItem(0);
-        setSelector(0);
-        initTopMenu();
-        initViewPager();
-    }
-
-    //初始化ViewPager
-    private void initViewPager() {
-
-        mViewPager.setAdapter(new MyAssetsVPAdapter(getSupportFragmentManager()));
-
-        mViewPager.setOffscreenPageLimit(3);
-
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+    private void initData() {
+        SubscribeCoinPresenter subscribeCoinPresenter = new SubscribeCoinPresenter(this);
+        subscribeCoinPresenter.getMyAssets(new SubscribeCoinPresenter.CallBack() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-                setSelector(position);
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
+            public void send(List<MyAssetsInfo.DataBean> info) {
+                mDataList.addAll(info);
+                mMyWalletRVAapter.notifyDataSetChanged();
             }
         });
-
-
     }
 
-    //初始化菜单
-    private void initTopMenu() {
-
-        for (int i = 0; i < mTopMenu.getChildCount(); i++) {
-
-            final View childAt = mTopMenu.getChildAt(i);
-
-            childAt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    int index = mTopMenu.indexOfChild(childAt);
-
-                    setSelector(index);
-
-                    mViewPager.setCurrentItem(index);
-
-                }
-            });
-
-
-        }
-
-    }
-
-    //菜单选项选中处理
-    private void setSelector(int index) {
-        for (int i = 0; i < mTopMenu.getChildCount(); i++) {
-
-            if (i == index) {
-
-                mTopMenu.getChildAt(i).setSelected(true);
-
-                switch (index) {
-
-                    case 0:
-
-                        mXx.setVisibility(View.VISIBLE);
-
-                        mXx2.setVisibility(View.INVISIBLE);
-
-                        mXx3.setVisibility(View.INVISIBLE);
-
-                        break;
-                    case 1:
-
-                        mXx.setVisibility(View.INVISIBLE);
-
-                        mXx2.setVisibility(View.VISIBLE);
-
-                        mXx3.setVisibility(View.INVISIBLE);
-
-                        break;
-                    case 2:
-
-                        mXx.setVisibility(View.INVISIBLE);
-
-                        mXx2.setVisibility(View.INVISIBLE);
-
-                        mXx3.setVisibility(View.VISIBLE);
-
-                        break;
-
-                }
-
-            } else {
-
-                mTopMenu.getChildAt(i).setSelected(false);
-
+    private void initRecyclerView() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(15));
+        mMyWalletRVAapter = new MyWalletRVAapter(this, mDataList);
+        mRecyclerView.setAdapter(mMyWalletRVAapter);
+        mMyWalletRVAapter.setOnItemClickListener(new MyWalletRVAapter.OnItemClickListener() {
+            @Override
+            public void onClick(int position, MyAssetsInfo.DataBean dataBean) {
+                View childAt = mRecyclerView.getChildAt(position);
+                initPopupWindow(childAt, dataBean);
             }
-        }
+        });
     }
 
-    //点击事件的处理
-    //点击事件的处理
-    @OnClick({R.id.bark})
+    private void initPopupWindow(View view, final MyAssetsInfo.DataBean dataBean) {
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int widthPixels = dm.widthPixels;
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        UtilTool.Log("坐标", "x" + location[0] + ":y" + location[1]);
+        mPopupWindowView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.pop_assets, null);
+        mPopupWindow = new PopupWindow(mPopupWindowView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
+        mPopupWindow.setAnimationStyle(R.style.AnimationRightFade);
+        mPopupWindow.showAtLocation(view, Gravity.NO_GRAVITY, widthPixels - mPopupWindow.getWidth(), location[1]);
+        final Button inCoin = (Button) mPopupWindowView.findViewById(R.id.btn_in_coin);
+        inCoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyAssetsActivity.this, InCoinActivity.class);
+                intent.putExtra("id", dataBean.getId());
+                intent.putExtra("coinName", dataBean.getName());
+                intent.putExtra("over", dataBean.getOver());
+                startActivity(intent);
+            }
+        });
+        Button outCoin = (Button) mPopupWindowView.findViewById(R.id.btn_out_coin);
+        outCoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyAssetsActivity.this, OutCoinActivity.class);
+                intent.putExtra("id", dataBean.getId());
+                intent.putExtra("coinName", dataBean.getName());
+                intent.putExtra("over", dataBean.getOver());
+                startActivity(intent);
+            }
+        });
+        Button transferAccounts = (Button) mPopupWindowView.findViewById(R.id.btn_transfer_accounts);
+        transferAccounts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MyAssetsActivity.this, TransferAccountsActivity.class);
+                intent.putExtra("id", dataBean.getId());
+                intent.putExtra("coinName", dataBean.getName());
+                intent.putExtra("over", dataBean.getOver());
+                startActivity(intent);
+            }
+        });
+    }
+
+    @OnClick({R.id.bark, R.id.tv_subscription, R.id.et_coin_name})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
-
                 finish();
+                break;
+            case R.id.tv_subscription:
+                startActivity(new Intent(this, SubscribeCoinActivity.class));
+                break;
+            case R.id.et_coin_name:
 
                 break;
-            /*case R.id.tv_bank_card:
+        }
+    }
 
-                startActivity(new Intent(this, BankCardActivity.class));
+    class SpaceItemDecoration extends RecyclerView.ItemDecoration {
+        int mSpace;
 
-                break;*/
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+            outRect.bottom = mSpace;
+            if (parent.getChildAdapterPosition(view) == 0) {
+                outRect.top = mSpace;
+            }
+        }
+
+        public SpaceItemDecoration(int space) {
+            this.mSpace = space;
         }
     }
 }

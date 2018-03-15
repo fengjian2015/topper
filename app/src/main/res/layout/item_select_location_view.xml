@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/rl_select_location"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y120">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/x20">
+
+        <TextView
+            android:id="@+id/location_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="北京"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/x35"/>
+
+        <TextView
+            android:id="@+id/location_addr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/location_name"
+            android:text="北京天安门"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="@dimen/x28"/>
+
+    </RelativeLayout>
+
+    <CheckBox
+        android:id="@+id/location_checkbox"
+        style="@style/CustomCheckboxTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/x20"/>
+
+</RelativeLayout>
