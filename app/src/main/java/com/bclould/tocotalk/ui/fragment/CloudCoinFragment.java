@@ -1,5 +1,6 @@
 package com.bclould.tocotalk.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.ui.activity.MainActivity;
+import com.bclould.tocotalk.ui.activity.MyAssetsActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -93,6 +95,7 @@ public class CloudCoinFragment extends Fragment {
             case R.id.ll_bank_card:
                 break;
             case R.id.ll_asserts:
+                startActivity(new Intent(getActivity(), MyAssetsActivity.class));
                 break;
             case R.id.ll_exchange:
                 break;

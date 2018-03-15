@@ -172,7 +172,7 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("coin_id") int id,
             @Field("coinout_address_id") int coinout_address_id,
-            @Field("coinout_number") int number,
+            @Field("coinout_number") float number,
             @Field("google_code") String google_code
     );
 

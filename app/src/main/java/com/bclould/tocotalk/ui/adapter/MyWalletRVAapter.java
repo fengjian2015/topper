@@ -1,18 +1,16 @@
 package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.MyAssetsInfo;
-import com.bclould.tocotalk.ui.activity.CurrencyInOutActivity;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -28,6 +26,7 @@ public class MyWalletRVAapter extends RecyclerView.Adapter {
 
     private final Context mContext;
     private final List<MyAssetsInfo.DataBean> mBeanList;
+    private OnItemClickListener mOnItemClickListener;
 
     public MyWalletRVAapter(Context context, List<MyAssetsInfo.DataBean> beanList) {
         mContext = context;
@@ -47,7 +46,7 @@ public class MyWalletRVAapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.setData(mBeanList.get(position));
+        viewHolder.setData(mBeanList.get(position), position);
     }
 
     @Override
@@ -59,41 +58,43 @@ public class MyWalletRVAapter extends RecyclerView.Adapter {
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
-
         @Bind(R.id.iv_coin)
         ImageView mIvCoin;
-        @Bind(R.id.coin_name)
-        TextView mCoinName;
+        @Bind(R.id.tv_coin_name)
+        TextView mTvCoinName;
+        @Bind(R.id.tv_coin_value)
+        TextView mTvCoinValue;
         @Bind(R.id.tv_coin_count)
         TextView mTvCoinCount;
-        @Bind(R.id.btn_tixian)
-        Button mBtnTixian;
+        @Bind(R.id.rl_popup)
+        RelativeLayout mRlPopup;
+
         private MyAssetsInfo.DataBean mLtcBean;
 
         ViewHolder(View view) {
             super(view);
-
             ButterKnife.bind(this, view);
-
-            mBtnTixian.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, CurrencyInOutActivity.class);
-                    intent.putExtra("id", mLtcBean.getId());
-                    intent.putExtra("name", mLtcBean.getName());
-                    intent.putExtra("total", mLtcBean.getTotal());
-                    mContext.startActivity(intent);
-
-                }
-            });
-
         }
 
-        public void setData(MyAssetsInfo.DataBean ltcBean) {
+        public void setData(final MyAssetsInfo.DataBean ltcBean, final int position) {
             mLtcBean = ltcBean;
             Glide.with(mContext).load(ltcBean.getLogo()).into(mIvCoin);
             mTvCoinCount.setText(ltcBean.getTotal());
-            mCoinName.setText(ltcBean.getName());
+            mTvCoinName.setText(ltcBean.getName());
+            mRlPopup.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mOnItemClickListener.onClick(position, ltcBean);
+                }
+            });
         }
+    }
+
+    public interface OnItemClickListener {
+        void onClick(int position, MyAssetsInfo.DataBean dataBean);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
     }
 }
