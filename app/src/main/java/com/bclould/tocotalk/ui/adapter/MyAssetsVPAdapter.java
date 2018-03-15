@@ -1,5 +1,7 @@
 package com.bclould.tocotalk.ui.adapter;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -15,13 +17,13 @@ import java.util.List;
  * Created by GA on 2017/9/22.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class MyAssetsVPAdapter extends FragmentPagerAdapter {
 
     List<Fragment> mFragmentList = new ArrayList<>();
 
     public MyAssetsVPAdapter(FragmentManager fm) {
         super(fm);
-
         mFragmentList.add(MyWalletFragment.getInstance());
         mFragmentList.add(BillDataFragment.getInstance());
         mFragmentList.add(InOUtDataFragment.getInstance());

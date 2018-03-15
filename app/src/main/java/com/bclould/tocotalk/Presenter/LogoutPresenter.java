@@ -1,8 +1,10 @@
 package com.bclould.tocotalk.Presenter;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
@@ -28,6 +30,7 @@ import static com.bclould.tocotalk.Presenter.LoginPresenter.TOKEN;
  * Created by GA on 2017/11/21.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class LogoutPresenter {
 
     private final SystemSetActivity mSystemSetActivity;
@@ -35,7 +38,6 @@ public class LogoutPresenter {
 
     public LogoutPresenter(SystemSetActivity systemSetActivity) {
         mSystemSetActivity = systemSetActivity;
-        logout();
     }
 
     private void showDialog() {
@@ -54,7 +56,7 @@ public class LogoutPresenter {
         }
     }
 
-    private void logout() {
+    public void logout() {
         if (UtilTool.isNetworkAvailable(mSystemSetActivity)) {
             showDialog();
             RetrofitUtil.getInstance(mSystemSetActivity)

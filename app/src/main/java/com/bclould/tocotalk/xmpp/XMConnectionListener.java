@@ -2,6 +2,8 @@ package com.bclould.tocotalk.xmpp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -16,6 +18,7 @@ import java.util.TimerTask;
 /**
  * 连接监听类
  */
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class XMConnectionListener implements ConnectionListener {
     private final Context mContext;
     private Timer tExit;
@@ -55,10 +58,7 @@ public class XMConnectionListener implements ConnectionListener {
     @Override
     public void connectionClosedOnError(Exception e) {
         Log.i("XMConnectionListener", "连接关闭异常");
-        Intent intent = new Intent();
-        intent.setAction("XMPPConnectionListener");
-        intent.putExtra("type", false);
-        mContext.sendBroadcast(intent);
+
         // 判断账号已被登录
         boolean error = e.getMessage().equals("stream:error (conflict)");
         if (!error) {

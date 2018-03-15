@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.FragmentFactory;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.BaseInfo;
@@ -31,7 +32,6 @@ import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.MessageEvent;
-import com.bclould.tocotalk.utils.StatusBarCompat;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XMConnectionListener;
 import com.bclould.tocotalk.xmpp.XmppConnection;
@@ -52,7 +52,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @Bind(R.id.main_fl)
     FrameLayout mMainFl;
@@ -108,7 +108,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        StatusBarCompat.setImmersionStateMode(this);
+//        StatusBarCompat.setImmersionStateMode(this);
+
 
         setContentView(R.layout.activity_main);
 
@@ -307,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         hideDialog();
         Map<Integer, Fragment> map = FragmentFactory.mMainMap;
-        FragmentFactory.getInstanes().setNull();
+        FragmentFactory.getInstanes(this).setNull();
         for (int i : map.keySet()) {
             mSupportFragmentManager.beginTransaction().remove(map.get(i));
             mSupportFragmentManager.beginTransaction().hide(map.get(i));
@@ -381,7 +382,7 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentTransaction ft = mSupportFragmentManager.beginTransaction();
 
-        FragmentFactory fragmentFactory = FragmentFactory.getInstanes();
+        FragmentFactory fragmentFactory = FragmentFactory.getInstanes(this);
 
         Fragment LastFragment = fragmentFactory.createMainFragment(lastIndex);
 
@@ -471,4 +472,5 @@ public class MainActivity extends AppCompatActivity {
             startActivity(home);
         }
     }
+
 }

@@ -87,6 +87,8 @@ public class AppsAdapter extends BaseAdapter {
                         EventBus.getDefault().post(new MessageEvent("打开相机"));
                     } else if (name.equals("文件")) {
                         EventBus.getDefault().post(new MessageEvent("打开文件管理"));
+                    }else if(name.equals("视频")){
+                        EventBus.getDefault().post(new MessageEvent("打开摄像机"));
                     }
                 }
             });

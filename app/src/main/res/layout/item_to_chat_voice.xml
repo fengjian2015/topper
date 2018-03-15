@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/x20">
+
+    <ImageView
+        android:id="@+id/iv_touxiang"
+        android:layout_width="@dimen/x80"
+        android:layout_height="@dimen/x80"
+        android:layout_alignParentRight="true"
+        android:scaleType="fitXY"
+        android:src="@mipmap/img_nfriend_headshot1"/>
+
+
+    <TextView
+        android:id="@+id/tv_voice_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_toLeftOf="@+id/rl_voice"
+        android:text="5''"
+        android:textSize="@dimen/x24"/>
+
+    <ImageView
+        android:id="@+id/iv_warning"
+        android:layout_width="@dimen/x60"
+        android:layout_height="@dimen/x60"
+        android:layout_toLeftOf="@+id/tv_voice_time"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/icon_fail"
+        android:visibility="visible"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_voice"
+        android:layout_toLeftOf="@+id/iv_touxiang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/x20"
+        android:background="@drawable/img_chat_bg">
+
+        <TextView
+            android:id="@+id/iv_voice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:maxLength="60"
+            android:text=""/>
+
+        <ImageView
+            android:id="@+id/iv_anim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

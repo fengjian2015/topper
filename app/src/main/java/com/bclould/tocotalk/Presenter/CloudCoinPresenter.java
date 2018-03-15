@@ -65,7 +65,7 @@ public class CloudCoinPresenter {
                         @Override
                         public void onNext(@NonNull MyAssetsInfo myAssetsInfo) {
                             if(myAssetsInfo.getStatus() == 1){
-                                mCloudCoinFragment.setData(myAssetsInfo.getData());
+//                                mCloudCoinFragment.setData(myAssetsInfo.getData());
                             }
                             hideDialog();
                         }

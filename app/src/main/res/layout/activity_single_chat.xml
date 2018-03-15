@@ -9,17 +9,17 @@
 
     <RelativeLayout
         android:id="@+id/rl_outer"
-        android:clickable="true"
-        android:focusable="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true">
 
         <LinearLayout
             android:id="@+id/ll_chat"
-            android:clickable="false"
-            android:focusable="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clickable="false"
+            android:focusable="false"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -69,8 +69,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:visibility="gone"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:id="@+id/rl_order_intro"
@@ -444,14 +444,28 @@
 
             </LinearLayout>
 
-            <com.bclould.tocotalk.ui.widget.LoadMoreListView
-                android:id="@+id/lv_message"
-                android:background="@color/light"
+            <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                android:id="@+id/refresh_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@null">
-            </com.bclould.tocotalk.ui.widget.LoadMoreListView>
+                android:layout_height="match_parent">
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:background="@color/light"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <!--<com.bclould.tocotalk.ui.widget.LoadMoreListView
+                    android:id="@+id/lv_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/light"
+                    android:divider="@null">
+                </com.bclould.tocotalk.ui.widget.LoadMoreListView>-->
+
+            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
         </LinearLayout>
 
     </RelativeLayout>

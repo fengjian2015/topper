@@ -1,8 +1,10 @@
 package com.bclould.tocotalk.ui.fragment;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Base64;
@@ -25,7 +27,6 @@ import com.bclould.tocotalk.ui.activity.ScanQRCodeActivity;
 import com.bclould.tocotalk.ui.activity.SendQRCodeRedActivity;
 import com.bclould.tocotalk.ui.adapter.CloudMessageVPAdapter;
 import com.bclould.tocotalk.utils.Constants;
-import com.bclould.tocotalk.utils.StatusBarCompat;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.google.gson.Gson;
 
@@ -39,26 +40,25 @@ import static android.app.Activity.RESULT_OK;
  * Created by GA on 2017/9/19.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class CloudMessageFragment extends Fragment {
 
-    @Bind(R.id.cloud_circle_menu)
-    LinearLayout mCloudCircleMenu;
-    @Bind(R.id.cloud_circle_add)
-    RelativeLayout mCloudCircleAdd;
-    @Bind(R.id.cloud_circle_vp)
-    ViewPager mCloudCircleVp;
-    @Bind(R.id.yunxin_xx)
-    TextView mYunxinXx;
-    @Bind(R.id.haoyou_xx)
-    TextView mHaoyouXx;
-    @Bind(R.id.dongtai_xx)
-    TextView mDongtaiXx;
 
     public static CloudMessageFragment instance = null;
     @Bind(R.id.status_bar_fix)
     View mStatusBarFix;
     @Bind(R.id.xx)
     TextView mXx;
+    @Bind(R.id.yunxin_xx)
+    TextView mYunxinXx;
+    @Bind(R.id.haoyou_xx)
+    TextView mHaoyouXx;
+    @Bind(R.id.cloud_circle_menu)
+    LinearLayout mCloudCircleMenu;
+    @Bind(R.id.cloud_circle_add)
+    RelativeLayout mCloudCircleAdd;
+    @Bind(R.id.cloud_circle_vp)
+    ViewPager mCloudCircleVp;
     private DisplayMetrics mDm;
     private int mHeightPixels;
     private ViewGroup mView;
@@ -94,7 +94,7 @@ public class CloudMessageFragment extends Fragment {
 
         getPhoneSize();
 
-        mStatusBarFix.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, StatusBarCompat.getStateBarHeight(getActivity())));//填充状态栏
+//        mStatusBarFix.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, StatusBarCompat.getStateBarHeight(getActivity())));//填充状态栏
 
         setSelector(0);
 
@@ -111,7 +111,6 @@ public class CloudMessageFragment extends Fragment {
         CloudMessageVPAdapter cloudMessageVPAdapter = new CloudMessageVPAdapter(getChildFragmentManager());
 
         mCloudCircleVp.setAdapter(cloudMessageVPAdapter);
-        mCloudCircleVp.setOffscreenPageLimit(3);
 
         mCloudCircleVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -121,9 +120,7 @@ public class CloudMessageFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-                /*if(position == 1){
-                    EventBus.getDefault().post(new MessageEvent(3));
-                }*/
+
                 setSelector(position);
             }
 
@@ -175,8 +172,6 @@ public class CloudMessageFragment extends Fragment {
 
                         mHaoyouXx.setVisibility(View.INVISIBLE);
 
-                        mDongtaiXx.setVisibility(View.INVISIBLE);
-
                         break;
                     case 1:
 
@@ -184,19 +179,7 @@ public class CloudMessageFragment extends Fragment {
 
                         mHaoyouXx.setVisibility(View.VISIBLE);
 
-                        mDongtaiXx.setVisibility(View.INVISIBLE);
-
                         break;
-                    case 2:
-
-                        mYunxinXx.setVisibility(View.INVISIBLE);
-
-                        mHaoyouXx.setVisibility(View.INVISIBLE);
-
-                        mDongtaiXx.setVisibility(View.VISIBLE);
-
-                        break;
-
                 }
 
             } else {
@@ -255,6 +238,7 @@ public class CloudMessageFragment extends Fragment {
         popChildClick();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

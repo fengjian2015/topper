@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/y8"
-                android:text="@string/trade"
+                android:text="发现"
                 android:textColor="@drawable/menu_text_color_selector"
                 android:textSize="@dimen/x26"/>
 
@@ -89,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/y8"
-                android:text="@string/exchange"
+                android:text="钱包"
                 android:textColor="@drawable/menu_text_color_selector"
                 android:textSize="@dimen/x26"/>
 

@@ -1,8 +1,10 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -20,6 +22,7 @@ import butterknife.OnClick;
  * Created by GA on 2017/10/11.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class PrivateRightsActivity extends BaseActivity {
 
     private static final String PHONEADDRESSLIST = "phone_address_list";

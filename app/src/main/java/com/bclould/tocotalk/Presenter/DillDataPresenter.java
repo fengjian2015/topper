@@ -9,6 +9,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.AwsInfo;
 import com.bclould.tocotalk.model.InOutInfo;
 import com.bclould.tocotalk.model.TransferInfo;
+import com.bclould.tocotalk.model.UrlInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.UtilTool;
@@ -126,7 +127,6 @@ public class DillDataPresenter {
 
     public void getSessionToken(final CallBack3 callBack3) {
         if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .getSessionToken(UtilTool.getToken())
@@ -140,7 +140,6 @@ public class DillDataPresenter {
 
                         @Override
                         public void onNext(@NonNull AwsInfo awsInfo) {
-                            hideDialog();
                             if(awsInfo.getStatus() == 1){
                                 callBack3.send(awsInfo.getData());
                                 UtilTool.Log("日志", awsInfo.getData().getAccessKeyId());
@@ -151,7 +150,42 @@ public class DillDataPresenter {
 
                         @Override
                         public void onError(@NonNull Throwable e) {
-                            hideDialog();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void getUrl(String key, final CallBack4 callBack4) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .getUrl(UtilTool.getToken(), key)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<UrlInfo>() {
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(@NonNull UrlInfo urlInfo) {
+                            if(urlInfo.getStatus() == 1){
+                                callBack4.send(urlInfo.getData());
+                            }
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+                            UtilTool.Log("日志", e.getMessage());
+//                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -177,5 +211,10 @@ public class DillDataPresenter {
     //定义接口
     public interface CallBack3 {
         void send(AwsInfo.DataBean data);
+    }
+
+    //定义接口
+    public interface CallBack4 {
+        void send(UrlInfo.DataBean data);
     }
 }

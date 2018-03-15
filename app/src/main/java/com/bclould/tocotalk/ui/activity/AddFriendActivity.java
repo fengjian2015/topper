@@ -1,9 +1,11 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -37,6 +39,7 @@ import butterknife.OnClick;
  * Created by GA on 2017/9/25.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class AddFriendActivity extends BaseActivity {
 
     List<String> mRowList = new ArrayList<>();

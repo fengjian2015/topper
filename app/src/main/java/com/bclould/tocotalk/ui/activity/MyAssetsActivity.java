@@ -59,21 +59,18 @@ public class MyAssetsActivity extends BaseActivity {
 
     //初始化界面
     private void initInterface() {
-
-        setSelector(0);
-
-        initTopMenu();
-
-        initViewPager();
-
         mViewPager.setCurrentItem(0);
-
+        setSelector(0);
+        initTopMenu();
+        initViewPager();
     }
 
     //初始化ViewPager
     private void initViewPager() {
 
         mViewPager.setAdapter(new MyAssetsVPAdapter(getSupportFragmentManager()));
+
+        mViewPager.setOffscreenPageLimit(3);
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -124,32 +121,50 @@ public class MyAssetsActivity extends BaseActivity {
 
     //菜单选项选中处理
     private void setSelector(int index) {
+        for (int i = 0; i < mTopMenu.getChildCount(); i++) {
 
-        if (index == 0) {
-            mTopMenu.getChildAt(index).setSelected(true);
-            mTopMenu.getChildAt(1).setSelected(false);
-            mTopMenu.getChildAt(2).setSelected(false);
-            mXx.setVisibility(View.VISIBLE);
-            mXx2.setVisibility(View.GONE);
-            mXx3.setVisibility(View.GONE);
+            if (i == index) {
+
+                mTopMenu.getChildAt(i).setSelected(true);
+
+                switch (index) {
+
+                    case 0:
+
+                        mXx.setVisibility(View.VISIBLE);
+
+                        mXx2.setVisibility(View.INVISIBLE);
+
+                        mXx3.setVisibility(View.INVISIBLE);
+
+                        break;
+                    case 1:
+
+                        mXx.setVisibility(View.INVISIBLE);
+
+                        mXx2.setVisibility(View.VISIBLE);
+
+                        mXx3.setVisibility(View.INVISIBLE);
+
+                        break;
+                    case 2:
+
+                        mXx.setVisibility(View.INVISIBLE);
+
+                        mXx2.setVisibility(View.INVISIBLE);
+
+                        mXx3.setVisibility(View.VISIBLE);
+
+                        break;
+
+                }
+
+            } else {
+
+                mTopMenu.getChildAt(i).setSelected(false);
+
+            }
         }
-        if (index == 1) {
-            mTopMenu.getChildAt(index).setSelected(true);
-            mTopMenu.getChildAt(0).setSelected(false);
-            mTopMenu.getChildAt(2).setSelected(false);
-            mXx.setVisibility(View.GONE);
-            mXx2.setVisibility(View.VISIBLE);
-            mXx3.setVisibility(View.GONE);
-        } else {
-            mTopMenu.getChildAt(index).setSelected(true);
-            mTopMenu.getChildAt(0).setSelected(false);
-            mTopMenu.getChildAt(1).setSelected(false);
-            mXx.setVisibility(View.GONE);
-            mXx2.setVisibility(View.GONE);
-            mXx3.setVisibility(View.VISIBLE);
-
-        }
-
     }
 
     //点击事件的处理

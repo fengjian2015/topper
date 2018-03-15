@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.bclould.tocotalk.R;
@@ -12,8 +14,10 @@ import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.AbstractXMPPConnection;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.MessageListener;
@@ -79,6 +83,7 @@ import static org.jivesoftware.smack.provider.ProviderManager.addIQProvider;
 /**
  * XmppConnection 工具类
  */
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class XmppConnection {
     private int SERVER_PORT = Constants.OPENFIRE_PORT;
     private String SERVER_HOST = Constants.OPENFIRE_IP;
@@ -166,6 +171,7 @@ public class XmppConnection {
                 return true;
             }
         } catch (Exception xe) {
+            EventBus.getDefault().post(new MessageEvent("登录失败"));
             UtilTool.Log("fsdafa", "连接失败");
             xe.printStackTrace();
             connection = null;

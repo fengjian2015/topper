@@ -338,19 +338,23 @@ public class DBManager {
     }
 
     public List<UserInfo> queryAllUser() {
-        db = helper.getWritableDatabase();
         List<UserInfo> userInfos = new ArrayList<>();
-        String sql = "select * from UserImage where my_user=?";
-        Cursor c = db.rawQuery(sql, new String[]{UtilTool.getMyUser()});
-        while (c.moveToNext()) {
-            UserInfo userInfo = new UserInfo();
-            userInfo.setUser(c.getString(c.getColumnIndex("user")));
-            userInfo.setPath(c.getString(c.getColumnIndex("path")));
-            userInfo.setStatus(c.getInt(c.getColumnIndex("status")));
-            userInfos.add(userInfo);
-        }
-        c.close();
+        try {
+            db = helper.getWritableDatabase();
+            String sql = "select * from UserImage where my_user=?";
+            Cursor c = db.rawQuery(sql, new String[]{UtilTool.getMyUser()});
+            while (c.moveToNext()) {
+                UserInfo userInfo = new UserInfo();
+                userInfo.setUser(c.getString(c.getColumnIndex("user")));
+                userInfo.setPath(c.getString(c.getColumnIndex("path")));
+                userInfo.setStatus(c.getInt(c.getColumnIndex("status")));
+                userInfos.add(userInfo);
+            }
+            c.close();
 //        db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return userInfos;
     }
 
@@ -390,6 +394,14 @@ public class DBManager {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("voiceStatus", 1);
+        db.update("MessageRecord", values, "id=?", new String[]{id + ""});
+        db.close();
+    }
+
+    public void updateMessage(String url, int id) {
+        db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("message", url);
         db.update("MessageRecord", values, "id=?", new String[]{id + ""});
         db.close();
     }

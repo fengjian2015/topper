@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/x20">
+
+    <ImageView
+        android:id="@+id/iv_touxiang"
+        android:layout_width="@dimen/x80"
+        android:layout_height="@dimen/x80"
+        android:scaleType="fitXY"
+        android:src="@mipmap/img_nfriend_headshot1"/>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_toRightOf="@+id/iv_touxiang"
+        android:background="@drawable/img_chat2_bg">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/iv_file_photo"
+            android:layout_alignTop="@+id/iv_file_photo"
+            android:layout_marginLeft="@dimen/x10"
+            android:layout_toRightOf="@+id/iv_file_photo"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_file_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="@dimen/x400"
+                android:text="春夏秋冬.mp3"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tv_file_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="1.4M"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_file_photo"
+            android:layout_width="@dimen/x100"
+            android:layout_height="@dimen/x100"
+            android:src="@mipmap/ic_launcher_round"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

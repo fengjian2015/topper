@@ -2,8 +2,10 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -30,6 +32,7 @@ import butterknife.OnClick;
  * Created by GA on 2017/9/20.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class LoginActivity extends AppCompatActivity {
 
     @Bind(R.id.et_emily)

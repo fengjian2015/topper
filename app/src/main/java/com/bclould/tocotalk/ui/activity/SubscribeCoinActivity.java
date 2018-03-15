@@ -1,7 +1,9 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -14,7 +16,6 @@ import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.MyAssetsInfo;
 import com.bclould.tocotalk.ui.adapter.SubscribeCoinRVAdatper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -25,6 +26,7 @@ import butterknife.OnClick;
  * Created by GA on 2017/11/8.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class SubscribeCoinActivity extends BaseActivity {
 
 
@@ -35,7 +37,6 @@ public class SubscribeCoinActivity extends BaseActivity {
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     private SubscribeCoinRVAdatper mAdatper;
-    private List<MyAssetsInfo.DataBean> mInfo = new ArrayList<>();
     private SubscribeCoinPresenter mSubscribeCoinPresenter;
 
     @Override

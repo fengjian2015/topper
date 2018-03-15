@@ -14,6 +14,7 @@ import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.model.OutCoinSiteInfo;
 import com.bclould.tocotalk.model.RedRecordInfo;
 import com.bclould.tocotalk.model.TransferInfo;
+import com.bclould.tocotalk.model.UrlInfo;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -395,6 +396,7 @@ public interface MyService {
     Observable<AwsInfo> getSessionToken(
             @Header("Authorization") String token
     );
+
     //充币提币
     @POST("finance/coinOutLog")
     @FormUrlEncoded
@@ -402,4 +404,13 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("opt_type") String opt_type
     );
+
+    //亚马逊公用url
+    @POST("awsS3/createPresignedUrl")
+    @FormUrlEncoded
+    Observable<UrlInfo> getUrl(
+            @Header("Authorization") String token,
+            @Field("key") String key
+    );
+
 }

@@ -4,15 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <com.bclould.tocotalk.ui.widget.PullToRefreshLayout
-        android:id="@+id/content_lv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/recycler_view"
-        android:listSelector="@android:color/transparent"
-        android:orientation="vertical"/>
-
     <RelativeLayout
         android:id="@+id/rl_ununited"
         android:layout_width="match_parent"

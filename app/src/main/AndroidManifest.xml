@@ -139,7 +139,7 @@
 
         <!--实名验证页面-->
         <activity
-            android:name="com.bclould.tocotalk.ui.activity.RealNameActivity"
+            android:name="com.bclould.tocotalk.ui.activity.RealNameC1Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
@@ -198,6 +198,12 @@
         <!--备注页面-->
         <activity
             android:name="com.bclould.tocotalk.ui.activity.RemarkActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--备注页面-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.LoginSetActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
@@ -385,6 +391,9 @@
             android:name="com.bclould.tocotalk.ui.activity.GroupChatActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--视频播放页面-->
+        <activity android:name=".ui.activity.VideoActivity"/>
 
         <!--紅包页面-->
         <activity

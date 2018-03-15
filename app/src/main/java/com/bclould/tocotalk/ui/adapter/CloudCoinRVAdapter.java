@@ -196,7 +196,7 @@ public class CloudCoinRVAdapter extends RecyclerView.Adapter {
 
         public void setData(MyAssetsInfo.DataBean ltcBean) {
             mLtcBean = ltcBean;
-            mCurrencyName.setText(UtilTool.exChange(ltcBean.getName()));
+            mCurrencyName.setText(ltcBean.getName());
             mCurrencyCount.setText(ltcBean.getTotal() + "个");
 
         }
@@ -227,7 +227,7 @@ public class CloudCoinRVAdapter extends RecyclerView.Adapter {
 
         public void setData(MyAssetsInfo.DataBean ltcBean) {
             mLtcBean = ltcBean;
-            mCurrencyName.setText(UtilTool.exChange(ltcBean.getName()));
+            mCurrencyName.setText(ltcBean.getName());
             mCurrencyCount.setText(ltcBean.getTotal() + "个");
         }
     }
@@ -257,7 +257,7 @@ public class CloudCoinRVAdapter extends RecyclerView.Adapter {
 
         public void setData(MyAssetsInfo.DataBean ltcBean) {
             mLtcBean = ltcBean;
-            mCurrencyName.setText(UtilTool.exChange(ltcBean.getName()));
+            mCurrencyName.setText(ltcBean.getName());
             mCurrencyCount.setText(ltcBean.getTotal() + "个");
         }
     }
@@ -287,7 +287,7 @@ public class CloudCoinRVAdapter extends RecyclerView.Adapter {
 
         public void setData(MyAssetsInfo.DataBean ltcBean) {
             mLtcBean = ltcBean;
-            mCurrencyName.setText(UtilTool.exChange(ltcBean.getName()));
+            mCurrencyName.setText(ltcBean.getName());
             mCurrencyCount.setText(ltcBean.getTotal() + "个");
         }
     }
@@ -317,7 +317,7 @@ public class CloudCoinRVAdapter extends RecyclerView.Adapter {
 
         public void setData(MyAssetsInfo.DataBean ltcBean) {
             mLtcBean = ltcBean;
-            mCurrencyName.setText(UtilTool.exChange(ltcBean.getName()));
+            mCurrencyName.setText(ltcBean.getName());
             mCurrencyCount.setText(ltcBean.getTotal() + "个");
         }
     }
@@ -347,7 +347,7 @@ public class CloudCoinRVAdapter extends RecyclerView.Adapter {
 
         public void setData(MyAssetsInfo.DataBean ltcBean) {
             mLtcBean = ltcBean;
-            mCurrencyName.setText(UtilTool.exChange(ltcBean.getName()));
+            mCurrencyName.setText(ltcBean.getName());
             mCurrencyCount.setText(ltcBean.getTotal() + "个");
         }
     }
@@ -377,7 +377,7 @@ public class CloudCoinRVAdapter extends RecyclerView.Adapter {
 
         public void setData(MyAssetsInfo.DataBean ltcBean) {
             mLtcBean = ltcBean;
-            mCurrencyName.setText(UtilTool.exChange(ltcBean.getName()));
+            mCurrencyName.setText(ltcBean.getName());
             mCurrencyCount.setText(ltcBean.getTotal() + "个");
         }
     }
@@ -407,7 +407,7 @@ public class CloudCoinRVAdapter extends RecyclerView.Adapter {
 
         public void setData(MyAssetsInfo.DataBean ltcBean) {
             mLtcBean = ltcBean;
-            mCurrencyName.setText(UtilTool.exChange(ltcBean.getName()));
+            mCurrencyName.setText(ltcBean.getName());
             mCurrencyCount.setText(ltcBean.getTotal() + "个");
         }
     }

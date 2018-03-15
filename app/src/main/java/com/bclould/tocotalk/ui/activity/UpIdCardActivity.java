@@ -33,8 +33,6 @@ public class UpIdCardActivity extends BaseActivity {
     private static final int SHOUCHI = 2;
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.help)
-    ImageView mHelp;
     @Bind(R.id.zhengmian_iv)
     ImageView mZhengmianIv;
     @Bind(R.id.zhengmian)
@@ -60,15 +58,13 @@ public class UpIdCardActivity extends BaseActivity {
     }
 
     //点击事件的处理
-    @OnClick({R.id.bark, R.id.help, R.id.zhengmian, R.id.fanmian, R.id.shouchi, R.id.up_check})
+    @OnClick({R.id.bark, R.id.zhengmian, R.id.fanmian, R.id.shouchi, R.id.up_check})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
 
                 finish();
 
-                break;
-            case R.id.help:
                 break;
             case R.id.zhengmian:
 

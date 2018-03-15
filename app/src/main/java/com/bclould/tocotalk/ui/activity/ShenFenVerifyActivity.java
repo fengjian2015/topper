@@ -1,15 +1,17 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
+import com.bclould.tocotalk.base.MyApp;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -19,7 +21,9 @@ import butterknife.OnClick;
  * Created by GA on 2017/10/9.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class ShenFenVerifyActivity extends BaseActivity {
+
 
     @Bind(R.id.bark)
     ImageView mBark;
@@ -27,8 +31,6 @@ public class ShenFenVerifyActivity extends BaseActivity {
     RelativeLayout mRlAutonymAttestation;
     @Bind(R.id.rl_phone_autonym)
     RelativeLayout mRlPhoneAutonym;
-    @Bind(R.id.rl_bank_binding)
-    RelativeLayout mRlBankBinding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,38 +40,23 @@ public class ShenFenVerifyActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
     }
 
-    //点击事件的处理
-    @OnClick({R.id.bark, R.id.rl_autonym_attestation, R.id.rl_phone_autonym, R.id.rl_bank_binding})
+    //跳转事件的处理
+    private void setSkip(Class clazz) {
+        startActivity(new Intent(this, clazz));
+    }
+
+    @OnClick({R.id.bark, R.id.rl_autonym_attestation, R.id.rl_phone_autonym})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
-
                 finish();
-
                 break;
             case R.id.rl_autonym_attestation:
-
-                setSkip(RealNameActivity.class);
-
+                setSkip(RealNameC1Activity.class);
                 break;
             case R.id.rl_phone_autonym:
-
-                setSkip(EmailBindingActivity.class);
-
-                break;
-            case R.id.rl_bank_binding:
-
-                setSkip(BankCardBindingActivity.class);
-
+                setSkip(UpIdCardActivity.class);
                 break;
         }
     }
-
-    //跳转事件的处理
-    private void setSkip(Class clazz) {
-
-        startActivity(new Intent(this, clazz));
-
-    }
-
 }
