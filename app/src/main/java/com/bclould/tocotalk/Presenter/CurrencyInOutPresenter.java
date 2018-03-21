@@ -258,9 +258,7 @@ public class CurrencyInOutPresenter {
                         }
                     });
         } else {
-
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-
         }
     }
 

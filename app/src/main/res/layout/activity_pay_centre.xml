@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x30"
-                android:src="@mipmap/iocn_person_check"/>
+                android:src="@mipmap/icon_zfjl"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x30"
-                android:src="@mipmap/iocn_person_check"/>
+                android:src="@mipmap/icon_zfgl"/>
 
             <TextView
                 android:layout_width="wrap_content"

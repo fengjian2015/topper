@@ -89,6 +89,7 @@ public class PayManageGVAdapter extends BaseAdapter {
             mTextview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    mTextview.setSelected(true);
                     mCallBack.send(i);
                 }
             });

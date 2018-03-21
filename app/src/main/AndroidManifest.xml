@@ -137,6 +137,18 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
+        <!--收付款页面-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.ReceiptPaymentActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--收付款页面-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.SetMoneyActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
         <!--充币页面-->
         <activity
             android:name="com.bclould.tocotalk.ui.activity.InCoinActivity"

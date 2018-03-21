@@ -3,13 +3,13 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/light"
               android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
         android:background="@color/white">
+
 
         <ImageView
             android:id="@+id/bark"
@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="添加银行卡"
+            android:text="设置金额"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -31,61 +31,56 @@
     <TextView
         style="@style/HCutOffRule"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/y80"
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x30"
-        android:gravity="center_vertical"
-        android:text="请绑定持卡人本人的银行卡"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
+        android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y30"
+        app:cardCornerRadius="@dimen/x15">
+
+        <EditText
+            android:id="@+id/et_count"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:hint="收币数量"
+            android:paddingLeft="@dimen/x20"
+            android:paddingRight="@dimen/x20"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+    </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y30"
         app:cardCornerRadius="@dimen/x15">
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/et_remark"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:text="卡号"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x25"/>
-
-            <EditText
-                android:id="@+id/et_card_number"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="@dimen/x50"
-                android:background="@color/transparent"
-                android:hint="请输入正确卡号"
-                android:inputType="textPersonName"
-                android:maxLength="20"
-                android:textColorHint="@color/gray"
-                android:textCursorDrawable="@null"
-                android:textSize="@dimen/x25"/>
-
-        </LinearLayout>
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:hint="添加备注"
+            android:paddingLeft="@dimen/x20"
+            android:paddingRight="@dimen/x20"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
 
     </android.support.v7.widget.CardView>
 
     <Button
-        android:id="@+id/btn_next"
+        android:id="@+id/btn_finish"
         android:layout_width="@dimen/x450"
         android:layout_height="@dimen/y80"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y60"
         android:background="@drawable/btn_blue_selector"
-        android:text="@string/next_step"
+        android:text="完成"
         android:textColor="@color/white"/>
 
 </LinearLayout>

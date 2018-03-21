@@ -2,6 +2,7 @@ package com.bclould.tocotalk.ui.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,10 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.PostInfo;
+import com.bclould.tocotalk.ui.activity.DynamicDetailActivity;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.jaeger.ninegridimageview.ItemImageClickListener;
 import com.jaeger.ninegridimageview.NineGridImageView;
 import com.jaeger.ninegridimageview.NineGridImageViewAdapter;
@@ -149,14 +151,14 @@ public class TaDynamicRVAdapter extends RecyclerView.Adapter {
         MusicHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            /*view.setOnClickListener(new View.OnClickListener() {
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
                     mContext.startActivity(new Intent(mContext, DynamicDetailActivity.class));
 
                 }
-            });*/
+            });
         }
     }
 
@@ -177,14 +179,14 @@ public class TaDynamicRVAdapter extends RecyclerView.Adapter {
         TextHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            /*view.setOnClickListener(new View.OnClickListener() {
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
                     mContext.startActivity(new Intent(mContext, DynamicDetailActivity.class));
 
                 }
-            });*/
+            });
         }
     }
 
@@ -207,14 +209,14 @@ public class TaDynamicRVAdapter extends RecyclerView.Adapter {
         VideoHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            /*view.setOnClickListener(new View.OnClickListener() {
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
                     mContext.startActivity(new Intent(mContext, DynamicDetailActivity.class));
 
                 }
-            });*/
+            });
         }
     }
 
@@ -242,7 +244,7 @@ public class TaDynamicRVAdapter extends RecyclerView.Adapter {
 
         public ImageHolder(View view) {
             super(view);
-            /*view.setOnClickListener(new View.OnClickListener() {
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -255,7 +257,7 @@ public class TaDynamicRVAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
 
                 }
-            });*/
+            });
             mTvContent = (TextView) itemView.findViewById(R.id.tv_content);
             mNglContent = (NineGridImageView<String>) itemView.findViewById(R.id.ngl_images);
             mNglContent.setAdapter(mAdapter);

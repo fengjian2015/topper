@@ -3,8 +3,10 @@ package com.bclould.tocotalk.ui.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -41,6 +43,7 @@ import io.reactivex.disposables.Disposable;
  * Created by GA on 2017/9/28.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class PublicshDynamicActivity extends BaseActivity {
 
     @Bind(R.id.bark)

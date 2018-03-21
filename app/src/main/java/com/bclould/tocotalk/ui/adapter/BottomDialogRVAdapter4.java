@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.ui.activity.OtcActivity;
 import com.bclould.tocotalk.ui.activity.PayManageActivity;
+import com.bclould.tocotalk.ui.activity.ReceiptPaymentActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -67,6 +68,9 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
                         activity.hideDialog(mName);
                     }else if(mContext instanceof PayManageActivity){
                         PayManageActivity activity = (PayManageActivity) mContext;
+                        activity.hideDialog(mName);
+                    }else if(mContext instanceof ReceiptPaymentActivity){
+                        ReceiptPaymentActivity activity = (ReceiptPaymentActivity) mContext;
                         activity.hideDialog(mName);
                     }
                 }

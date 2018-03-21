@@ -40,6 +40,7 @@
         app:cardCornerRadius="@dimen/x15">
 
         <RelativeLayout
+            android:id="@+id/rl_real_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -53,16 +54,13 @@
                 android:textSize="@dimen/x28"/>
 
 
-            <TextView
-                android:id="@+id/tv_check"
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/x30"
-                android:hint="已验证"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+                android:src="@mipmap/iocn_person_turn"/>
 
         </RelativeLayout>
 

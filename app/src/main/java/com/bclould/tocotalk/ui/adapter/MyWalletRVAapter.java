@@ -85,6 +85,7 @@ public class MyWalletRVAapter extends RecyclerView.Adapter {
                 }
             });
         }
+
     }
 
     public interface OnItemClickListener {

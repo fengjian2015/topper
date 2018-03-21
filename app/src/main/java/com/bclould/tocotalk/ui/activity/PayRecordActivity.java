@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -57,7 +58,12 @@ public class PayRecordActivity extends BaseActivity {
         setContentView(R.layout.activity_pay_record);
         ButterKnife.bind(this);
         initRecycler();
+        initMap();
         initData();
+    }
+
+    private void initMap() {
+        mMap.put("筛选", 0);
     }
 
     private void initData() {
@@ -86,8 +92,8 @@ public class PayRecordActivity extends BaseActivity {
 
     //显示账单筛选dialog
     String[] mFiltrateArr = {"全部", "红包", "转账", "收付款", "充币", "提币", "银行卡", "入账", "其他"};
+
     private void showFiltrateDialog() {
-        mMap.put("筛选", 0);
         mBottomDialog = new Dialog(this, R.style.BottomDialog2);
         View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bill, null);
         //获得dialog的window窗口
@@ -104,6 +110,13 @@ public class PayRecordActivity extends BaseActivity {
         mBottomDialog.setContentView(contentView);
         mBottomDialog.show();
         GridView gridView = (GridView) mBottomDialog.findViewById(R.id.grid_view);
+        Button cancel = (Button) mBottomDialog.findViewById(R.id.btn_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBottomDialog.dismiss();
+            }
+        });
         gridView.setAdapter(new PayManageGVAdapter(this, mFiltrateArr, mMap, new PayManageGVAdapter.CallBack() {
             //接口回调
             @Override

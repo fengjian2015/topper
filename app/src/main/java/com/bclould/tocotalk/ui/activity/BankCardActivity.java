@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
@@ -22,19 +23,27 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bclould.tocotalk.Presenter.BankCardPresenter;
 import com.bclould.tocotalk.Presenter.CurrencyInOutPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.model.CardListInfo;
 import com.bclould.tocotalk.ui.adapter.BankCardRVAdapter;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
-import com.bclould.tocotalk.utils.FullyLinearLayoutManager;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -63,44 +72,88 @@ public class BankCardActivity extends BaseActivity {
     private Dialog mRedDialog;
     private GridView mGridView;
     private MNPasswordEditText mEtPassword;
+    private BankCardPresenter mBankCardPresenter;
+    List<CardListInfo.DataBean> mCardList = new ArrayList<>();
+    private BankCardRVAdapter mBankCardRVAdapter;
+    private OnItemDeleteListener mOnItemDeleteListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank_card);
         ButterKnife.bind(this);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);//初始化EventBus
+        mBankCardPresenter = new BankCardPresenter(this);
         initRecyclerView();
+        initData();
         MyApp.getInstance().addActivity(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+        ButterKnife.unbind(this);
+    }
+
+    private void initData() {
+        mBankCardPresenter.bankCardList(new BankCardPresenter.CallBack2() {
+            @Override
+            public void send(List<CardListInfo.DataBean> data) {
+                mCardList.addAll(data);
+                mBankCardRVAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    //接受通知
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if ("银行卡绑定解绑".equals(msg)) {
+            initData();
+        }
     }
 
     //初始化条目
     private void initRecyclerView() {
-
-        mRecyclerView.setLayoutManager(new FullyLinearLayoutManager(this));
-
-        mRecyclerView.setAdapter(new BankCardRVAdapter(this));
-
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mBankCardRVAdapter = new BankCardRVAdapter(this, mCardList, mBankCardPresenter);
+        mRecyclerView.setAdapter(mBankCardRVAdapter);
         mRecyclerView.setNestedScrollingEnabled(false);
-
     }
+
+    boolean isDelete = false;
 
     //点击事件的处理
     @OnClick({R.id.bark, R.id.add_bank_card, R.id.tv_delete})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
-
                 finish();
-
                 break;
             case R.id.add_bank_card:
                 showPWDialog();
-//                startActivity(new Intent(this, BankCardBindingActivity.class));
                 break;
             case R.id.tv_delete:
-
+                isDelete = !isDelete;
+                try {
+                    mOnItemDeleteListener.onDelete(isDelete);
+                } catch (Exception e) {
+                    Toast.makeText(this, "您还没有添加银行卡", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
                 break;
         }
+    }
+
+    public interface OnItemDeleteListener {
+        void onDelete(boolean isDelete);
+    }
+
+    public void setOnItemDeleteListener(BankCardActivity.OnItemDeleteListener onItemDeleteListener) {
+        mOnItemDeleteListener = onItemDeleteListener;
     }
 
     private void showPWDialog() {

@@ -37,8 +37,6 @@ public class PayManageActivity extends BaseActivity {
     String[] mCoinArr = {"TPC", "BTC", "LTC", "DOGO", "ZEC", "LSK", "MAID", "SHC", "ANS"};
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.tv_check)
-    TextView mTvCheck;
     @Bind(R.id.iv)
     ImageView mIv;
     @Bind(R.id.rl_coin_pay)
@@ -58,7 +56,7 @@ public class PayManageActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.bark, R.id.rl_coin_pay, R.id.rl_alter_pw, R.id.rl_fingerprint_pw})
+    @OnClick({R.id.bark, R.id.rl_coin_pay, R.id.rl_alter_pw, R.id.rl_fingerprint_pw, R.id.rl_real_name})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -72,6 +70,9 @@ public class PayManageActivity extends BaseActivity {
                 break;
             case R.id.rl_fingerprint_pw:
                 showFingerDialog();
+                break;
+            case R.id.rl_real_name:
+                startActivity(new Intent(this, RealNameC1Activity.class));
                 break;
         }
     }

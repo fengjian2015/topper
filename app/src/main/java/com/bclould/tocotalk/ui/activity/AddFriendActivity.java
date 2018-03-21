@@ -70,6 +70,7 @@ public class AddFriendActivity extends BaseActivity {
         initListView();
     }
 
+    //初始化ListView
     private void initListView() {
         mAddFriendAdapter = new AddFriendAdapter(this, mRowList);
         mListView.setAdapter(mAddFriendAdapter);

@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.NetworkUtils;
-import com.bclould.tocotalk.utils.UtilTool;
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -78,7 +77,6 @@ public class RetrofitUtil {
     }
 
     private RetrofitUtil(Context Context) {
-        UtilTool.Log("走到这了吗", "");
         mContext = Context;//设置缓存路径
         File cacheFile = new File(mContext.getCacheDir(), "caheData");
         //设置缓存大小

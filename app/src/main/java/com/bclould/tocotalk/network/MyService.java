@@ -2,7 +2,9 @@ package com.bclould.tocotalk.network;
 
 
 import com.bclould.tocotalk.model.AwsInfo;
+import com.bclould.tocotalk.model.BankCardInfo;
 import com.bclould.tocotalk.model.BaseInfo;
+import com.bclould.tocotalk.model.CardListInfo;
 import com.bclould.tocotalk.model.CoinInfo;
 import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.model.GitHubInfo;
@@ -432,22 +434,24 @@ public interface MyService {
     //绑定银行
     @POST("user/bindBankCard")
     @FormUrlEncoded
-    Observable<InOutInfo> bindBankCard(
+    Observable<BaseInfo> bindBankCard(
             @Header("Authorization") String token,
             @Field("truename") String truename,
-            @Field("card_number") String card_number
+            @Field("bank_name") String bank_name,
+            @Field("bank_site") String bank_site,
+            @Field("bank_number") String bank_number
     );
 
     //银行卡列表
     @POST("user/bankCardList")
-    Observable<InOutInfo> bankCardList(
+    Observable<CardListInfo> bankCardList(
             @Header("Authorization") String token
     );
 
     //银行卡列表
     @POST("user/unBindBankCard")
     @FormUrlEncoded
-    Observable<InOutInfo> unBindBankCard(
+    Observable<BaseInfo> unBindBankCard(
             @Header("Authorization") String token,
             @Field("id") String id
     );
@@ -529,6 +533,13 @@ public interface MyService {
     Observable<BaseInfo> verifySecondPassword(
             @Header("Authorization") String token,
             @Field("second_password") String second_password
+    );
+
+    @POST("user/bankCardInfo")
+    @FormUrlEncoded
+    Observable<BankCardInfo> bankCardInfo(
+            @Header("Authorization") String token,
+            @Field("bank_number") String bank_number
     );
 
 }

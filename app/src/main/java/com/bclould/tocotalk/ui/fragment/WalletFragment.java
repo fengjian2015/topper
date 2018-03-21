@@ -9,14 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.ui.activity.BankCardActivity;
-import com.bclould.tocotalk.ui.activity.MainActivity;
 import com.bclould.tocotalk.ui.activity.MyAssetsActivity;
 import com.bclould.tocotalk.ui.activity.OtcActivity;
 import com.bclould.tocotalk.ui.activity.PayCentreActivity;
+import com.bclould.tocotalk.ui.activity.ReceiptPaymentActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,16 +26,13 @@ import butterknife.OnClick;
  * Created by GA on 2017/9/19.
  */
 
-public class CloudCoinFragment extends Fragment {
+public class WalletFragment extends Fragment {
 
-    public static CloudCoinFragment instance = null;
-    private static MainActivity sMainActivity;
+    public static WalletFragment instance = null;
     @Bind(R.id.iv_more)
     ImageView mIvMore;
     @Bind(R.id.ll_inout)
     LinearLayout mLlInout;
-    @Bind(R.id.tv_usdt)
-    TextView mTvUsdt;
     @Bind(R.id.ll_usdt)
     LinearLayout mLlUsdt;
     @Bind(R.id.ll_bank_card)
@@ -54,11 +50,11 @@ public class CloudCoinFragment extends Fragment {
     @Bind(R.id.ll_safe)
     LinearLayout mLlSafe;
 
-    public static CloudCoinFragment getInstance(MainActivity mainActivity) {
-        sMainActivity = mainActivity;
+
+    public static WalletFragment getInstance() {
         if (instance == null) {
 
-            instance = new CloudCoinFragment();
+            instance = new WalletFragment();
 
         }
 
@@ -93,6 +89,7 @@ public class CloudCoinFragment extends Fragment {
                 startActivity(new Intent(getActivity(), PayCentreActivity.class));
                 break;
             case R.id.ll_inout:
+                startActivity(new Intent(getActivity(), ReceiptPaymentActivity.class));
                 break;
             case R.id.ll_usdt:
                 break;

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img_four_bg"
+    android:orientation="vertical"
+    android:padding="@dimen/x20">
+
+    <TextView
+        android:id="@+id/pop_receipt"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/y15"
+        android:layout_weight="1"
+        android:drawableLeft="@mipmap/icon_pay_c"
+        android:gravity="center"
+        android:text="付款"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/x28"/>
+
+    <TextView
+        android:id="@+id/pop_payment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:drawableLeft="@mipmap/icon_get_c"
+        android:gravity="center"
+        android:text="收款"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/x28"/>
+
+</LinearLayout>

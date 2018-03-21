@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_marginRight="@dimen/x30"
-                android:layout_marginTop="@dimen/y20"
+                android:layout_marginTop="@dimen/y30"
                 android:descendantFocusability="beforeDescendants"
                 android:fastScrollEnabled="false">
             </android.support.v7.widget.RecyclerView>
@@ -67,8 +67,8 @@
                 android:layout_width="@dimen/x450"
                 android:layout_height="@dimen/y80"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/y60"
-                android:layout_marginTop="@dimen/y60"
+                android:layout_marginBottom="@dimen/y30"
+                android:layout_marginTop="@dimen/y30"
                 android:background="@drawable/bg_white_shape"
                 android:text="@string/add_bank_card"
                 android:textColor="@color/black"
