@@ -6,14 +6,27 @@ package com.bclould.tocotalk.utils;
 
 public class MessageEvent {
 
-    public String getMsg() {
-        return mMsg;
-    }
 
     public MessageEvent(String msg) {
         mMsg = msg;
     }
 
     private String mMsg;
+    private String coinName;
 
+    public String getMsg() {
+        return mMsg;
+    }
+
+    public void setMsg(String msg) {
+        mMsg = msg;
+    }
+
+    public String getCoinName() {
+        return coinName;
+    }
+
+    public void setCoinName(String coinName) {
+        this.coinName = coinName;
+    }
 }

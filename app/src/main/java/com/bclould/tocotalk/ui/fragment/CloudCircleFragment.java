@@ -1,3 +1,4 @@
+/*
 package com.bclould.tocotalk.ui.fragment;
 
 import android.animation.ObjectAnimator;
@@ -25,13 +26,16 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tocotalk.ui.activity.OtcActivity.HEADINGCODE;
+
+*/
 /**
  * Created by GA on 2017/9/19.
- */
+ *//*
+
 
 public class CloudCircleFragment extends Fragment {
 
-    public static final String HEADINGCODE = "heading_code";
     public static CloudCircleFragment instance = null;
     @Bind(R.id.status_bar_fix)
     View mStatusBarFix;
@@ -291,7 +295,8 @@ public class CloudCircleFragment extends Fragment {
     @OnClick({R.id.rl_selector_state, R.id.tv_proceed, R.id.tv_finish, R.id.tv_pushing})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            /*case R.id.rl_selector_state:
+            */
+/*case R.id.rl_selector_state:
 
                 break;
             case R.id.tv_proceed:
@@ -306,7 +311,9 @@ public class CloudCircleFragment extends Fragment {
 
                 showDialog();
 
-                break;*/
+                break;*//*
+
         }
     }
 }
+*/

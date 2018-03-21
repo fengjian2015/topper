@@ -4,13 +4,13 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -26,7 +26,6 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.FragmentFactory;
 import com.bclould.tocotalk.base.MyApp;
-import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.network.DownLoadApk;
 import com.bclould.tocotalk.network.RetrofitUtil;
@@ -39,6 +38,8 @@ import com.bclould.tocotalk.xmpp.XmppConnection;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.AbstractXMPPConnection;
+import org.jivesoftware.smackx.ping.PingFailedListener;
+import org.jivesoftware.smackx.ping.PingManager;
 
 import java.util.List;
 import java.util.Map;
@@ -61,7 +62,7 @@ public class MainActivity extends BaseActivity {
     LinearLayout mMainBottomMenu;
 
     public static MainActivity instance = null;
-    private android.support.v4.app.FragmentManager mSupportFragmentManager;
+    private FragmentManager mSupportFragmentManager;
     private LoadingProgressDialog mProgressDialog;
 
     public static MainActivity getInstance() {
@@ -88,7 +89,6 @@ public class MainActivity extends BaseActivity {
         }
 
 //        StatusBarCompat.setImmersionStateMode(this);
-
 
         setContentView(R.layout.activity_main);
 
@@ -309,6 +309,16 @@ public class MainActivity extends BaseActivity {
                         String user = myUser.substring(0, myUser.indexOf("@"));
                         connection.login(user, UtilTool.getpw());
                         connection.addConnectionListener(new XMConnectionListener(user, UtilTool.getpw(), MainActivity.this));
+                        /*if (connection.isAuthenticated()) {//登录成功
+                            PingManager.setDefaultPingInterval(10);
+                            PingManager myPingManager = PingManager.getInstanceFor(connection);
+                            myPingManager.registerPingFailedListener(new PingFailedListener() {
+                                @Override
+                                public void pingFailed() {
+                                    Toast.makeText(MainActivity.this, "发送心跳包失败", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }*/
                         EventBus.getDefault().post(new MessageEvent("登录成功"));
                         UtilTool.Log("fsdafa", "登录成功");
                         Message message = new Message();

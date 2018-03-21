@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.bclould.tocotalk.Presenter.CurrencyInOutPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
@@ -69,6 +70,7 @@ public class TransferAccountsActivity extends BaseActivity {
     Button mBtnConfirm;
     private int mId;
     private int mSiteId;
+    private ArrayList<Map<String, String>> valueList;
     private Animation mEnterAnim;
     private Animation mExitAnim;
     private Dialog mRedDialog;
@@ -76,7 +78,6 @@ public class TransferAccountsActivity extends BaseActivity {
     private MNPasswordEditText mEtPassword;
     private String mCoinName;
     private String mOver;
-    private ArrayList<Map<String, String>> valueList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,7 +103,9 @@ public class TransferAccountsActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_record:
-//                startActivity(new Intent(this));
+                Intent intent = new Intent(this, BillDetailsActivity.class);
+                intent.putExtra("type", 2);
+                startActivity(intent);
                 break;
             case R.id.btn_confirm:
                 if (editCheck()) {
@@ -110,6 +113,28 @@ public class TransferAccountsActivity extends BaseActivity {
                 }
                 break;
         }
+    }
+
+    public void showHintDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setCanceledOnTouchOutside(false);
+        TextView retry = (TextView) deleteCacheDialog.findViewById(R.id.tv_retry);
+        TextView findPassword = (TextView) deleteCacheDialog.findViewById(R.id.tv_find_password);
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                mRedDialog.show();
+            }
+        });
+        findPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                startActivity(new Intent(TransferAccountsActivity.this, PayPasswordActivity.class));
+            }
+        });
     }
 
     private void showPWDialog() {

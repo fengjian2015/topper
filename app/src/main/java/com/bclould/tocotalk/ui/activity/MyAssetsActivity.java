@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,7 +28,6 @@ import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.MyAssetsInfo;
 import com.bclould.tocotalk.ui.adapter.MyWalletRVAapter;
-import com.bclould.tocotalk.utils.UtilTool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,7 @@ public class MyAssetsActivity extends BaseActivity {
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     List<MyAssetsInfo.DataBean> mDataList = new ArrayList();
+    List<MyAssetsInfo.DataBean> mDiltrateData = new ArrayList();
     private MyWalletRVAapter mMyWalletRVAapter;
     private ViewGroup mPopupWindowView;
     private PopupWindow mPopupWindow;
@@ -65,6 +67,34 @@ public class MyAssetsActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         initRecyclerView();
         initData();
+        initEdit();
+    }
+
+    private void initEdit() {
+        mEtCoinName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String coinName = mEtCoinName.getText().toString().trim();
+                String upperCase = coinName.toUpperCase();
+                mDataList.clear();
+                for (MyAssetsInfo.DataBean dataBean : mDiltrateData) {
+                    if (dataBean.getName().contains(upperCase)) {
+                        mDataList.add(dataBean);
+                        mMyWalletRVAapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        });
     }
 
     private void initData() {
@@ -73,6 +103,7 @@ public class MyAssetsActivity extends BaseActivity {
             @Override
             public void send(List<MyAssetsInfo.DataBean> info) {
                 mDataList.addAll(info);
+                mDiltrateData.addAll(info);
                 mMyWalletRVAapter.notifyDataSetChanged();
             }
         });
@@ -85,9 +116,8 @@ public class MyAssetsActivity extends BaseActivity {
         mRecyclerView.setAdapter(mMyWalletRVAapter);
         mMyWalletRVAapter.setOnItemClickListener(new MyWalletRVAapter.OnItemClickListener() {
             @Override
-            public void onClick(int position, MyAssetsInfo.DataBean dataBean) {
-                View childAt = mRecyclerView.getChildAt(position);
-                initPopupWindow(childAt, dataBean);
+            public void onClick(View view, MyAssetsInfo.DataBean dataBean) {
+                initPopupWindow(view, dataBean);
             }
         });
     }
@@ -98,7 +128,6 @@ public class MyAssetsActivity extends BaseActivity {
         int widthPixels = dm.widthPixels;
         int[] location = new int[2];
         view.getLocationOnScreen(location);
-        UtilTool.Log("坐标", "x" + location[0] + ":y" + location[1]);
         mPopupWindowView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.pop_assets, null);
         mPopupWindow = new PopupWindow(mPopupWindowView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
         mPopupWindow.setAnimationStyle(R.style.AnimationRightFade);
@@ -145,7 +174,7 @@ public class MyAssetsActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_subscription:
-                startActivity(new Intent(this, SubscribeCoinActivity.class));
+                startActivity(new Intent(this, ExpectCoinActivity.class));
                 break;
             case R.id.et_coin_name:
 

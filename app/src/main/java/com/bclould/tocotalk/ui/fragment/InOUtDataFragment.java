@@ -59,7 +59,7 @@ public class InOUtDataFragment extends Fragment {
 
     private void initData() {
         DillDataPresenter dillDataPresenter = new DillDataPresenter(getContext());
-        dillDataPresenter.getInOutData(new DillDataPresenter.CallBack2() {
+        dillDataPresenter.getInOutData("提币", new DillDataPresenter.CallBack2() {
             @Override
             public void send(List<InOutInfo.DataBean> data) {
                 if (data.size() == 0) {

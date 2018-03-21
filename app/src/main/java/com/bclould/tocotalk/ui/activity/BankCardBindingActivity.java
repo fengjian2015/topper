@@ -26,7 +26,6 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class BankCardBindingActivity extends BaseActivity {
 
-    public static final String BANKCARDNUMBER = "bank_card_number";
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.real_name)
@@ -35,16 +34,12 @@ public class BankCardBindingActivity extends BaseActivity {
     EditText mBankCardNumber;
     @Bind(R.id.btn_next)
     Button mBtnNext;
-    private String mRealNames;
-    private String mIdCardNumbers;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank_card_binding);
         ButterKnife.bind(this);
-//        mRealNames = MySharedPreferences.getInstance().getString(RealNameC1Activity.REALNAME);
-        mRealName.setHint(mRealNames);
         MyApp.getInstance().addActivity(this);
     }
 
@@ -53,9 +48,7 @@ public class BankCardBindingActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
-
                 finish();
-
                 break;
             case R.id.btn_next:
                 if (checkEdit()) {
@@ -69,7 +62,7 @@ public class BankCardBindingActivity extends BaseActivity {
     //验证手机号和密码
     private boolean checkEdit() {
         if (mRealName.getText().toString().trim().isEmpty()) {
-            if (mRealNames.isEmpty()) {
+            if (mRealName.getText().toString().isEmpty()) {
                 Toast.makeText(this, "姓名不能为空", Toast.LENGTH_SHORT).show();
             } else {
                 return true;

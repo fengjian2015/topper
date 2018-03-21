@@ -7,12 +7,14 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.TestImageLoader;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.previewlibrary.ZoomMediaLoader;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +54,17 @@ public class MyApp extends Application {
 
         XmppConnection.getInstance().setContext(this);
 
+        createDir();
+
     }
+
+    private void createDir() {
+        File file = new File(Constants.PUBLICDIR);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+    }
+
     private HttpProxyCacheServer proxy;
 
     public static HttpProxyCacheServer getProxy(Context context) {

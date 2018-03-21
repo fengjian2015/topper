@@ -1,6 +1,8 @@
 package com.bclould.tocotalk.Presenter;
 
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -24,6 +26,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2018/1/19.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class PushBuyingPresenter {
     private final PushBuyingActivity mPushBuyingActivity;
     private LoadingProgressDialog mProgressDialog;
@@ -48,7 +51,7 @@ public class PushBuyingPresenter {
         }
     }
 
-    public void pushing(int type, String coin, String state, String legalTender, String price, String count, String paymentTime, String payment, String minLimit, String maxLimit, String remark, String password) {
+    public void pushing(int type, String coin, String state, String price, String count, String paymentTime, String payment, String minLimit, String maxLimit, String remark, String password) {
         double priced = Double.parseDouble(price);
         double countd = Double.parseDouble(count);
         double mind = Double.parseDouble(minLimit);
@@ -60,7 +63,7 @@ public class PushBuyingPresenter {
             showDialog();
             RetrofitUtil.getInstance(mPushBuyingActivity)
                     .getServer()
-                    .publishDeal(UtilTool.getToken(), type, coin, state, legalTender, 0, priced, countd, time, payment, mind, maxd, remark, password)
+                    .publishDeal(UtilTool.getToken(), type, coin, "CNY", state, priced, countd, time, payment, mind, maxd, remark, password)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<BaseInfo>() {
@@ -77,6 +80,7 @@ public class PushBuyingPresenter {
                                 showSetPwDialog();
                             }
                             hideDialog();
+                            UtilTool.Log("PushBuyingPresenter", baseInfo.getMessage());
                             Toast.makeText(mPushBuyingActivity, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 

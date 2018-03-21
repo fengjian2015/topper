@@ -41,7 +41,6 @@ public class DillDataPresenter {
             mProgressDialog = LoadingProgressDialog.createDialog(mContext);
             mProgressDialog.setMessage("加载中...");
         }
-
         mProgressDialog.show();
     }
 
@@ -52,7 +51,7 @@ public class DillDataPresenter {
         }
     }
 
-    public void getDillList(final CallBack callBack) {
+    public void getTransfer(final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
             RetrofitUtil.getInstance(mContext)
@@ -77,6 +76,7 @@ public class DillDataPresenter {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -89,12 +89,12 @@ public class DillDataPresenter {
         }
     }
 
-    public void getInOutData(final CallBack2 callBack) {
+    public void getInOutData(String type, final CallBack2 callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .coinOutLog(UtilTool.getToken(), "提币")
+                    .coinOutLog(UtilTool.getToken(), type)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<InOutInfo>() {
@@ -105,6 +105,7 @@ public class DillDataPresenter {
 
                         @Override
                         public void onNext(@NonNull InOutInfo inOutInfo) {
+                            hideDialog();
                             if(inOutInfo.getStatus() == 1){
                                 callBack.send(inOutInfo.getData());
                             }
@@ -112,7 +113,8 @@ public class DillDataPresenter {
 
                         @Override
                         public void onError(@NonNull Throwable e) {
-
+                            hideDialog();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -150,42 +152,6 @@ public class DillDataPresenter {
 
                         @Override
                         public void onError(@NonNull Throwable e) {
-                        }
-
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void getUrl(String key, final CallBack4 callBack4) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .getUrl(UtilTool.getToken(), key)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<UrlInfo>() {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
-
-                        }
-
-                        @Override
-                        public void onNext(@NonNull UrlInfo urlInfo) {
-                            if(urlInfo.getStatus() == 1){
-                                callBack4.send(urlInfo.getData());
-                            }
-                        }
-
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-                            UtilTool.Log("日志", e.getMessage());
-//                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:gravity="center"
+        android:text="账单筛选"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/x36"/>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <GridView
+        android:id="@+id/grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/y20"
+        android:layout_marginTop="@dimen/y20"
+        android:gravity="center"
+        android:horizontalSpacing="@dimen/x30"
+        android:numColumns="3"
+        android:scrollbars="none"
+        android:verticalSpacing="@dimen/x30">
+    </GridView>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="@dimen/x600"
+        android:layout_height="@dimen/y80"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/y20"
+        android:layout_marginTop="@dimen/y20"
+        android:background="@drawable/btn_blue_selector"
+        android:text="取消"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/x32"/>
+
+</LinearLayout>

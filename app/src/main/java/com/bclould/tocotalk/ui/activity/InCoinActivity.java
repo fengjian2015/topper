@@ -3,6 +3,7 @@ package com.bclould.tocotalk.ui.activity;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +19,7 @@ import com.bclould.tocotalk.Presenter.CurrencyInOutPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.model.BaseInfo;
-import com.bumptech.glide.Glide;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,6 +31,7 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class InCoinActivity extends BaseActivity {
+
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.tv_record)
@@ -46,6 +48,10 @@ public class InCoinActivity extends BaseActivity {
     CardView mCardView;
     @Bind(R.id.btn_copy)
     Button mBtnCopy;
+    @Bind(R.id.iv)
+    ImageView mIv;
+    @Bind(R.id.tv)
+    TextView mTv;
     private int mId;
     private String mCoinName;
     private String mOver;
@@ -55,8 +61,8 @@ public class InCoinActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_in_coin);
         ButterKnife.bind(this);
-        initData();
         initIntent();
+        initData();
     }
 
     private void initIntent() {
@@ -72,7 +78,8 @@ public class InCoinActivity extends BaseActivity {
         currencyInOutPresenter.inCoin(mId, new CurrencyInOutPresenter.CallBack() {
             @Override
             public void send(BaseInfo.DataBean data) {
-                Glide.with(InCoinActivity.this).load(data.getUrl()).into(mIvSiteQr);
+                Bitmap qrImage = UtilTool.createQRImage(data.getAddress());
+                mIvSiteQr.setImageBitmap(qrImage);
                 mTvSite.setText(data.getAddress());
             }
         });
@@ -85,7 +92,9 @@ public class InCoinActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_record:
-//                startActivity(new Intent(this));
+                Intent intent = new Intent(this, BillDetailsActivity.class);
+                intent.putExtra("type", 0);
+                startActivity(intent);
                 break;
             case R.id.btn_copy:
                 ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);

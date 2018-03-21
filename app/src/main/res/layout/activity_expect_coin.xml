@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/light"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="期望币种"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginTop="@dimen/y30"
+        android:text="如您有任何期望TT添加的币种，欢迎联系我们！"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x28"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x60"
+        android:layout_marginTop="@dimen/y20"
+        android:text="发送对象"
+        android:textSize="@dimen/x28"/>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y20"
+        app:cardBackgroundColor="#DFDFDF"
+        app:cardCornerRadius="@dimen/x50">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/x30"
+            android:text="邮电：Topperex@outlook.com"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x60"
+        android:layout_marginTop="@dimen/y20"
+        android:text="期望币种"
+        android:textSize="@dimen/x28"/>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y20"
+        app:cardCornerRadius="@dimen/x50">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:hint="请输入期望添加的币种"
+            android:paddingLeft="@dimen/x30"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x60"
+        android:layout_marginTop="@dimen/y20"
+        android:text="联系方式"
+        android:textSize="@dimen/x28"/>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y20"
+        app:cardCornerRadius="@dimen/x50">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:hint="请输入邮箱账号，以便我们联系您"
+            android:paddingLeft="@dimen/x30"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+    </android.support.v7.widget.CardView>
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="@dimen/x450"
+        android:layout_height="@dimen/y80"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/y60"
+        android:background="@drawable/btn_blue_selector"
+        android:text="提交"
+        android:textColor="@color/white"/>
+
+</LinearLayout>

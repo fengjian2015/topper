@@ -6,6 +6,7 @@
               android:background="@color/light"
               android:orientation="vertical">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
@@ -22,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="C1实名验证"
+            android:text="实名验证"
             android:textColor="@android:color/black"
             android:textSize="@dimen/x32"/>
 
@@ -31,176 +32,236 @@
     <TextView
         style="@style/HCutOffRule"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y20"
-        android:text="为确保用户权限及安全，请务必填写真实信息"
-        android:textSize="@dimen/x26"/>
-
-
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y20"
-        app:cardCornerRadius="@dimen/x15">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:text="姓名:"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/x28"/>
-
-            <EditText
-                android:id="@+id/et_name"
-                android:layout_width="@dimen/x500"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/x30"
-                android:background="@color/transparent"
-                android:gravity="right|center"
-                android:hint="请填写真实姓名"
-                android:inputType="textPersonName"
-                android:maxLength="20"
-                android:textCursorDrawable="@null"
-                android:textSize="@dimen/x28"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
-
-        <RelativeLayout
-            android:id="@+id/rl_card_type"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:text="证件类型:"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x30"
-                android:src="@mipmap/iocn_more_down"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
-
-            <TextView
-                android:id="@+id/tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:text="身份证号码:"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/x28"/>
-
-            <EditText
-                android:layout_toRightOf="@+id/tv"
-                android:id="@+id/et_number"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/x30"
-                android:background="@color/transparent"
-                android:gravity="right|center"
-                android:hint="请填写完整身份证号码"
-                android:inputType="number"
-                android:maxLength="20"
-                android:textCursorDrawable="@null"
-                android:textSize="@dimen/x28"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <Button
-        android:id="@+id/btn_next"
-        android:layout_width="@dimen/x450"
-        android:layout_height="@dimen/y80"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y60"
-        android:background="@drawable/btn_blue_selector"
-        android:text="提交"
-        android:textColor="@color/white"/>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/x350"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y60"
-        app:cardCornerRadius="@dimen/x25">
+        android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/ll_pass"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/x50"
-            android:paddingRight="@dimen/x50">
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <TextView
+            <ImageView
+                android:id="@+id/iv_auth_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@mipmap/icon_remind"
-                android:drawablePadding="@dimen/x10"
-                android:gravity="center"
-                android:text="为了您的账户安全，请实名认证"
+                android:src="@mipmap/shenhetongguo"/>
+
+            <TextView
+                android:id="@+id/tv_auth_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20"
+                android:text="实名认证通过"
                 android:textColor="@color/black"
-                android:textSize="@dimen/x26"/>
+                android:textSize="@dimen/x30"/>
 
-            <TextView
+            <Button
+                android:id="@+id/btn_auth"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y25"
-                android:text="1.真实姓名经实名认证后将不能够更改，请如实填写。
-2.本站只接受实名充值，提现时银行卡等姓名信息必须与您的认证姓名一致。
-3.本站有合理的理由怀疑用户提供虚假身份信息时，有权拒绝注册或者冻结、注销已经注册的账户及资产。"
-                android:textSize="@dimen/x26"/>
+                android:layout_height="@dimen/y80"
+                android:layout_marginTop="@dimen/y20"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x30"
+                android:background="@drawable/bg_blue_shape"
+                android:text="重新认证"/>
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/ll_no_pass"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/y20"
+                android:text="为确保用户权限及安全，请务必填写真实信息"
+                android:textSize="@dimen/x26"/>
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginRight="@dimen/x30"
+                android:layout_marginTop="@dimen/y20"
+                app:cardCornerRadius="@dimen/x15">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y120">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x30"
+                        android:text="姓名:"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/x28"/>
+
+                    <EditText
+                        android:id="@+id/et_name"
+                        android:layout_width="@dimen/x500"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/x30"
+                        android:background="@color/transparent"
+                        android:gravity="right|center"
+                        android:hint="请填写真实姓名"
+                        android:inputType="textPersonName"
+                        android:maxLength="20"
+                        android:textCursorDrawable="@null"
+                        android:textSize="@dimen/x28"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cv_card_type"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y120"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginRight="@dimen/x30"
+                android:layout_marginTop="@dimen/y30"
+                app:cardCornerRadius="@dimen/x15">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/tv2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x30"
+                        android:text="证件类型:"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/x28"/>
+
+                    <TextView
+                        android:id="@+id/card_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/tv2"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/x28"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/x30"
+                        android:src="@mipmap/iocn_more_down"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginRight="@dimen/x30"
+                android:layout_marginTop="@dimen/y30"
+                app:cardCornerRadius="@dimen/x15">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y120">
+
+                    <TextView
+                        android:id="@+id/tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x30"
+                        android:text="身份证号码:"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/x28"/>
+
+                    <EditText
+                        android:id="@+id/et_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/x30"
+                        android:layout_toRightOf="@+id/tv"
+                        android:background="@color/transparent"
+                        android:gravity="right|center"
+                        android:hint="请填写完整身份证号码"
+                        android:textCursorDrawable="@null"
+                        android:textSize="@dimen/x28"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="@dimen/x450"
+                android:layout_height="@dimen/y80"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/y60"
+                android:background="@drawable/btn_blue_selector"
+                android:text="下一步"
+                android:textColor="@color/white"/>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x350"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginRight="@dimen/x30"
+                android:layout_marginTop="@dimen/y60"
+                app:cardCornerRadius="@dimen/x25">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/x50"
+                    android:paddingRight="@dimen/x50">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@mipmap/icon_remind"
+                        android:drawablePadding="@dimen/x10"
+                        android:gravity="center"
+                        android:text="为了您的账户安全，请实名认证"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/x26"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/y25"
+                        android:text="1.真实姓名经实名认证后将不能够更改，请如实填写。
+2.本站只接受实名充值，提现时银行卡等姓名信息必须与您的认证姓名一致。
+3.本站有合理的理由怀疑用户提供虚假身份信息时，有权拒绝注册或者冻结、注销已经注册的账户及资产。"
+                        android:textSize="@dimen/x26"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

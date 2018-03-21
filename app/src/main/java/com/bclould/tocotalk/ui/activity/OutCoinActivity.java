@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.bclould.tocotalk.Presenter.CurrencyInOutPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
@@ -105,7 +106,9 @@ public class OutCoinActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_record:
-//                startActivity(new Intent(this, ));
+                Intent intent2 = new Intent(this, BillDetailsActivity.class);
+                intent2.putExtra("type", 1);
+                startActivity(intent2);
                 break;
             case R.id.btn_selector_site:
                 Intent intent = new Intent(this, OutCoinSiteActivity.class);
@@ -247,6 +250,28 @@ public class OutCoinActivity extends BaseActivity {
         }
     };
 
+    public void showHintDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setCanceledOnTouchOutside(false);
+        TextView retry = (TextView) deleteCacheDialog.findViewById(R.id.tv_retry);
+        TextView findPassword = (TextView) deleteCacheDialog.findViewById(R.id.tv_find_password);
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                mRedDialog.show();
+            }
+        });
+        findPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                startActivity(new Intent(OutCoinActivity.this, PayPasswordActivity.class));
+            }
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -262,11 +287,10 @@ public class OutCoinActivity extends BaseActivity {
     private void outCoin(String password) {
         String site = mEtOutCoinSite.getText().toString().trim();
         String count = mEtCoinCount.getText().toString().trim();
-        float countf = Float.parseFloat(count);
         String googleCode = mEtGoogleCode.getText().toString().trim();
         String remark = mEtRemark.getText().toString().trim();
         CurrencyInOutPresenter currencyInOutPresenter = new CurrencyInOutPresenter(this);
-        currencyInOutPresenter.coinOutAction(mId, mSiteId, countf, googleCode, password, remark);
+        currencyInOutPresenter.coinOutAction(mId + "", mSiteId + "", count, googleCode, password, remark);
     }
 
     private boolean editCheck() {

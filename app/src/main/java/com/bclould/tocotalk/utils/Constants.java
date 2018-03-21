@@ -27,4 +27,5 @@ public class Constants {
     public static final String SECRET_ACCESS_KEY = MySharedPreferences.getInstance().getString(SECRETACCESSKEY);
     public static final String SESSION_TOKEN = MySharedPreferences.getInstance().getString(SESSIONTOKEN);
     public static final String BUCKET_NAME  = "bclould";
+    public static final String PUBLICDIR  = "/sdcard/tocotalk/images/";
 }

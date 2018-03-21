@@ -2,8 +2,10 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -29,6 +31,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.model.OrderInfo;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
@@ -47,6 +50,7 @@ import static com.bclould.tocotalk.R.style.BottomDialog;
  * Created by GA on 2018/1/11.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class BuySellActivity extends BaseActivity {
 
 
@@ -482,6 +486,28 @@ public class BuySellActivity extends BaseActivity {
             }
         }
     };
+
+    public void showHintDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setCanceledOnTouchOutside(false);
+        TextView retry = (TextView) deleteCacheDialog.findViewById(R.id.tv_retry);
+        TextView findPassword = (TextView) deleteCacheDialog.findViewById(R.id.tv_find_password);
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                mRedDialog.show();
+            }
+        });
+        findPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                startActivity(new Intent(BuySellActivity.this, PayPasswordActivity.class));
+            }
+        });
+    }
 
     private void createOrder(String password) {
         BuySellPresenter buySellPresenter = new BuySellPresenter(this);

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:id="@+id/rl_selector_state"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:paddingRight="@dimen/x20"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_state"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="中国"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x28"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/tv_state"
+                android:src="@mipmap/icon_wallet_more_selected"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_coin_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="BTC"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/xx"
+        style="@style/HCutOffRule"
+        android:layout_below="@+id/title"/>
+
+
+    <LinearLayout
+        android:id="@+id/ll_menu"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_below="@+id/xx"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="购买"
+                android:textColor="@drawable/text_otc_selector"
+                android:textSize="@dimen/x30"/>
+
+            <TextView
+                android:id="@+id/tv_xx"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y3"
+                android:layout_alignParentBottom="true"
+                android:background="@color/black"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="出售"
+                android:textColor="@drawable/text_otc_selector"
+                android:textSize="@dimen/x30"/>
+
+            <TextView
+                android:id="@+id/tv_xx2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y3"
+                android:layout_alignParentBottom="true"
+                android:background="@color/blue2"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="订单"
+                android:textColor="@drawable/text_otc_selector"
+                android:textSize="@dimen/x30"/>
+
+            <TextView
+                android:id="@+id/tv_xx3"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y3"
+                android:layout_alignParentBottom="true"
+                android:background="@color/blue2"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/cloud_circle_vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/xx2"
+        android:layout_below="@+id/ll_menu">
+    </android.support.v4.view.ViewPager>
+
+    <TextView
+        android:id="@+id/xx2"
+        style="@style/HCutOffRule"
+        android:layout_above="@+id/ll_bottom"/>
+
+    <LinearLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y80"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_selector_coin"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:text="选择币种"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+        <TextView
+            android:layout_width="@dimen/x1"
+            android:layout_height="match_parent"
+            android:background="@color/gray"/>
+
+        <Button
+            android:id="@+id/btn_push_ad"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:text="发布广告"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+    </LinearLayout>
+
+    <!--
+       <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/gray"
+            android:gravity="center"
+            android:text="开发当中敬请期待"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/x50"/>-->
+
+</RelativeLayout>
+

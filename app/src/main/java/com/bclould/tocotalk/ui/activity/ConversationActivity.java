@@ -64,7 +64,6 @@ import com.bclould.tocotalk.utils.RecordUtil;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.luck.picture.lib.PictureSelector;
-import com.luck.picture.lib.compress.Luban;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
@@ -112,6 +111,8 @@ import sj.keyboard.widget.EmoticonPageView;
 import sj.keyboard.widget.EmoticonsEditText;
 import sj.keyboard.widget.FuncLayout;
 import sj.keyboard.widget.RecordIndicator;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 
 import static com.bclould.tocotalk.R.style.BottomDialog;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_FILE_MSG;
@@ -605,7 +606,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 .previewImage(true)// 是否可预览图片
                 .previewVideo(true)// 是否可预览视频
                 .enablePreviewAudio(true) // 是否可播放音频
-                .compressGrade(Luban.THIRD_GEAR)// luban压缩档次，默认3档 Luban.FIRST_GEAR、Luban.CUSTOM_GEAR
+                .compressGrade(com.luck.picture.lib.compress.Luban.THIRD_GEAR)// luban压缩档次，默认3档 Luban.FIRST_GEAR、Luban.CUSTOM_GEAR
                 .isCamera(true)// 是否显示拍照按钮
                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                 //.setOutputCameraPath("/CustomPath")// 自定义拍照保存路径
@@ -672,66 +673,139 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         final String key = name + UtilTool.createtFileName() + ".AN." + fileName;
         Bitmap bitmap = null;
         if (postfix.equals("Video")) {
-            bitmap = ThumbnailUtils.createVideoThumbnail(path  //url的参数
+            bitmap = ThumbnailUtils.createVideoThumbnail(path
                     , MediaStore.Video.Thumbnails.MINI_KIND);
         } else {
             bitmap = BitmapFactory.decodeFile(path);
         }
-        final File newFile = new File("/sdcard/" + key);
+        final File newFile = new File(Constants.PUBLICDIR + key);
         UtilTool.sizeCompress(bitmap, newFile);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
-                            Constants.ACCESS_KEY_ID,
-                            Constants.SECRET_ACCESS_KEY,
-                            Constants.SESSION_TOKEN);
-                    AmazonS3Client s3Client = new AmazonS3Client(
-                            sessionCredentials);
-                    Regions regions = Regions.fromName("ap-northeast-2");
-                    Region region = Region.getRegion(regions);
-                    s3Client.setRegion(region);
-                    s3Client.addRequestHandler(new RequestHandler2() {
-                        @Override
-                        public void beforeRequest(Request<?> request) {
-                            UtilTool.Log("aws", "之前");
-                            Message message = new Message();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("key", key);
-                            bundle.putString("newFile", newFile.getPath());
-                            bundle.putString("path", path);
-                            bundle.putString("postfix", postfix);
-                            message.obj = bundle;
-                            message.what = 1;
-                            handler.sendMessage(message);
-                        }
 
-                        @Override
-                        public void afterResponse(Request<?> request, Response<?> response) {
-                            Message message = new Message();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("key", key);
-                            bundle.putString("newFile", newFile.getPath());
-                            bundle.putString("postfix", postfix);
-                            message.obj = bundle;
-                            message.what = 2;
-                            handler.sendMessage(message);
-                        }
+        if (postfix.equals("Video")) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
+                                Constants.ACCESS_KEY_ID,
+                                Constants.SECRET_ACCESS_KEY,
+                                Constants.SESSION_TOKEN);
+                        AmazonS3Client s3Client = new AmazonS3Client(
+                                sessionCredentials);
+                        Regions regions = Regions.fromName("ap-northeast-2");
+                        Region region = Region.getRegion(regions);
+                        s3Client.setRegion(region);
+                        s3Client.addRequestHandler(new RequestHandler2() {
+                            @Override
+                            public void beforeRequest(Request<?> request) {
+                                UtilTool.Log("aws", "之前");
+                                Message message = new Message();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("key", key);
+                                bundle.putString("newFile", newFile.getPath());
+                                bundle.putString("path", path);
+                                bundle.putString("postfix", postfix);
+                                message.obj = bundle;
+                                message.what = 1;
+                                handler.sendMessage(message);
+                            }
 
-                        @Override
-                        public void afterError(Request<?> request, Response<?> response, Exception e) {
-                            UtilTool.Log("aws", "错误");
-                        }
-                    });
-                    PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
-                    s3Client.putObject(por);
+                            @Override
+                            public void afterResponse(Request<?> request, Response<?> response) {
+                                Message message = new Message();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("key", key);
+                                bundle.putString("newFile", newFile.getPath());
+                                bundle.putString("postfix", postfix);
+                                message.obj = bundle;
+                                message.what = 2;
+                                handler.sendMessage(message);
+                            }
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+                            @Override
+                            public void afterError(Request<?> request, Response<?> response, Exception e) {
+                                UtilTool.Log("aws", "错误");
+                            }
+                        });
+                        PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
+                        s3Client.putObject(por);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }).start();
+            }).start();
+
+        } else {
+
+            Luban.with(ConversationActivity.this)
+                    .load(file)                                   // 传人要压缩的图片列表
+                    .ignoreBy(100)                                  // 忽略不压缩图片的大小
+                    .setCompressListener(new OnCompressListener() { //设置回调
+                        @Override
+                        public void onStart() {
+                        }
+
+                        @Override
+                        public void onSuccess(final File file) {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
+                                                Constants.ACCESS_KEY_ID,
+                                                Constants.SECRET_ACCESS_KEY,
+                                                Constants.SESSION_TOKEN);
+                                        AmazonS3Client s3Client = new AmazonS3Client(
+                                                sessionCredentials);
+                                        Regions regions = Regions.fromName("ap-northeast-2");
+                                        Region region = Region.getRegion(regions);
+                                        s3Client.setRegion(region);
+                                        s3Client.addRequestHandler(new RequestHandler2() {
+                                            @Override
+                                            public void beforeRequest(Request<?> request) {
+                                                UtilTool.Log("aws", "之前");
+                                                Message message = new Message();
+                                                Bundle bundle = new Bundle();
+                                                bundle.putString("key", key);
+                                                bundle.putString("newFile", newFile.getPath());
+                                                bundle.putString("path", path);
+                                                bundle.putString("postfix", postfix);
+                                                message.obj = bundle;
+                                                message.what = 1;
+                                                handler.sendMessage(message);
+                                            }
+
+                                            @Override
+                                            public void afterResponse(Request<?> request, Response<?> response) {
+                                                Message message = new Message();
+                                                Bundle bundle = new Bundle();
+                                                bundle.putString("key", key);
+                                                bundle.putString("newFile", newFile.getPath());
+                                                bundle.putString("postfix", postfix);
+                                                message.obj = bundle;
+                                                message.what = 2;
+                                                handler.sendMessage(message);
+                                            }
+
+                                            @Override
+                                            public void afterError(Request<?> request, Response<?> response, Exception e) {
+                                                UtilTool.Log("aws", "错误");
+                                            }
+                                        });
+                                        PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
+                                        s3Client.putObject(por);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }).start();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                        }
+                    }).launch();    //启动压缩
+        }
     }
 
     private void sendFileMessage(String path, String postfix, String key, String newFile) {

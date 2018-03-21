@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.ui.activity.PersonalDetailsActivity;
-import com.bclould.tocotalk.ui.activity.ShenFenVerifyActivity;
+import com.bclould.tocotalk.ui.activity.RealNameC1Activity;
 import com.bclould.tocotalk.ui.activity.SystemSetActivity;
 import com.bclould.tocotalk.ui.activity.UserSafetyActivity;
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -42,6 +42,8 @@ public class MyFragment extends Fragment {
     public static MyFragment instance = null;
     @Bind(R.id.iv_touxiang)
     ImageView mIvTouxiang;
+    @Bind(R.id.tv_name)
+    TextView mTvName;
     @Bind(R.id.rl_personal_data)
     RelativeLayout mRlPersonalData;
     @Bind(R.id.iv)
@@ -56,10 +58,6 @@ public class MyFragment extends Fragment {
     ImageView mIv3;
     @Bind(R.id.rl_system_set)
     RelativeLayout mRlSystemSet;
-    @Bind(R.id.tv_name)
-    TextView mTvName;
-    @Bind(R.id.iv_id)
-    TextView mIvId;
     private DBManager mMgr;
 
     public static MyFragment getInstance() {
@@ -129,7 +127,7 @@ public class MyFragment extends Fragment {
                 startActivity(new Intent(getActivity(), PersonalDetailsActivity.class));
                 break;
             case R.id.rl_autonym_attestation:
-                startActivity(new Intent(getActivity(), ShenFenVerifyActivity.class));
+                startActivity(new Intent(getActivity(), RealNameC1Activity.class));
                 break;
             case R.id.rl_security_center:
                 startActivity(new Intent(getActivity(), UserSafetyActivity.class));

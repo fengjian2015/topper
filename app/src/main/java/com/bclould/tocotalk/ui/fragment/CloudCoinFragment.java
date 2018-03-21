@@ -12,8 +12,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.ui.activity.BankCardActivity;
 import com.bclould.tocotalk.ui.activity.MainActivity;
 import com.bclould.tocotalk.ui.activity.MyAssetsActivity;
+import com.bclould.tocotalk.ui.activity.OtcActivity;
+import com.bclould.tocotalk.ui.activity.PayCentreActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -87,12 +90,14 @@ public class CloudCoinFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_more:
+                startActivity(new Intent(getActivity(), PayCentreActivity.class));
                 break;
             case R.id.ll_inout:
                 break;
             case R.id.ll_usdt:
                 break;
             case R.id.ll_bank_card:
+                startActivity(new Intent(getActivity(), BankCardActivity.class));
                 break;
             case R.id.ll_asserts:
                 startActivity(new Intent(getActivity(), MyAssetsActivity.class));
@@ -100,6 +105,7 @@ public class CloudCoinFragment extends Fragment {
             case R.id.ll_exchange:
                 break;
             case R.id.ll_otc:
+                startActivity(new Intent(getActivity(), OtcActivity.class));
                 break;
             case R.id.ll_financing:
                 break;

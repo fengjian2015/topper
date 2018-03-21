@@ -59,7 +59,7 @@ public class BillDataFragment extends Fragment {
 
     private void initData() {
         DillDataPresenter dillDataPresenter = new DillDataPresenter(getContext());
-        dillDataPresenter.getDillList(new DillDataPresenter.CallBack() {
+        dillDataPresenter.getTransfer(new DillDataPresenter.CallBack() {
             @Override
             public void send(List<TransferInfo.DataBean> data) {
                 if (data.size() == 0) {

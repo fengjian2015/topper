@@ -1,6 +1,5 @@
 package com.bclould.tocotalk.ui.activity;
 
-import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
@@ -54,6 +53,7 @@ import static com.bclould.tocotalk.R.style.BottomDialog;
  * Created by GA on 2018/1/22.
  */
 
+@android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
 public class SendQRCodeRedActivity extends AppCompatActivity {
 
     @Bind(R.id.bark)
@@ -82,7 +82,6 @@ public class SendQRCodeRedActivity extends AppCompatActivity {
     private Dialog mBottomDialog;
     private List<CoinInfo.DataBean> mDataBeanList = new ArrayList<>();
 
-    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
