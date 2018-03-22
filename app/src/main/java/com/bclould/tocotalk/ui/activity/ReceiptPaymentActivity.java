@@ -2,6 +2,7 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,9 +22,12 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bclould.tocotalk.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter4;
+import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -61,14 +65,39 @@ public class ReceiptPaymentActivity extends BaseActivity {
     private int mHeightPixels;
     private ViewGroup mView;
     private PopupWindow mPopupWindow;
+    private ReceiptPaymentPresenter mReceiptPaymentPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receipt_payment);
+        mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);
         ButterKnife.bind(this);
         getPhoneSize();
+        moneyIn();
     }
+
+    private void moneyIn() {
+        mReceiptPaymentPresenter.generateReceiptQrCode(new ReceiptPaymentPresenter.CallBack() {
+            @Override
+            public void send(int id) {
+                String code = UtilTool.base64PetToJson(Constants.MONEYIN, "redID", id + "", "收付款");
+                Bitmap bitmap = UtilTool.createQRImage(code);
+                mIvQr.setImageBitmap(bitmap);
+            }
+        });
+    }
+
+    /*private void moneyOut() {
+        mReceiptPaymentPresenter.generatePaymentQrCode(new ReceiptPaymentPresenter.CallBack() {
+            @Override
+            public void send(int id) {
+                String code = UtilTool.base64PetToJson(Constants.MONEYIN, "redID", id + "", "收付款");
+                Bitmap bitmap = UtilTool.createQRImage(code);
+                mIvQr.setImageBitmap(bitmap);
+            }
+        });
+    }*/
 
     @OnClick({R.id.bark, R.id.tv_selector_way, R.id.tv_selector, R.id.tv_set_money, R.id.rl_receipt_payment_record})
     public void onViewClicked(View view) {

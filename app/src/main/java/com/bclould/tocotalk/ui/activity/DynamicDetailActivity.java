@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
@@ -39,6 +41,7 @@ import butterknife.OnClick;
  * Created by GA on 2017/10/19.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class DynamicDetailActivity extends BaseActivity {
 
     @Bind(R.id.bark)

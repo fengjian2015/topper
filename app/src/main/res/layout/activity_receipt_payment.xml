@@ -70,8 +70,7 @@
                 android:layout_width="@dimen/x500"
                 android:layout_height="@dimen/x500"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/y50"
-                android:src="@mipmap/qr_code1"/>
+                android:layout_marginTop="@dimen/y50"/>
 
             <TextView
                 android:id="@+id/xx"

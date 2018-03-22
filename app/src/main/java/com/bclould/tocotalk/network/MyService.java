@@ -459,10 +459,12 @@ public interface MyService {
     //发布动态
     @POST("dynamic/publish")
     @FormUrlEncoded
-    Observable<InOutInfo> publishDynamic(
+    Observable<BaseInfo> publishDynamic(
             @Header("Authorization") String token,
             @Field("content") String content,
+            @Field("key_type") String key_type,
             @Field("key") String key,
+            @Field("key_compress") String key_compress,
             @Field("position") String position
     );
 
@@ -502,14 +504,14 @@ public interface MyService {
 
     //生成收款二维码
     @POST("receipt/generateReceiptQrCode")
-    Observable<InOutInfo> generateReceiptQrCode(
+    Observable<BaseInfo> generateReceiptQrCode(
             @Header("Authorization") String token
     );
 
     //扫收款码
     @POST("receipt/payment")
     @FormUrlEncoded
-    Observable<InOutInfo> payment(
+    Observable<BaseInfo> payment(
             @Header("Authorization") String token,
             @Field("id") String id,
             @Field("number") String number,
@@ -518,16 +520,26 @@ public interface MyService {
 
     //生成付款二维码
     @POST("receipt/generatePaymentQrCode")
-    Observable<InOutInfo> generatePaymentQrCode(
-            @Header("Authorization") String token
+    Observable<BaseInfo> generatePaymentQrCode(
+            @Header("Authorization") String token,
+            @Field("number") String number,
+            @Field("coin_id") String coin_id
     );
 
-    //生成付款二维码
+    //扫付款码， 收款操作
+    @POST("receipt/receipt")
+    Observable<BaseInfo> receipt(
+            @Header("Authorization") String token,
+            @Field("data") String data
+    );
+
+    //获取国家列表
     @POST("common/getCountryList")
     Observable<InOutInfo> getCountryList(
             @Header("Authorization") String token
-    );//生成付款二维码
+    );
 
+    //验证支付密码
     @POST("common/verifySecondPassword")
     @FormUrlEncoded
     Observable<BaseInfo> verifySecondPassword(
@@ -535,6 +547,7 @@ public interface MyService {
             @Field("second_password") String second_password
     );
 
+    //获取银行卡信息
     @POST("user/bankCardInfo")
     @FormUrlEncoded
     Observable<BankCardInfo> bankCardInfo(

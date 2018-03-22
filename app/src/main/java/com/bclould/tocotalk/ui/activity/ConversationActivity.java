@@ -701,7 +701,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         }
         //缩略图储存路径
         final File newFile = new File(Constants.PUBLICDIR + key);
-        UtilTool.sizeCompress(bitmap, newFile);//压缩图片
+        UtilTool.comp(bitmap, newFile);//压缩图片
 
         //上传视频到aws
         if (postfix.equals("Video")) {

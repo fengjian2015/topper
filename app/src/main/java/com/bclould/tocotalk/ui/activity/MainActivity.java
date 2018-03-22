@@ -144,7 +144,7 @@ public class MainActivity extends BaseActivity {
         //自动登录即时通讯
         loginIM();
         //检测版本更新
-        checkVersion();
+//        checkVersion();
     }
 
     //检测版本更新

@@ -16,6 +16,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.BankCardInfo;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.AnimatorTool;
 
 import butterknife.Bind;
@@ -78,11 +79,37 @@ public class BankCardBindingActivity extends BaseActivity {
             @Override
             public void send(BankCardInfo.DataBean data) {
                 Intent intent = new Intent(BankCardBindingActivity.this, BankCardBindingActivity2.class);
-                intent.putExtra("data", data);
-                intent.putExtra("cardNumber", cardNumber);
-                startActivity(intent);
-                finish();
+                if (data.getTruename().isEmpty()) {
+                    showDialog();
+                } else {
+                    intent.putExtra("data", data);
+                    intent.putExtra("cardNumber", cardNumber);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
+    }
+
+    private void showDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle("您还没有实名认证，请先去实名认证");
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                startActivity(new Intent(BankCardBindingActivity.this, RealNameC1Activity.class));
+            }
+        });
+
     }
 }

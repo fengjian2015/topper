@@ -33,7 +33,6 @@ import com.bclould.tocotalk.model.VoiceInfo;
 import com.bclould.tocotalk.ui.activity.ImageViewActivity;
 import com.bclould.tocotalk.ui.activity.RedPacketActivity;
 import com.bclould.tocotalk.ui.activity.VideoActivity;
-import com.bclould.tocotalk.ui.widget.BubbleImageView;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -90,7 +89,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private String mFileName;
 
     public ChatAdapter(Context context, List<MessageInfo> messageList, Bitmap fromBitmap, String user, DBManager mgr, MediaPlayer mediaPlayer) {
-        UtilTool.Log("肉质", "刷新走了构造吗");
         mContext = context;
         mMessageList = messageList;
         mFromBitmap = fromBitmap;
@@ -593,7 +591,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         @Bind(R.id.iv_touxiang)
         ImageView mIvTouxiang;
         @Bind(R.id.iv_img)
-        BubbleImageView mIvImg;
+        ImageView mIvImg;
         @Bind(R.id.iv_warning)
         ImageView mIvWarning;
         @Bind(R.id.iv_load)
@@ -648,7 +646,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         @Bind(R.id.iv_touxiang)
         ImageView mIvTouxiang;
         @Bind(R.id.iv_img)
-        BubbleImageView mIvImg;
+        ImageView mIvImg;
 
         FromImgHolder(View view) {
             super(view);

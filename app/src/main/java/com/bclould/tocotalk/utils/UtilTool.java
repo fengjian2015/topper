@@ -8,7 +8,6 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
@@ -42,6 +41,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jxmpp.jid.impl.JidCreate;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -108,20 +108,50 @@ public class UtilTool {
         return fileName;
     }
 
-    public static void sizeCompress(Bitmap bmp, File file) {
+    public static void comp(Bitmap image, File file) {
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        if (bmp.getByteCount() > 800000) {
-            // 尺寸压缩倍数,值越大，图片尺寸越小
-            int ratio = 6;
-            // 压缩Bitmap到对应尺寸
-            Bitmap result = Bitmap.createBitmap(bmp.getWidth() / ratio, bmp.getHeight() / ratio, Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(result);
-            Rect rect = new Rect(0, 0, bmp.getWidth() / ratio, bmp.getHeight() / ratio);
-            canvas.drawBitmap(bmp, null, rect, null);
-            // 把压缩后的数据存放到baos中
-            result.compress(Bitmap.CompressFormat.JPEG, 50, baos);
-        } else {
-            bmp.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        if (baos.toByteArray().length / 1024 > 1024) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
+            baos.reset();//重置baos即清空baos
+            image.compress(Bitmap.CompressFormat.JPEG, 50, baos);//这里压缩50%，把压缩后的数据存放到baos中
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
+        BitmapFactory.Options newOpts = new BitmapFactory.Options();
+        //开始读入图片，此时把options.inJustDecodeBounds 设回true了
+        newOpts.inJustDecodeBounds = true;
+        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
+        newOpts.inJustDecodeBounds = false;
+        int w = newOpts.outWidth;
+        int h = newOpts.outHeight;
+        //现在主流手机比较多是800*480分辨率，所以高和宽我们设置为
+        float hh = 800f;//这里设置高度为800f
+        float ww = 480f;//这里设置宽度为480f
+        //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
+        int be = 1;//be=1表示不缩放
+        if (w > h && w > ww) {//如果宽度大的话根据宽度固定大小缩放
+            be = (int) (newOpts.outWidth / ww);
+        } else if (w < h && h > hh) {//如果高度高的话根据宽度固定大小缩放
+            be = (int) (newOpts.outHeight / hh);
+        }
+        if (be <= 0)
+            be = 1;
+        newOpts.inSampleSize = be;//设置缩放比例
+        //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
+        isBm = new ByteArrayInputStream(baos.toByteArray());
+        bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
+        compressImage(bitmap, file);//压缩好比例大小后再进行质量压缩
+    }
+
+    private static void compressImage(Bitmap image, File file) {
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        int options = 100;
+        while (baos.toByteArray().length / 1024 > 100) { //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+            baos.reset();//重置baos即清空baos
+            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
+            options -= 10;//每次都减少10
         }
         try {
             FileOutputStream fos = new FileOutputStream(file);
@@ -133,6 +163,44 @@ public class UtilTool {
         }
     }
 
+    /*public static void sizeCompress(Bitmap bmp, File file) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        int ratio = 0;
+        int quality = 0;
+        if (bmp.getHeight() > 3000 && bmp.getWidth() > 4000) {
+            ratio = 7;
+            quality =;
+        } else if (bmp.getHeight() > 2500 && bmp.getWidth() > 3500) {
+            ratio = 6;
+        } else if (bmp.getHeight() > 2000 && bmp.getWidth() > 3000) {
+            ratio = 5;
+        } else if (bmp.getHeight() > 1500 && bmp.getWidth() > 2500) {
+            ratio = 4;
+        } else if (bmp.getHeight() > 1000 && bmp.getWidth() > 2000) {
+            ratio = 3;
+        } else if (bmp.getHeight() > 500 && bmp.getWidth() > 1500) {
+            ratio = 2;
+        } else if (bmp.getHeight() > 500 && bmp.getWidth() > 1500) {
+            ratio = 2;
+        }
+        // 压缩Bitmap到对应尺寸
+        Bitmap result = Bitmap.createBitmap(bmp.getWidth() / ratio, bmp.getHeight() / ratio, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(result);
+        Rect rect = new Rect(0, 0, bmp.getWidth() / ratio, bmp.getHeight() / ratio);
+        canvas.drawBitmap(bmp, null, rect, null);
+        // 把压缩后的数据存放到baos中
+        result.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(baos.toByteArray());
+            fos.flush();
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+*/
     /**
      * 保存View为图片的方法
      */
