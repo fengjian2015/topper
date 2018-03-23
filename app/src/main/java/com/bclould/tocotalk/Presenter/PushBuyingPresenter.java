@@ -15,7 +15,10 @@ import com.bclould.tocotalk.ui.activity.PayPasswordActivity;
 import com.bclould.tocotalk.ui.activity.PushBuyingActivity;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
+
+import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -76,6 +79,7 @@ public class PushBuyingPresenter {
                         public void onNext(BaseInfo baseInfo) {
                             if (baseInfo.getStatus() == 1) {
                                 mPushBuyingActivity.finish();
+                                EventBus.getDefault().post(new MessageEvent("发布交易"));
                             } else if (baseInfo.getMessage().equals("尚未设置交易密码")) {
                                 showSetPwDialog();
                             }

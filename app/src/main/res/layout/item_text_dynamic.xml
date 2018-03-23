@@ -18,7 +18,7 @@
             android:src="@mipmap/img_nfriend_headshot1"/>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x20"
             android:layout_marginTop="@dimen/y30"
@@ -47,7 +47,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/x30"
                 android:layout_marginTop="@dimen/y10"
-                android:text="交流信息的工具。如汉字、拉丁仓颉之初作书，盖依类象形，故谓之文，其后形声相益，即谓之字。文者物象之本,字者言孳乳而浸多也"
                 android:textSize="@dimen/x26"/>
 
             <!--<LinearLayout
@@ -86,35 +85,27 @@
                 android:orientation="horizontal">
 
 
-                <ImageView
-                    android:layout_width="@dimen/x25"
-                    android:layout_height="@dimen/y25"
-                    android:layout_marginLeft="@dimen/x30"
-                    android:src="@mipmap/icon_news_discuss"/>
-
                 <TextView
-                    android:id="@+id/pinglun_count"
+                    android:id="@+id/tv_pinglun"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/x10"
+                    android:drawableLeft="@mipmap/icon_news_discuss"
+                    android:drawablePadding="@dimen/x10"
                     android:gravity="center"
-                    android:text="45654"
-                    android:textSize="@dimen/x20"/>
+                    android:text="0"
+                    android:textSize="@dimen/x26"/>
 
-                <ImageView
-                    android:layout_width="@dimen/x25"
-                    android:layout_height="@dimen/y25"
-                    android:layout_marginLeft="@dimen/x30"
-                    android:src="@mipmap/icon_news_good"/>
 
                 <TextView
-                    android:id="@+id/zan_count"
+                    android:id="@+id/tv_zan"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/x10"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:drawableLeft="@mipmap/icon_news_good"
+                    android:drawablePadding="@dimen/x10"
                     android:gravity="center"
-                    android:text="45654"
-                    android:textSize="@dimen/x20"/>
+                    android:text="0"
+                    android:textSize="@dimen/x26"/>
 
             </LinearLayout>
 

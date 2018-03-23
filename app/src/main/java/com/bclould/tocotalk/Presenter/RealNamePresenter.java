@@ -63,7 +63,12 @@ public class RealNamePresenter {
                         @Override
                         public void onNext(BaseInfo baseInfo) {
                             hideDialog();
-                            callBack.send(baseInfo.getMessage());
+                            if (baseInfo.getStatus() == 1) {
+                                callBack.send(baseInfo.getMessage());
+                                Toast.makeText(mContext, "提交成功", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         }
 
                         @Override

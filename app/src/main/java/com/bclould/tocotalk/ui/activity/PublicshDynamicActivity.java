@@ -32,7 +32,7 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.bclould.tocotalk.Presenter.PublicshDynamicPresenter;
+import com.bclould.tocotalk.Presenter.DynamicPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
@@ -85,7 +85,7 @@ public class PublicshDynamicActivity extends BaseActivity {
     private List<LocalMedia> selectList = new ArrayList<>();
     private PublicshDynamicGVAdapter adapter;
     private int maxSelectNum = 9;
-    private PublicshDynamicPresenter mPublicshDynamicPresenter;
+    private DynamicPresenter mDynamicPresenter;
     private boolean mType = false;
     private LoadingProgressDialog mProgressDialog;
 
@@ -93,7 +93,7 @@ public class PublicshDynamicActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish_dynamic);
-        mPublicshDynamicPresenter = new PublicshDynamicPresenter(this);
+        mDynamicPresenter = new DynamicPresenter(this);
         ButterKnife.bind(this);
         initRecyclerView();
         MyApp.getInstance().addActivity(this);
@@ -215,14 +215,15 @@ public class PublicshDynamicActivity extends BaseActivity {
                         mType = true;
                         selectList.clear();
                         selectList.add(localMedia);
+                    } else {
+                        // 例如 LocalMedia 里面返回三种path
+                        // 1.media.getPath(); 为原图path
+                        // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
+                        // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
+                        // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
+                        adapter.setList(selectList);
+                        adapter.notifyDataSetChanged();
                     }
-                    // 例如 LocalMedia 里面返回三种path
-                    // 1.media.getPath(); 为原图path
-                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
-                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
-                    // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
-                    adapter.setList(selectList);
-                    adapter.notifyDataSetChanged();
                     break;
             }
         }
@@ -271,7 +272,7 @@ public class PublicshDynamicActivity extends BaseActivity {
                 String text = mTextEt.getText().toString();
                 if (selectList.size() != 0 || !text.isEmpty()) {
                     try {
-                        checkFile(text);
+                        checkFile();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -284,7 +285,7 @@ public class PublicshDynamicActivity extends BaseActivity {
 
     List<String> mPathList = new ArrayList<>();
 
-    private void checkFile(String text) {
+    private void checkFile() {
         showDialog();
         if (selectList.size() != 0) {
             if (mType) {
@@ -413,7 +414,7 @@ public class PublicshDynamicActivity extends BaseActivity {
 
     private void publicshDynamic(String type, String keyList, String mkeyCompressList) {
         String text = mTextEt.getText().toString();
-        mPublicshDynamicPresenter.publicsh(text, type, keyList, mkeyCompressList, "", new PublicshDynamicPresenter.CallBack() {
+        mDynamicPresenter.publicsh(text, type, keyList, mkeyCompressList, "", new DynamicPresenter.CallBack() {
             @Override
             public void send() {
                 hideDialog();

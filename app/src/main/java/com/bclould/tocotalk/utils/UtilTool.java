@@ -211,7 +211,7 @@ public class UtilTool {
                 Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bm);
         v.draw(canvas);
-        File f = new File("/sdcard/Pictures/Screenshots/", fileName);
+        File f = new File(Constants.PUBLICDIR, fileName);
         if (f.exists()) {
             f.delete();
         }

@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.bclould.tocotalk.ui.fragment.CloudMessageFragment;
 import com.bclould.tocotalk.ui.fragment.ConversationFragment;
-import com.bclould.tocotalk.ui.fragment.DynamicStateFragment;
+import com.bclould.tocotalk.ui.fragment.DynamicFragment;
 import com.bclould.tocotalk.ui.fragment.FriendListFragment;
 import com.bclould.tocotalk.ui.fragment.NewsFragment;
 
@@ -31,7 +31,7 @@ public class CloudMessageVPAdapter extends FragmentPagerAdapter {
             mFragmentList.add(ConversationFragment.getInstance());
             mFragmentList.add(FriendListFragment.getInstance());
         }else {
-            mFragmentList.add(DynamicStateFragment.getInstance());
+            mFragmentList.add(DynamicFragment.getInstance());
             mFragmentList.add(NewsFragment.getInstance());
         }
 

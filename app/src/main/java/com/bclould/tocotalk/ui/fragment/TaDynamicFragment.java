@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bclould.tocotalk.R;
-import com.bclould.tocotalk.ui.adapter.TaDynamicRVAdapter;
 import com.bclould.tocotalk.model.PostInfo;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -85,7 +84,7 @@ public class TaDynamicFragment extends Fragment {
             PostInfo post = new PostInfo("Am I handsome? Am I handsome? Am I handsome?", imgUrls);
             mPostList.add(post);
         }
-        mRecyclerView.setAdapter(new TaDynamicRVAdapter(getActivity(), mPostList));
+//        mRecyclerView.setAdapter(new DynamicRVAdapter(getActivity(), mPostList));
         manager.scrollToPositionWithOffset(0, 0);
         mRecyclerView.post(new Runnable() {
             @Override

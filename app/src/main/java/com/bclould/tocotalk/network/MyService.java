@@ -7,6 +7,7 @@ import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.CardListInfo;
 import com.bclould.tocotalk.model.CoinInfo;
 import com.bclould.tocotalk.model.DealListInfo;
+import com.bclould.tocotalk.model.DynamicListInfo;
 import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.model.GoogleInfo;
 import com.bclould.tocotalk.model.GrabRedInfo;
@@ -217,6 +218,12 @@ public interface MyService {
     Observable<BaseInfo> bindGoogle(
             @Header("Authorization") String token,
             @Field("google_code") String google_code
+    );
+
+    //解除绑定谷歌验证
+    @POST("security/unBindGoogleAuthenticator")
+    Observable<BaseInfo> unBindGoogle(
+            @Header("Authorization") String token
     );
 
     //创建红包
@@ -471,7 +478,7 @@ public interface MyService {
     //动态列表
     @POST("dynamic/dynamicList")
     @FormUrlEncoded
-    Observable<InOutInfo> dynamicList(
+    Observable<DynamicListInfo> dynamicList(
             @Header("Authorization") String token,
             @Field("page") String page,
             @Field("page_size") String page_size

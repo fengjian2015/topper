@@ -7,9 +7,12 @@ import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.BaseInfo;
+import com.bclould.tocotalk.model.DynamicListInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.UtilTool;
+
+import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -21,11 +24,11 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class PublicshDynamicPresenter {
+public class DynamicPresenter {
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
 
-    public PublicshDynamicPresenter(Context context) {
+    public DynamicPresenter(Context context) {
         mContext = context;
     }
 
@@ -46,7 +49,6 @@ public class PublicshDynamicPresenter {
     }
 
     public void publicsh(String text, String type, String keyList, String keyCompressList, String position, final CallBack callBack) {
-
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
                     .getServer()
@@ -83,8 +85,53 @@ public class PublicshDynamicPresenter {
         }
     }
 
+    public void dynamicList(String page, String pageSize, final CallBack2 callBack2) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .dynamicList(UtilTool.getToken(), page, pageSize)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<DynamicListInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(DynamicListInfo dynamicListInfo) {
+                            hideDialog();
+                           if(dynamicListInfo.getStatus() == 1){
+                               callBack2.send(dynamicListInfo.getData());
+                           }else {
+                               Toast.makeText(mContext, "加载失败", Toast.LENGTH_SHORT).show();
+                           }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            hideDialog();
+                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     //定义接口
     public interface CallBack {
         void send();
+    }
+
+    //定义接口
+    public interface CallBack2 {
+        void send(List<DynamicListInfo.DataBean> data);
     }
 }

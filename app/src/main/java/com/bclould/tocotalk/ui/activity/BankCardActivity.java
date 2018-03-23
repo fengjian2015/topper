@@ -98,6 +98,7 @@ public class BankCardActivity extends BaseActivity {
     }
 
     private void initData() {
+        mCardList.clear();
         mBankCardPresenter.bankCardList(new BankCardPresenter.CallBack2() {
             @Override
             public void send(List<CardListInfo.DataBean> data) {
@@ -138,11 +139,18 @@ public class BankCardActivity extends BaseActivity {
                 break;
             case R.id.tv_delete:
                 isDelete = !isDelete;
-                try {
-                    mOnItemDeleteListener.onDelete(isDelete);
-                } catch (Exception e) {
+                if (mRecyclerView.getChildCount() != 0) {
+                    for (int i = 0; i < mRecyclerView.getChildCount(); i++) {
+                        View childAt = mRecyclerView.getChildAt(i);
+                        TextView delete = (TextView) childAt.findViewById(R.id.tv_delete);
+                        if (isDelete) {
+                            delete.setVisibility(View.VISIBLE);
+                        } else {
+                            delete.setVisibility(View.GONE);
+                        }
+                    }
+                }else {
                     Toast.makeText(this, "您还没有添加银行卡", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
                 }
                 break;
         }

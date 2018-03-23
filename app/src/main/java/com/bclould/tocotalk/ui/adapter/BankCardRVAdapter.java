@@ -51,7 +51,7 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
     //绑定ViewHolder
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ViewHolder viewHolder = (ViewHolder) holder;
+        final ViewHolder viewHolder = (ViewHolder) holder;
         viewHolder.setData(mCardList.get(position));
     }
 
@@ -87,13 +87,7 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
             mBankName.setText(split[0]);
             mCardType.setText(split[split.length - 1]);
             mBankCardNumber.setText(data.getCard_number());
-            mTvDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    showDialog(data);
-                }
-            });
-            mActivity.setOnItemDeleteListener(new BankCardActivity.OnItemDeleteListener() {
+            /*mActivity.setOnItemDeleteListener(new BankCardActivity.OnItemDeleteListener() {
                 @Override
                 public void onDelete(boolean isDelete) {
                     if (isDelete) {
@@ -102,7 +96,14 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
                         mTvDelete.setVisibility(View.GONE);
                     }
                 }
+            });*/
+            mTvDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showDialog(data);
+                }
             });
+
         }
     }
 

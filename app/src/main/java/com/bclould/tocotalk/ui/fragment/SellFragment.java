@@ -18,6 +18,7 @@ import com.bclould.tocotalk.base.BaseFragment;
 import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.ui.adapter.BuySellRVAdapter;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.UtilTool;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -87,8 +88,10 @@ public class SellFragment extends BaseFragment {
         mCoinName = event.getCoinName();
         if (msg.equals("幣種切換")) {
             initData(mCoinName);
+        } else if (msg.equals("发布交易")) {
+            initData(mCoinName);
+            UtilTool.Log("卖", mCoinName);
         }
-
     }
 
     private void initRecyclerView() {
@@ -111,7 +114,7 @@ public class SellFragment extends BaseFragment {
     private void initData(String coin) {
         mDataList.clear();
         BuySellPresenter buySellPresenter = new BuySellPresenter(getContext());
-        buySellPresenter.getDealList(1, coin, new BuySellPresenter.CallBack() {
+        buySellPresenter.getDealList(2, coin, new BuySellPresenter.CallBack() {
             @Override
             public void send(List<DealListInfo.DataBean> dataBean, String coin) {
                 if (dataBean.size() != 0) {

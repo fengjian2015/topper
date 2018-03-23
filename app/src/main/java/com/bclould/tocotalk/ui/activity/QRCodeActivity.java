@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
@@ -76,7 +77,11 @@ public class QRCodeActivity extends BaseActivity {
 
                 break;
             case R.id.btn_save_qr:
-                UtilTool.saveBitmap(mRlQr);
+                if(UtilTool.saveBitmap(mRlQr)){
+                    Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(this, "保存失败", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.more:
                 break;

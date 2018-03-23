@@ -173,7 +173,7 @@ public class XmppConnection {
             }
         } catch (Exception xe) {
             EventBus.getDefault().post(new MessageEvent("登录失败"));
-            MainActivity.getInstance().hideDialog();
+            mHandler.sendEmptyMessage(0);
             UtilTool.Log("fsdafa", "连接失败");
             xe.printStackTrace();
             connection = null;
@@ -181,6 +181,13 @@ public class XmppConnection {
         return false;
     }
 
+    android.os.Handler mHandler = new android.os.Handler() {
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            super.handleMessage(msg);
+            MainActivity.getInstance().hideDialog();
+        }
+    };
 
     /**
      * 关闭连接
@@ -225,6 +232,7 @@ public class XmppConnection {
 
             // 添加连接监听
             connectionListener = new XMConnectionListener(account, password, mContext);
+            getConnection().removeConnectionListener(connectionListener);
             getConnection().addConnectionListener(connectionListener);
             return true;
         } catch (XMPPException | IOException | SmackException | InterruptedException xe) {

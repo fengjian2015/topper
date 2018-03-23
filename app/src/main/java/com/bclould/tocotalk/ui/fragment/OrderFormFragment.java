@@ -91,7 +91,6 @@ public class OrderFormFragment extends Fragment {
         if (msg.equals("幣種切換")) {
             initData(mCoinName);
         }
-
     }
 
     private void initListener() {
@@ -111,6 +110,7 @@ public class OrderFormFragment extends Fragment {
     }
 
     private void initData(String coin) {
+        mDataList.clear();
         BuySellPresenter buySellPresenter = new BuySellPresenter(getContext());
         buySellPresenter.getOrderList(1, coin, new BuySellPresenter.CallBack3() {
             @Override

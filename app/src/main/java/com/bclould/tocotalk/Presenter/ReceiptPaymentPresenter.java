@@ -83,6 +83,7 @@ public class ReceiptPaymentPresenter {
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
+
     //定义接口
     public interface CallBack {
         void send(int id);

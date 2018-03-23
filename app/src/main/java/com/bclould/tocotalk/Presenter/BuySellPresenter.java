@@ -131,6 +131,7 @@ public class BuySellPresenter {
     }
 
     public void createOrder(int id, String coinCount, String price, String money, final CallBack2 callBack2, String password) {
+        UtilTool.Log("日志", "调了几次");
         double count = Double.parseDouble(coinCount);
         double priced = Double.parseDouble(price);
         double moneyd = Double.parseDouble(money);

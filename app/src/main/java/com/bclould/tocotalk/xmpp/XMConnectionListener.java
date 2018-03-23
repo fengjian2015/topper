@@ -97,6 +97,7 @@ public class XMConnectionListener implements ConnectionListener {
                     }
                 } catch (Exception e) {
                     Log.i("XMConnectionListener", "尝试登录,出现异常!");
+                    Log.i("XMConnectionListener", e.getMessage());
                 }
             }
         }

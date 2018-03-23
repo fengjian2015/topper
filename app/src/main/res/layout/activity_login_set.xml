@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="安全中心"
+            android:text="登录设置"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 

@@ -156,13 +156,10 @@ public class RealNameC1Activity extends BaseActivity {
         mRealNamePresenter.realNameVerify(name, cardNumber, mType, new RealNamePresenter.CallBack() {
             @Override
             public void send(String message) {
-                Toast.makeText(RealNameC1Activity.this, "提交成功", Toast.LENGTH_SHORT).show();
-                if (message.equals("ok")) {
-                    Intent intent = new Intent(RealNameC1Activity.this, UpIdCardActivity.class);
-                    intent.putExtra("type", mType);
-                    startActivity(intent);
-                    finish();
-                }
+                Intent intent = new Intent(RealNameC1Activity.this, UpIdCardActivity.class);
+                intent.putExtra("type", mType);
+                startActivity(intent);
+                finish();
             }
         });
 

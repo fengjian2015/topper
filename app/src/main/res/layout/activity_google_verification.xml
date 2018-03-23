@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/light"
-              android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/light"
+                android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/rl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
         android:background="@color/white">
@@ -29,159 +30,206 @@
     </RelativeLayout>
 
     <TextView
-        style="@style/HCutOffRule"/>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/y80"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y30">
-
-
-        <TextView
-            android:id="@+id/tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:lineSpacingExtra="@dimen/y10"
-            android:text="使用Google Authenticator應用掃描二維碼，獲獎以下密鑰手動添加到驗證器中"
-            android:textSize="@dimen/x26"/>
-
-        <TextView
-            android:id="@+id/tv_download"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignRight="@+id/tv"
-            android:gravity="bottom"
-            android:text="立即下載"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x26"/>
-
-    </RelativeLayout>
-
-    <TextView
+        android:id="@+id/xx"
         style="@style/HCutOffRule"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y20"/>
-
-    <ImageView
-        android:id="@+id/iv_qr_code"
-        android:layout_width="@dimen/x300"
-        android:layout_height="@dimen/x300"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/y30"/>
+        android:layout_below="@+id/rl_title"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/y30"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/x30"
-            android:text="當前賬號："
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/x28"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="943252723@qq.com"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/x28"/>
-
-    </LinearLayout>
-
-    <RelativeLayout
+        android:id="@+id/ll_binding"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y30">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/xx"
+        android:orientation="vertical">
 
-        <android.support.v7.widget.CardView
-            android:layout_width="@dimen/x500"
-            android:layout_height="@dimen/y90"
-            android:layout_centerVertical="true"
-            app:cardCornerRadius="@dimen/x15">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y80"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y30">
+
 
             <TextView
-                android:id="@+id/secret_key"
+                android:id="@+id/tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:lineSpacingExtra="@dimen/y10"
+                android:text="使用Google Authenticator應用掃描二維碼，獲獎以下密鑰手動添加到驗證器中"
+                android:textSize="@dimen/x26"/>
+
+            <TextView
+                android:id="@+id/tv_download"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignRight="@+id/tv"
+                android:gravity="bottom"
+                android:text="立即下載"
+                android:textColor="@color/blue2"
+                android:textSize="@dimen/x26"/>
+
+        </RelativeLayout>
+
+        <TextView
+            style="@style/HCutOffRule"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y20"/>
+
+        <ImageView
+            android:id="@+id/iv_qr_code"
+            android:layout_width="@dimen/x300"
+            android:layout_height="@dimen/x300"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/y30"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y30"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x30"
+                android:text="當前賬號："
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/x28"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="943252723@qq.com"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/x28"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y30">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="@dimen/x500"
+                android:layout_height="@dimen/y90"
+                android:layout_centerVertical="true"
+                app:cardCornerRadius="@dimen/x15">
+
+                <TextView
+                    android:id="@+id/secret_key"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/x26"/>
+
+            </android.support.v7.widget.CardView>
+            <!--<EditText
+                android:id="@+id/et_address"
+                android:layout_width="@dimen/x500"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_blue_border"
+                android:hint="@string/et_coin_address"
+                android:paddingLeft="@dimen/x20"
+                android:paddingRight="@dimen/x20"
+                android:textColor="@android:color/black"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/x32"/>-->
+
+            <Button
+                android:id="@+id/btn_copy"
+                android:layout_width="@dimen/x175"
+                android:layout_height="@dimen/y80"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_green_shape"
+                android:drawableRight="@mipmap/update"
+                android:padding="@dimen/x10"
+                android:text="複製密鑰"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x26"/>
+
+        </RelativeLayout>
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y20"
+            app:cardCornerRadius="@dimen/x15">
+
+            <EditText
+                android:id="@+id/et_code"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
+                android:background="@android:color/transparent"
+                android:hint="請輸入動態代碼"
+                android:inputType="number"
+                android:maxLength="6"
+                android:paddingLeft="@dimen/x20"
                 android:textColor="@android:color/black"
+                android:textCursorDrawable="@null"
                 android:textSize="@dimen/x26"/>
 
         </android.support.v7.widget.CardView>
-        <!--<EditText
-            android:id="@+id/et_address"
-            android:layout_width="@dimen/x500"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:background="@drawable/bg_blue_border"
-            android:hint="@string/et_coin_address"
-            android:paddingLeft="@dimen/x20"
-            android:paddingRight="@dimen/x20"
-            android:textColor="@android:color/black"
-            android:textCursorDrawable="@null"
-            android:textSize="@dimen/x32"/>-->
 
         <Button
-            android:id="@+id/btn_copy"
-            android:layout_width="@dimen/x175"
+            android:id="@+id/btn_finish"
+            android:layout_width="@dimen/x450"
             android:layout_height="@dimen/y80"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/bg_green_shape"
-            android:drawableRight="@mipmap/update"
-            android:padding="@dimen/x10"
-            android:text="複製密鑰"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y60"
+            android:background="@drawable/btn_blue_selector"
+            android:text="绑定"
+            android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="@dimen/x26"/>
+            android:textSize="@dimen/x32"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 
-
-    <android.support.v7.widget.CardView
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_unbinding"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y20"
-        app:cardCornerRadius="@dimen/x15">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/xx"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/et_code"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:hint="請輸入動態代碼"
-            android:inputType="number"
-            android:maxLength="6"
-            android:paddingLeft="@dimen/x20"
-            android:textColor="@android:color/black"
-            android:textCursorDrawable="@null"
-            android:textSize="@dimen/x26"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:src="@mipmap/shenhetongguo"
+            android:layout_height="wrap_content"/>
 
-    </android.support.v7.widget.CardView>
+        <TextView
+            android:layout_marginTop="@dimen/y20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已绑定谷歌验证"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
 
-    <Button
-        android:id="@+id/btn_finish"
-        android:layout_width="@dimen/x450"
-        android:layout_height="@dimen/y80"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y60"
-        android:background="@drawable/btn_blue_selector"
-        android:text="@string/finish"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="@dimen/x32"/>
+        <Button
+            android:id="@+id/btn_unbinding"
+            android:layout_width="@dimen/x450"
+            android:layout_height="@dimen/y80"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y60"
+            android:background="@drawable/btn_blue_selector"
+            android:text="解绑"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/x32"/>
 
-</LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
