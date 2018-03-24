@@ -109,7 +109,6 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
         initInterface();
         MyApp.getInstance().addActivity(this);
-        showNavigationBar(true);
     }
 
     @Override
