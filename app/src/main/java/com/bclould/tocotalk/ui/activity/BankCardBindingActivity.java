@@ -79,7 +79,7 @@ public class BankCardBindingActivity extends BaseActivity {
             @Override
             public void send(BankCardInfo.DataBean data) {
                 Intent intent = new Intent(BankCardBindingActivity.this, BankCardBindingActivity2.class);
-                if (data.getTruename().isEmpty()) {
+                if (data.getTruename() != null && data.getTruename().isEmpty()) {
                     showDialog();
                 } else {
                     intent.putExtra("data", data);
