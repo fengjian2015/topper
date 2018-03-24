@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/9/22.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class BillDataRVAapter extends RecyclerView.Adapter {
 
     private final Context mContext;
@@ -43,7 +44,6 @@ public class BillDataRVAapter extends RecyclerView.Adapter {
         return holder;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;

@@ -119,4 +119,53 @@
 
     </RelativeLayout>
 
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y20"
+        app:cardCornerRadius="@dimen/x15">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/y20"
+            android:paddingLeft="@dimen/x20"
+            android:paddingRight="@dimen/x20"
+            android:paddingTop="@dimen/y20">
+
+            <ImageView
+                android:id="@+id/iv"
+                android:layout_width="@dimen/x45"
+                android:layout_height="@dimen/x45"
+                android:src="@mipmap/icon_remind"/>
+
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x10"
+                android:layout_toRightOf="@+id/iv"
+                android:text="这是您的BTC充值地址，请将您的BTC转入此地址，务必备注您的注册邮箱账号，填写错误将无法到账成功！"
+                android:textColor="@color/redpacket2"
+                android:textSize="@dimen/x26"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv"
+                android:layout_marginLeft="@dimen/x10"
+                android:layout_toRightOf="@+id/iv"
+                android:text="1.BTC转账需要BTC网络进行确认，每笔转账至少需要预0.05个BTC在原地址，达到3个确认后您的BTC会自动充值至您的账户之中；
+2.禁止任何非BTC資產充值該地址，否则将无法到賬為TPX資產,丢失將無法找回；
+3.您在操作BTC钱包向此地址转账时，请务必填写备注信息：您的邮箱账号，否则将无法到账！
+4.请勿使用本地址做为挖矿地址，否则不能到账。"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x26"/>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
 </LinearLayout>

@@ -1,13 +1,14 @@
 package com.bclould.tocotalk.base;
 
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 
-import com.bclould.tocotalk.ui.activity.MainActivity;
-import com.bclould.tocotalk.ui.fragment.CloudCoinFragment;
 import com.bclould.tocotalk.ui.fragment.CloudMessageFragment;
-import com.bclould.tocotalk.ui.fragment.DynamicStateFragment;
+import com.bclould.tocotalk.ui.fragment.DiscoverFragment;
 import com.bclould.tocotalk.ui.fragment.MyFragment;
+import com.bclould.tocotalk.ui.fragment.WalletFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,17 +18,16 @@ import java.util.Map;
  * Fragment的工厂，保证创建的Fragment的唯一性
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class FragmentFactory {
     private static FragmentFactory fragmentFactory;
 
     public static Map<Integer, Fragment> mMainMap = new HashMap<>();
-    private static MainActivity sMainActivity;
 
     private FragmentFactory() {
     }
 
-    public static FragmentFactory getInstanes(MainActivity mainActivity) {
-        sMainActivity = mainActivity;
+    public static FragmentFactory getInstanes() {
         if (fragmentFactory == null) {
             synchronized (FragmentFactory.class) {
                 if (fragmentFactory == null) {
@@ -57,10 +57,10 @@ public class FragmentFactory {
                 fragment = new CloudMessageFragment();
                 break;
             case 1:// 云币页面
-                fragment = DynamicStateFragment.getInstance();
+                fragment = DiscoverFragment.getInstance();
                 break;
             case 2:// 云圈页面
-                fragment = CloudCoinFragment.getInstance(sMainActivity);
+                fragment = WalletFragment.getInstance();
                 break;
             case 3:// 我的页面
                 fragment = new MyFragment();

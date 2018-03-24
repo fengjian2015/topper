@@ -64,7 +64,6 @@ import com.bclould.tocotalk.utils.RecordUtil;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.luck.picture.lib.PictureSelector;
-import com.luck.picture.lib.compress.Luban;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
@@ -112,6 +111,8 @@ import sj.keyboard.widget.EmoticonPageView;
 import sj.keyboard.widget.EmoticonsEditText;
 import sj.keyboard.widget.FuncLayout;
 import sj.keyboard.widget.RecordIndicator;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 
 import static com.bclould.tocotalk.R.style.BottomDialog;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_FILE_MSG;
@@ -223,15 +224,16 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_chat);
         ButterKnife.bind(this);
-        mMgr = new DBManager(this);//开始获取数据库数据
-        EventBus.getDefault().register(this);
-        initIntent();
-        initEmoticonsKeyboard();
-        MyApp.getInstance().addActivity(this);
-        initAdapter();
-        initData();
-        mMgr.updateNumber(mUser, 0);
-        EventBus.getDefault().post(new MessageEvent("处理未读消息"));
+        mMgr = new DBManager(this);//初始化数据库管理类
+        EventBus.getDefault().register(this);//初始化EventBus
+        initIntent();//初始化intent事件
+        initEmoticonsKeyboard();//初始化功能盘
+        MyApp.getInstance().addActivity(this);//打开添加activity
+        initAdapter();//初始化适配器
+        initData();//初始化数据
+        mMgr.updateNumber(mUser, 0);//更新未读消息条数
+        EventBus.getDefault().post(new MessageEvent("处理未读消息"));//发送更新未读消息通知
+        //监听touch事件隐藏软键盘
         mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -262,7 +264,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
         ArrayList<EmojiBean> emojiArray = new ArrayList<>();
         Collections.addAll(emojiArray, DefEmoticons.getDefEmojiArray());
-        // emoticon click
+        // 监听表情盘点击事件
         final EmoticonClickListener emoticonClickListener = new EmoticonClickListener() {
             @Override
             public void onEmoticonClick(Object o, int actionType, boolean isDelBtn) {
@@ -286,7 +288,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             }
         };
 
-        // emoticon instantiate
+        // 实例化表情盘
         final EmoticonDisplayListener emoticonDisplayListener = new EmoticonDisplayListener() {
             @Override
             public void onBindView(int i, ViewGroup viewGroup, EmoticonsAdapter.ViewHolder viewHolder, Object object, final boolean isDelBtn) {
@@ -312,7 +314,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             }
         };
 
-        //  page instantiate
+        //  实例化page
         PageViewInstantiateListener pageViewInstantiateListener = new PageViewInstantiateListener<EmoticonPageEntity>() {
             @Override
             public View instantiateItem(ViewGroup viewGroup, int i, EmoticonPageEntity pageEntity) {
@@ -333,7 +335,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             }
         };
 
-        // build
+        // 构建
         PageSetEntity xhsPageSetEntity = new EmoticonPageSetEntity.Builder()
                 .setLine(3)
                 .setRow(7)
@@ -347,7 +349,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         pageSetAdapter.add(xhsPageSetEntity);
         mEkbEmoticonsKeyboard.setAdapter(pageSetAdapter);
 
-
+        //过滤表情
         class EmojiFilter extends EmoticonFilter {
 
             private int emojiSize = -1;
@@ -390,7 +392,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 }
             }
         }
-        // add a filter
+        // 输入框添加表情过滤
         mEkbEmoticonsKeyboard.getEtChat().addEmoticonFilter(new EmojiFilter());
 
         mEkbEmoticonsKeyboard.getBtnSend().setOnClickListener(new View.OnClickListener() {
@@ -401,27 +403,30 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             }
         });
 
+        //实例化录音管理类
         recordIndicator = new RecordIndicator(this);
+        //给功能盘添加录音监听
         mEkbEmoticonsKeyboard.setRecordIndicator(recordIndicator);
         try {
             recordIndicator.setOnRecordListener(new RecordIndicator.OnRecordListener() {
                 @Override
                 public void recordStart() {
-                    startRecord();
+                    startRecord();//开始录音
                 }
 
                 @Override
                 public void recordFinish() {
-                    finishRecord();
+                    finishRecord();//完成录音
                 }
 
                 @Override
                 public void recordCancel() {
-                    cancelRecord();
+                    cancelRecord();//取消录音
                 }
 
                 @Override
                 public long getRecordTime() {
+                    //获取录音时间
                     if (null == recordUtil) {
                         return 0;
                     }
@@ -441,6 +446,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         }
     }
 
+    //开始录音
     private void startRecord() {
         if (null == recordUtil) {
             recordUtil = new RecordUtil(this);
@@ -448,25 +454,30 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         recordUtil.start();
     }
 
+    //完成了录音
     private void finishRecord() {
         recordUtil.finish();
         sendVoice();
     }
 
+    //发送录音
     private void sendVoice() {
         int duration = recordUtil.getVoiceDuration();
         String fileName = recordUtil.getFileName();
         try {
+            //实例化聊天管理类
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
-            org.jivesoftware.smack.packet.Message message = new org.jivesoftware.smack.packet.Message();
-            VoiceInfo voiceInfo = new VoiceInfo();
-            byte[] bytes = UtilTool.readStream(fileName);
-            String base64 = Base64.encodeToString(bytes);
-            voiceInfo.setElementText(base64);
-            message.setBody("[audio]:" + duration + "秒");
-            message.addExtension(voiceInfo);
-            chat.sendMessage(message);
+            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);//实例化聊天类
+            org.jivesoftware.smack.packet.Message message = new org.jivesoftware.smack.packet.Message();//实例化消息
+            VoiceInfo voiceInfo = new VoiceInfo();//实例化语音model
+            byte[] bytes = UtilTool.readStream(fileName);//把语音文件转换成二进制
+            String base64 = Base64.encodeToString(bytes);//二进制转成Base64
+            voiceInfo.setElementText(base64);//设置进model
+            message.setBody("[audio]:" + duration + "秒");//body设置进消息
+            message.addExtension(voiceInfo);//扩展message,把语音添加进标签
+            chat.sendMessage(message);//发送消息
+
+            //把消息添加进数据库
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date curDate = new Date(System.currentTimeMillis());
             String time = formatter.format(curDate);
@@ -481,8 +492,10 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             messageInfo.setVoiceStatus(1);
             mMgr.addMessage(messageInfo);
             mMessageList.add(messageInfo);
+            //刷新数据
             mChatAdapter.notifyDataSetChanged();
             scrollToBottom();
+            //给聊天列表更新消息
             if (mMgr.findConversation(mUser)) {
                 mMgr.updateConversation(mUser, 0, "[语音]", time);
             } else {
@@ -493,8 +506,10 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 info.setMessage("[语音]");
                 mMgr.addConversation(info);
             }
+            //发送消息通知
             EventBus.getDefault().post(new MessageEvent("自己发了消息"));
         } catch (Exception e) {
+            //发送失败处理
             e.printStackTrace();
             Toast.makeText(this, "发送失败，请检查当前网络连接", Toast.LENGTH_SHORT).show();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -529,12 +544,13 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     }
 
+    //录音取消处理
     private void cancelRecord() {
         recordUtil.cancel();
         Toast.makeText(this, "取消录音", Toast.LENGTH_SHORT).show();
     }
 
-
+    //界面失去焦点暂停语音播放
     @Override
     protected void onPause() {
         super.onPause();
@@ -542,6 +558,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         mediaPlayer.reset();
     }
 
+    //界面销毁隐藏软键盘
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -555,6 +572,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         }
     }
 
+    //接受通知
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
@@ -575,6 +593,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         }
     }
 
+    //打开系统视频录制
     private void openCameraShooting() {
         Uri uri = null;
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
@@ -605,7 +624,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 .previewImage(true)// 是否可预览图片
                 .previewVideo(true)// 是否可预览视频
                 .enablePreviewAudio(true) // 是否可播放音频
-                .compressGrade(Luban.THIRD_GEAR)// luban压缩档次，默认3档 Luban.FIRST_GEAR、Luban.CUSTOM_GEAR
+                .compressGrade(com.luck.picture.lib.compress.Luban.THIRD_GEAR)// luban压缩档次，默认3档 Luban.FIRST_GEAR、Luban.CUSTOM_GEAR
                 .isCamera(true)// 是否显示拍照按钮
                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                 //.setOutputCameraPath("/CustomPath")// 自定义拍照保存路径
@@ -642,6 +661,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         }
     }
 
+    //页面返回数据处理
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -663,77 +683,163 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         }
     }
 
+    //上传文件到aws
     public void Upload(final String path) {
-        final File file = new File(path);
-        String fileName = file.getName();
-        String myUser = UtilTool.getMyUser();
-        String name = myUser.substring(0, myUser.indexOf("@"));
-        final String postfix = UtilTool.getPostfix(fileName);
-        final String key = name + UtilTool.createtFileName() + ".AN." + fileName;
+        final File file = new File(path);//获取文件
+        String fileName = file.getName();//获取文件名
+        String myUser = UtilTool.getMyUser();//获取自己user
+        String name = myUser.substring(0, myUser.indexOf("@"));//切割user获取name
+        final String postfix = UtilTool.getPostfix(fileName);//获取文件后缀
+        final String key = name + UtilTool.createtFileName() + ".AN." + fileName;//命名aws文件名
         Bitmap bitmap = null;
+        //获取发送图片或视频第一帧的bitmap
         if (postfix.equals("Video")) {
-            bitmap = ThumbnailUtils.createVideoThumbnail(path  //url的参数
+            bitmap = ThumbnailUtils.createVideoThumbnail(path
                     , MediaStore.Video.Thumbnails.MINI_KIND);
         } else {
             bitmap = BitmapFactory.decodeFile(path);
         }
-        final File newFile = new File("/sdcard/" + key);
-        UtilTool.sizeCompress(bitmap, newFile);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
-                            Constants.ACCESS_KEY_ID,
-                            Constants.SECRET_ACCESS_KEY,
-                            Constants.SESSION_TOKEN);
-                    AmazonS3Client s3Client = new AmazonS3Client(
-                            sessionCredentials);
-                    Regions regions = Regions.fromName("ap-northeast-2");
-                    Region region = Region.getRegion(regions);
-                    s3Client.setRegion(region);
-                    s3Client.addRequestHandler(new RequestHandler2() {
-                        @Override
-                        public void beforeRequest(Request<?> request) {
-                            UtilTool.Log("aws", "之前");
-                            Message message = new Message();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("key", key);
-                            bundle.putString("newFile", newFile.getPath());
-                            bundle.putString("path", path);
-                            bundle.putString("postfix", postfix);
-                            message.obj = bundle;
-                            message.what = 1;
-                            handler.sendMessage(message);
-                        }
+        //缩略图储存路径
+        final File newFile = new File(Constants.PUBLICDIR + key);
+        UtilTool.comp(bitmap, newFile);//压缩图片
 
-                        @Override
-                        public void afterResponse(Request<?> request, Response<?> response) {
-                            Message message = new Message();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("key", key);
-                            bundle.putString("newFile", newFile.getPath());
-                            bundle.putString("postfix", postfix);
-                            message.obj = bundle;
-                            message.what = 2;
-                            handler.sendMessage(message);
-                        }
+        //上传视频到aws
+        if (postfix.equals("Video")) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        //连接aws
+                        BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
+                                Constants.ACCESS_KEY_ID,
+                                Constants.SECRET_ACCESS_KEY,
+                                Constants.SESSION_TOKEN);
+                        AmazonS3Client s3Client = new AmazonS3Client(
+                                sessionCredentials);
+                        Regions regions = Regions.fromName("ap-northeast-2");
+                        Region region = Region.getRegion(regions);
+                        s3Client.setRegion(region);
+                        //上传监听
+                        s3Client.addRequestHandler(new RequestHandler2() {
+                            @Override
+                            //上传之前把消息储存数据库
+                            public void beforeRequest(Request<?> request) {
+                                UtilTool.Log("aws", "之前");
+                                Message message = new Message();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("key", key);
+                                bundle.putString("newFile", newFile.getPath());
+                                bundle.putString("path", path);
+                                bundle.putString("postfix", postfix);
+                                message.obj = bundle;
+                                message.what = 1;
+                                handler.sendMessage(message);
+                            }
 
-                        @Override
-                        public void afterError(Request<?> request, Response<?> response, Exception e) {
-                            UtilTool.Log("aws", "错误");
-                        }
-                    });
-                    PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
-                    s3Client.putObject(por);
+                            //上传文件完成
+                            @Override
+                            public void afterResponse(Request<?> request, Response<?> response) {
+                                Message message = new Message();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("key", key);
+                                bundle.putString("newFile", newFile.getPath());
+                                bundle.putString("postfix", postfix);
+                                message.obj = bundle;
+                                message.what = 2;
+                                handler.sendMessage(message);
+                            }
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+                            @Override
+                            public void afterError(Request<?> request, Response<?> response, Exception e) {
+                                UtilTool.Log("aws", "错误");
+                            }
+                        });
+                        //实例化上传请求
+                        PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
+                        //开始上传
+                        s3Client.putObject(por);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }).start();
+            }).start();
+
+        } else {
+            //压缩图片
+            Luban.with(ConversationActivity.this)
+                    .load(file)                                   // 传人要压缩的图片列表
+                    .ignoreBy(100)                                  // 忽略不压缩图片的大小
+                    .setCompressListener(new OnCompressListener() { //设置回调
+                        @Override
+                        public void onStart() {
+                        }
+
+                        @Override
+                        public void onSuccess(final File file) {
+                            //上传图片到aws
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        //连接aws
+                                        BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
+                                                Constants.ACCESS_KEY_ID,
+                                                Constants.SECRET_ACCESS_KEY,
+                                                Constants.SESSION_TOKEN);
+                                        AmazonS3Client s3Client = new AmazonS3Client(
+                                                sessionCredentials);
+                                        Regions regions = Regions.fromName("ap-northeast-2");
+                                        Region region = Region.getRegion(regions);
+                                        s3Client.setRegion(region);
+                                        s3Client.addRequestHandler(new RequestHandler2() {
+                                            @Override
+                                            public void beforeRequest(Request<?> request) {
+                                                UtilTool.Log("aws", "之前");
+                                                Message message = new Message();
+                                                Bundle bundle = new Bundle();
+                                                bundle.putString("key", key);
+                                                bundle.putString("newFile", newFile.getPath());
+                                                bundle.putString("path", path);
+                                                bundle.putString("postfix", postfix);
+                                                message.obj = bundle;
+                                                message.what = 1;
+                                                handler.sendMessage(message);
+                                            }
+
+                                            @Override
+                                            public void afterResponse(Request<?> request, Response<?> response) {
+                                                Message message = new Message();
+                                                Bundle bundle = new Bundle();
+                                                bundle.putString("key", key);
+                                                bundle.putString("newFile", newFile.getPath());
+                                                bundle.putString("postfix", postfix);
+                                                message.obj = bundle;
+                                                message.what = 2;
+                                                handler.sendMessage(message);
+                                            }
+
+                                            @Override
+                                            public void afterError(Request<?> request, Response<?> response, Exception e) {
+                                                UtilTool.Log("aws", "错误");
+                                            }
+                                        });
+                                        PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
+                                        s3Client.putObject(por);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }).start();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                        }
+                    }).launch();    //启动压缩
+        }
     }
 
+    //发送文件消息
     private void sendFileMessage(String path, String postfix, String key, String newFile) {
         try {
             MessageInfo messageInfo = new MessageInfo();
@@ -850,6 +956,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
+                    //下拉查询历史消息
                     List<MessageInfo> messageInfos = mMgr.pagingQueryMessage(mUser);
                     List<MessageInfo> MessageList2 = new ArrayList<MessageInfo>();
                     MessageList2.addAll(messageInfos);
@@ -868,6 +975,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                     sendFileMessage(path, postfix, key, newFile);
                     break;
                 case 2:
+                    //文件上传成功发送消息
                     Bundle bundle2 = (Bundle) msg.obj;
                     String key2 = bundle2.getString("key");
                     String postfix2 = bundle2.getString("postfix");
@@ -903,6 +1011,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         }
     };
 
+    //初始化数据
     private void initData() {
         List<MessageInfo> messageInfos = mMgr.queryMessage(mUser);
         mMessageList.clear();
@@ -939,6 +1048,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         mTitleName.setText(mName);
     }
 
+    //初始化适配器
     private void initAdapter() {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -964,6 +1074,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         });
     }
 
+    //显示更多dialog
     private void showDialog() {
         mBottomDialog = new Dialog(this, R.style.BottomDialog2);
         View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_conversation, null);
@@ -983,7 +1094,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         dialogClick();
     }
 
-
+    //处理更多Dialog的点击事件
     private void dialogClick() {
         LinearLayout help = (LinearLayout) mBottomDialog.findViewById(R.id.ll_help);
         help.setOnClickListener(new View.OnClickListener() {
@@ -1017,6 +1128,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         });
     }
 
+    //显示删除好友dialog
     private void showDeleteDialog() {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
         deleteCacheDialog.show();
@@ -1052,6 +1164,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     }
 
 
+    //发送文本消息
     private void sendMessage(String message) {
         try {
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
@@ -1126,11 +1239,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 }
                 break;
             case R.id.rl_outer:
-                /*InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                boolean isOpen = imm.isActive();//isOpen若返回true，则表示输入法打开
-                if (isOpen) {
-                    imm.hideSoftInputFromWindow(mEkbEmoticonsKeyboard.getEtChat().getWindowToken(), 0);
-                }*/
                 break;
             case R.id.iv_else:
                 showDialog();

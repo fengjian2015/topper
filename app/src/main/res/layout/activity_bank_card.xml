@@ -22,10 +22,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/my_bank_card"
+            android:text="银行卡"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
+        <TextView
+            android:id="@+id/tv_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
+            android:paddingRight="@dimen/x20"
+            android:text="删除"
+            android:textColor="@color/blue2"/>
 
     </RelativeLayout>
 
@@ -37,9 +46,9 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:descendantFocusability="blocksDescendants"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:descendantFocusability="blocksDescendants"
             android:orientation="vertical">
 
             <android.support.v7.widget.RecyclerView
@@ -48,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_marginRight="@dimen/x30"
-                android:layout_marginTop="@dimen/y20"
+                android:layout_marginTop="@dimen/y30"
                 android:descendantFocusability="beforeDescendants"
                 android:fastScrollEnabled="false">
             </android.support.v7.widget.RecyclerView>
@@ -58,11 +67,11 @@
                 android:layout_width="@dimen/x450"
                 android:layout_height="@dimen/y80"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="@dimen/y60"
-                android:layout_marginTop="@dimen/y60"
-                android:background="@drawable/btn_blue_selector"
+                android:layout_marginBottom="@dimen/y30"
+                android:layout_marginTop="@dimen/y30"
+                android:background="@drawable/bg_white_shape"
                 android:text="@string/add_bank_card"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:textSize="@dimen/x32"/>
 
         </LinearLayout>

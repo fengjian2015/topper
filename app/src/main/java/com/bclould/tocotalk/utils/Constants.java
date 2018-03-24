@@ -19,6 +19,7 @@ public class Constants {
     public static final String CHUANCODE = "爨^(&";
     public static final String REDBAG = "[redBag]";
     public static final String REDPACKAGE = "redPackage";
+    public static final String MONEYIN = "moneyIn";
     public static final String REDDEFAULT = "恭喜發財，大吉大利";
     public static final String MYUSER = UtilTool.getMyUser();
     public static final String DOMAINNAME = "xmpp.bclould.com";
@@ -27,4 +28,5 @@ public class Constants {
     public static final String SECRET_ACCESS_KEY = MySharedPreferences.getInstance().getString(SECRETACCESSKEY);
     public static final String SESSION_TOKEN = MySharedPreferences.getInstance().getString(SESSIONTOKEN);
     public static final String BUCKET_NAME  = "bclould";
+    public static final String PUBLICDIR  = "/sdcard/tocotalk/images/";
 }

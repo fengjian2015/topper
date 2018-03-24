@@ -2,7 +2,9 @@ package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,7 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/9/20.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class BuySellRVAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;
@@ -88,7 +91,7 @@ public class BuySellRVAdapter extends RecyclerView.Adapter {
             if (mType) {
                 mBtnSellBuy.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape2));
                 mBtnSellBuy.setTextColor(mContext.getColor(R.color.sell));
-                mBtnSellBuy.setText(mContext.getString(R.string.sell));
+                mBtnSellBuy.setText("出售");
                 mTvPayWay.setBackground(mContext.getDrawable(R.drawable.bg_payway_shape2));
             }
             mBtnSellBuy.setOnClickListener(new View.OnClickListener() {

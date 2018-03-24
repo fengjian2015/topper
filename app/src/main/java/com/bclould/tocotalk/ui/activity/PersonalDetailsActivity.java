@@ -57,16 +57,13 @@ public class PersonalDetailsActivity extends BaseActivity {
     TextView mTvUsername;
     @Bind(R.id.rl_username)
     RelativeLayout mRlUsername;
-    @Bind(R.id.tv_userid)
-    TextView mTvUserid;
-    @Bind(R.id.rl_userid)
-    RelativeLayout mRlUserid;
     @Bind(R.id.rl_qr_card)
     RelativeLayout mRlQrCard;
     @Bind(R.id.tv_location)
     TextView mTvLocation;
     @Bind(R.id.rl_location)
     RelativeLayout mRlLocation;
+
     private List<LocalMedia> selectList = new ArrayList<>();
     private DBManager mMgr;
 
@@ -89,6 +86,9 @@ public class PersonalDetailsActivity extends BaseActivity {
         } else {
             mTouxiang.setImageBitmap(UtilTool.setDefaultimage(this));
         }
+        String jid = UtilTool.getMyUser();
+        String myName = jid.substring(0, jid.indexOf("@"));
+        mTvUsername.setText(myName);
     }
 
     //拿到选择的图片

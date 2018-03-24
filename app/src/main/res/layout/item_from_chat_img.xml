@@ -12,12 +12,15 @@
         android:scaleType="fitXY"
         android:src="@mipmap/img_nfriend_headshot1"/>
 
-    <com.bclould.tocotalk.ui.widget.BubbleImageView
+    <ImageView
         android:id="@+id/iv_img"
         android:layout_width="wrap_content"
-        android:layout_marginLeft="@dimen/x20"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
         android:layout_toRightOf="@+id/iv_touxiang"
-        android:scaleType="matrix"/>
+        android:adjustViewBounds="true"
+        android:maxHeight="@dimen/y800"
+        android:maxWidth="@dimen/x480"
+        android:scaleType="centerInside"/>
 
 </RelativeLayout>

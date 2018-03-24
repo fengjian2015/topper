@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/light"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="支付记录"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+        <TextView
+            android:id="@+id/tv_filtrate"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:paddingRight="@dimen/x20"
+            android:text="筛选"
+            android:textColor="@color/blue2"
+            android:textSize="@dimen/x30"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_date_selector"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100">
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/x30"
+            android:gravity="center_vertical"
+            android:text="2018-03"
+            android:textColor="@color/blue2"
+            android:textSize="@dimen/x28"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x30"
+            android:src="@mipmap/icon_timeline"/>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:paddingLeft="@dimen/x40"
+        android:paddingTop="@dimen/y40"
+        android:paddingRight="@dimen/x40"
+        android:background="@drawable/bg_pay_record_shape"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

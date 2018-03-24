@@ -2,6 +2,8 @@ package com.bclould.tocotalk.Presenter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -9,7 +11,9 @@ import android.widget.Toast;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.model.OrderInfo;
+import com.bclould.tocotalk.model.OrderListInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
+import com.bclould.tocotalk.ui.activity.BuySellActivity;
 import com.bclould.tocotalk.ui.activity.PayPasswordActivity;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
@@ -26,6 +30,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2018/1/19.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class BuySellPresenter {
 
     private final Context mContext;
@@ -70,8 +75,43 @@ public class BuySellPresenter {
                             hideDialog();
                             if (baseInfo.getStatus() == 1)
                                 callBack.send(baseInfo.getData(), coin);
-                            else
-                                Toast.makeText(mContext, baseInfo.getMassage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            hideDialog();
+                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void getOrderList(int type, final String coin, final CallBack3 callBack) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .getOrderList(UtilTool.getToken(), coin, type)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<OrderListInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(OrderListInfo baseInfo) {
+                            hideDialog();
+                            if (baseInfo.getStatus() == 1)
+                                callBack.send(baseInfo.getData());
                         }
 
                         @Override
@@ -91,6 +131,7 @@ public class BuySellPresenter {
     }
 
     public void createOrder(int id, String coinCount, String price, String money, final CallBack2 callBack2, String password) {
+        UtilTool.Log("日志", "调了几次");
         double count = Double.parseDouble(coinCount);
         double priced = Double.parseDouble(price);
         double moneyd = Double.parseDouble(money);
@@ -114,6 +155,9 @@ public class BuySellPresenter {
                                 callBack2.send(baseInfo.getData());
                             } else if (baseInfo.getMassage().equals("尚未设置交易密码")) {
                                 showSetPwDialog();
+                            } else if (baseInfo.getMassage().equals("交易密码不正确")) {
+                                BuySellActivity activity = (BuySellActivity) mContext;
+                                activity.showHintDialog();
                             } else {
                                 Toast.makeText(mContext, baseInfo.getMassage() + "", Toast.LENGTH_SHORT).show();
                             }
@@ -164,5 +208,10 @@ public class BuySellPresenter {
     //定义接口
     public interface CallBack2 {
         void send(OrderInfo.DataBean data);
+    }
+
+    //定义接口
+    public interface CallBack3 {
+        void send(List<OrderListInfo.DataBean> data);
     }
 }

@@ -6,7 +6,7 @@ import android.widget.Toast;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.MyAssetsInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
-import com.bclould.tocotalk.ui.fragment.CloudCoinFragment;
+import com.bclould.tocotalk.ui.fragment.WalletFragment;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.UtilTool;
 
@@ -22,12 +22,12 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CloudCoinPresenter {
 
-    private final CloudCoinFragment mCloudCoinFragment;
+    private final WalletFragment mWalletFragment;
     private final Activity mActivity;
     private LoadingProgressDialog mProgressDialog;
 
-    public CloudCoinPresenter(CloudCoinFragment cloudCoinFragment, Activity activity) {
-        mCloudCoinFragment = cloudCoinFragment;
+    public CloudCoinPresenter(WalletFragment walletFragment, Activity activity) {
+        mWalletFragment = walletFragment;
         mActivity = activity;
     }
 
@@ -65,7 +65,7 @@ public class CloudCoinPresenter {
                         @Override
                         public void onNext(@NonNull MyAssetsInfo myAssetsInfo) {
                             if(myAssetsInfo.getStatus() == 1){
-//                                mCloudCoinFragment.setData(myAssetsInfo.getData());
+//                                mWalletFragment.setData(myAssetsInfo.getData());
                             }
                             hideDialog();
                         }

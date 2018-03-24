@@ -100,7 +100,7 @@ public class CloudMessageFragment extends Fragment {
 
         mCloudCircleVp.setCurrentItem(0);
 
-        initBottomMenu();
+        initTopMenu();
 
         initViewPager();
     }
@@ -108,7 +108,7 @@ public class CloudMessageFragment extends Fragment {
     //初始化ViewPager
     private void initViewPager() {
 
-        CloudMessageVPAdapter cloudMessageVPAdapter = new CloudMessageVPAdapter(getChildFragmentManager());
+        CloudMessageVPAdapter cloudMessageVPAdapter = new CloudMessageVPAdapter(getChildFragmentManager(), this);
 
         mCloudCircleVp.setAdapter(cloudMessageVPAdapter);
 
@@ -134,7 +134,7 @@ public class CloudMessageFragment extends Fragment {
 
 
     //初始化顶部菜单栏
-    private void initBottomMenu() {
+    private void initTopMenu() {
 
         for (int i = 0; i < mCloudCircleMenu.getChildCount(); i++) {
 

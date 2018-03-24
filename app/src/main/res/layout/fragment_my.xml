@@ -44,21 +44,12 @@
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/iv_touxiang"
-                android:layout_marginLeft="@dimen/x20"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x30"
                 android:layout_toRightOf="@+id/iv_touxiang"
                 android:text="安子"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x35"/>
-
-            <TextView
-                android:id="@+id/iv_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/iv_touxiang"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@id/iv_touxiang"
-                android:text="ID：12"/>
 
             <ImageView
                 android:layout_width="@dimen/x70"

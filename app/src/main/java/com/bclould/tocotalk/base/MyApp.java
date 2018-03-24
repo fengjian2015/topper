@@ -7,12 +7,14 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.TestImageLoader;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.previewlibrary.ZoomMediaLoader;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,18 +27,14 @@ import java.util.List;
 public class MyApp extends Application {
 
     public static MyApp instance = null;
-    private List<Activity> mActivityList = new ArrayList<>();
+    private List<Activity> mActivityList = new ArrayList<>();//储存打开的Activity
 
+    //单例
     public static MyApp getInstance() {
-
         if (instance == null) {
-
             instance = new MyApp();
-
         }
-
         return instance;
-
     }
 
     @Override
@@ -46,13 +44,28 @@ public class MyApp extends Application {
         //初始化sp
         MySharedPreferences.getInstance().init(this);
 
+        //初始化
         ZoomMediaLoader.getInstance().init(new TestImageLoader());
 
+        //初始化xmpp
         XmppConnection.getInstance().setDB(new DBManager(this));
 
         XmppConnection.getInstance().setContext(this);
 
+        //创建项目公开目录
+        createDir();
+
     }
+
+    //创建项目公开目录
+    private void createDir() {
+        File file = new File(Constants.PUBLICDIR);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+    }
+
+    //初始化视频缓存库
     private HttpProxyCacheServer proxy;
 
     public static HttpProxyCacheServer getProxy(Context context) {
@@ -64,6 +77,7 @@ public class MyApp extends Application {
         return new HttpProxyCacheServer(this);
     }
 
+    //退出app
     public void RestartApp() {
         exit();
     }

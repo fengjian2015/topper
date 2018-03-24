@@ -2,9 +2,12 @@ package com.bclould.tocotalk.network;
 
 
 import com.bclould.tocotalk.model.AwsInfo;
+import com.bclould.tocotalk.model.BankCardInfo;
 import com.bclould.tocotalk.model.BaseInfo;
+import com.bclould.tocotalk.model.CardListInfo;
 import com.bclould.tocotalk.model.CoinInfo;
 import com.bclould.tocotalk.model.DealListInfo;
+import com.bclould.tocotalk.model.DynamicListInfo;
 import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.model.GoogleInfo;
 import com.bclould.tocotalk.model.GrabRedInfo;
@@ -12,10 +15,10 @@ import com.bclould.tocotalk.model.InOutInfo;
 import com.bclould.tocotalk.model.LoginInfo;
 import com.bclould.tocotalk.model.MyAssetsInfo;
 import com.bclould.tocotalk.model.OrderInfo;
+import com.bclould.tocotalk.model.OrderListInfo;
 import com.bclould.tocotalk.model.OutCoinSiteInfo;
 import com.bclould.tocotalk.model.RedRecordInfo;
 import com.bclould.tocotalk.model.TransferInfo;
-import com.bclould.tocotalk.model.UrlInfo;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -170,10 +173,12 @@ public interface MyService {
     @FormUrlEncoded
     Observable<BaseInfo> coinOutAction(
             @Header("Authorization") String token,
-            @Field("coin_id") int id,
-            @Field("coinout_address_id") int coinout_address_id,
-            @Field("coinout_number") float number,
-            @Field("google_code") String google_code
+            @Field("coin_id") String id,
+            @Field("coinout_address_id") String coinout_address_id,
+            @Field("coinout_number") String number,
+            @Field("google_code") String google_code,
+            @Field("second_password") String second_password,
+            @Field("mark") String mark
     );
 
     //退出登录
@@ -213,6 +218,12 @@ public interface MyService {
     Observable<BaseInfo> bindGoogle(
             @Header("Authorization") String token,
             @Field("google_code") String google_code
+    );
+
+    //解除绑定谷歌验证
+    @POST("security/unBindGoogleAuthenticator")
+    Observable<BaseInfo> unBindGoogle(
+            @Header("Authorization") String token
     );
 
     //创建红包
@@ -264,7 +275,6 @@ public interface MyService {
             @Field("coin_name") String coin_name,
             @Field("country") String country,
             @Field("currency") String currency,
-            @Field("premium") double premium,
             @Field("price") double price,
             @Field("number") double number,
             @Field("deadline") int deadline,
@@ -343,7 +353,7 @@ public interface MyService {
     //订单列表
     @POST("trans/orderLists")
     @FormUrlEncoded
-    Observable<BaseInfo> getOrderList(
+    Observable<OrderListInfo> getOrderList(
             @Header("Authorization") String token,
             @Field("coin_name") String coin_name,
             @Field("type") int type
@@ -364,7 +374,7 @@ public interface MyService {
             @Header("Authorization") String token
     );
 
-    //检测版本号
+    //下载apk
     @GET
     Observable<GitHubInfo> checkVersion(
             @Url String url
@@ -396,7 +406,7 @@ public interface MyService {
             @Header("Authorization") String token
     );
 
-    //充币提币
+    //充币提币记录
     @POST("finance/coinOutLog")
     @FormUrlEncoded
     Observable<InOutInfo> coinOutLog(
@@ -404,12 +414,152 @@ public interface MyService {
             @Field("opt_type") String opt_type
     );
 
-    //亚马逊公用url
-    @POST("awsS3/createPresignedUrl")
+    //实名认证
+    @POST("user/realNameVerify")
     @FormUrlEncoded
-    Observable<UrlInfo> getUrl(
+    Observable<BaseInfo> realNameVerify(
+            @Header("Authorization") String token,
+            @Field("truename") String truename,
+            @Field("card_number") String card_number,
+            @Field("type") String type
+    );
+
+    //验证实名是否通过
+    @POST("user/realNameInfo")
+    Observable<BaseInfo> realNameInfo(
+            @Header("Authorization") String token
+    );
+
+    //实名绑定
+    @POST("user/bindRealName")
+    @FormUrlEncoded
+    Observable<BaseInfo> bindRealName(
             @Header("Authorization") String token,
             @Field("key") String key
+    );
+
+    //绑定银行
+    @POST("user/bindBankCard")
+    @FormUrlEncoded
+    Observable<BaseInfo> bindBankCard(
+            @Header("Authorization") String token,
+            @Field("truename") String truename,
+            @Field("bank_name") String bank_name,
+            @Field("bank_site") String bank_site,
+            @Field("bank_number") String bank_number
+    );
+
+    //银行卡列表
+    @POST("user/bankCardList")
+    Observable<CardListInfo> bankCardList(
+            @Header("Authorization") String token
+    );
+
+    //银行卡列表
+    @POST("user/unBindBankCard")
+    @FormUrlEncoded
+    Observable<BaseInfo> unBindBankCard(
+            @Header("Authorization") String token,
+            @Field("id") String id
+    );
+
+    //发布动态
+    @POST("dynamic/publish")
+    @FormUrlEncoded
+    Observable<BaseInfo> publishDynamic(
+            @Header("Authorization") String token,
+            @Field("content") String content,
+            @Field("key_type") String key_type,
+            @Field("key") String key,
+            @Field("key_compress") String key_compress,
+            @Field("position") String position
+    );
+
+    //动态列表
+    @POST("dynamic/dynamicList")
+    @FormUrlEncoded
+    Observable<DynamicListInfo> dynamicList(
+            @Header("Authorization") String token,
+            @Field("page") String page,
+            @Field("page_size") String page_size
+    );
+
+    //发表评论
+    @POST("review/publish")
+    @FormUrlEncoded
+    Observable<InOutInfo> publishReview(
+            @Header("Authorization") String token,
+            @Field("dynamic_id") String dynamic_id,
+            @Field("content") String content
+    );
+
+    //评论列表
+    @POST("review/reviewList")
+    @FormUrlEncoded
+    Observable<InOutInfo> reviewList(
+            @Header("Authorization") String token,
+            @Field("dynamic_id") String dynamic_id
+    );
+
+    //赞
+    @POST("dynamic/like")
+    @FormUrlEncoded
+    Observable<InOutInfo> like(
+            @Header("Authorization") String token,
+            @Field("dynamic_id") String dynamic_id
+    );
+
+    //生成收款二维码
+    @POST("receipt/generateReceiptQrCode")
+    Observable<BaseInfo> generateReceiptQrCode(
+            @Header("Authorization") String token
+    );
+
+    //扫收款码
+    @POST("receipt/payment")
+    @FormUrlEncoded
+    Observable<BaseInfo> payment(
+            @Header("Authorization") String token,
+            @Field("id") String id,
+            @Field("number") String number,
+            @Field("coin_id") String coin_id
+    );
+
+    //生成付款二维码
+    @POST("receipt/generatePaymentQrCode")
+    Observable<BaseInfo> generatePaymentQrCode(
+            @Header("Authorization") String token,
+            @Field("number") String number,
+            @Field("coin_id") String coin_id
+    );
+
+    //扫付款码， 收款操作
+    @POST("receipt/receipt")
+    Observable<BaseInfo> receipt(
+            @Header("Authorization") String token,
+            @Field("data") String data
+    );
+
+    //获取国家列表
+    @POST("common/getCountryList")
+    Observable<InOutInfo> getCountryList(
+            @Header("Authorization") String token
+    );
+
+    //验证支付密码
+    @POST("common/verifySecondPassword")
+    @FormUrlEncoded
+    Observable<BaseInfo> verifySecondPassword(
+            @Header("Authorization") String token,
+            @Field("second_password") String second_password
+    );
+
+    //获取银行卡信息
+    @POST("user/bankCardInfo")
+    @FormUrlEncoded
+    Observable<BankCardInfo> bankCardInfo(
+            @Header("Authorization") String token,
+            @Field("bank_number") String bank_number
     );
 
 }

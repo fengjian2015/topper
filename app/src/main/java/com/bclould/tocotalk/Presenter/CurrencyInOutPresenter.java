@@ -11,8 +11,12 @@ import android.widget.Toast;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
+import com.bclould.tocotalk.ui.activity.BankCardActivity;
+import com.bclould.tocotalk.ui.activity.BankCardBindingActivity;
 import com.bclould.tocotalk.ui.activity.GoogleVerificationActivity;
+import com.bclould.tocotalk.ui.activity.OutCoinActivity;
 import com.bclould.tocotalk.ui.activity.PayPasswordActivity;
+import com.bclould.tocotalk.ui.activity.TransferAccountsActivity;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.UtilTool;
@@ -53,13 +57,13 @@ public class CurrencyInOutPresenter {
         }
     }
 
-    public void coinOutAction(int id, int address, float count, String googleCode, String password, String google_code) {
+    public void coinOutAction(String id, String address, String count, String googleCode, String password, String mark) {
 
         if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .coinOutAction(UtilTool.getToken(), id, address, count, google_code)
+                    .coinOutAction(UtilTool.getToken(), id, address, count, googleCode, password, mark)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<BaseInfo>() {
@@ -70,15 +74,24 @@ public class CurrencyInOutPresenter {
 
                         @Override
                         public void onNext(@NonNull BaseInfo baseInfo) {
-                            if (baseInfo.getMessage().equals("请先绑定谷歌验证"))
+                            if (baseInfo.getMessage().equals("尚未设置交易密码")) {
+                                showSetPwDialog();
+                            } else if (baseInfo.getMessage().equals("请先绑定谷歌验证")) {
                                 mContext.startActivity(new Intent(mContext, GoogleVerificationActivity.class));
+                            } else if (baseInfo.getMessage().equals("交易密码不正确")) {
+                                OutCoinActivity activity = (OutCoinActivity) mContext;
+                                activity.showHintDialog();
+
+                            }
                             hideDialog();
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                            UtilTool.Log(this.getClass().getName(), baseInfo.getMessage());
                         }
 
                         @Override
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
+                            UtilTool.Log(this.getClass().getName(), e.getMessage());
                             Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
                         }
 
@@ -132,8 +145,13 @@ public class CurrencyInOutPresenter {
                         @Override
                         public void onNext(@NonNull BaseInfo baseInfo) {
                             hideDialog();
-                             if (baseInfo.getMessage().equals("尚未设置交易密码")) {
+                            if (baseInfo.getMessage().equals("请先绑定谷歌验证")) {
+                                mContext.startActivity(new Intent(mContext, GoogleVerificationActivity.class));
+                            } else if (baseInfo.getMessage().equals("尚未设置交易密码")) {
                                 showSetPwDialog();
+                            } else if (baseInfo.getMessage().equals("交易密码不正确")) {
+                                TransferAccountsActivity activity = (TransferAccountsActivity) mContext;
+                                activity.showHintDialog();
                             }
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -173,6 +191,7 @@ public class CurrencyInOutPresenter {
                         @Override
                         public void onNext(@NonNull BaseInfo baseInfo) {
                             hideDialog();
+
                             if (baseInfo.getStatus() == 1)
                                 callBack.send(baseInfo.getData());
                             else
@@ -194,6 +213,52 @@ public class CurrencyInOutPresenter {
 
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
 
+        }
+    }
+
+    public void check(String password) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .verifySecondPassword(UtilTool.getToken(), password)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(@NonNull BaseInfo baseInfo) {
+                            hideDialog();
+                            if (baseInfo.getMessage().equals("尚未设置交易密码")) {
+                                showSetPwDialog();
+                            } else if (baseInfo.getMessage().equals("交易密码不正确")) {
+                                BankCardActivity activity = (BankCardActivity) mContext;
+                                activity.showHintDialog();
+                            } else if (baseInfo.getStatus() == 1) {
+                                BankCardActivity activity = (BankCardActivity) mContext;
+                                mContext.startActivity(new Intent(activity, BankCardBindingActivity.class));
+                            } else {
+                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+                            hideDialog();
+                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.CoinInfo;
 import com.bclould.tocotalk.ui.activity.SendRedPacketActivity;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -33,6 +33,7 @@ public class BottomDialogRVAdapter2 extends RecyclerView.Adapter {
         mSendRedPacketActivity = sendRedPacketActivity;
         mCoinArr = coinArr;
     }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

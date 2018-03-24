@@ -28,12 +28,12 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.GrabRedInfo;
 import com.bclould.tocotalk.model.MessageInfo;
+import com.bclould.tocotalk.model.SerMap;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.model.VoiceInfo;
 import com.bclould.tocotalk.ui.activity.ImageViewActivity;
 import com.bclould.tocotalk.ui.activity.RedPacketActivity;
 import com.bclould.tocotalk.ui.activity.VideoActivity;
-import com.bclould.tocotalk.ui.widget.BubbleImageView;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -50,6 +50,7 @@ import org.jxmpp.jid.impl.JidCreate;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
@@ -90,7 +91,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private String mFileName;
 
     public ChatAdapter(Context context, List<MessageInfo> messageList, Bitmap fromBitmap, String user, DBManager mgr, MediaPlayer mediaPlayer) {
-        UtilTool.Log("肉质", "刷新走了构造吗");
         mContext = context;
         mMessageList = messageList;
         mFromBitmap = fromBitmap;
@@ -110,7 +110,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        UtilTool.Log("肉质", "刷新走了CreateViewHolder");
         View view = null;
         RecyclerView.ViewHolder holder = null;
         if (viewType == TO_TEXT_MSG) {
@@ -153,11 +152,18 @@ public class ChatAdapter extends RecyclerView.Adapter {
         return holder;
     }
 
+    HashMap<String, String> mImageMap = new HashMap<>();
+
     public void upDateImage() {
         mImageList.clear();
+        mImageMap.clear();
         for (final MessageInfo info : mMessageList) {
-            if (info.getMsgType() == TO_IMG_MSG || info.getMsgType() == FROM_IMG_MSG) {
+            if (info.getMsgType() == TO_IMG_MSG) {
                 mImageList.add(info.getMessage());
+                mImageMap.put(info.getMessage(), "");
+            } else if (info.getMsgType() == FROM_IMG_MSG) {
+                mImageList.add(info.getVoice());
+                mImageMap.put(info.getVoice(), info.getMessage());
             }
         }
     }
@@ -593,7 +599,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         @Bind(R.id.iv_touxiang)
         ImageView mIvTouxiang;
         @Bind(R.id.iv_img)
-        BubbleImageView mIvImg;
+        ImageView mIvImg;
         @Bind(R.id.iv_warning)
         ImageView mIvWarning;
         @Bind(R.id.iv_load)
@@ -631,6 +637,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, ImageViewActivity.class);
                     intent.putStringArrayListExtra("images", mImageList);
+                    SerMap serMap = new SerMap();
+                    serMap.setMap(mImageMap);
+                    intent.putExtra("imgMap", serMap);
                     int position = 0;
                     for (int i = 0; i < mImageList.size(); i++) {
                         if (messageInfo.getMessage().equals(mImageList.get(i))) {
@@ -648,7 +657,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         @Bind(R.id.iv_touxiang)
         ImageView mIvTouxiang;
         @Bind(R.id.iv_img)
-        BubbleImageView mIvImg;
+        ImageView mIvImg;
 
         FromImgHolder(View view) {
             super(view);
@@ -664,9 +673,12 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, ImageViewActivity.class);
                     intent.putStringArrayListExtra("images", mImageList);
+                    SerMap serMap = new SerMap();
+                    serMap.setMap(mImageMap);
+                    intent.putExtra("imgMap", serMap);
                     int position = 0;
                     for (int i = 0; i < mImageList.size(); i++) {
-                        if (messageInfo.getMessage().equals(mImageList.get(i))) {
+                        if (messageInfo.getVoice().equals(mImageList.get(i))) {
                             position = i;
                         }
                     }

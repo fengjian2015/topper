@@ -46,7 +46,7 @@ public class MyWalletRVAapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.setData(mBeanList.get(position), position);
+        viewHolder.setData(mBeanList.get(position));
     }
 
     @Override
@@ -62,13 +62,10 @@ public class MyWalletRVAapter extends RecyclerView.Adapter {
         ImageView mIvCoin;
         @Bind(R.id.tv_coin_name)
         TextView mTvCoinName;
-        @Bind(R.id.tv_coin_value)
-        TextView mTvCoinValue;
         @Bind(R.id.tv_coin_count)
         TextView mTvCoinCount;
         @Bind(R.id.rl_popup)
         RelativeLayout mRlPopup;
-
         private MyAssetsInfo.DataBean mLtcBean;
 
         ViewHolder(View view) {
@@ -76,7 +73,7 @@ public class MyWalletRVAapter extends RecyclerView.Adapter {
             ButterKnife.bind(this, view);
         }
 
-        public void setData(final MyAssetsInfo.DataBean ltcBean, final int position) {
+        public void setData(final MyAssetsInfo.DataBean ltcBean) {
             mLtcBean = ltcBean;
             Glide.with(mContext).load(ltcBean.getLogo()).into(mIvCoin);
             mTvCoinCount.setText(ltcBean.getTotal());
@@ -84,14 +81,15 @@ public class MyWalletRVAapter extends RecyclerView.Adapter {
             mRlPopup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mOnItemClickListener.onClick(position, ltcBean);
+                    mOnItemClickListener.onClick(view, ltcBean);
                 }
             });
         }
+
     }
 
     public interface OnItemClickListener {
-        void onClick(int position, MyAssetsInfo.DataBean dataBean);
+        void onClick(View view, MyAssetsInfo.DataBean dataBean);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {

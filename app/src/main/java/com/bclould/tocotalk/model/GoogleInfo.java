@@ -12,6 +12,15 @@ public class GoogleInfo {
 
     private String key;
     private String img;
+    private int is_google_verify;
+
+    public int getIs_google_verify() {
+        return is_google_verify;
+    }
+
+    public void setIs_google_verify(int is_google_verify) {
+        this.is_google_verify = is_google_verify;
+    }
 
     public String getKey() {
         return key;

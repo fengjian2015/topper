@@ -5,8 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
@@ -33,7 +31,7 @@ public class InOutDataRVAapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_add_asset, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_in_out_record, parent, false);
         return new ViewHolder(view);
     }
 
@@ -52,12 +50,15 @@ public class InOutDataRVAapter extends RecyclerView.Adapter {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.iv_coin)
-        ImageView mIvCoin;
-        @Bind(R.id.tv_coin)
-        TextView mTvCoin;
-        @Bind(R.id.btc_add)
-        Button mBtcAdd;
+
+        @Bind(R.id.type_name)
+        TextView mTypeName;
+        @Bind(R.id.time)
+        TextView mTime;
+        @Bind(R.id.tv_reality_transfer)
+        TextView mTvRealityTransfer;
+        @Bind(R.id.tv_reailty_income)
+        TextView mTvReailtyIncome;
 
         ViewHolder(View view) {
             super(view);
@@ -65,7 +66,10 @@ public class InOutDataRVAapter extends RecyclerView.Adapter {
         }
 
         public void setData(InOutInfo.DataBean dataBean) {
-
+            mTypeName.setText(dataBean.getUser_name());
+            mTime.setText(dataBean.getCreated_at());
+            mTvRealityTransfer.setText(dataBean.getNumber());
+            mTvReailtyIncome.setText(dataBean.getNumber_u());
         }
     }
 }

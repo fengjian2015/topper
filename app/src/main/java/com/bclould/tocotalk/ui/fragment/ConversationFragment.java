@@ -105,7 +105,6 @@ public class ConversationFragment extends Fragment {
     public static ConversationFragment instance = null;
     private ConversationAdapter mConversationAdapter;
     private MyReceiver receiver;
-    private DillDataPresenter mDillDataPresenter = new DillDataPresenter(getContext());
 
     public static ConversationFragment getInstance() {
 

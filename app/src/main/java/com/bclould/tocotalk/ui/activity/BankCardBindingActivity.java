@@ -11,9 +11,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bclould.tocotalk.Presenter.BankCardPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.model.BankCardInfo;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.utils.AnimatorTool;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,59 +30,86 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class BankCardBindingActivity extends BaseActivity {
 
-    public static final String BANKCARDNUMBER = "bank_card_number";
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.real_name)
-    EditText mRealName;
-    @Bind(R.id.bank_card_number)
-    EditText mBankCardNumber;
     @Bind(R.id.btn_next)
     Button mBtnNext;
-    private String mRealNames;
-    private String mIdCardNumbers;
+    @Bind(R.id.et_card_number)
+    EditText mEtCardNumber;
+    private BankCardPresenter mBankCardPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank_card_binding);
         ButterKnife.bind(this);
-//        mRealNames = MySharedPreferences.getInstance().getString(RealNameC1Activity.REALNAME);
-        mRealName.setHint(mRealNames);
         MyApp.getInstance().addActivity(this);
+        mBankCardPresenter = new BankCardPresenter(this);
     }
 
-    //点击事件的处理
+
+    //验证手机号和密码
+    private boolean checkEdit() {
+        if (mEtCardNumber.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, "卡号不能为空", Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mEtCardNumber);
+        } else {
+            return true;
+        }
+        return false;
+    }
+
     @OnClick({R.id.bark, R.id.btn_next})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
-
                 finish();
-
                 break;
             case R.id.btn_next:
                 if (checkEdit()) {
-                    startActivity(new Intent(this, BankCardBindingActivity2.class));
-                    finish();
+                    next();
                 }
                 break;
         }
     }
 
-    //验证手机号和密码
-    private boolean checkEdit() {
-        if (mRealName.getText().toString().trim().isEmpty()) {
-            if (mRealNames.isEmpty()) {
-                Toast.makeText(this, "姓名不能为空", Toast.LENGTH_SHORT).show();
-            } else {
-                return true;
+    private void next() {
+        final String cardNumber = mEtCardNumber.getText().toString().trim();
+        mBankCardPresenter.bankCardInfo(cardNumber, new BankCardPresenter.CallBack() {
+            @Override
+            public void send(BankCardInfo.DataBean data) {
+                Intent intent = new Intent(BankCardBindingActivity.this, BankCardBindingActivity2.class);
+                if (data.getTruename().isEmpty()) {
+                    showDialog();
+                } else {
+                    intent.putExtra("data", data);
+                    intent.putExtra("cardNumber", cardNumber);
+                    startActivity(intent);
+                    finish();
+                }
             }
-        } else if (mBankCardNumber.getText().toString().isEmpty()) {
-            Toast.makeText(this, "卡号不能为空", Toast.LENGTH_SHORT).show();
-        } else {
-            return true;
-        }
-        return false;
+        });
+    }
+
+    private void showDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle("您还没有实名认证，请先去实名认证");
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                startActivity(new Intent(BankCardBindingActivity.this, RealNameC1Activity.class));
+            }
+        });
+
     }
 }

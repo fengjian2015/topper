@@ -4,13 +4,13 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -26,7 +26,6 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.FragmentFactory;
 import com.bclould.tocotalk.base.MyApp;
-import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.network.DownLoadApk;
 import com.bclould.tocotalk.network.RetrofitUtil;
@@ -39,6 +38,8 @@ import com.bclould.tocotalk.xmpp.XmppConnection;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.AbstractXMPPConnection;
+import org.jivesoftware.smackx.ping.PingFailedListener;
+import org.jivesoftware.smackx.ping.PingManager;
 
 import java.util.List;
 import java.util.Map;
@@ -61,17 +62,14 @@ public class MainActivity extends BaseActivity {
     LinearLayout mMainBottomMenu;
 
     public static MainActivity instance = null;
-    private android.support.v4.app.FragmentManager mSupportFragmentManager;
+    private FragmentManager mSupportFragmentManager;
     private LoadingProgressDialog mProgressDialog;
 
+    //单例
     public static MainActivity getInstance() {
-
         if (instance == null) {
-
             instance = new MainActivity();
-
         }
-
         return instance;
     }
     private void showNavigationBar(boolean show){
@@ -100,7 +98,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mSupportFragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null && savedInstanceState.getBoolean("isMainActivityDestroy", false)) {
             //当activity被系统销毁，获取到之前的fragment，并且移除之前的fragment的状态
@@ -108,16 +105,9 @@ public class MainActivity extends BaseActivity {
                 mSupportFragmentManager.beginTransaction().remove(fragment).commit();
             }
         }
-
-//        StatusBarCompat.setImmersionStateMode(this);
-
-
         setContentView(R.layout.activity_main);
-
         ButterKnife.bind(this);
-
         initInterface();
-
         MyApp.getInstance().addActivity(this);
         showNavigationBar(true);
     }
@@ -164,21 +154,29 @@ public class MainActivity extends BaseActivity {
 
     //初始化界面
     private void initInterface() {
+        //开始选中聊天Fragment
         setSelector(0);
+        //切换Fragment
         changeFragment(0);
+        //初始化底部菜单
         initBottomMenu();
+        //获取权限
         UtilTool.getPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, "获取储存权限失败");
         UtilTool.getPermissions(this, Manifest.permission.CAMERA, "", "获取相机权限失败");
         UtilTool.getPermissions(this, Manifest.permission.RECORD_AUDIO, "", "获取语音权限失败");
+        //自动登录即时通讯
         loginIM();
+        //检测版本更新
         checkVersion();
     }
 
+    //检测版本更新
     private void checkVersion() {
+        //判断是否开启网络
         if (UtilTool.isNetworkAvailable(this)) {
             RetrofitUtil.getInstance(this)
                     .getServer()
-                    .checkVersion("https://api.github.com/repos/bclould/tocotalk/releases/latest")
+                    .checkVersion("https://api.github.com/repos/bclould/tocotalk/releases/latest")//githua获取版本更新
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<GitHubInfo>() {
@@ -189,6 +187,7 @@ public class MainActivity extends BaseActivity {
 
                         @Override
                         public void onNext(GitHubInfo baseInfo) {
+                            //判断是否需要更新
                             float version = Float.parseFloat(UtilTool.getVersionCode(MainActivity.this));
                             float tag = Float.parseFloat(baseInfo.getTag_name());
                             if (version < tag)
@@ -199,7 +198,7 @@ public class MainActivity extends BaseActivity {
                         public void onError(Throwable e) {
                             hideDialog();
                             UtilTool.Log("日志", e.getMessage());
-                            Toast.makeText(MainActivity.this, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -214,9 +213,13 @@ public class MainActivity extends BaseActivity {
 
     //显示Dialog
     private void showUpdateDialog(GitHubInfo gitHubInfo) {
+        //获取download连接
         final String url = gitHubInfo.getAssets().get(0).getBrowser_download_url();
+        //获取apk名字
         final String appName = gitHubInfo.getName();
+        //更新描述
         final String body = gitHubInfo.getBody();
+        //显示更新dialog
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle("检测到有新版本！");
@@ -236,7 +239,7 @@ public class MainActivity extends BaseActivity {
                     showDownloadSetting();
                     return;
                 }
-
+                UtilTool.Log("版本更新", url);
                 DownLoadApk.download(MainActivity.this, url, body, appName);
                 deleteCacheDialog.dismiss();
             }
@@ -244,12 +247,14 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    //获取intent意图
     private boolean intentAvailable(Intent intent) {
         PackageManager packageManager = getPackageManager();
         List list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
         return list.size() > 0;
     }
 
+    //更新完成弹出安装
     private void showDownloadSetting() {
         String packageName = "com.android.providers.downloads";
         Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -259,6 +264,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    //下载状态
     private boolean canDownloadState() {
         try {
             int state = this.getPackageManager().getApplicationEnabledSetting("com.android.providers.downloads");
@@ -276,6 +282,7 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
+    //显示登录中Dialog
     public void showDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(this);
@@ -286,12 +293,14 @@ public class MainActivity extends BaseActivity {
         mProgressDialog.show();
     }
 
+    //隐藏登录中dialog
     public void hideDialog() {
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
             mProgressDialog = null;
         }
     }
+
 
     Handler mHandler = new Handler() {
         @Override
@@ -311,27 +320,43 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //隐藏dialog
         hideDialog();
+        //页面销毁删除掉储存的fragment
         Map<Integer, Fragment> map = FragmentFactory.mMainMap;
-        FragmentFactory.getInstanes(this).setNull();
+        FragmentFactory.getInstanes().setNull();
         for (int i : map.keySet()) {
             mSupportFragmentManager.beginTransaction().remove(map.get(i));
             mSupportFragmentManager.beginTransaction().hide(map.get(i));
         }
     }
 
+    //登录即时通讯
     private void loginIM() {
         showDialog();
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
+                    //连接openfile
                     AbstractXMPPConnection connection = XmppConnection.getInstance().getConnection();
+                    //判断是否连接
                     if (connection != null && connection.isConnected()) {
                         String myUser = UtilTool.getMyUser();
                         String user = myUser.substring(0, myUser.indexOf("@"));
                         connection.login(user, UtilTool.getpw());
                         connection.addConnectionListener(new XMConnectionListener(user, UtilTool.getpw(), MainActivity.this));
+                        /*if (connection.isAuthenticated()) {//登录成功
+                            PingManager.setDefaultPingInterval(10);
+                            PingManager myPingManager = PingManager.getInstanceFor(connection);
+                            myPingManager.registerPingFailedListener(new PingFailedListener() {
+                                @Override
+                                public void pingFailed() {
+                                    Toast.makeText(MainActivity.this, "发送心跳包失败", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }*/
+                        //登录成功发送通知
                         EventBus.getDefault().post(new MessageEvent("登录成功"));
                         UtilTool.Log("fsdafa", "登录成功");
                         Message message = new Message();
@@ -339,6 +364,7 @@ public class MainActivity extends BaseActivity {
                         mHandler.sendMessage(message);
                     }
                 } catch (Exception e) {
+                    //发送登录失败通知
                     EventBus.getDefault().post(new MessageEvent("登录失败"));
                     Message message = new Message();
                     mHandler.sendMessage(message);
@@ -388,12 +414,11 @@ public class MainActivity extends BaseActivity {
 
         FragmentTransaction ft = mSupportFragmentManager.beginTransaction();
 
-        FragmentFactory fragmentFactory = FragmentFactory.getInstanes(this);
+        FragmentFactory fragmentFactory = FragmentFactory.getInstanes();
 
         Fragment LastFragment = fragmentFactory.createMainFragment(lastIndex);
 
         Fragment fragment = fragmentFactory.createMainFragment(index);
-
 
         if (mSupportFragmentManager.getFragments() == null) {
 
@@ -420,7 +445,6 @@ public class MainActivity extends BaseActivity {
 //     当activity销毁时不保存其内部的view的状态
 
     @Override
-
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean("isMainActivityDestroy", true);

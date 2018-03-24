@@ -17,15 +17,6 @@
         android:fastScrollEnabled="false"
         android:overScrollMode="never"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/gray"
-            android:gravity="center"
-            android:text="开发当中敬请期待"
-            android:textColor="@color/gray"
-            android:textSize="@dimen/x50"/>
-
     </RelativeLayout>
 
 

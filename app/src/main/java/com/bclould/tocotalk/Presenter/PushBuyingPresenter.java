@@ -1,6 +1,8 @@
 package com.bclould.tocotalk.Presenter;
 
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -13,7 +15,10 @@ import com.bclould.tocotalk.ui.activity.PayPasswordActivity;
 import com.bclould.tocotalk.ui.activity.PushBuyingActivity;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
+
+import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -24,6 +29,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2018/1/19.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class PushBuyingPresenter {
     private final PushBuyingActivity mPushBuyingActivity;
     private LoadingProgressDialog mProgressDialog;
@@ -48,7 +54,7 @@ public class PushBuyingPresenter {
         }
     }
 
-    public void pushing(int type, String coin, String state, String legalTender, String price, String count, String paymentTime, String payment, String minLimit, String maxLimit, String remark, String password) {
+    public void pushing(int type, String coin, String state, String price, String count, String paymentTime, String payment, String minLimit, String maxLimit, String remark, String password) {
         double priced = Double.parseDouble(price);
         double countd = Double.parseDouble(count);
         double mind = Double.parseDouble(minLimit);
@@ -60,7 +66,7 @@ public class PushBuyingPresenter {
             showDialog();
             RetrofitUtil.getInstance(mPushBuyingActivity)
                     .getServer()
-                    .publishDeal(UtilTool.getToken(), type, coin, state, legalTender, 0, priced, countd, time, payment, mind, maxd, remark, password)
+                    .publishDeal(UtilTool.getToken(), type, coin, "CNY", state, priced, countd, time, payment, mind, maxd, remark, password)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<BaseInfo>() {
@@ -73,10 +79,12 @@ public class PushBuyingPresenter {
                         public void onNext(BaseInfo baseInfo) {
                             if (baseInfo.getStatus() == 1) {
                                 mPushBuyingActivity.finish();
+                                EventBus.getDefault().post(new MessageEvent("发布交易"));
                             } else if (baseInfo.getMessage().equals("尚未设置交易密码")) {
                                 showSetPwDialog();
                             }
                             hideDialog();
+                            UtilTool.Log("PushBuyingPresenter", baseInfo.getMessage());
                             Toast.makeText(mPushBuyingActivity, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
