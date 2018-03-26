@@ -104,23 +104,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/time"
-                        android:layout_marginBottom="@dimen/y40"
-                        android:layout_marginLeft="@dimen/x40"
+                        android:layout_marginLeft="@dimen/x25"
                         android:layout_marginTop="@dimen/y20"
-                        android:layout_toRightOf="@+id/touxiang"
                         android:text="文字文字文字文字文字文字"
-                        android:textSize="@dimen/x26"/>
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/x28"/>
 
                     <com.jaeger.ninegridimageview.NineGridImageView
                         android:id="@+id/ngl_images"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/time"
+                        android:layout_below="@+id/dynamic_text"
                         android:layout_marginBottom="@dimen/y20"
-                        android:layout_marginLeft="@dimen/x20"
+                        android:layout_marginLeft="@dimen/x25"
                         android:layout_marginRight="@dimen/x20"
                         android:layout_marginTop="@dimen/y20"
-                        android:visibility="gone"
                         ngl:imgGap="@dimen/x10"
                         ngl:showStyle="fill"/>
 
@@ -139,6 +137,7 @@
                             android:src="@drawable/zan_selector"/>
 
                         <TextView
+                            android:id="@+id/tv_like_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/x10"
@@ -197,7 +196,7 @@
             android:layout_width="@dimen/x600"
             android:layout_height="match_parent"
             android:background="@color/transparent"
-            android:hint="安子"
+            android:hint="请输入评论"
             android:paddingBottom="@dimen/x30"
             android:paddingLeft="@dimen/x36"
             android:paddingRight="@dimen/x36"

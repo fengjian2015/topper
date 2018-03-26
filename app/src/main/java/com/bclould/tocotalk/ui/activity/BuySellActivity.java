@@ -33,6 +33,7 @@ import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
+import com.bclould.tocotalk.utils.UtilTool;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;
@@ -343,20 +344,24 @@ public class BuySellActivity extends BaseActivity {
             case R.id.btn_add_friend:
                 break;
             case R.id.btn_sell_buy:
-                String moneys = mEtCny.getText().toString();
-                String count = mEtCoin.getText().toString();
-                if (!moneys.isEmpty() && !count.isEmpty()) {
-                    int money = Integer.parseInt(moneys);
-                    if (money >= mData.getMin_amount() && money <= mData.getMax_amount()) {
-                        if (!mType)
-                            createOrder("");
-                        else
-                            showPWDialog();
-                    }
-                } else {
-                    Toast.makeText(this, "金额或者数量不能为空", Toast.LENGTH_SHORT).show();
-                }
+                buySell();
                 break;
+        }
+    }
+
+    private void buySell() {
+        String moneys = mEtCny.getText().toString();
+        String count = mEtCoin.getText().toString();
+        if (!moneys.isEmpty() && !count.isEmpty()) {
+            int money = Integer.parseInt(moneys);
+            if (money >= mData.getMin_amount() && money <= mData.getMax_amount()) {
+                if (!mType)
+                    createOrder("");
+                else
+                    showPWDialog();
+            }
+        } else {
+            Toast.makeText(this, "金额或者数量不能为空", Toast.LENGTH_SHORT).show();
         }
     }
 

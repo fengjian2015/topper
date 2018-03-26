@@ -19,7 +19,6 @@ import com.bclould.tocotalk.ui.adapter.DynamicRVAdapter;
 import com.bclould.tocotalk.utils.FullyLinearLayoutManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
@@ -82,6 +81,7 @@ public class DynamicFragment extends Fragment {
     List<DynamicListInfo.DataBean> mDataList = new ArrayList<>();
 
     private void initData(String page, String pageSize) {
+        mDataList.clear();
         mDynamicPresenter.dynamicList(page, pageSize, new DynamicPresenter.CallBack2() {
             @Override
             public void send(List<DynamicListInfo.DataBean> data) {
@@ -97,15 +97,7 @@ public class DynamicFragment extends Fragment {
         final FullyLinearLayoutManager manager = new FullyLinearLayoutManager(getContext());
 
         mRecyclerView.setLayoutManager(manager);
-/*
-        mPostList = new ArrayList<>();
-        for (int i = 0; i < 18; i++) {
-            List<String> imgUrls = new ArrayList<>();
-            imgUrls.addAll(Arrays.asList(IMG_URL_LIST).subList(0, i % 9));
-            PostInfo post = new PostInfo("Am I handsome? Am I handsome? Am I handsome?", imgUrls);
-            mPostList.add(post);
-        }*/
-        mDynamicRVAdapter = new DynamicRVAdapter(getActivity(), mDataList, mMgr);
+        mDynamicRVAdapter = new DynamicRVAdapter(getActivity(), mDataList, mMgr, mDynamicPresenter);
         mRecyclerView.setAdapter(mDynamicRVAdapter);
         manager.scrollToPositionWithOffset(0, 0);
         mRecyclerView.post(new Runnable() {
@@ -120,15 +112,9 @@ public class DynamicFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
+                initData(mPage, mPageSize);
             }
         });
-        mRefreshLayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                refreshlayout.finishLoadmore(2000);
-            }
-        });
-
     }
 
     @Override

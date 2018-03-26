@@ -1,5 +1,6 @@
 package com.bclould.tocotalk.ui.adapter;
 
+import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.CoinInfo;
+import com.bclould.tocotalk.ui.activity.PaymentActivity;
 import com.bclould.tocotalk.ui.activity.SendRedPacketActivity;
 import com.bumptech.glide.Glide;
 
@@ -25,19 +27,19 @@ import butterknife.ButterKnife;
 
 public class BottomDialogRVAdapter2 extends RecyclerView.Adapter {
 
-    private final SendRedPacketActivity mSendRedPacketActivity;
+    private final Context mContext;
     private final List<CoinInfo.DataBean> mCoinArr;
 
 
-    public BottomDialogRVAdapter2(SendRedPacketActivity sendRedPacketActivity, List<CoinInfo.DataBean> coinArr) {
-        mSendRedPacketActivity = sendRedPacketActivity;
+    public BottomDialogRVAdapter2(Context context, List<CoinInfo.DataBean> coinArr) {
+        mContext = context;
         mCoinArr = coinArr;
     }
 
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mSendRedPacketActivity).inflate(R.layout.item_dialog_bottom, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_dialog_bottom, parent, false);
         return new ViewHolder(view);
     }
 
@@ -61,6 +63,7 @@ public class BottomDialogRVAdapter2 extends RecyclerView.Adapter {
         @Bind(R.id.tv_name)
         TextView mTvName;
         private String mName;
+        private int mId;
 
         ViewHolder(View view) {
             super(view);
@@ -70,15 +73,22 @@ public class BottomDialogRVAdapter2 extends RecyclerView.Adapter {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onClick(View view) {
-                    mSendRedPacketActivity.hideDialog(mName);
+                    if (mContext instanceof SendRedPacketActivity) {
+                        SendRedPacketActivity activity = (SendRedPacketActivity) mContext;
+                        activity.hideDialog(mName);
+                    }else if(mContext instanceof PaymentActivity){
+                        PaymentActivity activity = (PaymentActivity) mContext;
+                        activity.hideDialog(mName, mId);
+                    }
                 }
             });
         }
 
         public void setData(CoinInfo.DataBean data) {
             mName = data.getName();
+            mId = data.getId();
             mTvName.setText(mName);
-            Glide.with(mSendRedPacketActivity).load(data.getLogo()).into(mTvCoinLogo);
+            Glide.with(mContext).load(data.getLogo()).into(mTvCoinLogo);
         }
     }
 }

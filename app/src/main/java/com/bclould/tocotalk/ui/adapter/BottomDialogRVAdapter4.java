@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.ui.activity.OtcActivity;
 import com.bclould.tocotalk.ui.activity.PayManageActivity;
-import com.bclould.tocotalk.ui.activity.ReceiptPaymentActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,6 +31,7 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
         mContext = context;
         mCoinArr = coinArr;
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_dialog_bottom, parent, false);
@@ -63,14 +63,11 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(mContext instanceof OtcActivity) {
+                    if (mContext instanceof OtcActivity) {
                         OtcActivity activity = (OtcActivity) mContext;
                         activity.hideDialog(mName);
-                    }else if(mContext instanceof PayManageActivity){
+                    } else if (mContext instanceof PayManageActivity) {
                         PayManageActivity activity = (PayManageActivity) mContext;
-                        activity.hideDialog(mName);
-                    }else if(mContext instanceof ReceiptPaymentActivity){
-                        ReceiptPaymentActivity activity = (ReceiptPaymentActivity) mContext;
                         activity.hideDialog(mName);
                     }
                 }

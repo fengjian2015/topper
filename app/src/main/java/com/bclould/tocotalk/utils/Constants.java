@@ -20,6 +20,7 @@ public class Constants {
     public static final String REDBAG = "[redBag]";
     public static final String REDPACKAGE = "redPackage";
     public static final String MONEYIN = "moneyIn";
+    public static final String MONEYOUT = "moneyOut";
     public static final String REDDEFAULT = "恭喜發財，大吉大利";
     public static final String MYUSER = UtilTool.getMyUser();
     public static final String DOMAINNAME = "xmpp.bclould.com";

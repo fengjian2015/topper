@@ -1,6 +1,8 @@
 package com.bclould.tocotalk.Presenter;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
@@ -21,6 +23,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2018/2/26.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class CoinPresenter {
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;

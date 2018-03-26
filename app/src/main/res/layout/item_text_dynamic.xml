@@ -47,7 +47,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/x30"
                 android:layout_marginTop="@dimen/y10"
-                android:textSize="@dimen/x26"/>
+                android:textColor="@color/black"
+                android:textSize="@dimen/x28"/>
 
             <!--<LinearLayout
                 android:id="@+id/ll_song"

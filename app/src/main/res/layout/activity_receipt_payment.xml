@@ -57,55 +57,31 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="@dimen/x650"
-        android:layout_height="@dimen/y750"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         app:cardCornerRadius="@dimen/x15">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/y60"
+            android:layout_marginTop="@dimen/y60">
+
+            <TextView
+                android:id="@+id/tv_coin_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/y30"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x32"/>
 
             <ImageView
+                android:layout_below="@+id/tv_coin_count"
                 android:id="@+id/iv_qr"
                 android:layout_width="@dimen/x500"
                 android:layout_height="@dimen/x500"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/y50"/>
-
-            <TextView
-                android:id="@+id/xx"
-                style="@style/HCutOffRule"
-                android:layout_below="@+id/iv_qr"
-                android:layout_marginLeft="@dimen/x30"
-                android:layout_marginRight="@dimen/x30"
-                android:layout_marginTop="@dimen/y20"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/xx">
-
-                <TextView
-                    android:id="@+id/tv_selector"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="选择币种"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x32"/>
-
-                <TextView
-                    android:id="@+id/tv_set_money"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="设置金额"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x32"/>
-
-            </LinearLayout>
+                android:layout_centerHorizontal="true"/>
 
         </RelativeLayout>
 

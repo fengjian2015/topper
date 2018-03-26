@@ -12,12 +12,14 @@ import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.model.GoogleInfo;
 import com.bclould.tocotalk.model.GrabRedInfo;
 import com.bclould.tocotalk.model.InOutInfo;
+import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.model.LoginInfo;
 import com.bclould.tocotalk.model.MyAssetsInfo;
 import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.model.OrderListInfo;
 import com.bclould.tocotalk.model.OutCoinSiteInfo;
 import com.bclould.tocotalk.model.RedRecordInfo;
+import com.bclould.tocotalk.model.ReviewListInfo;
 import com.bclould.tocotalk.model.TransferInfo;
 
 import io.reactivex.Observable;
@@ -380,8 +382,8 @@ public interface MyService {
             @Url String url
     );
 
-    //检测版本号
-    @POST("finance/AssetName")
+    //币种列表
+    @POST("finance/AssetNameV2")
     Observable<CoinInfo> AssetName(
             @Header("Authorization") String token
     );
@@ -487,7 +489,7 @@ public interface MyService {
     //发表评论
     @POST("review/publish")
     @FormUrlEncoded
-    Observable<InOutInfo> publishReview(
+    Observable<ReviewListInfo> publishReview(
             @Header("Authorization") String token,
             @Field("dynamic_id") String dynamic_id,
             @Field("content") String content
@@ -496,7 +498,7 @@ public interface MyService {
     //评论列表
     @POST("review/reviewList")
     @FormUrlEncoded
-    Observable<InOutInfo> reviewList(
+    Observable<ReviewListInfo> reviewList(
             @Header("Authorization") String token,
             @Field("dynamic_id") String dynamic_id
     );
@@ -504,9 +506,17 @@ public interface MyService {
     //赞
     @POST("dynamic/like")
     @FormUrlEncoded
-    Observable<InOutInfo> like(
+    Observable<LikeInfo> like(
             @Header("Authorization") String token,
             @Field("dynamic_id") String dynamic_id
+    );
+
+    //评论点赞
+    @POST("review/like")
+    @FormUrlEncoded
+    Observable<LikeInfo> reviewLike(
+            @Header("Authorization") String token,
+            @Field("review_id") String review_id
     );
 
     //生成收款二维码
@@ -522,15 +532,18 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("id") String id,
             @Field("number") String number,
-            @Field("coin_id") String coin_id
+            @Field("coin_id") String coin_id,
+            @Field("second_password") String second_password
     );
 
     //生成付款二维码
     @POST("receipt/generatePaymentQrCode")
+    @FormUrlEncoded
     Observable<BaseInfo> generatePaymentQrCode(
             @Header("Authorization") String token,
             @Field("number") String number,
-            @Field("coin_id") String coin_id
+            @Field("coin_id") String coin_id,
+            @Field("second_password") String second_password
     );
 
     //扫付款码， 收款操作

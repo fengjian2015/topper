@@ -16,6 +16,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.QrCardInfo;
+import com.bclould.tocotalk.model.QrRedInfo;
 import com.bclould.tocotalk.ui.fragment.CloudMessageFragment;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
@@ -108,33 +109,53 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
             UtilTool.Log("日志", result);
             finish();
         } else {
-            if (!result.isEmpty() && result.contains(Constants.BUSINESSCARD)) {
-                String base64 = result.substring(Constants.BUSINESSCARD.length(), result.length());
-                String jsonresult = Base64.decodeToString(base64);
-                UtilTool.Log("日志", jsonresult);
-                try {
-                    Gson gson = new Gson();
-                    QrCardInfo qrCardInfo = gson.fromJson(jsonresult, QrCardInfo.class);
-                    String name = qrCardInfo.getName();
-                    if (!qrCardInfo.getName().contains(Constants.DOMAINNAME)) {
-                        name = name + "@" + Constants.DOMAINNAME;
+            if (result != null && !result.isEmpty()) {
+                if (result.contains(Constants.BUSINESSCARD)) {
+                    try {
+                        String base64 = result.substring(Constants.BUSINESSCARD.length(), result.length());
+                        String jsonresult = Base64.decodeToString(base64);
+                        UtilTool.Log("日志", jsonresult);
+
+                        Gson gson = new Gson();
+                        QrCardInfo qrCardInfo = gson.fromJson(jsonresult, QrCardInfo.class);
+                        String name = qrCardInfo.getName();
+                        if (!qrCardInfo.getName().contains(Constants.DOMAINNAME)) {
+                            name = name + "@" + Constants.DOMAINNAME;
+                        }
+                        if (!mMgr.findUser(name)) {
+                            Roster.getInstanceFor(XmppConnection.getInstance().getConnection()).createEntry(JidCreate.entityBareFrom(name), null, new String[]{"Friends"});
+                            Toast.makeText(this, "发送请求成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(this, "已在好友列表", Toast.LENGTH_SHORT).show();
+                        }
+                        finish();
+                    } catch (Exception e) {
+                        Toast.makeText(this, "发送请求失败", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
                     }
-                    if (!mMgr.findUser(name)) {
-                        Roster.getInstanceFor(XmppConnection.getInstance().getConnection()).createEntry(JidCreate.entityBareFrom(name), null, new String[]{"Friends"});
-                        Toast.makeText(this, "发送请求成功", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, "已在好友列表", Toast.LENGTH_SHORT).show();
+                } else if (result.contains(Constants.MONEYIN)) {
+                    try {
+                        String base64 = result.substring(Constants.MONEYIN.length(), result.length());
+                        String jsonresult = Base64.decodeToString(base64);
+                        UtilTool.Log("日志", jsonresult);
+                        Gson gson = new Gson();
+                        QrRedInfo qrRedInfo = gson.fromJson(jsonresult, QrRedInfo.class);
+                        Intent intent = new Intent(this, PaymentActivity.class);
+                        intent.putExtra("userId", qrRedInfo.getRedID());
+                        intent.putExtra("type", true);
+                        startActivity(intent);
+                        finish();
+                    } catch (Exception e) {
+                        Toast.makeText(this, "扫描二维码失败", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
                     }
+                } else {
+                    Intent intent = new Intent(ScanQRCodeActivity.this, CloudMessageFragment.class);
+                    intent.putExtra("result", result);
+                    setResult(RESULT_OK, intent);
                     finish();
-                } catch (Exception e) {
-                    Toast.makeText(this, "发送请求失败", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
                 }
             }
-            Intent intent = new Intent(ScanQRCodeActivity.this, CloudMessageFragment.class);
-            intent.putExtra("result", result);
-            setResult(RESULT_OK, intent);
-            finish();
         }
         //再次延时1.5秒后启动
         mZxingview.startSpot();

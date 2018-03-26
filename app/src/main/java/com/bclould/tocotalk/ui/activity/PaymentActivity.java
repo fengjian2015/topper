@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -27,15 +27,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.Presenter.CoinPresenter;
-import com.bclould.tocotalk.Presenter.RedPacketPresenter;
+import com.bclould.tocotalk.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.model.CoinInfo;
-import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter3;
+import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
-import com.bclould.tocotalk.utils.Constants;
-import com.bclould.tocotalk.utils.UtilTool;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;
@@ -50,78 +49,82 @@ import butterknife.OnClick;
 import static com.bclould.tocotalk.R.style.BottomDialog;
 
 /**
- * Created by GA on 2018/1/22.
+ * Created by GA on 2018/3/26.
  */
 
-@android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
-public class SendQRCodeRedActivity extends AppCompatActivity {
+@RequiresApi(api = Build.VERSION_CODES.N)
+public class PaymentActivity extends BaseActivity {
 
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.tv_redpacket_record)
-    TextView mTvRedpacketRecord;
-    @Bind(R.id.title)
-    RelativeLayout mTitle;
+    @Bind(R.id.et_count)
+    EditText mEtCount;
     @Bind(R.id.tv_coin)
     TextView mTvCoin;
+    @Bind(R.id.btn_payment)
+    Button mBtnPayment;
     @Bind(R.id.rl_selector_coin)
     RelativeLayout mRlSelectorCoin;
-    @Bind(R.id.et_money_count)
-    EditText mEtMoneyCount;
-    @Bind(R.id.et_red_count)
-    EditText mEtRedCount;
-    @Bind(R.id.btn_send)
-    Button mBtnSend;
-    private Dialog mRedDialog;
+    @Bind(R.id.tv_title)
+    TextView mTvTitle;
+    private String mUserId;
+    private ReceiptPaymentPresenter mReceiptPaymentPresenter;
+    private Dialog mBottomDialog;
+    private CoinPresenter mCoinPresenter;
+    List<CoinInfo.DataBean> mDataBeanList = new ArrayList<>();
+    private int mId;
+    private boolean mType;
+    private String mCoinName;
+    private ArrayList<Map<String, String>> valueList;
     private Animation mEnterAnim;
     private Animation mExitAnim;
-    private MNPasswordEditText mEtPassword;
+    private Dialog mRedDialog;
     private GridView mGridView;
-    private ArrayList<Map<String, String>> valueList;
-    private RedPacketPresenter mRedPacketPresenter;
-    private Dialog mBottomDialog;
-    private List<CoinInfo.DataBean> mDataBeanList = new ArrayList<>();
+    private MNPasswordEditText mEtPassword;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_send_qr_code_red);
+        setContentView(R.layout.activity_payment);
         ButterKnife.bind(this);
-        getWindow().setStatusBarColor(getColor(R.color.redpacket3));
-        mRedPacketPresenter = new RedPacketPresenter(this);
+        initIntent();
+        mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);
+        mCoinPresenter = new CoinPresenter(this);
         initData();
     }
 
     private void initData() {
-        CoinPresenter coinPresenter = new CoinPresenter(this);
-        coinPresenter.getCoin(new CoinPresenter.CallBack() {
+        mCoinPresenter.getCoin(new CoinPresenter.CallBack() {
             @Override
             public void send(List<CoinInfo.DataBean> address) {
-               /* for (CoinInfo.DataBean dataBean : address) {
-                    if (!dataBean.getCoin_over().equals("0")) {
-                        mDataBeanList.add(dataBean);
-                    }
-                }*/
-               mDataBeanList.addAll(address);
+                mDataBeanList.addAll(address);
             }
         });
     }
 
-    @OnClick({R.id.bark, R.id.tv_redpacket_record, R.id.rl_selector_coin, R.id.btn_send})
+    private void initIntent() {
+        mType = getIntent().getBooleanExtra("type", false);
+        if (mType) {
+            mUserId = getIntent().getStringExtra("userId");
+        } else {
+            mTvTitle.setText("收款");
+            mBtnPayment.setText("确定");
+        }
+    }
+
+    @OnClick({R.id.bark, R.id.btn_payment, R.id.rl_selector_coin})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_redpacket_record:
-                startActivity(new Intent(this, RedPacketRecordActivity.class));
+            case R.id.btn_payment:
+                if (checkEidt()) {
+                    showPWDialog();
+                }
                 break;
             case R.id.rl_selector_coin:
-                showDialog();
-                break;
-            case R.id.btn_send:
-                if (checkEdit())
-                    showPWDialog();
+                showCoinDialog();
                 break;
         }
     }
@@ -149,8 +152,6 @@ public class SendQRCodeRedActivity extends AppCompatActivity {
     }
 
     private void initDialog() {
-        String coins = mTvCoin.getText().toString();
-        String count = mEtMoneyCount.getText().toString();
         TextView coin = (TextView) mRedDialog.findViewById(R.id.tv_coin);
         TextView countCoin = (TextView) mRedDialog.findViewById(R.id.tv_count_coin);
         mEtPassword = (MNPasswordEditText) mRedDialog.findViewById(R.id.et_password);
@@ -181,8 +182,14 @@ public class SendQRCodeRedActivity extends AppCompatActivity {
             }
         });
         valueList = virtualKeyboardView.getValueList();
-        countCoin.setText(count + coins);
-        coin.setText(coins + "红包");
+        if (mType) {
+            coin.setText("扫码支付");
+        } else {
+            coin.setText("扫码收款");
+        }
+        String count = mEtCount.getText().toString();
+        String coinName = mTvCoin.getText().toString();
+        countCoin.setText(count + coinName);
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -208,8 +215,34 @@ public class SendQRCodeRedActivity extends AppCompatActivity {
                 if (password.length() == 6) {
                     mRedDialog.dismiss();
                     mEtPassword.setText("");
-                    sendRed(password);
+                    if (mType) {
+                        payment(password);
+                    } else {
+                        createQrCode(password);
+                    }
                 }
+            }
+        });
+    }
+
+    public void showHintDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setCanceledOnTouchOutside(false);
+        TextView retry = (TextView) deleteCacheDialog.findViewById(R.id.tv_retry);
+        TextView findPassword = (TextView) deleteCacheDialog.findViewById(R.id.tv_find_password);
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                mRedDialog.show();
+            }
+        });
+        findPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                startActivity(new Intent(PaymentActivity.this, PayPasswordActivity.class));
             }
         });
     }
@@ -254,8 +287,22 @@ public class SendQRCodeRedActivity extends AppCompatActivity {
         }
     };
 
+    private void createQrCode(String password) {
+        final String count = mEtCount.getText().toString();
+        mReceiptPaymentPresenter.generatePaymentQrCode(count, mId, password, new ReceiptPaymentPresenter.CallBack3() {
+            @Override
+            public void send(String url) {
+                Intent intent = new Intent(PaymentActivity.this, ReceiptPaymentActivity.class);
+                intent.putExtra("url", url);
+                intent.putExtra("coinName", mCoinName);
+                intent.putExtra("count", count);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+    }
 
-    private void showDialog() {
+    private void showCoinDialog() {
         mBottomDialog = new Dialog(this, R.style.BottomDialog2);
         View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom, null);
         //获得dialog的window窗口
@@ -274,84 +321,46 @@ public class SendQRCodeRedActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) mBottomDialog.findViewById(R.id.recycler_view);
         TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
         Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new BottomDialogRVAdapter2(this, mDataBeanList));
         addCoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SendQRCodeRedActivity.this, MyAssetsActivity.class));
+                startActivity(new Intent(PaymentActivity.this, MyAssetsActivity.class));
                 mBottomDialog.dismiss();
             }
         });
         tvTitle.setText("选择币种");
-        if (mDataBeanList.size() != 0) {
-            recyclerView.setVisibility(View.VISIBLE);
-            addCoin.setVisibility(View.GONE);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(new BottomDialogRVAdapter3(this, mDataBeanList));
-        } else {
-            recyclerView.setVisibility(View.GONE);
-            addCoin.setVisibility(View.VISIBLE);
-        }
     }
 
-    public void hideDialog(String name) {
+    public void hideDialog(String name, int id) {
+        mId = id;
+        mCoinName = name;
         mBottomDialog.dismiss();
         mTvCoin.setText(name);
     }
 
-    private void sendRed(String password) {
-        String coin = mTvCoin.getText().toString();
-        int count = Integer.parseInt(mEtRedCount.getText().toString());
-        double money = Double.parseDouble(mEtMoneyCount.getText().toString());
-        double single = money / count;
-        mRedPacketPresenter.sendRedPacket("code", 2, coin, Constants.REDDEFAULT, 2, count, single, money, password, new RedPacketPresenter.CallBack() {
-            @Override
-            public void send(int id) {
-                String code = UtilTool.base64PetToJson(Constants.REDPACKAGE, "redID", id + "", "红包");
-                Intent intent = new Intent(SendQRCodeRedActivity.this, QRCodeRedActivity.class);
-                intent.putExtra("code", code);
-                intent.putExtra("type", true);
-                startActivity(intent);
-            }
-        });
-    }
-
-    //验证手机号和密码
-    private boolean checkEdit() {
-        if (mEtMoneyCount.getText().toString().trim().equals("")) {
-            Toast.makeText(this, getResources().getString(R.string.toast_count), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mEtMoneyCount);
-        } else if (mEtRedCount.getText().toString().trim().equals("")) {
-            Toast.makeText(this, getResources().getString(R.string.toast_count), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mEtRedCount);
-        } else if (mTvCoin.getText().toString().trim().equals("")) {
-            Toast.makeText(this, getResources().getString(R.string.toast_coin), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mTvCoin);
+    private boolean checkEidt() {
+        if (mEtCount.getText().toString().isEmpty()) {
+            AnimatorTool.getInstance().editTextAnimator(mEtCount);
+            Toast.makeText(this, "数量不能为空", Toast.LENGTH_SHORT).show();
+        } else if (mTvCoin.getText().toString().isEmpty()) {
+            AnimatorTool.getInstance().editTextAnimator(mRlSelectorCoin);
+            Toast.makeText(this, "请选择币种", Toast.LENGTH_SHORT).show();
         } else {
             return true;
         }
         return false;
     }
 
-    public void showHintDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this);
-        deleteCacheDialog.show();
-        deleteCacheDialog.setCanceledOnTouchOutside(false);
-        TextView retry = (TextView) deleteCacheDialog.findViewById(R.id.tv_retry);
-        TextView findPassword = (TextView) deleteCacheDialog.findViewById(R.id.tv_find_password);
-        retry.setOnClickListener(new View.OnClickListener() {
+    private void payment(String password) {
+        String count = mEtCount.getText().toString();
+        mReceiptPaymentPresenter.payment(mUserId, count, mId, password, new ReceiptPaymentPresenter.CallBack2() {
             @Override
-            public void onClick(View view) {
-                deleteCacheDialog.dismiss();
-                mRedDialog.show();
-            }
-        });
-        findPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteCacheDialog.dismiss();
-                startActivity(new Intent(SendQRCodeRedActivity.this, PayPasswordActivity.class));
+            public void send() {
+                Toast.makeText(PaymentActivity.this, "付款成功", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }
-
 }

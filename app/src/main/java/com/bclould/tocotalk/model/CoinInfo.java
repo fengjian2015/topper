@@ -41,7 +41,15 @@ public class CoinInfo {
 
         private String logo;
         private String name;
-        private String coin_over;
+        private int id;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
 
         public String getLogo() {
             return logo;
@@ -57,14 +65,6 @@ public class CoinInfo {
 
         public void setName(String name) {
             this.name = name;
-        }
-
-        public String getCoin_over() {
-            return coin_over;
-        }
-
-        public void setCoin_over(String coin_over) {
-            this.coin_over = coin_over;
         }
     }
 }

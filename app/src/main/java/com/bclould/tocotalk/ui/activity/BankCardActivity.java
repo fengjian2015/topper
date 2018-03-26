@@ -75,7 +75,6 @@ public class BankCardActivity extends BaseActivity {
     private BankCardPresenter mBankCardPresenter;
     List<CardListInfo.DataBean> mCardList = new ArrayList<>();
     private BankCardRVAdapter mBankCardRVAdapter;
-    private OnItemDeleteListener mOnItemDeleteListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -154,14 +153,6 @@ public class BankCardActivity extends BaseActivity {
                 }
                 break;
         }
-    }
-
-    public interface OnItemDeleteListener {
-        void onDelete(boolean isDelete);
-    }
-
-    public void setOnItemDeleteListener(BankCardActivity.OnItemDeleteListener onItemDeleteListener) {
-        mOnItemDeleteListener = onItemDeleteListener;
     }
 
     private void showPWDialog() {

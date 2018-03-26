@@ -117,11 +117,12 @@ public class SendRedPacketActivity extends AppCompatActivity {
         coinPresenter.getCoin(new CoinPresenter.CallBack() {
             @Override
             public void send(List<CoinInfo.DataBean> address) {
-                for(CoinInfo.DataBean dataBean : address){
+                /*for(CoinInfo.DataBean dataBean : address){
                     if(!dataBean.getCoin_over().equals("0")){
                         mDataBeanList.add(dataBean);
                     }
-                }
+                }*/
+                mDataBeanList.addAll(address);
             }
         });
     }

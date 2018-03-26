@@ -17,9 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.bclould.tocotalk.Presenter.DynamicPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.DynamicListInfo;
+import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.activity.DynamicDetailActivity;
 import com.bclould.tocotalk.utils.Constants;
@@ -51,11 +53,13 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
     private final Context mContext;
     private final List<DynamicListInfo.DataBean> mDataList;
     private final DBManager mMgr;
+    private final DynamicPresenter mDynamicPresenter;
 
-    public DynamicRVAdapter(Context context, List<DynamicListInfo.DataBean> dataList, DBManager mgr) {
+    public DynamicRVAdapter(Context context, List<DynamicListInfo.DataBean> dataList, DBManager mgr, DynamicPresenter dynamicPresenter) {
         mContext = context;
         mDataList = dataList;
         mMgr = mgr;
+        mDynamicPresenter = dynamicPresenter;
     }
 
     @Override
@@ -271,6 +275,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         };
         private ArrayList<String> mCompressImgList;
         private ArrayList<String> mImgList;
+        private DynamicListInfo.DataBean mDataBean;
 
         public ImageHolder(View view) {
             super(view);
@@ -278,15 +283,16 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     Intent intent = new Intent();
-
                     intent.setClass(mContext, DynamicDetailActivity.class);
-
-                    intent.putStringArrayListExtra("imageList", mCompressImgList);
-
+                    intent.putStringArrayListExtra("compressImgList", mCompressImgList);
+                    intent.putStringArrayListExtra("imageList", mImgList);
+                    intent.putExtra("content", mDataBean.getContent());
+                    intent.putExtra("like", mDataBean.getLike_count() + "");
+                    intent.putExtra("name", mDataBean.getUser_name());
+                    intent.putExtra("time", mDataBean.getCreated_at());
+                    intent.putExtra("id", mDataBean.getId() + "");
                     mContext.startActivity(intent);
-
                 }
             });
             mNglImages.setAdapter(mAdapter);
@@ -322,7 +328,8 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
 
         }
 
-        public void setData(DynamicListInfo.DataBean dataBean) {
+        public void setData(final DynamicListInfo.DataBean dataBean) {
+            mDataBean = dataBean;
             mCompressImgList = (ArrayList<String>) dataBean.getKey_compress_urls();
             mImgList = (ArrayList<String>) dataBean.getKey_urls();
             mNglImages.setImagesData(mCompressImgList);
@@ -336,6 +343,27 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             mTvContent.setText(dataBean.getContent());
             mTvPinglun.setText(dataBean.getReview_count() + "");
             mTvZan.setText(dataBean.getLike_count() + "");
+            if (dataBean.getIs_like() == 1) {
+                mTvZan.setSelected(true);
+            } else {
+                mTvZan.setSelected(false);
+            }
+            mTvZan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mDynamicPresenter.like(dataBean.getId() + "", new DynamicPresenter.CallBack4() {
+                        @Override
+                        public void send(LikeInfo data) {
+                            mTvZan.setText(data.getLikeCounts() + "");
+                            if (data.getStatus() == 1) {
+                                mTvZan.setSelected(true);
+                            } else {
+                                mTvZan.setSelected(false);
+                            }
+                        }
+                    });
+                }
+            });
         }
     }
 }
