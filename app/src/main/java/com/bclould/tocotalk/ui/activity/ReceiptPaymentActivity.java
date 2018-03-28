@@ -2,6 +2,8 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,9 +21,12 @@ import android.widget.TextView;
 import com.bclould.tocotalk.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
+import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,21 +38,39 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class ReceiptPaymentActivity extends BaseActivity {
-    private static final int PAYMENTQRCODE = 0;
+    private static final int MONEYIN = 0;
+    private static final int MONEYOUT = 1;
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.tv_selector_way)
     TextView mTvSelectorWay;
     @Bind(R.id.xx2)
     TextView mXx2;
-    @Bind(R.id.tv_coin_count)
-    TextView mTvCoinCount;
+    @Bind(R.id.tv_hint)
+    TextView mTvHint;
+    @Bind(R.id.tv_coin)
+    TextView mTvCoin;
+    @Bind(R.id.tv2)
+    TextView mTv2;
+    @Bind(R.id.tv_count)
+    TextView mTvCount;
+    @Bind(R.id.tv_remark)
+    TextView mTvRemark;
+    @Bind(R.id.rl_data)
+    RelativeLayout mRlData;
     @Bind(R.id.iv_qr)
     ImageView mIvQr;
+    @Bind(R.id.xx)
+    TextView mXx;
+    @Bind(R.id.tv_set)
+    TextView mTvSet;
     @Bind(R.id.tv)
     TextView mTv;
     @Bind(R.id.rl_receipt_payment_record)
     RelativeLayout mRlReceiptPaymentRecord;
+    @Bind(R.id.tv3)
+    TextView mTv3;
+
 
     private DisplayMetrics mDm;
     private int mHeightPixels;
@@ -66,17 +89,21 @@ public class ReceiptPaymentActivity extends BaseActivity {
     }
 
     private void moneyIn() {
-        mReceiptPaymentPresenter.generateReceiptQrCode(new ReceiptPaymentPresenter.CallBack() {
+        mRlData.setVisibility(View.GONE);
+        mXx.setVisibility(View.VISIBLE);
+        mTvSet.setVisibility(View.VISIBLE);
+        mTvHint.setText("扫描二维码向我付款");
+        mReceiptPaymentPresenter.generateReceiptQrCode("", "", "", new ReceiptPaymentPresenter.CallBack() {
             @Override
-            public void send(int id) {
-                String code = UtilTool.base64PetToJson(Constants.MONEYIN, "redID", id + "", "收付款");
+            public void send(BaseInfo.DataBean data) {
+                String code = UtilTool.base64PetToJson(Constants.MONEYIN, "redID", data.getId() + "", "收付款");
                 Bitmap bitmap = UtilTool.createQRImage(code);
-                mIvQr.setImageBitmap(bitmap);
+                mIvQr.setBackground(new BitmapDrawable(bitmap));
             }
         });
     }
 
-    @OnClick({R.id.bark, R.id.tv_selector_way, R.id.rl_receipt_payment_record})
+    @OnClick({R.id.bark, R.id.tv_selector_way, R.id.rl_receipt_payment_record, R.id.tv_set})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -84,6 +111,11 @@ public class ReceiptPaymentActivity extends BaseActivity {
                 break;
             case R.id.tv_selector_way:
                 initPopWindow();
+                break;
+            case R.id.tv_set:
+                Intent intent = new Intent(this, PaymentActivity.class);
+                intent.putExtra("type", Constants.QRMONEYIN);
+                startActivityForResult(intent, MONEYIN);
                 break;
             case R.id.rl_receipt_payment_record:
                 startActivity(new Intent(this, PayRecordActivity.class));
@@ -93,11 +125,8 @@ public class ReceiptPaymentActivity extends BaseActivity {
 
     //获取屏幕高度
     private void getPhoneSize() {
-
         mDm = new DisplayMetrics();
-
         getWindowManager().getDefaultDisplay().getMetrics(mDm);
-
         mHeightPixels = mDm.heightPixels;
     }
 
@@ -130,12 +159,51 @@ public class ReceiptPaymentActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PAYMENTQRCODE && resultCode == RESULT_OK) {
-            String url = data.getStringExtra("url");
-            String coinName = data.getStringExtra("coinName");
-            String count = data.getStringExtra("count");
-            Glide.with(this).load(url).into(mIvQr);
-            mTvCoinCount.setText(count + " " + coinName);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == MONEYOUT) {
+                mTvSet.setVisibility(View.GONE);
+                mXx.setVisibility(View.GONE);
+                mRlData.setVisibility(View.VISIBLE);
+                String url = data.getStringExtra("url");
+                String coinName = data.getStringExtra("coinName");
+                String remark = data.getStringExtra("remark");
+                String count = data.getStringExtra("count");
+                Glide.with(this).load(url).into(new SimpleTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                        if (resource != null) {
+                            mIvQr.setBackground(resource);
+                        }
+                    }
+                });
+                if (remark == null) {
+                    mTv3.setVisibility(View.GONE);
+                    mTvRemark.setVisibility(View.GONE);
+                } else {
+                    mTvRemark.setText(remark);
+                }
+                mTvCoin.setText(coinName);
+                mTvCount.setText(count);
+                mTvHint.setText("出示付款码，向对方付款");
+            } else if (requestCode == MONEYIN) {
+                mRlData.setVisibility(View.VISIBLE);
+                String coinId = data.getStringExtra("coinId");
+                String coinName = data.getStringExtra("coinName");
+                String count = data.getStringExtra("count");
+                String id = data.getStringExtra("id");
+                String remark = data.getStringExtra("remark");
+                mTvCount.setText(count);
+                mTvCoin.setText(coinName);
+                String base64PetToJson = UtilTool.base64PetToJson2(Constants.MONEYIN, "redID", id, "number", count, "coin_id", coinId, "coin_name", coinName, "mark", remark);
+                Bitmap bitmap = UtilTool.createQRImage(base64PetToJson);
+                mIvQr.setImageBitmap(bitmap);
+                if (remark == null) {
+                    mTv3.setVisibility(View.GONE);
+                    mTvRemark.setVisibility(View.GONE);
+                } else {
+                    mTvRemark.setText(remark);
+                }
+            }
         }
     }
 
@@ -156,8 +224,8 @@ public class ReceiptPaymentActivity extends BaseActivity {
                 mTvSelectorWay.setText(payment.getText());
                 mPopupWindow.dismiss();
                 Intent intent = new Intent(ReceiptPaymentActivity.this, PaymentActivity.class);
-                intent.putExtra("type", false);
-                startActivityForResult(intent, PAYMENTQRCODE);
+                intent.putExtra("type", Constants.MONEYOUT);
+                startActivityForResult(intent, MONEYOUT);
             }
         });
     }

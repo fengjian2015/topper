@@ -10,7 +10,7 @@ android {
 //        }
     }
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion '26.0.2'
     aaptOptions.cruncherEnabled = false
     aaptOptions.useNewCruncher = false
     lintOptions {
@@ -30,7 +30,7 @@ android {
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
-            abiFilters "armeabi-v7a", "x86","armeabi"
+            abiFilters "armeabi-v7a", "x86", "armeabi"
         }
         javaCompileOptions {
             annotationProcessorOptions {

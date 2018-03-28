@@ -106,7 +106,7 @@
                         android:layout_below="@+id/time"
                         android:layout_marginLeft="@dimen/x25"
                         android:layout_marginTop="@dimen/y20"
-                        android:text="文字文字文字文字文字文字"
+                        android:layout_marginBottom="@dimen/y20"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x28"/>
 

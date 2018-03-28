@@ -18,12 +18,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bclould.tocotalk.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
+import com.bclould.tocotalk.model.TransferListInfo;
 import com.bclould.tocotalk.ui.adapter.PayManageGVAdapter;
 import com.bclould.tocotalk.ui.adapter.PayRecordRVAdapter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -50,13 +54,19 @@ public class PayRecordActivity extends BaseActivity {
     RecyclerView mRecyclerView;
     private PayRecordRVAdapter mPayRecordRVAdapter;
     private Dialog mBottomDialog;
+    String mPage = "1";
+    String mPageSize = "1000";
+    String mType = "全部";
+    String mDate = "2018-03";
     private Map<String, Integer> mMap = new HashMap<>();
+    private ReceiptPaymentPresenter mReceiptPaymentPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_record);
         ButterKnife.bind(this);
+        mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);
         initRecycler();
         initMap();
         initData();
@@ -66,12 +76,22 @@ public class PayRecordActivity extends BaseActivity {
         mMap.put("筛选", 0);
     }
 
+    List<TransferListInfo.DataBean> mDataBeanList = new ArrayList<>();
+
     private void initData() {
+        mDataBeanList.clear();
+        mReceiptPaymentPresenter.transRecord(mPage, mPageSize, mType, mDate, new ReceiptPaymentPresenter.CallBack4() {
+            @Override
+            public void send(List<TransferListInfo.DataBean> data) {
+                mDataBeanList.addAll(data);
+                mPayRecordRVAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void initRecycler() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mPayRecordRVAdapter = new PayRecordRVAdapter(this);
+        mPayRecordRVAdapter = new PayRecordRVAdapter(this, mDataBeanList);
         mRecyclerView.setAdapter(mPayRecordRVAdapter);
     }
 
@@ -120,7 +140,9 @@ public class PayRecordActivity extends BaseActivity {
         gridView.setAdapter(new PayManageGVAdapter(this, mFiltrateArr, mMap, new PayManageGVAdapter.CallBack() {
             //接口回调
             @Override
-            public void send(int position) {
+            public void send(int position, String typeName) {
+                mType = typeName;
+                initData();
                 mMap.put("筛选", position);
                 mBottomDialog.dismiss();
             }

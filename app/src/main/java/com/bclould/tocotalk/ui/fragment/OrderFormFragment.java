@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.bclould.tocotalk.Presenter.BuySellPresenter;
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.OrderListInfo;
 import com.bclould.tocotalk.ui.adapter.OrderRVAdapter;
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -52,6 +53,7 @@ public class OrderFormFragment extends Fragment {
     private String mCoinName = "BTC";
     private List<OrderListInfo.DataBean> mDataList = new ArrayList<>();
     private OrderRVAdapter mOrderRVAdapter;
+    private DBManager mMgr;
 
     public static OrderFormFragment getInstance() {
 
@@ -69,20 +71,22 @@ public class OrderFormFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_buy, container, false);
         ButterKnife.bind(this, view);
+        mMgr = new DBManager(getContext());
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         initRecyclerView();
         initListener();
+        initData(mCoinName);
         return view;
     }
 
-    @Override
+    /*@Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             initData(mCoinName);
         }
-    }
+    }*/
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
@@ -105,7 +109,7 @@ public class OrderFormFragment extends Fragment {
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mOrderRVAdapter = new OrderRVAdapter(getActivity(), true, mDataList);
+        mOrderRVAdapter = new OrderRVAdapter(getActivity(), mDataList, mMgr);
         mRecyclerView.setAdapter(mOrderRVAdapter);
     }
 

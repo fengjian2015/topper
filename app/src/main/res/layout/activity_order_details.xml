@@ -133,7 +133,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="交易金额(CNY)"
+                android:text="交易金额"
                 android:textSize="@dimen/x26"/>
 
             <TextView
@@ -155,7 +155,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="交易数量(BTC)"
+                android:text="交易数量"
                 android:textSize="@dimen/x26"/>
 
             <TextView
@@ -178,7 +178,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="交易价格(CNY)"
+                android:text="交易价格"
                 android:textSize="@dimen/x26"/>
 
             <TextView

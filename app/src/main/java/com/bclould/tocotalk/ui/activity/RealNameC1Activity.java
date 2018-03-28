@@ -93,6 +93,9 @@ public class RealNameC1Activity extends BaseActivity {
                     mBtnAuth.setVisibility(View.GONE);
                     mTvAuthType.setText(message);
                     mLlPass.setVisibility(View.VISIBLE);
+                }else if (message.equals("未认证")) {
+                    mLlNoPass.setVisibility(View.VISIBLE);
+                    mLlPass.setVisibility(View.GONE);
                 }
             }
         });

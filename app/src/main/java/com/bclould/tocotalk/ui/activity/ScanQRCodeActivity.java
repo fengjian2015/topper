@@ -12,11 +12,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bclould.tocotalk.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.QrCardInfo;
-import com.bclould.tocotalk.model.QrRedInfo;
+import com.bclould.tocotalk.model.QrPaymentInfo;
+import com.bclould.tocotalk.model.QrReceiptInfo;
+import com.bclould.tocotalk.model.ReceiptInfo;
 import com.bclould.tocotalk.ui.fragment.CloudMessageFragment;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
@@ -51,6 +54,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
     ImageView mBark;
     private int mCode;
     private DBManager mMgr;
+    private ReceiptPaymentPresenter mReceiptPaymentPresenter;
 
 
     @Override
@@ -60,6 +64,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
         ButterKnife.bind(this);
         initView();
         mMgr = new DBManager(this);
+        mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);
         MyApp.getInstance().addActivity(this);
         Intent intent = getIntent();
         mCode = intent.getIntExtra("code", 0);
@@ -139,12 +144,51 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                         String jsonresult = Base64.decodeToString(base64);
                         UtilTool.Log("日志", jsonresult);
                         Gson gson = new Gson();
-                        QrRedInfo qrRedInfo = gson.fromJson(jsonresult, QrRedInfo.class);
-                        Intent intent = new Intent(this, PaymentActivity.class);
-                        intent.putExtra("userId", qrRedInfo.getRedID());
-                        intent.putExtra("type", true);
-                        startActivity(intent);
+                        QrReceiptInfo qrReceiptInfo = gson.fromJson(jsonresult, QrReceiptInfo.class);
+                        if (qrReceiptInfo.getCoin_id() == null && qrReceiptInfo.getCoin_name() == null && qrReceiptInfo.getNumber() == null) {
+                            Intent intent = new Intent(this, PaymentActivity.class);
+                            intent.putExtra("userId", qrReceiptInfo.getRedId() + "");
+                            intent.putExtra("type", Constants.MONEYIN);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(this, PaymentActivity.class);
+                            intent.putExtra("userId", qrReceiptInfo.getRedId() + "");
+                            intent.putExtra("coinId", qrReceiptInfo.getCoin_id());
+                            intent.putExtra("coinName", qrReceiptInfo.getCoin_name());
+                            intent.putExtra("number", qrReceiptInfo.getNumber());
+                            intent.putExtra("mark", qrReceiptInfo.getMark());
+                            intent.putExtra("type", Constants.DATAMONEYIN);
+                            startActivity(intent);
+                        }
                         finish();
+                    } catch (Exception e) {
+                        Toast.makeText(this, "扫描二维码失败", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                } else if (result.contains(Constants.MONEYOUT)) {
+                    try {
+                        String base64 = result.substring(Constants.MONEYOUT.length(), result.length());
+                        String jsonresult = Base64.decodeToString(base64);
+                        UtilTool.Log("日志", jsonresult);
+                        Gson gson = new Gson();
+                        QrPaymentInfo qrPaymentInfo = gson.fromJson(jsonresult, QrPaymentInfo.class);
+                        if (qrPaymentInfo.getStatus() == 1) {
+                            mReceiptPaymentPresenter.receipt(qrPaymentInfo.getData(), new ReceiptPaymentPresenter.CallBack5() {
+                                @Override
+                                public void send(ReceiptInfo.DataBean data) {
+                                    Intent intent = new Intent(ScanQRCodeActivity.this, PayReceiptResultActivity.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("coinName", data.getCoin_name());
+                                    bundle.putString("date", data.getDate());
+                                    bundle.putString("name", data.getName());
+                                    bundle.putString("number", data.getNumber());
+                                    bundle.putString("type", Constants.MONEYOUT);
+                                    intent.putExtras(bundle);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
+                        }
                     } catch (Exception e) {
                         Toast.makeText(this, "扫描二维码失败", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();

@@ -30,6 +30,7 @@ import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.model.ReviewListInfo;
 import com.bclould.tocotalk.ui.adapter.DynamicDetailRVAdapter;
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.jaeger.ninegridimageview.ItemImageClickListener;
@@ -40,6 +41,8 @@ import com.previewlibrary.enitity.ThumbViewInfo;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,12 +115,12 @@ public class DynamicDetailActivity extends BaseActivity {
     private ArrayList<String> mCompressImgList;
     private String mUserName;
     private String mTimes;
-    private String mLike;
     private String mContent;
     private DBManager mMgr;
     private DynamicPresenter mDynamicPresenter;
     private String mId;
     private DynamicDetailRVAdapter mDynamicDetailRVAdapter;
+    private ReviewListInfo.DataBean.InfoBean mInfo;
 
 
     @Override
@@ -145,17 +148,17 @@ public class DynamicDetailActivity extends BaseActivity {
 
     private void initData() {
         mDataList.clear();
-        mData.clear();
         mDynamicPresenter.reviewList(mId, new DynamicPresenter.CallBack3() {
             @Override
             public void send(ReviewListInfo.DataBean data) {
-                if(data.getInfo().getIs_like() == 1){
+                mInfo = data.getInfo();
+                if (data.getInfo().getIs_like() == 1) {
                     mLlZan.setSelected(true);
-                }else {
+                } else {
                     mLlZan.setSelected(false);
                 }
                 mDataList.addAll(data.getList());
-                mData.add(data);
+                mTvLikeCount.setText(data.getInfo().getLike_count() + "");
                 mDynamicDetailRVAdapter.notifyDataSetChanged();
             }
         });
@@ -163,25 +166,25 @@ public class DynamicDetailActivity extends BaseActivity {
 
     //    初始化界面
     private void initInterface() {
-        Intent intent = getIntent();
-        mImageList = intent.getStringArrayListExtra("imageList");//获取上个页面传递的数据
-        mCompressImgList = intent.getStringArrayListExtra("compressImgList");
-        mUserName = intent.getStringExtra("name");
-        mTimes = intent.getStringExtra("time");
-        mLike = intent.getStringExtra("like");
-        mContent = intent.getStringExtra("content");
-        mId = intent.getStringExtra("id");
+        Bundle bundle = getIntent().getExtras();
+        if (bundle.containsKey("imageList")) {
+            mImageList = bundle.getStringArrayList("imageList");//获取上个页面传递的数据
+            mCompressImgList = bundle.getStringArrayList("compressImgList");
+        }
+        mId = bundle.getString("id");
+        mUserName = bundle.getString("name");
+        mTimes = bundle.getString("time");
+        mContent = bundle.getString("content");
         mName.setText(mUserName);
         mTime.setText(mTimes);
         mDynamicText.setText(mContent);
-        mTvLikeCount.setText(mLike);
         try {
             Bitmap bitmap = BitmapFactory.decodeFile(mMgr.queryUser(mUserName + "@" + Constants.DOMAINNAME).get(0).getPath());
             mTouxiang.setImageBitmap(bitmap);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (mCompressImgList.size() != 0) {//判断是否有数据，没有显示另一个状态
+        if (mCompressImgList != null && mCompressImgList.size() != 0) {//判断是否有数据，没有显示另一个状态
             mNglImages.setAdapter(mAdapter);
             mNglImages.setImagesData(mCompressImgList);
             //九宫格图片填充数据
@@ -197,13 +200,14 @@ public class DynamicDetailActivity extends BaseActivity {
                 }
             });
 
+        } else {
+            mNglImages.setVisibility(View.GONE);
         }
         //初始化列表
         initRecyclerView();
     }
 
     List<ReviewListInfo.DataBean.ListBean> mDataList = new ArrayList<>();
-    List<ReviewListInfo.DataBean> mData = new ArrayList<>();
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -244,6 +248,11 @@ public class DynamicDetailActivity extends BaseActivity {
                 mDataList.add(0, data.get(0));
                 mDynamicDetailRVAdapter.notifyItemInserted(0);
                 mDynamicDetailRVAdapter.notifyItemRangeChanged(0, mDataList.size() - 0);
+                //发送消息通知
+                MessageEvent messageEvent = new MessageEvent("发表评论");
+                messageEvent.setReviewCount(mDataList.size() + "");
+                messageEvent.setId(mId);
+                EventBus.getDefault().post(messageEvent);
             }
         });
     }
@@ -258,6 +267,12 @@ public class DynamicDetailActivity extends BaseActivity {
                 } else {
                     mLlZan.setSelected(false);
                 }
+                //发送消息通知
+                MessageEvent messageEvent = new MessageEvent("点赞");
+                messageEvent.setLikeCount(data.getLikeCounts() + "");
+                messageEvent.setId(mId);
+                messageEvent.setType(data.getStatus() == 1 ? true : false);
+                EventBus.getDefault().post(messageEvent);
             }
         });
     }

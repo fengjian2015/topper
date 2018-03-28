@@ -1,6 +1,7 @@
 package com.bclould.tocotalk.ui.fragment;
 
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -9,11 +10,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.ui.widget.ZoomImageView;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.polites.android.GestureImageView;
 
 /**
  * Created by GA on 2018/3/7.
@@ -22,7 +23,7 @@ import com.polites.android.GestureImageView;
 public class ImageViewFragment extends Fragment {
     private String imageUrl;
     private ProgressBar loadBar;
-    private GestureImageView imageGiv;
+    private ZoomImageView imageGiv;
     private String mBigImgUrl;
     private TextView mArtworkMaster;
 
@@ -32,14 +33,15 @@ public class ImageViewFragment extends Fragment {
         View view = inflater.inflate(R.layout.layout_images_view_item, container,
                 false);
         init(view);
-        loadImage(imageUrl);
+//        loadImage(imageUrl);
         return view;
     }
 
     private void init(View mView) {
         loadBar = (ProgressBar) mView.findViewById(R.id.imageView_loading_pb);
-        imageGiv = (GestureImageView) mView.findViewById(R.id.imageView_item_giv);
+        imageGiv = (ZoomImageView) mView.findViewById(R.id.imageView_item_giv);
         mArtworkMaster = (TextView) mView.findViewById(R.id.tv_artwork_master);
+        imageGiv.setImageURI(Uri.parse(imageUrl));
         if (mBigImgUrl.isEmpty()) {
             mArtworkMaster.setVisibility(View.GONE);
         } else {
@@ -49,12 +51,13 @@ public class ImageViewFragment extends Fragment {
                 public void onClick(View view) {
                     UtilTool.Log("图片", mBigImgUrl);
                     loadBar.setVisibility(View.VISIBLE);
+                    loadBar.bringToFront();
                     Glide.with(ImageViewFragment.this).load(mBigImgUrl).into(new SimpleTarget<Drawable>() {
                         @Override
                         public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
                             if (resource != null) {
-                                UtilTool.Log("图片", "加载完成");
                                 imageGiv.setImageDrawable(resource);
+                                mArtworkMaster.setVisibility(View.GONE);
                                 loadBar.setVisibility(View.GONE);
                             }
                         }

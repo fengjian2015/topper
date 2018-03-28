@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,11 +31,14 @@ import com.bclould.tocotalk.Presenter.CoinPresenter;
 import com.bclould.tocotalk.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
+import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.CoinInfo;
+import com.bclould.tocotalk.model.ReceiptInfo;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
+import com.bclould.tocotalk.utils.Constants;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;
@@ -67,13 +71,25 @@ public class PaymentActivity extends BaseActivity {
     RelativeLayout mRlSelectorCoin;
     @Bind(R.id.tv_title)
     TextView mTvTitle;
+    @Bind(R.id.et_remark)
+    EditText mEtRemark;
+    @Bind(R.id.ll_no_steadfast)
+    LinearLayout mLlNoSteadfast;
+    @Bind(R.id.tv_coin2)
+    TextView mTvCoin2;
+    @Bind(R.id.tv_count)
+    TextView mTvCount;
+    @Bind(R.id.tv_remark)
+    TextView mTvRemark;
+    @Bind(R.id.ll_steadfast)
+    LinearLayout mLlSteadfast;
     private String mUserId;
     private ReceiptPaymentPresenter mReceiptPaymentPresenter;
     private Dialog mBottomDialog;
     private CoinPresenter mCoinPresenter;
     List<CoinInfo.DataBean> mDataBeanList = new ArrayList<>();
     private int mId;
-    private boolean mType;
+    private String mType;
     private String mCoinName;
     private ArrayList<Map<String, String>> valueList;
     private Animation mEnterAnim;
@@ -81,6 +97,10 @@ public class PaymentActivity extends BaseActivity {
     private Dialog mRedDialog;
     private GridView mGridView;
     private MNPasswordEditText mEtPassword;
+    private String mCoinId;
+    private String mCoinNames;
+    private String mNumber;
+    private String mMark;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,12 +123,26 @@ public class PaymentActivity extends BaseActivity {
     }
 
     private void initIntent() {
-        mType = getIntent().getBooleanExtra("type", false);
-        if (mType) {
+        mType = getIntent().getStringExtra("type");
+        if (mType.equals(Constants.MONEYIN)) {
             mUserId = getIntent().getStringExtra("userId");
-        } else {
-            mTvTitle.setText("收款");
+        } else if (mType.equals(Constants.MONEYOUT)) {
+            mTvTitle.setText("生成付款码");
             mBtnPayment.setText("确定");
+        } else if (mType.equals(Constants.QRMONEYIN)) {
+            mTvTitle.setText("生成收款码");
+            mBtnPayment.setText("确定");
+        } else {
+            mLlNoSteadfast.setVisibility(View.GONE);
+            mLlSteadfast.setVisibility(View.VISIBLE);
+            mUserId = getIntent().getStringExtra("userId");
+            mCoinId = getIntent().getStringExtra("coinId");
+            mCoinNames = getIntent().getStringExtra("coinName");
+            mNumber = getIntent().getStringExtra("number");
+            mMark = getIntent().getStringExtra("mark");
+            mTvCoin2.setText(mCoinNames);
+            mTvCount.setText(mNumber);
+            mTvRemark.setText(mMark);
         }
     }
 
@@ -119,8 +153,14 @@ public class PaymentActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_payment:
-                if (checkEidt()) {
+                if (mType.equals(Constants.DATAMONEYIN)) {
                     showPWDialog();
+                } else if (checkEidt()) {
+                    if (mType.equals(Constants.MONEYIN) || mType.equals(Constants.MONEYOUT)) {
+                        showPWDialog();
+                    } else {
+                        createReceiptQrCode();
+                    }
                 }
                 break;
             case R.id.rl_selector_coin:
@@ -182,10 +222,14 @@ public class PaymentActivity extends BaseActivity {
             }
         });
         valueList = virtualKeyboardView.getValueList();
-        if (mType) {
+        if (mType.equals(Constants.MONEYIN)) {
             coin.setText("扫码支付");
+        } else if (mType.equals(Constants.MONEYOUT)) {
+            coin.setText("生成付款码");
+        } else if (mType.equals(Constants.QRMONEYIN)) {
+            coin.setText("生成收款码");
         } else {
-            coin.setText("扫码收款");
+            coin.setText("扫码支付");
         }
         String count = mEtCount.getText().toString();
         String coinName = mTvCoin.getText().toString();
@@ -215,12 +259,51 @@ public class PaymentActivity extends BaseActivity {
                 if (password.length() == 6) {
                     mRedDialog.dismiss();
                     mEtPassword.setText("");
-                    if (mType) {
+                    if (mType.equals(Constants.MONEYIN)) {
                         payment(password);
-                    } else {
+                    } else if (mType.equals(Constants.MONEYOUT)) {
                         createQrCode(password);
+                    } else if (mType.equals(Constants.DATAMONEYIN)) {
+                        payment2(password);
                     }
                 }
+            }
+        });
+    }
+
+    private void payment2(String password) {
+        mReceiptPaymentPresenter.payment(mUserId, mNumber, Integer.parseInt(mCoinId), password, new ReceiptPaymentPresenter.CallBack2() {
+            @Override
+            public void send(ReceiptInfo.DataBean data) {
+                Intent intent = new Intent(PaymentActivity.this, PayReceiptResultActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("coinName", data.getCoin_name());
+                bundle.putString("date", data.getDate());
+                bundle.putString("name", data.getName());
+                bundle.putString("number", data.getNumber());
+                bundle.putString("type", Constants.MONEYIN);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                Toast.makeText(PaymentActivity.this, "付款成功", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+    }
+
+    private void createReceiptQrCode() {
+        String count = mEtCount.getText().toString();
+        String remark = mEtRemark.getText().toString();
+        mReceiptPaymentPresenter.generateReceiptQrCode(mId + "", count, remark, new ReceiptPaymentPresenter.CallBack() {
+            @Override
+            public void send(BaseInfo.DataBean data) {
+                Intent intent = new Intent(PaymentActivity.this, ReceiptPaymentActivity.class);
+                intent.putExtra("coinId", data.getCoin_id());
+                intent.putExtra("coinName", data.getCoin_name());
+                intent.putExtra("count", data.getNumber());
+                intent.putExtra("id", data.getId() + "");
+                intent.putExtra("remark", data.getRemark());
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
     }
@@ -289,12 +372,14 @@ public class PaymentActivity extends BaseActivity {
 
     private void createQrCode(String password) {
         final String count = mEtCount.getText().toString();
+        final String remark = mEtRemark.getText().toString();
         mReceiptPaymentPresenter.generatePaymentQrCode(count, mId, password, new ReceiptPaymentPresenter.CallBack3() {
             @Override
             public void send(String url) {
                 Intent intent = new Intent(PaymentActivity.this, ReceiptPaymentActivity.class);
                 intent.putExtra("url", url);
                 intent.putExtra("coinName", mCoinName);
+                intent.putExtra("remark", remark);
                 intent.putExtra("count", count);
                 setResult(RESULT_OK, intent);
                 finish();
@@ -357,7 +442,16 @@ public class PaymentActivity extends BaseActivity {
         String count = mEtCount.getText().toString();
         mReceiptPaymentPresenter.payment(mUserId, count, mId, password, new ReceiptPaymentPresenter.CallBack2() {
             @Override
-            public void send() {
+            public void send(ReceiptInfo.DataBean data) {
+                Intent intent = new Intent(PaymentActivity.this, PayReceiptResultActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("coinName", data.getCoin_name());
+                bundle.putString("date", data.getDate());
+                bundle.putString("name", data.getName());
+                bundle.putString("number", data.getNumber());
+                bundle.putString("type", Constants.MONEYIN);
+                intent.putExtras(bundle);
+                startActivity(intent);
                 Toast.makeText(PaymentActivity.this, "付款成功", Toast.LENGTH_SHORT).show();
                 finish();
             }

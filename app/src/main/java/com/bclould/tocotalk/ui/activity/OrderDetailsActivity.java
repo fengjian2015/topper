@@ -1,8 +1,10 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,6 +25,7 @@ import butterknife.OnClick;
  * Created by GA on 2018/1/19.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class OrderDetailsActivity extends BaseActivity {
     @Bind(R.id.bark)
     ImageView mBark;
@@ -108,11 +111,23 @@ public class OrderDetailsActivity extends BaseActivity {
         Intent intent = getIntent();
         mData = (OrderInfo.DataBean) intent.getSerializableExtra("data");
         String type = intent.getStringExtra("type");
-        if(type.equals("买")){
-
-        }else {
-
+        if (type.equals("买")) {
+            mTvTitle.setText("购买" + mData.getCoin_name());
+            mLlBuyer.setVisibility(View.VISIBLE);
+            mLlSeller.setVisibility(View.GONE);
+            mTvBuysell.setText("卖家:" + mData.getTo_user_name());
+            mTvBuysell2.setText("买家:" + mData.getUser_name());
+        } else {
+            mLlBuyer.setVisibility(View.GONE);
+            mLlSeller.setVisibility(View.VISIBLE);
+            mTvTitle.setText("售出" + mData.getCoin_name());
+            mTvBuysell.setText("买家:" + mData.getUser_name());
+            mTvBuysell2.setText("卖家:" + mData.getTo_user_name());
         }
+        mTvCount.setText(mData.getNumber());
+        mTvMoney.setText(mData.getTrans_amount());
+        mTvPrice.setText(mData.getPrice());
+        mTvOrderNumber.setText("订单号:" + mData.getOrder_no());
     }
 
     @OnClick({R.id.bark, R.id.tv_help, R.id.btn_cancel_order2, R.id.btn_confirm_send_coin, R.id.btn_cancel_order, R.id.btn_confirm_pay})

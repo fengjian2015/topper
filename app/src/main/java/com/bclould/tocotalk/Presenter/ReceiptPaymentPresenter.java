@@ -10,12 +10,16 @@ import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.BaseInfo;
+import com.bclould.tocotalk.model.ReceiptInfo;
+import com.bclould.tocotalk.model.TransferListInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.activity.PayPasswordActivity;
 import com.bclould.tocotalk.ui.activity.PaymentActivity;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.UtilTool;
+
+import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -53,11 +57,11 @@ public class ReceiptPaymentPresenter {
     }
 
 
-    public void generateReceiptQrCode(final CallBack callBack) {
+    public void generateReceiptQrCode(String coinId, String count, String remark, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .generateReceiptQrCode(UtilTool.getToken())
+                    .generateReceiptQrCode(UtilTool.getToken(), coinId, count, remark)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<BaseInfo>() {
@@ -69,7 +73,7 @@ public class ReceiptPaymentPresenter {
                         @Override
                         public void onNext(BaseInfo baseInfo) {
                             if (baseInfo.getStatus() == 1) {
-                                callBack.send(baseInfo.getData().getId());
+                                callBack.send(baseInfo.getData());
                             }
                         }
 
@@ -90,29 +94,30 @@ public class ReceiptPaymentPresenter {
     }
 
     public void payment(String userId, String count, int id, String password, final CallBack2 callBack2) {
+        UtilTool.Log("日志", userId + "," + id);
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .payment(UtilTool.getToken(), userId, count, id + "", password)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
+                    .subscribe(new Observer<ReceiptInfo>() {
                         @Override
                         public void onSubscribe(Disposable d) {
 
                         }
 
                         @Override
-                        public void onNext(BaseInfo baseInfo) {
-                            if (baseInfo.getMessage().equals("尚未设置交易密码")) {
+                        public void onNext(ReceiptInfo receiptInfo) {
+                            if (receiptInfo.getMessage().equals("尚未设置交易密码")) {
                                 showSetPwDialog();
-                            } else if (baseInfo.getMessage().equals("交易密码不正确")) {
+                            } else if (receiptInfo.getMessage().equals("交易密码不正确")) {
                                 PaymentActivity activity = (PaymentActivity) mContext;
                                 activity.showHintDialog();
-                            } else if (baseInfo.getStatus() == 1) {
-                                callBack2.send();
+                            } else if (receiptInfo.getStatus() == 1) {
+                                callBack2.send(receiptInfo.getData());
                             }
-                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, receiptInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -194,18 +199,103 @@ public class ReceiptPaymentPresenter {
         }
     }
 
+    public void transRecord(String page, String pageSize, String type, String date, final CallBack4 callBack4) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .getTransRecord(UtilTool.getToken(), page, pageSize, type, date)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<TransferListInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(TransferListInfo transferListInfo) {
+                            if (transferListInfo.getStatus() == 1) {
+                                callBack4.send(transferListInfo.getData());
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            hideDialog();
+                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void receipt(String data, final CallBack5 callBack5) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .receipt(UtilTool.getToken(), data)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<ReceiptInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(ReceiptInfo receiptInfo) {
+                            if (receiptInfo.getStatus() == 1) {
+                                callBack5.send(receiptInfo.getData());
+                            } else {
+                                Toast.makeText(mContext, receiptInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            hideDialog();
+                            UtilTool.Log("错误", e.getMessage());
+                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     //定义接口
     public interface CallBack {
-        void send(int id);
+        void send(BaseInfo.DataBean data);
     }
 
     //定义接口
     public interface CallBack2 {
-        void send();
+        void send(ReceiptInfo.DataBean data);
     }
 
     //定义接口
     public interface CallBack3 {
         void send(String url);
+    }
+
+    //定义接口
+    public interface CallBack4 {
+        void send(List<TransferListInfo.DataBean> data);
+    }
+
+    //定义接口
+    public interface CallBack5 {
+        void send(ReceiptInfo.DataBean data);
     }
 }

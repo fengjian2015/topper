@@ -32,71 +32,175 @@
     <TextView
         style="@style/HCutOffRule"/>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
+    <LinearLayout
+        android:id="@+id/ll_no_steadfast"
+        android:visibility="visible"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:id="@+id/rl_selector_coin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y30"
+            app:cardCornerRadius="@dimen/x15">
 
-            <TextView
-                android:id="@+id/tv_coin"
+            <RelativeLayout
+                android:id="@+id/rl_selector_coin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_coin"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:hint="请选择币种"
+                    android:paddingLeft="@dimen/x20"
+                    android:paddingRight="@dimen/x20"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x30"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x20"
+                    android:src="@mipmap/icon_little_m"/>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y30"
+            app:cardCornerRadius="@dimen/x15">
+
+            <EditText
+                android:id="@+id/et_count"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:gravity="center_vertical"
-                android:hint="请选择币种"
+                android:hint="请输入数量"
+                android:inputType="numberDecimal"
                 android:paddingLeft="@dimen/x20"
                 android:paddingRight="@dimen/x20"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x20"
-                android:src="@mipmap/icon_little_m"/>
+        </android.support.v7.widget.CardView>
 
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
-
-        <EditText
-            android:id="@+id/et_count"
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:hint="请输入数量"
-            android:inputType="numberDecimal"
-            android:paddingLeft="@dimen/x20"
-            android:paddingRight="@dimen/x20"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
+            android:layout_height="@dimen/y120"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginBottom="@dimen/y60"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y30"
+            app:cardCornerRadius="@dimen/x15">
 
-    </android.support.v7.widget.CardView>
+            <EditText
+                android:id="@+id/et_remark"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:hint="请输入备注"
+                android:paddingLeft="@dimen/x20"
+                android:paddingRight="@dimen/x20"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_steadfast"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y30"
+            app:cardCornerRadius="@dimen/x15">
+
+                <TextView
+                    android:id="@+id/tv_coin2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
+                    android:hint="请选择币种"
+                    android:paddingLeft="@dimen/x20"
+                    android:paddingRight="@dimen/x20"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x30"/>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y30"
+            app:cardCornerRadius="@dimen/x15">
+
+            <TextView
+                android:id="@+id/tv_count"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="请输入数量"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/x20"
+                android:paddingRight="@dimen/x20"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginBottom="@dimen/y60"
+            android:layout_marginTop="@dimen/y30"
+            app:cardCornerRadius="@dimen/x15">
+
+            <TextView
+                android:id="@+id/tv_remark"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="请输入备注"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/x20"
+                android:paddingRight="@dimen/x20"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn_payment"
         android:layout_width="@dimen/x450"
         android:layout_height="@dimen/y80"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y60"
         android:background="@drawable/btn_blue_selector"
         android:text="付款"
         android:textColor="@color/white"/>

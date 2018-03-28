@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FEFCF7"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y80"
+        android:src="@mipmap/we_chat"/>
+
+    <TextView
+        android:id="@+id/tv_pay_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y30"
+        android:text="支付成功"
+        android:textColor="@color/green"
+        android:textSize="@dimen/x32"/>
+
+    <TextView
+        android:id="@+id/tv_coin_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y30"
+        android:text="0.1TPC"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x50"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tv_who"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y50"
+        android:text="收款人"
+        android:textSize="@dimen/x28"/>
+
+    <ImageView
+        android:id="@+id/tv_touxiang"
+        android:layout_width="@dimen/x100"
+        android:layout_height="@dimen/x100"
+        android:layout_marginTop="@dimen/y30"
+        android:src="@mipmap/img_nfriend_headshot1"/>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y30"
+        android:text="安子"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x32"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/btn_finish"
+        android:layout_width="@dimen/x300"
+        android:layout_height="@dimen/y80"
+        android:layout_marginTop="@dimen/y100"
+        android:background="@drawable/bg_blue_border"
+        android:text="完成"
+        android:textColor="@color/blue2"/>
+
+</LinearLayout>

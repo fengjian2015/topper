@@ -976,6 +976,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                     break;
                 case 2:
                     //文件上传成功发送消息
+                    selectList.clear();
                     Bundle bundle2 = (Bundle) msg.obj;
                     String key2 = bundle2.getString("key");
                     String postfix2 = bundle2.getString("postfix");

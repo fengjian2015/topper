@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.Presenter.BankCardPresenter;
+import com.bclould.tocotalk.Presenter.RealNamePresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
@@ -45,6 +46,27 @@ public class BankCardBindingActivity extends BaseActivity {
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
         mBankCardPresenter = new BankCardPresenter(this);
+        initData();
+    }
+
+    private void initData() {
+        RealNamePresenter realNamePresenter = new RealNamePresenter(this);
+        realNamePresenter.realNameInfo(new RealNamePresenter.CallBack() {
+            @Override
+            public void send(String message) {
+                if (message.equals("未认证")) {
+                    showDialog();
+                    mBtnNext.setClickable(false);
+                } else if (message.equals("认证失败")) {
+                    showDialog();
+                    mBtnNext.setClickable(false);
+                    Toast.makeText(BankCardBindingActivity.this, "实名认证失败，请重新认证", Toast.LENGTH_SHORT).show();
+                } else if (message.equals("待审核")) {
+                    mBtnNext.setClickable(false);
+                    Toast.makeText(BankCardBindingActivity.this, "实名认证审核中", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 
@@ -94,6 +116,7 @@ public class BankCardBindingActivity extends BaseActivity {
     private void showDialog() {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
         deleteCacheDialog.show();
+        deleteCacheDialog.setCanceledOnTouchOutside(false);
         deleteCacheDialog.setTitle("您还没有实名认证，请先去实名认证");
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {

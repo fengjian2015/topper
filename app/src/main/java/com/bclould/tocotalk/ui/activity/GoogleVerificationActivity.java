@@ -20,6 +20,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.GoogleInfo;
+import com.bclould.tocotalk.ui.widget.CurrencyDialog;
 import com.bclould.tocotalk.utils.AnimatorTool;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
@@ -60,6 +61,7 @@ public class GoogleVerificationActivity extends BaseActivity {
     @Bind(R.id.ll_unbinding)
     LinearLayout mLlUnbinding;
     private GoogleVerificationPresenter mGoogleVerificationPresenter;
+    private CurrencyDialog mCurrencyDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,7 +90,7 @@ public class GoogleVerificationActivity extends BaseActivity {
             case R.id.tv_download:
                 break;
             case R.id.btn_unbinding:
-                unBinding();
+                showGoogleDialog();
                 break;
             case R.id.btn_copy:
                 copySecretKey();
@@ -100,8 +102,36 @@ public class GoogleVerificationActivity extends BaseActivity {
         }
     }
 
+    private void showGoogleDialog() {
+        mCurrencyDialog = new CurrencyDialog(R.layout.dialog_google_code, this, R.style.dialog);
+        mCurrencyDialog.show();
+        Button confirm = (Button) mCurrencyDialog.findViewById(R.id.btn_confirm);
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                unBinding();
+            }
+        });
+    }
+
     private void unBinding() {
-        mGoogleVerificationPresenter.unBinding();
+        EditText editText = (EditText) mCurrencyDialog.findViewById(R.id.et_google_code);
+        String googleCode = editText.getText().toString();
+        if (!googleCode.isEmpty()) {
+            mGoogleVerificationPresenter.unBinding(googleCode, new GoogleVerificationPresenter.CallBack() {
+                @Override
+                public void send() {
+                    mCurrencyDialog.dismiss();
+                    mLlBinding.setVisibility(View.VISIBLE);
+                    mLlUnbinding.setVisibility(View.GONE);
+                    getGoogleKey();
+                }
+            });
+        } else {
+            AnimatorTool.getInstance().editTextAnimator(editText);
+            Toast.makeText(this, getString(R.string.toast_google_code), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     //绑定谷歌验证器

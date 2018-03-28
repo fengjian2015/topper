@@ -102,7 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/x20"
-                    android:drawableLeft="@mipmap/icon_news_good"
+                    android:drawableLeft="@drawable/zan_selector"
                     android:drawablePadding="@dimen/x10"
                     android:gravity="center"
                     android:text="0"

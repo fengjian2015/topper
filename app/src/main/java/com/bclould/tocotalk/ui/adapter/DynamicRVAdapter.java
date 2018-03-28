@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -173,6 +174,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         TextView mTvPinglun;
         @Bind(R.id.tv_zan)
         TextView mTvZan;
+        private DynamicListInfo.DataBean mDataBean;
 
         TextHolder(View view) {
             super(view);
@@ -180,12 +182,21 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mContext.startActivity(new Intent(mContext, DynamicDetailActivity.class));
+                    Intent intent = new Intent();
+                    Bundle bundle = new Bundle();
+                    intent.setClass(mContext, DynamicDetailActivity.class);
+                    bundle.putString("id", mDataBean.getId() + "");
+                    bundle.putString("content", mDataBean.getContent());
+                    bundle.putString("name", mDataBean.getUser_name());
+                    bundle.putString("time", mDataBean.getCreated_at());
+                    intent.putExtras(bundle);
+                    mContext.startActivity(intent);
                 }
             });
         }
 
-        public void setData(DynamicListInfo.DataBean dataBean) {
+        public void setData(final DynamicListInfo.DataBean dataBean) {
+            mDataBean = dataBean;
             try {
                 mTouxiang.setImageBitmap(getImage(dataBean.getUser_name()));
             } catch (Exception e) {
@@ -196,6 +207,27 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             mTextContent.setText(dataBean.getContent());
             mTvPinglun.setText(dataBean.getReview_count() + "");
             mTvZan.setText(dataBean.getLike_count() + "");
+            if (dataBean.getIs_like() == 1) {
+                mTvZan.setSelected(true);
+            } else {
+                mTvZan.setSelected(false);
+            }
+            mTvZan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mDynamicPresenter.like(dataBean.getId() + "", new DynamicPresenter.CallBack4() {
+                        @Override
+                        public void send(LikeInfo data) {
+                            mTvZan.setText(data.getLikeCounts() + "");
+                            if (data.getStatus() == 1) {
+                                mTvZan.setSelected(true);
+                            } else {
+                                mTvZan.setSelected(false);
+                            }
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -285,13 +317,14 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent();
                     intent.setClass(mContext, DynamicDetailActivity.class);
-                    intent.putStringArrayListExtra("compressImgList", mCompressImgList);
-                    intent.putStringArrayListExtra("imageList", mImgList);
-                    intent.putExtra("content", mDataBean.getContent());
-                    intent.putExtra("like", mDataBean.getLike_count() + "");
-                    intent.putExtra("name", mDataBean.getUser_name());
-                    intent.putExtra("time", mDataBean.getCreated_at());
-                    intent.putExtra("id", mDataBean.getId() + "");
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArrayList("compressImgList", mCompressImgList);
+                    bundle.putStringArrayList("imageList", mImgList);
+                    bundle.putString("id", mDataBean.getId() + "");
+                    bundle.putString("content", mDataBean.getContent());
+                    bundle.putString("name", mDataBean.getUser_name());
+                    bundle.putString("time", mDataBean.getCreated_at());
+                    intent.putExtras(bundle);
                     mContext.startActivity(intent);
                 }
             });

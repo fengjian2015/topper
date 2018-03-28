@@ -79,7 +79,9 @@ public class BuyFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        mCoinName = event.getCoinName();
+        if (event.getCoinName() != null) {
+            mCoinName = event.getCoinName();
+        }
         if (msg.equals("幣種切換")) {
             initData(mCoinName);
         } else if (msg.equals("发布交易")) {

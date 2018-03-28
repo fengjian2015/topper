@@ -525,6 +525,24 @@ public class UtilTool {
         return prefix + str;
     }
 
+    public static String base64PetToJson2(String prefix, String key, String value, String key2, String value2, String key3, String value3,String key4, String value4, String key5, String value5) {
+        String jsonresult = "";//定义返回字符串
+        JSONObject object = new JSONObject();//创建一个总的对象，这个对象对整个json串
+        try {
+            object.put(key, value);
+            object.put(key2, value2);
+            object.put(key3, value3);
+            object.put(key4, value4);
+            object.put(key5, value5);
+            jsonresult = object.toString();//生成返回字符串
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String str = Base64.encodeToString(jsonresult.getBytes(), Base64.DEFAULT);
+        return prefix + str;
+    }
+
+
     public static Bitmap getMyImage(DBManager mgr, String myUser) {
         List<UserInfo> info = mgr.queryUser(myUser);
         if (info.size() != 0)

@@ -1,6 +1,8 @@
 package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.model.TransferListInfo;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -17,12 +22,15 @@ import butterknife.ButterKnife;
  * Created by GA on 2018/3/20.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class PayRecordRVAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;
+    private final List<TransferListInfo.DataBean> mDataBeanList;
 
-    public PayRecordRVAdapter(Context context) {
+    public PayRecordRVAdapter(Context context, List<TransferListInfo.DataBean> dataBeanList) {
         mContext = context;
+        mDataBeanList = dataBeanList;
     }
 
     @Override
@@ -33,15 +41,19 @@ public class PayRecordRVAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        ViewHolder viewHolder = (ViewHolder) holder;
+        viewHolder.setData(mDataBeanList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 20;
+        if (mDataBeanList.size() != 0) {
+            return mDataBeanList.size();
+        }
+        return 0;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_photo)
         ImageView mIvPhoto;
         @Bind(R.id.tv_name)
@@ -52,10 +64,25 @@ public class PayRecordRVAdapter extends RecyclerView.Adapter {
         TextView mTvMoney;
         @Bind(R.id.tv_time)
         TextView mTvTime;
+        private TransferListInfo.DataBean mDataBean;
 
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+        }
+
+        public void setData(TransferListInfo.DataBean dataBean) {
+            mDataBean = dataBean;
+            mTvName.setText(dataBean.getType());
+            mTvType.setText(dataBean.getType_desc());
+            mTvTime.setText(dataBean.getCreated_at());
+            if (dataBean.getNumber().contains("-")) {
+                mTvMoney.setText(dataBean.getNumber() + " " + dataBean.getCoin_name());
+                mTvMoney.setTextColor(mContext.getColor(R.color.green));
+            } else {
+                mTvMoney.setText("+" + dataBean.getNumber() + " " + dataBean.getCoin_name());
+                mTvMoney.setTextColor(mContext.getColor(R.color.red));
+            }
         }
     }
 }

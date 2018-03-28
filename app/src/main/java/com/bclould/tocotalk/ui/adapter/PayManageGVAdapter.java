@@ -68,7 +68,7 @@ public class PayManageGVAdapter extends BaseAdapter {
 
     //定义接口
     public interface CallBack {
-        void send(int position);
+        void send(int position, String typeName);
     }
 
     class ViewHolder {
@@ -90,7 +90,7 @@ public class PayManageGVAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View view) {
                     mTextview.setSelected(true);
-                    mCallBack.send(i);
+                    mCallBack.send(i, mTextview.getText().toString());
                 }
             });
         }

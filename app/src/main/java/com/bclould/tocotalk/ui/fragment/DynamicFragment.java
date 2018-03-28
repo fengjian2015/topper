@@ -17,9 +17,14 @@ import com.bclould.tocotalk.model.DynamicListInfo;
 import com.bclould.tocotalk.model.PostInfo;
 import com.bclould.tocotalk.ui.adapter.DynamicRVAdapter;
 import com.bclould.tocotalk.utils.FullyLinearLayoutManager;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,15 +72,46 @@ public class DynamicFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_dynamic_state, container, false);
-
         ButterKnife.bind(this, view);
         mDynamicPresenter = new DynamicPresenter(getContext());
         mMgr = new DBManager(getContext());
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         initRecyclerView();
         initData(mPage, mPageSize);
         return view;
+    }
+
+    //接受通知
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals("发表评论")) {
+            String id = event.getId();
+            for (DynamicListInfo.DataBean info : mDataList) {
+                if ((info.getId() + "").equals(id)) {
+                    info.setReview_count(Integer.parseInt(event.getReviewCount()));
+                }
+            }
+            mDynamicRVAdapter.notifyDataSetChanged();
+        } else if (msg.equals("点赞")) {
+            String id = event.getId();
+            for (DynamicListInfo.DataBean info : mDataList) {
+                if ((info.getId() + "").equals(id)) {
+                    info.setLike_count(Integer.parseInt(event.getLikeCount()));
+                    if (event.isType()) {
+                        info.setIs_like(1);
+                    } else {
+                        info.setIs_like(0);
+                    }
+                }
+            }
+            mDynamicRVAdapter.notifyDataSetChanged();
+        } else if (msg.equals("发表动态")) {
+            initData(mPage, mPageSize);
+        }
+
     }
 
     List<DynamicListInfo.DataBean> mDataList = new ArrayList<>();
@@ -121,6 +157,6 @@ public class DynamicFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-
+        EventBus.getDefault().unregister(this);
     }
 }

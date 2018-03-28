@@ -1,7 +1,9 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -23,6 +25,7 @@ import butterknife.OnClick;
  * Created by GA on 2017/10/13.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class CommentActivity extends BaseActivity {
 
     @Bind(R.id.bark)

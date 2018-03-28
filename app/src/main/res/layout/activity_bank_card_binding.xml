@@ -68,8 +68,8 @@
                 android:layout_marginLeft="@dimen/x50"
                 android:background="@color/transparent"
                 android:hint="请输入正确卡号"
-                android:inputType="textPersonName"
-                android:maxLength="20"
+                android:inputType="number"
+                android:maxLength="25"
                 android:textColorHint="@color/gray"
                 android:textCursorDrawable="@null"
                 android:textSize="@dimen/x25"/>

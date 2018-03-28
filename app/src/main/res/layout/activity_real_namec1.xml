@@ -78,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -201,6 +201,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="@dimen/x30"
                         android:layout_toRightOf="@+id/tv"
+                        android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:background="@color/transparent"
                         android:gravity="right|center"
                         android:hint="请填写完整身份证号码"

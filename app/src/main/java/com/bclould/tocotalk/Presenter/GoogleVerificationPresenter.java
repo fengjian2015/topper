@@ -122,12 +122,12 @@ public class GoogleVerificationPresenter {
         }
     }
 
-    public void unBinding() {
+    public void unBinding(String googleCode, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mGoogleVerificationActivity)) {
             showDialog();
             RetrofitUtil.getInstance(mGoogleVerificationActivity)
                     .getServer()
-                    .unBindGoogle(UtilTool.getToken())
+                    .unBindGoogle(UtilTool.getToken(), googleCode)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<BaseInfo>() {
@@ -138,7 +138,7 @@ public class GoogleVerificationPresenter {
                         @Override
                         public void onNext(@NonNull BaseInfo baseInfo) {
                             if (baseInfo.getStatus() == 1)
-                                mGoogleVerificationActivity.finish();
+                                callBack.send();
                             hideDialog();
                             Toast.makeText(mGoogleVerificationActivity, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -157,5 +157,10 @@ public class GoogleVerificationPresenter {
         } else {
             Toast.makeText(mGoogleVerificationActivity, mGoogleVerificationActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    //定义接口
+    public interface CallBack {
+        void send();
     }
 }

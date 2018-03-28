@@ -46,11 +46,12 @@
         style="@style/HCutOffRule"/>
 
     <TextView
+        android:id="@+id/tv_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/y40"
-        android:layout_marginTop="@dimen/y40"
+        android:layout_marginBottom="@dimen/y30"
+        android:layout_marginTop="@dimen/y30"
         android:text="扫二维码向我付款"
         android:textColor="#60798E"
         android:textSize="@dimen/x28"/>
@@ -64,24 +65,101 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/y60"
-            android:layout_marginTop="@dimen/y60">
+            android:paddingLeft="@dimen/x50"
+            android:paddingRight="@dimen/x50"
+            android:paddingTop="@dimen/y30">
 
-            <TextView
-                android:id="@+id/tv_coin_count"
+            <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/rl_data"
+                android:layout_marginBottom="@dimen/y20"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/y30"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x32"/>
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="币种:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x28"/>
+
+                <TextView
+                    android:id="@+id/tv_coin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="TPC"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x30"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_coin"
+                    android:layout_marginTop="@dimen/y5"
+                    android:text="数量:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x28"/>
+
+                <TextView
+                    android:id="@+id/tv_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/tv_coin"
+                    android:layout_marginTop="@dimen/y5"
+                    android:text="100.00"
+                    android:textColor="@color/blue2"
+                    android:textSize="@dimen/x30"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_count"
+                    android:layout_marginTop="@dimen/y5"
+                    android:text="备注:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x28"/>
+
+                <TextView
+                    android:id="@+id/tv_remark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/tv_count"
+                    android:layout_marginTop="@dimen/y5"
+                    android:text="飞机撒开了"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x28"/>
+
+            </RelativeLayout>
 
             <ImageView
-                android:layout_below="@+id/tv_coin_count"
                 android:id="@+id/iv_qr"
-                android:layout_width="@dimen/x500"
-                android:layout_height="@dimen/x500"
-                android:layout_centerHorizontal="true"/>
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x550"
+                android:layout_below="@+id/rl_data"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/y20"/>
+
+            <TextView
+                android:id="@+id/xx"
+                style="@style/HCutOffRule"
+                android:layout_below="@+id/iv_qr"/>
+
+            <TextView
+                android:id="@+id/tv_set"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y120"
+                android:layout_below="@+id/xx"
+                android:textSize="@dimen/x32"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:text="设置金额和币种"/>
 
         </RelativeLayout>
 

@@ -13,6 +13,42 @@ public class MessageEvent {
 
     private String mMsg;
     private String coinName;
+    private String reviewCount;
+    private String id;
+    private String likeCount;
+    private boolean type;
+
+    public boolean isType() {
+        return type;
+    }
+
+    public void setType(boolean type) {
+        this.type = type;
+    }
+
+    public String getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(String likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(String reviewCount) {
+        this.reviewCount = reviewCount;
+    }
 
     public String getMsg() {
         return mMsg;

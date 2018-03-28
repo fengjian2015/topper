@@ -7,7 +7,7 @@ import java.util.List;
  * Created by GA on 2018/1/19.
  */
 
-public class DealListInfo implements Serializable{
+public class DealListInfo implements Serializable {
 
 
     /**
@@ -44,7 +44,7 @@ public class DealListInfo implements Serializable{
         this.data = data;
     }
 
-    public static class DataBean implements Serializable{
+    public static class DataBean implements Serializable {
         /**
          * id : 2
          * user_id : 34
@@ -81,7 +81,7 @@ public class DealListInfo implements Serializable{
         private int max_amount;
         private String remark;
         private int status;
-        private int created_at;
+        private String created_at;
         private int count_trans_number;
         private String username;
 
@@ -205,11 +205,11 @@ public class DealListInfo implements Serializable{
             this.status = status;
         }
 
-        public int getCreated_at() {
+        public String getCreated_at() {
             return created_at;
         }
 
-        public void setCreated_at(int created_at) {
+        public void setCreated_at(String created_at) {
             this.created_at = created_at;
         }
 

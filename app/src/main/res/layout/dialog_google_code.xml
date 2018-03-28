@@ -37,6 +37,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/y60"
         android:layout_marginTop="@dimen/y60"
+        android:layout_marginLeft="@dimen/x50"
+        android:layout_marginRight="@dimen/x50"
         android:background="@drawable/btn_blue_selector"
         android:text="@string/confirm"
         android:textAllCaps="false"

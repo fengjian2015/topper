@@ -18,9 +18,11 @@ import com.bclould.tocotalk.model.MyAssetsInfo;
 import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.model.OrderListInfo;
 import com.bclould.tocotalk.model.OutCoinSiteInfo;
+import com.bclould.tocotalk.model.ReceiptInfo;
 import com.bclould.tocotalk.model.RedRecordInfo;
 import com.bclould.tocotalk.model.ReviewListInfo;
 import com.bclould.tocotalk.model.TransferInfo;
+import com.bclould.tocotalk.model.TransferListInfo;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -224,8 +226,10 @@ public interface MyService {
 
     //解除绑定谷歌验证
     @POST("security/unBindGoogleAuthenticator")
+    @FormUrlEncoded
     Observable<BaseInfo> unBindGoogle(
-            @Header("Authorization") String token
+            @Header("Authorization") String token,
+            @Field("google_code") String google_code
     );
 
     //创建红包
@@ -521,14 +525,18 @@ public interface MyService {
 
     //生成收款二维码
     @POST("receipt/generateReceiptQrCode")
+    @FormUrlEncoded
     Observable<BaseInfo> generateReceiptQrCode(
-            @Header("Authorization") String token
+            @Header("Authorization") String token,
+            @Field("coin_id") String coin_id,
+            @Field("number") String number,
+            @Field("mark") String mark
     );
 
     //扫收款码
     @POST("receipt/payment")
     @FormUrlEncoded
-    Observable<BaseInfo> payment(
+    Observable<ReceiptInfo> payment(
             @Header("Authorization") String token,
             @Field("id") String id,
             @Field("number") String number,
@@ -546,9 +554,10 @@ public interface MyService {
             @Field("second_password") String second_password
     );
 
-    //扫付款码， 收款操作
+    //扫付款码，收款操作
     @POST("receipt/receipt")
-    Observable<BaseInfo> receipt(
+    @FormUrlEncoded
+    Observable<ReceiptInfo> receipt(
             @Header("Authorization") String token,
             @Field("data") String data
     );
@@ -573,6 +582,17 @@ public interface MyService {
     Observable<BankCardInfo> bankCardInfo(
             @Header("Authorization") String token,
             @Field("bank_number") String bank_number
+    );
+
+    //获取支付记录
+    @POST("common/transRecord")
+    @FormUrlEncoded
+    Observable<TransferListInfo> getTransRecord(
+            @Header("Authorization") String token,
+            @Field("page") String page,
+            @Field("page_size") String page_size,
+            @Field("type") String type,
+            @Field("date") String date
     );
 
 }

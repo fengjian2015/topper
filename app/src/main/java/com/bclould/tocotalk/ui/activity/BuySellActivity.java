@@ -33,7 +33,6 @@ import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
-import com.bclould.tocotalk.utils.UtilTool;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;
@@ -320,6 +319,7 @@ public class BuySellActivity extends BaseActivity {
         mTv4.setText(mData.getCurrency());
         mTvRemark.setText(mData.getRemark());
         mTvPrice.setText(mPrice + "");
+        mEtCny.setHint(mData.getMin_amount() + "-" + mData.getMax_amount() + mData.getCurrency());
         mTvReputation.setText("交易 " + mData.getCount_trans_number() + " | 数量 " + mData.getNumber() + " " + mData.getCoin_name());
         mTvTitle.setText("购买" + mData.getCoin_name());
         if (mType) {

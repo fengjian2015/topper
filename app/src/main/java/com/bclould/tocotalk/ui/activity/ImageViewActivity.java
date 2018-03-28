@@ -1,7 +1,9 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -21,6 +23,7 @@ import java.util.List;
  * Created by GA on 2018/3/7.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class ImageViewActivity extends FragmentActivity {
     private ArrayList<String> imageList;
     private List<Fragment> fragList;
@@ -40,7 +43,7 @@ public class ImageViewActivity extends FragmentActivity {
             if (bundle.containsKey("clickedIndex")) {
                 currentPage = bundle.getInt("clickedIndex");
             }
-            if(bundle.containsKey("imgMap")){
+            if (bundle.containsKey("imgMap")) {
                 SerMap serMap = (SerMap) bundle.getSerializable("imgMap");
                 mImageMap = serMap.getMap();
             }

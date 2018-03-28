@@ -40,6 +40,7 @@ import com.bclould.tocotalk.ui.adapter.PublicshDynamicGVAdapter;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.FullyGridLayoutManager;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.compress.Luban;
@@ -48,6 +49,8 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.permissions.RxPermissions;
 import com.luck.picture.lib.tools.PictureFileUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -419,6 +422,7 @@ public class PublicshDynamicActivity extends BaseActivity {
             public void send() {
                 hideDialog();
                 finish();
+                EventBus.getDefault().post(new MessageEvent("发表动态"));
             }
         });
     }
