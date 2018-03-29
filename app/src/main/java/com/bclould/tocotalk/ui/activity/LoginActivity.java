@@ -162,10 +162,10 @@ public class LoginActivity extends AppCompatActivity {
 
     //登录
     private void login() {
-        String emil = mEtEmily.getText().toString();
+        String email = mEtEmily.getText().toString();
         String password = mEtPassword.getText().toString();
         LoginPresenter loginPresenter = new LoginPresenter(this);
-        loginPresenter.Login(emil, password);
+        loginPresenter.Login(email, password);
     }
 
     //验证手机号和密码

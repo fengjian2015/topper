@@ -61,28 +61,22 @@ public class PaymentActivity extends BaseActivity {
 
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.et_count)
-    EditText mEtCount;
-    @Bind(R.id.tv_coin)
-    TextView mTvCoin;
-    @Bind(R.id.btn_payment)
-    Button mBtnPayment;
-    @Bind(R.id.rl_selector_coin)
-    RelativeLayout mRlSelectorCoin;
     @Bind(R.id.tv_title)
     TextView mTvTitle;
+    @Bind(R.id.tv_coin)
+    TextView mTvCoin;
+    @Bind(R.id.iv_jiantou)
+    ImageView mIvJiantou;
+    @Bind(R.id.rl_selector_coin)
+    RelativeLayout mRlSelectorCoin;
+    @Bind(R.id.et_count)
+    EditText mEtCount;
     @Bind(R.id.et_remark)
     EditText mEtRemark;
     @Bind(R.id.ll_no_steadfast)
     LinearLayout mLlNoSteadfast;
-    @Bind(R.id.tv_coin2)
-    TextView mTvCoin2;
-    @Bind(R.id.tv_count)
-    TextView mTvCount;
-    @Bind(R.id.tv_remark)
-    TextView mTvRemark;
-    @Bind(R.id.ll_steadfast)
-    LinearLayout mLlSteadfast;
+    @Bind(R.id.btn_payment)
+    Button mBtnPayment;
     private String mUserId;
     private ReceiptPaymentPresenter mReceiptPaymentPresenter;
     private Dialog mBottomDialog;
@@ -133,16 +127,16 @@ public class PaymentActivity extends BaseActivity {
             mTvTitle.setText("生成收款码");
             mBtnPayment.setText("确定");
         } else {
-            mLlNoSteadfast.setVisibility(View.GONE);
-            mLlSteadfast.setVisibility(View.VISIBLE);
             mUserId = getIntent().getStringExtra("userId");
             mCoinId = getIntent().getStringExtra("coinId");
             mCoinNames = getIntent().getStringExtra("coinName");
             mNumber = getIntent().getStringExtra("number");
             mMark = getIntent().getStringExtra("mark");
-            mTvCoin2.setText(mCoinNames);
-            mTvCount.setText(mNumber);
-            mTvRemark.setText(mMark);
+            mTvCoin.setText(mCoinNames);
+            mEtCount.setText(mNumber);
+            mEtCount.setKeyListener(null);
+            mEtRemark.setText(mMark);
+            mEtRemark.setKeyListener(null);
         }
     }
 

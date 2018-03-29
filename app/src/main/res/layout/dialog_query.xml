@@ -2,41 +2,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="vertical">
-
+                android:background="@drawable/bg_white_shape"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/y30"
+                android:paddingBottom="@dimen/y30"
+                android:paddingLeft="@dimen/x50"
+                android:paddingRight="@dimen/x50">
 
     <TextView
         android:id="@+id/tv_title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:gravity="center"
-        android:text="疑问"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/x36"/>
-
-    <TextView
-        android:id="@+id/xx"
-        style="@style/HCutOffRule"
-        android:layout_below="@+id/tv_title"/>
-
-    <TextView
-        android:id="@+id/tv_content"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/xx"
-        android:padding="@dimen/y30"
-        android:text="昨天,某小官为了巴结林大将军,特意来邀请林大将军到闻名全国的宝物湖一游.本来对这个兴趣缺缺的林枫就要拒绝,刘佳却抢先答应了而後刘佳用会说话的大眼睛对林枫发电,游湖的事情就这样定下来了今天早上,两人就出去了聪明的某小官为了进一步讨好林大将军,特意为他安排了一名美女导游"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/x30"/>
+        android:layout_centerHorizontal="true"
+        android:drawableLeft="@mipmap/icon_remind"
+        android:text="谷歌验证"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x28"/>
 
-    <Button
-        android:id="@+id/btn_query"
-        android:layout_width="@dimen/x70"
-        android:layout_height="@dimen/x70"
-        android:layout_below="@+id/tv_content"
-        android:layout_marginBottom="@dimen/y30"
-        android:layout_marginLeft="@dimen/x30"
-        android:background="@mipmap/icon_prompt_tibi"/>
+    <TextView
+        android:lineSpacingExtra="@dimen/x8"
+        android:layout_marginTop="@dimen/y30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_title"
+        android:text="1.安装“Google Authenticator”应用程序，选择“手动输入密钥”；\n2.粘贴以上“密钥”到“密钥”输入栏，并填写您的Tocotalk账号，点击完成；\n3.复制“谷歌验证码”，粘贴至上方输入栏；\n4.请勿删除此双重验证密码账户，否则将导致您无法进行账户操作；如果误删，您可通过重置密钥重新获取。"
+        android:textColor="@color/bar_grey_90"
+        android:textSize="@dimen/x26"/>
 
 </RelativeLayout>

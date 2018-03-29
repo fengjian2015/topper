@@ -158,7 +158,6 @@ public class UpIdCardActivity extends BaseActivity {
             case R.id.up_check:
                 if (mType.equals("1")) {
                     if (ShenfenCheck()) {
-
                         upImage(mShenfenMap);
                     }
                 } else {
@@ -216,8 +215,14 @@ public class UpIdCardActivity extends BaseActivity {
             String key = (String) msg.obj;
             keyList += "," + key;
             count++;
-            if (count == 3) {
-                submit(keyList);
+            if(mType.equals("1")) {
+                if (count == 3) {
+                    submit(keyList);
+                }
+            }else {
+                if (count == 2) {
+                    submit(keyList);
+                }
             }
         }
     };

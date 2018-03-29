@@ -30,7 +30,7 @@ public class LoginPresenter {
     private final LoginActivity mLoginActivity;
     private LoadingProgressDialog mProgressDialog;
     public static final String MYUSERNAME = "my_username";
-    public static final String EMIL = "emil";
+    public static final String EMAIL = "email";
 
     public LoginPresenter(LoginActivity loginActivity) {
         mLoginActivity = loginActivity;
@@ -52,13 +52,13 @@ public class LoginPresenter {
         }
     }
 
-    public void Login(final String emil, final String password) {
+    public void Login(final String email, final String password) {
 
         if (UtilTool.isNetworkAvailable(mLoginActivity)) {
             showDialog();
             RetrofitUtil.getInstance(mLoginActivity)
                     .getServer()
-                    .login(emil, password)
+                    .login(email, password)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<LoginInfo>() {
@@ -78,7 +78,7 @@ public class LoginPresenter {
                                 MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
                                 MySharedPreferences.getInstance().setInteger(USERID, baseInfo.getData().getUser_id());
                                 MySharedPreferences.getInstance().setString(MYUSERNAME, baseInfo.getData().getName() + "@" + Constants.DOMAINNAME);
-                                MySharedPreferences.getInstance().setString(EMIL, emil);
+                                MySharedPreferences.getInstance().setString(EMAIL, email);
                                 MySharedPreferences.getInstance().setString(LOGINPW, password);
                                 hideDialog();
                                 mLoginActivity.startActivity(new Intent(mLoginActivity, MainActivity.class));

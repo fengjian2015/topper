@@ -526,6 +526,7 @@ public class BuySellActivity extends BaseActivity {
                     intent.putExtra("type", "买");
                 intent.putExtra("data", data);
                 startActivity(intent);
+                finish();
             }
         }, password);
     }

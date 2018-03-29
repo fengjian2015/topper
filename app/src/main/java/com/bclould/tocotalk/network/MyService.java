@@ -16,6 +16,7 @@ import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.model.LoginInfo;
 import com.bclould.tocotalk.model.MyAssetsInfo;
 import com.bclould.tocotalk.model.OrderInfo;
+import com.bclould.tocotalk.model.OrderInfo2;
 import com.bclould.tocotalk.model.OrderListInfo;
 import com.bclould.tocotalk.model.OutCoinSiteInfo;
 import com.bclould.tocotalk.model.ReceiptInfo;
@@ -229,7 +230,7 @@ public interface MyService {
     @FormUrlEncoded
     Observable<BaseInfo> unBindGoogle(
             @Header("Authorization") String token,
-            @Field("google_code") String google_code
+            @Field("vcode") String vcode
     );
 
     //创建红包
@@ -361,12 +362,19 @@ public interface MyService {
     @FormUrlEncoded
     Observable<OrderListInfo> getOrderList(
             @Header("Authorization") String token,
-            @Field("coin_name") String coin_name,
-            @Field("type") int type
+            @Field("coin_name") String coin_name
+    );
+
+    //订单详情
+    @POST("trans/orderInfo")
+    @FormUrlEncoded
+    Observable<OrderInfo2> orderInfo(
+            @Header("Authorization") String token,
+            @Field("id") String id
     );
 
     //获取市场参考价
-    @POST("trans/getCoinPrice ")
+    @POST("trans/getCoinPrice")
     @FormUrlEncoded
     Observable<BaseInfo> getCoinPrice(
             @Header("Authorization") String token,

@@ -71,6 +71,7 @@ public class PersonalDetailsActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_detail);
+        mMgr = new DBManager(this);
         ButterKnife.bind(this);
         initInterface();
         MyApp.getInstance().addActivity(this);
@@ -100,7 +101,7 @@ public class PersonalDetailsActivity extends BaseActivity {
                 case PictureConfig.CHOOSE_REQUEST:
                     // 图片选择结果回调
                     selectList = PictureSelector.obtainMultipleResult(data);
-                    Bitmap bitmap = BitmapFactory.decodeFile(selectList.get(0).getPath());
+                    Bitmap bitmap = BitmapFactory.decodeFile(selectList.get(0).getCompressPath());
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                     byte[] bytes = baos.toByteArray();
@@ -109,6 +110,7 @@ public class PersonalDetailsActivity extends BaseActivity {
                         List<UserInfo> userInfos = mMgr.queryUser(UtilTool.getMyUser());
                         mTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfos.get(0).getPath()));
                         EventBus.getDefault().post(new MessageEvent("修改头像"));
+                        Toast.makeText(this, "修改成功", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(this, "修改失败", Toast.LENGTH_SHORT).show();
                     }

@@ -70,13 +70,12 @@ public class ReceiptPaymentActivity extends BaseActivity {
     RelativeLayout mRlReceiptPaymentRecord;
     @Bind(R.id.tv3)
     TextView mTv3;
-
-
     private DisplayMetrics mDm;
     private int mHeightPixels;
     private ViewGroup mView;
     private PopupWindow mPopupWindow;
     private ReceiptPaymentPresenter mReceiptPaymentPresenter;
+    private boolean mType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,6 +88,7 @@ public class ReceiptPaymentActivity extends BaseActivity {
     }
 
     private void moneyIn() {
+        mTvSet.setText("设置金额和币种");
         mRlData.setVisibility(View.GONE);
         mXx.setVisibility(View.VISIBLE);
         mTvSet.setVisibility(View.VISIBLE);
@@ -113,9 +113,16 @@ public class ReceiptPaymentActivity extends BaseActivity {
                 initPopWindow();
                 break;
             case R.id.tv_set:
-                Intent intent = new Intent(this, PaymentActivity.class);
-                intent.putExtra("type", Constants.QRMONEYIN);
-                startActivityForResult(intent, MONEYIN);
+                if (mType) {
+                    Intent intent = new Intent(ReceiptPaymentActivity.this, PaymentActivity.class);
+                    intent.putExtra("type", Constants.MONEYOUT);
+                    startActivityForResult(intent, MONEYOUT);
+                } else {
+                    Intent intent = new Intent(this, PaymentActivity.class);
+                    intent.putExtra("type", Constants.QRMONEYIN);
+                    startActivityForResult(intent, MONEYIN);
+
+                }
                 break;
             case R.id.rl_receipt_payment_record:
                 startActivity(new Intent(this, PayRecordActivity.class));
@@ -161,8 +168,8 @@ public class ReceiptPaymentActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == MONEYOUT) {
-                mTvSet.setVisibility(View.GONE);
-                mXx.setVisibility(View.GONE);
+                mType = true;
+                mTvSet.setText("更改设置");
                 mRlData.setVisibility(View.VISIBLE);
                 String url = data.getStringExtra("url");
                 String coinName = data.getStringExtra("coinName");
@@ -186,7 +193,9 @@ public class ReceiptPaymentActivity extends BaseActivity {
                 mTvCount.setText(count);
                 mTvHint.setText("出示付款码，向对方付款");
             } else if (requestCode == MONEYIN) {
+                mType = false;
                 mRlData.setVisibility(View.VISIBLE);
+                mTvSet.setText("更改设置");
                 String coinId = data.getStringExtra("coinId");
                 String coinName = data.getStringExtra("coinName");
                 String count = data.getStringExtra("count");

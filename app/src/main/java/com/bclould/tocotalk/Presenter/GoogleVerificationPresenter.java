@@ -122,12 +122,12 @@ public class GoogleVerificationPresenter {
         }
     }
 
-    public void unBinding(String googleCode, final CallBack callBack) {
+    public void unBinding(String vcode, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mGoogleVerificationActivity)) {
             showDialog();
             RetrofitUtil.getInstance(mGoogleVerificationActivity)
                     .getServer()
-                    .unBindGoogle(UtilTool.getToken(), googleCode)
+                    .unBindGoogle(UtilTool.getToken(), vcode)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<BaseInfo>() {

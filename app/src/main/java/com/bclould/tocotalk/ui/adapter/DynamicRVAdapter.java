@@ -388,10 +388,13 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                         @Override
                         public void send(LikeInfo data) {
                             mTvZan.setText(data.getLikeCounts() + "");
+                            dataBean.setLike_count(data.getLikeCounts());
                             if (data.getStatus() == 1) {
                                 mTvZan.setSelected(true);
+                                dataBean.setIs_like(1);
                             } else {
                                 mTvZan.setSelected(false);
+                                dataBean.setIs_like(0);
                             }
                         }
                     });

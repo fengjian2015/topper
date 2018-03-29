@@ -77,7 +77,7 @@ public class OrderInfo implements Serializable {
         private String user_name;
         private int to_user_id;
         private String to_user_name;
-        private int created_at;
+        private String created_at;
         private int id;
         private int deadline;
 
@@ -193,11 +193,11 @@ public class OrderInfo implements Serializable {
             this.to_user_name = to_user_name;
         }
 
-        public int getCreated_at() {
+        public String getCreated_at() {
             return created_at;
         }
 
-        public void setCreated_at(int created_at) {
+        public void setCreated_at(String created_at) {
             this.created_at = created_at;
         }
 

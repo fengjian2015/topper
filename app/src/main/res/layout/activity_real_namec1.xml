@@ -38,11 +38,11 @@
 
         <LinearLayout
             android:id="@+id/ll_pass"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_auth_type"
@@ -61,14 +61,14 @@
 
             <Button
                 android:id="@+id/btn_auth"
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/y80"
                 android:layout_marginTop="@dimen/y20"
+                android:background="@drawable/bg_blue_shape"
+                android:text="重新认证"
                 android:textColor="@color/white"
                 android:textSize="@dimen/x30"
-                android:background="@drawable/bg_blue_shape"
-                android:text="重新认证"/>
+                android:visibility="gone"/>
 
         </LinearLayout>
 
@@ -78,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -201,8 +201,8 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="@dimen/x30"
                         android:layout_toRightOf="@+id/tv"
-                        android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:background="@color/transparent"
+                        android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:gravity="right|center"
                         android:hint="请填写完整身份证号码"
                         android:textCursorDrawable="@null"
@@ -252,9 +252,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/y25"
-                        android:text="1.真实姓名经实名认证后将不能够更改，请如实填写。
-2.本站只接受实名充值，提现时银行卡等姓名信息必须与您的认证姓名一致。
-3.本站有合理的理由怀疑用户提供虚假身份信息时，有权拒绝注册或者冻结、注销已经注册的账户及资产。"
+                        android:text="1.真实姓名经实名认证后将不能够更改，请如实填写。\n2.本站只接受实名充值，提现时银行卡等姓名信息必须与您的认证姓名一致。\n3.本站有合理的理由怀疑用户提供虚假身份信息时，有权拒绝注册或者冻结、注销已经注册的账户及资产。"
                         android:textSize="@dimen/x26"/>
 
                 </LinearLayout>

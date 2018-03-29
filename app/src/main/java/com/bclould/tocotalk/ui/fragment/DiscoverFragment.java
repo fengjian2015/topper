@@ -83,7 +83,11 @@ public class DiscoverFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-
+                if (position == 1) {
+                    mTvPush.setVisibility(View.GONE);
+                } else {
+                    mTvPush.setVisibility(View.VISIBLE);
+                }
                 setSelector(position);
             }
 

@@ -80,18 +80,13 @@ public class OrderFormFragment extends Fragment {
         return view;
     }
 
-    /*@Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            initData(mCoinName);
-        }
-    }*/
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        mCoinName = event.getCoinName();
+        if (event.getCoinName() != null) {
+            mCoinName = event.getCoinName();
+        }
         if (msg.equals("幣種切換")) {
             initData(mCoinName);
         }
@@ -116,7 +111,7 @@ public class OrderFormFragment extends Fragment {
     private void initData(String coin) {
         mDataList.clear();
         BuySellPresenter buySellPresenter = new BuySellPresenter(getContext());
-        buySellPresenter.getOrderList(1, coin, new BuySellPresenter.CallBack3() {
+        buySellPresenter.getOrderList(coin, new BuySellPresenter.CallBack3() {
             @Override
             public void send(List<OrderListInfo.DataBean> data) {
                 if (data.size() != 0) {

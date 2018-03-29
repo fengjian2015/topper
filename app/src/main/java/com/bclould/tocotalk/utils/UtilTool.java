@@ -148,7 +148,7 @@ public class UtilTool {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
         int options = 100;
-        while (baos.toByteArray().length / 1024 > 100) { //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+        while (baos.toByteArray().length / 1024 > 80) { //循环判断如果压缩后图片是否大于100kb,大于继续压缩
             baos.reset();//重置baos即清空baos
             image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
             options -= 10;//每次都减少10
@@ -163,44 +163,6 @@ public class UtilTool {
         }
     }
 
-    /*public static void sizeCompress(Bitmap bmp, File file) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        int ratio = 0;
-        int quality = 0;
-        if (bmp.getHeight() > 3000 && bmp.getWidth() > 4000) {
-            ratio = 7;
-            quality =;
-        } else if (bmp.getHeight() > 2500 && bmp.getWidth() > 3500) {
-            ratio = 6;
-        } else if (bmp.getHeight() > 2000 && bmp.getWidth() > 3000) {
-            ratio = 5;
-        } else if (bmp.getHeight() > 1500 && bmp.getWidth() > 2500) {
-            ratio = 4;
-        } else if (bmp.getHeight() > 1000 && bmp.getWidth() > 2000) {
-            ratio = 3;
-        } else if (bmp.getHeight() > 500 && bmp.getWidth() > 1500) {
-            ratio = 2;
-        } else if (bmp.getHeight() > 500 && bmp.getWidth() > 1500) {
-            ratio = 2;
-        }
-        // 压缩Bitmap到对应尺寸
-        Bitmap result = Bitmap.createBitmap(bmp.getWidth() / ratio, bmp.getHeight() / ratio, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(result);
-        Rect rect = new Rect(0, 0, bmp.getWidth() / ratio, bmp.getHeight() / ratio);
-        canvas.drawBitmap(bmp, null, rect, null);
-        // 把压缩后的数据存放到baos中
-        result.compress(Bitmap.CompressFormat.JPEG, 50, baos);
-
-        try {
-            FileOutputStream fos = new FileOutputStream(file);
-            fos.write(baos.toByteArray());
-            fos.flush();
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-*/
     /**
      * 保存View为图片的方法
      */
@@ -458,7 +420,7 @@ public class UtilTool {
 
     public synchronized static boolean isFastClick() {
         long time = System.currentTimeMillis();
-        if (time - lastClickTime < 500) {
+        if (time - lastClickTime < 60000) {
             return true;
         }
         lastClickTime = time;

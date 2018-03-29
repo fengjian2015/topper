@@ -1,6 +1,7 @@
 package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -10,11 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.OrderListInfo;
+import com.bclould.tocotalk.ui.activity.OrderDetailsActivity;
 import com.bclould.tocotalk.utils.Constants;
 
 import java.util.List;
@@ -73,21 +77,15 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
         TextView mTvOrderNumber;
         @Bind(R.id.tv_type)
         TextView mTvType;
-        private OrderListInfo.DataBean mDataBean;
+        @Bind(R.id.rl_itme)
+        RelativeLayout mRlItme;
 
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
         }
 
-        public void setData(OrderListInfo.DataBean dataBean) {
-            mDataBean = dataBean;
+        public void setData(final OrderListInfo.DataBean dataBean) {
             try {
                 String jid = dataBean.getTo_user_name() + "@" + Constants.DOMAINNAME;
                 Bitmap bitmap = BitmapFactory.decodeFile(mMgr.queryUser(jid).get(0).getPath());
@@ -96,10 +94,32 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
                 e.printStackTrace();
             }
             mTvName.setText(dataBean.getTo_user_name());
-            mTvMoney.setText("交易金额 " + dataBean.getTrans_amount());
+            mTvMoney.setText("交易金额" + dataBean.getTrans_amount());
             mTvOrderNumber.setText("订单号:" + dataBean.getOrder_no());
             mTvType.setText(dataBean.getStatus_name());
             mTvCoinType.setText(dataBean.getCoin_name() + dataBean.getType_name());
+            if (dataBean.getType() == 1) {
+                mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape));
+                mTvCoinType.setTextColor(mContext.getColor(R.color.blue2));
+            } else {
+                mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape2));
+                mTvCoinType.setTextColor(mContext.getColor(R.color.green2));
+            }
+
+            mRlItme.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (dataBean.getStatus() == 0 || dataBean.getStatus() == 3) {
+                        Toast.makeText(mContext, "交易已关闭", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(mContext, OrderDetailsActivity.class);
+                        intent.putExtra("type", "订单");
+                        intent.putExtra("id", dataBean.getId() + "");
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
+
         }
     }
 }
