@@ -196,7 +196,7 @@ public class OrderDetailsActivity extends BaseActivity {
 
     private void confirmGiveCoin() {
         if (mType.equals("订单")) {
-            mOrderDetailsPresenter.confirmGiveCoin(mInfo.getData().getId(), mInfo.getData().getTrans_id(), new OrderDetailsPresenter.CallBack2() {
+            mOrderDetailsPresenter.confirmGiveCoin(mInfo.getData().getTrans_id(), mInfo.getData().getId(), new OrderDetailsPresenter.CallBack2() {
                 @Override
                 public void send() {
                     Toast.makeText(OrderDetailsActivity.this, "完成交易", Toast.LENGTH_SHORT).show();
@@ -216,7 +216,7 @@ public class OrderDetailsActivity extends BaseActivity {
 
     private void confirmPay() {
         if (mType.equals("订单")) {
-            mOrderDetailsPresenter.confirmPay(mInfo.getData().getId(), mInfo.getData().getTrans_id(), new OrderDetailsPresenter.CallBack2() {
+            mOrderDetailsPresenter.confirmPay(mInfo.getData().getTrans_id(), mInfo.getData().getId(), new OrderDetailsPresenter.CallBack2() {
                 @Override
                 public void send() {
                     Toast.makeText(OrderDetailsActivity.this, "确认付款成功", Toast.LENGTH_SHORT).show();
@@ -234,7 +234,7 @@ public class OrderDetailsActivity extends BaseActivity {
 
     private void cancel() {
         if (mType.equals("订单")) {
-            mOrderDetailsPresenter.cancel(mInfo.getData().getId(), mInfo.getData().getTrans_id(), new OrderDetailsPresenter.CallBack2() {
+            mOrderDetailsPresenter.cancel(mInfo.getData().getTrans_id(), mInfo.getData().getId(), new OrderDetailsPresenter.CallBack2() {
                 @Override
                 public void send() {
                     Toast.makeText(OrderDetailsActivity.this, "取消交易", Toast.LENGTH_SHORT).show();
