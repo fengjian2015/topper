@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="#EBEFF5"
@@ -76,7 +77,8 @@
                 android:layout_centerVertical="true"
                 android:text="等待支付"
                 android:textColor="#FE6633"
-                android:textSize="@dimen/x28"/>
+                android:textSize="@dimen/x30"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/tv2"
@@ -86,7 +88,7 @@
                 android:layout_marginTop="@dimen/y15"
                 android:text="剩余"
                 android:textColor="@color/bar_grey"
-                android:textSize="@dimen/x24"/>
+                android:textSize="@dimen/x28"/>
 
             <TextView
                 android:id="@+id/tv_time"
@@ -98,7 +100,8 @@
                 android:layout_marginTop="@dimen/y15"
                 android:layout_toRightOf="@+id/tv2"
                 android:textColor="@color/black"
-                android:textSize="@dimen/x26"/>
+                android:textSize="@dimen/x28"
+                android:textStyle="bold"/>
 
             <!--<TextView
                 android:id="@+id/tv"
@@ -134,7 +137,8 @@
                 android:layout_alignParentRight="true"
                 android:text="1000"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/x26"/>
+                android:textSize="@dimen/x30"
+                android:textStyle="bold"/>
 
         </RelativeLayout>
 
@@ -156,7 +160,8 @@
                 android:layout_alignParentRight="true"
                 android:text="0.5"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/x26"/>
+                android:textSize="@dimen/x30"
+                android:textStyle="bold"/>
 
         </RelativeLayout>
 
@@ -179,7 +184,8 @@
                 android:layout_alignParentRight="true"
                 android:text="124562"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/x26"/>
+                android:textSize="@dimen/x30"
+                android:textStyle="bold"/>
 
         </RelativeLayout>
 
@@ -193,7 +199,8 @@
             android:layout_marginTop="@dimen/y15"
             android:text="卖家：安子"
             android:textColor="@color/bar_grey"
-            android:textSize="@dimen/x28"/>
+            android:textSize="@dimen/x28"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/tv_remark"
@@ -368,7 +375,8 @@
                 android:layout_centerVertical="true"
                 android:text="买家：安子"
                 android:textColor="@color/bar_grey"
-                android:textSize="@dimen/x28"/>
+                android:textSize="@dimen/x28"
+                android:textStyle="bold"/>
 
             <LinearLayout
                 android:id="@+id/ll_seller"
@@ -438,43 +446,35 @@
         style="@style/HCutOffRule"
         android:layout_alignParentBottom="true"/>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/y10"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginTop="@dimen/y15"
-        android:text="交易提示："
-        android:textColor="@color/bar_grey_90"
-        android:textSize="@dimen/x28"/>
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y50"
+        app:cardCornerRadius="@dimen/x25">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginRight="@dimen/x20"
-        android:lineSpacingExtra="@dimen/x8"
-        android:text="1、您的汇款将直接进入卖家账号，交易过程中卖家出售的数字资产将由平台托管；"
-        android:textSize="@dimen/x24"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/y30"
+            android:layout_marginTop="@dimen/y30"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/x50"
+            android:paddingRight="@dimen/x50">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y5"
-        android:lineSpacingExtra="@dimen/x8"
-        android:text="2、请在规定时间内完成付款，并务必点击”确认付款“，卖家确认收款后，系统会将数字资产划转至您的账户；"
-        android:textSize="@dimen/x24"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y5"
-        android:text="3、请勿频繁取消订单，否则将导致限制交易；"
-        android:textSize="@dimen/x24"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y25"
+                android:lineSpacingExtra="@dimen/x8"
+                android:text="1、您的汇款将直接进入卖家账号，交易过程中卖家出售的数字资产将由平台托管。\n2、请在规定时间内完成付款，并务必点击”确认付款“，卖家确认收款后，系统会将数字资产划转至您的账户。\n3、请勿频繁取消订单，否则将导致限制交易。"
+                android:textSize="@dimen/x26"/>
 
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

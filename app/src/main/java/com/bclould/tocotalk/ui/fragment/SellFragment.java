@@ -40,7 +40,6 @@ import butterknife.ButterKnife;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class SellFragment extends BaseFragment {
 
-    public static SellFragment instance = null;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.refreshLayout)
@@ -54,12 +53,6 @@ public class SellFragment extends BaseFragment {
     private List<DealListInfo.DataBean> mDataList = new ArrayList<>();
     private BuySellRVAdapter mBuySellRVAdapter;
 
-    public static SellFragment getInstance() {
-        if (instance == null) {
-            instance = new SellFragment();
-        }
-        return instance;
-    }
 
     @Nullable
     @Override

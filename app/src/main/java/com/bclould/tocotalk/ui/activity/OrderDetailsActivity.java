@@ -17,6 +17,9 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.model.OrderInfo2;
+import com.bclould.tocotalk.utils.MessageEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -93,6 +96,8 @@ public class OrderDetailsActivity extends BaseActivity {
                     mTvTime.setText(minute + "分" + second + "秒");
                     if (mRecLen < 0) {
                         mTimer.cancel();
+                        finish();
+                        Toast.makeText(OrderDetailsActivity.this, "订单超时", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -119,7 +124,7 @@ public class OrderDetailsActivity extends BaseActivity {
             mData = (OrderInfo.DataBean) intent.getSerializableExtra("data");
             mRecLen = mData.getDeadline();
             mTimer.schedule(mTask, 1000, 1000);
-            if (mType.equals("买")) {
+            if (mData.getType() == 1) {
                 mTvTitle.setText("购买" + mData.getCoin_name());
                 mLlBuyer.setVisibility(View.VISIBLE);
                 mLlSeller.setVisibility(View.GONE);
@@ -129,8 +134,8 @@ public class OrderDetailsActivity extends BaseActivity {
                 mLlBuyer.setVisibility(View.GONE);
                 mLlSeller.setVisibility(View.VISIBLE);
                 mTvTitle.setText("售出" + mData.getCoin_name());
-                mTvBuysell.setText("买家:" + mData.getTo_user_name());
-                mTvBuysell2.setText("卖家:" + mData.getUser_name());
+                mTvBuysell2.setText("买家:" + mData.getTo_user_name());
+                mTvBuysell.setText("卖家:" + mData.getUser_name());
             }
             mTvCount.setText(mData.getNumber());
             mTvMoney.setText(mData.getTrans_amount());
@@ -159,8 +164,8 @@ public class OrderDetailsActivity extends BaseActivity {
                     mLlBuyer.setVisibility(View.GONE);
                     mLlSeller.setVisibility(View.VISIBLE);
                     mTvTitle.setText("售出" + data.getCoin_name());
-                    mTvBuysell.setText("买家:" + data.getTo_user_name());
-                    mTvBuysell2.setText("卖家:" + data.getUser_name());
+                    mTvBuysell.setText("买家:" + data.getUser_name());
+                    mTvBuysell2.setText("卖家:" + data.getTo_user_name());
                 }
                 mTvCount.setText(data.getNumber());
                 mTvMoney.setText(data.getTrans_amount());
@@ -199,14 +204,20 @@ public class OrderDetailsActivity extends BaseActivity {
             mOrderDetailsPresenter.confirmGiveCoin(mInfo.getData().getTrans_id(), mInfo.getData().getId(), new OrderDetailsPresenter.CallBack2() {
                 @Override
                 public void send() {
+                    MessageEvent messageEvent = new MessageEvent("确认放币");
+                    messageEvent.setId(mInfo.getData().getId() + "");
+                    EventBus.getDefault().post(messageEvent);
                     Toast.makeText(OrderDetailsActivity.this, "完成交易", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             });
         } else {
-            mOrderDetailsPresenter.confirmGiveCoin(mData.getId(), mData.getTrans_id(), new OrderDetailsPresenter.CallBack2() {
+            mOrderDetailsPresenter.confirmGiveCoin(mData.getTrans_id(), mData.getId(), new OrderDetailsPresenter.CallBack2() {
                 @Override
                 public void send() {
+                    MessageEvent messageEvent = new MessageEvent("确认放币");
+                    messageEvent.setId(mData.getId() + "");
+                    EventBus.getDefault().post(messageEvent);
                     Toast.makeText(OrderDetailsActivity.this, "完成交易", Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -219,13 +230,22 @@ public class OrderDetailsActivity extends BaseActivity {
             mOrderDetailsPresenter.confirmPay(mInfo.getData().getTrans_id(), mInfo.getData().getId(), new OrderDetailsPresenter.CallBack2() {
                 @Override
                 public void send() {
+                    mTvPayType.setText("等待放币");
+                    MessageEvent messageEvent = new MessageEvent("确认付款");
+                    messageEvent.setId(mInfo.getData().getId() + "");
+                    EventBus.getDefault().post(messageEvent);
                     Toast.makeText(OrderDetailsActivity.this, "确认付款成功", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
-            mOrderDetailsPresenter.confirmPay(mData.getId(), mData.getTrans_id(), new OrderDetailsPresenter.CallBack2() {
+            mOrderDetailsPresenter.confirmPay(mData.getTrans_id(), mData.getId(), new OrderDetailsPresenter.CallBack2() {
                 @Override
                 public void send() {
+                    mTvPayType.setText("等待放币");
+                    MessageEvent messageEvent = new MessageEvent("确认付款");
+                    messageEvent.setId(mData.getId() + "");
+                    EventBus.getDefault().post(messageEvent);
+                    EventBus.getDefault().post(new MessageEvent("确认付款"));
                     Toast.makeText(OrderDetailsActivity.this, "确认付款成功", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -237,14 +257,20 @@ public class OrderDetailsActivity extends BaseActivity {
             mOrderDetailsPresenter.cancel(mInfo.getData().getTrans_id(), mInfo.getData().getId(), new OrderDetailsPresenter.CallBack2() {
                 @Override
                 public void send() {
+                    MessageEvent messageEvent = new MessageEvent("取消订单");
+                    messageEvent.setId(mInfo.getData().getId() + "");
+                    EventBus.getDefault().post(messageEvent);
                     Toast.makeText(OrderDetailsActivity.this, "取消交易", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             });
         } else {
-            mOrderDetailsPresenter.cancel(mData.getId(), mData.getTrans_id(), new OrderDetailsPresenter.CallBack2() {
+            mOrderDetailsPresenter.cancel(mData.getTrans_id(), mData.getId(), new OrderDetailsPresenter.CallBack2() {
                 @Override
                 public void send() {
+                    MessageEvent messageEvent = new MessageEvent("取消订单");
+                    messageEvent.setId(mData.getId() + "");
+                    EventBus.getDefault().post(messageEvent);
                     Toast.makeText(OrderDetailsActivity.this, "取消交易", Toast.LENGTH_SHORT).show();
                     finish();
                 }

@@ -33,7 +33,10 @@ import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
@@ -520,11 +523,9 @@ public class BuySellActivity extends BaseActivity {
             @Override
             public void send(OrderInfo.DataBean data) {
                 Intent intent = new Intent(BuySellActivity.this, OrderDetailsActivity.class);
-                if (mType)
-                    intent.putExtra("type", "卖");
-                else
-                    intent.putExtra("type", "买");
+                intent.putExtra("type", "广告");
                 intent.putExtra("data", data);
+                EventBus.getDefault().post(new MessageEvent("创建订单"));
                 startActivity(intent);
                 finish();
             }

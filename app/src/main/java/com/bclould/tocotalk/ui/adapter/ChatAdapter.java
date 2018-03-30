@@ -162,8 +162,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 mImageList.add(info.getMessage());
                 mImageMap.put(info.getMessage(), "");
             } else if (info.getMsgType() == FROM_IMG_MSG) {
-                mImageList.add(info.getVoice());
-                mImageMap.put(info.getVoice(), info.getMessage());
+                if (info.getImageType() != 0) {
+                    mImageList.add(info.getMessage());
+                    mImageMap.put(info.getMessage(), "");
+                } else {
+                    mImageList.add(info.getVoice());
+                    mImageMap.put(info.getVoice(), info.getMessage());
+                }
             }
         }
     }
@@ -254,19 +259,20 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mIvWarning.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    anewSendText(mUser, messageInfo.getMessage(), mIvWarning, messageInfo.getId());
+                    anewSendText(mUser, messageInfo.getMessage(), mIvWarning, messageInfo.getId(), messageInfo);
                 }
             });
         }
     }
 
-    private void anewSendText(String user, String message, ImageView ivWarning, int id) {
+    private void anewSendText(String user, String message, ImageView ivWarning, int id, MessageInfo messageInfo) {
         try {
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
             Chat chat = manager.createChat(JidCreate.entityBareFrom(user), null);
             chat.sendMessage(message);
             ivWarning.setVisibility(View.GONE);
-            mMgr.updateMessageHint(id, 1);
+            messageInfo.setSendStatus(0);
+            mMgr.updateMessageHint(id, 0);
         } catch (Exception e) {
             e.printStackTrace();
             ivWarning.setVisibility(View.VISIBLE);
@@ -508,7 +514,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
             message.addExtension(voiceInfo);
             chat.sendMessage(message);
             ivWarning.setVisibility(View.GONE);
-            mMgr.updateMessageHint(messageInfo.getId(), 1);
+            messageInfo.setSendStatus(0);
+            mMgr.updateMessageHint(messageInfo.getId(), 0);
             EventBus.getDefault().post(new MessageEvent("自己发了消息"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -678,11 +685,18 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     intent.putExtra("imgMap", serMap);
                     int position = 0;
                     for (int i = 0; i < mImageList.size(); i++) {
-                        if (messageInfo.getVoice().equals(mImageList.get(i))) {
-                            position = i;
+                        if (messageInfo.getImageType() == 0) {
+                            if (messageInfo.getVoice().equals(mImageList.get(i))) {
+                                position = i;
+                            }
+                        }else {
+                            if (messageInfo.getMessage().equals(mImageList.get(i))) {
+                                position = i;
+                            }
                         }
                     }
                     intent.putExtra("clickedIndex", position);
+                    intent.putExtra("id", messageInfo.getId());
                     mContext.startActivity(intent);
                 }
             });

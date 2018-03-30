@@ -65,7 +65,7 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     if (mContext instanceof OtcActivity) {
                         OtcActivity activity = (OtcActivity) mContext;
-                        activity.hideDialog(mName);
+//                        activity.hideDialog(mName, mId);
                     } else if (mContext instanceof PayManageActivity) {
                         PayManageActivity activity = (PayManageActivity) mContext;
                         activity.hideDialog(mName);

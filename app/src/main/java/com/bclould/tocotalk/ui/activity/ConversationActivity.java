@@ -218,6 +218,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private String mImagePath;
     private ChatAdapter mChatAdapter;
     private LinearLayoutManager mLayoutManager;
+    private int mId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -590,6 +591,14 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             showFileChooser();
         } else if (msg.equals("打开摄像机")) {
             openCameraShooting();
+        } else if (msg.equals("查看原图")) {
+            String id = event.getId();
+            for (MessageInfo info : mMessageList) {
+                if (info.getId() == Integer.parseInt(id)) {
+                    info.setImageType(1);
+                    mChatAdapter.notifyDataSetChanged();
+                }
+            }
         }
     }
 
@@ -827,6 +836,13 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                                         PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
                                         s3Client.putObject(por);
                                     } catch (Exception e) {
+                                        mMgr.updateMessageHint(mId, 2);
+                                        for (MessageInfo info : mMessageList) {
+                                            if (info.getId() == mId) {
+                                                info.setSendStatus(2);
+                                                handler.sendEmptyMessage(3);
+                                            }
+                                        }
                                         e.printStackTrace();
                                     }
                                 }
@@ -859,8 +875,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             } else {
                 messageInfo.setMsgType(TO_FILE_MSG);
             }
-            int id = mMgr.addMessage(messageInfo);
-            messageInfo.setId(id);
+            mId = mMgr.addMessage(messageInfo);
+            messageInfo.setId(mId);
             mMessageList.add(messageInfo);
             mChatAdapter.notifyDataSetChanged();
             scrollToBottom();
@@ -896,7 +912,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             String time = formatter.format(curDate);
             messageInfo.setTime(time);
             messageInfo.setType(0);
-            messageInfo.setSendStatus(1);
+            messageInfo.setSendStatus(2);
             if (postfix.equals("Image")) {
                 messageInfo.setMsgType(TO_IMG_MSG);
             } else if (postfix.equals("Video")) {
@@ -995,7 +1011,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                                     message.addExtension(voiceInfo);
                                     message.setBody("[" + postfix2 + "]:" + key2);
                                     chat.sendMessage(message);
-                                    info.setSendStatus(1);
                                     mMgr.updateMessageHint(info.getId(), 1);
                                     mChatAdapter.notifyDataSetChanged();
                                     return;
@@ -1007,6 +1022,9 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                             }
                         }
                     }
+                    break;
+                case 3:
+                    mChatAdapter.notifyDataSetChanged();
                     break;
             }
         }

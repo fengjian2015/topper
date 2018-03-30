@@ -1,6 +1,7 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,10 +23,12 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.bclould.tocotalk.Presenter.CoinPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.FragmentFactory;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.model.CoinInfo;
 import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.network.DownLoadApk;
 import com.bclould.tocotalk.network.RetrofitUtil;
@@ -38,8 +41,6 @@ import com.bclould.tocotalk.xmpp.XmppConnection;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.AbstractXMPPConnection;
-import org.jivesoftware.smackx.ping.PingFailedListener;
-import org.jivesoftware.smackx.ping.PingManager;
 
 import java.util.List;
 import java.util.Map;
@@ -145,6 +146,18 @@ public class MainActivity extends BaseActivity {
         loginIM();
         //检测版本更新
         checkVersion();
+        //获取币种
+        getCoinList();
+    }
+
+    private void getCoinList() {
+        CoinPresenter coinPresenter = new CoinPresenter(this);
+        coinPresenter.getCoin(new CoinPresenter.CallBack() {
+            @Override
+            public void send(List<CoinInfo.DataBean> address) {
+                MyApp.getInstance().mDataBeanList.addAll(address);
+            }
+        });
     }
 
     //检测版本更新
@@ -382,6 +395,7 @@ public class MainActivity extends BaseActivity {
     //切换Fragment
     int lastIndex = 0;
 
+    @SuppressLint("RestrictedApi")
     private void changeFragment(int index) {
 
         if (mSupportFragmentManager == null) {

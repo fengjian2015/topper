@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,17 +36,16 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/12/20.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class ConversationAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;
     private final List<ConversationInfo> mConversationList;
-    private final ConversationFragment mConversationFragment;
     private final DBManager mMgr;
 
     public ConversationAdapter(ConversationFragment conversationFragment, Context context, List<ConversationInfo> ConversationList, DBManager mgr) {
         mContext = context;
         mConversationList = ConversationList;
-        mConversationFragment = conversationFragment;
         mMgr = mgr;
     }
 

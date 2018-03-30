@@ -32,6 +32,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter;
+import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
@@ -195,7 +196,8 @@ public class PushBuyingActivity extends BaseActivity {
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));
                 break;
             case R.id.rl_selector_currency:
-                showDialog(mCoinArr, COINSIGN, getString(R.string.selected_currency));
+//                showDialog(mCoinArr, COINSIGN, getString(R.string.selected_currency));
+                showCoinDialog();
                 break;
             case R.id.rl_county:
                 showDialog(mStateArr, STATESIGN, getString(R.string.selector_state));
@@ -212,6 +214,37 @@ public class PushBuyingActivity extends BaseActivity {
                 showDialog(mTimeArr, TIMESIGN, getString(R.string.selector_payment_time));
                 break;
         }
+    }
+
+    private void showCoinDialog() {
+        mBottomDialog = new Dialog(this, R.style.BottomDialog2);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom, null);
+        //获得dialog的window窗口
+        Window window = mBottomDialog.getWindow();
+        window.getDecorView().setPadding(0, 0, 0, 0);
+        //获得window窗口的属性
+        WindowManager.LayoutParams lp = window.getAttributes();
+        //设置窗口宽度为充满全屏
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        //将设置好的属性set回去
+        window.setAttributes(lp);
+        window.setGravity(Gravity.BOTTOM);
+        window.setWindowAnimations(BottomDialog);
+        mBottomDialog.setContentView(contentView);
+        mBottomDialog.show();
+        RecyclerView recyclerView = (RecyclerView) mBottomDialog.findViewById(R.id.recycler_view);
+        TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
+        Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mDataBeanList));
+        addCoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PushBuyingActivity.this, MyAssetsActivity.class));
+                mBottomDialog.dismiss();
+            }
+        });
+        tvTitle.setText("选择币种");
     }
 
     //验证手机号和密码
@@ -519,8 +552,8 @@ public class PushBuyingActivity extends BaseActivity {
         });*/
     }
 
-    private void getCoinPrice(String coin, String legalTender) {
-
-
+    public void hideDialog2(String name, int id) {
+        mBottomDialog.dismiss();
+        mTvCurrency.setText(name);
     }
 }

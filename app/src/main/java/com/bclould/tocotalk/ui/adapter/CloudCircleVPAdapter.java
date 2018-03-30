@@ -6,11 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.bclould.tocotalk.ui.fragment.OrderFormFragment;
-import com.bclould.tocotalk.ui.fragment.SellFragment;
-import com.bclould.tocotalk.ui.fragment.BuyFragment;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,14 +15,12 @@ import java.util.List;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CloudCircleVPAdapter extends FragmentPagerAdapter {
 
-    List<Fragment> mFragmentList = new ArrayList<>();
 
-    public CloudCircleVPAdapter(FragmentManager fm) {
+    private final List<Fragment> mFragmentList;
+
+    public CloudCircleVPAdapter(FragmentManager fm, List<Fragment> fragmentList) {
         super(fm);
-        mFragmentList.add(BuyFragment.getInstance());
-        mFragmentList.add(SellFragment.getInstance());
-        mFragmentList.add(OrderFormFragment.getInstance());
-
+        mFragmentList = fragmentList;
     }
 
     @Override

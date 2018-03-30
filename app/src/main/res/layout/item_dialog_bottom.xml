@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/tv_coin_logo"
-        android:layout_width="@dimen/x80"
-        android:layout_height="@dimen/x80"
+        android:layout_width="@dimen/x60"
+        android:layout_height="@dimen/x60"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/x50"/>
 

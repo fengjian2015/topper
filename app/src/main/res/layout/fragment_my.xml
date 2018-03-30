@@ -64,55 +64,55 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
-        app:cardCornerRadius="@dimen/x15"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginTop="@dimen/y30"
-        android:layout_marginRight="@dimen/x30"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y120">
+        android:layout_height="@dimen/y120"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y30"
+        app:cardCornerRadius="@dimen/x15">
 
         <RelativeLayout
             android:id="@+id/rl_autonym_attestation"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x30"
-            android:id="@+id/iv"
-            android:layout_width="wrap_content"
-            android:src="@mipmap/iocn_person_check"
-            android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x30"
+                android:src="@mipmap/iocn_person_check"/>
 
             <TextView
-                android:text="@string/authentication"
-                android:layout_toRightOf="@+id/iv"
-                android:layout_centerVertical="true"
-                android:textSize="@dimen/x28"
-                android:textColor="@color/black"
-                android:layout_marginLeft="@dimen/x30"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_toRightOf="@+id/iv"
+                android:text="@string/authentication"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x28"/>
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:src="@mipmap/iocn_person_turn"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/x30"
-                android:layout_height="wrap_content"/>
+                android:src="@mipmap/iocn_person_turn"/>
 
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
-        app:cardCornerRadius="@dimen/x15"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginTop="@dimen/y30"
-        android:layout_marginRight="@dimen/x30"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y120">
+        android:layout_height="@dimen/y120"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y30"
+        app:cardCornerRadius="@dimen/x15">
 
         <RelativeLayout
             android:id="@+id/rl_security_center"
@@ -120,42 +120,42 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
                 android:id="@+id/iv2"
                 android:layout_width="wrap_content"
-                android:src="@mipmap/icon_person_safe"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x30"
+                android:src="@mipmap/icon_person_safe"/>
 
             <TextView
-                android:text="安全中心"
-                android:layout_toRightOf="@+id/iv2"
-                android:layout_centerVertical="true"
-                android:textSize="@dimen/x28"
-                android:textColor="@color/black"
-                android:layout_marginLeft="@dimen/x30"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_toRightOf="@+id/iv2"
+                android:text="安全中心"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x28"/>
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:src="@mipmap/iocn_person_turn"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/x30"
-                android:layout_height="wrap_content"/>
+                android:src="@mipmap/iocn_person_turn"/>
 
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
-        app:cardCornerRadius="@dimen/x15"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginTop="@dimen/y30"
-        android:layout_marginRight="@dimen/x30"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y120">
+        android:layout_height="@dimen/y120"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y30"
+        app:cardCornerRadius="@dimen/x15">
 
         <RelativeLayout
             android:id="@+id/rl_system_set"
@@ -163,30 +163,30 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
                 android:id="@+id/iv3"
                 android:layout_width="wrap_content"
-                android:src="@mipmap/iocn_person_set"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x30"
+                android:src="@mipmap/iocn_person_set"/>
 
             <TextView
-                android:text="系统设置"
-                android:layout_toRightOf="@+id/iv3"
-                android:layout_centerVertical="true"
-                android:textSize="@dimen/x28"
-                android:textColor="@color/black"
-                android:layout_marginLeft="@dimen/x30"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_toRightOf="@+id/iv3"
+                android:text="系统设置"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x28"/>
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:src="@mipmap/iocn_person_turn"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/x30"
-                android:layout_height="wrap_content"/>
+                android:src="@mipmap/iocn_person_turn"/>
 
         </RelativeLayout>
 

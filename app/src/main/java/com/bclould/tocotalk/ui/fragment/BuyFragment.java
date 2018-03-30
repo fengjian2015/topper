@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,7 +15,6 @@ import android.widget.LinearLayout;
 
 import com.bclould.tocotalk.Presenter.BuySellPresenter;
 import com.bclould.tocotalk.R;
-import com.bclould.tocotalk.base.BaseFragment;
 import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.ui.adapter.BuySellRVAdapter;
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -38,9 +38,8 @@ import butterknife.ButterKnife;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class BuyFragment extends BaseFragment {
+public class BuyFragment extends Fragment {
 
-    public static BuyFragment instance = null;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.refreshLayout)
@@ -54,13 +53,6 @@ public class BuyFragment extends BaseFragment {
     private List<DealListInfo.DataBean> mDataList = new ArrayList<>();
     private BuySellRVAdapter mBuySellRVAdapter;
 
-
-    public static BuyFragment getInstance() {
-        if (instance == null) {
-            instance = new BuyFragment();
-        }
-        return instance;
-    }
 
     @Nullable
     @Override

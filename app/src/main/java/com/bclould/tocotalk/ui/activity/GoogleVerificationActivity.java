@@ -2,6 +2,9 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,11 +24,15 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.GoogleInfo;
+import com.bclould.tocotalk.network.DownLoadApk;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.AnimatorTool;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -83,6 +90,7 @@ public class GoogleVerificationActivity extends BaseActivity {
     private CurrencyDialog mCurrencyDialog;
     private RegisterPresenter mRegisterPresenter;
     private String mEmail;
+    private DeleteCacheDialog mDeleteCacheDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -178,6 +186,9 @@ public class GoogleVerificationActivity extends BaseActivity {
                 showHintDialog();
                 break;
             case R.id.tv_download:
+                http:
+//qufenqi-static.oss-cn-hangzhou.aliyuncs.com/mobile/android/Authenticator_49.apk
+                showDialog();
                 break;
             case R.id.btn_copy:
                 copySecretKey();
@@ -203,6 +214,68 @@ public class GoogleVerificationActivity extends BaseActivity {
                 }
                 break;
         }
+    }
+
+    private void showDialog() {
+        if (mDeleteCacheDialog == null)
+            mDeleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
+        mDeleteCacheDialog.show();
+        mDeleteCacheDialog.setTitle("确定下载谷歌验证器？");
+        Button cancel = (Button) mDeleteCacheDialog.findViewById(R.id.btn_cancel);
+        Button confirm = (Button) mDeleteCacheDialog.findViewById(R.id.btn_confirm);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDeleteCacheDialog.dismiss();
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (!canDownloadState()) {
+                    showDownloadSetting();
+                    return;
+                }
+                DownLoadApk.download(GoogleVerificationActivity.this, "http://qufenqi-static.oss-cn-hangzhou.aliyuncs.com/mobile/android/Authenticator_49.apk", "用于身份验证", "谷歌验证器");
+                mDeleteCacheDialog.dismiss();
+            }
+        });
+    }
+
+    //获取intent意图
+    private boolean intentAvailable(Intent intent) {
+        PackageManager packageManager = getPackageManager();
+        List list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
+    }
+
+    //更新完成弹出安装
+    private void showDownloadSetting() {
+        String packageName = "com.android.providers.downloads";
+        Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + packageName));
+        if (intentAvailable(intent)) {
+            startActivity(intent);
+        }
+    }
+
+    //下载状态
+    private boolean canDownloadState() {
+        try {
+            int state = this.getPackageManager().getApplicationEnabledSetting("com.android.providers.downloads");
+
+            if (state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+                    || state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
+                    || state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_UNTIL_USED) {
+                return false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     private void sendVcode() {

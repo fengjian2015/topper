@@ -40,7 +40,6 @@ import butterknife.ButterKnife;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class OrderFormFragment extends Fragment {
-    private static OrderFormFragment instance;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.refreshLayout)
@@ -49,22 +48,10 @@ public class OrderFormFragment extends Fragment {
     ImageView mIv;
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
-    private View mView;
     private String mCoinName = "BTC";
     private List<OrderListInfo.DataBean> mDataList = new ArrayList<>();
     private OrderRVAdapter mOrderRVAdapter;
     private DBManager mMgr;
-
-    public static OrderFormFragment getInstance() {
-
-        if (instance == null) {
-
-            instance = new OrderFormFragment();
-
-        }
-
-        return instance;
-    }
 
     @Nullable
     @Override
@@ -88,6 +75,29 @@ public class OrderFormFragment extends Fragment {
             mCoinName = event.getCoinName();
         }
         if (msg.equals("幣種切換")) {
+            initData(mCoinName);
+        } else if (msg.equals("确认付款")) {
+            for (OrderListInfo.DataBean info : mDataList) {
+                if (info.getId() == Integer.parseInt(event.getId())) {
+                    info.setStatus_name("等待放币");
+                    mOrderRVAdapter.notifyDataSetChanged();
+                }
+            }
+        } else if (msg.equals("取消订单")) {
+            for (OrderListInfo.DataBean info : mDataList) {
+                if (info.getId() == Integer.parseInt(event.getId())) {
+                    info.setStatus_name("已取消");
+                    mOrderRVAdapter.notifyDataSetChanged();
+                }
+            }
+        } else if (msg.equals("确认放币")) {
+            for (OrderListInfo.DataBean info : mDataList) {
+                if (info.getId() == Integer.parseInt(event.getId())) {
+                    info.setStatus_name("已完成");
+                    mOrderRVAdapter.notifyDataSetChanged();
+                }
+            }
+        } else if (msg.equals("创建订单")) {
             initData(mCoinName);
         }
     }

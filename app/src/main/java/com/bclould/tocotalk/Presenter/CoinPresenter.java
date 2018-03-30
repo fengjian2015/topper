@@ -51,7 +51,7 @@ public class CoinPresenter {
     public void getCoin(final CallBack callBack) {
 
         if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
+//            showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .AssetName(UtilTool.getToken())

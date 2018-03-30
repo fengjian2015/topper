@@ -251,6 +251,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:lineSpacingExtra="@dimen/x8"
                         android:layout_marginTop="@dimen/y25"
                         android:text="1.真实姓名经实名认证后将不能够更改，请如实填写。\n2.本站只接受实名充值，提现时银行卡等姓名信息必须与您的认证姓名一致。\n3.本站有合理的理由怀疑用户提供虚假身份信息时，有权拒绝注册或者冻结、注销已经注册的账户及资产。"
                         android:textSize="@dimen/x26"/>

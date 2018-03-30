@@ -27,12 +27,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bclould.tocotalk.Presenter.CoinPresenter;
 import com.bclould.tocotalk.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
+import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.BaseInfo;
-import com.bclould.tocotalk.model.CoinInfo;
 import com.bclould.tocotalk.model.ReceiptInfo;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
@@ -43,7 +42,6 @@ import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -80,8 +78,6 @@ public class PaymentActivity extends BaseActivity {
     private String mUserId;
     private ReceiptPaymentPresenter mReceiptPaymentPresenter;
     private Dialog mBottomDialog;
-    private CoinPresenter mCoinPresenter;
-    List<CoinInfo.DataBean> mDataBeanList = new ArrayList<>();
     private int mId;
     private String mType;
     private String mCoinName;
@@ -103,18 +99,8 @@ public class PaymentActivity extends BaseActivity {
         ButterKnife.bind(this);
         initIntent();
         mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);
-        mCoinPresenter = new CoinPresenter(this);
-        initData();
     }
 
-    private void initData() {
-        mCoinPresenter.getCoin(new CoinPresenter.CallBack() {
-            @Override
-            public void send(List<CoinInfo.DataBean> address) {
-                mDataBeanList.addAll(address);
-            }
-        });
-    }
 
     private void initIntent() {
         mType = getIntent().getStringExtra("type");
@@ -401,7 +387,7 @@ public class PaymentActivity extends BaseActivity {
         TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
         Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new BottomDialogRVAdapter2(this, mDataBeanList));
+        recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mDataBeanList));
         addCoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

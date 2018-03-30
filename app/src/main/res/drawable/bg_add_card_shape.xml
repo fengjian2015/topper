@@ -6,5 +6,4 @@
 
     <solid android:color="#FA8294"/>
 
-    <stroke android:color="@android:color/black" android:width="@dimen/x2"/>
 </shape>

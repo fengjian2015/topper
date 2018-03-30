@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,11 +23,18 @@ import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
-import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter4;
+import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
 import com.bclould.tocotalk.ui.adapter.CloudCircleVPAdapter;
+import com.bclould.tocotalk.ui.fragment.BuyFragment;
+import com.bclould.tocotalk.ui.fragment.OrderFormFragment;
+import com.bclould.tocotalk.ui.fragment.SellFragment;
 import com.bclould.tocotalk.utils.MessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,7 +50,6 @@ import static com.bclould.tocotalk.R.style.BottomDialog;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class OtcActivity extends BaseActivity {
 
-    String[] mCoinArr = {"TPC", "BTC", "LTC", "DOGO", "ZEC", "LSK", "MAID", "SHC", "ANS"};
     @Bind(R.id.tv_state)
     TextView mTvState;
     @Bind(R.id.rl_selector_state)
@@ -80,7 +87,16 @@ public class OtcActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otc);
         ButterKnife.bind(this);
+        initFragment();
         init();
+    }
+
+    List<Fragment> mFragmentList = new ArrayList<>();
+
+    private void initFragment() {
+        mFragmentList.add(new BuyFragment());
+        mFragmentList.add(new SellFragment());
+        mFragmentList.add(new OrderFormFragment());
     }
 
     private void init() {
@@ -92,12 +108,16 @@ public class OtcActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+        for (Fragment fragment : mFragmentList) {
+            getSupportFragmentManager().beginTransaction().remove(fragment);
+            getSupportFragmentManager().beginTransaction().hide(fragment);
+        }
     }
 
     //初始化ViewPager
     private void initViewPager() {
 
-        CloudCircleVPAdapter cloudCircleVPAdapter = new CloudCircleVPAdapter(getSupportFragmentManager());
+        CloudCircleVPAdapter cloudCircleVPAdapter = new CloudCircleVPAdapter(getSupportFragmentManager(), mFragmentList);
 
         mCloudCircleVp.setAdapter(cloudCircleVPAdapter);
 
@@ -210,7 +230,7 @@ public class OtcActivity extends BaseActivity {
         TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
         Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new BottomDialogRVAdapter4(this, mCoinArr));
+        recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mDataBeanList));
         addCoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -221,7 +241,7 @@ public class OtcActivity extends BaseActivity {
         tvTitle.setText("选择币种");
     }
 
-    public void hideDialog(String name) {
+    public void hideDialog(String name, int id) {
         mBottomDialog.dismiss();
         mTvCoinName.setText(name);
         MessageEvent messageEvent = new MessageEvent("幣種切換");

@@ -1,6 +1,5 @@
 package com.bclould.tocotalk.ui.fragment;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -58,23 +57,19 @@ public class MyFragment extends Fragment {
     ImageView mIv3;
     @Bind(R.id.rl_system_set)
     RelativeLayout mRlSystemSet;
+
     private DBManager mMgr;
 
     public static MyFragment getInstance() {
-
         if (instance == null) {
-
             instance = new MyFragment();
-
         }
-
         return instance;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_my, container, false);
         ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
@@ -106,19 +101,11 @@ public class MyFragment extends Fragment {
             mIvTouxiang.setImageBitmap(bitmap);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public void onResume() {
-        super.onResume();
-
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
-
 
     @OnClick({R.id.rl_personal_data, R.id.rl_autonym_attestation, R.id.rl_security_center, R.id.rl_system_set})
     public void onViewClicked(View view) {

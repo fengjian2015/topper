@@ -10,11 +10,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.ui.widget.ZoomImageView;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by GA on 2018/3/7.
@@ -26,6 +30,8 @@ public class ImageViewFragment extends Fragment {
     private ZoomImageView imageGiv;
     private String mBigImgUrl;
     private TextView mArtworkMaster;
+    private DBManager mMgr;
+    private int mId;
 
     public View onCreateView(android.view.LayoutInflater inflater,
                              android.view.ViewGroup container,
@@ -33,7 +39,7 @@ public class ImageViewFragment extends Fragment {
         View view = inflater.inflate(R.layout.layout_images_view_item, container,
                 false);
         init(view);
-//        loadImage(imageUrl);
+        loadImage(imageUrl);
         return view;
     }
 
@@ -59,6 +65,10 @@ public class ImageViewFragment extends Fragment {
                                 imageGiv.setImageDrawable(resource);
                                 mArtworkMaster.setVisibility(View.GONE);
                                 loadBar.setVisibility(View.GONE);
+                                mMgr.updateImageType(mId + "", 1);
+                                MessageEvent messageEvent = new MessageEvent("查看原图");
+                                messageEvent.setId(mId + "");
+                                EventBus.getDefault().post(messageEvent);
                             }
                         }
                     });
@@ -75,16 +85,29 @@ public class ImageViewFragment extends Fragment {
     }
 
     public void loadImage(String url) {
-        imageGiv.setImageDrawable(Drawable.createFromPath(url));
+        if (url.startsWith("https://")) {
+            Glide.with(ImageViewFragment.this).load(url).into(new SimpleTarget<Drawable>() {
+                @Override
+                public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                    if (resource != null) {
+                        imageGiv.setImageDrawable(resource);
+                    }
+                }
+            });
+        } else {
+            imageGiv.setImageDrawable(Drawable.createFromPath(url));
+        }
     }
 
     public String getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(String imageUrl, String bigImgUrl) {
+    public void setImageUrl(String imageUrl, String bigImgUrl, DBManager mgr, int id) {
         this.imageUrl = imageUrl;
         this.mBigImgUrl = bigImgUrl;
+        mMgr = mgr;
+        mId = id;
     }
 }
 

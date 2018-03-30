@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.SerMap;
 import com.bclould.tocotalk.ui.fragment.ImageViewFragment;
 
@@ -30,10 +31,13 @@ public class ImageViewActivity extends FragmentActivity {
     private ViewPager imageVp;
     private int currentPage;
     private HashMap<String, String> mImageMap;
+    private DBManager mMgr;
+    private int mId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mMgr = new DBManager(this);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
@@ -47,6 +51,9 @@ public class ImageViewActivity extends FragmentActivity {
                 SerMap serMap = (SerMap) bundle.getSerializable("imgMap");
                 mImageMap = serMap.getMap();
             }
+            if (bundle.containsKey("id")) {
+                mId = bundle.getInt("id");
+            }
         }
         setContentView(R.layout.activity_images_view);
         findView();
@@ -57,7 +64,7 @@ public class ImageViewActivity extends FragmentActivity {
         fragList = new ArrayList<Fragment>();
         for (int i = 0; i < imageList.size(); i++) {
             ImageViewFragment imageVF = new ImageViewFragment();
-            imageVF.setImageUrl(imageList.get(i), mImageMap.get(imageList.get(i)));
+            imageVF.setImageUrl(imageList.get(i), mImageMap.get(imageList.get(i)), mMgr, mId);
             fragList.add(imageVF);
         }
         // 类似缓存

@@ -27,8 +27,6 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class SystemSetActivity extends BaseActivity {
-
-    private static final String DISTURB = "disturb";
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.iv_concern_we)
@@ -73,7 +71,6 @@ public class SystemSetActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_system_set);
         ButterKnife.bind(this);
-        finish();
         MyApp.getInstance().addActivity(this);
     }
 

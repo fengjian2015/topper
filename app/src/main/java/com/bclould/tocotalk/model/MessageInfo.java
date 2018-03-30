@@ -21,6 +21,15 @@ public class MessageInfo {
     private String voiceTime;
     private int sendStatus;
     private int msgType;
+    private int imageType;
+
+    public int getImageType() {
+        return imageType;
+    }
+
+    public void setImageType(int imageType) {
+        this.imageType = imageType;
+    }
 
     public int getMsgType() {
         return msgType;

@@ -8,9 +8,10 @@ import java.util.List;
 
 public class CoinInfo {
 
+
     /**
      * status : 1
-     * data : [{"logo":"https://www.bclould.com:8112/images/coin/coin_ltc.png","name":"LTC","coin_over":"0"},{"logo":"https://www.bclould.com:8112/images/coin/coin_doge.png","name":"DOGE","coin_over":"0"},{"logo":"https://www.bclould.com:8112/images/coin/coin_zec.png","name":"ZEC","coin_over":"0"},{"logo":"https://www.bclould.com:8112/images/coin/coin_lsk.png","name":"LSK","coin_over":"0"},{"logo":"https://www.bclould.com:8112/images/coin/coin_maid.png","name":"MAID","coin_over":"0"},{"logo":"https://www.bclould.com:8112/images/coin/coin_shc.png","name":"SHC","coin_over":"0"},{"logo":"https://www.bclould.com:8112/images/coin/dbb8c7597187cf99577350caee0d6387f46c6891.png","name":"BTC","coin_over":"0"},{"logo":"https://www.bclould.com:8112/images/coin/coin_ans.png","name":"ANS","coin_over":"0"},{"logo":"https://www.bclould.com:8112/images/coin/kuOFxXaZKWNVZJ3yTS1bNUR4leHd4e8gbpLheqmZ.png","name":"TPC","coin_over":"0.059"}]
+     * data : [{"id":2,"logo":"https://www.bclould.com:8112/images/coin/coin_ltc.png","name":"LTC"},{"id":3,"logo":"https://www.bclould.com:8112/images/coin/coin_doge.png","name":"DOGE"},"..."]
      */
 
     private int status;
@@ -34,14 +35,14 @@ public class CoinInfo {
 
     public static class DataBean {
         /**
+         * id : 2
          * logo : https://www.bclould.com:8112/images/coin/coin_ltc.png
          * name : LTC
-         * coin_over : 0
          */
 
+        private int id;
         private String logo;
         private String name;
-        private int id;
 
         public int getId() {
             return id;

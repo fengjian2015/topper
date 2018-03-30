@@ -52,6 +52,7 @@ public class DBManager {
         values.put("voiceTime", messageInfo.getVoiceTime());
         values.put("sendStatus", messageInfo.getSendStatus());
         values.put("msgType", messageInfo.getMsgType());
+        values.put("imageType", messageInfo.getImageType());
         int id = (int) db.insert("MessageRecord", null, values);
         UtilTool.Log("日志", "添加成功" + messageInfo.toString());
         db.close();
@@ -93,6 +94,7 @@ public class DBManager {
                 messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
                 messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
                 messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
+                messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -154,6 +156,7 @@ public class DBManager {
                 messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
                 messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
                 messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
+                messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
                 messageInfos.add(messageInfo);
             }
 
@@ -174,6 +177,14 @@ public class DBManager {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("state", state);
+        db.update("MessageRecord", values, "id=?", new String[]{id});
+        db.close();
+    }
+
+    public void updateImageType(String id, int imageType) {
+        db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("imageType", imageType);
         db.update("MessageRecord", values, "id=?", new String[]{id});
         db.close();
     }
@@ -386,7 +397,7 @@ public class DBManager {
     public void updateMessageHint(int id, int status) {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("sendStatus", 1);
+        values.put("sendStatus", status);
         db.update("MessageRecord", values, "id=?", new String[]{id + ""});
         db.close();
     }
