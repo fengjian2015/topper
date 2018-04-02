@@ -1,7 +1,9 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -9,21 +11,27 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bclould.tocotalk.Presenter.LoginPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.utils.AnimatorTool;
+import com.bclould.tocotalk.utils.MySharedPreferences;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tocotalk.Presenter.LoginPresenter.LOGINSET;
+
 /**
  * Created by GA on 2018/3/12.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class LoginSetActivity extends BaseActivity {
     @Bind(R.id.bark)
     ImageView mBark;
@@ -49,21 +57,76 @@ public class LoginSetActivity extends BaseActivity {
     EditText mEtVcode;
     @Bind(R.id.btn_finish)
     Button mBtnFinish;
+    @Bind(R.id.ll_check_box)
+    LinearLayout mLlCheckBox;
     private boolean isEye;
+    private LoginPresenter mLoginPresenter;
+    private int mIndex;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_set);
         ButterKnife.bind(this);
+        mLoginPresenter = new LoginPresenter(this);
         init();
     }
 
     private void init() {
-        mCbNoVerify.setChecked(true);
+        String index = MySharedPreferences.getInstance().getString(LOGINSET);
+        if (!index.isEmpty()) {
+            switch (Integer.parseInt(index)) {
+                case 0:
+                    mCbNoVerify.setChecked(true);
+                    break;
+                case 1:
+                    mCbEmail.setChecked(true);
+                    break;
+                case 2:
+                    mCbGoogle.setChecked(true);
+                    break;
+            }
+        } else {
+            mCbNoVerify.setChecked(true);
+        }
+        initCheckBox();
     }
 
-    @OnClick({R.id.bark,R.id.rl_eye, R.id.btn_finish})
+    private void initCheckBox() {
+        for (int i = 0; i < mLlCheckBox.getChildCount(); i++) {
+            View childAt = mLlCheckBox.getChildAt(i);
+            childAt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int index = mLlCheckBox.indexOfChild(view);
+                    selectorCheck(index);
+                    mIndex = index;
+                }
+            });
+        }
+    }
+
+    private void selectorCheck(int index) {
+        switch (index) {
+            case 0:
+                mCbNoVerify.setChecked(true);
+                mCbEmail.setChecked(false);
+                mCbGoogle.setChecked(false);
+                break;
+            case 1:
+                mCbNoVerify.setChecked(false);
+                mCbEmail.setChecked(true);
+                mCbGoogle.setChecked(false);
+                break;
+            case 2:
+                mCbNoVerify.setChecked(false);
+                mCbEmail.setChecked(false);
+                mCbGoogle.setChecked(true);
+                break;
+        }
+    }
+
+    @OnClick({R.id.bark, R.id.rl_eye, R.id.btn_finish})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -74,13 +137,21 @@ public class LoginSetActivity extends BaseActivity {
                 eyeShowHidden(isEye);
                 break;
             case R.id.btn_finish:
-                if(checkEdit()){
-
+                if (checkEdit()) {
+                    submit();
                 }
                 break;
         }
     }
+
+    private void submit() {
+        String pw = mEtPayPassword.getText().toString();
+        String googleCode = mEtVcode.getText().toString();
+        mLoginPresenter.loginValidateTypeSetting(mIndex, pw, googleCode);
+    }
+
     //输入框的文本显示和隐藏
+
     private void eyeShowHidden(boolean isEye) {
         if (isEye) {
             mEye.setSelected(true);
@@ -99,7 +170,7 @@ public class LoginSetActivity extends BaseActivity {
             Toast.makeText(this, getString(R.string.toast_password), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtPayPassword);
         } else if (mEtVcode.getText().toString().trim().equals("")) {
-            Toast.makeText(this, getString(R.string.toast_password), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_google_code), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtVcode);
         } else {
             return true;

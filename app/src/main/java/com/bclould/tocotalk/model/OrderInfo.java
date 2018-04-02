@@ -15,7 +15,7 @@ public class OrderInfo implements Serializable {
      */
 
     private int status;
-    private String massage;
+    private String message;
     private DataBean data;
 
     public int getStatus() {
@@ -26,12 +26,12 @@ public class OrderInfo implements Serializable {
         this.status = status;
     }
 
-    public String getMassage() {
-        return massage;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMassage(String massage) {
-        this.massage = massage;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public DataBean getData() {

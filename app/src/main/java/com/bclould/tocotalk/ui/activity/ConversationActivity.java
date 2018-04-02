@@ -583,6 +583,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             EventBus.getDefault().post(new MessageEvent("处理未读消息"));
         } else if (msg.equals("发红包了")) {
             initData();
+        }else if (msg.equals("转账了")) {
+            initData();
         } else if (msg.equals("打开相册")) {
             selectorImages();
         } else if (msg.equals("打开相机")) {
@@ -1012,6 +1014,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                                     message.setBody("[" + postfix2 + "]:" + key2);
                                     chat.sendMessage(message);
                                     mMgr.updateMessageHint(info.getId(), 1);
+                                    info.setSendStatus(1);
                                     mChatAdapter.notifyDataSetChanged();
                                     return;
                                 } catch (Exception e) {

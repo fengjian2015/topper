@@ -52,6 +52,7 @@ public class BuyFragment extends Fragment {
     private String mCoinName = "BTC";
     private List<DealListInfo.DataBean> mDataList = new ArrayList<>();
     private BuySellRVAdapter mBuySellRVAdapter;
+    private BuySellPresenter mBuySellPresenter;
 
 
     @Nullable
@@ -60,12 +61,18 @@ public class BuyFragment extends Fragment {
         if (mView == null)
             mView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_buy, container, false);
         ButterKnife.bind(this, mView);
+        mBuySellPresenter = new BuySellPresenter(getContext());
         initRecyclerView();
         initData(mCoinName);
+        bindBankStatus();
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         initListener();
         return mView;
+    }
+
+    private void bindBankStatus() {
+        mBuySellPresenter.bindBankStatus();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -109,8 +116,7 @@ public class BuyFragment extends Fragment {
 
     private void initData(String coin) {
         mDataList.clear();
-        BuySellPresenter buySellPresenter = new BuySellPresenter(getContext());
-        buySellPresenter.getDealList(1, coin, new BuySellPresenter.CallBack() {
+        mBuySellPresenter.getDealList(1, coin, new BuySellPresenter.CallBack() {
             @Override
             public void send(List<DealListInfo.DataBean> dataBean, String coin) {
                 if (dataBean.size() != 0) {

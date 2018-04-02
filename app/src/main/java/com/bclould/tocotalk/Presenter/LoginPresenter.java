@@ -1,17 +1,25 @@
 package com.bclould.tocotalk.Presenter;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.LoginInfo;
+import com.bclould.tocotalk.model.LoginRecordInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.activity.LoginActivity;
+import com.bclould.tocotalk.ui.activity.LoginSetActivity;
 import com.bclould.tocotalk.ui.activity.MainActivity;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
+
+import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -22,23 +30,25 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2017/11/15.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class LoginPresenter {
 
     public static final String TOKEN = "token";
     public static final String USERID = "user_id";
     public static final String LOGINPW = "login_pw";
-    private final LoginActivity mLoginActivity;
+    public static final String LOGINSET = "login_set";
+    private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
     public static final String MYUSERNAME = "my_username";
     public static final String EMAIL = "email";
 
-    public LoginPresenter(LoginActivity loginActivity) {
-        mLoginActivity = loginActivity;
+    public LoginPresenter(Context context) {
+        mContext = context;
     }
 
     private void showDialog() {
         if (mProgressDialog == null) {
-            mProgressDialog = LoadingProgressDialog.createDialog(mLoginActivity);
+            mProgressDialog = LoadingProgressDialog.createDialog(mContext);
             mProgressDialog.setMessage("登录中...");
         }
 
@@ -54,9 +64,9 @@ public class LoginPresenter {
 
     public void Login(final String email, final String password) {
 
-        if (UtilTool.isNetworkAvailable(mLoginActivity)) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
-            RetrofitUtil.getInstance(mLoginActivity)
+            RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .login(email, password)
                     .subscribeOn(Schedulers.io())
@@ -71,7 +81,7 @@ public class LoginPresenter {
                         public void onNext(LoginInfo baseInfo) {
                             if (baseInfo.getStatus() != 1) {
                                 hideDialog();
-                                Toast.makeText(mLoginActivity, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
 //                                getCaptcha();
                             } else {
                                 UtilTool.Log("日志", baseInfo.getData().getName());
@@ -81,9 +91,10 @@ public class LoginPresenter {
                                 MySharedPreferences.getInstance().setString(EMAIL, email);
                                 MySharedPreferences.getInstance().setString(LOGINPW, password);
                                 hideDialog();
-                                mLoginActivity.startActivity(new Intent(mLoginActivity, MainActivity.class));
-                                mLoginActivity.finish();
-                                Toast.makeText(mLoginActivity, mLoginActivity.getString(R.string.toast_succeed), Toast.LENGTH_SHORT).show();
+                                mContext.startActivity(new Intent(mContext, MainActivity.class));
+                                LoginActivity activity = (LoginActivity) mContext;
+                                activity.finish();
+                                Toast.makeText(mContext, mContext.getString(R.string.toast_succeed), Toast.LENGTH_SHORT).show();
 //                                imLogin(password, baseInfo.getData().getName());
                             }
                         }
@@ -91,7 +102,7 @@ public class LoginPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mLoginActivity, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -101,70 +112,95 @@ public class LoginPresenter {
                     });
         } else {
 
-            Toast.makeText(mLoginActivity, mLoginActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
 
         }
     }
 
-    /*private void imLogin(final String password, final String user) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                AbstractXMPPConnection connection = XmppConnection.getInstance().getConnection();
-                try {
-                    if (connection.isConnected()) {
-                        connection.login(user, password);
-                        Message message = new Message();
-                        mHandler.sendMessage(message);
-                    }
-                } catch (Exception e) {
-                    UtilTool.Log("fsdafa", e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-    Handler mHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-
-            UtilTool.Log("fsdafa", "登录成功");
-            EventBus.getDefault().post(new MessageEvent("登录成功"));
-
-        }
-    };
-
-    public void getCaptcha() {
-
-        if (UtilTool.isNetworkAvailable(mLoginActivity)) {
+    public void loginRecord(final CallBack callBack) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(Constants.BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-            MyService myService = retrofit.create(MyService.class);
-
-            myService.getCaptcha("https://www.bclould.com:8098/api/captcha")
-                    .enqueue(new Callback<ResponseBody>() {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .loginRecord(UtilTool.getToken())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<LoginRecordInfo>() {
                         @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            if (response.isSuccessful()) {
-                                hideDialog();
-                                mLoginActivity.setData(response);
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(LoginRecordInfo loginRecordInfo) {
+                            hideDialog();
+                            if (loginRecordInfo.getStatus() == 1) {
+                                callBack.send(loginRecordInfo.getData());
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            hideDialog();
+                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void loginValidateTypeSetting(final int index, String pw, String googleCode) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .loginValidateTypeSetting(UtilTool.getToken(), index + "", pw, googleCode)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(BaseInfo baseInfo) {
+                            hideDialog();
+                            if (baseInfo.getStatus() == 1) {
+                                LoginSetActivity activity = (LoginSetActivity) mContext;
+                                activity.finish();
+                                MySharedPreferences.getInstance().setString(LOGINSET, index + "");
+                            } else {
+                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        public void onError(Throwable e) {
                             hideDialog();
+                            UtilTool.Log("登录设置", e.getMessage());
+                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
                         }
                     });
         } else {
-
-            Toast.makeText(mLoginActivity, mLoginActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
-    }*/
+    }
+
+    //定义接口
+    public interface CallBack {
+        void send(List<LoginRecordInfo.DataBean> data);
+    }
 }

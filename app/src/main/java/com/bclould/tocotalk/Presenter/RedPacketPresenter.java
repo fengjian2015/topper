@@ -12,6 +12,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.GrabRedInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
+import com.bclould.tocotalk.ui.activity.ChatTransferActivity;
 import com.bclould.tocotalk.ui.activity.PayPasswordActivity;
 import com.bclould.tocotalk.ui.activity.SendQRCodeRedActivity;
 import com.bclould.tocotalk.ui.activity.SendRedPacketActivity;
@@ -145,13 +146,58 @@ public class RedPacketPresenter {
                         public void onNext(GrabRedInfo baseInfo) {
                             if (baseInfo.getStatus() != 2) {
                                 callBack.send(baseInfo.getData());
-                            }else if (baseInfo.getStatus() == 4) {
+                            } else if (baseInfo.getStatus() == 4) {
                                 Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                            }else if(baseInfo.getStatus() == 2){
+                            } else if (baseInfo.getStatus() == 2) {
                                 Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                             hideDialog();
 
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            hideDialog();
+                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void transgerfriend(String coin, String user, double count, String password, String remark) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .friendTransfer(UtilTool.getToken(), coin, user, count, password, remark)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(BaseInfo baseInfo) {
+                            hideDialog();
+                            if (baseInfo.getStatus() == 1) {
+                                ChatTransferActivity activity = (ChatTransferActivity) mContext;
+                                activity.sendMessage();
+                            } else if (baseInfo.getMessage().equals("尚未设置交易密码")) {
+                                showSetPwDialog();
+                            } else if (baseInfo.getMessage().equals("交易密码不正确")) {
+                                ChatTransferActivity activity = (ChatTransferActivity) mContext;
+                                activity.showHintDialog();
+                            }
+                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

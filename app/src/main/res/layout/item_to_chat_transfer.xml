@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_touxiang"
+        android:layout_width="@dimen/x80"
+        android:layout_height="@dimen/x80"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y20"
+        android:scaleType="fitXY"
+        android:src="@mipmap/img_nfriend_headshot1"/>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_redpacket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/y20"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y20"
+        android:layout_toLeftOf="@+id/iv_touxiang"
+        app:cardBackgroundColor="#FE5419"
+        app:cardCornerRadius="@dimen/x20">
+
+        <RelativeLayout
+            android:layout_width="@dimen/x450"
+            android:layout_height="@dimen/y200">
+
+            <TextView
+                android:id="@+id/tv_remark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_marginTop="@dimen/y20"
+                android:layout_toRightOf="@+id/iv_transfer"
+                android:gravity="center_vertical"
+                android:text="转账给XXX"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x30"/>
+
+            <TextView
+                android:id="@+id/tv_coin_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_remark"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_marginTop="@dimen/y20"
+                android:layout_toRightOf="@+id/iv_transfer"
+                android:gravity="center_vertical"
+                android:text="100.00TPC"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x26"/>
+
+            <ImageView
+                android:id="@+id/iv_transfer"
+                android:layout_width="@dimen/x60"
+                android:layout_height="@dimen/x60"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginTop="@dimen/y30"
+                android:src="@mipmap/icon_tr_b"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y60"
+                android:layout_alignParentBottom="true"
+                android:background="#90ffffff"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/x30"
+                android:text="转账"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x22"/>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

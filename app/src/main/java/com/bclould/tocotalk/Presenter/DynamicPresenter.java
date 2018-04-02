@@ -87,12 +87,12 @@ public class DynamicPresenter {
         }
     }
 
-    public void dynamicList(String page, String pageSize, final CallBack2 callBack2) {
+    public void dynamicList(String page, String pageSize, String userList, final CallBack2 callBack2) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .dynamicList(UtilTool.getToken(), page, pageSize)
+                    .dynamicList(UtilTool.getToken(), page, pageSize, userList)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<DynamicListInfo>() {

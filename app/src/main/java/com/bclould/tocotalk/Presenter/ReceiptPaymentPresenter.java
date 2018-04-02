@@ -15,6 +15,7 @@ import com.bclould.tocotalk.model.TransferListInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.activity.PayPasswordActivity;
 import com.bclould.tocotalk.ui.activity.PaymentActivity;
+import com.bclould.tocotalk.ui.activity.RealNameC1Activity;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.UtilTool;
@@ -74,7 +75,10 @@ public class ReceiptPaymentPresenter {
                         public void onNext(BaseInfo baseInfo) {
                             if (baseInfo.getStatus() == 1) {
                                 callBack.send(baseInfo.getData());
+                            } else if (baseInfo.getMessage().equals("请先进行实名认证")) {
+                                showHintDialog(0);
                             }
+                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -110,12 +114,14 @@ public class ReceiptPaymentPresenter {
                         @Override
                         public void onNext(ReceiptInfo receiptInfo) {
                             if (receiptInfo.getMessage().equals("尚未设置交易密码")) {
-                                showSetPwDialog();
+                                showHintDialog(1);
                             } else if (receiptInfo.getMessage().equals("交易密码不正确")) {
                                 PaymentActivity activity = (PaymentActivity) mContext;
                                 activity.showHintDialog();
                             } else if (receiptInfo.getStatus() == 1) {
                                 callBack2.send(receiptInfo.getData());
+                            } else if (receiptInfo.getMessage().equals("请先进行实名认证")) {
+                                showHintDialog(0);
                             }
                             Toast.makeText(mContext, receiptInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -136,10 +142,17 @@ public class ReceiptPaymentPresenter {
         }
     }
 
-    private void showSetPwDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_set_pw, mContext);
+    private void showHintDialog(final int type) {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext);
         deleteCacheDialog.show();
-        deleteCacheDialog.setCanceledOnTouchOutside(false);
+        switch (type) {
+            case 0:
+                deleteCacheDialog.setTitle("请先实名认证！");
+                break;
+            case 1:
+                deleteCacheDialog.setTitle("请先设置交易密码！");
+                break;
+        }
         Button retry = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         Button findPassword = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
         retry.setOnClickListener(new View.OnClickListener() {
@@ -152,7 +165,14 @@ public class ReceiptPaymentPresenter {
             @Override
             public void onClick(View view) {
                 deleteCacheDialog.dismiss();
-                mContext.startActivity(new Intent(mContext, PayPasswordActivity.class));
+                switch (type) {
+                    case 0:
+                        mContext.startActivity(new Intent(mContext, RealNameC1Activity.class));
+                        break;
+                    case 1:
+                        mContext.startActivity(new Intent(mContext, PayPasswordActivity.class));
+                        break;
+                }
             }
         });
     }
@@ -173,12 +193,14 @@ public class ReceiptPaymentPresenter {
                         @Override
                         public void onNext(BaseInfo baseInfo) {
                             if (baseInfo.getMessage().equals("尚未设置交易密码")) {
-                                showSetPwDialog();
+                                showHintDialog(1);
                             } else if (baseInfo.getMessage().equals("交易密码不正确")) {
                                 PaymentActivity activity = (PaymentActivity) mContext;
                                 activity.showHintDialog();
                             } else if (baseInfo.getStatus() == 1) {
                                 callBack3.send(baseInfo.getData().getUrl());
+                            } else if (baseInfo.getMessage().equals("请先进行实名认证")) {
+                                showHintDialog(0);
                             }
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -252,9 +274,10 @@ public class ReceiptPaymentPresenter {
                         public void onNext(ReceiptInfo receiptInfo) {
                             if (receiptInfo.getStatus() == 1) {
                                 callBack5.send(receiptInfo.getData());
-                            } else {
-                                Toast.makeText(mContext, receiptInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                            } else if (receiptInfo.getMessage().equals("请先进行实名认证")) {
+                                showHintDialog(0);
                             }
+                            Toast.makeText(mContext, receiptInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

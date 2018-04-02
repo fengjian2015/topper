@@ -370,7 +370,7 @@ public class SendRedPacketActivity extends AppCompatActivity {
             messageInfo.setState(0);
             messageInfo.setRedId(id);
             mMgr.addMessage(messageInfo);
-            String hint = "[" + mCoin + "]" + mRemark;
+            String hint = "[红包]";
             if (mMgr.findConversation(mUser)) {
                 mMgr.updateConversation(mUser, 0, hint, time);
             } else {

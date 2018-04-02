@@ -491,6 +491,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
+        <!--登录记录页面-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.LoginRecordActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
         <!--支付中心页面-->
         <activity
             android:name="com.bclould.tocotalk.ui.activity.PayCentreActivity"
@@ -512,6 +518,12 @@
         <!--扫码支付页面-->
         <activity
             android:name="com.bclould.tocotalk.ui.activity.PaymentActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--扫码支付页面-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.ChatTransferActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 

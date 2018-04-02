@@ -166,6 +166,7 @@
                         android:layout_marginLeft="@dimen/x30"
                         android:layout_toRightOf="@+id/xx"
                         android:hint="选择币种"
+                        android:text="BTC"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/x30"/>
 
@@ -220,6 +221,7 @@
                         android:layout_marginLeft="@dimen/x30"
                         android:layout_toRightOf="@+id/xx2"
                         android:hint="选择国家"
+                        android:text="中国"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/x30"/>
 
@@ -496,7 +498,6 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/x30"
                         android:layout_toRightOf="@+id/xx5"
-                        android:text="65000"
                         android:textColor="@android:color/black"/>
 
                     <TextView

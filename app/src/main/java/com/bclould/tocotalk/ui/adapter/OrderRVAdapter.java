@@ -110,7 +110,7 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                mTvName.setText(dataBean.getUser_name());
+                mTvName.setText(dataBean.getTo_user_name());
                 mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape2));
                 mTvCoinType.setTextColor(mContext.getColor(R.color.green2));
             }

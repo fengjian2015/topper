@@ -53,6 +53,33 @@ public class BaseInfo {
         private String coin_id;
         private String number;
         private String mark;
+        private String total;
+        private String USDT;
+        private String CNY;
+
+        public String getUSDT() {
+            return USDT;
+        }
+
+        public void setUSDT(String USDT) {
+            this.USDT = USDT;
+        }
+
+        public String getCNY() {
+            return CNY;
+        }
+
+        public void setCNY(String CNY) {
+            this.CNY = CNY;
+        }
+
+        public String getTotal() {
+            return total;
+        }
+
+        public void setTotal(String total) {
+            this.total = total;
+        }
 
         public String getRemark() {
             return mark;

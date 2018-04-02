@@ -1,5 +1,6 @@
 package com.bclould.tocotalk.Presenter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -11,6 +12,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.RedRecordInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
+import com.bclould.tocotalk.ui.activity.BankCardActivity;
 import com.bclould.tocotalk.ui.activity.PayPasswordActivity;
 import com.bclould.tocotalk.ui.activity.PushBuyingActivity;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
@@ -19,6 +21,8 @@ import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.text.DecimalFormat;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -31,16 +35,16 @@ import io.reactivex.schedulers.Schedulers;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class PushBuyingPresenter {
-    private final PushBuyingActivity mPushBuyingActivity;
+    private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
 
-    public PushBuyingPresenter(PushBuyingActivity pushBuyingActivity) {
-        mPushBuyingActivity = pushBuyingActivity;
+    public PushBuyingPresenter(Context context) {
+        mContext = context;
     }
 
     private void showDialog() {
         if (mProgressDialog == null) {
-            mProgressDialog = LoadingProgressDialog.createDialog(mPushBuyingActivity);
+            mProgressDialog = LoadingProgressDialog.createDialog(mContext);
             mProgressDialog.setMessage("加载中...");
         }
 
@@ -62,9 +66,9 @@ public class PushBuyingPresenter {
         String s = paymentTime.substring(0, paymentTime.indexOf("分"));
         int time = Integer.parseInt(s);
 
-        if (UtilTool.isNetworkAvailable(mPushBuyingActivity)) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
-            RetrofitUtil.getInstance(mPushBuyingActivity)
+            RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .publishDeal(UtilTool.getToken(), type, coin, state, "CNY", priced, countd, time, payment, mind, maxd, remark, password)
                     .subscribeOn(Schedulers.io())
@@ -78,20 +82,26 @@ public class PushBuyingPresenter {
                         @Override
                         public void onNext(BaseInfo baseInfo) {
                             if (baseInfo.getStatus() == 1) {
-                                mPushBuyingActivity.finish();
+                                PushBuyingActivity activity = (PushBuyingActivity) mContext;
+                                activity.finish();
                                 EventBus.getDefault().post(new MessageEvent("发布交易"));
                             } else if (baseInfo.getMessage().equals("尚未设置交易密码")) {
-                                showSetPwDialog();
+                                showHintDialog(1);
+                            } else if (baseInfo.getMessage().equals("交易密码不正确")) {
+                                PushBuyingActivity activity = (PushBuyingActivity) mContext;
+                                activity.showHintDialog();
+                            } else if (baseInfo.getMessage().equals("请先绑定银行卡")) {
+                                showHintDialog(0);
                             }
                             hideDialog();
                             UtilTool.Log("PushBuyingPresenter", baseInfo.getMessage());
-                            Toast.makeText(mPushBuyingActivity, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mPushBuyingActivity, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -100,14 +110,22 @@ public class PushBuyingPresenter {
                         }
                     });
         } else {
-            Toast.makeText(mPushBuyingActivity, mPushBuyingActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void showSetPwDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_set_pw, mPushBuyingActivity);
+
+    private void showHintDialog(final int type) {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext);
         deleteCacheDialog.show();
-        deleteCacheDialog.setCanceledOnTouchOutside(false);
+        switch (type) {
+            case 0:
+                deleteCacheDialog.setTitle("请先绑定银行卡！");
+                break;
+            case 1:
+                deleteCacheDialog.setTitle("请先设置交易密码！");
+                break;
+        }
         Button retry = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         Button findPassword = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
         retry.setOnClickListener(new View.OnClickListener() {
@@ -120,17 +138,63 @@ public class PushBuyingPresenter {
             @Override
             public void onClick(View view) {
                 deleteCacheDialog.dismiss();
-                mPushBuyingActivity.startActivity(new Intent(mPushBuyingActivity, PayPasswordActivity.class));
+                switch (type) {
+                    case 0:
+                        mContext.startActivity(new Intent(mContext, BankCardActivity.class));
+                        break;
+                    case 1:
+                        mContext.startActivity(new Intent(mContext, PayPasswordActivity.class));
+                        break;
+                }
             }
         });
     }
 
-    public void getCoinPrice(String name) {
+    public void getCoinPrice(String name, final CallBack2 callBack2) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .assetsValuation(UtilTool.getToken(), name)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                        }
 
+                        @Override
+                        public void onNext(BaseInfo baseInfo) {
+                            if (baseInfo.getStatus() == 1) {
+                                double usdt = Double.parseDouble(baseInfo.getData().getUSDT());
+                                double cny = Double.parseDouble(baseInfo.getData().getCNY());
+                                DecimalFormat df = new DecimalFormat("#.00");
+                                String price = df.format(cny * usdt);
+                                callBack2.send(price);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
     }
 
     //定义接口
     public interface CallBack {
         void send(RedRecordInfo.DataBean data);
+    }
+
+    //定义接口
+    public interface CallBack2 {
+        void send(String price);
     }
 }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.AppInfo;
+import com.bclould.tocotalk.ui.activity.ChatTransferActivity;
 import com.bclould.tocotalk.ui.activity.LocationActivity;
 import com.bclould.tocotalk.ui.activity.SendRedPacketActivity;
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -92,6 +93,10 @@ public class AppsAdapter extends BaseAdapter {
                         EventBus.getDefault().post(new MessageEvent("打开摄像机"));
                     } else if (name.equals("位置")) {
                         mContext.startActivity(new Intent(mContext, LocationActivity.class));
+                    }else if (name.equals("转账")) {
+                        Intent intent = new Intent(mContext, ChatTransferActivity.class);
+                        intent.putExtra("user", mUser);
+                        mContext.startActivity(intent);
                     }
                 }
             });

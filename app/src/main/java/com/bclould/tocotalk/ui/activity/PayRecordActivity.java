@@ -75,6 +75,7 @@ public class PayRecordActivity extends BaseActivity {
         setContentView(R.layout.activity_pay_record);
         ButterKnife.bind(this);
         getOptionData();
+        mTvDate.setText(mDate);
         mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);
         initRecycler();
         initMap();

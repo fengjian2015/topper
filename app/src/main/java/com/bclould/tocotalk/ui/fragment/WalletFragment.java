@@ -1,15 +1,19 @@
 package com.bclould.tocotalk.ui.fragment;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.bclould.tocotalk.Presenter.SubscribeCoinPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.ui.activity.BankCardActivity;
 import com.bclould.tocotalk.ui.activity.MyAssetsActivity;
@@ -26,6 +30,7 @@ import butterknife.OnClick;
  * Created by GA on 2017/9/19.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class WalletFragment extends Fragment {
 
     public static WalletFragment instance = null;
@@ -49,6 +54,8 @@ public class WalletFragment extends Fragment {
     LinearLayout mLlPawn;
     @Bind(R.id.ll_safe)
     LinearLayout mLlSafe;
+    @Bind(R.id.tv_total)
+    TextView mTvTotal;
 
 
     public static WalletFragment getInstance() {
@@ -65,10 +72,19 @@ public class WalletFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_cloud_coin, container, false);
-
         ButterKnife.bind(this, view);
-
+        initData();
         return view;
+    }
+
+    private void initData() {
+        SubscribeCoinPresenter subscribeCoinPresenter = new SubscribeCoinPresenter(getContext());
+        subscribeCoinPresenter.totalAssetsValuation(new SubscribeCoinPresenter.CallBack2() {
+            @Override
+            public void send(String total) {
+                mTvTotal.setText(total);
+            }
+        });
     }
 
     @Override

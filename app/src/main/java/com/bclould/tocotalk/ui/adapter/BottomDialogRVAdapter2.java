@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.CoinInfo;
+import com.bclould.tocotalk.ui.activity.ChatTransferActivity;
 import com.bclould.tocotalk.ui.activity.OtcActivity;
 import com.bclould.tocotalk.ui.activity.PaymentActivity;
 import com.bclould.tocotalk.ui.activity.PushBuyingActivity;
@@ -87,6 +88,9 @@ public class BottomDialogRVAdapter2 extends RecyclerView.Adapter {
                     }else if(mContext instanceof PushBuyingActivity){
                         PushBuyingActivity activity = (PushBuyingActivity) mContext;
                         activity.hideDialog2(mName, mId);
+                    }else if(mContext instanceof ChatTransferActivity){
+                        ChatTransferActivity activity = (ChatTransferActivity) mContext;
+                        activity.hideDialog(mName, mId);
                     }
                 }
             });

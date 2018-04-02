@@ -1,7 +1,9 @@
 package com.bclould.tocotalk.ui.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +25,7 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/9/22.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class MyWalletFragment extends Fragment {
 
     public static MyWalletFragment instance = null;

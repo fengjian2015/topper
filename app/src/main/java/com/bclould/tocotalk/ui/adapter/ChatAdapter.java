@@ -78,6 +78,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public static final int TO_RED_MSG = 9;//发送红包消息类型
     public static final int FROM_FILE_MSG = 10;//接受文件消息类型
     public static final int TO_FILE_MSG = 11;//发送文件消息类型
+    public static final int FROM_TRANSFER_MSG = 12;//接受红包消息类型
+    public static final int TO_TRANSFER_MSG = 13;//发送红包消息类型
     private final Context mContext;
     private final List<MessageInfo> mMessageList;
     private final Bitmap mFromBitmap;
@@ -148,6 +150,12 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } else if (viewType == FROM_FILE_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_file, parent, false);
             holder = new FromVideoHolder(view);
+        } else if (viewType == TO_TRANSFER_MSG) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_to_chat_transfer, parent, false);
+            holder = new ToTransferHolder(view);
+        } else if (viewType == FROM_TRANSFER_MSG) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_transfer, parent, false);
+            holder = new FromTransferHolder(view);
         }
         return holder;
     }
@@ -218,6 +226,14 @@ public class ChatAdapter extends RecyclerView.Adapter {
             case FROM_VIDEO_MSG:
                 FromVideoHolder fromVideoHolder = (FromVideoHolder) holder;
                 fromVideoHolder.setData(mMessageList.get(position));
+                break;
+            case TO_TRANSFER_MSG:
+                ToTransferHolder toTransferHolder = (ToTransferHolder) holder;
+                toTransferHolder.setData(mMessageList.get(position));
+                break;
+            case FROM_TRANSFER_MSG:
+                FromTransferHolder fromTransferHolder = (FromTransferHolder) holder;
+                fromTransferHolder.setData(mMessageList.get(position));
                 break;
         }
     }
@@ -689,7 +705,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                             if (messageInfo.getVoice().equals(mImageList.get(i))) {
                                 position = i;
                             }
-                        }else {
+                        } else {
                             if (messageInfo.getMessage().equals(mImageList.get(i))) {
                                 position = i;
                             }
@@ -772,6 +788,66 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     Intent intent = new Intent(mContext, VideoActivity.class);
                     intent.putExtra("url", messageInfo.getMessage());
                     mContext.startActivity(intent);
+                }
+            });
+        }
+    }
+
+    class ToTransferHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.iv_touxiang)
+        ImageView mIvTouxiang;
+        @Bind(R.id.tv_remark)
+        TextView mTvRemark;
+        @Bind(R.id.tv_coin_count)
+        TextView mTvCoinCount;
+        @Bind(R.id.iv_transfer)
+        ImageView mIvTransfer;
+        @Bind(R.id.cv_redpacket)
+        CardView mCvRedpacket;
+
+        ToTransferHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(MessageInfo messageInfo) {
+            mIvTouxiang.setImageBitmap(mToBitmap);
+            mTvRemark.setText(messageInfo.getRemark());
+            mTvCoinCount.setText(messageInfo.getCount() + messageInfo.getCoin());
+            mCvRedpacket.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+        }
+    }
+
+    class FromTransferHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.iv_touxiang)
+        ImageView mIvTouxiang;
+        @Bind(R.id.tv_remark)
+        TextView mTvRemark;
+        @Bind(R.id.tv_coin_count)
+        TextView mTvCoinCount;
+        @Bind(R.id.iv_transfer)
+        ImageView mIvTransfer;
+        @Bind(R.id.cv_redpacket)
+        CardView mCvRedpacket;
+
+        FromTransferHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(MessageInfo messageInfo) {
+            mIvTouxiang.setImageBitmap(mFromBitmap);
+            mTvRemark.setText(messageInfo.getRemark());
+            mTvCoinCount.setText(messageInfo.getCount() + messageInfo.getCoin());
+            mCvRedpacket.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
                 }
             });
         }

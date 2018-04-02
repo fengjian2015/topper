@@ -14,6 +14,7 @@ import com.bclould.tocotalk.Presenter.DynamicPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.DynamicListInfo;
+import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.adapter.DynamicRVAdapter;
 import com.bclould.tocotalk.utils.FullyLinearLayoutManager;
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -108,7 +109,16 @@ public class DynamicFragment extends Fragment {
 
     private void initData(String page, String pageSize) {
         mDataList.clear();
-        mDynamicPresenter.dynamicList(page, pageSize, new DynamicPresenter.CallBack2() {
+        String userList = "";
+        List<UserInfo> userInfos = mMgr.queryAllUser();
+        for (int i = 0; i < userInfos.size(); i++) {
+            if (i == 0) {
+                userList = userInfos.get(i).getUser();
+            } else {
+                userList += "," + userInfos.get(i).getUser();
+            }
+        }
+        mDynamicPresenter.dynamicList(page, pageSize, userList, new DynamicPresenter.CallBack2() {
             @Override
             public void send(List<DynamicListInfo.DataBean> data) {
                 mDataList.addAll(data);

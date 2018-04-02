@@ -14,6 +14,7 @@ import com.bclould.tocotalk.model.GrabRedInfo;
 import com.bclould.tocotalk.model.InOutInfo;
 import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.model.LoginInfo;
+import com.bclould.tocotalk.model.LoginRecordInfo;
 import com.bclould.tocotalk.model.MyAssetsInfo;
 import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.model.OrderInfo2;
@@ -495,7 +496,8 @@ public interface MyService {
     Observable<DynamicListInfo> dynamicList(
             @Header("Authorization") String token,
             @Field("page") String page,
-            @Field("page_size") String page_size
+            @Field("page_size") String page_size,
+            @Field("friends") String friends
     );
 
     //发表评论
@@ -603,4 +605,57 @@ public interface MyService {
             @Field("date") String date
     );
 
+    //登录记录
+    @POST("loginLog")
+    Observable<LoginRecordInfo> loginRecord(
+            @Header("Authorization") String token
+    );
+
+    //验证实名认证
+    @POST("user/realNameStatus")
+    Observable<BaseInfo> realNameStatus(
+            @Header("Authorization") String token
+    );
+
+    //验证是否绑定银行卡
+    @POST("user/bindBankStatus")
+    Observable<BaseInfo> bindBankStatus(
+            @Header("Authorization") String token
+    );
+
+    //登录设置
+    @POST("loginValidateTypeSetting")
+    @FormUrlEncoded
+    Observable<BaseInfo> loginValidateTypeSetting(
+            @Header("Authorization") String token,
+            @Field("validate_type") String validate_type,
+            @Field("second_password") String second_password,
+            @Field("google_code") String google_code
+    );
+
+    //获取总估值
+    @POST("finance/totalAssetsValuation")
+    Observable<BaseInfo> totalAssetsValuation(
+            @Header("Authorization") String token
+    );
+
+    //获取币种估值
+    @POST("finance/assetsValuation")
+    @FormUrlEncoded
+    Observable<BaseInfo> assetsValuation(
+            @Header("Authorization") String token,
+            @Field("to") String to
+    );
+
+    //获取币种估值
+    @POST("finance/friendTransfer")
+    @FormUrlEncoded
+    Observable<BaseInfo> friendTransfer(
+            @Header("Authorization") String token,
+            @Field("coin_name") String coin_name,
+            @Field("user_name") String user_name,
+            @Field("number") double number,
+            @Field("second_password") String second_password,
+            @Field("mark") String mark
+    );
 }

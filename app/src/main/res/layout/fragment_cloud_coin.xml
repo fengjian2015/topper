@@ -82,6 +82,14 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/x32"/>
 
+            <TextView
+                android:id="@+id/tv_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/y20"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x30"/>
 
         </LinearLayout>
 

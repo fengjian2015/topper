@@ -18,6 +18,7 @@ public class Constants {
     public static final String BASE_URL = "https://www.bclould.com:8112/api/";
     public static final String CHUANCODE = "爨^(&";
     public static final String REDBAG = "[redBag]";
+    public static final String TRANSFER = "[transfer]";
     public static final String REDPACKAGE = "redPackage";
     public static final String MONEYIN = "moneyIn";
     public static final String MONEYOUT = "moneyOut";

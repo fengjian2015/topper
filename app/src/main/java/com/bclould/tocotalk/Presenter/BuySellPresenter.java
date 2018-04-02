@@ -9,10 +9,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.model.OrderListInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
+import com.bclould.tocotalk.ui.activity.BankCardActivity;
 import com.bclould.tocotalk.ui.activity.BuySellActivity;
 import com.bclould.tocotalk.ui.activity.PayPasswordActivity;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
@@ -73,8 +75,9 @@ public class BuySellPresenter {
                         @Override
                         public void onNext(DealListInfo baseInfo) {
                             hideDialog();
-                            if (baseInfo.getStatus() == 1)
+                            if (baseInfo.getStatus() == 1) {
                                 callBack.send(baseInfo.getData(), coin);
+                            }
                         }
 
                         @Override
@@ -153,13 +156,15 @@ public class BuySellPresenter {
                             hideDialog();
                             if (baseInfo.getStatus() == 1) {
                                 callBack2.send(baseInfo.getData());
-                            } else if (baseInfo.getMassage().equals("尚未设置交易密码")) {
-                                showSetPwDialog();
-                            } else if (baseInfo.getMassage().equals("交易密码不正确")) {
+                            } else if (baseInfo.getMessage().equals("尚未设置交易密码")) {
+                                showHintDialog(1);
+                            } else if (baseInfo.getMessage().equals("交易密码不正确")) {
                                 BuySellActivity activity = (BuySellActivity) mContext;
                                 activity.showHintDialog();
+                            } else if (baseInfo.getMessage().equals("请先绑定银行卡")) {
+                                showHintDialog(0);
                             } else {
-                                Toast.makeText(mContext, baseInfo.getMassage() + "", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext, baseInfo.getMessage() + "", Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -179,10 +184,57 @@ public class BuySellPresenter {
         }
     }
 
-    private void showSetPwDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_set_pw, mContext);
+
+    public void bindBankStatus() {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .bindBankStatus(UtilTool.getToken())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(BaseInfo baseInfo) {
+                            hideDialog();
+                            if (baseInfo.getStatus() == 1) {
+                            } else {
+                                showHintDialog(0);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            hideDialog();
+                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showHintDialog(final int type) {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext);
         deleteCacheDialog.show();
-        deleteCacheDialog.setCanceledOnTouchOutside(false);
+        switch (type) {
+            case 0:
+                deleteCacheDialog.setTitle("请先绑定银行卡！");
+                break;
+            case 1:
+                deleteCacheDialog.setTitle("请先设置交易密码！");
+                break;
+        }
         Button retry = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         Button findPassword = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
         retry.setOnClickListener(new View.OnClickListener() {
@@ -195,7 +247,14 @@ public class BuySellPresenter {
             @Override
             public void onClick(View view) {
                 deleteCacheDialog.dismiss();
-                mContext.startActivity(new Intent(mContext, PayPasswordActivity.class));
+                switch (type) {
+                    case 0:
+                        mContext.startActivity(new Intent(mContext, BankCardActivity.class));
+                        break;
+                    case 1:
+                        mContext.startActivity(new Intent(mContext, PayPasswordActivity.class));
+                        break;
+                }
             }
         });
     }

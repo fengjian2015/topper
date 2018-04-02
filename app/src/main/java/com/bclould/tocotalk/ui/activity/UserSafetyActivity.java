@@ -74,6 +74,7 @@ public class UserSafetyActivity extends BaseActivity {
                 startActivity(new Intent(this, LoginSetActivity.class));
                 break;
             case R.id.rl_login_record:
+                startActivity(new Intent(this, LoginRecordActivity.class));
                 break;
         }
     }

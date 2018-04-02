@@ -33,6 +33,7 @@ import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
@@ -172,6 +173,7 @@ public class PushBuyingActivity extends BaseActivity {
     private MNPasswordEditText mEtPassword;
     private ArrayList<Map<String, String>> valueList;
     private GridView mGridView;
+    String mCoinName = "BTC";
     private PushBuyingPresenter mPushBuyingPresenter;
     private int mType;
 
@@ -181,6 +183,17 @@ public class PushBuyingActivity extends BaseActivity {
         setContentView(R.layout.activity_push_buying);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
+        initData(mCoinName);
+    }
+
+    private void initData(String name) {
+        mPushBuyingPresenter = new PushBuyingPresenter(this);
+        mPushBuyingPresenter.getCoinPrice(name, new PushBuyingPresenter.CallBack2() {
+            @Override
+            public void send(String price) {
+                mTvPrice.setText(price);
+            }
+        });
     }
 
     @OnClick({R.id.rl_buy_sell, R.id.bark, R.id.iv_question, R.id.rl_selector_currency, R.id.rl_county, R.id.rl_payment, R.id.rl_payment_time, R.id.btn_pushing})
@@ -426,7 +439,6 @@ public class PushBuyingActivity extends BaseActivity {
         } else {
             mType = 2;
         }
-        mPushBuyingPresenter = new PushBuyingPresenter(this);
         mPushBuyingPresenter.pushing(mType, coin, state, price, count, paymentTime, payment, minLimit, maxLimit, remark, password);
     }
 
@@ -505,6 +517,28 @@ public class PushBuyingActivity extends BaseActivity {
         }
     }
 
+    public void showHintDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setCanceledOnTouchOutside(false);
+        TextView retry = (TextView) deleteCacheDialog.findViewById(R.id.tv_retry);
+        TextView findPassword = (TextView) deleteCacheDialog.findViewById(R.id.tv_find_password);
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                mRedDialog.show();
+            }
+        });
+        findPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                startActivity(new Intent(PushBuyingActivity.this, PayPasswordActivity.class));
+            }
+        });
+    }
+
     private void setListener() {
         /*mTvCurrency.addTextChangedListener(new TextWatcher() {
             @Override
@@ -554,6 +588,8 @@ public class PushBuyingActivity extends BaseActivity {
 
     public void hideDialog2(String name, int id) {
         mBottomDialog.dismiss();
+        mCoinName = name;
+        initData(name);
         mTvCurrency.setText(name);
     }
 }

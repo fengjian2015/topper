@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 public class MySharedPreferences {
 
     private static final String SETTING = "setting";
-    private static final String SETTING2 = "setting2";
     public static MySharedPreferences instance = null;
     private Context mContext;
 
@@ -24,6 +23,10 @@ public class MySharedPreferences {
         }
 
         return instance;
+    }
+
+    public SharedPreferences getSp(){
+        return mContext.getSharedPreferences(SETTING, 0);
     }
 
     public void init(Context context) {

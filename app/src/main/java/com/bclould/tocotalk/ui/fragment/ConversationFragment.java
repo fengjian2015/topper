@@ -77,6 +77,7 @@ import static com.bclould.tocotalk.ui.activity.ConversationActivity.SESSIONTOKEN
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_IMG_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_RED_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_TEXT_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_TRANSFER_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_VIDEO_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_VOICE_MSG;
 import static com.bclould.tocotalk.utils.Constants.ACCESS_KEY_ID;
@@ -405,7 +406,7 @@ public class ConversationFragment extends Fragment {
                     }
                 }
 
-                if (chatMsg.contains(Constants.CHUANCODE)) {
+                if (chatMsg.contains(Constants.REDBAG)) {
                     String s = chatMsg.replace(Constants.CHUANCODE, ",");
                     String[] split = s.split(",");
                     remark = split[1];
@@ -413,10 +414,16 @@ public class ConversationFragment extends Fragment {
                     count = split[3];
                     msgType = FROM_RED_MSG;
                     redId = Integer.parseInt(split[4]);
-                    redpacket = "[" + coin + "红包]" + remark;
+                    redpacket = "[红包]";
+                }else if(chatMsg.contains(Constants.TRANSFER)){
+                    String s = chatMsg.replace(Constants.CHUANCODE, ",");
+                    String[] split = s.split(",");
+                    remark = split[1];
+                    coin = split[2];
+                    count = split[3];
+                    msgType = FROM_TRANSFER_MSG;
+                    redpacket = "[转账]";
                 }
-
-                //获取当前时间
 
                 //添加数据库
                 messageInfo.setUsername(from);
