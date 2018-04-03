@@ -6,12 +6,12 @@ import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.CoinInfo;
+import com.bclould.tocotalk.model.StateInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.UtilTool;
-
-import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -48,8 +48,7 @@ public class CoinPresenter {
         }
     }
 
-    public void getCoin(final CallBack callBack) {
-
+    public void getCoin() {
         if (UtilTool.isNetworkAvailable(mContext)) {
 //            showDialog();
             RetrofitUtil.getInstance(mContext)
@@ -65,8 +64,9 @@ public class CoinPresenter {
 
                         @Override
                         public void onNext(@NonNull CoinInfo coinInfo) {
-                            callBack.send(coinInfo.getData());
-                            hideDialog();
+                            if (coinInfo.getStatus() == 1) {
+                                MyApp.getInstance().mCoinList.addAll(coinInfo.getData());
+                            }
                         }
 
                         @Override
@@ -86,8 +86,41 @@ public class CoinPresenter {
         }
     }
 
-    //定义接口
-    public interface CallBack {
-        void send(List<CoinInfo.DataBean> address);
+    public void getState() {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .getCountryList(UtilTool.getToken())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<StateInfo>() {
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(@NonNull StateInfo stateInfo) {
+                            hideDialog();
+                            if (stateInfo.getStatus() == 1) {
+                                MyApp.getInstance().mStateList.addAll(stateInfo.getData());
+                            }
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+                            UtilTool.Log("日志1", e.getMessage());
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+
+        }
     }
 }

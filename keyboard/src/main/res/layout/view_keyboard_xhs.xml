@@ -34,6 +34,7 @@
             android:layout_toLeftOf="@+id/rl_multi_and_send"
             android:layout_toRightOf="@+id/btn_voice_or_text"
             android:background="@drawable/btn_voice"
+            android:focusableInTouchMode="true"
             android:text="@string/long_click_record"
             android:textColor="#727272"
             android:visibility="gone"/>

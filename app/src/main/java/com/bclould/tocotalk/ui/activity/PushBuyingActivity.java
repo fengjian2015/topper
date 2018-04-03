@@ -36,6 +36,7 @@ import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
+import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;
@@ -47,6 +48,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tocotalk.Presenter.LoginPresenter.STATE;
 import static com.bclould.tocotalk.R.style.BottomDialog;
 
 /**
@@ -61,10 +63,6 @@ public class PushBuyingActivity extends BaseActivity {
     private static final int PAYSIGN = 2;
     private static final int TIMESIGN = 4;
     private static final int BUYSELL = 3;
-
-    String[] mCoinArr = {"TPC", "BTC", "LTC", "DOGO", "ZEC", "LSK", "MAID", "SHC", "ANS"};
-    String[] mStateArr = {"中國", "美國", "日本", "瑞士", "澳洲", "馬來西亞", "韓國"};
-    String[] mPayArr = {"支付寶", "微信", "銀聯", "現金"};
     String[] mTimeArr = {"5分钟", "10分钟", "20分钟", "30分钟"};
     String[] mBuySellArr = {"买", "卖"};
     @Bind(R.id.bark)
@@ -183,7 +181,12 @@ public class PushBuyingActivity extends BaseActivity {
         setContentView(R.layout.activity_push_buying);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
+        init();
         initData(mCoinName);
+    }
+
+    private void init() {
+        mTvState.setText(MySharedPreferences.getInstance().getString(STATE));
     }
 
     private void initData(String name) {
@@ -209,15 +212,11 @@ public class PushBuyingActivity extends BaseActivity {
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));
                 break;
             case R.id.rl_selector_currency:
-//                showDialog(mCoinArr, COINSIGN, getString(R.string.selected_currency));
                 showCoinDialog();
                 break;
             case R.id.rl_county:
-                showDialog(mStateArr, STATESIGN, getString(R.string.selector_state));
                 break;
-
             case R.id.rl_payment:
-                showDialog(mPayArr, PAYSIGN, getString(R.string.selector_payment));
                 break;
             case R.id.btn_pushing:
                 if (checkEdit())
@@ -249,7 +248,7 @@ public class PushBuyingActivity extends BaseActivity {
         TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
         Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mDataBeanList));
+        recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mCoinList));
         addCoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -18,6 +18,7 @@ import com.bclould.tocotalk.base.BaseFragment;
 import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.ui.adapter.BuySellRVAdapter;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -32,6 +33,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.bclould.tocotalk.Presenter.LoginPresenter.STATE;
 
 /**
  * Created by GA on 2017/9/20.
@@ -50,6 +53,7 @@ public class SellFragment extends BaseFragment {
     LinearLayout mLlNoData;
     private View mView;
     private String mCoinName = "BTC";
+    private String mState = MySharedPreferences.getInstance().getString(STATE);
     private List<DealListInfo.DataBean> mDataList = new ArrayList<>();
     private BuySellRVAdapter mBuySellRVAdapter;
 
@@ -64,7 +68,7 @@ public class SellFragment extends BaseFragment {
             EventBus.getDefault().register(this);
         initRecyclerView();
         initListener();
-        initData(mCoinName);
+        initData(mCoinName, mState);
         return mView;
     }
 
@@ -81,12 +85,16 @@ public class SellFragment extends BaseFragment {
         String msg = event.getMsg();
         if (event.getCoinName() != null) {
             mCoinName = event.getCoinName();
+        } else if (event.getState() != null) {
+            mState = event.getState();
         }
         if (msg.equals("幣種切換")) {
-            initData(mCoinName);
+            initData(mCoinName, mState);
         } else if (msg.equals("发布交易")) {
-            initData(mCoinName);
-            UtilTool.Log("卖", mCoinName);
+            initData(mCoinName, mState);
+            UtilTool.Log("卖", mState);
+        } else if (msg.equals("国家切换")) {
+            initData(mCoinName, mState);
         }
     }
 
@@ -102,15 +110,15 @@ public class SellFragment extends BaseFragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
-                initData(mCoinName);
+                initData(mCoinName, mState);
             }
         });
     }
 
-    private void initData(String coin) {
+    private void initData(String coinName, String state) {
         mDataList.clear();
         BuySellPresenter buySellPresenter = new BuySellPresenter(getContext());
-        buySellPresenter.getDealList(2, coin, new BuySellPresenter.CallBack() {
+        buySellPresenter.getDealList(2, coinName, state, new BuySellPresenter.CallBack() {
             @Override
             public void send(List<DealListInfo.DataBean> dataBean, String coin) {
                 if (dataBean.size() != 0) {

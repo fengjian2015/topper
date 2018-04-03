@@ -41,7 +41,7 @@ public class RedPacketRecordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setStatusBarColor(getColor(R.color.redpacket3));
+        getWindow().setStatusBarColor(getColor(R.color.redpacket2));
         setContentView(R.layout.activity_red_packet_record);
         ButterKnife.bind(this);
         setSelector(0);

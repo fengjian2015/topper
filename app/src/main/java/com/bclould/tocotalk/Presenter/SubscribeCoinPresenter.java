@@ -173,7 +173,6 @@ public class SubscribeCoinPresenter {
 
     public void totalAssetsValuation(final CallBack2 callBack2) {
         if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .totalAssetsValuation(UtilTool.getToken())
@@ -187,7 +186,6 @@ public class SubscribeCoinPresenter {
 
                         @Override
                         public void onNext(BaseInfo baseInfo) {
-                            hideDialog();
                             if (baseInfo.getStatus() == 1) {
                                 callBack2.send(baseInfo.getData().getTotal());
                             }
@@ -196,7 +194,6 @@ public class SubscribeCoinPresenter {
 
                         @Override
                         public void onError(Throwable e) {
-                            hideDialog();
                             Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 

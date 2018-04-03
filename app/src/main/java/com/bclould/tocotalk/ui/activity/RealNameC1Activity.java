@@ -1,19 +1,26 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,11 +28,14 @@ import com.bclould.tocotalk.Presenter.RealNamePresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter3;
 import com.bclould.tocotalk.utils.AnimatorTool;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.bclould.tocotalk.R.style.BottomDialog;
 
 /**
  * Created by GA on 2017/9/26.
@@ -60,10 +70,23 @@ public class RealNameC1Activity extends BaseActivity {
     Button mBtnAuth;
     @Bind(R.id.iv_auth_type)
     ImageView mIvAuthType;
+    @Bind(R.id.tv3)
+    TextView mTv3;
+    @Bind(R.id.tv_state)
+    TextView mTvState;
+    @Bind(R.id.iv_jiantou2)
+    ImageView mIvJiantou2;
+    @Bind(R.id.rl_selector_state)
+    RelativeLayout mRlSelectorState;
+    @Bind(R.id.iv_jiantou)
+    ImageView mIvJiantou;
     private ViewGroup mView;
     private PopupWindow mPopupWindow;
     private RealNamePresenter mRealNamePresenter;
     private String mType;
+    private Dialog mBottomDialog;
+    private int mId;
+    private String mName_zh;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,7 +116,7 @@ public class RealNameC1Activity extends BaseActivity {
                     mBtnAuth.setVisibility(View.GONE);
                     mTvAuthType.setText(message);
                     mLlPass.setVisibility(View.VISIBLE);
-                }else if (message.equals("未认证")) {
+                } else if (message.equals("未认证")) {
                     mLlNoPass.setVisibility(View.VISIBLE);
                     mLlPass.setVisibility(View.GONE);
                 }
@@ -101,7 +124,7 @@ public class RealNameC1Activity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.bark, R.id.cv_card_type, R.id.btn_next, R.id.btn_auth})
+    @OnClick({R.id.bark, R.id.cv_card_type, R.id.btn_next, R.id.btn_auth, R.id.rl_selector_state})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -109,6 +132,9 @@ public class RealNameC1Activity extends BaseActivity {
                 break;
             case R.id.cv_card_type:
                 showPopup();
+                break;
+            case R.id.rl_selector_state:
+                showStateDialog();
                 break;
             case R.id.btn_next:
                 if (checkEdit()) {
@@ -120,6 +146,49 @@ public class RealNameC1Activity extends BaseActivity {
                 mLlPass.setVisibility(View.GONE);
                 break;
         }
+    }
+
+    private void showStateDialog() {
+        mBottomDialog = new Dialog(this, R.style.BottomDialog2);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom, null);
+        //获得dialog的window窗口
+        Window window = mBottomDialog.getWindow();
+        window.getDecorView().setPadding(0, 0, 0, 0);
+        //获得window窗口的属性
+        WindowManager.LayoutParams lp = window.getAttributes();
+        //设置窗口宽度为充满全屏
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        //将设置好的属性set回去
+        window.setAttributes(lp);
+        window.setGravity(Gravity.BOTTOM);
+        window.setWindowAnimations(BottomDialog);
+        mBottomDialog.setContentView(contentView);
+        mBottomDialog.show();
+        RecyclerView recyclerView = (RecyclerView) mBottomDialog.findViewById(R.id.recycler_view);
+        TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
+        Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
+        addCoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(RealNameC1Activity.this, MyAssetsActivity.class));
+                mBottomDialog.dismiss();
+            }
+        });
+        tvTitle.setText("选择国家");
+        if (MyApp.getInstance().mCoinList.size() != 0) {
+            recyclerView.setVisibility(View.VISIBLE);
+            addCoin.setVisibility(View.GONE);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(new BottomDialogRVAdapter3(this, MyApp.getInstance().mStateList));
+        } else {
+            recyclerView.setVisibility(View.GONE);
+            addCoin.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void hideDialog(String name) {
+        mBottomDialog.dismiss();
+        mTvState.setText(name);
     }
 
     private void showPopup() {
@@ -156,7 +225,7 @@ public class RealNameC1Activity extends BaseActivity {
         } else {
             mType = "2";
         }
-        mRealNamePresenter.realNameVerify(name, cardNumber, mType, new RealNamePresenter.CallBack() {
+        mRealNamePresenter.realNameVerify(name, cardNumber, mId, mType, new RealNamePresenter.CallBack() {
             @Override
             public void send(String message) {
                 Intent intent = new Intent(RealNameC1Activity.this, UpIdCardActivity.class);
@@ -178,10 +247,20 @@ public class RealNameC1Activity extends BaseActivity {
         } else if (mCardType.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, "证件类型不能为空", Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mCardType);
+        } else if (mTvState.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, "国籍不能为空", Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mRlSelectorState);
         } else {
             return true;
         }
 
         return false;
+    }
+
+    public void hideDialog(int id, String name_zh) {
+        mBottomDialog.dismiss();
+        mId = id;
+        mName_zh = name_zh;
+        mTvState.setText(name_zh);
     }
 }

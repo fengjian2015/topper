@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
@@ -14,6 +18,7 @@ import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.activity.LoginActivity;
 import com.bclould.tocotalk.ui.activity.LoginSetActivity;
 import com.bclould.tocotalk.ui.activity.MainActivity;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MySharedPreferences;
@@ -37,6 +42,7 @@ public class LoginPresenter {
     public static final String USERID = "user_id";
     public static final String LOGINPW = "login_pw";
     public static final String LOGINSET = "login_set";
+    public static final String STATE = "state";
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
     public static final String MYUSERNAME = "my_username";
@@ -62,13 +68,12 @@ public class LoginPresenter {
         }
     }
 
-    public void Login(final String email, final String password) {
-
+    public void Login(final String email, final String password, final String code) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .login(email, password)
+                    .login(email, password, code)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<LoginInfo>() {
@@ -79,23 +84,33 @@ public class LoginPresenter {
 
                         @Override
                         public void onNext(LoginInfo baseInfo) {
-                            if (baseInfo.getStatus() != 1) {
-                                hideDialog();
-                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
-//                                getCaptcha();
-                            } else {
+                            hideDialog();
+                            if (baseInfo.getStatus() == 2) {
+                                if (baseInfo.getData().getValidate_type() == 1) {
+                                    sendVcode(email);
+                                    showEmailDialog(email, password);
+                                } else {
+                                    showGoogleDialog(email, password);
+                                }
+                            } else if (baseInfo.getStatus() == 1) {
                                 UtilTool.Log("日志", baseInfo.getData().getName());
                                 MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
                                 MySharedPreferences.getInstance().setInteger(USERID, baseInfo.getData().getUser_id());
                                 MySharedPreferences.getInstance().setString(MYUSERNAME, baseInfo.getData().getName() + "@" + Constants.DOMAINNAME);
                                 MySharedPreferences.getInstance().setString(EMAIL, email);
                                 MySharedPreferences.getInstance().setString(LOGINPW, password);
+                                if (baseInfo.getData().getCountry().isEmpty()) {
+                                    MySharedPreferences.getInstance().setString(STATE, "中国");
+                                } else {
+                                    MySharedPreferences.getInstance().setString(STATE, baseInfo.getData().getCountry());
+                                }
                                 hideDialog();
                                 mContext.startActivity(new Intent(mContext, MainActivity.class));
                                 LoginActivity activity = (LoginActivity) mContext;
                                 activity.finish();
                                 Toast.makeText(mContext, mContext.getString(R.string.toast_succeed), Toast.LENGTH_SHORT).show();
-//                                imLogin(password, baseInfo.getData().getName());
+                            } else {
+                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -115,6 +130,79 @@ public class LoginPresenter {
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
 
         }
+    }
+
+    private void sendVcode(String email) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .sendRegcode(email)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(BaseInfo baseInfo) {
+                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            hideDialog();
+                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showGoogleDialog(final String email, final String password) {
+        DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_google_code, mContext);
+        deleteCacheDialog.show();
+        final EditText etGoogle = (EditText) deleteCacheDialog.findViewById(R.id.et_google_code);
+        Button btnConfirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String googleCode = etGoogle.getText().toString();
+                if (googleCode.isEmpty()) {
+                    Toast.makeText(mContext, mContext.getString(R.string.toast_vcode), Toast.LENGTH_SHORT).show();
+                } else {
+                    Login(email, password, googleCode);
+                }
+            }
+        });
+    }
+
+    private void showEmailDialog(final String email, final String password) {
+        DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_google_code, mContext);
+        deleteCacheDialog.show();
+        final EditText etGoogle = (EditText) deleteCacheDialog.findViewById(R.id.et_google_code);
+        etGoogle.setHint(mContext.getString(R.string.et_vcode));
+        TextView tvTitle = (TextView) deleteCacheDialog.findViewById(R.id.tv_title);
+        tvTitle.setText("邮箱验证码");
+        Button btnConfirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String googleCode = etGoogle.getText().toString();
+                if (googleCode.isEmpty()) {
+                    Toast.makeText(mContext, mContext.getString(R.string.toast_vcode), Toast.LENGTH_SHORT).show();
+                } else {
+                    Login(email, password, googleCode);
+                }
+            }
+        });
     }
 
     public void loginRecord(final CallBack callBack) {
@@ -201,6 +289,11 @@ public class LoginPresenter {
 
     //定义接口
     public interface CallBack {
+        void send(List<LoginRecordInfo.DataBean> data);
+    }
+
+    //定义接口
+    public interface CallBack2 {
         void send(List<LoginRecordInfo.DataBean> data);
     }
 }

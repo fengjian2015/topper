@@ -65,6 +65,7 @@ public class MainActivity extends BaseActivity {
     public static MainActivity instance = null;
     private FragmentManager mSupportFragmentManager;
     private LoadingProgressDialog mProgressDialog;
+    private CoinPresenter mCoinPresenter;
 
     //单例
     public static MainActivity getInstance() {
@@ -85,6 +86,7 @@ public class MainActivity extends BaseActivity {
             }
         }
         setContentView(R.layout.activity_main);
+        mCoinPresenter = new CoinPresenter(this);
         ButterKnife.bind(this);
         initInterface();
         MyApp.getInstance().addActivity(this);
@@ -148,16 +150,16 @@ public class MainActivity extends BaseActivity {
         checkVersion();
         //获取币种
         getCoinList();
+        //获取国家
+        getStateList();
+    }
+
+    private void getStateList() {
+        mCoinPresenter.getState();
     }
 
     private void getCoinList() {
-        CoinPresenter coinPresenter = new CoinPresenter(this);
-        coinPresenter.getCoin(new CoinPresenter.CallBack() {
-            @Override
-            public void send(List<CoinInfo.DataBean> address) {
-                MyApp.getInstance().mDataBeanList.addAll(address);
-            }
-        });
+        mCoinPresenter.getCoin();
     }
 
     //检测版本更新

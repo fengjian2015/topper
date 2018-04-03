@@ -23,7 +23,7 @@
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x20"
         android:layout_toLeftOf="@+id/iv_touxiang"
-        app:cardBackgroundColor="#FE5419"
+        app:cardBackgroundColor="@color/redpacket2"
         app:cardCornerRadius="@dimen/x20">
 
         <RelativeLayout

@@ -18,6 +18,8 @@ import com.keyboard.view.R;
 
 public class RecordIndicator {
 
+    private final CallBack mCallBack;
+
     public enum RecordView {
         START_VIEW, CANCEL_VIEW, SHORT_VIEW
     }
@@ -38,8 +40,9 @@ public class RecordIndicator {
     private int minRecordTime = 1000;
     private Button recordButton;
 
-    public RecordIndicator(Context mContext) {
+    public RecordIndicator(Context mContext, CallBack callBack) {
         this.mContext = mContext;
+        mCallBack = callBack;
         initDialog();
     }
 
@@ -96,6 +99,11 @@ public class RecordIndicator {
         listenerVoiceBtn();
     }
 
+    //定义接口
+    public interface CallBack {
+        void send();
+    }
+
     private void listenerVoiceBtn() {
         recordButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -136,6 +144,17 @@ public class RecordIndicator {
                             if (cancel_record) {
                                 cancelRecord(true);
                             } else if (intervalTime < minRecordTime) {
+                                recordTooShort();
+                            } else {
+                                finishRecord();
+                            }
+                            break;
+                        case MotionEvent.ACTION_CANCEL:
+                            recordButton.setText("按住录音");
+                            long intervalTime2 = onRecordListener.getRecordTime();
+                            if (cancel_record) {
+                                cancelRecord(true);
+                            } else if (intervalTime2 < minRecordTime) {
                                 recordTooShort();
                             } else {
                                 finishRecord();

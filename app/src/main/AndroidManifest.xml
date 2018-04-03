@@ -521,9 +521,15 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
-        <!--扫码支付页面-->
+        <!--发送转账页面-->
         <activity
             android:name="com.bclould.tocotalk.ui.activity.ChatTransferActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--发送转账页面-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.TransferDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 

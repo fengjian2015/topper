@@ -255,7 +255,6 @@ public class TransferAccountsActivity extends BaseActivity {
                     if (amount.length() > 0) {
                         amount = amount.substring(0, amount.length() - 1);
                         mEtPassword.setText(amount);
-
                         Editable ea = mEtPassword.getText();
                         mEtPassword.setSelection(ea.length());
                     }

@@ -64,20 +64,20 @@ public class LoginActivity extends AppCompatActivity {
 
     //不能回车
     private void setEdit() {
-		if(mEtEmily == null){
-			mEtEmily.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-				@Override
-				public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-					return true;
-				}
-			});
-			mEtPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-				@Override
-				public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-					return true;
-				}
-			});
-		}
+        if (mEtEmily == null) {
+            mEtEmily.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    return true;
+                }
+            });
+            mEtPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    return true;
+                }
+            });
+        }
     }
 
     //监听返回键
@@ -165,7 +165,7 @@ public class LoginActivity extends AppCompatActivity {
         String email = mEtEmily.getText().toString();
         String password = mEtPassword.getText().toString();
         LoginPresenter loginPresenter = new LoginPresenter(this);
-        loginPresenter.Login(email, password);
+        loginPresenter.Login(email, password, "");
     }
 
     //验证手机号和密码

@@ -77,8 +77,9 @@ public class ReceiptPaymentPresenter {
                                 callBack.send(baseInfo.getData());
                             } else if (baseInfo.getMessage().equals("请先进行实名认证")) {
                                 showHintDialog(0);
+                            } else {
+                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             }
-                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -122,8 +123,9 @@ public class ReceiptPaymentPresenter {
                                 callBack2.send(receiptInfo.getData());
                             } else if (receiptInfo.getMessage().equals("请先进行实名认证")) {
                                 showHintDialog(0);
+                            } else {
+                                Toast.makeText(mContext, receiptInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             }
-                            Toast.makeText(mContext, receiptInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

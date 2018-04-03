@@ -1,5 +1,8 @@
 package com.bclould.tocotalk.ui.adapter;
 
+import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,10 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.bclould.tocotalk.R;
-import com.bclould.tocotalk.model.CoinInfo;
-import com.bclould.tocotalk.ui.activity.SendQRCodeRedActivity;
+import com.bclould.tocotalk.model.StateInfo;
+import com.bclould.tocotalk.ui.activity.OtcActivity;
+import com.bclould.tocotalk.ui.activity.RealNameC1Activity;
 
 import java.util.List;
 
@@ -23,31 +26,32 @@ import butterknife.ButterKnife;
 
 public class BottomDialogRVAdapter3 extends RecyclerView.Adapter {
 
-    private final SendQRCodeRedActivity mSendRedPacketActivity;
-    private final List<CoinInfo.DataBean> mCoinArr;
+    private final Context mContext;
+    private final List<StateInfo.DataBean> mStateList;
 
-    public BottomDialogRVAdapter3(SendQRCodeRedActivity sendRedPacketActivity, List<CoinInfo.DataBean> coinArr) {
-        mSendRedPacketActivity = sendRedPacketActivity;
-        mCoinArr = coinArr;
+
+    public BottomDialogRVAdapter3(Context context, List<StateInfo.DataBean> stateList) {
+        mContext = context;
+        mStateList = stateList;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mSendRedPacketActivity).inflate(R.layout.item_dialog_bottom, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_dialog_bottom, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.setData(mCoinArr.get(position));
+        viewHolder.setData(mStateList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        if (mCoinArr == null)
+        if (mStateList.size() == 0)
             return 0;
-        return mCoinArr.size();
+        return mStateList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -55,24 +59,30 @@ public class BottomDialogRVAdapter3 extends RecyclerView.Adapter {
         ImageView mTvCoinLogo;
         @Bind(R.id.tv_name)
         TextView mTvName;
-        private String mName;
+        private StateInfo.DataBean mDataBean;
 
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
 
             view.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onClick(View view) {
-                    mSendRedPacketActivity.hideDialog(mName);
+                    if (mContext instanceof RealNameC1Activity) {
+                        RealNameC1Activity activity = (RealNameC1Activity) mContext;
+                        activity.hideDialog(mDataBean.getId(), mDataBean.getName_zh());
+                    } else if (mContext instanceof OtcActivity) {
+                        OtcActivity activity = (OtcActivity) mContext;
+                        activity.hideDialog2(mDataBean.getId(), mDataBean.getName_zh());
+                    }
                 }
             });
         }
 
-        public void setData(CoinInfo.DataBean data) {
-            mName = data.getName();
-            mTvName.setText(mName);
-            Glide.with(mSendRedPacketActivity).load(data.getLogo()).into(mTvCoinLogo);
+        public void setData(StateInfo.DataBean dataBean) {
+            mDataBean = dataBean;
+            mTvName.setText(dataBean.getName_zh());
         }
     }
 }

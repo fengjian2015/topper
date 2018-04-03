@@ -10,14 +10,26 @@
         android:layout_height="@dimen/y100"
         android:background="@color/white">
 
+        <TextView
+            android:id="@+id/tv_filtrate"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
+            android:paddingRight="@dimen/x20"
+            android:text="筛选"
+            android:textColor="@color/blue2"
+            android:textSize="@dimen/x28"/>
+
         <RelativeLayout
             android:id="@+id/rl_selector_state"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:paddingRight="@dimen/x20"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x20"
+            android:paddingRight="@dimen/x20"
             android:visibility="visible">
 
             <TextView

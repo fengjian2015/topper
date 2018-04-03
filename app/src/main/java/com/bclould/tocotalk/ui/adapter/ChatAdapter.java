@@ -33,6 +33,7 @@ import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.model.VoiceInfo;
 import com.bclould.tocotalk.ui.activity.ImageViewActivity;
 import com.bclould.tocotalk.ui.activity.RedPacketActivity;
+import com.bclould.tocotalk.ui.activity.TransferDetailsActivity;
 import com.bclould.tocotalk.ui.activity.VideoActivity;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
 import com.bclould.tocotalk.utils.Constants;
@@ -351,7 +352,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 }
             });
             if (messageInfo.getState() == 1) {
-                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket));
+                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.transfer));
                 mTvExamine.setText("已領取紅包");
             } else {
                 mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket2));
@@ -399,7 +400,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mTvCoinRedpacket.setText(messageInfo.getCoin() + "红包");
             mTvRemark.setText(messageInfo.getRemark());
             if (messageInfo.getState() == 1) {
-                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket));
+                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.transfer));
                 mTvExamine.setText("已領取紅包");
                 mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -563,7 +564,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             } else {
                 mediaPlayer.reset();
                 mediaPlayer.setDataSource(fileName);     //设置资源目录
-                mediaPlayer.prepare();//缓冲
+                 mediaPlayer.prepare();//缓冲
                 mediaPlayer.start();//开始或恢复播放
             }
             mFileName = fileName;
@@ -810,14 +811,28 @@ public class ChatAdapter extends RecyclerView.Adapter {
             ButterKnife.bind(this, view);
         }
 
-        public void setData(MessageInfo messageInfo) {
+        public void setData(final MessageInfo messageInfo) {
             mIvTouxiang.setImageBitmap(mToBitmap);
             mTvRemark.setText(messageInfo.getRemark());
             mTvCoinCount.setText(messageInfo.getCount() + messageInfo.getCoin());
+            if (messageInfo.getState() == 0) {
+                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket));
+                mTvRemark.setText(messageInfo.getRemark());
+            } else {
+                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket3));
+                mTvRemark.setText("转账已被领取");
+            }
             mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    mMgr.updateMessageState(messageInfo.getId() + "", 1);
+                    messageInfo.setState(1);
+                    notifyDataSetChanged();
+                    Intent intent = new Intent(mContext, TransferDetailsActivity.class);
+                    intent.putExtra("count", messageInfo.getCount());
+                    intent.putExtra("coin", messageInfo.getCoin());
+                    intent.putExtra("time", messageInfo.getTime());
+                    mContext.startActivity(intent);
                 }
             });
         }
@@ -840,14 +855,28 @@ public class ChatAdapter extends RecyclerView.Adapter {
             ButterKnife.bind(this, view);
         }
 
-        public void setData(MessageInfo messageInfo) {
+        public void setData(final MessageInfo messageInfo) {
             mIvTouxiang.setImageBitmap(mFromBitmap);
             mTvRemark.setText(messageInfo.getRemark());
             mTvCoinCount.setText(messageInfo.getCount() + messageInfo.getCoin());
+            if (messageInfo.getState() == 0) {
+                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket));
+                mTvRemark.setText(messageInfo.getRemark());
+            } else {
+                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket3));
+                mTvRemark.setText("转账已被领取");
+            }
             mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    mMgr.updateMessageState(messageInfo.getId() + "", 1);
+                    messageInfo.setState(1);
+                    notifyDataSetChanged();
+                    Intent intent = new Intent(mContext, TransferDetailsActivity.class);
+                    intent.putExtra("count", messageInfo.getCount());
+                    intent.putExtra("coin", messageInfo.getCoin());
+                    intent.putExtra("time", messageInfo.getTime());
+                    mContext.startActivity(intent);
                 }
             });
         }

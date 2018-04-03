@@ -49,6 +49,7 @@ public class OrderFormFragment extends Fragment {
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
     private String mCoinName = "BTC";
+    private String mFiltrate = "全部";
     private List<OrderListInfo.DataBean> mDataList = new ArrayList<>();
     private OrderRVAdapter mOrderRVAdapter;
     private DBManager mMgr;
@@ -63,7 +64,7 @@ public class OrderFormFragment extends Fragment {
             EventBus.getDefault().register(this);
         initRecyclerView();
         initListener();
-        initData(mCoinName);
+        initData(mCoinName, mFiltrate);
         return view;
     }
 
@@ -73,9 +74,11 @@ public class OrderFormFragment extends Fragment {
         String msg = event.getMsg();
         if (event.getCoinName() != null) {
             mCoinName = event.getCoinName();
+        } else if (event.getFiltrate() != null) {
+            mFiltrate = event.getFiltrate();
         }
         if (msg.equals("幣種切換")) {
-            initData(mCoinName);
+            initData(mCoinName, mFiltrate);
         } else if (msg.equals("确认付款")) {
             for (OrderListInfo.DataBean info : mDataList) {
                 if (info.getId() == Integer.parseInt(event.getId())) {
@@ -98,7 +101,11 @@ public class OrderFormFragment extends Fragment {
                 }
             }
         } else if (msg.equals("创建订单")) {
-            initData(mCoinName);
+            initData(mCoinName, mFiltrate);
+        } else if (msg.equals("创建订单")) {
+            initData(mCoinName, mFiltrate);
+        }else if(msg.equals("交易订单筛选")){
+            initData(mCoinName, mFiltrate);
         }
     }
 
@@ -107,7 +114,7 @@ public class OrderFormFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
-                initData(mCoinName);
+                initData(mCoinName, mFiltrate);
             }
         });
     }
@@ -118,10 +125,10 @@ public class OrderFormFragment extends Fragment {
         mRecyclerView.setAdapter(mOrderRVAdapter);
     }
 
-    private void initData(String coin) {
+    private void initData(String coinName, String filtrate) {
         mDataList.clear();
         BuySellPresenter buySellPresenter = new BuySellPresenter(getContext());
-        buySellPresenter.getOrderList(coin, new BuySellPresenter.CallBack3() {
+        buySellPresenter.getOrderList(coinName, filtrate, new BuySellPresenter.CallBack3() {
             @Override
             public void send(List<OrderListInfo.DataBean> data) {
                 if (data.size() != 0) {

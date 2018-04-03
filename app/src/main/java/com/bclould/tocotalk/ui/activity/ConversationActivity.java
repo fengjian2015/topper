@@ -54,6 +54,7 @@ import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
+import com.bclould.tocotalk.model.RedRecordInfo;
 import com.bclould.tocotalk.model.VoiceInfo;
 import com.bclould.tocotalk.ui.adapter.ChatAdapter;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
@@ -405,7 +406,12 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         });
 
         //实例化录音管理类
-        recordIndicator = new RecordIndicator(this);
+        recordIndicator = new RecordIndicator(this, new RecordIndicator.CallBack() {
+            @Override
+            public void send() {
+                cancelRecord();
+            }
+        });
         //给功能盘添加录音监听
         mEkbEmoticonsKeyboard.setRecordIndicator(recordIndicator);
         try {
@@ -446,6 +452,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             e.printStackTrace();
         }
     }
+
 
     //开始录音
     private void startRecord() {
@@ -583,7 +590,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             EventBus.getDefault().post(new MessageEvent("处理未读消息"));
         } else if (msg.equals("发红包了")) {
             initData();
-        }else if (msg.equals("转账了")) {
+        } else if (msg.equals("转账了")) {
             initData();
         } else if (msg.equals("打开相册")) {
             selectorImages();
@@ -596,10 +603,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         } else if (msg.equals("查看原图")) {
             String id = event.getId();
             for (MessageInfo info : mMessageList) {
-                if (info.getId() == Integer.parseInt(id)) {
-                    info.setImageType(1);
-                    mChatAdapter.notifyDataSetChanged();
-                }
+                info.setImageType(1);
+                mChatAdapter.notifyDataSetChanged();
             }
         }
     }

@@ -46,12 +46,12 @@ public class RealNamePresenter {
         }
     }
 
-    public void realNameVerify(String name, String cardNumber, String cardType, final CallBack callBack) {
+    public void realNameVerify(String name, String cardNumber, int id, String cardType, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .realNameVerify(UtilTool.getToken(), name, cardNumber, cardType)
+                    .realNameVerify(UtilTool.getToken(), name, cardNumber, id + "", cardType)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<BaseInfo>() {

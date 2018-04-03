@@ -37,7 +37,8 @@
     <color name="red">#ff0000</color>
     <color name="redpacket">#FF9734</color>
     <color name="redpacket2">#FE5419</color>
-    <color name="redpacket3">#EC3431</color>
+    <color name="redpacket3">#FBC795</color>
+    <color name="transfer">#FBA588</color>
     <color name="dark_blue">#243042</color>
     <color name="darkgrey">#E5E5E5</color>
     <color name="green2">#52c7ca</color>

@@ -8,6 +8,6 @@
         android:width="@dimen/x500"
         android:height="@dimen/y80"/>
 
-    <solid android:color="@color/redpacket"/>
+    <solid android:color="@color/redpacket2"/>
 
 </shape>

@@ -387,7 +387,7 @@ public class PaymentActivity extends BaseActivity {
         TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
         Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mDataBeanList));
+        recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mCoinList));
         addCoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

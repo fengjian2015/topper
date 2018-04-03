@@ -58,12 +58,12 @@ public class BuySellPresenter {
         }
     }
 
-    public void getDealList(int type, final String coin, final CallBack callBack) {
+    public void getDealList(int type, String coinName, final String state, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .getDealList(UtilTool.getToken(), type, coin)
+                    .getDealList(UtilTool.getToken(), type, coinName, state)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<DealListInfo>() {
@@ -76,7 +76,7 @@ public class BuySellPresenter {
                         public void onNext(DealListInfo baseInfo) {
                             hideDialog();
                             if (baseInfo.getStatus() == 1) {
-                                callBack.send(baseInfo.getData(), coin);
+                                callBack.send(baseInfo.getData(), state);
                             }
                         }
 
@@ -96,12 +96,12 @@ public class BuySellPresenter {
         }
     }
 
-    public void getOrderList(final String coin, final CallBack3 callBack) {
+    public void getOrderList(String coinName, final String filtrate, final CallBack3 callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .getOrderList(UtilTool.getToken(), coin)
+                    .getOrderList(UtilTool.getToken(), coinName, filtrate)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<OrderListInfo>() {

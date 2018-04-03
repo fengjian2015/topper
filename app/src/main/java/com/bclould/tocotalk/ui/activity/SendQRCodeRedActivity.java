@@ -29,7 +29,7 @@ import android.widget.Toast;
 import com.bclould.tocotalk.Presenter.RedPacketPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
-import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter3;
+import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
@@ -84,7 +84,7 @@ public class SendQRCodeRedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_qr_code_red);
         ButterKnife.bind(this);
-        getWindow().setStatusBarColor(getColor(R.color.redpacket3));
+        getWindow().setStatusBarColor(getColor(R.color.redpacket2));
         mRedPacketPresenter = new RedPacketPresenter(this);
     }
 
@@ -264,11 +264,11 @@ public class SendQRCodeRedActivity extends AppCompatActivity {
             }
         });
         tvTitle.setText("选择币种");
-        if (MyApp.getInstance().mDataBeanList.size() != 0) {
+        if (MyApp.getInstance().mCoinList.size() != 0) {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(new BottomDialogRVAdapter3(this, MyApp.getInstance().mDataBeanList));
+            recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mCoinList));
         } else {
             recyclerView.setVisibility(View.GONE);
             addCoin.setVisibility(View.VISIBLE);

@@ -7,7 +7,9 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.listener.CrashHandler;
 import com.bclould.tocotalk.model.CoinInfo;
+import com.bclould.tocotalk.model.StateInfo;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.TestImageLoader;
@@ -29,7 +31,8 @@ public class MyApp extends Application {
 
     public static MyApp instance = null;
     private List<Activity> mActivityList = new ArrayList<>();//储存打开的Activity
-    public List<CoinInfo.DataBean> mDataBeanList = new ArrayList<>();
+    public List<CoinInfo.DataBean> mCoinList = new ArrayList<>();
+    public List<StateInfo.DataBean> mStateList = new ArrayList<>();
 
     //单例
     public static MyApp getInstance() {
@@ -46,6 +49,7 @@ public class MyApp extends Application {
         //初始化sp
         MySharedPreferences.getInstance().init(this);
 
+        new CrashHandler(this);
         //初始化
         ZoomMediaLoader.getInstance().init(new TestImageLoader());
 

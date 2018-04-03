@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
         android:layout_alignParentTop="true"
-        android:background="@color/redpacket3">
+        android:background="@color/redpacket2">
 
         <ImageView
             android:id="@+id/bark"
@@ -150,7 +150,7 @@
         android:layout_marginTop="@dimen/y80"
         android:background="@drawable/bg_orange_shape"
         android:text="发送"
-        android:textColor="@color/red"
+        android:textColor="@color/white"
         android:textSize="@dimen/x30"/>
 
 </LinearLayout>

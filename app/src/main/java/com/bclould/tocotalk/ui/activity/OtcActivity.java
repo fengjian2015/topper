@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,7 +26,9 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
+import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter3;
 import com.bclould.tocotalk.ui.adapter.CloudCircleVPAdapter;
+import com.bclould.tocotalk.ui.adapter.PayManageGVAdapter;
 import com.bclould.tocotalk.ui.fragment.BuyFragment;
 import com.bclould.tocotalk.ui.fragment.OrderFormFragment;
 import com.bclould.tocotalk.ui.fragment.SellFragment;
@@ -34,7 +37,9 @@ import com.bclould.tocotalk.utils.MessageEvent;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -80,7 +85,12 @@ public class OtcActivity extends BaseActivity {
     Button mBtnPushAd;
     @Bind(R.id.ll_bottom)
     LinearLayout mLlBottom;
+    @Bind(R.id.tv_filtrate)
+    TextView mTvFiltrate;
     private Dialog mBottomDialog;
+    private int mId;
+    private String mName_zh;
+    private Dialog mStateDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,6 +112,7 @@ public class OtcActivity extends BaseActivity {
     private void init() {
         initViewPager();
         initTopMenu();
+        mMap.put("筛选", 0);
     }
 
     @Override
@@ -131,6 +142,13 @@ public class OtcActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
+                if (position == 2) {
+                    mTvFiltrate.setVisibility(View.VISIBLE);
+                    mRlSelectorState.setVisibility(View.GONE);
+                } else {
+                    mTvFiltrate.setVisibility(View.GONE);
+                    mRlSelectorState.setVisibility(View.VISIBLE);
+                }
                 setSelector(position);
             }
 
@@ -192,13 +210,17 @@ public class OtcActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.rl_selector_state, R.id.bark, R.id.btn_selector_coin, R.id.btn_push_ad})
+    @OnClick({R.id.rl_selector_state, R.id.bark, R.id.btn_selector_coin, R.id.btn_push_ad, R.id.tv_filtrate})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_selector_state:
+                showStateDialog();
                 break;
             case R.id.bark:
                 finish();
+                break;
+            case R.id.tv_filtrate:
+                showFiltrateDialog();
                 break;
             case R.id.btn_selector_coin:
                 showCoinDialog();
@@ -208,6 +230,48 @@ public class OtcActivity extends BaseActivity {
                 startActivity(intent);
                 break;
         }
+    }
+
+    String mType = "全部";
+    String[] mFiltrateArr = {"全部", "已完成", "等待付款", "等待放币", "已取消"};
+    private Map<String, Integer> mMap = new HashMap<>();
+
+    private void showFiltrateDialog() {
+        mBottomDialog = new Dialog(this, R.style.BottomDialog2);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bill, null);
+        //获得dialog的window窗口
+        Window window = mBottomDialog.getWindow();
+        window.getDecorView().setPadding(0, 0, 0, 0);
+        //获得window窗口的属性
+        WindowManager.LayoutParams lp = window.getAttributes();
+        //设置窗口宽度为充满全屏
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        //将设置好的属性set回去
+        window.setAttributes(lp);
+        window.setGravity(Gravity.BOTTOM);
+        window.setWindowAnimations(BottomDialog);
+        mBottomDialog.setContentView(contentView);
+        mBottomDialog.show();
+        GridView gridView = (GridView) mBottomDialog.findViewById(R.id.grid_view);
+        Button cancel = (Button) mBottomDialog.findViewById(R.id.btn_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBottomDialog.dismiss();
+            }
+        });
+        gridView.setAdapter(new PayManageGVAdapter(this, mFiltrateArr, mMap, new PayManageGVAdapter.CallBack() {
+            //接口回调
+            @Override
+            public void send(int position, String typeName) {
+                mType = typeName;
+                mMap.put("筛选", position);
+                mBottomDialog.dismiss();
+                MessageEvent messageEvent = new MessageEvent("交易订单筛选");
+                messageEvent.setFiltrate(mType);
+                EventBus.getDefault().post(messageEvent);
+            }
+        }));
     }
 
     private void showCoinDialog() {
@@ -230,7 +294,7 @@ public class OtcActivity extends BaseActivity {
         TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
         Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mDataBeanList));
+        recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mCoinList));
         addCoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -241,11 +305,59 @@ public class OtcActivity extends BaseActivity {
         tvTitle.setText("选择币种");
     }
 
+    private void showStateDialog() {
+        mStateDialog = new Dialog(this, R.style.BottomDialog2);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom, null);
+        //获得dialog的window窗口
+        Window window = mStateDialog.getWindow();
+        window.getDecorView().setPadding(0, 0, 0, 0);
+        //获得window窗口的属性
+        WindowManager.LayoutParams lp = window.getAttributes();
+        //设置窗口宽度为充满全屏
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        //将设置好的属性set回去
+        window.setAttributes(lp);
+        window.setGravity(Gravity.BOTTOM);
+        window.setWindowAnimations(BottomDialog);
+        mStateDialog.setContentView(contentView);
+        mStateDialog.show();
+        RecyclerView recyclerView = (RecyclerView) mStateDialog.findViewById(R.id.recycler_view);
+        TextView tvTitle = (TextView) mStateDialog.findViewById(R.id.tv_title);
+        Button addCoin = (Button) mStateDialog.findViewById(R.id.btn_add_coin);
+        addCoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(OtcActivity.this, MyAssetsActivity.class));
+                mStateDialog.dismiss();
+            }
+        });
+        tvTitle.setText("选择国家");
+        if (MyApp.getInstance().mCoinList.size() != 0) {
+            recyclerView.setVisibility(View.VISIBLE);
+            addCoin.setVisibility(View.GONE);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(new BottomDialogRVAdapter3(this, MyApp.getInstance().mStateList));
+        } else {
+            recyclerView.setVisibility(View.GONE);
+            addCoin.setVisibility(View.VISIBLE);
+        }
+    }
+
     public void hideDialog(String name, int id) {
         mBottomDialog.dismiss();
         mTvCoinName.setText(name);
         MessageEvent messageEvent = new MessageEvent("幣種切換");
         messageEvent.setCoinName(name);
+        EventBus.getDefault().post(messageEvent);
+    }
+
+    public void hideDialog2(int id, String name) {
+        mStateDialog.dismiss();
+        mId = id;
+        mName_zh = name;
+        mTvState.setText(name);
+        MessageEvent messageEvent = new MessageEvent("国家切换");
+        messageEvent.setState(name);
         EventBus.getDefault().post(messageEvent);
     }
 

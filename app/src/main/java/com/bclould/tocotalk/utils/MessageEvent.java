@@ -13,10 +13,28 @@ public class MessageEvent {
 
     private String mMsg;
     private String coinName;
+    private String state;
     private String reviewCount;
     private String id;
     private String likeCount;
     private boolean type;
+    private String filtrate;
+
+    public String getFiltrate() {
+        return filtrate;
+    }
+
+    public void setFiltrate(String filtrate) {
+        this.filtrate = filtrate;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     public boolean isType() {
         return type;

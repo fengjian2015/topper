@@ -28,12 +28,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bclould.tocotalk.Presenter.CoinPresenter;
 import com.bclould.tocotalk.Presenter.RedPacketPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
-import com.bclould.tocotalk.model.CoinInfo;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
@@ -53,7 +51,6 @@ import org.jxmpp.jid.impl.JidCreate;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -100,12 +97,12 @@ public class SendRedPacketActivity extends AppCompatActivity {
     private String mRemark;
     private double mCount;
     private String mCoin;
-//    List<CoinInfo.DataBean> mDataBeanList = new ArrayList<>();
+//    List<CoinInfo.DataBean> mCoinList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setStatusBarColor(getColor(R.color.redpacket3));
+        getWindow().setStatusBarColor(getColor(R.color.redpacket2));
         mMgr = new DBManager(this);
         setContentView(R.layout.activity_send_red_packet);
         mUser = getIntent().getStringExtra("user");
@@ -290,11 +287,11 @@ public class SendRedPacketActivity extends AppCompatActivity {
             }
         });
         tvTitle.setText("选择币种");
-        if (MyApp.getInstance().mDataBeanList.size() != 0) {
+        if (MyApp.getInstance().mCoinList.size() != 0) {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mDataBeanList));
+            recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mCoinList));
         } else {
             recyclerView.setVisibility(View.GONE);
             addCoin.setVisibility(View.VISIBLE);

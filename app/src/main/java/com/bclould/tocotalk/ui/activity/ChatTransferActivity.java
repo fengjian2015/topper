@@ -35,7 +35,6 @@ import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
-import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
@@ -53,7 +52,6 @@ import org.jxmpp.jid.impl.JidCreate;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -348,11 +346,11 @@ public class ChatTransferActivity extends BaseActivity {
             }
         });
         tvTitle.setText("选择币种");
-        if (MyApp.getInstance().mDataBeanList.size() != 0) {
+        if (MyApp.getInstance().mCoinList.size() != 0) {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mDataBeanList));
+            recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mCoinList));
         } else {
             recyclerView.setVisibility(View.GONE);
             addCoin.setVisibility(View.VISIBLE);

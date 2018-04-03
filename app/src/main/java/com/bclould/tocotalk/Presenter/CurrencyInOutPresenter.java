@@ -19,7 +19,10 @@ import com.bclould.tocotalk.ui.activity.PayPasswordActivity;
 import com.bclould.tocotalk.ui.activity.TransferAccountsActivity;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
+
+import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -81,7 +84,10 @@ public class CurrencyInOutPresenter {
                             } else if (baseInfo.getMessage().equals("交易密码不正确")) {
                                 OutCoinActivity activity = (OutCoinActivity) mContext;
                                 activity.showHintDialog();
-
+                            } else if (baseInfo.getStatus() == 1) {
+                                EventBus.getDefault().post(new MessageEvent("转账"));
+                                OutCoinActivity activity = (OutCoinActivity) mContext;
+                                activity.finish();
                             }
                             hideDialog();
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
@@ -152,6 +158,10 @@ public class CurrencyInOutPresenter {
                             } else if (baseInfo.getMessage().equals("交易密码不正确")) {
                                 TransferAccountsActivity activity = (TransferAccountsActivity) mContext;
                                 activity.showHintDialog();
+                            } else if (baseInfo.getStatus() == 1) {
+                                EventBus.getDefault().post(new MessageEvent("转账"));
+                                TransferAccountsActivity activity = (TransferAccountsActivity) mContext;
+                                activity.finish();
                             }
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -191,7 +201,6 @@ public class CurrencyInOutPresenter {
                         @Override
                         public void onNext(@NonNull BaseInfo baseInfo) {
                             hideDialog();
-
                             if (baseInfo.getStatus() == 1)
                                 callBack.send(baseInfo.getData());
                             else

@@ -18,7 +18,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.ui.adapter.BuySellRVAdapter;
 import com.bclould.tocotalk.utils.MessageEvent;
-import com.bclould.tocotalk.utils.UtilTool;
+import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -32,6 +32,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.bclould.tocotalk.Presenter.LoginPresenter.STATE;
 
 /**
  * Created by GA on 2017/9/20.
@@ -50,12 +52,11 @@ public class BuyFragment extends Fragment {
     LinearLayout mLlNoData;
     private View mView;
     private String mCoinName = "BTC";
+    private String mState = MySharedPreferences.getInstance().getString(STATE);
     private List<DealListInfo.DataBean> mDataList = new ArrayList<>();
     private BuySellRVAdapter mBuySellRVAdapter;
     private BuySellPresenter mBuySellPresenter;
 
-
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mView == null)
@@ -63,7 +64,7 @@ public class BuyFragment extends Fragment {
         ButterKnife.bind(this, mView);
         mBuySellPresenter = new BuySellPresenter(getContext());
         initRecyclerView();
-        initData(mCoinName);
+        initData(mCoinName, mState);
         bindBankStatus();
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
@@ -80,12 +81,15 @@ public class BuyFragment extends Fragment {
         String msg = event.getMsg();
         if (event.getCoinName() != null) {
             mCoinName = event.getCoinName();
+        } else if (event.getState() != null) {
+            mState = event.getState();
         }
         if (msg.equals("幣種切換")) {
-            initData(mCoinName);
+            initData(mCoinName, mState);
         } else if (msg.equals("发布交易")) {
-            initData(mCoinName);
-            UtilTool.Log("otc", mCoinName);
+            initData(mCoinName, mState);
+        } else if (msg.equals("国家切换")) {
+            initData(mCoinName, mState);
         }
     }
 
@@ -102,7 +106,7 @@ public class BuyFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
-                initData(mCoinName);
+                initData(mCoinName, mState);
             }
         });
     }
@@ -114,9 +118,9 @@ public class BuyFragment extends Fragment {
     }
 
 
-    private void initData(String coin) {
+    private void initData(String coinName, String state) {
         mDataList.clear();
-        mBuySellPresenter.getDealList(1, coin, new BuySellPresenter.CallBack() {
+        mBuySellPresenter.getDealList(1, coinName, state, new BuySellPresenter.CallBack() {
             @Override
             public void send(List<DealListInfo.DataBean> dataBean, String coin) {
                 if (dataBean.size() != 0) {

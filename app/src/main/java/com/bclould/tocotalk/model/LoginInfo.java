@@ -50,6 +50,26 @@ public class LoginInfo {
 
         private String name;
 
+        private String country;
+
+        private int validate_type;
+
+        public int getValidate_type() {
+            return validate_type;
+        }
+
+        public void setValidate_type(int validate_type) {
+            this.validate_type = validate_type;
+        }
+
+        public String getCountry() {
+            return country;
+        }
+
+        public void setCountry(String country) {
+            this.country = country;
+        }
+
         public String getName() {
             return name;
         }

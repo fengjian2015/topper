@@ -23,6 +23,7 @@ import com.bclould.tocotalk.model.OutCoinSiteInfo;
 import com.bclould.tocotalk.model.ReceiptInfo;
 import com.bclould.tocotalk.model.RedRecordInfo;
 import com.bclould.tocotalk.model.ReviewListInfo;
+import com.bclould.tocotalk.model.StateInfo;
 import com.bclould.tocotalk.model.TransferInfo;
 import com.bclould.tocotalk.model.TransferListInfo;
 
@@ -47,7 +48,8 @@ public interface MyService {
     @POST("signIn")
     Observable<LoginInfo> login(
             @Field("email") String email,
-            @Field("password") String password
+            @Field("password") String password,
+            @Field("code") String code
     );
 
     //图形验证码
@@ -299,7 +301,8 @@ public interface MyService {
     Observable<DealListInfo> getDealList(
             @Header("Authorization") String token,
             @Field("type") int type,
-            @Field("coin_name") String coin_name
+            @Field("coin_name") String coin_name,
+            @Field("country") String country
     );
 
     //买币
@@ -363,7 +366,8 @@ public interface MyService {
     @FormUrlEncoded
     Observable<OrderListInfo> getOrderList(
             @Header("Authorization") String token,
-            @Field("coin_name") String coin_name
+            @Field("coin_name") String coin_name,
+            @Field("status") String status
     );
 
     //订单详情
@@ -436,6 +440,7 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("truename") String truename,
             @Field("card_number") String card_number,
+            @Field("country_id") String country_id,
             @Field("type") String type
     );
 
@@ -574,7 +579,7 @@ public interface MyService {
 
     //获取国家列表
     @POST("common/getCountryList")
-    Observable<InOutInfo> getCountryList(
+    Observable<StateInfo> getCountryList(
             @Header("Authorization") String token
     );
 

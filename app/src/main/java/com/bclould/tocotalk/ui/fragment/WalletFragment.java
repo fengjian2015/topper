@@ -20,6 +20,11 @@ import com.bclould.tocotalk.ui.activity.MyAssetsActivity;
 import com.bclould.tocotalk.ui.activity.OtcActivity;
 import com.bclould.tocotalk.ui.activity.PayCentreActivity;
 import com.bclould.tocotalk.ui.activity.ReceiptPaymentActivity;
+import com.bclould.tocotalk.utils.MessageEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -72,10 +77,21 @@ public class WalletFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_cloud_coin, container, false);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         ButterKnife.bind(this, view);
         initData();
         return view;
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals("转账")) {
+            initData();
+        }
+    }
+
 
     private void initData() {
         SubscribeCoinPresenter subscribeCoinPresenter = new SubscribeCoinPresenter(getContext());
@@ -96,6 +112,7 @@ public class WalletFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);;
     }
 
     @OnClick({R.id.iv_more, R.id.ll_inout, R.id.ll_usdt, R.id.ll_bank_card, R.id.ll_asserts, R.id.ll_exchange, R.id.ll_otc, R.id.ll_financing, R.id.ll_pawn, R.id.ll_safe})

@@ -28,6 +28,11 @@ import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.MyAssetsInfo;
 import com.bclould.tocotalk.ui.adapter.MyWalletRVAapter;
+import com.bclould.tocotalk.utils.MessageEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,11 +68,29 @@ public class MyAssetsActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_assets);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
         initRecyclerView();
         initData();
         initEdit();
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals("转账")) {
+            initData();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 
     private void initEdit() {
@@ -98,6 +121,7 @@ public class MyAssetsActivity extends BaseActivity {
     }
 
     private void initData() {
+        mDataList.clear();
         SubscribeCoinPresenter subscribeCoinPresenter = new SubscribeCoinPresenter(this);
         subscribeCoinPresenter.getMyAssets(new SubscribeCoinPresenter.CallBack() {
             @Override
@@ -132,6 +156,13 @@ public class MyAssetsActivity extends BaseActivity {
         mPopupWindow = new PopupWindow(mPopupWindowView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
         mPopupWindow.setAnimationStyle(R.style.AnimationRightFade);
         mPopupWindow.showAtLocation(view, Gravity.NO_GRAVITY, widthPixels - mPopupWindow.getWidth(), location[1]);
+        final ImageView back = (ImageView) mPopupWindowView.findViewById(R.id.iv_jiantou);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPopupWindow.dismiss();
+            }
+        });
         final Button inCoin = (Button) mPopupWindowView.findViewById(R.id.btn_in_coin);
         inCoin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,6 +172,7 @@ public class MyAssetsActivity extends BaseActivity {
                 intent.putExtra("coinName", dataBean.getName());
                 intent.putExtra("over", dataBean.getOver());
                 startActivity(intent);
+                mPopupWindow.dismiss();
             }
         });
         Button outCoin = (Button) mPopupWindowView.findViewById(R.id.btn_out_coin);
@@ -152,6 +184,7 @@ public class MyAssetsActivity extends BaseActivity {
                 intent.putExtra("coinName", dataBean.getName());
                 intent.putExtra("over", dataBean.getOver());
                 startActivity(intent);
+                mPopupWindow.dismiss();
             }
         });
         Button transferAccounts = (Button) mPopupWindowView.findViewById(R.id.btn_transfer_accounts);
@@ -163,6 +196,7 @@ public class MyAssetsActivity extends BaseActivity {
                 intent.putExtra("coinName", dataBean.getName());
                 intent.putExtra("over", dataBean.getOver());
                 startActivity(intent);
+                mPopupWindow.dismiss();
             }
         });
     }
