@@ -56,6 +56,33 @@ public class BaseInfo {
         private String total;
         private String USDT;
         private String CNY;
+        private String buy_price;
+        private String sale_price;
+        private String trend;
+
+        public String getBuy_price() {
+            return buy_price;
+        }
+
+        public void setBuy_price(String buy_price) {
+            this.buy_price = buy_price;
+        }
+
+        public String getSale_price() {
+            return sale_price;
+        }
+
+        public void setSale_price(String sale_price) {
+            this.sale_price = sale_price;
+        }
+
+        public String getTrend() {
+            return trend;
+        }
+
+        public void setTrend(String trend) {
+            this.trend = trend;
+        }
 
         public String getUSDT() {
             return USDT;

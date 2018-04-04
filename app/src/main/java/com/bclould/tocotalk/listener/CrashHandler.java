@@ -41,7 +41,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     private final Context mContext;
     private final Thread.UncaughtExceptionHandler defaultUncaught;
-    File logFile = new File(Constants.LOG_DIR + UtilTool.getMyUser() + getCurrentDateString() + ".txt");
+    File logFile = new File(Constants.LOG_DIR + "ExceptionLog" + UtilTool.getUser() + UtilTool.createtFileName() + ".txt");
 
     public CrashHandler(Context context) {
         super();
@@ -61,15 +61,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
                 MySharedPreferences.getInstance().setString(SESSIONTOKEN, data.getSessionToken());
             }
         });
-    }
-
-    private static String getCurrentDateString() {
-        String result = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd",
-                Locale.getDefault());
-        Date nowDate = new Date();
-        result = sdf.format(nowDate);
-        return result;
     }
 
     @Override
@@ -138,6 +129,10 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
         PrintWriter pw = null;
         try {
+            File file = new File(Constants.LOG_DIR);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
             if (!logFile.exists()) {
                 logFile.createNewFile();
             }

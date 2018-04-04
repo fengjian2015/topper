@@ -28,7 +28,6 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.FragmentFactory;
 import com.bclould.tocotalk.base.MyApp;
-import com.bclould.tocotalk.model.CoinInfo;
 import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.network.DownLoadApk;
 import com.bclould.tocotalk.network.RetrofitUtil;
@@ -334,7 +333,7 @@ public class MainActivity extends BaseActivity {
                     AbstractXMPPConnection connection = XmppConnection.getInstance().getConnection();
                     //判断是否连接
                     if (connection != null && connection.isConnected()) {
-                        String myUser = UtilTool.getMyUser();
+                        String myUser = UtilTool.getJid();
                         String user = myUser.substring(0, myUser.indexOf("@"));
                         connection.login(user, UtilTool.getpw());
                         connection.addConnectionListener(new XMConnectionListener(user, UtilTool.getpw(), MainActivity.this));

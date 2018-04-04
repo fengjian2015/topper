@@ -247,7 +247,7 @@ public class UpIdCardActivity extends BaseActivity {
         showDialog();
         for (Map.Entry<Integer, String> entry : map.entrySet()) {
             File file = new File(entry.getValue());
-            String jid = UtilTool.getMyUser();
+            String jid = UtilTool.getJid();
             String myName = jid.substring(0, jid.indexOf("@"));
             final String key = myName + UtilTool.createtFileName() + file.getName();
             Luban.with(UpIdCardActivity.this)

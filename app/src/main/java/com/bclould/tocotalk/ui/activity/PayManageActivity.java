@@ -19,7 +19,8 @@ import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
-import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter4;
+import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -96,7 +97,7 @@ public class PayManageActivity extends BaseActivity {
         RecyclerView recyclerView = (RecyclerView) mBottomDialog.findViewById(R.id.recycler_view);
         TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new BottomDialogRVAdapter4(this, mCoinArr));
+        recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mCoinList));
         tvTitle.setText("选择币种");
     }
 
@@ -104,7 +105,7 @@ public class PayManageActivity extends BaseActivity {
 
     }
 
-    public void hideDialog(String name) {
+    public void hideDialog(String name, int id) {
         mBottomDialog.dismiss();
         mTvCoinPay.setText(name + " 支付");
     }

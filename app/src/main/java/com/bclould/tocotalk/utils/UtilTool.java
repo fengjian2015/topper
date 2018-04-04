@@ -396,9 +396,15 @@ public class UtilTool {
 
     }
 
-    public static String getMyUser() {
+    public static String getJid() {
 
         return MySharedPreferences.getInstance().getString(MYUSERNAME);
+
+    }
+
+    public static String getUser() {
+
+        return getJid().substring(0, getJid().indexOf("@"));
 
     }
 
@@ -487,7 +493,7 @@ public class UtilTool {
         return prefix + str;
     }
 
-    public static String base64PetToJson2(String prefix, String key, String value, String key2, String value2, String key3, String value3,String key4, String value4, String key5, String value5) {
+    public static String base64PetToJson2(String prefix, String key, String value, String key2, String value2, String key3, String value3, String key4, String value4, String key5, String value5) {
         String jsonresult = "";//定义返回字符串
         JSONObject object = new JSONObject();//创建一个总的对象，这个对象对整个json串
         try {

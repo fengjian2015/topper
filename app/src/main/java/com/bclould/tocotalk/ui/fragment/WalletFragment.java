@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.bclould.tocotalk.Presenter.SubscribeCoinPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.ui.activity.BankCardActivity;
+import com.bclould.tocotalk.ui.activity.CoinExchangeActivity;
 import com.bclould.tocotalk.ui.activity.MyAssetsActivity;
 import com.bclould.tocotalk.ui.activity.OtcActivity;
 import com.bclould.tocotalk.ui.activity.PayCentreActivity;
@@ -133,6 +134,7 @@ public class WalletFragment extends Fragment {
                 startActivity(new Intent(getActivity(), MyAssetsActivity.class));
                 break;
             case R.id.ll_exchange:
+                startActivity(new Intent(getActivity(), CoinExchangeActivity.class));
                 break;
             case R.id.ll_otc:
                 startActivity(new Intent(getActivity(), OtcActivity.class));

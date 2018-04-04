@@ -97,9 +97,9 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':library')
     compile project(':keyboard')
-    compile files('libs/TencentLocationSdk_v6.2.5.3_r15b3b3cc_20171103_115903.jar')
-    compile files('libs/TencentMapSDK_Raster_v_1.2.8.1.c02ec64.jar')
-    compile files('libs/TencentMapSearch_v1.1.7.1.3e04ee1.jar')
+    implementation files('libs/TencentLocationSdk_v6.2.5.3_r15b3b3cc_20171103_115903.jar')
+    implementation files('libs/TencentMapSDK_Raster_v_1.2.8.1.c02ec64.jar')
+    implementation files('libs/TencentMapSearch_v1.1.7.1.3e04ee1.jar')
     compile 'com.android.support:appcompat-v7:25.+'
     compile 'com.android.support:cardview-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'

@@ -346,7 +346,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                             mMgr.updateMessageState(messageInfo.getId() + "", 1);
                             messageInfo.setState(1);
                             notifyDataSetChanged();
-                            skip(info, mToBitmap, UtilTool.getMyUser());
+                            skip(info, mToBitmap, UtilTool.getJid());
                         }
                     });
                 }

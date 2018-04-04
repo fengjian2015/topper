@@ -286,7 +286,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 	 *  </p>
 	 *  <ol>
 	 *  <li>Success, if the wrapped defaultVerifier accepts the certificate.</li>
-	 *  <li>Success, if the server certificate is stored in the keystore under the given hostname.</li>
+	 *  <li>Success, if the service certificate is stored in the keystore under the given hostname.</li>
 	 *  <li>Ask the user and return accordingly.</li>
 	 *  <li>Failure on exception.</li>
 	 *  </ol>
@@ -697,7 +697,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 	{
 		switch (interact(certChainMessage(chain, cause), R.string.mtm_accept_cert)) {
 		case MTMDecision.DECISION_ALWAYS:
-			storeCert(chain[0]); // only store the server cert, not the whole chain
+			storeCert(chain[0]); // only store the service cert, not the whole chain
 		case MTMDecision.DECISION_ONCE:
 			break;
 		default:
@@ -756,7 +756,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 					LOGGER.log(Level.FINE, "certificate for " + hostname + " is in our keystore. accepting.");
 					return true;
 				} else {
-					LOGGER.log(Level.FINE, "server " + hostname + " provided wrong certificate, asking user.");
+					LOGGER.log(Level.FINE, "service " + hostname + " provided wrong certificate, asking user.");
 					return interactHostname(cert, hostname);
 				}
 			} catch (Exception e) {

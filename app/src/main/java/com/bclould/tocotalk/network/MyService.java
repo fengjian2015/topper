@@ -6,8 +6,10 @@ import com.bclould.tocotalk.model.BankCardInfo;
 import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.CardListInfo;
 import com.bclould.tocotalk.model.CoinInfo;
+import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.model.DynamicListInfo;
+import com.bclould.tocotalk.model.ExchangeOrderInfo;
 import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.model.GoogleInfo;
 import com.bclould.tocotalk.model.GrabRedInfo;
@@ -662,5 +664,36 @@ public interface MyService {
             @Field("number") double number,
             @Field("second_password") String second_password,
             @Field("mark") String mark
+    );
+
+    //获取兑换币种列表
+    @POST("common/coinLists")
+    @FormUrlEncoded
+    Observable<CoinListInfo> coinLists(
+            @Header("Authorization") String token,
+            @Field("type") String type
+    );
+
+    //币种兑换记录
+    @POST("exchange/orders")
+    @FormUrlEncoded
+    Observable<ExchangeOrderInfo> exchangeOrders(
+            @Header("Authorization") String token,
+            @Field("market_coin_name") String market_coin_name,
+            @Field("trade_coin_name") String trade_coin_name,
+            @Field("page") String page,
+            @Field("page_size") String page_size
+    );
+
+    //币种兑换
+    @POST("exchange/sale")
+    @FormUrlEncoded
+    Observable<BaseInfo> exchangeSale(
+            @Header("Authorization") String token,
+            @Field("price") String price,
+            @Field("number") String number,
+            @Field("market_coin_name") String market_coin_name,
+            @Field("trade_coin_name") String trade_coin_name,
+            @Field("second_password") String second_password
     );
 }

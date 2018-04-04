@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.bclould.tocotalk.ui.fragment.BillDataFragment;
-import com.bclould.tocotalk.ui.fragment.InOUtDataFragment;
+import com.bclould.tocotalk.ui.fragment.InOutDataFragment;
 import com.bclould.tocotalk.ui.fragment.MyWalletFragment;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class MyAssetsVPAdapter extends FragmentPagerAdapter {
         super(fm);
         mFragmentList.add(MyWalletFragment.getInstance());
         mFragmentList.add(BillDataFragment.getInstance());
-        mFragmentList.add(InOUtDataFragment.getInstance());
+        mFragmentList.add(InOutDataFragment.getInstance());
     }
 
 

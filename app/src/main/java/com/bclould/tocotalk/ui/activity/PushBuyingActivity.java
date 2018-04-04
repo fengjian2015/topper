@@ -27,10 +27,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bclould.tocotalk.Presenter.CoinPresenter;
 import com.bclould.tocotalk.Presenter.PushBuyingPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
@@ -40,6 +42,7 @@ import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -172,13 +175,16 @@ public class PushBuyingActivity extends BaseActivity {
     private ArrayList<Map<String, String>> valueList;
     private GridView mGridView;
     String mCoinName = "BTC";
-    private PushBuyingPresenter mPushBuyingPresenter;
     private int mType;
+    private CoinPresenter mCoinPresenter;
+    private PushBuyingPresenter mPushBuyingPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_buying);
+        mCoinPresenter = new CoinPresenter(this);
+        mPushBuyingPresenter = new PushBuyingPresenter(this);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
         init();
@@ -190,10 +196,13 @@ public class PushBuyingActivity extends BaseActivity {
     }
 
     private void initData(String name) {
-        mPushBuyingPresenter = new PushBuyingPresenter(this);
-        mPushBuyingPresenter.getCoinPrice(name, new PushBuyingPresenter.CallBack2() {
+        mCoinPresenter.getCoinPrice(name, new CoinPresenter.CallBack2() {
             @Override
-            public void send(String price) {
+            public void send(BaseInfo.DataBean data) {
+                double usdt = Double.parseDouble(data.getUSDT());
+                double cny = Double.parseDouble(data.getCNY());
+                DecimalFormat df = new DecimalFormat("#.00");
+                String price = df.format(cny * usdt);
                 mTvPrice.setText(price);
             }
         });

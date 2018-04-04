@@ -295,7 +295,7 @@ public class PublicshDynamicActivity extends BaseActivity {
                 File file = new File(selectList.get(0).getPath());
                 String fileName = file.getName();
                 String name = fileName.substring(0, fileName.lastIndexOf("."));
-                String jid = UtilTool.getMyUser();
+                String jid = UtilTool.getJid();
                 String myName = jid.substring(0, jid.indexOf("@"));
                 Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(selectList.get(0).getPath()
                         , MediaStore.Video.Thumbnails.MINI_KIND);
@@ -313,7 +313,7 @@ public class PublicshDynamicActivity extends BaseActivity {
                         for (int i = 0; i < selectList.size(); i++) {
                             mPathList.add(selectList.get(i).getCompressPath());
                             File file = new File(selectList.get(i).getCompressPath());
-                            String jid = UtilTool.getMyUser();
+                            String jid = UtilTool.getJid();
                             String myName = jid.substring(0, jid.indexOf("@"));
                             final String key = myName + UtilTool.createtFileName() + file.getName();
                             final String keyCompress = myName + UtilTool.createtFileName() + "compress" + file.getName();

@@ -54,7 +54,6 @@ import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
-import com.bclould.tocotalk.model.RedRecordInfo;
 import com.bclould.tocotalk.model.VoiceInfo;
 import com.bclould.tocotalk.ui.adapter.ChatAdapter;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
@@ -704,7 +703,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     public void Upload(final String path) {
         final File file = new File(path);//获取文件
         String fileName = file.getName();//获取文件名
-        String myUser = UtilTool.getMyUser();//获取自己user
+        String myUser = UtilTool.getJid();//获取自己user
         String name = myUser.substring(0, myUser.indexOf("@"));//切割user获取name
         final String postfix = UtilTool.getPostfix(fileName);//获取文件后缀
         final String key = name + UtilTool.createtFileName() + ".AN." + fileName;//命名aws文件名

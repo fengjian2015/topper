@@ -81,7 +81,7 @@ public class MyFragment extends Fragment {
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals("修改头像")) {
-            Bitmap bitmap = UtilTool.getMyImage(mMgr, UtilTool.getMyUser());
+            Bitmap bitmap = UtilTool.getMyImage(mMgr, UtilTool.getJid());
             if (bitmap != null)
                 mIvTouxiang.setImageBitmap(bitmap);
         }
@@ -94,9 +94,9 @@ public class MyFragment extends Fragment {
     }
 
     private void init() {
-        mTvName.setText(UtilTool.getMyUser().substring(0, UtilTool.getMyUser().lastIndexOf("@")));
+        mTvName.setText(UtilTool.getJid().substring(0, UtilTool.getJid().lastIndexOf("@")));
         mMgr = new DBManager(getContext());
-        Bitmap bitmap = UtilTool.getMyImage(mMgr, UtilTool.getMyUser());
+        Bitmap bitmap = UtilTool.getMyImage(mMgr, UtilTool.getJid());
         if (bitmap != null)
             mIvTouxiang.setImageBitmap(bitmap);
     }

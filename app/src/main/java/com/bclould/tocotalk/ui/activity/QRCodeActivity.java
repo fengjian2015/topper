@@ -59,9 +59,9 @@ public class QRCodeActivity extends BaseActivity {
     private void init() {
         try {
             DBManager mgr = new DBManager(this);
-            List<UserInfo> userInfos = mgr.queryUser(UtilTool.getMyUser());
+            List<UserInfo> userInfos = mgr.queryUser(UtilTool.getJid());
             mTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfos.get(0).getPath()));
-            Bitmap bitmap = UtilTool.createQRImage(UtilTool.base64PetToJson(Constants.BUSINESSCARD, "name", UtilTool.getMyUser(), "名片"));
+            Bitmap bitmap = UtilTool.createQRImage(UtilTool.base64PetToJson(Constants.BUSINESSCARD, "name", UtilTool.getJid(), "名片"));
             mQrCodeIv.setImageBitmap(bitmap);
         } catch (Exception e) {
             e.printStackTrace();

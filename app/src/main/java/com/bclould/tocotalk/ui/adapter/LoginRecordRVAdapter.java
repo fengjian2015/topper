@@ -52,6 +52,8 @@ public class LoginRecordRVAdapter extends RecyclerView.Adapter {
     static class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.tv_ip)
         TextView mTvIp;
+        @Bind(R.id.tv_state)
+        TextView mTvState;
         @Bind(R.id.tv_time)
         TextView mTvTime;
 
@@ -63,6 +65,7 @@ public class LoginRecordRVAdapter extends RecyclerView.Adapter {
         public void setData(LoginRecordInfo.DataBean dataBean) {
             mTvIp.setText(dataBean.getIp());
             mTvTime.setText(dataBean.getCreated_at());
+            mTvState.setText(dataBean.getLocation());
         }
     }
 }

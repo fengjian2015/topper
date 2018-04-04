@@ -4,8 +4,10 @@ import android.Manifest;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Gravity;
@@ -23,6 +25,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.ui.adapter.LocationListAdapter;
 import com.bclould.tocotalk.ui.widget.AppTitle;
 import com.bclould.tocotalk.ui.widget.CenterIcon;
+import com.bclould.tocotalk.utils.UtilTool;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.jude.easyrecyclerview.decoration.DividerDecoration;
@@ -164,12 +167,23 @@ public class LocationActivity extends AppCompatActivity implements
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onLocationChanged(TencentLocation tencentLocation, int error, String reason) {
         LogUtil.e("----onLocationChanged---" + "----" + error + "---" + reason + tencentLocation.toString());
         if (error == TencentLocation.ERROR_OK) {
+            LatLng latLngLocation = null;
+            String provider = tencentLocation.getProvider();//定位方式
+            if (TencentLocation.GPS_PROVIDER.equals(provider)) {
+                // location 是GPS定位结果
+                latLngLocation = new LatLng(tencentLocation.getLatitude(), tencentLocation.getLongitude());
+                UtilTool.Log("位置", tencentLocation.getAddress());
+            } else if (TencentLocation.NETWORK_PROVIDER.equals(provider)) {
+                // location 是网络定位结果
+                UtilTool.Log("位置", tencentLocation.getAddress());
+                latLngLocation = new LatLng(tencentLocation.getLatitude(), tencentLocation.getLongitude());
+            }
             mLocation = tencentLocation;
-            LatLng latLngLocation = new LatLng(tencentLocation.getLatitude(), tencentLocation.getLongitude());
             // 更新 location Marker
             if (mLocationMarker == null) {
                 mLocationMarker =
@@ -200,13 +214,14 @@ public class LocationActivity extends AppCompatActivity implements
     private void startLocation() {
         LogUtil.e("开始定位" + mLocationManager);
         TencentLocationRequest request = TencentLocationRequest.create();
-        request.setInterval(50000);
-        request.setRequestLevel(TencentLocationRequest.REQUEST_LEVEL_GEO);
+        request.setInterval(10000);
+        request.setRequestLevel(TencentLocationRequest.REQUEST_LEVEL_NAME);
+        request.setAllowGPS(true);
+        request.setAllowDirection(true);
         int error = mLocationManager.requestLocationUpdates(request, this);
         LogUtil.e("定位错误" + error);
 
     }
-
 
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {

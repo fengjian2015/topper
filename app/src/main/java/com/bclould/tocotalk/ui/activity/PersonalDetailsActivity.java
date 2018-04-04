@@ -87,7 +87,7 @@ public class PersonalDetailsActivity extends BaseActivity {
         } else {
             mTouxiang.setImageBitmap(UtilTool.setDefaultimage(this));
         }
-        String jid = UtilTool.getMyUser();
+        String jid = UtilTool.getJid();
         String myName = jid.substring(0, jid.indexOf("@"));
         mTvUsername.setText(myName);
     }
@@ -107,7 +107,7 @@ public class PersonalDetailsActivity extends BaseActivity {
                     byte[] bytes = baos.toByteArray();
                     boolean type = XmppConnection.getInstance().changeImage(bytes);
                     if (type) {
-                        List<UserInfo> userInfos = mMgr.queryUser(UtilTool.getMyUser());
+                        List<UserInfo> userInfos = mMgr.queryUser(UtilTool.getJid());
                         mTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfos.get(0).getPath()));
                         EventBus.getDefault().post(new MessageEvent("修改头像"));
                         Toast.makeText(this, "修改成功", Toast.LENGTH_SHORT).show();

@@ -22,8 +22,6 @@ import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.text.DecimalFormat;
-
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -150,51 +148,12 @@ public class PushBuyingPresenter {
         });
     }
 
-    public void getCoinPrice(String name, final CallBack2 callBack2) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .assetsValuation(UtilTool.getToken(), name)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-                        }
 
-                        @Override
-                        public void onNext(BaseInfo baseInfo) {
-                            if (baseInfo.getStatus() == 1) {
-                                double usdt = Double.parseDouble(baseInfo.getData().getUSDT());
-                                double cny = Double.parseDouble(baseInfo.getData().getCNY());
-                                DecimalFormat df = new DecimalFormat("#.00");
-                                String price = df.format(cny * usdt);
-                                callBack2.send(price);
-                            }
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
-    }
 
     //定义接口
     public interface CallBack {
         void send(RedRecordInfo.DataBean data);
     }
 
-    //定义接口
-    public interface CallBack2 {
-        void send(String price);
-    }
+
 }

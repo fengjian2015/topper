@@ -187,7 +187,6 @@ public class BuySellPresenter {
 
     public void bindBankStatus() {
         if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .bindBankStatus(UtilTool.getToken())
@@ -201,7 +200,6 @@ public class BuySellPresenter {
 
                         @Override
                         public void onNext(BaseInfo baseInfo) {
-                            hideDialog();
                             if (baseInfo.getStatus() == 1) {
                             } else {
                                 showHintDialog(0);
@@ -210,7 +208,6 @@ public class BuySellPresenter {
 
                         @Override
                         public void onError(Throwable e) {
-                            hideDialog();
                             Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
