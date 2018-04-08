@@ -91,7 +91,7 @@ public class XMConnectionListener implements ConnectionListener {
                             intent.putExtra("type", true);
                             mContext.sendBroadcast(intent);
                         } else {
-                            Log.i("XMConnectionListener", "重新登录");
+                            Log.i("XMConnectionListener", "登录失败 重新尝试");
                             tExit.schedule(new TimeTask(), loginTime);
                         }
                     }

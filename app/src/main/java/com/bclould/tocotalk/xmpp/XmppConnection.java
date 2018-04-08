@@ -152,6 +152,7 @@ public class XmppConnection {
                 config.setCustomSSLContext(sslContext);
                 config.setSecurityMode(ConnectionConfiguration.SecurityMode.required);
 //                设置Debug
+
                 config.setDebuggerEnabled(true);
                 //设置离线状态
                 config.setSendPresence(false);
