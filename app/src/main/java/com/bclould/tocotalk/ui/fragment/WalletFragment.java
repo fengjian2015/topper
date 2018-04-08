@@ -17,10 +17,13 @@ import com.bclould.tocotalk.Presenter.SubscribeCoinPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.ui.activity.BankCardActivity;
 import com.bclould.tocotalk.ui.activity.CoinExchangeActivity;
+import com.bclould.tocotalk.ui.activity.FinancingActivity;
 import com.bclould.tocotalk.ui.activity.MyAssetsActivity;
 import com.bclould.tocotalk.ui.activity.OtcActivity;
-import com.bclould.tocotalk.ui.activity.PayCentreActivity;
+import com.bclould.tocotalk.ui.activity.PawnActivity;
+import com.bclould.tocotalk.ui.activity.PayRecordActivity;
 import com.bclould.tocotalk.ui.activity.ReceiptPaymentActivity;
+import com.bclould.tocotalk.ui.activity.SafeActivity;
 import com.bclould.tocotalk.utils.MessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -95,13 +98,17 @@ public class WalletFragment extends Fragment {
 
 
     private void initData() {
-        SubscribeCoinPresenter subscribeCoinPresenter = new SubscribeCoinPresenter(getContext());
-        subscribeCoinPresenter.totalAssetsValuation(new SubscribeCoinPresenter.CallBack2() {
-            @Override
-            public void send(String total) {
-                mTvTotal.setText(total);
-            }
-        });
+        try {
+            SubscribeCoinPresenter subscribeCoinPresenter = new SubscribeCoinPresenter(getContext());
+            subscribeCoinPresenter.totalAssetsValuation(new SubscribeCoinPresenter.CallBack2() {
+                @Override
+                public void send(String total) {
+                    mTvTotal.setText(total);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -113,14 +120,15 @@ public class WalletFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        EventBus.getDefault().unregister(this);;
+        EventBus.getDefault().unregister(this);
+        ;
     }
 
     @OnClick({R.id.iv_more, R.id.ll_inout, R.id.ll_usdt, R.id.ll_bank_card, R.id.ll_asserts, R.id.ll_exchange, R.id.ll_otc, R.id.ll_financing, R.id.ll_pawn, R.id.ll_safe})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_more:
-                startActivity(new Intent(getActivity(), PayCentreActivity.class));
+                startActivity(new Intent(getActivity(), PayRecordActivity.class));
                 break;
             case R.id.ll_inout:
                 startActivity(new Intent(getActivity(), ReceiptPaymentActivity.class));
@@ -140,10 +148,13 @@ public class WalletFragment extends Fragment {
                 startActivity(new Intent(getActivity(), OtcActivity.class));
                 break;
             case R.id.ll_financing:
+                startActivity(new Intent(getActivity(), FinancingActivity.class));
                 break;
             case R.id.ll_pawn:
+                startActivity(new Intent(getActivity(), PawnActivity.class));
                 break;
             case R.id.ll_safe:
+                startActivity(new Intent(getActivity(), SafeActivity.class));
                 break;
         }
     }

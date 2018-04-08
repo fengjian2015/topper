@@ -66,9 +66,7 @@ public class CommentActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
-
                 finish();
-
                 break;
             case R.id.previous_page:
                 break;

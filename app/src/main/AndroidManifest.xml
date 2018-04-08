@@ -497,15 +497,21 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
-        <!--支付中心页面-->
+        <!--理财页面-->
         <activity
-            android:name="com.bclould.tocotalk.ui.activity.PayCentreActivity"
+            android:name="com.bclould.tocotalk.ui.activity.FinancingActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
-        <!--支付管理页面-->
+        <!--典当页面-->
         <activity
-            android:name="com.bclould.tocotalk.ui.activity.PayManageActivity"
+            android:name="com.bclould.tocotalk.ui.activity.PawnActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--保险页面-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.SafeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
