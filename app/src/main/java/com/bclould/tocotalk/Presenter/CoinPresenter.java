@@ -70,6 +70,7 @@ public class CoinPresenter {
                         @Override
                         public void onNext(@NonNull CoinInfo coinInfo) {
                             if (coinInfo.getStatus() == 1) {
+                                MyApp.getInstance().mCoinList.clear();
                                 MyApp.getInstance().mCoinList.addAll(coinInfo.getData());
                             }
                         }
@@ -143,6 +144,7 @@ public class CoinPresenter {
                         public void onNext(@NonNull StateInfo stateInfo) {
                             hideDialog();
                             if (stateInfo.getStatus() == 1) {
+                                MyApp.getInstance().mStateList.clear();
                                 MyApp.getInstance().mStateList.addAll(stateInfo.getData());
                             }
                         }
@@ -292,6 +294,7 @@ public class CoinPresenter {
     public interface CallBack3 {
         void send(ExchangeOrderInfo.DataBeanX data);
     }
+
     //定义接口
     public interface CallBack4 {
         void send();

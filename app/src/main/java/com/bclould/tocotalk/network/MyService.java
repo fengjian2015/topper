@@ -17,6 +17,7 @@ import com.bclould.tocotalk.model.InOutInfo;
 import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.model.LoginInfo;
 import com.bclould.tocotalk.model.LoginRecordInfo;
+import com.bclould.tocotalk.model.ModeOfPaymentInfo;
 import com.bclould.tocotalk.model.MyAssetsInfo;
 import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.model.OrderInfo2;
@@ -294,7 +295,8 @@ public interface MyService {
             @Field("min_amount") double min_amount,
             @Field("max_amount") double max_amount,
             @Field("remark") String remark,
-            @Field("second_password") String second_password
+            @Field("second_password") String second_password,
+            @Field("bank_id") String bank_id
     );
 
     //交易列表
@@ -646,6 +648,12 @@ public interface MyService {
             @Header("Authorization") String token
     );
 
+    //获取usdt的数量
+    @POST("finance/currentUSD")
+    Observable<BaseInfo> getUSDT(
+            @Header("Authorization") String token
+    );
+
     //获取币种估值
     @POST("finance/assetsValuation")
     @FormUrlEncoded
@@ -695,5 +703,11 @@ public interface MyService {
             @Field("market_coin_name") String market_coin_name,
             @Field("trade_coin_name") String trade_coin_name,
             @Field("second_password") String second_password
+    );
+
+    //获取usdt的数量
+    @POST("common/isBindBankPayWechat")
+    Observable<ModeOfPaymentInfo> getModeOfPayment(
+            @Header("Authorization") String token
     );
 }

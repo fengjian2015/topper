@@ -55,7 +55,35 @@ public class BaseInfo {
         private String mark;
         private String total;
         private String USDT;
-        private String CNY;
+        private String currency;
+        private String rate;
+
+        public String getCurrency() {
+            return currency;
+        }
+
+        public void setCurrency(String currency) {
+            this.currency = currency;
+        }
+
+        public String getRate() {
+            return rate;
+        }
+
+        public void setRate(String rate) {
+            this.rate = rate;
+        }
+
+        private String usd;
+
+        public String getUsd() {
+            return usd;
+        }
+
+        public void setUsd(String usd) {
+            this.usd = usd;
+        }
+
         private String buy_price;
         private String sale_price;
         private String trend;
@@ -90,14 +118,6 @@ public class BaseInfo {
 
         public void setUSDT(String USDT) {
             this.USDT = USDT;
-        }
-
-        public String getCNY() {
-            return CNY;
-        }
-
-        public void setCNY(String CNY) {
-            this.CNY = CNY;
         }
 
         public String getTotal() {

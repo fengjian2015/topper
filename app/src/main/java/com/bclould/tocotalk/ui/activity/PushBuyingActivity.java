@@ -29,10 +29,12 @@ import android.widget.Toast;
 
 import com.bclould.tocotalk.Presenter.CoinPresenter;
 import com.bclould.tocotalk.Presenter.PushBuyingPresenter;
+import com.bclould.tocotalk.Presenter.SubscribeCoinPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.BaseInfo;
+import com.bclould.tocotalk.model.ModeOfPaymentInfo;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
@@ -63,11 +65,13 @@ public class PushBuyingActivity extends BaseActivity {
 
     private static final int COINSIGN = 0;
     private static final int STATESIGN = 1;
-    private static final int PAYSIGN = 2;
+    public static final int PAYSIGN = 2;
+    public static final int PAYSIGN2 = 5;
     private static final int TIMESIGN = 4;
     private static final int BUYSELL = 3;
     String[] mTimeArr = {"5分钟", "10分钟", "20分钟", "30分钟"};
     String[] mBuySellArr = {"买", "卖"};
+    String[] mPayArr = {"银行卡", "支付宝", "微信"};
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.tv_title)
@@ -189,6 +193,20 @@ public class PushBuyingActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         init();
         initData(mCoinName);
+        getModeOfPayment();
+    }
+
+    Map<String, Boolean> mModeOfPayment = new HashMap<>();
+
+    private void getModeOfPayment() {
+        mPushBuyingPresenter.getModeOfPayment(new SubscribeCoinPresenter.CallBack2() {
+            @Override
+            public void send(ModeOfPaymentInfo.DataBean data) {
+                mModeOfPayment.put("银行卡", data.isBank());
+                mModeOfPayment.put("支付宝", data.isAlipay());
+                mModeOfPayment.put("微信", data.isWechat());
+            }
+        });
     }
 
     private void init() {
@@ -200,7 +218,7 @@ public class PushBuyingActivity extends BaseActivity {
             @Override
             public void send(BaseInfo.DataBean data) {
                 double usdt = Double.parseDouble(data.getUSDT());
-                double cny = Double.parseDouble(data.getCNY());
+                double cny = Double.parseDouble(data.getRate());
                 DecimalFormat df = new DecimalFormat("#.00");
                 String price = df.format(cny * usdt);
                 mTvPrice.setText(price);
@@ -215,7 +233,7 @@ public class PushBuyingActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.rl_buy_sell:
-                showDialog(mBuySellArr, BUYSELL, "买卖");
+                showDialog(mModeOfPayment, mBuySellArr, BUYSELL, "买卖");
                 break;
             case R.id.iv_question:
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));
@@ -226,13 +244,23 @@ public class PushBuyingActivity extends BaseActivity {
             case R.id.rl_county:
                 break;
             case R.id.rl_payment:
+                String buySell = mTvBuySell.getText().toString();
+                if (buySell.isEmpty()) {
+                    Toast.makeText(this, "请先选择买卖", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (buySell.equals("买")) {
+                        showDialog(mModeOfPayment, mPayArr, PAYSIGN, getString(R.string.selector_payment));
+                    } else {
+                        showDialog(mModeOfPayment, mPayArr, PAYSIGN2, getString(R.string.selector_payment));
+                    }
+                }
                 break;
             case R.id.btn_pushing:
                 if (checkEdit())
                     showPWDialog();
                 break;
             case R.id.rl_payment_time:
-                showDialog(mTimeArr, TIMESIGN, getString(R.string.selector_payment_time));
+                showDialog(mModeOfPayment, mTimeArr, TIMESIGN, getString(R.string.selector_payment_time));
                 break;
         }
     }
@@ -452,7 +480,7 @@ public class PushBuyingActivity extends BaseActivity {
 
     private Map<String, Integer> mMap = new HashMap<>();
 
-    private void showDialog(String[] arr, final int sign, String title) {
+    private void showDialog(Map<String, Boolean> modeOfPayment, String[] arr, final int sign, String title) {
         mBottomDialog = new Dialog(this, R.style.BottomDialog2);
         View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom, null);
         //获得dialog的window窗口
@@ -470,12 +498,12 @@ public class PushBuyingActivity extends BaseActivity {
         mBottomDialog.show();
         mRecyclerView = (RecyclerView) mBottomDialog.findViewById(R.id.recycler_view);
         final Button button = (Button) mBottomDialog.findViewById(R.id.btn_cancel);
-        if (sign == PAYSIGN)
+        if (sign == PAYSIGN || sign == PAYSIGN2)
             button.setText("确定");
         TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
         tvTitle.setText(title);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mBottomDialogRVAdapter = new BottomDialogRVAdapter(this, arr, sign, new BottomDialogRVAdapter.CallBack() {
+        mBottomDialogRVAdapter = new BottomDialogRVAdapter(this, modeOfPayment, arr, sign, new BottomDialogRVAdapter.CallBack() {
             @Override
             public void send(String name, boolean isChecked, int position) {
                 if (isChecked) {
@@ -485,11 +513,12 @@ public class PushBuyingActivity extends BaseActivity {
                 }
             }
         }, mMap);
+
         mRecyclerView.setAdapter(mBottomDialogRVAdapter);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (sign == PAYSIGN) {
+                if (sign == PAYSIGN || sign == PAYSIGN2) {
                     String payWay = null;
                     for (String key : mMap.keySet()) {
                         if (payWay == null) {
@@ -515,6 +544,8 @@ public class PushBuyingActivity extends BaseActivity {
                 break;
             case BUYSELL:
                 mTvBuySell.setText(name);
+                mTvPayment.setText("");
+                mMap.clear();
                 break;
             case STATESIGN:
                 mTvState.setText(name);

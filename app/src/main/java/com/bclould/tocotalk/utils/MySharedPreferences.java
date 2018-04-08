@@ -10,7 +10,7 @@ import android.content.SharedPreferences;
 
 public class MySharedPreferences {
 
-    private static final String SETTING = "setting";
+    public static final String SETTING = "setting";
     public static MySharedPreferences instance = null;
     private Context mContext;
 

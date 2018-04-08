@@ -320,9 +320,18 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/x30"
                         android:layout_toRightOf="@+id/xx8"
-                        android:text="银行转账"
+                        android:hint="选择付款方式"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/x30"/>
+
+
+                    <ImageView
+                        android:layout_width="@dimen/x15"
+                        android:layout_height="@dimen/y20"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/x30"
+                        android:src="@mipmap/icon_bill_turninto"/>
 
                 </RelativeLayout>
 

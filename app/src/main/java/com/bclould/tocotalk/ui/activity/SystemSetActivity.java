@@ -1,6 +1,7 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,14 +23,16 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tocotalk.utils.MySharedPreferences.SETTING;
+
 /**
  * Created by GA on 2017/9/22.
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class SystemSetActivity extends BaseActivity {
-    private static final String INFORM = "inform";
-    private static final String PRIVATE = "private";
+    public static final String INFORM = "inform";
+    public static final String PRIVATE = "private";
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.iv_concern_we)
@@ -82,9 +85,16 @@ public class SystemSetActivity extends BaseActivity {
         boolean privateStatus = MySharedPreferences.getInstance().getBoolean(PRIVATE);
         mOnOffPrivate.setSelected(privateStatus);
         isOnOff2 = privateStatus;
-        boolean informStatus = MySharedPreferences.getInstance().getBoolean(INFORM);
-        mOnOffInform.setSelected(informStatus);
-        isOnOff = informStatus;
+        SharedPreferences sp = getSharedPreferences(SETTING, 0);
+        if (sp.contains(INFORM)) {
+            boolean informStatus = MySharedPreferences.getInstance().getBoolean(INFORM);
+            mOnOffInform.setSelected(informStatus);
+            isOnOff = informStatus;
+        } else {
+            mOnOffInform.setSelected(true);
+            isOnOff = true;
+        }
+
     }
 
 

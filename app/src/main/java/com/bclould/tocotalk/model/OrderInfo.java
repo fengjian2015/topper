@@ -10,12 +10,10 @@ public class OrderInfo implements Serializable {
 
     /**
      * status : 1
-     * massage : 成功
-     * data : {"order_no":"2018012656565253","payment_no":301281,"trans_id":10,"type":1,"coin_name":"BTC","currency":"人民幣","price":"80000","trans_amount":"4000","number":"0.05","pay_type":"銀聯, 微信, 支付寶","user_id":34,"user_name":"xihongwei","to_user_id":41,"to_user_name":"liaolinan2","created_at":1516945496,"id":25,"deadline":1800}
+     * data : {"id":66,"order_no":"2018032710250101","payment_no":446918,"trans_id":16,"user_id":34,"user_name":"xihongwei","to_user_id":41,"to_user_name":"liaolinan2","type":1,"coin_name":"TPC","currency":"中國","price":"80000","trans_amount":"100","number":"0.05","pay_type":"銀聯","status":0,"created_at":"2018-03-27 16:59:43","status_name":"已取消","deadline":1800,"bank":{"bank_site":"高新园","card_name":"习红卫","card_number":"622020200102198302","bank_name":"工商银行-牡丹灵通卡-借记卡"},"alipay":{"name":"xihongwei","alipay":""},"wechat":{"name":"xihongwei","wechat":""}}
      */
 
     private int status;
-    private String message;
     private DataBean data;
 
     public int getStatus() {
@@ -26,14 +24,6 @@ public class OrderInfo implements Serializable {
         this.status = status;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public DataBean getData() {
         return data;
     }
@@ -42,30 +32,40 @@ public class OrderInfo implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean implements Serializable {
+    public static class DataBean {
         /**
-         * order_no : 2018012656565253
-         * payment_no : 301281
-         * trans_id : 10
-         * type : 1
-         * coin_name : BTC
-         * currency : 人民幣
-         * price : 80000
-         * trans_amount : 4000
-         * number : 0.05
-         * pay_type : 銀聯, 微信, 支付寶
+         * id : 66
+         * order_no : 2018032710250101
+         * payment_no : 446918
+         * trans_id : 16
          * user_id : 34
          * user_name : xihongwei
          * to_user_id : 41
          * to_user_name : liaolinan2
-         * created_at : 1516945496
-         * id : 25
+         * type : 1
+         * coin_name : TPC
+         * currency : 中國
+         * price : 80000
+         * trans_amount : 100
+         * number : 0.05
+         * pay_type : 銀聯
+         * status : 0
+         * created_at : 2018-03-27 16:59:43
+         * status_name : 已取消
          * deadline : 1800
+         * bank : {"bank_site":"高新园","card_name":"习红卫","card_number":"622020200102198302","bank_name":"工商银行-牡丹灵通卡-借记卡"}
+         * alipay : {"name":"xihongwei","alipay":""}
+         * wechat : {"name":"xihongwei","wechat":""}
          */
 
+        private int id;
         private String order_no;
         private int payment_no;
         private int trans_id;
+        private int user_id;
+        private String user_name;
+        private int to_user_id;
+        private String to_user_name;
         private int type;
         private String coin_name;
         private String currency;
@@ -73,13 +73,21 @@ public class OrderInfo implements Serializable {
         private String trans_amount;
         private String number;
         private String pay_type;
-        private int user_id;
-        private String user_name;
-        private int to_user_id;
-        private String to_user_name;
+        private int status;
         private String created_at;
-        private int id;
+        private String status_name;
         private int deadline;
+        private BankBean bank;
+        private AlipayBean alipay;
+        private WechatBean wechat;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
 
         public String getOrder_no() {
             return order_no;
@@ -103,6 +111,38 @@ public class OrderInfo implements Serializable {
 
         public void setTrans_id(int trans_id) {
             this.trans_id = trans_id;
+        }
+
+        public int getUser_id() {
+            return user_id;
+        }
+
+        public void setUser_id(int user_id) {
+            this.user_id = user_id;
+        }
+
+        public String getUser_name() {
+            return user_name;
+        }
+
+        public void setUser_name(String user_name) {
+            this.user_name = user_name;
+        }
+
+        public int getTo_user_id() {
+            return to_user_id;
+        }
+
+        public void setTo_user_id(int to_user_id) {
+            this.to_user_id = to_user_id;
+        }
+
+        public String getTo_user_name() {
+            return to_user_name;
+        }
+
+        public void setTo_user_name(String to_user_name) {
+            this.to_user_name = to_user_name;
         }
 
         public int getType() {
@@ -161,36 +201,12 @@ public class OrderInfo implements Serializable {
             this.pay_type = pay_type;
         }
 
-        public int getUser_id() {
-            return user_id;
+        public int getStatus() {
+            return status;
         }
 
-        public void setUser_id(int user_id) {
-            this.user_id = user_id;
-        }
-
-        public String getUser_name() {
-            return user_name;
-        }
-
-        public void setUser_name(String user_name) {
-            this.user_name = user_name;
-        }
-
-        public int getTo_user_id() {
-            return to_user_id;
-        }
-
-        public void setTo_user_id(int to_user_id) {
-            this.to_user_id = to_user_id;
-        }
-
-        public String getTo_user_name() {
-            return to_user_name;
-        }
-
-        public void setTo_user_name(String to_user_name) {
-            this.to_user_name = to_user_name;
+        public void setStatus(int status) {
+            this.status = status;
         }
 
         public String getCreated_at() {
@@ -201,12 +217,12 @@ public class OrderInfo implements Serializable {
             this.created_at = created_at;
         }
 
-        public int getId() {
-            return id;
+        public String getStatus_name() {
+            return status_name;
         }
 
-        public void setId(int id) {
-            this.id = id;
+        public void setStatus_name(String status_name) {
+            this.status_name = status_name;
         }
 
         public int getDeadline() {
@@ -215,6 +231,128 @@ public class OrderInfo implements Serializable {
 
         public void setDeadline(int deadline) {
             this.deadline = deadline;
+        }
+
+        public BankBean getBank() {
+            return bank;
+        }
+
+        public void setBank(BankBean bank) {
+            this.bank = bank;
+        }
+
+        public AlipayBean getAlipay() {
+            return alipay;
+        }
+
+        public void setAlipay(AlipayBean alipay) {
+            this.alipay = alipay;
+        }
+
+        public WechatBean getWechat() {
+            return wechat;
+        }
+
+        public void setWechat(WechatBean wechat) {
+            this.wechat = wechat;
+        }
+
+        public static class BankBean {
+            /**
+             * bank_site : 高新园
+             * card_name : 习红卫
+             * card_number : 622020200102198302
+             * bank_name : 工商银行-牡丹灵通卡-借记卡
+             */
+
+            private String bank_site;
+            private String card_name;
+            private String card_number;
+            private String bank_name;
+
+            public String getBank_site() {
+                return bank_site;
+            }
+
+            public void setBank_site(String bank_site) {
+                this.bank_site = bank_site;
+            }
+
+            public String getCard_name() {
+                return card_name;
+            }
+
+            public void setCard_name(String card_name) {
+                this.card_name = card_name;
+            }
+
+            public String getCard_number() {
+                return card_number;
+            }
+
+            public void setCard_number(String card_number) {
+                this.card_number = card_number;
+            }
+
+            public String getBank_name() {
+                return bank_name;
+            }
+
+            public void setBank_name(String bank_name) {
+                this.bank_name = bank_name;
+            }
+        }
+
+        public static class AlipayBean {
+            /**
+             * name : xihongwei
+             * alipay :
+             */
+
+            private String name;
+            private String alipay;
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getAlipay() {
+                return alipay;
+            }
+
+            public void setAlipay(String alipay) {
+                this.alipay = alipay;
+            }
+        }
+
+        public static class WechatBean {
+            /**
+             * name : xihongwei
+             * wechat :
+             */
+
+            private String name;
+            private String wechat;
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getWechat() {
+                return wechat;
+            }
+
+            public void setWechat(String wechat) {
+                this.wechat = wechat;
+            }
         }
     }
 }

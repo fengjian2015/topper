@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -67,6 +68,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tocotalk.ui.activity.SystemSetActivity.INFORM;
+import static com.bclould.tocotalk.utils.MySharedPreferences.SETTING;
+
 /**
  * Created by GA on 2017/9/19.
  */
@@ -96,7 +100,7 @@ public class FriendListFragment extends Fragment {
     Handler myHandler = new Handler() {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case 0:
                     queryUser();
                     break;
@@ -244,7 +248,14 @@ public class FriendListFragment extends Fragment {
                 }
                 if (acceptAdd.equals("收到添加请求！")) {
                     //弹出一个对话框，包含同意和拒绝按钮
-                    UtilTool.playHint(getContext());
+                    SharedPreferences sp = getContext().getSharedPreferences(SETTING, 0);
+                    if (sp.contains(INFORM)) {
+                        if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
+                            UtilTool.playHint(getContext());
+                        }
+                    } else {
+                        UtilTool.playHint(getContext());
+                    }
                     mNewFriend += 1;
                     MySharedPreferences.getInstance().setInteger(NEWFRIEND, mNewFriend);
                     mNumber.setText(mNewFriend + "");

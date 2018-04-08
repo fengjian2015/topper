@@ -126,7 +126,7 @@ public class CoinExchangeActivity extends BaseActivity {
             @Override
             public void send(BaseInfo.DataBean data) {
                 double usdt = Double.parseDouble(data.getUSDT());
-                double cny = Double.parseDouble(data.getCNY());
+                double cny = Double.parseDouble(data.getRate());
                 DecimalFormat df = new DecimalFormat("#.00");
                 String price = df.format(cny * usdt);
                 mTvPrice.setText(data.getUSDT());

@@ -73,8 +73,8 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
         TextView mTvCoinType;
         @Bind(R.id.tv_money)
         TextView mTvMoney;
-        @Bind(R.id.tv_order_number)
-        TextView mTvOrderNumber;
+        @Bind(R.id.tv_time)
+        TextView mTvTime;
         @Bind(R.id.tv_type)
         TextView mTvType;
         @Bind(R.id.rl_itme)
@@ -88,7 +88,7 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
         public void setData(final OrderListInfo.DataBean dataBean) {
 
             mTvMoney.setText("交易金额" + dataBean.getTrans_amount());
-            mTvOrderNumber.setText("订单号:" + dataBean.getOrder_no());
+            mTvTime.setText(dataBean.getCreated_at());
             mTvType.setText(dataBean.getStatus_name());
             mTvCoinType.setText(dataBean.getCoin_name() + dataBean.getType_name());
             if (dataBean.getType() == 1) {

@@ -43,6 +43,7 @@ public class LoginPresenter {
     public static final String LOGINPW = "login_pw";
     public static final String LOGINSET = "login_set";
     public static final String STATE = "state";
+    private static final String CURRENCY = "currency";
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
     public static final String MYUSERNAME = "my_username";
@@ -99,6 +100,7 @@ public class LoginPresenter {
                                 MySharedPreferences.getInstance().setString(MYUSERNAME, baseInfo.getData().getName() + "@" + Constants.DOMAINNAME);
                                 MySharedPreferences.getInstance().setString(EMAIL, email);
                                 MySharedPreferences.getInstance().setString(LOGINPW, password);
+                                MySharedPreferences.getInstance().setString(CURRENCY, baseInfo.getData().getCurrency());
                                 if (baseInfo.getData().getCountry().isEmpty()) {
                                     MySharedPreferences.getInstance().setString(STATE, "中国");
                                 } else {
