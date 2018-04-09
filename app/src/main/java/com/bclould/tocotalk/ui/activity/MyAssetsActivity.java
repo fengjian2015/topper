@@ -86,13 +86,17 @@ public class MyAssetsActivity extends BaseActivity {
     }
 
     private void getTotal() {
-        mSubscribeCoinPresenter.getTotal(new SubscribeCoinPresenter.CallBack3() {
-            @Override
-            public void send(String data) {
-                mTvCurrency.setText("总资产(USD)");
-                mTvTotal.setText("≈" + data);
-            }
-        });
+        try {
+            mSubscribeCoinPresenter.getTotal(new SubscribeCoinPresenter.CallBack3() {
+                @Override
+                public void send(String data) {
+                    mTvCurrency.setText("总资产(USD)");
+                    mTvTotal.setText("≈" + data);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

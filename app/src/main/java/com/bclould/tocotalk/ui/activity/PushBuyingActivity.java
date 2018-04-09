@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -211,6 +212,66 @@ public class PushBuyingActivity extends BaseActivity {
 
     private void init() {
         mTvState.setText(MySharedPreferences.getInstance().getString(STATE));
+        mEtMinLimit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (mEtCount.getText().toString() != null && !mEtCount.getText().toString().isEmpty()) {
+                    if (mEtMinLimit.getText().toString() != null && !mEtMinLimit.getText().toString().isEmpty()) {
+                        int max = Integer.parseInt(mEtMinLimit.getText().toString());
+                        double price = Double.parseDouble(mTvPrice.getText().toString());
+                        double count = Double.parseDouble(mEtCount.getText().toString());
+                        int sum = (int) (price * count);
+                        if (max > sum) {
+                            mEtMinLimit.setText(sum + "");
+                        }
+                    } else {
+                        mEtMinLimit.setText("0");
+                    }
+                } else {
+                    Toast.makeText(PushBuyingActivity.this, "请先输入数量", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        mEtMaxLimit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (mEtCount.getText().toString() != null && !mEtCount.getText().toString().isEmpty()) {
+                    if (mEtMaxLimit.getText().toString() != null && !mEtMaxLimit.getText().toString().isEmpty()) {
+                        int max = Integer.parseInt(mEtMaxLimit.getText().toString());
+                        double price = Double.parseDouble(mTvPrice.getText().toString());
+                        double count = Double.parseDouble(mEtCount.getText().toString());
+                        int sum = (int) (price * count);
+                        if (max > sum) {
+                            mEtMaxLimit.setText(sum + "");
+                        }
+                    } else {
+                        mEtMaxLimit.setText("0");
+                    }
+                } else {
+                    Toast.makeText(PushBuyingActivity.this, "请先输入数量", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void initData(String name) {
@@ -244,7 +305,7 @@ public class PushBuyingActivity extends BaseActivity {
             case R.id.rl_county:
                 break;
             case R.id.rl_payment:
-                String buySell = mTvBuySell.getText().toString();
+                /*String buySell = mTvBuySell.getText().toString();
                 if (buySell.isEmpty()) {
                     Toast.makeText(this, "请先选择买卖", Toast.LENGTH_SHORT).show();
                 } else {
@@ -253,7 +314,7 @@ public class PushBuyingActivity extends BaseActivity {
                     } else {
                         showDialog(mModeOfPayment, mPayArr, PAYSIGN2, getString(R.string.selector_payment));
                     }
-                }
+                }*/
                 break;
             case R.id.btn_pushing:
                 if (checkEdit())
@@ -298,6 +359,7 @@ public class PushBuyingActivity extends BaseActivity {
 
     //验证手机号和密码
     private boolean checkEdit() {
+
         if (mTvCurrency.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, getResources().getString(R.string.toast_coin), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mTvCurrency);
@@ -313,15 +375,24 @@ public class PushBuyingActivity extends BaseActivity {
         } else if (mTvPaymentTime.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, getResources().getString(R.string.toast_payment_time), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mTvPaymentTime);
-        } else if (mEtMinLimit.getText().toString().trim().isEmpty()) {
-            Toast.makeText(this, getResources().getString(R.string.toast_min_limit), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mEtMaxLimit);
-        } else if (mEtMaxLimit.getText().toString().trim().isEmpty()) {
-            Toast.makeText(this, getResources().getString(R.string.toast_max_limit), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mEtMaxLimit);
         } else if (mEtCount.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, getResources().getString(R.string.toast_count), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtCount);
+        } else if (mEtMinLimit.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, getResources().getString(R.string.toast_min_limit), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mEtMinLimit);
+        } else if (mEtMaxLimit.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, getResources().getString(R.string.toast_max_limit), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mEtMaxLimit);
+        } else if (Double.parseDouble(mEtMinLimit.getText().toString()) < 100) {
+            Toast.makeText(this, "最小量不能小于100", Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mEtMinLimit);
+        } else if (Double.parseDouble(mEtMaxLimit.getText().toString()) < 100) {
+            Toast.makeText(this, "最大量不能小于100", Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mEtMaxLimit);
+        } else if (Double.parseDouble(mEtMaxLimit.getText().toString()) < Double.parseDouble(mEtMinLimit.getText().toString())) {
+            Toast.makeText(this, "最大量不能小于最小量", Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mEtMaxLimit);
         } else {
             return true;
         }
@@ -468,6 +539,9 @@ public class PushBuyingActivity extends BaseActivity {
         String maxLimit = mEtMaxLimit.getText().toString();
         String minLimit = mEtMinLimit.getText().toString();
         String remark = mEtRemark.getText().toString();
+        if (remark == null) {
+            remark = "";
+        }
         String count = mEtCount.getText().toString();
         String buySell = mTvBuySell.getText().toString();
         if (buySell.equals("买")) {
@@ -475,6 +549,7 @@ public class PushBuyingActivity extends BaseActivity {
         } else {
             mType = 2;
         }
+
         mPushBuyingPresenter.pushing(mType, coin, state, price, count, paymentTime, payment, minLimit, maxLimit, remark, password);
     }
 
@@ -544,8 +619,8 @@ public class PushBuyingActivity extends BaseActivity {
                 break;
             case BUYSELL:
                 mTvBuySell.setText(name);
-                mTvPayment.setText("");
-                mMap.clear();
+                /*mTvPayment.setText("");
+                mMap.clear();*/
                 break;
             case STATESIGN:
                 mTvState.setText(name);
@@ -578,57 +653,13 @@ public class PushBuyingActivity extends BaseActivity {
         });
     }
 
-    private void setListener() {
-        /*mTvCurrency.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String coin = mTvCurrency.getText().toString();
-                String legalTender = mTvExchangeCurrency.getText().toString();
-                if (legalTender.isEmpty()) {
-                    getCoinPrice(coin, "CNY");
-                } else {
-                    getCoinPrice(coin, legalTender);
-                }
-            }
-        });
-        mTvExchangeCurrency.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String coin = mTvCurrency.getText().toString();
-                String legalTender = mTvExchangeCurrency.getText().toString();
-                if (coin.isEmpty()) {
-                    getCoinPrice(coin, "CNY");
-                } else {
-                    getCoinPrice(coin, legalTender);
-                }
-            }
-        });*/
-    }
 
     public void hideDialog2(String name, int id) {
         mBottomDialog.dismiss();
         mCoinName = name;
         initData(name);
+        mEtMaxLimit.setText("0");
+        mEtMinLimit.setText("0");
         mTvCurrency.setText(name);
     }
 }

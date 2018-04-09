@@ -545,6 +545,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
+        <!--问题详情页面-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.QuestionDetailsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
         <!--扫码支付完成界面-->
         <activity
             android:name="com.bclould.tocotalk.ui.activity.PayReceiptResultActivity"

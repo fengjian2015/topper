@@ -23,6 +23,7 @@ import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.model.OrderInfo2;
 import com.bclould.tocotalk.model.OrderListInfo;
 import com.bclould.tocotalk.model.OutCoinSiteInfo;
+import com.bclould.tocotalk.model.QuestionInfo;
 import com.bclould.tocotalk.model.ReceiptInfo;
 import com.bclould.tocotalk.model.RedRecordInfo;
 import com.bclould.tocotalk.model.ReviewListInfo;
@@ -295,8 +296,7 @@ public interface MyService {
             @Field("min_amount") double min_amount,
             @Field("max_amount") double max_amount,
             @Field("remark") String remark,
-            @Field("second_password") String second_password,
-            @Field("bank_id") String bank_id
+            @Field("second_password") String second_password
     );
 
     //交易列表
@@ -708,6 +708,38 @@ public interface MyService {
     //获取usdt的数量
     @POST("common/isBindBankPayWechat")
     Observable<ModeOfPaymentInfo> getModeOfPayment(
+            @Header("Authorization") String token
+    );
+
+    //设置默认银行卡
+    @POST("user/setDefaultBankCard")
+    @FormUrlEncoded
+    Observable<BaseInfo> setDefaultBankCard(
+            @Header("Authorization") String token,
+            @Field("id") String id
+    );
+
+    //获取usdt的数量
+    @POST("question/hopeCoin")
+    @FormUrlEncoded
+    Observable<BaseInfo> hopeCoin(
+            @Header("Authorization") String token,
+            @Field("content") String content,
+            @Field("contact") String contact
+    );
+
+    //上传问题反馈图片
+    @POST("question/feedbacks")
+    @FormUrlEncoded
+    Observable<BaseInfo> feedbacks(
+            @Header("Authorization") String token,
+            @Field("content") String content,
+            @Field("key") String key
+    );
+
+    //获取问题列表
+    @POST("question/lists")
+    Observable<QuestionInfo> getQuestionList(
             @Header("Authorization") String token
     );
 }

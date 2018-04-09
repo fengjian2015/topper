@@ -113,6 +113,8 @@ public class BankCardActivity extends BaseActivity {
         String msg = event.getMsg();
         if ("银行卡绑定解绑".equals(msg)) {
             initData();
+        }else if ("设置默认银行卡".equals(msg)) {
+            initData();
         }
     }
 

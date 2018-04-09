@@ -42,6 +42,15 @@ public class CardListInfo {
         private int id;
         private String bank_name;
         private String card_number;
+        private int is_default;
+
+        public int getIs_default() {
+            return is_default;
+        }
+
+        public void setIs_default(int is_default) {
+            this.is_default = is_default;
+        }
 
         public int getId() {
             return id;

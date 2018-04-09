@@ -42,7 +42,6 @@ import com.maning.pswedittextlibrary.MNPasswordEditText;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +57,7 @@ import static com.bclould.tocotalk.R.style.BottomDialog;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CoinExchangeActivity extends BaseActivity {
+
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.tv_question)
@@ -84,12 +84,6 @@ public class CoinExchangeActivity extends BaseActivity {
     Button mBtnExchange;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @Bind(R.id.tv_up)
-    TextView mTvUp;
-    @Bind(R.id.tv_page)
-    TextView mTvPage;
-    @Bind(R.id.tv_below)
-    TextView mTvBelow;
     private CoinPresenter mCoinPresenter;
     private Dialog mBottomDialog;
     private Animation mEnterAnim;
@@ -116,7 +110,6 @@ public class CoinExchangeActivity extends BaseActivity {
     }
 
     private void initData() {
-        mPage.put("page", "1");
         mCoinPresenter = new CoinPresenter(this);
         initCoin();
     }
@@ -140,19 +133,20 @@ public class CoinExchangeActivity extends BaseActivity {
         });
     }
 
-    String mPageSize = "6 ";
-    Map<String, String> mPage = new HashMap<>();
-    Map<String, String> mPageSum = new HashMap<>();
+    String mPageSize = "100";
+    String mPage = "1";
+    /*Map<String, String> mPage = new HashMap<>();
+    Map<String, String> mPageSum = new HashMap<>();*/
     List<ExchangeOrderInfo.DataBeanX.DataBean> mExchangeOrderList = new ArrayList<>();
 
     private void initListData(String name) {
         mExchangeOrderList.clear();
-        mCoinPresenter.exchangeOrder("USDT", name, mPage.get("page"), mPageSize, new CoinPresenter.CallBack3() {
+        mCoinPresenter.exchangeOrder("USDT", name, mPage, mPageSize, new CoinPresenter.CallBack3() {
             @Override
             public void send(ExchangeOrderInfo.DataBeanX data) {
-                mPage.put("page", data.getCurrent_page() + "");
+                /*mPage.put("page", data.getCurrent_page() + "");
                 mPageSum.put("pageSum", data.getLast_page() + "");
-                mTvPage.setText(data.getCurrent_page() + "/" + data.getLast_page());
+                mTvPage.setText(data.getCurrent_page() + "/" + data.getLast_page());*/
                 mExchangeOrderList.addAll(data.getData());
                 mCoinExchangeRVAdapter.notifyDataSetChanged();
             }
@@ -179,7 +173,7 @@ public class CoinExchangeActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.bark, R.id.tv_question, R.id.ll_coin_selector, R.id.btn_exchange, R.id.tv_up, R.id.tv_below})
+    @OnClick({R.id.bark, R.id.tv_question, R.id.ll_coin_selector, R.id.btn_exchange})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -196,7 +190,7 @@ public class CoinExchangeActivity extends BaseActivity {
                     showPWDialog();
                 }
                 break;
-            case R.id.tv_up:
+           /* case R.id.tv_up:
                 if (mPage.get("page").equals("1")) {
                     Toast.makeText(this, "已经是第一页了", Toast.LENGTH_SHORT).show();
                 } else {
@@ -215,7 +209,7 @@ public class CoinExchangeActivity extends BaseActivity {
                     mPage.put("page", page + "");
                     initListData(mCoin.get(0));
                 }
-                break;
+                break;*/
         }
     }
 

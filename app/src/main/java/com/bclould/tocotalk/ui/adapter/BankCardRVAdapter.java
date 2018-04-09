@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +17,9 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.CardListInfo;
 import com.bclould.tocotalk.ui.activity.BankCardActivity;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.utils.MessageEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -75,44 +79,53 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
         TextView mBankCardNumber;
         @Bind(R.id.tv_delete)
         TextView mTvDelete;
+        @Bind(R.id.rl_card)
+        RelativeLayout mRlCard;
+        private CardListInfo.DataBean mData;
 
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showDialog(mData, 1);
+                }
+            });
         }
 
         public void setData(final CardListInfo.DataBean data) {
+            mData = data;
             String bankName = data.getBank_name();
             String[] split = bankName.split("-");
             mBankName.setText(split[0]);
             mCardType.setText(split[split.length - 1]);
             mBankCardNumber.setText(data.getCard_number());
-            /*mActivity.setOnItemDeleteListener(new BankCardActivity.OnItemDeleteListener() {
-                @Override
-                public void onDelete(boolean isDelete) {
-                    if (isDelete) {
-                        mTvDelete.setVisibility(View.VISIBLE);
-                    } else {
-                        mTvDelete.setVisibility(View.GONE);
-                    }
-                }
-            });*/
+            if (data.getIs_default() == 1) {
+                mRlCard.setBackground(mActivity.getDrawable(R.mipmap.img_bg_bankcard2));
+            } else {
+                mRlCard.setBackground(mActivity.getDrawable(R.mipmap.img_bg_bankcard));
+            }
             mTvDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showDialog(data);
+                    showDialog(data, 0);
                 }
             });
 
         }
     }
 
-    private void showDialog(final CardListInfo.DataBean data) {
+    private void showDialog(final CardListInfo.DataBean data, final int type) {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mActivity);
         deleteCacheDialog.show();
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         TextView title = (TextView) deleteCacheDialog.findViewById(R.id.tv_title);
-        title.setText("确定要删除银行卡吗？");
+        if (type == 0) {
+            title.setText("确定要删除银行卡吗？");
+        } else {
+            title.setText("是否设置为默认收款银行卡？");
+        }
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,18 +137,29 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View view) {
                 deleteCacheDialog.dismiss();
-                mBankCardPresenter.unBindBankCard(data.getId(), new BankCardPresenter.CallBack3() {
-                    @Override
-                    public void send(int status) {
-                        if (status == 1) {
-                            Toast.makeText(mActivity, "解绑成功", Toast.LENGTH_SHORT).show();
-                            mCardList.remove(data);
-                            notifyDataSetChanged();
-                        } else {
-                            Toast.makeText(mActivity, "解绑失败", Toast.LENGTH_SHORT).show();
+                if (type == 0) {
+                    mBankCardPresenter.unBindBankCard(data.getId(), new BankCardPresenter.CallBack3() {
+                        @Override
+                        public void send(int status) {
+                            if (status == 1) {
+                                Toast.makeText(mActivity, "解绑成功", Toast.LENGTH_SHORT).show();
+                                mCardList.remove(data);
+                                notifyDataSetChanged();
+                            } else {
+                                Toast.makeText(mActivity, "解绑失败", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    mBankCardPresenter.setDefaultBankCard(data.getId(), new BankCardPresenter.CallBack3() {
+                        @Override
+                        public void send(int status) {
+                            if (status == 1) {
+                                EventBus.getDefault().post(new MessageEvent("设置默认银行卡"));
+                            }
+                        }
+                    });
+                }
             }
         });
     }

@@ -114,19 +114,7 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mSign == PAYSIGN2) {
-                        if (mModeOfPayment.get(mName)) {
-                            isChecked = !isChecked;
-                            if (isChecked) {
-                                mCbPay.setChecked(true);
-                            } else {
-                                mCbPay.setChecked(false);
-                            }
-                            mCallBack.send(mName, isChecked, mPosition);
-                        } else {
-                            Toast.makeText(mPushBuyingActivity, "请先绑定" + mName, Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
+                    if (mModeOfPayment.get(mName)) {
                         isChecked = !isChecked;
                         if (isChecked) {
                             mCbPay.setChecked(true);
@@ -134,8 +122,19 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
                             mCbPay.setChecked(false);
                         }
                         mCallBack.send(mName, isChecked, mPosition);
+                    } else {
+                        Toast.makeText(mPushBuyingActivity, "请先绑定" + mName, Toast.LENGTH_SHORT).show();
                     }
-                }
+                }/* else {
+                        isChecked = !isChecked;
+                        if (isChecked) {
+                            mCbPay.setChecked(true);
+                        } else {
+                            mCbPay.setChecked(false);
+                        }
+                        mCallBack.send(mName, isChecked, mPosition);
+                    }*/
+
             });
         }
 

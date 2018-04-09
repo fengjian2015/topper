@@ -86,6 +86,7 @@
         app:cardCornerRadius="@dimen/x50">
 
         <EditText
+            android:id="@+id/et_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
@@ -114,6 +115,7 @@
         app:cardCornerRadius="@dimen/x50">
 
         <EditText
+            android:id="@+id/et_contact"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"

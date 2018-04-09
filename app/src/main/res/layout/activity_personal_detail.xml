@@ -194,7 +194,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x30"
-                android:text="位置"
+                android:text="国籍"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
 
@@ -205,7 +205,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/x30"
-                android:text="CN"
+                android:hint="未认证"
                 android:textSize="@dimen/x26"/>
 
         </RelativeLayout>

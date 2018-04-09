@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/rl_card"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/x710"
     android:layout_height="@dimen/y330"
     android:layout_gravity="center"
     android:background="@mipmap/img_bg_bankcard"
     android:padding="@dimen/x20">
+
 
     <ImageView
         android:id="@+id/image"

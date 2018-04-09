@@ -69,7 +69,7 @@ public class PushBuyingPresenter {
             showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .publishDeal(UtilTool.getToken(), type, coin, state, "CNY", priced, countd, time, payment, mind, maxd, remark, password, "1")
+                    .publishDeal(UtilTool.getToken(), type, coin, state, "CNY", priced, countd, time, payment, mind, maxd, remark, password)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<BaseInfo>() {

@@ -38,7 +38,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:gravity="center"
-                android:text="中国"
+                android:text="中国 - 大陆"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 
