@@ -69,8 +69,6 @@ public class BuySellActivity extends BaseActivity {
     TextView mTvId;
     @Bind(R.id.tv_reputation)
     TextView mTvReputation;
-    @Bind(R.id.btn_add_friend)
-    Button mBtnAddFriend;
     @Bind(R.id.tv2)
     TextView mTv2;
     @Bind(R.id.tv_quota)
@@ -336,15 +334,14 @@ public class BuySellActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.bark, R.id.tv_help, R.id.btn_add_friend, R.id.btn_sell_buy})
+    @OnClick({R.id.bark, R.id.tv_help, R.id.btn_sell_buy})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
             case R.id.tv_help:
-                break;
-            case R.id.btn_add_friend:
+                startActivity(new Intent(this, ProblemFeedBackActivity.class));
                 break;
             case R.id.btn_sell_buy:
                 buySell();

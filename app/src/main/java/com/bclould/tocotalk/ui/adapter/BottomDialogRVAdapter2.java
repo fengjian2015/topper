@@ -14,7 +14,6 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.CoinInfo;
 import com.bclould.tocotalk.ui.activity.ChatTransferActivity;
 import com.bclould.tocotalk.ui.activity.OtcActivity;
-import com.bclould.tocotalk.ui.activity.PayManageActivity;
 import com.bclould.tocotalk.ui.activity.PaymentActivity;
 import com.bclould.tocotalk.ui.activity.PushBuyingActivity;
 import com.bclould.tocotalk.ui.activity.SendRedPacketActivity;
@@ -80,20 +79,17 @@ public class BottomDialogRVAdapter2 extends RecyclerView.Adapter {
                     if (mContext instanceof SendRedPacketActivity) {
                         SendRedPacketActivity activity = (SendRedPacketActivity) mContext;
                         activity.hideDialog(mName);
-                    }else if(mContext instanceof PaymentActivity){
+                    } else if (mContext instanceof PaymentActivity) {
                         PaymentActivity activity = (PaymentActivity) mContext;
                         activity.hideDialog(mName, mId);
-                    }else if(mContext instanceof OtcActivity){
+                    } else if (mContext instanceof OtcActivity) {
                         OtcActivity activity = (OtcActivity) mContext;
                         activity.hideDialog(mName, mId);
-                    }else if(mContext instanceof PushBuyingActivity){
+                    } else if (mContext instanceof PushBuyingActivity) {
                         PushBuyingActivity activity = (PushBuyingActivity) mContext;
                         activity.hideDialog2(mName, mId);
-                    }else if(mContext instanceof ChatTransferActivity){
+                    } else if (mContext instanceof ChatTransferActivity) {
                         ChatTransferActivity activity = (ChatTransferActivity) mContext;
-                        activity.hideDialog(mName, mId);
-                    }else if(mContext instanceof PayManageActivity){
-                        PayManageActivity activity = (PayManageActivity) mContext;
                         activity.hideDialog(mName, mId);
                     }
                 }

@@ -87,7 +87,7 @@
             android:text="交易10 | 數量 0.241628 BTC"
             android:textSize="@dimen/x24"/>
 
-        <Button
+        <!--<Button
             android:id="@+id/btn_add_friend"
             android:layout_width="@dimen/y180"
             android:layout_height="@dimen/y60"
@@ -98,7 +98,7 @@
             android:text="加为好友"
             android:textAllCaps="false"
             android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"/>
+            android:textSize="@dimen/x28"/>-->
 
     </RelativeLayout>
 
@@ -228,6 +228,7 @@
             android:id="@+id/tv4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/et_cny"
             android:layout_marginLeft="@dimen/x25"
             android:layout_marginTop="@dimen/y20"
             android:text="CNY"
@@ -237,8 +238,9 @@
             android:id="@+id/et_cny"
             android:layout_width="@dimen/x315"
             android:layout_height="@dimen/y100"
+            android:layout_alignParentRight="true"
             android:layout_below="@+id/tv4"
-            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x20"
             android:layout_marginTop="@dimen/y10"
             android:background="@drawable/bg_blue_border"
             android:hint="2000-561435CNY"
@@ -255,7 +257,7 @@
             android:layout_marginLeft="@dimen/x20"
             android:layout_marginRight="@dimen/x20"
             android:layout_marginTop="@dimen/y30"
-            android:layout_toRightOf="@+id/et_cny"
+            android:layout_toLeftOf="@+id/et_cny"
             android:src="@mipmap/icon_exchange_bg"/>
 
         <TextView
@@ -272,9 +274,8 @@
             android:id="@+id/et_coin"
             android:layout_width="@dimen/x315"
             android:layout_height="@dimen/y100"
-            android:layout_alignParentRight="true"
             android:layout_below="@+id/tv4"
-            android:layout_marginRight="@dimen/x20"
+            android:layout_marginLeft="@dimen/x20"
             android:layout_marginTop="@dimen/y10"
             android:background="@drawable/bg_blue_border"
             android:hint="买入数量"

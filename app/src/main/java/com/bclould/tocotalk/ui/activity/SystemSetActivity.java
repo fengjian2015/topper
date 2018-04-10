@@ -16,6 +16,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.utils.MySharedPreferences;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,6 +28,8 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class SystemSetActivity extends BaseActivity {
+    private static final String INFORM = "inform";
+    private static final String PRIVATE = "private";
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.iv_concern_we)
@@ -72,6 +75,16 @@ public class SystemSetActivity extends BaseActivity {
         setContentView(R.layout.activity_system_set);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
+        init();
+    }
+
+    private void init() {
+        boolean privateStatus = MySharedPreferences.getInstance().getBoolean(PRIVATE);
+        mOnOffPrivate.setSelected(privateStatus);
+        isOnOff2 = privateStatus;
+        boolean informStatus = MySharedPreferences.getInstance().getBoolean(INFORM);
+        mOnOffInform.setSelected(informStatus);
+        isOnOff = informStatus;
     }
 
 
@@ -104,6 +117,8 @@ public class SystemSetActivity extends BaseActivity {
         logoutPresenter.logout();
     }
 
+    boolean isOnOff = false;
+    boolean isOnOff2 = false;
 
     @OnClick({R.id.btn_brak, R.id.bark, R.id.rl_concern_we, R.id.rl_inform, R.id.rl_private, R.id.rl_help, R.id.rl_cache})
     public void onViewClicked(View view) {
@@ -118,10 +133,12 @@ public class SystemSetActivity extends BaseActivity {
                 startActivity(new Intent(this, GuanYuMeActivity.class));
                 break;
             case R.id.rl_inform:
-                setOnOff();
+                isOnOff = !isOnOff;
+                setOnOff(INFORM, isOnOff);
                 break;
             case R.id.rl_private:
-                setOnOff();
+                isOnOff2 = !isOnOff2;
+                setOnOff(PRIVATE, isOnOff2);
                 break;
             case R.id.rl_help:
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));
@@ -169,7 +186,21 @@ public class SystemSetActivity extends BaseActivity {
 
     }
 
-    private void setOnOff() {
-
+    private void setOnOff(String key, boolean status) {
+        if (key.equals(PRIVATE)) {
+            if (status) {
+                mOnOffPrivate.setSelected(true);
+            } else {
+                mOnOffPrivate.setSelected(false);
+            }
+            MySharedPreferences.getInstance().setBoolean(PRIVATE, status);
+        } else {
+            if (status) {
+                mOnOffInform.setSelected(true);
+            } else {
+                mOnOffInform.setSelected(false);
+            }
+            MySharedPreferences.getInstance().setBoolean(INFORM, status);
+        }
     }
 }

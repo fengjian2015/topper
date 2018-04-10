@@ -1,47 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/light"
-              android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/light">
 
-    <RelativeLayout
-        android:background="@color/white"
-        android:padding="@dimen/x30"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="@color/gray"
+        android:gravity="center"
+        android:text="开发当中，敬请期待"
+        android:textSize="@dimen/x55"/>
 
-        <TextView
-            android:id="@+id/tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="24小时新闻"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
-
-        <TextView
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="更多>>"
-            android:textSize="@dimen/x26"/>
-
-        <TextView
-            android:layout_marginTop="@dimen/y20"
-            android:layout_below="@+id/tv_time"
-            android:layout_width="wrap_content"
-            android:textColor="@color/black"
-            android:lines="1"
-            android:singleLine="true"
-            android:text="发货撒会计法发六块腹肌附件为奇偶四大皆空发了而欧文人家问"
-            android:layout_height="wrap_content"/>
-
-    </RelativeLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <LinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/x30">
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="24小时新闻"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="更多>>"
+                android:textSize="@dimen/x26"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_time"
+                android:layout_marginTop="@dimen/y20"
+                android:lines="1"
+                android:singleLine="true"
+                android:text="发货撒会计法发六块腹肌附件为奇偶四大皆空发了而欧文人家问"
+                android:textColor="@color/black"/>
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+
+</RelativeLayout>

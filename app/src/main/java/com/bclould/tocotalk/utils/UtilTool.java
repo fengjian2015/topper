@@ -403,16 +403,10 @@ public class UtilTool {
     }
 
     public static String getUser() {
-        if(getJid() != null)
-        {
-            int pos = getJid().indexOf("@");
-            if (pos > 0) {
-                return getJid().substring(0, getJid().indexOf("@"));
-            }else{
-                return getJid();
-            }
+        if (!getJid().isEmpty()) {
+            return getJid().substring(0, getJid().indexOf("@"));
         }
-        return null;
+        return "";
     }
 
     public static String getpw() {
