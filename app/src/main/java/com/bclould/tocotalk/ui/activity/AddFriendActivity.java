@@ -20,6 +20,7 @@ import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.ui.adapter.AddFriendAdapter;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 
@@ -145,11 +146,11 @@ public class AddFriendActivity extends BaseActivity {
         try {
             String text = mEtSearch.getText().toString();
             UserSearchManager search = new UserSearchManager(XmppConnection.getInstance().getConnection());
-            Form searchForm = search.getSearchForm(JidCreate.domainBareFrom("search.xmpp.bclould.com"));
+            Form searchForm = search.getSearchForm(JidCreate.domainBareFrom("search." + Constants.DOMAINNAME));
             Form answerForm = searchForm.createAnswerForm();
             answerForm.setAnswer("Username", true);
             answerForm.setAnswer("search", text.trim());
-            ReportedData data = search.getSearchResults(answerForm, JidCreate.domainBareFrom("search.xmpp.bclould.com"));
+            ReportedData data = search.getSearchResults(answerForm, JidCreate.domainBareFrom("search." + Constants.DOMAINNAME));
             List<ReportedData.Row> rowList = data.getRows();
             if (rowList != null) {
                 mLlHot.setVisibility(View.GONE);

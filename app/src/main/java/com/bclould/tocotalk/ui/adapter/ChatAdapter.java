@@ -820,7 +820,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 mTvRemark.setText(messageInfo.getRemark());
             } else {
                 mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket3));
-                mTvRemark.setText("转账已被领取");
             }
             mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -832,6 +831,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     intent.putExtra("count", messageInfo.getCount());
                     intent.putExtra("coin", messageInfo.getCoin());
                     intent.putExtra("time", messageInfo.getTime());
+                    intent.putExtra("type", 1);
                     mContext.startActivity(intent);
                 }
             });
@@ -876,6 +876,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     intent.putExtra("count", messageInfo.getCount());
                     intent.putExtra("coin", messageInfo.getCoin());
                     intent.putExtra("time", messageInfo.getTime());
+                    intent.putExtra("type", 0);
                     mContext.startActivity(intent);
                 }
             });

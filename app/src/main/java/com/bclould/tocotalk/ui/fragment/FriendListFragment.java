@@ -332,7 +332,7 @@ public class FriendListFragment extends Fragment {
                 if (presence.getType().equals(Presence.Type.subscribe)) {
                     //发送广播传递发送方的JIDfrom及字符串
                     UtilTool.Log("日志1", mMgr.findUser(from) + "");
-                    UtilTool.Log("日志1", mMgr.findRequest(from) + "");
+                    UtilTool.Log("发", from);
                     if (!mMgr.findUser(from)) {
                         acceptAdd = "收到添加请求！";
                         Intent intent = new Intent();
@@ -366,6 +366,7 @@ public class FriendListFragment extends Fragment {
                         RosterEntry entry = roster.getEntry(JidCreate.entityBareFrom(from));
                         roster.removeEntry(entry);
                         UtilTool.Log("fsdafa", "删除成功！");
+                        mMgr.deleteUser(from);
                         initData();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -377,7 +378,7 @@ public class FriendListFragment extends Fragment {
                     getContext().sendBroadcast(intent);
                 } else if (presence.getType().equals(
                         Presence.Type.unsubscribed)) {
-                    try {
+                   /* try {
                         Roster roster = Roster.getInstanceFor(XmppConnection.getInstance().getConnection());
                         RosterEntry entry = roster.getEntry(JidCreate.entityBareFrom(from));
                         roster.removeEntry(entry);
@@ -386,7 +387,7 @@ public class FriendListFragment extends Fragment {
                     } catch (Exception e) {
                         e.printStackTrace();
                         UtilTool.Log("fsdafa", e.getMessage());
-                    }
+                    }*/
                 } else if (presence.getType().equals(
                         Presence.Type.unavailable)) {
                     String user = from.substring(0, from.indexOf("@"));
@@ -460,6 +461,13 @@ public class FriendListFragment extends Fragment {
     private void queryUser() {
         mUsers.removeAll(mUsers);
         List<UserInfo> userInfos = mMgr.queryAllUser();
+        UserInfo userInfo = null;
+        for (UserInfo info : userInfos) {
+            if (info.getUser().equals(UtilTool.getJid())) {
+                userInfo = info;
+            }
+        }
+        userInfos.remove(userInfo);
         mUsers.addAll(userInfos);
     }
 

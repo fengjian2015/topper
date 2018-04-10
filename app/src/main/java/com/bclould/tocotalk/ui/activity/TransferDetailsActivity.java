@@ -57,6 +57,12 @@ public class TransferDetailsActivity extends BaseActivity {
         String count = intent.getStringExtra("count");
         String coin = intent.getStringExtra("coin");
         String time = intent.getStringExtra("time");
+        int type = intent.getIntExtra("type", 0);
+        if(type == 0){
+            mTvHint.setText("已收入钱包");
+        }else {
+            mTvHint.setText("已转入对方钱包");
+        }
         DecimalFormat df = new DecimalFormat("#.00");
         String countd = df.format(Double.parseDouble(count));
         mTvCoin.setText(coin);

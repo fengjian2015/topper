@@ -345,6 +345,8 @@ public class ProblemFeedBackFragment extends Fragment {
                         s3Client.putObject(por);
                     }
                 } catch (AmazonClientException e) {
+                    hideDialog();
+                    Toast.makeText(getContext(), "上传失败", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
             }

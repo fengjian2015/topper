@@ -776,6 +776,13 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                         s3Client.putObject(por);
                     } catch (Exception e) {
                         e.printStackTrace();
+                        mMgr.updateMessageHint(mId, 2);
+                        for (MessageInfo info : mMessageList) {
+                            if (info.getId() == mId) {
+                                info.setSendStatus(2);
+                                handler.sendEmptyMessage(3);
+                            }
+                        }
                     }
                 }
             }).start();

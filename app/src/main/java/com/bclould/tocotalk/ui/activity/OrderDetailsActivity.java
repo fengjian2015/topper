@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -17,6 +18,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.model.OrderInfo2;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.MessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -79,6 +81,16 @@ public class OrderDetailsActivity extends BaseActivity {
     LinearLayout mLlBuyer;
     @Bind(R.id.ll_order)
     LinearLayout mLlOrder;
+    @Bind(R.id.tv_payment_type)
+    TextView mTvPaymentType;
+    @Bind(R.id.btn_sell_cancel)
+    Button mBtnSellCancel;
+    @Bind(R.id.btn_sell_confirm)
+    Button mBtnSellConfirm;
+    @Bind(R.id.btn_buy_cancel)
+    Button mBtnBuyCancel;
+    @Bind(R.id.btn_buy_confirm)
+    Button mBtnBuyConfirm;
     private OrderInfo.DataBean mData;
     Timer mTimer = new Timer();
     private int mRecLen = 0;
@@ -128,15 +140,17 @@ public class OrderDetailsActivity extends BaseActivity {
                 mTvTitle.setText("购买" + mData.getCoin_name());
                 mLlBuyer.setVisibility(View.VISIBLE);
                 mLlSeller.setVisibility(View.GONE);
-                mTvBuysell.setText("卖家:" + mData.getTo_user_name());
-                mTvBuysell2.setText("买家:" + mData.getUser_name());
+                mTvPaymentType.setText("付款方式:");
+                mTvPayType.setText("等待付款");
             } else {
                 mLlBuyer.setVisibility(View.GONE);
                 mLlSeller.setVisibility(View.VISIBLE);
                 mTvTitle.setText("售出" + mData.getCoin_name());
-                mTvBuysell2.setText("买家:" + mData.getTo_user_name());
-                mTvBuysell.setText("卖家:" + mData.getUser_name());
+                mTvPaymentType.setText("收款方式:");
+                mTvPayType.setText("等待收款");
             }
+            mTvBuysell.setText("卖家:" + mData.getTo_user_name());
+            mTvBuysell2.setText("买家:" + mData.getUser_name());
             mTvCount.setText(mData.getNumber());
             mTvMoney.setText(mData.getTrans_amount());
             mTvPrice.setText(mData.getPrice());
@@ -171,15 +185,21 @@ public class OrderDetailsActivity extends BaseActivity {
                     mLlBuyer.setVisibility(View.VISIBLE);
                     mLlSeller.setVisibility(View.GONE);
                     mTvTitle.setText("购买" + data.getCoin_name());
-                    mTvBuysell.setText("卖家:" + data.getTo_user_name());
-                    mTvBuysell2.setText("买家:" + data.getUser_name());
                 } else {
                     mLlBuyer.setVisibility(View.GONE);
                     mLlSeller.setVisibility(View.VISIBLE);
                     mTvTitle.setText("售出" + data.getCoin_name());
-                    mTvBuysell.setText("买家:" + data.getUser_name());
-                    mTvBuysell2.setText("卖家:" + data.getTo_user_name());
                 }
+                if (data.getStatus() == 0) {
+                    mTimer.cancel();
+                    mTvTime.setText("0分钟");
+                } else if (data.getStatus() == 1) {
+                } else if (data.getStatus() == 2) {
+                } else if (data.getStatus() == 3) {
+                } else if (data.getStatus() == 4) {
+                }
+                mTvBuysell.setText("卖家:" + data.getTo_user_name());
+                mTvBuysell2.setText("买家:" + data.getUser_name());
                 mTvCount.setText(data.getNumber());
                 mTvMoney.setText(data.getTrans_amount());
                 mTvPrice.setText(data.getPrice());
@@ -205,18 +225,44 @@ public class OrderDetailsActivity extends BaseActivity {
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));
                 break;
             case R.id.btn_buy_cancel:
-                cancel();
+                showDialog("取消");
                 break;
             case R.id.btn_sell_cancel:
-                cancel();
+                showDialog("取消");
                 break;
             case R.id.btn_buy_confirm:
                 confirmPay();
                 break;
             case R.id.btn_sell_confirm:
-                confirmGiveCoin();
+                showDialog("放币");
                 break;
         }
+    }
+
+    public void showDialog(final String type) {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
+        deleteCacheDialog.show();
+        if (type.equals("取消"))
+            deleteCacheDialog.setTitle("是否取消订单？");
+        else
+            deleteCacheDialog.setTitle("是否确认放币？");
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (type.equals("取消"))
+                    cancel();
+                else
+                    confirmGiveCoin();
+            }
+        });
     }
 
     private void confirmGiveCoin() {
@@ -265,7 +311,6 @@ public class OrderDetailsActivity extends BaseActivity {
                     MessageEvent messageEvent = new MessageEvent("确认付款");
                     messageEvent.setId(mData.getId() + "");
                     EventBus.getDefault().post(messageEvent);
-                    EventBus.getDefault().post(new MessageEvent("确认付款"));
                     Toast.makeText(OrderDetailsActivity.this, "确认付款成功", Toast.LENGTH_SHORT).show();
                 }
             });

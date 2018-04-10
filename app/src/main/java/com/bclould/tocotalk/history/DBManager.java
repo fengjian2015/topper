@@ -382,7 +382,9 @@ public class DBManager {
 
     public void deleteUser(String user) {
         db = helper.getWritableDatabase();
-        db.delete("UserImage", "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
+        int type = db.delete("UserImage", "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
+        UtilTool.Log("fsdafa", type + "");
+        UtilTool.Log("fsdafa", "删除" + user);
         db.close();
     }
 

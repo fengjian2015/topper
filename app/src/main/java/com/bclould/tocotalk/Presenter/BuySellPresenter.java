@@ -60,7 +60,6 @@ public class BuySellPresenter {
 
     public void getDealList(int type, String coinName, final String state, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .getDealList(UtilTool.getToken(), type, coinName, state)
@@ -98,7 +97,6 @@ public class BuySellPresenter {
 
     public void getOrderList(String coinName, final String filtrate, final CallBack3 callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .getOrderList(UtilTool.getToken(), coinName, filtrate)
@@ -139,7 +137,6 @@ public class BuySellPresenter {
         double priced = Double.parseDouble(price);
         double moneyd = Double.parseDouble(money);
         if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .createOrder(UtilTool.getToken(), id, count, priced, moneyd, password)

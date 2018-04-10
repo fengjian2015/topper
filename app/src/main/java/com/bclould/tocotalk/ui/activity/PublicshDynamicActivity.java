@@ -310,18 +310,24 @@ public class PublicshDynamicActivity extends BaseActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        for (int i = 0; i < selectList.size(); i++) {
-                            mPathList.add(selectList.get(i).getCompressPath());
-                            File file = new File(selectList.get(i).getCompressPath());
-                            String jid = UtilTool.getJid();
-                            String myName = jid.substring(0, jid.indexOf("@"));
-                            final String key = myName + UtilTool.createtFileName() + file.getName();
-                            final String keyCompress = myName + UtilTool.createtFileName() + "compress" + file.getName();
-                            //缩略图储存路径
-                            final File newFile = new File(Constants.PUBLICDIR + keyCompress);
-                            UtilTool.comp(BitmapFactory.decodeFile(selectList.get(i).getCompressPath()), newFile);//压缩图片
-                            upImage(key, file, true);
-                            upImage(keyCompress, newFile, false);
+                        try {
+                            for (int i = 0; i < selectList.size(); i++) {
+                                mPathList.add(selectList.get(i).getCompressPath());
+                                File file = new File(selectList.get(i).getCompressPath());
+                                String jid = UtilTool.getJid();
+                                String myName = jid.substring(0, jid.indexOf("@"));
+                                final String key = myName + UtilTool.createtFileName() + file.getName();
+                                final String keyCompress = myName + UtilTool.createtFileName() + "compress" + file.getName();
+                                //缩略图储存路径
+                                final File newFile = new File(Constants.PUBLICDIR + keyCompress);
+                                UtilTool.comp(BitmapFactory.decodeFile(selectList.get(i).getCompressPath()), newFile);//压缩图片
+                                upImage(key, file, true);
+                                upImage(keyCompress, newFile, false);
+                            }
+                        } catch (Exception e) {
+                            hideDialog();
+                            Toast.makeText(PublicshDynamicActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
                         }
                     }
                 }).start();
@@ -333,45 +339,41 @@ public class PublicshDynamicActivity extends BaseActivity {
 
 
     private void upImage(final String key, File file, final boolean type) {
-        try {
-            BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
-                    Constants.ACCESS_KEY_ID,
-                    Constants.SECRET_ACCESS_KEY,
-                    Constants.SESSION_TOKEN);
-            AmazonS3Client s3Client = new AmazonS3Client(
-                    sessionCredentials);
-            Regions regions = Regions.fromName("ap-northeast-2");
-            Region region = Region.getRegion(regions);
-            s3Client.setRegion(region);
-            s3Client.addRequestHandler(new RequestHandler2() {
-                @Override
-                public void beforeRequest(Request<?> request) {
+        BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
+                Constants.ACCESS_KEY_ID,
+                Constants.SECRET_ACCESS_KEY,
+                Constants.SESSION_TOKEN);
+        AmazonS3Client s3Client = new AmazonS3Client(
+                sessionCredentials);
+        Regions regions = Regions.fromName("ap-northeast-2");
+        Region region = Region.getRegion(regions);
+        s3Client.setRegion(region);
+        s3Client.addRequestHandler(new RequestHandler2() {
+            @Override
+            public void beforeRequest(Request<?> request) {
 
+            }
+
+            @Override
+            public void afterResponse(Request<?> request, Response<?> response) {
+                Message message = new Message();
+                message.obj = key;
+                if (type) {
+                    message.arg1 = 0;
+                } else {
+                    message.arg1 = 1;
                 }
+                message.what = 1;
+                handler.sendMessage(message);
+            }
 
-                @Override
-                public void afterResponse(Request<?> request, Response<?> response) {
-                    Message message = new Message();
-                    message.obj = key;
-                    if (type) {
-                        message.arg1 = 0;
-                    } else {
-                        message.arg1 = 1;
-                    }
-                    message.what = 1;
-                    handler.sendMessage(message);
-                }
+            @Override
+            public void afterError(Request<?> request, Response<?> response, Exception e) {
 
-                @Override
-                public void afterError(Request<?> request, Response<?> response, Exception e) {
-
-                }
-            });
-            PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
-            s3Client.putObject(por);
-        } catch (AmazonClientException e) {
-            e.printStackTrace();
-        }
+            }
+        });
+        PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
+        s3Client.putObject(por);
     }
 
     String mKeyList = "";

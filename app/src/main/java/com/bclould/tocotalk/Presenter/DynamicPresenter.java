@@ -12,6 +12,7 @@ import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.model.ReviewListInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
 
 import java.util.List;
@@ -88,6 +89,8 @@ public class DynamicPresenter {
     }
 
     public void dynamicList(String page, String pageSize, String userList, final CallBack2 callBack2) {
+        userList = userList.replace("@" + Constants.DOMAINNAME, "");
+        UtilTool.Log("动态", userList);
         if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
             RetrofitUtil.getInstance(mContext)

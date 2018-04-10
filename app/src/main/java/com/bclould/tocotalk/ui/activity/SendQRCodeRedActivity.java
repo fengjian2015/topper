@@ -256,6 +256,13 @@ public class SendQRCodeRedActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) mBottomDialog.findViewById(R.id.recycler_view);
         TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
         Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
+        Button cancel = (Button) mBottomDialog.findViewById(R.id.btn_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBottomDialog.dismiss();
+            }
+        });
         addCoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
