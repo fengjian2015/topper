@@ -13,6 +13,7 @@ import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.model.ExchangeOrderInfo;
 import com.bclould.tocotalk.model.StateInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
+import com.bclould.tocotalk.ui.activity.ExpectCoinActivity;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.UtilTool;
 
@@ -70,6 +71,7 @@ public class CoinPresenter {
                         @Override
                         public void onNext(@NonNull CoinInfo coinInfo) {
                             if (coinInfo.getStatus() == 1) {
+                                MyApp.getInstance().mCoinList.clear();
                                 MyApp.getInstance().mCoinList.addAll(coinInfo.getData());
                             }
                         }
@@ -143,6 +145,7 @@ public class CoinPresenter {
                         public void onNext(@NonNull StateInfo stateInfo) {
                             hideDialog();
                             if (stateInfo.getStatus() == 1) {
+                                MyApp.getInstance().mStateList.clear();
                                 MyApp.getInstance().mStateList.addAll(stateInfo.getData());
                             }
                         }
@@ -278,6 +281,45 @@ public class CoinPresenter {
         }
     }
 
+    public void hopeCoin(String content, String contact) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .hopeCoin(UtilTool.getToken(), content, contact)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(@NonNull BaseInfo baseInfo) {
+                            if (baseInfo.getStatus() == 1) {
+                                ExpectCoinActivity activity = (ExpectCoinActivity) mContext;
+                                activity.finish();
+                            }
+                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+                            UtilTool.Log("日志1", e.getMessage());
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
     //定义接口
     public interface CallBack {
         void send(List<CoinListInfo.DataBean> data);
@@ -292,6 +334,7 @@ public class CoinPresenter {
     public interface CallBack3 {
         void send(ExchangeOrderInfo.DataBeanX data);
     }
+
     //定义接口
     public interface CallBack4 {
         void send();

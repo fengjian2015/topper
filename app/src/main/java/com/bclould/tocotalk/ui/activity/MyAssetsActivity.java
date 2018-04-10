@@ -59,9 +59,14 @@ public class MyAssetsActivity extends BaseActivity {
     RecyclerView mRecyclerView;
     List<MyAssetsInfo.DataBean> mDataList = new ArrayList();
     List<MyAssetsInfo.DataBean> mDiltrateData = new ArrayList();
+    @Bind(R.id.tv_currency)
+    TextView mTvCurrency;
+    @Bind(R.id.tv_total)
+    TextView mTvTotal;
     private MyWalletRVAapter mMyWalletRVAapter;
     private ViewGroup mPopupWindowView;
     private PopupWindow mPopupWindow;
+    private SubscribeCoinPresenter mSubscribeCoinPresenter;
 
     @Override
 
@@ -71,11 +76,27 @@ public class MyAssetsActivity extends BaseActivity {
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         ButterKnife.bind(this);
+        mSubscribeCoinPresenter = new SubscribeCoinPresenter(this);
         MyApp.getInstance().addActivity(this);
+        getTotal();
         initRecyclerView();
         initData();
         initEdit();
 
+    }
+
+    private void getTotal() {
+        try {
+            mSubscribeCoinPresenter.getTotal(new SubscribeCoinPresenter.CallBack3() {
+                @Override
+                public void send(String data) {
+                    mTvCurrency.setText("总资产(USD)");
+                    mTvTotal.setText("≈" + data);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -122,8 +143,7 @@ public class MyAssetsActivity extends BaseActivity {
 
     private void initData() {
         mDataList.clear();
-        SubscribeCoinPresenter subscribeCoinPresenter = new SubscribeCoinPresenter(this);
-        subscribeCoinPresenter.getMyAssets(new SubscribeCoinPresenter.CallBack() {
+        mSubscribeCoinPresenter.getMyAssets(new SubscribeCoinPresenter.CallBack() {
             @Override
             public void send(List<MyAssetsInfo.DataBean> info) {
                 mDataList.addAll(info);

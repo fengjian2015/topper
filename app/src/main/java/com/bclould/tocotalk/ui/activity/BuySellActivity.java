@@ -353,7 +353,7 @@ public class BuySellActivity extends BaseActivity {
         String moneys = mEtCny.getText().toString();
         String count = mEtCoin.getText().toString();
         if (!moneys.isEmpty() && !count.isEmpty()) {
-            int money = Integer.parseInt(moneys);
+            double money = Double.parseDouble(moneys);
             if (money >= mData.getMin_amount() && money <= mData.getMax_amount()) {
                 if (!mType)
                     createOrder("");

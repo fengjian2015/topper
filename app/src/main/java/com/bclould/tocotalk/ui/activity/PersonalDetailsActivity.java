@@ -20,6 +20,7 @@ import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.luck.picture.lib.PictureSelector;
@@ -37,6 +38,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tocotalk.Presenter.LoginPresenter.STATE;
 import static com.luck.picture.lib.config.PictureMimeType.ofImage;
 
 /**
@@ -79,6 +81,8 @@ public class PersonalDetailsActivity extends BaseActivity {
 
     //初始化界面
     private void initInterface() {
+        String state = MySharedPreferences.getInstance().getString(STATE);
+        mTvLocation.setText(state);
         DBManager mgr = new DBManager(this);
         List<UserInfo> userInfos = mgr.queryUser(Constants.MYUSER);
         if (userInfos.size() != 0) {

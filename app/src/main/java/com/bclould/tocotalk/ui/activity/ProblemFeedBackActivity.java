@@ -1,7 +1,9 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +22,7 @@ import butterknife.OnClick;
  * Created by GA on 2017/10/17.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class ProblemFeedBackActivity extends BaseActivity {
 
 

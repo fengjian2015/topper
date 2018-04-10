@@ -34,4 +34,5 @@ public class Constants {
     public static final String LOG_DIR  = "/sdcard/tocotalk/log/";
     public static final String QRMONEYIN = "qrMoneyIn";
     public static final String DATAMONEYIN = "dataMoneyIn";
+    public static final String HINT_TYPE = "hint_type";
 }

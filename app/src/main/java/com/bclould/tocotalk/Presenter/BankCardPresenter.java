@@ -134,7 +134,6 @@ public class BankCardPresenter {
 
     public void bankCardList(final CallBack2 callBack2) {
         if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .bankCardList(UtilTool.getToken())
@@ -148,7 +147,6 @@ public class BankCardPresenter {
 
                         @Override
                         public void onNext(@NonNull CardListInfo cardListInfo) {
-                            hideDialog();
                             if (cardListInfo.getStatus() == 1) {
                                 callBack2.send(cardListInfo.getData());
                             }
@@ -156,7 +154,6 @@ public class BankCardPresenter {
 
                         @Override
                         public void onError(@NonNull Throwable e) {
-                            hideDialog();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -193,6 +190,40 @@ public class BankCardPresenter {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+    public void setDefaultBankCard(int id, final CallBack3 callBack3) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .setDefaultBankCard(UtilTool.getToken(), id + "")
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(@NonNull BaseInfo baseInfo) {
+                            callBack3.send(baseInfo.getStatus());
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 

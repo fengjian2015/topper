@@ -141,7 +141,20 @@ public class OrderDetailsActivity extends BaseActivity {
             mTvMoney.setText(mData.getTrans_amount());
             mTvPrice.setText(mData.getPrice());
             mTvOrderNumber.setText("订单号:" + mData.getOrder_no());
+            try {
+                mTvBankName.setText(mData.getBank().getCard_name());
+                mTvBankNumber.setText(mData.getBank().getCard_number());
+                mTvBankSite.setText(mData.getBank().getBank_name());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mTimer.cancel();
     }
 
     OrderInfo2 mInfo = new OrderInfo2();
@@ -171,6 +184,13 @@ public class OrderDetailsActivity extends BaseActivity {
                 mTvMoney.setText(data.getTrans_amount());
                 mTvPrice.setText(data.getPrice());
                 mTvPayType.setText(data.getStatus_name());
+                try {
+                    mTvBankName.setText(data.getBank().getCard_name());
+                    mTvBankNumber.setText(data.getBank().getCard_number());
+                    mTvBankSite.setText(data.getBank().getBank_name());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

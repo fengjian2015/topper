@@ -231,16 +231,16 @@ public class UpIdCardActivity extends BaseActivity {
         String keyLists = keyList.substring(keyList.indexOf(",") + 1, keyList.length());
         UtilTool.Log("日志", keyLists);
         RealNamePresenter realNamePresenter = new RealNamePresenter(this);
-        realNamePresenter.UpImage(keyLists, new RealNamePresenter.CallBack2() {
+        realNamePresenter.UpImage(keyLists, new RealNamePresenter.CallBack() {
             @Override
-            public void send(String message) {
-                if (message.equals("ok")) {
+            public void send(int status) {
+                if (status == 1) {
                     Toast.makeText(UpIdCardActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
                     finish();
                 }
+                hideDialog();
             }
         });
-        hideDialog();
     }
 
     private void upImage(Map<Integer, String> map) {

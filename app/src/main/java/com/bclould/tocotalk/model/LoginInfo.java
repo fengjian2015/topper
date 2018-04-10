@@ -51,6 +51,15 @@ public class LoginInfo {
         private String name;
 
         private String country;
+        private String currency;
+
+        public String getCurrency() {
+            return currency;
+        }
+
+        public void setCurrency(String currency) {
+            this.currency = currency;
+        }
 
         private int validate_type;
 

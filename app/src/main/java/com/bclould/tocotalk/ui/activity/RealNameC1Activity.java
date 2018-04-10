@@ -95,7 +95,7 @@ public class RealNameC1Activity extends BaseActivity {
         ButterKnife.bind(this);
         mRealNamePresenter = new RealNamePresenter(this);
         MyApp.getInstance().addActivity(this);
-        mRealNamePresenter.realNameInfo(new RealNamePresenter.CallBack() {
+        mRealNamePresenter.realNameInfo(new RealNamePresenter.CallBack2() {
             @Override
             public void send(String message) {
                 if (message.equals("认证成功")) {
@@ -227,7 +227,7 @@ public class RealNameC1Activity extends BaseActivity {
         }
         mRealNamePresenter.realNameVerify(name, cardNumber, mId, mType, new RealNamePresenter.CallBack() {
             @Override
-            public void send(String message) {
+            public void send(int message) {
                 Intent intent = new Intent(RealNameC1Activity.this, UpIdCardActivity.class);
                 intent.putExtra("type", mType);
                 startActivity(intent);

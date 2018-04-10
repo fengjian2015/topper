@@ -2,8 +2,12 @@ package com.bclould.tocotalk.ui.fragment;
 
 import android.Manifest;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,9 +21,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.Request;
+import com.amazonaws.Response;
+import com.amazonaws.auth.BasicSessionCredentials;
+import com.amazonaws.handlers.RequestHandler2;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.bclould.tocotalk.Presenter.RealNamePresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.ui.adapter.ProblemFeedBackRVAdapter;
+import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
+import com.bclould.tocotalk.utils.AnimatorTool;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.FullyGridLayoutManager;
+import com.bclould.tocotalk.utils.UtilTool;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.compress.Luban;
 import com.luck.picture.lib.config.PictureConfig;
@@ -28,6 +46,7 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.permissions.RxPermissions;
 import com.luck.picture.lib.tools.PictureFileUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,21 +63,25 @@ import static android.app.Activity.RESULT_OK;
  * Created by GA on 2017/10/17.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class ProblemFeedBackFragment extends Fragment {
 
     public static ProblemFeedBackFragment instance = null;
-    @Bind(R.id.recycler_view)
-    RecyclerView mRecyclerView;
     @Bind(R.id.feedback_content)
     EditText mFeedbackContent;
-    @Bind(R.id.contact_way)
-    EditText mContactWay;
-    @Bind(R.id.finish)
-    Button mFinish;
     @Bind(R.id.text_count)
     TextView mTextCount;
+    @Bind(R.id.text)
+    TextView mText;
+    @Bind(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+    @Bind(R.id.finish)
+    Button mFinish;
+
     private List<LocalMedia> mSelectList = new ArrayList<>();
     private ProblemFeedBackRVAdapter adapter;
+    private LoadingProgressDialog mProgressDialog;
+    private RealNamePresenter mRealNamePresenter;
 
     public static ProblemFeedBackFragment getInstance() {
 
@@ -78,6 +101,8 @@ public class ProblemFeedBackFragment extends Fragment {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_problem_feedback, container, false);
 
         ButterKnife.bind(this, view);
+
+        mRealNamePresenter = new RealNamePresenter(getContext());
 
         initRecyclerView();
 
@@ -234,7 +259,123 @@ public class ProblemFeedBackFragment extends Fragment {
     }
 
 
+    private void showDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = LoadingProgressDialog.createDialog(getContext());
+            mProgressDialog.setMessage("上传中...");
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideDialog() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
+    }
+
+    private String keyList;
+    private int count;
+    private String mType;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            String key = (String) msg.obj;
+            if (count == 1) {
+                keyList = key;
+            } else {
+                keyList += "," + key;
+            }
+            count++;
+            if (count == mSelectList.size()) {
+                submit(keyList);
+            }
+        }
+    };
+
     @OnClick(R.id.finish)
     public void onViewClicked() {
+        if (checkEdit()) {
+            if (mSelectList.size() != 0) {
+                upImage();
+            } else {
+                submit("");
+            }
+        }
+    }
+
+    private void upImage() {
+        showDialog();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    for (LocalMedia info : mSelectList) {
+                        File file = new File(info.getCompressPath());
+                        final String key = UtilTool.getUser() + UtilTool.createtFileName() + file.getName();
+                        BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
+                                Constants.ACCESS_KEY_ID,
+                                Constants.SECRET_ACCESS_KEY,
+                                Constants.SESSION_TOKEN);
+                        AmazonS3Client s3Client = new AmazonS3Client(
+                                sessionCredentials);
+                        Regions regions = Regions.fromName("ap-northeast-2");
+                        Region region = Region.getRegion(regions);
+                        s3Client.setRegion(region);
+                        s3Client.addRequestHandler(new RequestHandler2() {
+                            @Override
+                            public void beforeRequest(Request<?> request) {
+
+                            }
+
+                            @Override
+                            public void afterResponse(Request<?> request, Response<?> response) {
+                                Message message = new Message();
+                                message.obj = key;
+                                handler.sendMessage(message);
+                            }
+
+                            @Override
+                            public void afterError(Request<?> request, Response<?> response, Exception e) {
+
+                            }
+                        });
+                        PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
+                        s3Client.putObject(por);
+                    }
+                } catch (AmazonClientException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private boolean checkEdit() {
+        if (mFeedbackContent.getText().toString().isEmpty()) {
+            AnimatorTool.getInstance().editTextAnimator(mFeedbackContent);
+            Toast.makeText(getContext(), "内容不能为空", Toast.LENGTH_SHORT).show();
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+    private void submit(String keyList) {
+        String content = mFeedbackContent.getText().toString();
+        mRealNamePresenter.UpFeedBackImage(content, keyList, new RealNamePresenter.CallBack() {
+            @Override
+            public void send(int status) {
+                if (status == 1) {
+                    Toast.makeText(getActivity(), "上传成功", Toast.LENGTH_SHORT).show();
+                    mSelectList.clear();
+                    adapter.notifyDataSetChanged();
+                    mFeedbackContent.setText("");
+                } else {
+                    Toast.makeText(getActivity(), "上传失败", Toast.LENGTH_SHORT).show();
+                }
+                hideDialog();
+            }
+        });
     }
 }

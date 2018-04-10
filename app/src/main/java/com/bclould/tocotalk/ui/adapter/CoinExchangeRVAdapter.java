@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.ExchangeOrderInfo;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import butterknife.Bind;
@@ -48,13 +49,14 @@ public class CoinExchangeRVAdapter extends RecyclerView.Adapter {
         return mDataList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.tv_name)
+        TextView mTvName;
         @Bind(R.id.tv_type)
         TextView mTvType;
-        @Bind(R.id.tv_price)
-        TextView mTvPrice;
-        @Bind(R.id.tv_count)
-        TextView mTvCount;
+        @Bind(R.id.tv_money)
+        TextView mTvMoney;
         @Bind(R.id.tv_time)
         TextView mTvTime;
 
@@ -64,9 +66,12 @@ public class CoinExchangeRVAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(ExchangeOrderInfo.DataBeanX.DataBean dataBean) {
-            mTvType.setText("卖出");
-            mTvCount.setText(dataBean.getNumber());
-            mTvPrice.setText(dataBean.getPrice());
+            mTvName.setText("兑换");
+            mTvType.setText("数量 - " + dataBean.getNumber() + " | 价格 - " + dataBean.getPrice());
+            double sum = Double.parseDouble(dataBean.getNumber()) * Double.parseDouble(dataBean.getPrice());
+            DecimalFormat df = new DecimalFormat("#.##");
+            String str = df.format(sum);
+            mTvMoney.setText(str + " USDT");
             mTvTime.setText(dataBean.getCreated_at());
         }
     }

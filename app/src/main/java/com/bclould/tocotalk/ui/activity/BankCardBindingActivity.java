@@ -51,7 +51,7 @@ public class BankCardBindingActivity extends BaseActivity {
 
     private void initData() {
         RealNamePresenter realNamePresenter = new RealNamePresenter(this);
-        realNamePresenter.realNameInfo(new RealNamePresenter.CallBack() {
+        realNamePresenter.realNameInfo(new RealNamePresenter.CallBack2() {
             @Override
             public void send(String message) {
                 if (message.equals("未认证")) {

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.ui.activity.PushBuyingActivity;
@@ -16,6 +17,9 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.bclould.tocotalk.ui.activity.PushBuyingActivity.PAYSIGN;
+import static com.bclould.tocotalk.ui.activity.PushBuyingActivity.PAYSIGN2;
 
 /**
  * Created by GA on 2017/11/22.
@@ -29,20 +33,22 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
     private final int mSign;
     private final CallBack mCallBack;
     private final Map<String, Integer> mMap;
+    private final Map<String, Boolean> mModeOfPayment;
 
-    public BottomDialogRVAdapter(PushBuyingActivity pushBuyingActivity, String[] arr, int sign, CallBack callBack, Map<String, Integer> map) {
+    public BottomDialogRVAdapter(PushBuyingActivity pushBuyingActivity, Map<String, Boolean> modeOfPayment, String[] arr, int sign, CallBack callBack, Map<String, Integer> map) {
         mPushBuyingActivity = pushBuyingActivity;
         mSign = sign;
         mArr = arr;
         mCallBack = callBack;
         mMap = map;
+        mModeOfPayment = modeOfPayment;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = null;
         RecyclerView.ViewHolder viewHolder = null;
-        if (mSign == 2) {
+        if (mSign == 2 || mSign == 5) {
             view = LayoutInflater.from(mPushBuyingActivity).inflate(R.layout.item_dialog_bottom_pay, parent, false);
             viewHolder = new ViewHolder2(view);
         } else {
@@ -54,7 +60,7 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (mSign == 2) {
+        if (mSign == 2 || mSign == 5) {
             ViewHolder2 viewHolder2 = (ViewHolder2) holder;
             viewHolder2.setData(mArr[position], position);
         } else {
@@ -108,20 +114,37 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    isChecked = !isChecked;
-                    if (isChecked) {
-                        mCbPay.setChecked(true);
+                    if (mModeOfPayment.get(mName)) {
+                        isChecked = !isChecked;
+                        if (isChecked) {
+                            mCbPay.setChecked(true);
+                        } else {
+                            mCbPay.setChecked(false);
+                        }
+                        mCallBack.send(mName, isChecked, mPosition);
                     } else {
-                        mCbPay.setChecked(false);
+                        Toast.makeText(mPushBuyingActivity, "请先绑定" + mName, Toast.LENGTH_SHORT).show();
                     }
-                    mCallBack.send(mName, isChecked, mPosition);
-                }
+                }/* else {
+                        isChecked = !isChecked;
+                        if (isChecked) {
+                            mCbPay.setChecked(true);
+                        } else {
+                            mCbPay.setChecked(false);
+                        }
+                        mCallBack.send(mName, isChecked, mPosition);
+                    }*/
+
             });
         }
 
         public void setData(String name, int position) {
             mName = name;
-            mTvName.setText(name);
+            if (mModeOfPayment.get(name)) {
+                mTvName.setText(name);
+            } else {
+                mTvName.setText(name + "(未绑定)");
+            }
             mPosition = position;
             for (String key : mMap.keySet()) {
                 if (key.equals(name)) {

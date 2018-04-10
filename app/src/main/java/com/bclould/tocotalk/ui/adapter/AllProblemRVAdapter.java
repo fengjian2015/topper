@@ -1,6 +1,8 @@
 package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.model.QuestionInfo;
+import com.bclould.tocotalk.ui.activity.QuestionDetailsActivity;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -19,9 +25,10 @@ import butterknife.ButterKnife;
 public class AllProblemRVAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;
+    private final List<QuestionInfo.DataBean> mDataBeanList;
 
-    public AllProblemRVAdapter(Context context) {
-
+    public AllProblemRVAdapter(Context context, List<QuestionInfo.DataBean> dataBeanList) {
+        mDataBeanList = dataBeanList;
         mContext = context;
     }
 
@@ -37,22 +44,45 @@ public class AllProblemRVAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
-
+        ViewHolder viewHolder = (ViewHolder) holder;
+        viewHolder.setData(mDataBeanList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 20;
+        if (mDataBeanList.size() != 0) {
+            return mDataBeanList.size();
+        }
+        return 0;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.problem_content)
         TextView mProblemContent;
+        @Bind(R.id.cv)
+        CardView mCV;
 
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+        }
+
+        public void setData(final QuestionInfo.DataBean dataBean) {
+            mProblemContent.setText(dataBean.getTitle());
+            mCV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, QuestionDetailsActivity.class);
+                    intent.putExtra("id", dataBean.getId() + "");
+                    mContext.startActivity(intent);
+                }
+            });
         }
     }
 }

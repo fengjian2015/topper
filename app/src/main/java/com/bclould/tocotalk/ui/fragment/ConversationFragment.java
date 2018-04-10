@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -74,6 +75,7 @@ import butterknife.OnClick;
 import static com.bclould.tocotalk.ui.activity.ConversationActivity.ACCESSKEYID;
 import static com.bclould.tocotalk.ui.activity.ConversationActivity.SECRETACCESSKEY;
 import static com.bclould.tocotalk.ui.activity.ConversationActivity.SESSIONTOKEN;
+import static com.bclould.tocotalk.ui.activity.SystemSetActivity.INFORM;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_IMG_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_RED_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_TEXT_MSG;
@@ -83,6 +85,7 @@ import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_VOICE_MSG;
 import static com.bclould.tocotalk.utils.Constants.ACCESS_KEY_ID;
 import static com.bclould.tocotalk.utils.Constants.SECRET_ACCESS_KEY;
 import static com.bclould.tocotalk.utils.Constants.SESSION_TOKEN;
+import static com.bclould.tocotalk.utils.MySharedPreferences.SETTING;
 
 /**
  * Created by GA on 2017/12/12.
@@ -183,7 +186,7 @@ public class ConversationFragment extends Fragment {
             initData();
         } else if (msg.equals("新的好友")) {
             initData();
-        }else if(msg.equals("登录失败")){
+        } else if (msg.equals("登录失败")) {
             mRlUnunited.setVisibility(View.VISIBLE);
         }
 
@@ -222,7 +225,14 @@ public class ConversationFragment extends Fragment {
         try {
             List<Message> list = offlineManager.getMessages();
             if (list.size() != 0) {
-                UtilTool.playHint(getContext());
+                SharedPreferences sp = getContext().getSharedPreferences(SETTING, 0);
+                if (sp.contains(INFORM)) {
+                    if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
+                        UtilTool.playHint(getContext());
+                    }
+                } else {
+                    UtilTool.playHint(getContext());
+                }
                 for (int i = 0; i < list.size(); i++) {
                     if (list.get(i) != null && list.get(i).getBody() != null && !list.get(i).getBody().equals("null")) {
                         android.os.Message msg = new android.os.Message();
@@ -256,7 +266,14 @@ public class ConversationFragment extends Fragment {
                     android.os.Message msg = new android.os.Message();
                     msg.obj = message;
                     handler.sendMessage(msg);
-                    UtilTool.playHint(getContext());
+                    SharedPreferences sp = getContext().getSharedPreferences(SETTING, 0);
+                    if (sp.contains(INFORM)) {
+                        if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
+                            UtilTool.playHint(getContext());
+                        }
+                    } else {
+                        UtilTool.playHint(getContext());
+                    }
                 }
             }
         };
@@ -415,7 +432,7 @@ public class ConversationFragment extends Fragment {
                     msgType = FROM_RED_MSG;
                     redId = Integer.parseInt(split[4]);
                     redpacket = "[红包]";
-                }else if(chatMsg.contains(Constants.TRANSFER)){
+                } else if (chatMsg.contains(Constants.TRANSFER)) {
                     String s = chatMsg.replace(Constants.CHUANCODE, ",");
                     String[] split = s.split(",");
                     remark = split[1];

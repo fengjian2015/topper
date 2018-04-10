@@ -43,6 +43,7 @@ public class LoginPresenter {
     public static final String LOGINPW = "login_pw";
     public static final String LOGINSET = "login_set";
     public static final String STATE = "state";
+    private static final String CURRENCY = "currency";
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
     public static final String MYUSERNAME = "my_username";
@@ -86,11 +87,15 @@ public class LoginPresenter {
                         public void onNext(LoginInfo baseInfo) {
                             hideDialog();
                             if (baseInfo.getStatus() == 2) {
-                                if (baseInfo.getData().getValidate_type() == 1) {
-                                    sendVcode(email);
-                                    showEmailDialog(email, password);
+                                if (baseInfo.getData() != null) {
+                                    if (baseInfo.getData().getValidate_type() == 1) {
+                                        sendVcode(email);
+                                        showEmailDialog(email, password);
+                                    } else {
+                                        showGoogleDialog(email, password);
+                                    }
                                 } else {
-                                    showGoogleDialog(email, password);
+                                    Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             } else if (baseInfo.getStatus() == 1) {
                                 UtilTool.Log("日志", baseInfo.getData().getName());
@@ -99,8 +104,9 @@ public class LoginPresenter {
                                 MySharedPreferences.getInstance().setString(MYUSERNAME, baseInfo.getData().getName() + "@" + Constants.DOMAINNAME);
                                 MySharedPreferences.getInstance().setString(EMAIL, email);
                                 MySharedPreferences.getInstance().setString(LOGINPW, password);
+                                MySharedPreferences.getInstance().setString(CURRENCY, baseInfo.getData().getCurrency());
                                 if (baseInfo.getData().getCountry().isEmpty()) {
-                                    MySharedPreferences.getInstance().setString(STATE, "中国");
+                                    MySharedPreferences.getInstance().setString(STATE, "中国 - 大陆");
                                 } else {
                                     MySharedPreferences.getInstance().setString(STATE, baseInfo.getData().getCountry());
                                 }
@@ -109,14 +115,13 @@ public class LoginPresenter {
                                 LoginActivity activity = (LoginActivity) mContext;
                                 activity.finish();
                                 Toast.makeText(mContext, mContext.getString(R.string.toast_succeed), Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
+                            UtilTool.Log("登录", e.getMessage());
                             Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
                         }
 

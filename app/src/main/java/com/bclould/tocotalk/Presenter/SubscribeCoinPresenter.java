@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.BaseInfo;
+import com.bclould.tocotalk.model.ModeOfPaymentInfo;
 import com.bclould.tocotalk.model.MyAssetsInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
@@ -171,7 +172,46 @@ public class SubscribeCoinPresenter {
         }
     }
 
-    public void totalAssetsValuation(final CallBack2 callBack2) {
+    public void getUSDT(final CallBack3 callBack3) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .getUSDT(UtilTool.getToken())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(BaseInfo baseInfo) {
+                            if (baseInfo.getStatus() == 1) {
+                                callBack3.send(baseInfo.getData().getUsd());
+                            } else {
+                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+    public void getTotal(final CallBack3 callBack3) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
                     .getServer()
@@ -187,7 +227,7 @@ public class SubscribeCoinPresenter {
                         @Override
                         public void onNext(BaseInfo baseInfo) {
                             if (baseInfo.getStatus() == 1) {
-                                callBack2.send(baseInfo.getData().getTotal());
+                                callBack3.send(baseInfo.getData().getTotal());
                             } else {
                                 Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -217,6 +257,11 @@ public class SubscribeCoinPresenter {
 
     //定义接口
     public interface CallBack2 {
-        void send(String total);
+        void send(ModeOfPaymentInfo.DataBean data);
+    }
+
+    //定义接口
+    public interface CallBack3 {
+        void send(String data);
     }
 }

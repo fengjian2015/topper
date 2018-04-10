@@ -23,10 +23,15 @@ import com.bclould.tocotalk.Presenter.LoginPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.utils.AnimatorTool;
+import com.bclould.tocotalk.utils.MySharedPreferences;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.bclould.tocotalk.Presenter.LoginPresenter.EMAIL;
+import static com.bclould.tocotalk.Presenter.LoginPresenter.LOGINPW;
+import static com.bclould.tocotalk.ui.activity.SystemSetActivity.PRIVATE;
 
 /**
  * Created by GA on 2017/9/20.
@@ -54,6 +59,13 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login2);
 
         ButterKnife.bind(this);
+
+        if (MySharedPreferences.getInstance().getBoolean(PRIVATE)) {
+            String email = MySharedPreferences.getInstance().getString(EMAIL);
+            String logPW = MySharedPreferences.getInstance().getString(LOGINPW);
+            mEtEmily.setText(email);
+            mEtPassword.setText(logPW);
+        }
 
         setEdit();
 

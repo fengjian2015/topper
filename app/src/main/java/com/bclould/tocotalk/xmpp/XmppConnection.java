@@ -167,6 +167,7 @@ public class XmppConnection {
                 //SASLAuthentication.blacklistSASLMechanism("DIGEST-MD5");
 
                 connection = new XMPPTCPConnection(config.build());
+                connection.setReplyTimeout(10000);
                 connection.connect();// 连接到服务器
                 ProviderManager.addIQProvider("muc", "MZH", new MUCPacketExtensionProvider());
                 UtilTool.Log("fsdafa", "连接成功");

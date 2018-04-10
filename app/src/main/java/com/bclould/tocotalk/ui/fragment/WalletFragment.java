@@ -100,10 +100,10 @@ public class WalletFragment extends Fragment {
     private void initData() {
         try {
             SubscribeCoinPresenter subscribeCoinPresenter = new SubscribeCoinPresenter(getContext());
-            subscribeCoinPresenter.totalAssetsValuation(new SubscribeCoinPresenter.CallBack2() {
+            subscribeCoinPresenter.getUSDT(new SubscribeCoinPresenter.CallBack3() {
                 @Override
-                public void send(String total) {
-                    mTvTotal.setText(total);
+                public void send(String data) {
+                    mTvTotal.setText(data);
                 }
             });
         } catch (Exception e) {

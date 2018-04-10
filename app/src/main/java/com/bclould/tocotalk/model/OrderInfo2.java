@@ -8,7 +8,7 @@ public class OrderInfo2 {
 
     /**
      * status : 1
-     * data : {"id":66,"order_no":"2018032710250101","payment_no":446918,"trans_id":16,"user_id":34,"user_name":"xihongwei","to_user_id":41,"to_user_name":"liaolinan2","type":1,"coin_name":"TPC","currency":"中國","price":"80000","trans_amount":"100","number":"0.05","pay_type":"銀聯","status":0,"created_at":"2018-03-27 16:59:43","status_name":"已取消","deadline":1800}
+     * data : {"id":66,"order_no":"2018032710250101","payment_no":446918,"trans_id":16,"user_id":34,"user_name":"xihongwei","to_user_id":41,"to_user_name":"liaolinan2","type":1,"coin_name":"TPC","currency":"中國","price":"80000","trans_amount":"100","number":"0.05","pay_type":"銀聯","status":0,"created_at":"2018-03-27 16:59:43","status_name":"已取消","deadline":1800,"bank":{"bank_site":"高新园","card_name":"习红卫","card_number":"622020200102198302","bank_name":"工商银行-牡丹灵通卡-借记卡"},"alipay":{"name":"xihongwei","alipay":""},"wechat":{"name":"xihongwei","wechat":""}}
      */
 
     private int status;
@@ -51,6 +51,9 @@ public class OrderInfo2 {
          * created_at : 2018-03-27 16:59:43
          * status_name : 已取消
          * deadline : 1800
+         * bank : {"bank_site":"高新园","card_name":"习红卫","card_number":"622020200102198302","bank_name":"工商银行-牡丹灵通卡-借记卡"}
+         * alipay : {"name":"xihongwei","alipay":""}
+         * wechat : {"name":"xihongwei","wechat":""}
          */
 
         private int id;
@@ -72,6 +75,9 @@ public class OrderInfo2 {
         private String created_at;
         private String status_name;
         private int deadline;
+        private BankBean bank;
+        private AlipayBean alipay;
+        private WechatBean wechat;
 
         public int getId() {
             return id;
@@ -223,6 +229,128 @@ public class OrderInfo2 {
 
         public void setDeadline(int deadline) {
             this.deadline = deadline;
+        }
+
+        public BankBean getBank() {
+            return bank;
+        }
+
+        public void setBank(BankBean bank) {
+            this.bank = bank;
+        }
+
+        public AlipayBean getAlipay() {
+            return alipay;
+        }
+
+        public void setAlipay(AlipayBean alipay) {
+            this.alipay = alipay;
+        }
+
+        public WechatBean getWechat() {
+            return wechat;
+        }
+
+        public void setWechat(WechatBean wechat) {
+            this.wechat = wechat;
+        }
+
+        public static class BankBean {
+            /**
+             * bank_site : 高新园
+             * card_name : 习红卫
+             * card_number : 622020200102198302
+             * bank_name : 工商银行-牡丹灵通卡-借记卡
+             */
+
+            private String bank_site;
+            private String card_name;
+            private String card_number;
+            private String bank_name;
+
+            public String getBank_site() {
+                return bank_site;
+            }
+
+            public void setBank_site(String bank_site) {
+                this.bank_site = bank_site;
+            }
+
+            public String getCard_name() {
+                return card_name;
+            }
+
+            public void setCard_name(String card_name) {
+                this.card_name = card_name;
+            }
+
+            public String getCard_number() {
+                return card_number;
+            }
+
+            public void setCard_number(String card_number) {
+                this.card_number = card_number;
+            }
+
+            public String getBank_name() {
+                return bank_name;
+            }
+
+            public void setBank_name(String bank_name) {
+                this.bank_name = bank_name;
+            }
+        }
+
+        public static class AlipayBean {
+            /**
+             * name : xihongwei
+             * alipay :
+             */
+
+            private String name;
+            private String alipay;
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getAlipay() {
+                return alipay;
+            }
+
+            public void setAlipay(String alipay) {
+                this.alipay = alipay;
+            }
+        }
+
+        public static class WechatBean {
+            /**
+             * name : xihongwei
+             * wechat :
+             */
+
+            private String name;
+            private String wechat;
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getWechat() {
+                return wechat;
+            }
+
+            public void setWechat(String wechat) {
+                this.wechat = wechat;
+            }
         }
     }
 }

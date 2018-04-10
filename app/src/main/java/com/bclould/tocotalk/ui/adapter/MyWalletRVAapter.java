@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
@@ -60,12 +59,14 @@ public class MyWalletRVAapter extends RecyclerView.Adapter {
     class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_coin)
         ImageView mIvCoin;
+        @Bind(R.id.iv_popup)
+        ImageView mIvPopup;
         @Bind(R.id.tv_coin_name)
         TextView mTvCoinName;
         @Bind(R.id.tv_coin_count)
         TextView mTvCoinCount;
-        @Bind(R.id.rl_popup)
-        RelativeLayout mRlPopup;
+        @Bind(R.id.tv_coin_value)
+        TextView mTvCoinValue;
         private MyAssetsInfo.DataBean mLtcBean;
 
         ViewHolder(View view) {
@@ -78,7 +79,8 @@ public class MyWalletRVAapter extends RecyclerView.Adapter {
             Glide.with(mContext).load(ltcBean.getLogo()).into(mIvCoin);
             mTvCoinCount.setText(ltcBean.getTotal());
             mTvCoinName.setText(ltcBean.getName());
-            mRlPopup.setOnClickListener(new View.OnClickListener() {
+            mTvCoinValue.setText(ltcBean.getNumber() + ltcBean.getCurrency());
+            mIvPopup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mOnItemClickListener.onClick(view, ltcBean);
