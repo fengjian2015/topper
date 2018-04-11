@@ -90,6 +90,11 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             mTvMoney.setText("交易金额" + dataBean.getTrans_amount());
             mTvTime.setText(dataBean.getCreated_at());
             mTvType.setText(dataBean.getStatus_name());
+            if(dataBean.getStatus() == 4){
+                mTvType.setTextColor(mContext.getColor(R.color.color_orange));
+            }else {
+                mTvType.setTextColor(mContext.getColor(R.color.black));
+            }
             mTvCoinType.setText(dataBean.getCoin_name() + dataBean.getType_name());
             if (dataBean.getType() == 1) {
                 try {
@@ -124,6 +129,11 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
                         intent.putExtra("id", dataBean.getId() + "");
                         mContext.startActivity(intent);
                     } else if (dataBean.getStatus() == 3) {
+                        Intent intent = new Intent(mContext, OrderCloseActivity.class);
+                        intent.putExtra("status", dataBean.getStatus());
+                        intent.putExtra("id", dataBean.getId() + "");
+                        mContext.startActivity(intent);
+                    } else if (dataBean.getStatus() == 4) {
                         Intent intent = new Intent(mContext, OrderCloseActivity.class);
                         intent.putExtra("status", dataBean.getStatus());
                         intent.putExtra("id", dataBean.getId() + "");

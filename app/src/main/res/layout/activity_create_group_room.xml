@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="创建群聊"
+            android:text="@string/create_group_chat"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -33,7 +33,7 @@
             android:layout_centerVertical="true"
             android:gravity="center"
             android:paddingRight="@dimen/x20"
-            android:text="发起"
+            android:text="@string/create"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x30"
-            android:text="群名："
+            android:text="@string/group_name"
             android:textColor="@android:color/black"
             android:textSize="@dimen/x32"/>
 
@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:hint="请输入群名"
+                android:hint="@string/et_group_name"
                 android:paddingLeft="@dimen/x30"
                 android:paddingRight="@dimen/x30"
                 android:textColor="@android:color/black"
@@ -85,7 +85,7 @@
         android:background="@color/light"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/x30"
-        android:text="币云好友"
+        android:text="@string/invite_friend"
         android:textSize="@dimen/x26"/>
 
     <RelativeLayout

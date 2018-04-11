@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
         android:layout_alignParentTop="true"
-        android:background="@color/redpacket3">
+        android:background="@color/redpacket2">
 
         <ImageView
             android:id="@+id/bark"
@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="红包"
+            android:text="@string/red_package"
             android:textColor="@color/white"
             android:textSize="@dimen/x32"/>
 
@@ -35,7 +35,7 @@
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:paddingRight="@dimen/x20"
-            android:text="紅包記錄"
+            android:text="@string/red_package_record"
             android:textColor="@color/white"
             android:textSize="@dimen/x26"/>
 
@@ -97,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y10"
-            android:text="已存入钱包，可直接转账"
+            android:text="@string/grab_qr_red_hint"
             android:textColor="@color/white"
             android:textSize="@dimen/x30"/>
 

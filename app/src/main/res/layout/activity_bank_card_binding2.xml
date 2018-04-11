@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="银行卡信息"
+            android:text="@string/bank_card_information"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -36,7 +36,7 @@
         android:layout_height="@dimen/y80"
         android:layout_marginLeft="@dimen/x30"
         android:gravity="center_vertical"
-        android:text="请绑定持卡人本人的银行卡"
+        android:text="@string/please_bind_the_cardholders_bank_card"
         android:textColor="@color/black"
         android:textSize="@dimen/x28"/>
 
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/x30"
-                android:text="卡类型"
+                android:text="@string/card_type"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/x30"
-                android:text="开户行"
+                android:text="@string/opening_bank"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 
@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:background="@android:color/transparent"
-                android:hint="请输入完整的银行卡开户行地址信息"
+                android:hint="@string/et_opening_bank"
                 android:paddingRight="@dimen/x20"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
@@ -127,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/x30"
-                android:text="持卡人"
+                android:text="@string/cardholder"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 
@@ -161,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/x30"
-                android:text="证件号"
+                android:text="@string/id_number"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 
@@ -185,7 +185,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y60"
         android:background="@drawable/btn_blue_selector"
-        android:text="提交"
+        android:text="@string/submit"
         android:textColor="@color/white"/>
 
 </LinearLayout>

@@ -134,12 +134,13 @@ public class CurrencyInOutPresenter {
         });
     }
 
-    public void transfer(String coinName, String email, double count, String payPassword) {
+    public void transfer(String coinName, String email, double count, String google, String payPassword) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .transfer(UtilTool.getToken(), coinName, email, count, payPassword)
+                    .transfer(UtilTool.getToken(), coinName, email, count, google, payPassword)
+
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<BaseInfo>() {

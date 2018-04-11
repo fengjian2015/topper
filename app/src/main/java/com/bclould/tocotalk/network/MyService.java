@@ -215,6 +215,7 @@ public interface MyService {
             @Field("coin_name") String coin_name,
             @Field("account_email") String email,
             @Field("number") double number,
+            @Field("google_code") String google_code,
             @Field("second_password") String second_password
     );
 

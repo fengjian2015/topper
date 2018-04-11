@@ -188,7 +188,8 @@
                 android:id="@+id/ll_finish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/HCutOffRule"
@@ -235,6 +236,52 @@
                         android:textSize="@dimen/x26"/>
 
                 </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_exception_buy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/HCutOffRule"
+                    android:layout_marginTop="@dimen/y20"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/y20"
+                    android:gravity="center_vertical"
+                    android:text="系統正在處理中....請耐心等待賣家放幣"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_exception_sell"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/HCutOffRule"
+                    android:layout_marginTop="@dimen/y20"/>
+
+                <Button
+                    android:id="@+id/btn_confirm"
+                    android:layout_width="@dimen/x250"
+                    android:layout_height="@dimen/y80"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/y10"
+                    android:layout_marginTop="@dimen/y30"
+                    android:background="@drawable/bg_blue_shape"
+                    android:text="確定放幣"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/x28"/>
 
             </LinearLayout>
 

@@ -184,6 +184,7 @@ public class CoinPresenter {
                             if (coinListInfo.getStatus() == 1) {
                                 callBack.send(coinListInfo.getData());
                             }
+                            UtilTool.Log("日志1", coinListInfo.getMessage());
                         }
 
                         @Override

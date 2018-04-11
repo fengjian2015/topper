@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="购买BTC"
+            android:text="@string/buy_btc"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -33,7 +33,7 @@
             android:layout_centerVertical="true"
             android:gravity="center"
             android:paddingRight="@dimen/x20"
-            android:text="帮助"
+            android:text="@string/help"
             android:textColor="@color/blue2"
             android:textSize="@dimen/x30"/>
 
@@ -63,7 +63,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y25"
             android:layout_toRightOf="@+id/iv_touxiang"
-            android:text="安子"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -74,7 +73,6 @@
             android:layout_below="@+id/tv_name"
             android:layout_marginTop="@dimen/y5"
             android:layout_toRightOf="@+id/iv_touxiang"
-            android:text="ID:123456"
             android:textSize="@dimen/x26"/>
 
         <TextView
@@ -84,7 +82,6 @@
             android:layout_below="@+id/tv_id"
             android:layout_marginTop="@dimen/y5"
             android:layout_toRightOf="@+id/iv_touxiang"
-            android:text="交易10 | 數量 0.241628 BTC"
             android:textSize="@dimen/x24"/>
 
         <!--<Button
@@ -119,7 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x25"
             android:layout_marginTop="@dimen/y20"
-            android:text="交易限额："
+            android:text="@string/trading_limit"
             android:textColor="@color/black"
             android:textSize="@dimen/x30"/>
 
@@ -129,7 +126,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y20"
             android:layout_toRightOf="@+id/tv2"
-            android:text="2000-364555CNY"
             android:textColor="@color/bar_grey"
             android:textSize="@dimen/x28"/>
 
@@ -141,7 +137,6 @@
             android:layout_marginRight="@dimen/x10"
             android:layout_marginTop="@dimen/y20"
             android:layout_toLeftOf="@+id/tv"
-            android:text="121355"
             android:textColor="@color/black"
             android:textSize="@dimen/x30"/>
 
@@ -164,7 +159,7 @@
             android:layout_below="@+id/tv2"
             android:layout_marginLeft="@dimen/x25"
             android:layout_marginTop="@dimen/y20"
-            android:text="备注："
+            android:text="@string/remark"
             android:textColor="@android:color/black"
             android:textSize="@dimen/x30"/>
 
@@ -176,7 +171,6 @@
             android:layout_below="@+id/tv2"
             android:layout_marginTop="@dimen/y20"
             android:layout_toRightOf="@+id/tv3"
-            android:text="非诚勿扰"
             android:textSize="@dimen/x26"/>
 
     </RelativeLayout>
@@ -192,7 +186,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginTop="@dimen/y30"
-        android:text="购买数量："
+        android:text="@string/buy_count"
         android:textColor="@android:color/black"
         android:textSize="@dimen/x30"/>
 
@@ -243,7 +237,6 @@
             android:layout_marginRight="@dimen/x20"
             android:layout_marginTop="@dimen/y10"
             android:background="@drawable/bg_blue_border"
-            android:hint="2000-561435CNY"
             android:inputType="numberDecimal"
             android:paddingLeft="@dimen/x20"
             android:paddingRight="@dimen/x20"
@@ -278,7 +271,7 @@
             android:layout_marginLeft="@dimen/x20"
             android:layout_marginTop="@dimen/y10"
             android:background="@drawable/bg_blue_border"
-            android:hint="买入数量"
+            android:hint="@string/buy_count"
             android:inputType="numberDecimal"
             android:paddingLeft="@dimen/x20"
             android:paddingRight="@dimen/x20"
@@ -294,7 +287,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y50"
         android:background="@drawable/bg_blue_shape"
-        android:text="购买"
+        android:text="@string/buy"
         android:textAllCaps="false"
         android:textColor="@color/white"/>
 
@@ -313,7 +306,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="温馨提示："
+            android:text="@string/warm_prompt"
             android:textColor="@color/black"
             android:textSize="@dimen/x30"/>
 
@@ -321,21 +314,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y20"
-            android:text="1、交易前请详细了解卖家的交易信息"
+            android:text="@string/buy_sell_hint1"
             android:textSize="@dimen/x28"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y20"
-            android:text="2、请通过平台进行沟通协定，并保存好相关聊天信息"
+            android:text="@string/buy_sell_hint2"
             android:textSize="@dimen/x28"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y20"
-            android:text="3、如遇到交易纠纷，请通过平台解决问题"
+            android:text="@string/buy_sell_hint3"
             android:textSize="@dimen/x28"/>
 
 

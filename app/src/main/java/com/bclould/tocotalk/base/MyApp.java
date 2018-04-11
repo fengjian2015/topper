@@ -9,6 +9,7 @@ import android.support.annotation.RequiresApi;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.listener.CrashHandler;
 import com.bclould.tocotalk.model.CoinInfo;
+import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.model.StateInfo;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MySharedPreferences;
@@ -33,6 +34,7 @@ public class MyApp extends Application {
     private List<Activity> mActivityList = new ArrayList<>();//储存打开的Activity
     public List<CoinInfo.DataBean> mCoinList = new ArrayList<>();
     public List<StateInfo.DataBean> mStateList = new ArrayList<>();
+    public List<CoinListInfo.DataBean> mOtcCoinList = new ArrayList<>();
 
     //单例
     public static MyApp getInstance() {

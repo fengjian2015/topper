@@ -113,7 +113,7 @@ public class OutCoinSiteActivity extends BaseActivity {
     public void setSite(String address, int id) {
         Intent intent = new Intent();
         intent.putExtra("address", address);
-        intent.putExtra("id", id);
+        intent.putExtra("siteId", id);
         this.setResult(Activity.RESULT_OK, intent);
         finish();
     }

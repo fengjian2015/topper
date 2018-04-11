@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="期望币种"
+            android:text="@string/expect_coin"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x60"
         android:layout_marginTop="@dimen/y20"
-        android:text="发送对象"
+        android:text="@string/send_who"
         android:textSize="@dimen/x28"/>
 
     <android.support.v7.widget.CardView
@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x60"
         android:layout_marginTop="@dimen/y20"
-        android:text="期望币种"
+        android:text="@string/expect_coin"
         android:textSize="@dimen/x28"/>
 
     <android.support.v7.widget.CardView
@@ -91,7 +91,7 @@
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
             android:gravity="center_vertical"
-            android:hint="请输入期望添加的币种"
+            android:hint="@string/et_expect_coin"
             android:paddingLeft="@dimen/x30"
             android:textColor="@color/black"
             android:textSize="@dimen/x30"/>
@@ -103,7 +103,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x60"
         android:layout_marginTop="@dimen/y20"
-        android:text="联系方式"
+        android:text="@string/contact_information"
         android:textSize="@dimen/x28"/>
 
     <android.support.v7.widget.CardView
@@ -120,7 +120,7 @@
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
             android:gravity="center_vertical"
-            android:hint="请输入邮箱账号，以便我们联系您"
+            android:hint="@string/et_emily"
             android:paddingLeft="@dimen/x30"
             android:textColor="@color/black"
             android:textSize="@dimen/x30"/>
@@ -134,7 +134,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y60"
         android:background="@drawable/btn_blue_selector"
-        android:text="提交"
+        android:text="@string/submit"
         android:textColor="@color/white"/>
 
 </LinearLayout>

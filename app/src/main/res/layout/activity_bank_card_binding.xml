@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="添加银行卡"
+            android:text="@string/add_bank_card"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -36,7 +36,7 @@
         android:layout_height="@dimen/y80"
         android:layout_marginLeft="@dimen/x30"
         android:gravity="center_vertical"
-        android:text="请绑定持卡人本人的银行卡"
+        android:text="@string/please_bind_the_cardholders_bank_card"
         android:textColor="@color/black"
         android:textSize="@dimen/x28"/>
 
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x30"
-                android:text="卡号"
+                android:text="@string/card_number"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x25"/>
 
@@ -67,7 +67,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="@dimen/x50"
                 android:background="@color/transparent"
-                android:hint="请输入正确卡号"
+                android:hint="@string/et_bank_card_number"
                 android:inputType="number"
                 android:maxLength="25"
                 android:textColorHint="@color/gray"

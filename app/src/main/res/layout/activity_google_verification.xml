@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="谷歌驗證"
+            android:text="@string/google_verify"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -35,7 +35,7 @@
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
             android:paddingRight="@dimen/x20"
-            android:text="温馨提示"
+            android:text="@string/warm_prompt"
             android:textColor="@color/blue2"
             android:textSize="@dimen/x28"/>
 
@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:lineSpacingExtra="@dimen/y10"
-                android:text="谷歌身份验证器"
+                android:text="@string/google_Authenticator"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 
@@ -76,7 +76,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:gravity="center_vertical"
-                android:text="立即下載"
+                android:text="@string/download"
                 android:textColor="@color/blue2"
                 android:textSize="@dimen/x26"/>
 
@@ -104,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x30"
-                android:text="當前賬號："
+                android:text="@string/the_current_account"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/x28"/>
 
@@ -112,7 +112,6 @@
                 android:id="@+id/tv_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="943252723@qq.com"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/x28"/>
 
@@ -151,7 +150,7 @@
                 android:background="@drawable/bg_green_shape"
                 android:drawableRight="@mipmap/update"
                 android:padding="@dimen/x10"
-                android:text="複製密鑰"
+                android:text="@string/copy"
                 android:textColor="@color/white"
                 android:textSize="@dimen/x26"/>
 
@@ -172,7 +171,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:hint="請輸入動態代碼"
+                android:hint="@string/et_google_code"
                 android:inputType="number"
                 android:maxLength="6"
                 android:paddingLeft="@dimen/x20"
@@ -189,7 +188,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/y60"
             android:background="@drawable/btn_blue_selector"
-            android:text="绑定"
+            android:text="@string/binding"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="@dimen/x32"/>
@@ -215,7 +214,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:lineSpacingExtra="@dimen/y10"
-                android:text="谷歌身份验证器"
+                android:text="@string/google_Authenticator"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 
@@ -224,7 +223,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:gravity="center_vertical"
-                android:text="已绑定"
+                android:text="@string/is_binding"
                 android:textSize="@dimen/x26"/>
 
         </RelativeLayout>
@@ -251,7 +250,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x30"
-                    android:text="谷歌验证"
+                    android:text="@string/google_verify"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x30"/>
 
@@ -262,7 +261,7 @@
                     android:layout_alignParentRight="true"
                     android:gravity="center_vertical"
                     android:paddingRight="@dimen/x30"
-                    android:text="解除绑定"
+                    android:text="@string/unbinding"
                     android:textColor="@color/blue2"
                     android:textSize="@dimen/x30"/>
 
@@ -285,7 +284,7 @@
             android:layout_height="@dimen/y80"
             android:layout_marginLeft="@dimen/x30"
             android:gravity="center_vertical"
-            android:text="发送电邮"/>
+            android:text="@string/send_email"/>
 
         <TextView
             android:id="@+id/tv_email2"
@@ -316,7 +315,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
-                    android:text="动态验证码"
+                    android:text="@string/vcode"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x28"/>
 
@@ -328,7 +327,7 @@
                     android:layout_toLeftOf="@+id/tv_send"
                     android:layout_toRightOf="@+id/tv2"
                     android:background="@android:color/transparent"
-                    android:hint="请输入邮箱验证码"
+                    android:hint="@string/et_vcode"
                     android:inputType="number"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x28"/>
@@ -341,7 +340,7 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/x20"
                     android:paddingRight="@dimen/x20"
-                    android:text="动态验证码"
+                    android:text="@string/vcode"
                     android:textColor="@color/blue2"
                     android:textSize="@dimen/x28"/>
 
@@ -356,7 +355,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/y60"
             android:background="@drawable/btn_blue_selector"
-            android:text="解绑"
+            android:text="@string/unbinding"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="@dimen/x32"/>

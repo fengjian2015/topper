@@ -58,14 +58,16 @@ public class PayReceiptResultActivity extends BaseActivity {
         String number = bundle.getString("number");
         String type = bundle.getString("type");
         if (type.equals(Constants.MONEYIN)) {
-            mTvWho.setText("付款人");
-            mIvResult.setImageResource(R.mipmap.icon_get_c1);
-        } else {
-            mIvResult.setImageResource(R.mipmap.icon_pay_c1);
             mTvWho.setText("收款人");
+            mIvResult.setImageResource(R.mipmap.icon_pay_c1);
+            mTvPayType.setText("支付成功");
+        } else {
+            mIvResult.setImageResource(R.mipmap.icon_get_c1);
+            mTvWho.setText("付款人");
+            mTvPayType.setText("收款成功");
         }
         mTvCoinCount.setText(number + coinName);
-        mTvWho.setText(name);
+        mTvName.setText(name);
         try {
             Drawable drawable = Drawable.createFromPath(mMgr.queryUser(name + "@" + Constants.DOMAINNAME).get(0).getPath());
             mTvTouxiang.setImageDrawable(drawable);

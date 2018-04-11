@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="银行卡"
+            android:text="@string/bank_card"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -33,7 +33,7 @@
             android:layout_alignParentRight="true"
             android:gravity="center_vertical"
             android:paddingRight="@dimen/x20"
-            android:text="删除"
+            android:text="@string/delete"
             android:textColor="@color/blue2"/>
 
     </RelativeLayout>

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.ui.activity.CoinExchangeActivity;
+import com.bclould.tocotalk.ui.activity.OtcActivity;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -75,6 +76,9 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
                     if (mContext instanceof CoinExchangeActivity) {
                         CoinExchangeActivity activity = (CoinExchangeActivity) mContext;
                         activity.hideDialog(mName, mId, mLogo, mCoin_over);
+                    }else if (mContext instanceof OtcActivity) {
+                        OtcActivity activity = (OtcActivity) mContext;
+                        activity.hideDialog(mName, mId);
                     }
                 }
             });

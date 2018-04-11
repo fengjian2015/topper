@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="详情"
+            android:text="@string/detail"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -74,7 +74,6 @@
                         android:layout_marginLeft="@dimen/x40"
                         android:layout_marginTop="@dimen/x36"
                         android:layout_toRightOf="@+id/touxiang"
-                        android:text="安子"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x32"/>
 
@@ -96,7 +95,6 @@
                         android:layout_marginLeft="@dimen/x10"
                         android:layout_marginTop="@dimen/y20"
                         android:layout_toRightOf="@+id/time_tv"
-                        android:text="3小时前"
                         android:textSize="@dimen/x18"/>
 
                     <TextView
@@ -141,7 +139,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/x10"
-                            android:text="7489"
                             android:textColor="@drawable/text_blue_selector"
                             android:textSize="@dimen/x22"/>
 
@@ -162,7 +159,7 @@
                         android:layout_height="@dimen/y80"
                         android:layout_marginLeft="@dimen/x20"
                         android:gravity="center"
-                        android:text="所有回复"
+                        android:text="@string/all_reviews"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x24"/>
 
@@ -196,7 +193,7 @@
             android:layout_width="@dimen/x600"
             android:layout_height="match_parent"
             android:background="@color/transparent"
-            android:hint="请输入评论"
+            android:hint="@string/et_comment"
             android:paddingBottom="@dimen/x30"
             android:paddingLeft="@dimen/x36"
             android:paddingRight="@dimen/x36"
@@ -213,7 +210,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/x34"
             android:gravity="center"
-            android:text="发送"
+            android:text="@string/send"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
