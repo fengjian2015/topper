@@ -215,11 +215,11 @@ public class UpIdCardActivity extends BaseActivity {
             String key = (String) msg.obj;
             keyList += "," + key;
             count++;
-            if(mType.equals("1")) {
+            if (mType.equals("1")) {
                 if (count == 3) {
                     submit(keyList);
                 }
-            }else {
+            } else {
                 if (count == 2) {
                     submit(keyList);
                 }
@@ -294,6 +294,8 @@ public class UpIdCardActivity extends BaseActivity {
                                         PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
                                         s3Client.putObject(por);
                                     } catch (AmazonClientException e) {
+                                        hideDialog();
+                                        Toast.makeText(UpIdCardActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
                                         e.printStackTrace();
                                     }
                                 }

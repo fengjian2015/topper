@@ -18,6 +18,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.activity.ConversationActivity;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 
@@ -86,7 +87,7 @@ public class FriendListVPAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, ConversationActivity.class);
                     Bundle bundle = new Bundle();
-                    String user = mFriendChildName.getText() + "@xmpp.bclould.com";
+                    String user = mFriendChildName.getText() + "@" + Constants.DOMAINNAME;
                     bundle.putString("name", mFriendChildName.getText().toString());
                     bundle.putString("user", user);
                     if (mDatas != null)
@@ -115,7 +116,9 @@ public class FriendListVPAdapter extends RecyclerView.Adapter {
                 e.printStackTrace();
             }
             mFriendChildTouxiang.setImageBitmap(bitmap);
-            mFriendChildName.setText(user.substring(0, user.indexOf("@")));
+            UtilTool.Log("好友", user );
+            if (user.contains("@"))
+                mFriendChildName.setText(user.substring(0, user.indexOf("@")));
             /*if (userInfo.getStatus() == 1) {
                 mFriendChildType.setText("在线");
                 mFriendChildType.setTextColor(mContext.getColor(R.color.green));

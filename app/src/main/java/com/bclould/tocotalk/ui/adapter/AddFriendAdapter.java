@@ -2,6 +2,8 @@ package com.bclould.tocotalk.ui.adapter;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.ui.activity.AddFriendActivity;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 
@@ -28,6 +31,7 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/12/12.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class AddFriendAdapter extends BaseAdapter {
 
     private final List<String> mRowList;
@@ -66,7 +70,7 @@ public class AddFriendAdapter extends BaseAdapter {
             mViewHolder = (ViewHolder) view.getTag();
         }
         String user = mRowList.get(itemId);
-        byte[] userImage = UtilTool.getUserImage(XmppConnection.getInstance().getConnection(), user + "@xmpp.bclould.com");
+        byte[] userImage = UtilTool.getUserImage(XmppConnection.getInstance().getConnection(), user + "@" + Constants.DOMAINNAME);
         if (userImage != null) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(userImage, 0, userImage.length);
             mViewHolder.mIvTouxiang.setImageBitmap(bitmap);
@@ -76,7 +80,7 @@ public class AddFriendAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 try {
-                    Roster.getInstanceFor(XmppConnection.getInstance().getConnection()).createEntry(JidCreate.entityBareFrom(mRowList.get(itemId) + "@xmpp.bclould.com"), null, new String[]{"Friends"});
+                    Roster.getInstanceFor(XmppConnection.getInstance().getConnection()).createEntry(JidCreate.entityBareFrom(mRowList.get(itemId) + "@" + Constants.DOMAINNAME), null, new String[]{"Friends"});
                     mAddFriendActivity.finish();
                     Toast.makeText(mAddFriendActivity, "发送请求成功", Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {

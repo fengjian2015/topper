@@ -70,7 +70,7 @@ public class BillDataRVAapter extends RecyclerView.Adapter {
             super(view);
             ButterKnife.bind(this, view);
 
-            view.setOnClickListener(new View.OnClickListener() {
+           /* view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, BillDetailsActivity.class);
@@ -87,7 +87,7 @@ public class BillDataRVAapter extends RecyclerView.Adapter {
                     intent.putExtra("id", mDataBean.getTo_id());
                     mContext.startActivity(intent);
                 }
-            });
+            });*/
 
         }
 

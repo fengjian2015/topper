@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="资产"
+            android:text="@string/assets"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -35,7 +35,7 @@
             android:layout_centerVertical="true"
             android:gravity="center"
             android:paddingRight="@dimen/x20"
-            android:text="期望币种"
+            android:text="@string/expect_coin"
             android:textColor="@color/blue2"
             android:textSize="@dimen/x28"/>
 
@@ -64,7 +64,7 @@
                 android:layout_weight="6"
                 android:background="@android:color/transparent"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                android:hint="输入币种名称"
+                android:hint="@string/et_coin_name"
                 android:maxLength="8"
                 android:paddingLeft="@dimen/x30"
                 android:paddingRight="@dimen/x30"

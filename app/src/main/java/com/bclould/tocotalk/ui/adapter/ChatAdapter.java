@@ -92,6 +92,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     ArrayList<String> mImageList = new ArrayList<>();
     private CurrencyDialog mCurrencyDialog;
     private String mFileName;
+    private AnimationDrawable mAnim;
 
     public ChatAdapter(Context context, List<MessageInfo> messageList, Bitmap fromBitmap, String user, DBManager mgr, MediaPlayer mediaPlayer) {
         mContext = context;
@@ -508,10 +509,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     anewSendVoice(messageInfo, mIvWarning);
                 }
             });
+            final AnimationDrawable anim = (AnimationDrawable) mIvAnim.getBackground();
             mRlVoice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    playVoice(mMediaPlayer, messageInfo.getVoice());
+                    playVoice(mMediaPlayer, messageInfo.getVoice(), anim);
                 }
             });
         }
@@ -541,33 +543,42 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public void playVoice(MediaPlayer mediaPlayer, String fileName) {
+    public void playVoice(MediaPlayer mediaPlayer, String fileName, final AnimationDrawable anim) {
         try {
             //对mediaPlayer进行实例化
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mediaPlayer) {
                     mediaPlayer.reset();
+                    anim.selectDrawable(0);
+                    anim.stop();
                 }
             });
             if (mediaPlayer.isPlaying()) {
                 if (mFileName.equals(fileName)) {
                     mediaPlayer.stop();
                     mediaPlayer.reset();
+                    anim.selectDrawable(0);
+                    anim.stop();
                 } else {
                     mediaPlayer.stop();
                     mediaPlayer.reset();
+                    mAnim.selectDrawable(0);
+                    mAnim.stop();
                     mediaPlayer.setDataSource(fileName);     //设置资源目录
                     mediaPlayer.prepare();//缓冲
                     mediaPlayer.start();
+                    anim.start();
                 }
             } else {
                 mediaPlayer.reset();
                 mediaPlayer.setDataSource(fileName);     //设置资源目录
-                 mediaPlayer.prepare();//缓冲
+                mediaPlayer.prepare();//缓冲
                 mediaPlayer.start();//开始或恢复播放
+                anim.start();
             }
             mFileName = fileName;
+            mAnim = anim;
         } catch (IOException e) {
             Log("日志", "没有找到这个文件");
             e.printStackTrace();
@@ -607,10 +618,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 mIvStatus.setVisibility(View.VISIBLE);
             }
             mIvVoice.setText(blank);
+            final AnimationDrawable anim = (AnimationDrawable) mIvAnim.getBackground();
             mRlVoice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    playVoice(mMediaPlayer, messageInfo.getVoice());
+                    playVoice(mMediaPlayer, messageInfo.getVoice(), anim);
                     mMgr.updateMessageStatus(messageInfo.getId());
                     mIvStatus.setVisibility(View.GONE);
                     messageInfo.setVoiceStatus(1);
@@ -820,7 +832,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 mTvRemark.setText(messageInfo.getRemark());
             } else {
                 mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket3));
-                mTvRemark.setText("转账已被领取");
             }
             mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -832,6 +843,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     intent.putExtra("count", messageInfo.getCount());
                     intent.putExtra("coin", messageInfo.getCoin());
                     intent.putExtra("time", messageInfo.getTime());
+                    intent.putExtra("type", 1);
                     mContext.startActivity(intent);
                 }
             });
@@ -876,6 +888,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     intent.putExtra("count", messageInfo.getCount());
                     intent.putExtra("coin", messageInfo.getCoin());
                     intent.putExtra("time", messageInfo.getTime());
+                    intent.putExtra("type", 0);
                     mContext.startActivity(intent);
                 }
             });

@@ -40,6 +40,7 @@
         app:cardCornerRadius="@dimen/x15">
 
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/rl_concern_we"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y120">
@@ -79,7 +80,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y30"
         app:cardCornerRadius="@dimen/x15">
 
         <RelativeLayout

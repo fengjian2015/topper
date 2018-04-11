@@ -6,14 +6,12 @@ package com.bclould.tocotalk.model;
 
 import java.util.List;
 
-/**
- * ltc : {"id":2,"name":"ltc","logo":"https://www.yuanbao.com/images/coin/coin_ltc.png","display":"莱特币","status":1,"wallet":"获取失败！","over":"99800","lock":"200！","total":"10000"}
- */
 public class MyAssetsInfo {
+
 
     /**
      * status : 1
-     * data : [{"id":27,"name":"USDT","logo":"https://topperex.s3-ap-northeast-1.amazonaws.com/exchange/gLauR2QEsSnZwKf5h39y4LA0B7Chz4zr8s4Pslqr.png","display":"USDT","status":2,"wallet":"TXuJQCojvB6ve7XASSgNpxNNXGSPPUzY96","over":"7213.98","lock":"0","total":"7213.98","number":45479.82,"currency":"CNY"},{"id":29,"name":"TPX","logo":"https://topperex.s3.ap-northeast-1.amazonaws.com/exchange/JPYAkJfoA61BNkKuuKRu1FGn74rDCxgaKSZVKfgF.png","display":"TPX","status":2,"wallet":"TWKFV96U9jyqPV2kmMU7GhwHDGizNY59fH","over":"100","lock":"0","total":"100","number":630.43,"currency":"CNY"},"..."]
+     * data : [{"id":27,"name":"USDT","logo":"https://topperex.s3-ap-northeast-1.amazonaws.com/exchange/gLauR2QEsSnZwKf5h39y4LA0B7Chz4zr8s4Pslqr.png","display":"USDT","can_in":2,"can_out":1,"can_trans":2,"status":2,"wallet":"","over":"7213.98","lock":"0","total":"7213.98","currency":"CNY","number":45336.26},{"id":29,"name":"TPX","logo":"https://topperex.s3.ap-northeast-1.amazonaws.com/exchange/JPYAkJfoA61BNkKuuKRu1FGn74rDCxgaKSZVKfgF.png","display":"TPX","can_in":2,"can_out":1,"can_trans":2,"status":2,"wallet":"","over":"99","lock":"0","total":"99","currency":"CNY","number":622.16},"..."]
      */
 
     private int status;
@@ -41,26 +39,32 @@ public class MyAssetsInfo {
          * name : USDT
          * logo : https://topperex.s3-ap-northeast-1.amazonaws.com/exchange/gLauR2QEsSnZwKf5h39y4LA0B7Chz4zr8s4Pslqr.png
          * display : USDT
+         * can_in : 2
+         * can_out : 1
+         * can_trans : 2
          * status : 2
-         * wallet : TXuJQCojvB6ve7XASSgNpxNNXGSPPUzY96
+         * wallet :
          * over : 7213.98
          * lock : 0
          * total : 7213.98
-         * number : 45479.82
          * currency : CNY
+         * number : 45336.26
          */
 
         private int id;
         private String name;
         private String logo;
         private String display;
+        private int can_in;
+        private int can_out;
+        private int can_trans;
         private int status;
         private String wallet;
         private String over;
         private String lock;
         private String total;
-        private double number;
         private String currency;
+        private double number;
 
         public int getId() {
             return id;
@@ -92,6 +96,30 @@ public class MyAssetsInfo {
 
         public void setDisplay(String display) {
             this.display = display;
+        }
+
+        public int getCan_in() {
+            return can_in;
+        }
+
+        public void setCan_in(int can_in) {
+            this.can_in = can_in;
+        }
+
+        public int getCan_out() {
+            return can_out;
+        }
+
+        public void setCan_out(int can_out) {
+            this.can_out = can_out;
+        }
+
+        public int getCan_trans() {
+            return can_trans;
+        }
+
+        public void setCan_trans(int can_trans) {
+            this.can_trans = can_trans;
         }
 
         public int getStatus() {
@@ -134,20 +162,20 @@ public class MyAssetsInfo {
             this.total = total;
         }
 
-        public double getNumber() {
-            return number;
-        }
-
-        public void setNumber(double number) {
-            this.number = number;
-        }
-
         public String getCurrency() {
             return currency;
         }
 
         public void setCurrency(String currency) {
             this.currency = currency;
+        }
+
+        public double getNumber() {
+            return number;
+        }
+
+        public void setNumber(double number) {
+            this.number = number;
         }
     }
 }

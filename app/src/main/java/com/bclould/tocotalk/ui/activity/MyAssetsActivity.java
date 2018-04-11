@@ -219,6 +219,19 @@ public class MyAssetsActivity extends BaseActivity {
                 mPopupWindow.dismiss();
             }
         });
+        if (dataBean.getCan_in() == 1) {
+            inCoin.setVisibility(View.VISIBLE);
+        } else if (dataBean.getCan_in() == 2) {
+            inCoin.setVisibility(View.GONE);
+        } else if (dataBean.getCan_out() == 1) {
+            outCoin.setVisibility(View.VISIBLE);
+        } else if (dataBean.getCan_out() == 2) {
+            outCoin.setVisibility(View.GONE);
+        } else if (dataBean.getCan_trans() == 1) {
+            transferAccounts.setVisibility(View.VISIBLE);
+        } else if (dataBean.getCan_trans() == 2) {
+            transferAccounts.setVisibility(View.GONE);
+        }
     }
 
     @OnClick({R.id.bark, R.id.tv_subscription, R.id.et_coin_name})

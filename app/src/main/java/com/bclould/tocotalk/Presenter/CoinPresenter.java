@@ -108,7 +108,6 @@ public class CoinPresenter {
                         @Override
                         public void onNext(BaseInfo baseInfo) {
                             if (baseInfo.getStatus() == 1) {
-
                                 callBack2.send(baseInfo.getData());
                             }
                         }
@@ -185,6 +184,7 @@ public class CoinPresenter {
                             if (coinListInfo.getStatus() == 1) {
                                 callBack.send(coinListInfo.getData());
                             }
+                            UtilTool.Log("日志1", coinListInfo.getMessage());
                         }
 
                         @Override

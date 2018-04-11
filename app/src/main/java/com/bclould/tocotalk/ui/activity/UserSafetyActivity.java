@@ -55,9 +55,12 @@ public class UserSafetyActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
     }
 
-    @OnClick({R.id.bark, R.id.rl_login_password, R.id.rl_pay_password, R.id.rl_google, R.id.rl_login_set, R.id.rl_login_record})
+    @OnClick({R.id.rl_fingerprint_lock, R.id.bark, R.id.rl_login_password, R.id.rl_pay_password, R.id.rl_google, R.id.rl_login_set, R.id.rl_login_record})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.rl_fingerprint_lock:
+                startActivity(new Intent(this, PawnActivity.class));
+                break;
             case R.id.bark:
                 finish();
                 break;

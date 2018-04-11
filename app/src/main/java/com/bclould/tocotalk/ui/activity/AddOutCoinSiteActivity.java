@@ -2,13 +2,11 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.support.annotation.RequiresApi;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,12 +23,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.bclould.tocotalk.R.style.BottomDialog;
-
 /**
  * Created by GA on 2017/11/17.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class AddOutCoinSiteActivity extends BaseActivity {
 
     @Bind(R.id.bark)
@@ -45,6 +42,8 @@ public class AddOutCoinSiteActivity extends BaseActivity {
     EditText mEtRemark;
     @Bind(R.id.btn_preserve)
     Button mBtnPreserve;
+    @Bind(R.id.et_google_code)
+    EditText mEtGoogleCode;
     private int mId;
     private Dialog mBottomDialog;
     private int QRCODE = 0;
@@ -78,8 +77,7 @@ public class AddOutCoinSiteActivity extends BaseActivity {
             case R.id.btn_preserve:
                 //检测输入框
                 if (checkEdit2())
-                    //添加提币地址
-                    showGoogleDialog();
+                    addCoinOutAddress();
                 break;
         }
     }
@@ -93,7 +91,7 @@ public class AddOutCoinSiteActivity extends BaseActivity {
         }
     }
 
-    //显示谷歌验证弹窗
+    /*//显示谷歌验证弹窗
     private void showGoogleDialog() {
         mBottomDialog = new Dialog(this, R.style.BottomDialog2);
         View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_google_code, null);
@@ -117,21 +115,15 @@ public class AddOutCoinSiteActivity extends BaseActivity {
                 addCoinOutAddress();
             }
         });
-    }
+    }*/
 
     //添加地址网络请求
     private void addCoinOutAddress() {
-        EditText etGoogleCode = (EditText) mBottomDialog.findViewById(R.id.et_google_code);
-        String googleCode = etGoogleCode.getText().toString().trim();
         String address = mEtAddress.getText().toString().trim();
         String memo = mEtRemark.getText().toString().trim();
-        if (!googleCode.isEmpty()) {
-            AddOutCoinSitePresenter addOutCoinSitePresenter = new AddOutCoinSitePresenter(this);
-            addOutCoinSitePresenter.addCoinOutAddress(mId, memo, address, googleCode);
-        } else {
-            AnimatorTool.getInstance().editTextAnimator(etGoogleCode);
-            Toast.makeText(this, getString(R.string.toast_google_code), Toast.LENGTH_SHORT).show();
-        }
+        String googleCode = mEtGoogleCode.getText().toString();
+        AddOutCoinSitePresenter addOutCoinSitePresenter = new AddOutCoinSitePresenter(this);
+        addOutCoinSitePresenter.addCoinOutAddress(mId, memo, address, googleCode);
     }
 
     //判断输入框是否有内容
@@ -140,8 +132,11 @@ public class AddOutCoinSiteActivity extends BaseActivity {
             Toast.makeText(this, getResources().getString(R.string.toast_address), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtAddress);
         } else if (mEtRemark.getText().toString().trim().equals("")) {
-            Toast.makeText(this, getResources().getString(R.string.toast_vcode), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "备注不能为空", Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtRemark);
+        } else if (mEtGoogleCode.getText().toString().trim().equals("")) {
+            Toast.makeText(this, getString(R.string.toast_google_code), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mEtGoogleCode);
         } else {
             return true;
         }

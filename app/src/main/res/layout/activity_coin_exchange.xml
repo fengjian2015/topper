@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="币币兑换"
+            android:text="@string/lrwmzpm"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -35,7 +35,7 @@
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:padding="@dimen/x20"
-            android:text="问题"
+            android:text="@string/question"
             android:textColor="@color/blue"
             android:textSize="@dimen/x28"/>
 
@@ -187,7 +187,7 @@
             android:layout_marginBottom="@dimen/y10"
             android:layout_marginTop="@dimen/y30"
             android:background="@drawable/btn_blue_selector"
-            android:text="确认兑换"
+            android:text="@string/confirm_exchange"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="@dimen/x32"/>
@@ -338,7 +338,7 @@
         android:layout_marginLeft="@dimen/x30"
         android:drawableLeft="@mipmap/icon_ex_records"
         android:drawablePadding="@dimen/x10"
-        android:text="记录"
+        android:text="@string/record"
         android:textColor="@color/black"
         android:textSize="@dimen/x28"/>
 

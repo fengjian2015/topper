@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="登录设置"
+            android:text="@string/login_set"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y20"
-        android:text="为了您的资金安全，请选择一种安全的登录验证模式"
+        android:text="@string/login_set_hint"
         android:textSize="@dimen/x26"/>
 
     <LinearLayout
@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x30"
-                    android:text="每次登录都不需要验证"
+                    android:text="@string/login_set1"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x28"/>
 
@@ -98,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x30"
-                    android:text="每次登录进行邮箱验证"
+                    android:text="@string/login_set2"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x28"/>
 
@@ -134,7 +134,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x30"
-                    android:text="每次登录进行谷歌验证"
+                    android:text="@string/login_set3"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x28"/>
 
@@ -159,7 +159,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/y20"
         android:layout_marginLeft="@dimen/x30"
-        android:text="必填："
+        android:text="@string/required"
         android:textSize="@dimen/x28"/>
 
     <android.support.v7.widget.CardView
@@ -180,7 +180,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="9"
                 android:background="@android:color/transparent"
-                android:hint="请输入支付密码"
+                android:hint="@string/et_password"
                 android:inputType="numberPassword"
                 android:maxLength="6"
                 android:paddingLeft="@dimen/x20"
@@ -225,7 +225,7 @@
             android:layout_height="match_parent"
             android:layout_weight="9"
             android:background="@android:color/transparent"
-            android:hint="请输入谷歌验证"
+            android:hint="@string/et_google_code"
             android:inputType="number"
             android:maxLength="6"
             android:paddingLeft="@dimen/x20"

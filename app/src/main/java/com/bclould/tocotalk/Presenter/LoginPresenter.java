@@ -105,7 +105,7 @@ public class LoginPresenter {
                                 MySharedPreferences.getInstance().setString(EMAIL, email);
                                 MySharedPreferences.getInstance().setString(LOGINPW, password);
                                 MySharedPreferences.getInstance().setString(CURRENCY, baseInfo.getData().getCurrency());
-                                if (baseInfo.getData().getCountry().isEmpty()) {
+                                if (baseInfo.getData().getCountry() == null) {
                                     MySharedPreferences.getInstance().setString(STATE, "中国 - 大陆");
                                 } else {
                                     MySharedPreferences.getInstance().setString(STATE, baseInfo.getData().getCountry());

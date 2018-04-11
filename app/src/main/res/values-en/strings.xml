@@ -124,5 +124,6 @@
     <string name="toast_max_limit">请输入最大量</string>
     <string name="count">数量</string>
     <string name="toast_username">用户名不能为空</string>
+    <string name="search">搜索</string>
 
 </resources>

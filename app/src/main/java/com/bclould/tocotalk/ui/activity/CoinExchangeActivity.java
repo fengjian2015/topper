@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,14 +94,41 @@ public class CoinExchangeActivity extends BaseActivity {
     private ArrayList<Map<String, String>> valueList;
     private GridView mGridView;
     private CoinExchangeRVAdapter mCoinExchangeRVAdapter;
+    private String mPrice = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin_exchange);
         ButterKnife.bind(this);
+        initListener();
         initRecylerView();
         initData();
+    }
+
+    private void initListener() {
+        mEtCount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String counts = mEtCount.getText().toString();
+                if (counts != null && !counts.isEmpty() && mPrice != null && !mPrice.isEmpty()) {
+                    double count = Double.parseDouble(counts);
+                    double price = Double.parseDouble(mPrice);
+                    int sum = (int) (count * price);
+                    mTvPrice.setText(sum + "");
+                } else {
+                    mTvPrice.setText(mPrice);
+                }
+            }
+        });
     }
 
     private void initRecylerView() {
@@ -118,16 +146,21 @@ public class CoinExchangeActivity extends BaseActivity {
         mCoinPresenter.getCoinPrice(name, new CoinPresenter.CallBack2() {
             @Override
             public void send(BaseInfo.DataBean data) {
-                double usdt = Double.parseDouble(data.getUSDT());
-                double cny = Double.parseDouble(data.getRate());
-                DecimalFormat df = new DecimalFormat("#.00");
-                String price = df.format(cny * usdt);
-                mTvPrice.setText(data.getUSDT());
-                mTvCny.setText("≈ " + price + " CNY");
-                if (data.getTrend().contains("-")) {
-                    mBtnFloat.setText(data.getTrend() + "% ↓");
-                } else {
-                    mBtnFloat.setText(data.getTrend() + "% ↑");
+                try {
+                    double usdt = Double.parseDouble(data.getUSDT());
+                    double cny = Double.parseDouble(data.getRate());
+                    DecimalFormat df = new DecimalFormat("#.00");
+                    String price = df.format(cny * usdt);
+                    mTvPrice.setText(data.getUSDT());
+                    mPrice = mTvPrice.getText().toString();
+                    mTvCny.setText("≈ " + price + " CNY");
+                    if (data.getTrend().contains("-")) {
+                        mBtnFloat.setText(data.getTrend() + "% ↓");
+                    } else {
+                        mBtnFloat.setText(data.getTrend() + "% ↑");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -135,8 +168,6 @@ public class CoinExchangeActivity extends BaseActivity {
 
     String mPageSize = "100";
     String mPage = "1";
-    /*Map<String, String> mPage = new HashMap<>();
-    Map<String, String> mPageSum = new HashMap<>();*/
     List<ExchangeOrderInfo.DataBeanX.DataBean> mExchangeOrderList = new ArrayList<>();
 
     private void initListData(String name) {
@@ -144,9 +175,6 @@ public class CoinExchangeActivity extends BaseActivity {
         mCoinPresenter.exchangeOrder("USDT", name, mPage, mPageSize, new CoinPresenter.CallBack3() {
             @Override
             public void send(ExchangeOrderInfo.DataBeanX data) {
-                /*mPage.put("page", data.getCurrent_page() + "");
-                mPageSum.put("pageSum", data.getLast_page() + "");
-                mTvPage.setText(data.getCurrent_page() + "/" + data.getLast_page());*/
                 mExchangeOrderList.addAll(data.getData());
                 mCoinExchangeRVAdapter.notifyDataSetChanged();
             }
@@ -160,15 +188,18 @@ public class CoinExchangeActivity extends BaseActivity {
         mCoinPresenter.coinLists("exchange", new CoinPresenter.CallBack() {
             @Override
             public void send(List<CoinListInfo.DataBean> data) {
-                mCoinList.addAll(data);
-                mCoin.add(data.get(0).getName());
-                mTvRemain.setText("当前可用 " + data.get(0).getCoin_over() + " " + data.get(0).getName());
-                mTvCoin.setText(data.get(0).getName());
-                Glide.with(CoinExchangeActivity.this).load(data.get(0).getLogo()).into(mIvLogo);
-                mTvExchange.setText(data.get(0).getName() + "/" + "USDT");
-
-                initPrice(data.get(0).getName());
-                initListData(data.get(0).getName());
+                try {
+                    mCoinList.addAll(data);
+                    mCoin.add(data.get(0).getName());
+                    mTvRemain.setText("当前可用 " + data.get(0).getCoin_over() + " " + data.get(0).getName());
+                    mTvCoin.setText(data.get(0).getName());
+                    Glide.with(CoinExchangeActivity.this).load(data.get(0).getLogo()).into(mIvLogo);
+                    mTvExchange.setText(data.get(0).getName() + "/" + "USDT");
+                    initPrice(data.get(0).getName());
+                    initListData(data.get(0).getName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -391,6 +422,13 @@ public class CoinExchangeActivity extends BaseActivity {
         RecyclerView recyclerView = (RecyclerView) mBottomDialog.findViewById(R.id.recycler_view);
         TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
         Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
+        Button cancel = (Button) mBottomDialog.findViewById(R.id.btn_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBottomDialog.dismiss();
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new BottomDialogRVAdapter4(this, mCoinList));
         addCoin.setOnClickListener(new View.OnClickListener() {

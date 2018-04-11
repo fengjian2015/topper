@@ -270,7 +270,7 @@ public class TransferAccountsActivity extends BaseActivity {
         String google = mEtGoogleCode.getText().toString().trim();
         String remark = mEtRemark.getText().toString().trim();
         CurrencyInOutPresenter currencyInOutPresenter = new CurrencyInOutPresenter(this);
-        currencyInOutPresenter.transfer(mCoinName, email, countf, password);
+        currencyInOutPresenter.transfer(mCoinName, email, countf, google, password);
     }
 
     private boolean editCheck() {

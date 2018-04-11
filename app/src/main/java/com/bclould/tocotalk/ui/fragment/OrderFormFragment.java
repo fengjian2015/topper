@@ -80,16 +80,19 @@ public class OrderFormFragment extends Fragment {
         if (msg.equals("幣種切換")) {
             initData(mCoinName, mFiltrate);
         } else if (msg.equals("确认付款")) {
-            for (OrderListInfo.DataBean info : mDataList) {
+            initData(mCoinName, mFiltrate);
+           /* for (OrderListInfo.DataBean info : mDataList) {
                 if (info.getId() == Integer.parseInt(event.getId())) {
                     info.setStatus_name("等待放币");
+                    info.setStatus(2);
                     mOrderRVAdapter.notifyDataSetChanged();
                 }
-            }
+            }*/
         } else if (msg.equals("取消订单")) {
             for (OrderListInfo.DataBean info : mDataList) {
                 if (info.getId() == Integer.parseInt(event.getId())) {
                     info.setStatus_name("已取消");
+                    info.setStatus(0);
                     mOrderRVAdapter.notifyDataSetChanged();
                 }
             }
@@ -97,6 +100,7 @@ public class OrderFormFragment extends Fragment {
             for (OrderListInfo.DataBean info : mDataList) {
                 if (info.getId() == Integer.parseInt(event.getId())) {
                     info.setStatus_name("已完成");
+                    info.setStatus(3);
                     mOrderRVAdapter.notifyDataSetChanged();
                 }
             }
@@ -104,7 +108,7 @@ public class OrderFormFragment extends Fragment {
             initData(mCoinName, mFiltrate);
         } else if (msg.equals("创建订单")) {
             initData(mCoinName, mFiltrate);
-        }else if(msg.equals("交易订单筛选")){
+        } else if (msg.equals("交易订单筛选")) {
             initData(mCoinName, mFiltrate);
         }
     }

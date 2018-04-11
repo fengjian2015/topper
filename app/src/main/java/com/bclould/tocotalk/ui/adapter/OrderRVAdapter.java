@@ -13,11 +13,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.OrderListInfo;
+import com.bclould.tocotalk.ui.activity.OrderCloseActivity;
 import com.bclould.tocotalk.ui.activity.OrderDetailsActivity;
 import com.bclould.tocotalk.utils.Constants;
 
@@ -90,6 +90,11 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             mTvMoney.setText("交易金额" + dataBean.getTrans_amount());
             mTvTime.setText(dataBean.getCreated_at());
             mTvType.setText(dataBean.getStatus_name());
+            if(dataBean.getStatus() == 4){
+                mTvType.setTextColor(mContext.getColor(R.color.color_orange));
+            }else {
+                mTvType.setTextColor(mContext.getColor(R.color.black));
+            }
             mTvCoinType.setText(dataBean.getCoin_name() + dataBean.getType_name());
             if (dataBean.getType() == 1) {
                 try {
@@ -118,8 +123,21 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             mRlItme.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (dataBean.getStatus() == 0 || dataBean.getStatus() == 3) {
-                        Toast.makeText(mContext, "交易已关闭", Toast.LENGTH_SHORT).show();
+                    if (dataBean.getStatus() == 0) {
+                        Intent intent = new Intent(mContext, OrderCloseActivity.class);
+                        intent.putExtra("status", dataBean.getStatus());
+                        intent.putExtra("id", dataBean.getId() + "");
+                        mContext.startActivity(intent);
+                    } else if (dataBean.getStatus() == 3) {
+                        Intent intent = new Intent(mContext, OrderCloseActivity.class);
+                        intent.putExtra("status", dataBean.getStatus());
+                        intent.putExtra("id", dataBean.getId() + "");
+                        mContext.startActivity(intent);
+                    } else if (dataBean.getStatus() == 4) {
+                        Intent intent = new Intent(mContext, OrderCloseActivity.class);
+                        intent.putExtra("status", dataBean.getStatus());
+                        intent.putExtra("id", dataBean.getId() + "");
+                        mContext.startActivity(intent);
                     } else {
                         Intent intent = new Intent(mContext, OrderDetailsActivity.class);
                         intent.putExtra("type", "订单");

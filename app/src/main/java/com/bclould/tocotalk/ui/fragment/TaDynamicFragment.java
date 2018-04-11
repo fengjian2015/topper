@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.PostInfo;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;

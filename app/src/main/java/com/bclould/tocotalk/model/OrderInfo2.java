@@ -74,6 +74,25 @@ public class OrderInfo2 {
         private int status;
         private String created_at;
         private String status_name;
+        private String min_amount;
+        private String max_amount;
+
+        public String getMin_amount() {
+            return min_amount;
+        }
+
+        public void setMin_amount(String min_amount) {
+            this.min_amount = min_amount;
+        }
+
+        public String getMax_amount() {
+            return max_amount;
+        }
+
+        public void setMax_amount(String max_amount) {
+            this.max_amount = max_amount;
+        }
+
         private int deadline;
         private BankBean bank;
         private AlipayBean alipay;

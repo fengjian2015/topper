@@ -68,12 +68,13 @@
             android:layout_weight="8"
             app:cardCornerRadius="@dimen/x15">
 
-            <EditText
-                android:id="@+id/et_out_coin_site"
+            <TextView
+                android:id="@+id/tv_out_coin_site"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:background="@android:color/transparent"
-                android:hint="输入提币地址"
+                android:hint="选择提币地址"
                 android:paddingLeft="@dimen/x20"
                 android:paddingRight="@dimen/x20"
                 android:textColor="@color/black"
@@ -247,7 +248,7 @@
         android:layout_marginTop="@dimen/y45"
         app:cardCornerRadius="@dimen/x15">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/y50"
@@ -257,11 +258,18 @@
             android:paddingLeft="@dimen/x20"
             android:paddingRight="@dimen/x20">
 
-            <TextView
+            <ImageView
+                android:id="@+id/iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@mipmap/icon_remind"
-                android:drawablePadding="@dimen/x10"
+                android:src="@mipmap/icon_remind"/>
+
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x10"
+                android:layout_toRightOf="@+id/iv"
                 android:text="1.提币手续费为0.5%，请仔细确认后再确认"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x26"/>
@@ -269,13 +277,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/tv"
+                android:layout_below="@+id/tv"
                 android:layout_marginTop="@dimen/y10"
-                android:layout_marginLeft="@dimen/x40"
+                android:layout_toRightOf="@+id/iv"
+                android:lineSpacingExtra="@dimen/x6"
                 android:text="2.每笔转出最小限额100个币，最大限额100000个币，每天转出限额500000个币"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x26"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </android.support.v7.widget.CardView>
 

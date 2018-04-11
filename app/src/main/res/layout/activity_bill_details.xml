@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="明细"
+            android:text="@string/detail"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -36,7 +36,7 @@
             android:layout_centerVertical="true"
             android:gravity="center"
             android:paddingRight="@dimen/x20"
-            android:text="问题"
+            android:text="@string/question"
             android:textColor="@color/blue2"
             android:textSize="@dimen/x28"/>
 
@@ -68,7 +68,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="收到转账记录"
+                android:text="@string/receipt_of_transfer_record"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/x30"/>
 

@@ -22,17 +22,20 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bclould.tocotalk.Presenter.CoinPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
-import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
+import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter3;
+import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tocotalk.ui.adapter.CloudCircleVPAdapter;
 import com.bclould.tocotalk.ui.adapter.PayManageGVAdapter;
 import com.bclould.tocotalk.ui.fragment.BuyFragment;
 import com.bclould.tocotalk.ui.fragment.OrderFormFragment;
 import com.bclould.tocotalk.ui.fragment.SellFragment;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -112,7 +115,21 @@ public class OtcActivity extends BaseActivity {
     private void init() {
         initViewPager();
         initTopMenu();
+        initData();
         mMap.put("筛选", 0);
+    }
+
+    private void initData() {
+        if (MyApp.getInstance().mOtcCoinList.size() == 0) {
+            CoinPresenter coinPresenter = new CoinPresenter(this);
+            coinPresenter.coinLists("otc", new CoinPresenter.CallBack() {
+                @Override
+                public void send(List<CoinListInfo.DataBean> data) {
+                    UtilTool.Log("币种", data.size() + "");
+                    MyApp.getInstance().mOtcCoinList.addAll(data);
+                }
+            });
+        }
     }
 
     @Override
@@ -294,7 +311,14 @@ public class OtcActivity extends BaseActivity {
         TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
         Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mCoinList));
+        Button cancel = (Button) mBottomDialog.findViewById(R.id.btn_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBottomDialog.dismiss();
+            }
+        });
+        recyclerView.setAdapter(new BottomDialogRVAdapter4(this, MyApp.getInstance().mOtcCoinList));
         addCoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

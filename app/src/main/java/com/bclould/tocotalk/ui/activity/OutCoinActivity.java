@@ -53,8 +53,6 @@ public class OutCoinActivity extends BaseActivity {
     ImageView mBark;
     @Bind(R.id.tv_record)
     TextView mTvRecord;
-    @Bind(R.id.et_out_coin_site)
-    EditText mEtOutCoinSite;
     @Bind(R.id.btn_selector_site)
     Button mBtnSelectorSite;
     @Bind(R.id.et_coin_count)
@@ -71,6 +69,12 @@ public class OutCoinActivity extends BaseActivity {
     EditText mEtRemark;
     @Bind(R.id.btn_confirm)
     Button mBtnConfirm;
+    @Bind(R.id.tv_out_coin_site)
+    TextView mTvOutCoinSite;
+    @Bind(R.id.iv)
+    ImageView mIv;
+    @Bind(R.id.tv)
+    TextView mTv;
     private int mId;
     private int mSiteId;
     private Animation mEnterAnim;
@@ -279,13 +283,13 @@ public class OutCoinActivity extends BaseActivity {
             if (requestCode == SELECTORSITE) {
                 mSiteId = data.getIntExtra("siteId", 0);
                 String site = data.getStringExtra("address");
-                mEtOutCoinSite.setText(site);
+                mTvOutCoinSite.setText(site);
             }
         }
     }
 
     private void outCoin(String password) {
-        String site = mEtOutCoinSite.getText().toString().trim();
+        String site = mTvOutCoinSite.getText().toString().trim();
         String count = mEtCoinCount.getText().toString().trim();
         String googleCode = mEtGoogleCode.getText().toString().trim();
         String remark = mEtRemark.getText().toString().trim();
@@ -294,9 +298,9 @@ public class OutCoinActivity extends BaseActivity {
     }
 
     private boolean editCheck() {
-        if (mEtOutCoinSite.getText().toString().isEmpty()) {
+        if (mTvOutCoinSite.getText().toString().isEmpty()) {
             Toast.makeText(this, "提币地址不能为空", Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mEtOutCoinSite);
+            AnimatorTool.getInstance().editTextAnimator(mTvOutCoinSite);
         } else if (mEtCoinCount.getText().toString().isEmpty()) {
             Toast.makeText(this, "数量不能为空", Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtCoinCount);

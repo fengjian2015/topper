@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginTop="@dimen/y20"
-            android:text="登录"
+            android:text="@string/login"
             android:textColor="@color/white"
             android:textSize="@dimen/x40"/>
 
@@ -27,7 +27,7 @@
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
             android:paddingRight="@dimen/x30"
-            android:text="注册"
+            android:text="@string/register"
             android:textColor="@color/white"/>
 
     </RelativeLayout>
@@ -54,7 +54,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="邮箱"
+            android:text="@string/email"
             android:textSize="@dimen/x30"/>
 
         <EditText
@@ -75,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y20"
-            android:text="密码"
+            android:text="@string/password"
             android:textSize="@dimen/x30"/>
 
         <RelativeLayout
@@ -128,7 +128,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y20"
         android:background="@drawable/bg_blue_shape"
-        android:text="登录"
+        android:text="@string/login"
         android:textColor="@color/white"
         android:textSize="@dimen/x35"/>
 

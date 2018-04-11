@@ -194,7 +194,7 @@ public class PushBuyingActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         init();
         initData(mCoinName);
-        getModeOfPayment();
+//        getModeOfPayment();
     }
 
     Map<String, Boolean> mModeOfPayment = new HashMap<>();
@@ -278,13 +278,18 @@ public class PushBuyingActivity extends BaseActivity {
         mCoinPresenter.getCoinPrice(name, new CoinPresenter.CallBack2() {
             @Override
             public void send(BaseInfo.DataBean data) {
-                double usdt = Double.parseDouble(data.getUSDT());
-                double cny = Double.parseDouble(data.getRate());
-                DecimalFormat df = new DecimalFormat("#.00");
-                String price = df.format(cny * usdt);
-                mTvPrice.setText(price);
+                try {
+                    double usdt = Double.parseDouble(data.getUSDT());
+                    double cny = Double.parseDouble(data.getRate());
+                    DecimalFormat df = new DecimalFormat("#.00");
+                    String price = df.format(cny * usdt);
+                    mTvPrice.setText(price);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
+
     }
 
     @OnClick({R.id.rl_buy_sell, R.id.bark, R.id.iv_question, R.id.rl_selector_currency, R.id.rl_county, R.id.rl_payment, R.id.rl_payment_time, R.id.btn_pushing})
@@ -343,6 +348,13 @@ public class PushBuyingActivity extends BaseActivity {
         mBottomDialog.setContentView(contentView);
         mBottomDialog.show();
         RecyclerView recyclerView = (RecyclerView) mBottomDialog.findViewById(R.id.recycler_view);
+        Button cancel = (Button) mBottomDialog.findViewById(R.id.btn_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBottomDialog.dismiss();
+            }
+        });
         TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
         Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

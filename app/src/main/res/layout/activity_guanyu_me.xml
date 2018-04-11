@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="关于我们"
+            android:text="@string/guanyu_me"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -84,7 +84,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="官网"
+                android:text="@string/guanwang"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 
@@ -117,7 +117,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="邮箱"
+                android:text="@string/email"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 
@@ -150,7 +150,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="检查更新"
+                android:text="@string/check_update"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 
