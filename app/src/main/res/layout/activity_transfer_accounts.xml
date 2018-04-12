@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="转账"
+            android:text="@string/transfer"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -35,7 +35,7 @@
             android:layout_centerVertical="true"
             android:gravity="center"
             android:paddingRight="@dimen/x20"
-            android:text="记录"
+            android:text="@string/record"
             android:textColor="@color/blue2"
             android:textSize="@dimen/x28"/>
 
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x40"
         android:layout_marginTop="@dimen/y25"
-        android:text="转给"
+        android:text="@string/transfer_give"
         android:textColor="@color/black"
         android:textSize="@dimen/x28"/>
 
@@ -65,10 +65,11 @@
         <EditText
             android:id="@+id/et_email"
             android:layout_width="match_parent"
+            android:singleLine="true"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/tv_yu_e"
             android:background="@android:color/transparent"
-            android:hint="输入转账人邮箱"
+            android:hint="@string/et_emily"
             android:paddingLeft="@dimen/x20"
             android:paddingRight="@dimen/x20"
             android:textColor="@color/black"
@@ -80,7 +81,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x40"
-        android:text="货币数量"
+        android:text="@string/count"
         android:textColor="@color/black"
         android:textSize="@dimen/x28"/>
 
@@ -100,11 +101,12 @@
 
             <EditText
                 android:id="@+id/et_coin_count"
+                android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_toLeftOf="@+id/tv_yu_e"
                 android:background="@android:color/transparent"
-                android:hint="输入货币数量"
+                android:hint="@string/et_count"
                 android:inputType="numberDecimal"
                 android:paddingLeft="@dimen/x20"
                 android:paddingRight="@dimen/x20"
@@ -117,7 +119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/tv_coin_count"
-                android:text="余额"
+                android:text="@string/surplus"
                 android:textSize="@dimen/x28"/>
 
             <TextView
@@ -148,7 +150,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x40"
-        android:text="谷歌验证"
+        android:text="@string/google_verify"
         android:textColor="@color/black"
         android:textSize="@dimen/x28"/>
 
@@ -165,9 +167,10 @@
             android:id="@+id/et_google_code"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:singleLine="true"
             android:layout_toLeftOf="@+id/tv_yu_e"
             android:background="@android:color/transparent"
-            android:hint="输入谷歌验证码"
+            android:hint="@string/et_google_code"
             android:inputType="number"
             android:maxLength="6"
             android:paddingLeft="@dimen/x20"
@@ -181,7 +184,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x40"
-        android:text="备注"
+        android:text="@string/remark"
         android:textColor="@color/black"
         android:textSize="@dimen/x28"/>
 
@@ -199,10 +202,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/tv_yu_e"
+            android:singleLine="true"
             android:background="@android:color/transparent"
-            android:hint="输入备注信息"
-            android:inputType="number"
-            android:maxLength="6"
+            android:hint="@string/et_memo"
             android:paddingLeft="@dimen/x20"
             android:paddingRight="@dimen/x20"
             android:textColor="@color/black"
@@ -217,7 +219,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y30"
         android:background="@drawable/btn_blue_selector"
-        android:text="转账"
+        android:text="@string/transfer"
         android:textColor="@color/white"/>
 
 
@@ -225,10 +227,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:lineSpacingExtra="@dimen/x10"
-        android:text="站内转账不收取手续费
-TocoTalk保障安全服务"
-        android:textColor="@color/black"
         android:layout_marginTop="@dimen/y100"
+        android:lineSpacingExtra="@dimen/x10"
+        android:text="@string/transfer_hint"
+        android:textColor="@color/black"
         android:textSize="@dimen/x28"/>
 </LinearLayout>

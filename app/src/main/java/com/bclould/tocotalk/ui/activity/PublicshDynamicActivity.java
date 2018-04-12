@@ -18,7 +18,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,10 +78,6 @@ public class PublicshDynamicActivity extends BaseActivity {
     ScrollView mScrollView;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @Bind(R.id.ll_site)
-    LinearLayout mLlSite;
-    @Bind(R.id.ll_synchronization)
-    LinearLayout mLlSynchronization;
 
 
     private List<LocalMedia> selectList = new ArrayList<>();

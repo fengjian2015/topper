@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="生成红包"
+            android:text="@string/create_qr_code_red"
             android:textColor="@color/white"
             android:textSize="@dimen/x32"/>
 
@@ -34,7 +34,7 @@
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:paddingRight="@dimen/x20"
-            android:text="紅包記錄"
+            android:text="@string/red_package_record"
             android:textColor="@color/white"
             android:textSize="@dimen/x26"/>
 
@@ -74,7 +74,7 @@
             android:layout_below="@+id/tv_qr_code"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/y60"
-            android:text="扫一扫上面的二维码图案，领取红包"
+            android:text="@string/qr_code_red_hint"
             android:textColor="@android:color/black"/>
 
         <Button
@@ -85,7 +85,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/y30"
             android:background="@drawable/bg_register_shape"
-            android:text="保存二维码"/>
+            android:text="@string/save_qr_code"/>
 
     </RelativeLayout>
 

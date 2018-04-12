@@ -89,8 +89,6 @@ public class FriendListFragment extends Fragment {
     TextView mNumber;
     @Bind(R.id.news_friend)
     RelativeLayout mNewsFriend;
-    @Bind(R.id.my_group)
-    LinearLayout mMyGroup;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.refresh_layout)
@@ -484,7 +482,7 @@ public class FriendListFragment extends Fragment {
     }
 
 
-    @OnClick({R.id.ll_search, R.id.news_friend, R.id.my_group})
+    @OnClick({R.id.ll_search, R.id.news_friend})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_search:
@@ -498,13 +496,13 @@ public class FriendListFragment extends Fragment {
                 mNumber.setVisibility(View.GONE);
                 mNewFriend = 0;
                 break;
-            case R.id.my_group:
+            /*case R.id.my_group:
 
                 startActivity(new Intent(getActivity(), GroupListActivity.class));
 
                 XmppConnection.getInstance().joinMultiUserChat(Constants.MYUSER, "群聊六", mMgr);
 
-                break;
+                break;*/
         }
     }
 }

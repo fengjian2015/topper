@@ -17,7 +17,10 @@ import com.bclould.tocotalk.Presenter.AddOutCoinSitePresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.model.InCoinInfo;
 import com.bclould.tocotalk.utils.AnimatorTool;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -47,6 +50,7 @@ public class AddOutCoinSiteActivity extends BaseActivity {
     private int mId;
     private Dialog mBottomDialog;
     private int QRCODE = 0;
+    private String mCoinName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +63,7 @@ public class AddOutCoinSiteActivity extends BaseActivity {
 
     private void initInterface() {
         mId = getIntent().getIntExtra("id", 0);
+        mCoinName = getIntent().getStringExtra("coinName");
     }
 
     //点击事件处理
@@ -86,8 +91,19 @@ public class AddOutCoinSiteActivity extends BaseActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            String result = data.getStringExtra("result");
-            mEtAddress.setText(result);
+            try {
+                String result = data.getStringExtra("result");
+                Gson gson = new Gson();
+                InCoinInfo inCoinInfo = gson.fromJson(result, InCoinInfo.class);
+                if (inCoinInfo.getCoin().equals(mCoinName)) {
+                    mEtAddress.setText(inCoinInfo.getAddress());
+                } else {
+                    Toast.makeText(this, "您掃描的不是" + mCoinName + "地址", Toast.LENGTH_SHORT).show();
+                }
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "二維碼解析失敗", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

@@ -103,7 +103,9 @@ public class WalletFragment extends Fragment {
             subscribeCoinPresenter.getUSDT(new SubscribeCoinPresenter.CallBack3() {
                 @Override
                 public void send(String data) {
-                    mTvTotal.setText(data);
+                    if (data != null) {
+                        mTvTotal.setText(data);
+                    }
                 }
             });
         } catch (Exception e) {

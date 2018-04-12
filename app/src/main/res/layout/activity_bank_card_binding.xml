@@ -62,6 +62,7 @@
 
             <EditText
                 android:id="@+id/et_card_number"
+                android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"

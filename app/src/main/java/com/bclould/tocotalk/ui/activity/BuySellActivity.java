@@ -121,7 +121,7 @@ public class BuySellActivity extends BaseActivity {
 
     private void setListener() {
         mEtCny.setFilters(new InputFilter[]{lengthFilter});
-        mEtCoin.setFilters(new InputFilter[]{lengthFilter2});
+        mEtCoin.setFilters(new InputFilter[]{lengthFilter});
         mEtCoin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {

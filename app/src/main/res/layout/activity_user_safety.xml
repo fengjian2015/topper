@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="安全中心"
+            android:text="@string/user_safety"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -58,7 +58,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/iv_login_password"
-                android:text="登录密码"
+                android:text="@string/login_pw"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
 
@@ -102,7 +102,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/iv_pay_password"
-                android:text="支付密码"
+                android:text="@string/payment_pw"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
 
@@ -145,7 +145,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/iv_fingerprint_lock"
-                android:text="指纹密码"
+                android:text="@string/fingerprint_lock"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
 
@@ -188,7 +188,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/iv_google"
-                android:text="谷歌验证"
+                android:text="@string/google_verify"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
 
@@ -231,7 +231,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/iv_login_set"
-                android:text="登录设置"
+                android:text="@string/login_set"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
 
@@ -274,7 +274,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/iv_login_record"
-                android:text="登录记录"
+                android:text="@string/login_record"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
 

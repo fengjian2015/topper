@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="发红包"
+            android:text="@string/send_red_packet"
             android:textColor="@color/white"
             android:textSize="@dimen/x32"/>
 
@@ -93,6 +93,7 @@
             <EditText
                 android:id="@+id/et_count"
                 android:layout_width="match_parent"
+                android:singleLine="true"
                 android:layout_height="match_parent"
                 android:layout_toLeftOf="@+id/tv"
                 android:background="@android:color/transparent"
@@ -150,8 +151,9 @@
             android:id="@+id/et_remark"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y120"
+            android:singleLine="true"
             android:background="@android:color/transparent"
-            android:hint="恭喜发财，大吉大利"
+            android:hint="@string/congratulation"
             android:paddingLeft="@dimen/x20"
             android:paddingRight="@dimen/x20"
             android:textSize="@dimen/x30"/>
@@ -173,7 +175,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y30"
-        android:text="TopperTalk保障安全服务"
+        android:text="@string/send_red_packet_hint"
         android:textSize="@dimen/x26"/>
 
 </LinearLayout>

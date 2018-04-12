@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginTop="@dimen/y30"
-        android:text="谷歌验证"
+        android:text="@string/google_verify"
         android:textColor="@android:color/black"
         android:textSize="@dimen/x30"/>
 
@@ -22,6 +22,7 @@
         android:layout_height="@dimen/y110"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
+        android:singleLine="true"
         android:layout_marginTop="@dimen/y30"
         android:background="@drawable/bg_blue_border"
         android:hint="@string/et_google_code"
@@ -37,9 +38,9 @@
         android:layout_height="@dimen/y80"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/y60"
-        android:layout_marginTop="@dimen/y60"
         android:layout_marginLeft="@dimen/x50"
         android:layout_marginRight="@dimen/x50"
+        android:layout_marginTop="@dimen/y60"
         android:background="@drawable/btn_blue_selector"
         android:text="@string/confirm"
         android:textAllCaps="false"

@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="发布广告"
+            android:text="@string/push_ad"
             android:textColor="@android:color/black"
             android:textSize="@dimen/x32"/>
 
@@ -93,7 +93,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/x30"
                         android:gravity="center_vertical"
-                        android:text="买卖"
+                        android:text="@string/buysell"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x26"/>
 
@@ -111,7 +111,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/x30"
                         android:layout_toRightOf="@+id/xx4"
-                        android:hint="选择买还是卖"
+                        android:hint="@string/selecotr_buy_sell"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/x30"/>
 
@@ -166,7 +166,7 @@
                         android:layout_marginLeft="@dimen/x30"
                         android:layout_toRightOf="@+id/xx"
                         android:hint="选择币种"
-                        android:text="BTC"
+                        android:text="TPC"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/x30"/>
 
@@ -220,7 +220,6 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/x30"
                         android:layout_toRightOf="@+id/xx2"
-                        android:text="中国"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/x30"/>
 
@@ -320,7 +319,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/x30"
                         android:layout_toRightOf="@+id/xx8"
-                        android:text="银行卡"
+                        android:text="@string/bank_card"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/x30"/>
 
@@ -357,7 +356,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/x30"
                         android:gravity="center_vertical"
-                        android:text="付款期限"
+                        android:text="@string/payment_time_limit"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x26"/>
 
@@ -375,7 +374,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/x30"
                         android:layout_toRightOf="@+id/xx9"
-                        android:hint="选择付款期限"
+                        android:hint="@string/selector_payment_time_limit"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/x30"/>
 
@@ -546,6 +545,7 @@
                         android:layout_toRightOf="@+id/xx10"
                         android:background="@android:color/transparent"
                         android:hint="@string/et_count"
+                        android:singleLine="true"
                         android:inputType="numberDecimal"
                         android:paddingLeft="@dimen/x30"
                         android:textColor="@android:color/black"
@@ -559,7 +559,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/x30"
-                        android:text="个"
+                        android:text="@string/individual"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/x30"/>
 
@@ -601,10 +601,11 @@
                     <EditText
                         android:id="@+id/et_min_limit"
                         android:layout_width="@dimen/x400"
+                        android:singleLine="true"
                         android:layout_height="match_parent"
                         android:layout_toRightOf="@+id/xx6"
                         android:background="@android:color/transparent"
-                        android:hint="每笔交易最小价格"
+                        android:hint="@string/et_min_limit"
                         android:inputType="numberDecimal"
                         android:paddingLeft="@dimen/x30"
                         android:textColor="@android:color/black"
@@ -663,8 +664,9 @@
                         android:layout_height="match_parent"
                         android:layout_toRightOf="@+id/xx7"
                         android:background="@android:color/transparent"
-                        android:hint="每笔交易最大价格"
+                        android:hint="@string/et_max_limit"
                         android:inputType="numberDecimal"
+                        android:singleLine="true"
                         android:paddingLeft="@dimen/x30"
                         android:textColor="@android:color/black"
                         android:textCursorDrawable="@null"

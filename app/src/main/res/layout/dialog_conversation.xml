@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/x20"
-            android:text="帮助"
+            android:text="@string/help"
             android:textColor="@color/black"
             android:textSize="@dimen/x30"/>
 
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/x20"
-            android:text="群聊"
+            android:text="@string/group_chat"
             android:textColor="@color/black"
             android:textSize="@dimen/x30"/>
 
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/x20"
-            android:text="删除"
+            android:text="@string/delete"
             android:textColor="@color/black"
             android:textSize="@dimen/x30"/>
 
@@ -110,7 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/x20"
-            android:text="投诉"
+            android:text="@string/complain"
             android:textColor="@color/black"
             android:textSize="@dimen/x30"/>
 

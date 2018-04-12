@@ -53,6 +53,7 @@ public class OutCoinSiteActivity extends BaseActivity {
     RelativeLayout mRlAddSite;
     private int mId;
     private OutCoinSitePresenter mOutCoinSitePresenter;
+    private String mCoinName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,9 +70,12 @@ public class OutCoinSiteActivity extends BaseActivity {
         //获取地址
         getSite();
     }
+
     //初始化界面
     private void initInterface() {
         mId = getIntent().getIntExtra("id", 0);//获取上个界面传递的Id
+        //获取上个界面传递的Id
+        mCoinName = getIntent().getStringExtra("coinName");
         getSite();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -99,6 +103,7 @@ public class OutCoinSiteActivity extends BaseActivity {
                 Intent intent = new Intent();
                 intent.setClass(this, AddOutCoinSiteActivity.class);
                 intent.putExtra("id", mId);
+                intent.putExtra("coinNanme", mCoinName);
                 startActivity(intent);
                 break;
         }

@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/y20"
-                android:text="收付款"
+                android:text="@string/receipt_payment"
                 android:textColor="@color/white"
                 android:textSize="@dimen/x32"/>
 
@@ -110,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/y20"
-                android:text="银行卡"
+                android:text="@string/bank_card"
                 android:textColor="@color/white"
                 android:textSize="@dimen/x32"/>
 
@@ -158,7 +158,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/y20"
-                    android:text="数字资产"
+                    android:text="@string/number_asset"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x32"/>
 
@@ -190,7 +190,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/y20"
-                    android:text="兑换"
+                    android:text="@string/exchange"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x32"/>
 
@@ -262,7 +262,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/y20"
-                    android:text="理财"
+                    android:text="@string/manage_money"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x32"/>
 
@@ -294,7 +294,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/y20"
-                    android:text="典当"
+                    android:text="@string/pawn"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x32"/>
 
@@ -326,7 +326,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/y20"
-                    android:text="保险"
+                    android:text="@string/safe"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x32"/>
 

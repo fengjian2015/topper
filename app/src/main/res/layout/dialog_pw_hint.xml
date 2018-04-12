@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginTop="@dimen/y30"
-        android:text="支付密码错误，请重试！"
+        android:text="@string/payment_pw_error_hint"
         android:textColor="@android:color/black"
         android:textSize="@dimen/x35"/>
 
@@ -23,7 +23,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/y30"
         android:layout_marginLeft="@dimen/x300"
-        android:text="重试"
+        android:text="@string/retry"
         android:textColor="@android:color/black"
         android:textSize="@dimen/x35"/>
 
@@ -35,7 +35,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="@dimen/y30"
         android:layout_marginRight="@dimen/x30"
-        android:text="忘记密码"
+        android:text="@string/find_password"
         android:textColor="@color/blue2"
         android:textSize="@dimen/x35"/>
 

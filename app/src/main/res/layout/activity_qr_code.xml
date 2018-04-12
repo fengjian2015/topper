@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="二维码"
+            android:text="@string/qr_code"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -74,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y15"
-            android:text="扫描二维码，添加为好友"
+            android:text="@string/qr_code_hint"
             android:textSize="@dimen/x28"/>
 
     </LinearLayout>
@@ -88,5 +88,5 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y30"
         android:background="@drawable/bg_register_shape"
-        android:text="保存二维码"/>
+        android:text="@string/save_qr_code"/>
 </LinearLayout>

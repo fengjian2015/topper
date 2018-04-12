@@ -140,7 +140,6 @@ public class CurrencyInOutPresenter {
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .transfer(UtilTool.getToken(), coinName, email, count, google, payPassword)
-
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<BaseInfo>() {
@@ -202,10 +201,8 @@ public class CurrencyInOutPresenter {
                         @Override
                         public void onNext(@NonNull BaseInfo baseInfo) {
                             hideDialog();
-                            if (baseInfo.getStatus() == 1)
+                            if(baseInfo.getStatus() == 1)
                                 callBack.send(baseInfo.getData());
-                            else
-                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -220,9 +217,7 @@ public class CurrencyInOutPresenter {
                         }
                     });
         } else {
-
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-
         }
     }
 
@@ -272,8 +267,46 @@ public class CurrencyInOutPresenter {
         }
     }
 
+    public void outCoinDesc(int id, final CallBack callBack) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .outCoinDesc(UtilTool.getToken(), id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(@NonNull BaseInfo baseInfo) {
+                            hideDialog();
+                            if(baseInfo.getStatus() == 1)
+                                callBack.send(baseInfo.getData());
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+                            hideDialog();
+                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     //定义接口
     public interface CallBack {
+
         void send(BaseInfo.DataBean data);
     }
 }

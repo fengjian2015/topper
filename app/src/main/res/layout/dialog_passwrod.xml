@@ -29,7 +29,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
-                    android:text="请输入支付密码"
+                    android:text="@string/et_pay_pw"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x32"/>
 

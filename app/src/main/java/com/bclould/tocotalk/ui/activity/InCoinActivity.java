@@ -21,6 +21,8 @@ import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.utils.UtilTool;
 
+import org.json.JSONObject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -38,8 +40,6 @@ public class InCoinActivity extends BaseActivity {
     TextView mTvRecord;
     @Bind(R.id.tv_count)
     TextView mTvCount;
-    @Bind(R.id.tv_usdt)
-    TextView mTvUsdt;
     @Bind(R.id.iv_site_qr)
     ImageView mIvSiteQr;
     @Bind(R.id.tv_site)
@@ -50,8 +50,10 @@ public class InCoinActivity extends BaseActivity {
     Button mBtnCopy;
     @Bind(R.id.iv)
     ImageView mIv;
-    @Bind(R.id.tv)
-    TextView mTv;
+    @Bind(R.id.tv_title)
+    TextView mTvTitle;
+    @Bind(R.id.tv_desc)
+    TextView mTvDesc;
     private int mId;
     private String mCoinName;
     private String mOver;
@@ -63,6 +65,7 @@ public class InCoinActivity extends BaseActivity {
         ButterKnife.bind(this);
         initIntent();
         initData();
+
     }
 
     private void initIntent() {
@@ -70,7 +73,8 @@ public class InCoinActivity extends BaseActivity {
         mId = intent.getIntExtra("id", 0);
         mCoinName = intent.getStringExtra("coinName");
         mOver = intent.getStringExtra("over");
-        mTvCount.setText(mOver);
+        mTvCount.setText(mOver + mCoinName);
+
     }
 
     private void initData() {
@@ -78,9 +82,22 @@ public class InCoinActivity extends BaseActivity {
         currencyInOutPresenter.inCoin(mId, new CurrencyInOutPresenter.CallBack() {
             @Override
             public void send(BaseInfo.DataBean data) {
-                Bitmap qrImage = UtilTool.createQRImage(data.getAddress());
-                mIvSiteQr.setImageBitmap(qrImage);
-                mTvSite.setText(data.getAddress());
+                try {
+                    if (data.getDesc() != null && data.getAddress() != null && data.getTitle() != null) {
+                        String desc = data.getDesc().replace("\\n", "\n");
+                        mTvTitle.setText(data.getTitle());
+                        mTvDesc.setText(desc);
+                        JSONObject object = new JSONObject();//创建一个总的对象，这个对象对整个json串
+                        object.put("coin", mCoinName);
+                        object.put("address", data.getAddress());
+                        String jsonresult = object.toString();//生成返回字符串
+                        Bitmap qrImage = UtilTool.createQRImage(jsonresult);
+                        mIvSiteQr.setImageBitmap(qrImage);
+                        mTvSite.setText(data.getAddress());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -94,6 +111,8 @@ public class InCoinActivity extends BaseActivity {
             case R.id.tv_record:
                 Intent intent = new Intent(this, BillDetailsActivity.class);
                 intent.putExtra("type", 0);
+                intent.putExtra("coin_id", mId + "");
+                intent.putExtra("coin_name", mCoinName);
                 startActivity(intent);
                 break;
             case R.id.btn_copy:

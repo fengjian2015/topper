@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x20"
-                    android:text="搜索用户昵称"
+                    android:text="@string/search_friend"
                     android:textColor="@color/gray"
                     android:textSize="@dimen/x28"/>
 
@@ -79,7 +79,7 @@
                         android:layout_centerVertical="true"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/x20"
-                        android:text="新的好友"
+                        android:text="@string/new_friend"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x32"/>
 
@@ -105,7 +105,7 @@
                 <TextView
                     style="@style/HCutOffRule"/>
 
-                <LinearLayout
+               <!-- <LinearLayout
                     android:id="@+id/my_group"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/y100"
@@ -122,11 +122,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/x20"
-                        android:text="我的群组"
+                        android:text="@string/my_group"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x32"/>
 
-                </LinearLayout>
+                </LinearLayout>-->
 
                 <TextView
                     android:layout_width="match_parent"
@@ -134,7 +134,7 @@
                     android:background="@color/light"
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/x20"
-                    android:text="我的好友"
+                    android:text="@string/my_friend"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x28"/>
 

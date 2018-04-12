@@ -180,7 +180,13 @@ public class MainActivity extends BaseActivity {
                         public void onNext(GitHubInfo baseInfo) {
                             //判断是否需要更新
                             float version = Float.parseFloat(UtilTool.getVersionCode(MainActivity.this));
-                            float tag = Float.parseFloat(baseInfo.getTag_name());
+                            String tag_version = "";
+                            if (baseInfo.getTag_name().contains("v")) {
+                                tag_version = baseInfo.getTag_name().replace("v", "");
+                            } else {
+                                tag_version = baseInfo.getTag_name();
+                            }
+                            float tag = Float.parseFloat(tag_version);
                             if (version < tag)
                                 showUpdateDialog(baseInfo);
                         }

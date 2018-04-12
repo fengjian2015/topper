@@ -9,7 +9,9 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -107,6 +109,7 @@ public class CoinExchangeActivity extends BaseActivity {
     }
 
     private void initListener() {
+        mEtCount.setFilters(new InputFilter[]{lengthFilter});
         mEtCount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -122,7 +125,8 @@ public class CoinExchangeActivity extends BaseActivity {
                 if (counts != null && !counts.isEmpty() && mPrice != null && !mPrice.isEmpty()) {
                     double count = Double.parseDouble(counts);
                     double price = Double.parseDouble(mPrice);
-                    int sum = (int) (count * price);
+                    DecimalFormat df = new DecimalFormat("#.000000");
+                    String sum = df.format(count * price);
                     mTvPrice.setText(sum + "");
                 } else {
                     mTvPrice.setText(mPrice);
@@ -130,6 +134,33 @@ public class CoinExchangeActivity extends BaseActivity {
             }
         });
     }
+
+    private InputFilter lengthFilter = new InputFilter() {
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end,
+                                   Spanned dest, int dstart, int dend) {
+            // source:当前输入的字符
+            // start:输入字符的开始位置
+            // end:输入字符的结束位置
+            // dest：当前已显示的内容
+            // dstart:当前光标开始位置
+            // dent:当前光标结束位置
+            if (dest.length() == 0 && source.equals(".")) {
+                return "0.";
+            }
+            String dValue = dest.toString();
+            String[] splitArray = dValue.split("\\.");
+            if (splitArray.length > 1) {
+                String dotValue = splitArray[1];
+                if (dotValue.length() == 2) {
+                    return "";
+                }
+            }
+            return null;
+        }
+
+    };
 
     private void initRecylerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -147,17 +178,21 @@ public class CoinExchangeActivity extends BaseActivity {
             @Override
             public void send(BaseInfo.DataBean data) {
                 try {
-                    double usdt = Double.parseDouble(data.getUSDT());
-                    double cny = Double.parseDouble(data.getRate());
-                    DecimalFormat df = new DecimalFormat("#.00");
-                    String price = df.format(cny * usdt);
-                    mTvPrice.setText(data.getUSDT());
-                    mPrice = mTvPrice.getText().toString();
-                    mTvCny.setText("≈ " + price + " CNY");
-                    if (data.getTrend().contains("-")) {
-                        mBtnFloat.setText(data.getTrend() + "% ↓");
-                    } else {
-                        mBtnFloat.setText(data.getTrend() + "% ↑");
+                    if (data.getUSDT() != null && data.getRate() != null && data.getTrend() != null) {
+                        if (!data.getUSDT().isEmpty() && !data.getRate().isEmpty() && !data.getTrend().isEmpty()) {
+                            double usdt = Double.parseDouble(data.getUSDT());
+                            double cny = Double.parseDouble(data.getRate());
+                            DecimalFormat df = new DecimalFormat("#.00");
+                            String price = df.format(cny * usdt);
+                            mTvPrice.setText(data.getUSDT());
+                            mPrice = mTvPrice.getText().toString();
+                            mTvCny.setText("≈ " + price + " CNY");
+                            if (data.getTrend().contains("-")) {
+                                mBtnFloat.setText(data.getTrend() + "% ↓");
+                            } else {
+                                mBtnFloat.setText(data.getTrend() + "% ↑");
+                            }
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

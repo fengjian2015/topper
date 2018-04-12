@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.bclould.tocotalk.Presenter.CurrencyInOutPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
+import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
@@ -53,6 +54,8 @@ public class OutCoinActivity extends BaseActivity {
     ImageView mBark;
     @Bind(R.id.tv_record)
     TextView mTvRecord;
+    @Bind(R.id.tv_out_coin_site)
+    TextView mTvOutCoinSite;
     @Bind(R.id.btn_selector_site)
     Button mBtnSelectorSite;
     @Bind(R.id.et_coin_count)
@@ -69,12 +72,11 @@ public class OutCoinActivity extends BaseActivity {
     EditText mEtRemark;
     @Bind(R.id.btn_confirm)
     Button mBtnConfirm;
-    @Bind(R.id.tv_out_coin_site)
-    TextView mTvOutCoinSite;
     @Bind(R.id.iv)
     ImageView mIv;
-    @Bind(R.id.tv)
-    TextView mTv;
+    @Bind(R.id.tv_desc)
+    TextView mTvDesc;
+
     private int mId;
     private int mSiteId;
     private Animation mEnterAnim;
@@ -92,6 +94,20 @@ public class OutCoinActivity extends BaseActivity {
         setContentView(R.layout.activity_out_coin);
         ButterKnife.bind(this);
         initIntent();
+        initData();
+    }
+
+    private void initData() {
+        CurrencyInOutPresenter currencyInOutPresenter = new CurrencyInOutPresenter(this);
+        currencyInOutPresenter.outCoinDesc(mId, new CurrencyInOutPresenter.CallBack() {
+            @Override
+            public void send(BaseInfo.DataBean data) {
+                if(data.getDesc() != null){
+                    String desc = data.getDesc().replace("\\n", "\n");
+                    mTvDesc.setText(desc);
+                }
+            }
+        });
     }
 
     private void initIntent() {
@@ -112,11 +128,14 @@ public class OutCoinActivity extends BaseActivity {
             case R.id.tv_record:
                 Intent intent2 = new Intent(this, BillDetailsActivity.class);
                 intent2.putExtra("type", 1);
+                intent2.putExtra("coin_id", mId + "");
+                intent2.putExtra("coin_name", mCoinName);
                 startActivity(intent2);
                 break;
             case R.id.btn_selector_site:
                 Intent intent = new Intent(this, OutCoinSiteActivity.class);
                 intent.putExtra("id", mId);
+                intent.putExtra("coinNanme", mCoinName);
                 startActivityForResult(intent, SELECTORSITE);
                 break;
             case R.id.btn_confirm:

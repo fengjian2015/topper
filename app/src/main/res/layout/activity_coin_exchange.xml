@@ -83,6 +83,7 @@
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
                     android:hint="@string/et_count"
+                    android:singleLine="true"
                     android:inputType="numberDecimal"
                     android:paddingLeft="@dimen/x20"
                     android:paddingRight="@dimen/x20"

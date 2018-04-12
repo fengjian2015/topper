@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:text="安子-转账"
                 android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
+                android:textSize="@dimen/x28"/>
 
             <TextView
                 android:id="@+id/time"
@@ -49,22 +49,25 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_reality_transfer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="实际转账"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
-
-            <TextView
                 android:id="@+id/tv_reailty_income"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/type_name"
+                android:layout_gravity="right"
                 android:layout_marginTop="@dimen/y10"
                 android:text="实际到账"
                 android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
+                android:textSize="@dimen/x28"/>
+
+            <TextView
+                android:id="@+id/tv_reality_transfer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="实际转账"
+                android:textSize="@dimen/x22"/>
+
+
         </LinearLayout>
 
     </RelativeLayout>

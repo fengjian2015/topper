@@ -48,7 +48,7 @@ public class OrderFormFragment extends Fragment {
     ImageView mIv;
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
-    private String mCoinName = "BTC";
+    private String mCoinName = "TPC";
     private String mFiltrate = "全部";
     private List<OrderListInfo.DataBean> mDataList = new ArrayList<>();
     private OrderRVAdapter mOrderRVAdapter;

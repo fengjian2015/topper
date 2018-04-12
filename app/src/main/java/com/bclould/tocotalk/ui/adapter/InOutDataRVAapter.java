@@ -23,10 +23,14 @@ public class InOutDataRVAapter extends RecyclerView.Adapter {
 
     private final Context mContext;
     private final List<InOutInfo.DataBean> mData;
+    private final int mType;
+    private final String mCoinName;
 
-    public InOutDataRVAapter(Context context, List<InOutInfo.DataBean> data) {
+    public InOutDataRVAapter(Context context, List<InOutInfo.DataBean> data, int type, String coinName) {
         mContext = context;
         mData = data;
+        mType = type;
+        mCoinName = coinName;
     }
 
     @Override
@@ -49,7 +53,7 @@ public class InOutDataRVAapter extends RecyclerView.Adapter {
         return 0;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.type_name)
         TextView mTypeName;
@@ -68,8 +72,14 @@ public class InOutDataRVAapter extends RecyclerView.Adapter {
         public void setData(InOutInfo.DataBean dataBean) {
             mTypeName.setText(dataBean.getUser_name());
             mTime.setText(dataBean.getCreated_at());
-            mTvRealityTransfer.setText(dataBean.getNumber());
-            mTvReailtyIncome.setText(dataBean.getNumber_u());
+            if (mType == 0) {
+                mTvRealityTransfer.setText("實際充幣" + " " + dataBean.getNumber() + " " + mCoinName);
+                mTvReailtyIncome.setText("實際到幣" + " " + dataBean.getNumber_u() + " " + mCoinName);
+            } else {
+
+                mTvRealityTransfer.setText("實際提幣" + " " + dataBean.getNumber() + " " + mCoinName);
+                mTvReailtyIncome.setText("實際到幣" + " " + dataBean.getNumber_u() + " " + mCoinName);
+            }
         }
     }
 }

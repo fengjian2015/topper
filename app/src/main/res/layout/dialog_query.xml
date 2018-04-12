@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:drawableLeft="@mipmap/icon_remind"
-        android:text="谷歌验证"
+        android:text="@string/google_verify"
         android:textColor="@color/black"
         android:textSize="@dimen/x28"/>
 
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_title"
-        android:text="1.安装“Google Authenticator”应用程序，选择“手动输入密钥”；\n2.粘贴以上“密钥”到“密钥”输入栏，并填写您的Tocotalk账号，点击完成；\n3.复制“谷歌验证码”，粘贴至上方输入栏；\n4.请勿删除此双重验证密码账户，否则将导致您无法进行账户操作；如果误删，您可通过重置密钥重新获取。"
+        android:text="@string/binding_google_hint"
         android:textColor="@color/bar_grey_90"
         android:textSize="@dimen/x26"/>
 

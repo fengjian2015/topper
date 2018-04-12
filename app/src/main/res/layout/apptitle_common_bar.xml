@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="标题"
+        android:text="@string/title"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:visibility="invisible" />
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:padding="10dp"
-        android:text="左侧文字"
+        android:text="@string/left_text"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:visibility="invisible" />

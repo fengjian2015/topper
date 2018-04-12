@@ -14,6 +14,16 @@ public class InOutInfo {
      */
 
     private int status;
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     private List<DataBean> data;
 
     public int getStatus() {
@@ -45,7 +55,7 @@ public class InOutInfo {
         private String user_name;
         private String number;
         private String number_u;
-        private int created_at;
+        private String created_at;
 
         public int getUser_id() {
             return user_id;
@@ -79,11 +89,11 @@ public class InOutInfo {
             this.number_u = number_u;
         }
 
-        public int getCreated_at() {
+        public String getCreated_at() {
             return created_at;
         }
 
-        public void setCreated_at(int created_at) {
+        public void setCreated_at(String created_at) {
             this.created_at = created_at;
         }
     }

@@ -51,7 +51,7 @@ public class BuyFragment extends Fragment {
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
     private View mView;
-    private String mCoinName = "BTC";
+    private String mCoinName = "TPC";
     private String mState = MySharedPreferences.getInstance().getString(STATE);
     private List<DealListInfo.DataBean> mDataList = new ArrayList<>();
     private BuySellRVAdapter mBuySellRVAdapter;

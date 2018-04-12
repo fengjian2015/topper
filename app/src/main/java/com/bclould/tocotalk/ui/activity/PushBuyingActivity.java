@@ -37,7 +37,7 @@ import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.ModeOfPaymentInfo;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter;
-import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
+import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
@@ -179,7 +179,7 @@ public class PushBuyingActivity extends BaseActivity {
     private MNPasswordEditText mEtPassword;
     private ArrayList<Map<String, String>> valueList;
     private GridView mGridView;
-    String mCoinName = "BTC";
+    String mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();
     private int mType;
     private CoinPresenter mCoinPresenter;
     private PushBuyingPresenter mPushBuyingPresenter;
@@ -211,8 +211,9 @@ public class PushBuyingActivity extends BaseActivity {
     }
 
     private void init() {
+        mTvCurrency.setText(mCoinName);
         mTvState.setText(MySharedPreferences.getInstance().getString(STATE));
-        mEtMinLimit.addTextChangedListener(new TextWatcher() {
+        /*mEtMinLimit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -235,7 +236,7 @@ public class PushBuyingActivity extends BaseActivity {
                             mEtMinLimit.setText(sum + "");
                         }
                     } else {
-                        mEtMinLimit.setText("0");
+                        mEtMinLimit.setText("");
                     }
                 } else {
                     Toast.makeText(PushBuyingActivity.this, "请先输入数量", Toast.LENGTH_SHORT).show();
@@ -265,13 +266,13 @@ public class PushBuyingActivity extends BaseActivity {
                             mEtMaxLimit.setText(sum + "");
                         }
                     } else {
-                        mEtMaxLimit.setText("0");
+                        mEtMaxLimit.setText("");
                     }
                 } else {
                     Toast.makeText(PushBuyingActivity.this, "请先输入数量", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        });*/
     }
 
     private void initData(String name) {
@@ -281,7 +282,7 @@ public class PushBuyingActivity extends BaseActivity {
                 try {
                     double usdt = Double.parseDouble(data.getUSDT());
                     double cny = Double.parseDouble(data.getRate());
-                    DecimalFormat df = new DecimalFormat("#.00");
+                    DecimalFormat df = new DecimalFormat("#.000000");
                     String price = df.format(cny * usdt);
                     mTvPrice.setText(price);
                 } catch (Exception e) {
@@ -358,7 +359,7 @@ public class PushBuyingActivity extends BaseActivity {
         TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
         Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mCoinList));
+        recyclerView.setAdapter(new BottomDialogRVAdapter4(this, MyApp.getInstance().mOtcCoinList));
         addCoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -396,7 +397,7 @@ public class PushBuyingActivity extends BaseActivity {
         } else if (mEtMaxLimit.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, getResources().getString(R.string.toast_max_limit), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtMaxLimit);
-        } else if (Double.parseDouble(mEtMinLimit.getText().toString()) < 100) {
+        } /*else if (Double.parseDouble(mEtMinLimit.getText().toString()) < 100) {
             Toast.makeText(this, "最小量不能小于100", Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtMinLimit);
         } else if (Double.parseDouble(mEtMaxLimit.getText().toString()) < 100) {
@@ -405,7 +406,7 @@ public class PushBuyingActivity extends BaseActivity {
         } else if (Double.parseDouble(mEtMaxLimit.getText().toString()) < Double.parseDouble(mEtMinLimit.getText().toString())) {
             Toast.makeText(this, "最大量不能小于最小量", Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtMaxLimit);
-        } else {
+        }*/ else {
             return true;
         }
         return false;
@@ -670,8 +671,8 @@ public class PushBuyingActivity extends BaseActivity {
         mBottomDialog.dismiss();
         mCoinName = name;
         initData(name);
-        mEtMaxLimit.setText("0");
-        mEtMinLimit.setText("0");
+//        mEtMaxLimit.setText("");
+//        mEtMinLimit.setText("");
         mTvCurrency.setText(name);
     }
 }

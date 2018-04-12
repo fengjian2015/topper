@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/y230"
-        android:text="将二维码放入框内，即可自动扫描"
+        android:text="@string/scan_qr_code_hint"
         android:textColor="@android:color/white"
         android:textSize="14sp"/>
 
