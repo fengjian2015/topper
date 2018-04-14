@@ -50,6 +50,15 @@ public class TransferListInfo {
         private String type_desc;
         private String number;
         private String created_at;
+        private int type_number;
+
+        public int getType_number() {
+            return type_number;
+        }
+
+        public void setType_number(int type_number) {
+            this.type_number = type_number;
+        }
 
         public int getUser_id() {
             return user_id;

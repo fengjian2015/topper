@@ -13,6 +13,7 @@ import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.model.OrderListInfo;
+import com.bclould.tocotalk.model.TransRecordInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.activity.BankCardActivity;
 import com.bclould.tocotalk.ui.activity.BuySellActivity;
@@ -45,7 +46,7 @@ public class BuySellPresenter {
     private void showDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(mContext);
-            mProgressDialog.setMessage("加载中...");
+            mProgressDialog.setMessage(mContext.getString(R.string.loading));
         }
 
         mProgressDialog.show();
@@ -153,12 +154,15 @@ public class BuySellPresenter {
                             hideDialog();
                             if (baseInfo.getStatus() == 1) {
                                 callBack2.send(baseInfo.getData());
-                            } else if (baseInfo.getMessage().equals("尚未设置交易密码")) {
+//                            } else if (baseInfo.getMessage().equals("尚未设置交易密码")) {
+                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.set_payment_pw_hint))) {
                                 showHintDialog(1);
-                            } else if (baseInfo.getMessage().equals("交易密码不正确")) {
+                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.payment_pw_error))) {
+//                            } else if (baseInfo.getMessage().equals("交易密码不正确")) {
                                 BuySellActivity activity = (BuySellActivity) mContext;
                                 activity.showHintDialog();
-                            } else if (baseInfo.getMessage().equals("请先绑定银行卡")) {
+//                            } else if (baseInfo.getMessage().equals("请先绑定银行卡")) {
+                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.binding_bank_hint))) {
                                 showHintDialog(0);
                             } else {
                                 Toast.makeText(mContext, baseInfo.getMessage() + "", Toast.LENGTH_SHORT).show();
@@ -168,7 +172,7 @@ public class BuySellPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, "网络连接错误，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -223,10 +227,10 @@ public class BuySellPresenter {
         deleteCacheDialog.show();
         switch (type) {
             case 0:
-                deleteCacheDialog.setTitle("请先绑定银行卡！");
+                deleteCacheDialog.setTitle(mContext.getString(R.string.binding_bank_hint));
                 break;
             case 1:
-                deleteCacheDialog.setTitle("请先设置交易密码！");
+                deleteCacheDialog.setTitle(mContext.getString(R.string.set_pay_pw_hint));
                 break;
         }
         Button retry = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
@@ -253,6 +257,41 @@ public class BuySellPresenter {
         });
     }
 
+    public void transRecordInfo(String id, String type_number, final CallBack3 callBack3) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .transRecord(UtilTool.getToken(), id, type_number)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<TransRecordInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(TransRecordInfo transRecordInfo) {
+                            if (transRecordInfo.getStatus() == 1) {
+                                callBack3.send2(transRecordInfo.getData());
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     //定义接口
     public interface CallBack {
         void send(List<DealListInfo.DataBean> dataBean, String coin);
@@ -266,5 +305,7 @@ public class BuySellPresenter {
     //定义接口
     public interface CallBack3 {
         void send(List<OrderListInfo.DataBean> data);
+
+        void send2(TransRecordInfo.DataBean data);
     }
 }

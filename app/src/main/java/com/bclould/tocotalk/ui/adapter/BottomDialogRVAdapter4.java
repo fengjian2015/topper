@@ -66,6 +66,7 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
         private int mId;
         private String mCoin_over;
         private String mLogo;
+        private String mServiceCharge;
 
         ViewHolder(View view) {
             super(view);
@@ -76,7 +77,7 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     if (mContext instanceof CoinExchangeActivity) {
                         CoinExchangeActivity activity = (CoinExchangeActivity) mContext;
-                        activity.hideDialog(mName, mId, mLogo, mCoin_over);
+                        activity.hideDialog(mName, mId, mLogo, mCoin_over, mServiceCharge);
                     } else if (mContext instanceof OtcActivity) {
                         OtcActivity activity = (OtcActivity) mContext;
                         activity.hideDialog(mName, mId);
@@ -93,6 +94,7 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
             mCoin_over = data.getCoin_over();
             mLogo = data.getLogo();
             mId = data.getId();
+            mServiceCharge = data.getOut_exchange();
             mTvName.setText(mName);
             Glide.with(mContext).load(data.getLogo()).into(mTvCoinLogo);
         }

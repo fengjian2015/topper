@@ -233,7 +233,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         initAdapter();//初始化适配器
         initData();//初始化数据
         mMgr.updateNumber(mUser, 0);//更新未读消息条数
-        EventBus.getDefault().post(new MessageEvent("处理未读消息"));//发送更新未读消息通知
+        EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));//发送更新未读消息通知
         //监听touch事件隐藏软键盘
         mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -480,7 +480,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             byte[] bytes = UtilTool.readStream(fileName);//把语音文件转换成二进制
             String base64 = Base64.encodeToString(bytes);//二进制转成Base64
             voiceInfo.setElementText(base64);//设置进model
-            message.setBody("[audio]:" + duration + "秒");//body设置进消息
+            message.setBody("[audio]:" + duration + getString(R.string.second));//body设置进消息
             message.addExtension(voiceInfo);//扩展message,把语音添加进标签
             chat.sendMessage(message);//发送消息
 
@@ -504,26 +504,26 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             scrollToBottom();
             //给聊天列表更新消息
             if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, "[语音]", time);
+                mMgr.updateConversation(mUser, 0, "[" + getString(R.string.voice) + "]", time);
             } else {
                 ConversationInfo info = new ConversationInfo();
                 info.setTime(time);
                 info.setFriend(mName);
                 info.setUser(mUser);
-                info.setMessage("[语音]");
+                info.setMessage("[" + getString(R.string.voice) + "]");
                 mMgr.addConversation(info);
             }
             //发送消息通知
-            EventBus.getDefault().post(new MessageEvent("自己发了消息"));
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.oneself_send_msg)));
         } catch (Exception e) {
             //发送失败处理
             e.printStackTrace();
-            Toast.makeText(this, "发送失败，请检查当前网络连接", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.send_error), Toast.LENGTH_SHORT).show();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date curDate = new Date(System.currentTimeMillis());
             String time = formatter.format(curDate);
             MessageInfo messageInfo = new MessageInfo();
-            messageInfo.setMessage("[audio]:" + duration + "秒");
+            messageInfo.setMessage("[audio]:" + duration + getString(R.string.second));
             messageInfo.setType(0);
             messageInfo.setUsername(mUser);
             messageInfo.setVoice(fileName);
@@ -537,16 +537,16 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             mChatAdapter.notifyDataSetChanged();
             scrollToBottom();
             if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, "[语音]", time);
+                mMgr.updateConversation(mUser, 0, "[" + getString(R.string.voice) + "]", time);
             } else {
                 ConversationInfo info = new ConversationInfo();
                 info.setTime(time);
                 info.setFriend(mName);
                 info.setUser(mUser);
-                info.setMessage("[语音]");
+                info.setMessage("[" + getString(R.string.voice) + "]");
                 mMgr.addConversation(info);
             }
-            EventBus.getDefault().post(new MessageEvent("自己发了消息"));
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.oneself_send_msg)));
         }
 
     }
@@ -554,7 +554,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     //录音取消处理
     private void cancelRecord() {
         recordUtil.cancel();
-        Toast.makeText(this, "取消录音", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.cancel_record), Toast.LENGTH_SHORT).show();
     }
 
     //界面失去焦点暂停语音播放
@@ -583,23 +583,23 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        if (msg.equals("消息数据库更新")) {
+        if (msg.equals(getString(R.string.msg_database_update))) {
             initData();
             mMgr.updateNumber(mUser, 0);
-            EventBus.getDefault().post(new MessageEvent("处理未读消息"));
-        } else if (msg.equals("发红包了")) {
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));
+        } else if (msg.equals(getString(R.string.send_red_packet_le))) {
             initData();
-        } else if (msg.equals("转账了")) {
+        } else if (msg.equals(getString(R.string.transfer))) {
             initData();
-        } else if (msg.equals("打开相册")) {
+        } else if (msg.equals(getString(R.string.open_photo_album))) {
             selectorImages();
-        } else if (msg.equals("打开相机")) {
+        } else if (msg.equals(getString(R.string.open_camera))) {
             photograph();
-        } else if (msg.equals("打开文件管理")) {
+        } else if (msg.equals(getString(R.string.open_file_manage))) {
             showFileChooser();
-        } else if (msg.equals("打开摄像机")) {
+        } else if (msg.equals(getString(R.string.open_vidicon))) {
             openCameraShooting();
-        } else if (msg.equals("查看原图")) {
+        } else if (msg.equals(getString(R.string.look_original))) {
             String id = event.getId();
             for (MessageInfo info : mMessageList) {
                 info.setImageType(1);
@@ -895,28 +895,28 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             scrollToBottom();
             if (mMgr.findConversation(mUser)) {
                 if (postfix.equals("Image"))
-                    mMgr.updateConversation(mUser, 0, "[图片]", time);
+                    mMgr.updateConversation(mUser, 0, "[" + getString(R.string.image) + "]", time);
                 else if (postfix.equals("Video"))
-                    mMgr.updateConversation(mUser, 0, "[视频]", time);
+                    mMgr.updateConversation(mUser, 0, "[" + getString(R.string.video) + "]", time);
                 else
-                    mMgr.updateConversation(mUser, 0, "[文件]", time);
+                    mMgr.updateConversation(mUser, 0, "[" + getString(R.string.file) + "]", time);
             } else {
                 ConversationInfo info = new ConversationInfo();
                 info.setTime(time);
                 info.setFriend(mName);
                 info.setUser(mUser);
                 if (postfix.equals("Image"))
-                    info.setMessage("图片");
+                    info.setMessage("[" + getString(R.string.image) + "]");
                 else if (postfix.equals("Video"))
-                    info.setMessage("视频");
+                    info.setMessage("[" + getString(R.string.video) + "]");
                 else
-                    info.setMessage("文件");
+                    info.setMessage("[" + getString(R.string.file) + "]");
                 mMgr.addConversation(info);
             }
-            EventBus.getDefault().post(new MessageEvent("自己发了消息"));
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.oneself_send_msg)));
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "发送失败，请检查当前网络连接", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.send_error), Toast.LENGTH_SHORT).show();
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(mUser);
             messageInfo.setVoice(path);
@@ -939,25 +939,25 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             scrollToBottom();
             if (mMgr.findConversation(mUser)) {
                 if (postfix.equals("Image"))
-                    mMgr.updateConversation(mUser, 0, "图片", time);
+                    mMgr.updateConversation(mUser, 0, getString(R.string.image), time);
                 else if (postfix.equals("Video"))
-                    mMgr.updateConversation(mUser, 0, "视频", time);
+                    mMgr.updateConversation(mUser, 0, getString(R.string.video), time);
                 else
-                    mMgr.updateConversation(mUser, 0, "文件", time);
+                    mMgr.updateConversation(mUser, 0, getString(R.string.file), time);
             } else {
                 ConversationInfo info = new ConversationInfo();
                 info.setTime(time);
                 info.setFriend(mName);
                 info.setUser(mUser);
                 if (postfix.equals("Image"))
-                    info.setMessage("图片");
+                    info.setMessage("[" + getString(R.string.image) + "]");
                 else if (postfix.equals("Video"))
-                    info.setMessage("视频");
+                    info.setMessage("[" + getString(R.string.video) + "]");
                 else
-                    info.setMessage("文件");
+                    info.setMessage("[" + getString(R.string.file) + "]");
                 mMgr.addConversation(info);
             }
-            EventBus.getDefault().post(new MessageEvent("自己发了消息"));
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.oneself_send_msg)));
         }
     }
 
@@ -970,10 +970,10 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             intent.setType("*/*");
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             try {
-                startActivityForResult(Intent.createChooser(intent, "请选择一个要上传的文件"),
+                startActivityForResult(Intent.createChooser(intent, getString(R.string.selector_file)),
                         FILE_SELECT_CODE);
             } catch (ActivityNotFoundException ex) {
-                Toast.makeText(this, "请安装文件管理器", Toast.LENGTH_SHORT)
+                Toast.makeText(this, getString(R.string.toast_install_file_manage), Toast.LENGTH_SHORT)
                         .show();
             }
         } else {
@@ -1165,7 +1165,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private void showDeleteDialog() {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
         deleteCacheDialog.show();
-        deleteCacheDialog.setTitle("确定要删除 " + mName + " 吗？");
+        deleteCacheDialog.setTitle(getString(R.string.confirm_delete) + " " + mName + " " + getString(R.string.what));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -1181,11 +1181,11 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                     Roster roster = Roster.getInstanceFor(XmppConnection.getInstance().getConnection());
                     RosterEntry entry = roster.getEntry(JidCreate.entityBareFrom(mUser));
                     roster.removeEntry(entry);
-                    Toast.makeText(ConversationActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ConversationActivity.this, getString(R.string.delete_succeed), Toast.LENGTH_SHORT).show();
                     mMgr.deleteConversation(mUser);
                     mMgr.deleteMessage(mUser);
                     mMgr.deleteUser(mUser);
-                    EventBus.getDefault().post(new MessageEvent("删除好友"));
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.delete_friend)));
                     deleteCacheDialog.dismiss();
                     finish();
                 } catch (Exception e) {
@@ -1226,10 +1226,10 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 info.setMessage(message);
                 mMgr.addConversation(info);
             }
-            EventBus.getDefault().post(new MessageEvent("自己发了消息"));
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.oneself_send_msg)));
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "发送失败，请检查当前网络连接", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.send_error), Toast.LENGTH_SHORT).show();
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(mUser);
             messageInfo.setMessage(message);
@@ -1254,7 +1254,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 info.setMessage(message);
                 mMgr.addConversation(info);
             }
-            EventBus.getDefault().post(new MessageEvent("自己发了消息"));
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.oneself_send_msg)));
         }
     }
 

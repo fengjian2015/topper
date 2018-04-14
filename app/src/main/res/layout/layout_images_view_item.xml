@@ -24,7 +24,7 @@
         android:id="@+id/tv_artwork_master"
         android:layout_width="@dimen/x180"
         android:layout_height="@dimen/y60"
-        android:text="查看原图"
+        android:text="@string/look_original"
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"

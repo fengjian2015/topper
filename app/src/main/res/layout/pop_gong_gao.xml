@@ -14,7 +14,7 @@
         android:layout_height="@dimen/y100"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/x30"
-        android:text="身份证"
+        android:text="@string/id_card"
         android:textColor="@color/black"
         android:textSize="@dimen/x30"/>
 
@@ -27,7 +27,7 @@
         android:layout_height="@dimen/y100"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/x30"
-        android:text="护照"
+        android:text="@string/protection"
         android:textColor="@color/black"
         android:textSize="@dimen/x30"/>
 

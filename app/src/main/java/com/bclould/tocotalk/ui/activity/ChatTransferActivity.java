@@ -150,7 +150,7 @@ public class ChatTransferActivity extends BaseActivity {
             Toast.makeText(this, getString(R.string.toast_count), Toast.LENGTH_SHORT).show();
         } else if (mTvCoin.getText().toString().isEmpty()) {
             AnimatorTool.getInstance().editTextAnimator(mRlSelectorCoin);
-            Toast.makeText(this, getString(R.string.toast_count), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_coin), Toast.LENGTH_SHORT).show();
         } else {
             return true;
         }
@@ -214,7 +214,7 @@ public class ChatTransferActivity extends BaseActivity {
         });
         valueList = virtualKeyboardView.getValueList();
         countCoin.setText(count + coins);
-        coin.setText(coins + "转账");
+        coin.setText(coins + getString(R.string.transfer));
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -250,7 +250,7 @@ public class ChatTransferActivity extends BaseActivity {
         mCount = mEtCount.getText().toString();
         mRemark = mEtRemark.getText().toString();
         if (mRemark.isEmpty()) {
-            mRemark = "转账给" + mName;
+            mRemark = getString(R.string.transfer) + getString(R.string.transfer_give) + mName;
         }
         mCoin = mTvCoin.getText().toString();
         mRedPacketPresenter.transgerfriend(mCoin, mName, Double.parseDouble(mCount), password, mRemark);
@@ -351,7 +351,7 @@ public class ChatTransferActivity extends BaseActivity {
                 mBottomDialog.dismiss();
             }
         });
-        tvTitle.setText("选择币种");
+        tvTitle.setText(getString(R.string.selector_coin));
         if (MyApp.getInstance().mCoinList.size() != 0) {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);
@@ -388,7 +388,7 @@ public class ChatTransferActivity extends BaseActivity {
             messageInfo.setCount(mCount);
             messageInfo.setState(0);
             mMgr.addMessage(messageInfo);
-            String hint = "[转账]";
+            String hint = "[" + getString(R.string.transfer) + "]";
             if (mMgr.findConversation(mUser)) {
                 mMgr.updateConversation(mUser, 0, hint, time);
             } else {
@@ -399,7 +399,7 @@ public class ChatTransferActivity extends BaseActivity {
                 info.setMessage(hint);
                 mMgr.addConversation(info);
             }
-            EventBus.getDefault().post(new MessageEvent("转账了"));
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.transfer)));
             finish();
         } catch (Exception e) {
             e.printStackTrace();

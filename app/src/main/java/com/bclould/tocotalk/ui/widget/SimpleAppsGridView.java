@@ -21,9 +21,11 @@ public class SimpleAppsGridView extends RelativeLayout {
 
     protected View view;
     private String mUser;
+    private Context mContext;
 
     public SimpleAppsGridView(Context context) {
         this(context, null);
+        mContext = context;
 
     }
 
@@ -36,13 +38,13 @@ public class SimpleAppsGridView extends RelativeLayout {
     protected void init() {
         GridView gv_apps = (GridView) view.findViewById(R.id.gv_apps);
         ArrayList<AppInfo> mAppBeanList = new ArrayList<>();
-        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_photo, "图片"));
-        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_camera, "拍照"));
-        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_video, "视频"));
+        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_photo, mContext.getString(R.string.image)));
+        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_camera, mContext.getString(R.string.paizhao)));
+        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_video, mContext.getString(R.string.video)));
 //        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_file, "文件"));
-        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_transfer, "转账"));
-        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_red_envelope, "红包"));
-        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_position, "位置"));
+        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_transfer, mContext.getString(R.string.transfer)));
+        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_red_envelope, mContext.getString(R.string.red_package)));
+//        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_position, mContext.getString(R.string.location)));
         AppsAdapter adapter = new AppsAdapter(getContext(), mAppBeanList, mUser);
         gv_apps.setAdapter(adapter);
     }

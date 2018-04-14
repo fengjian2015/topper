@@ -34,7 +34,7 @@ public class OutCoinSitePresenter {
     private void showDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(mOutCoinSiteActivity);
-            mProgressDialog.setMessage("加载中...");
+            mProgressDialog.setMessage(mOutCoinSiteActivity.getString(R.string.loading));
         }
 
         mProgressDialog.show();
@@ -76,8 +76,8 @@ public class OutCoinSitePresenter {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
-                            Toast.makeText(mOutCoinSiteActivity, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
-                        }
+
+                            Toast.makeText(mOutCoinSiteActivity, mOutCoinSiteActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();}
 
                         @Override
                         public void onComplete() {
@@ -107,14 +107,16 @@ public class OutCoinSitePresenter {
                         public void onNext(@NonNull BaseInfo baseInfo) {
                             Toast.makeText(mOutCoinSiteActivity, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             hideDialog();
-                            if (baseInfo.getMessage().contains("删除成功！")) ;
+                            if (baseInfo.getMessage().contains(mOutCoinSiteActivity.getString(R.string.delete_succeed))){
+
+                            }
 
                         }
 
                         @Override
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
-                            Toast.makeText(mOutCoinSiteActivity, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mOutCoinSiteActivity, mOutCoinSiteActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

@@ -113,10 +113,10 @@ public class PersonalDetailsActivity extends BaseActivity {
                     if (type) {
                         List<UserInfo> userInfos = mMgr.queryUser(UtilTool.getJid());
                         mTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfos.get(0).getPath()));
-                        EventBus.getDefault().post(new MessageEvent("修改头像"));
-                        Toast.makeText(this, "修改成功", Toast.LENGTH_SHORT).show();
+                        EventBus.getDefault().post(new MessageEvent(getString(R.string.xg_touxaing)));
+                        Toast.makeText(this, getString(R.string.xg_succeed), Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(this, "修改失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.xg_error), Toast.LENGTH_SHORT).show();
                     }
                     break;
             }

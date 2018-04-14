@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +47,7 @@ import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -70,9 +70,9 @@ public class PushBuyingActivity extends BaseActivity {
     public static final int PAYSIGN2 = 5;
     private static final int TIMESIGN = 4;
     private static final int BUYSELL = 3;
-    String[] mTimeArr = {"5分钟", "10分钟", "20分钟", "30分钟"};
-    String[] mBuySellArr = {"买", "卖"};
-    String[] mPayArr = {"银行卡", "支付宝", "微信"};
+    List<String> mTimeList = new ArrayList<>();
+    List<String> mBuySellList = new ArrayList<>();
+    List<String> mPayList = new ArrayList<>();
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.tv_title)
@@ -81,6 +81,16 @@ public class PushBuyingActivity extends BaseActivity {
     ImageView mIvQuestion;
     @Bind(R.id.rl_title)
     RelativeLayout mRlTitle;
+    @Bind(R.id.tv_hint)
+    TextView mTvHint;
+    @Bind(R.id.tv4)
+    TextView mTv4;
+    @Bind(R.id.xx4)
+    TextView mXx4;
+    @Bind(R.id.tv_buy_sell)
+    TextView mTvBuySell;
+    @Bind(R.id.rl_buy_sell)
+    RelativeLayout mRlBuySell;
     @Bind(R.id.tv)
     TextView mTv;
     @Bind(R.id.xx)
@@ -117,8 +127,8 @@ public class PushBuyingActivity extends BaseActivity {
     TextView mTv5;
     @Bind(R.id.xx5)
     TextView mXx5;
-    @Bind(R.id.tv_price)
-    TextView mTvPrice;
+    @Bind(R.id.et_price)
+    EditText mEtPrice;
     @Bind(R.id.tv_units)
     TextView mTvUnits;
     @Bind(R.id.rl_price)
@@ -161,14 +171,7 @@ public class PushBuyingActivity extends BaseActivity {
     Button mBtnPushing;
     @Bind(R.id.rl_bottom)
     RelativeLayout mRlBottom;
-    @Bind(R.id.tv4)
-    TextView mTv4;
-    @Bind(R.id.xx4)
-    TextView mXx4;
-    @Bind(R.id.tv_buy_sell)
-    TextView mTvBuySell;
-    @Bind(R.id.rl_buy_sell)
-    RelativeLayout mRlBuySell;
+
 
     private Dialog mBottomDialog;
     private RecyclerView mRecyclerView;
@@ -179,10 +182,11 @@ public class PushBuyingActivity extends BaseActivity {
     private MNPasswordEditText mEtPassword;
     private ArrayList<Map<String, String>> valueList;
     private GridView mGridView;
-    String mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();
+    String mCoinName = "";
     private int mType;
     private CoinPresenter mCoinPresenter;
     private PushBuyingPresenter mPushBuyingPresenter;
+    private String mServiceCharge = MyApp.getInstance().mOtcCoinList.get(0).getOut_otc();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -190,11 +194,30 @@ public class PushBuyingActivity extends BaseActivity {
         setContentView(R.layout.activity_push_buying);
         mCoinPresenter = new CoinPresenter(this);
         mPushBuyingPresenter = new PushBuyingPresenter(this);
+        if (MyApp.getInstance().mOtcCoinList.size() != 0) {
+            mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();
+        }
+        setData();
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
         init();
-        initData(mCoinName);
+        if (!mCoinName.isEmpty()) {
+            initData(mCoinName);
+        }
+        mTvHint.setText(getString(R.string.push_ad_hint) + mServiceCharge + "%" + getString(R.string.sxf));
 //        getModeOfPayment();
+    }
+
+    private void setData() {
+        mTimeList.add(getString(R.string.time_bar));
+        mTimeList.add(getString(R.string.time_bar2));
+        mTimeList.add(getString(R.string.time_bar3));
+        mTimeList.add(getString(R.string.time_bar4));
+        mBuySellList.add(getString(R.string.mai));
+        mBuySellList.add(getString(R.string.mai2));
+        mPayList.add(getString(R.string.bank_card));
+        mPayList.add(getString(R.string.alipay));
+        mPayList.add(getString(R.string.we_chat));
     }
 
     Map<String, Boolean> mModeOfPayment = new HashMap<>();
@@ -203,9 +226,9 @@ public class PushBuyingActivity extends BaseActivity {
         mPushBuyingPresenter.getModeOfPayment(new SubscribeCoinPresenter.CallBack2() {
             @Override
             public void send(ModeOfPaymentInfo.DataBean data) {
-                mModeOfPayment.put("银行卡", data.isBank());
-                mModeOfPayment.put("支付宝", data.isAlipay());
-                mModeOfPayment.put("微信", data.isWechat());
+                mModeOfPayment.put(getString(R.string.bank_card), data.isBank());
+                mModeOfPayment.put(getString(R.string.alipay), data.isAlipay());
+                mModeOfPayment.put(getString(R.string.we_chat), data.isWechat());
             }
         });
     }
@@ -282,9 +305,9 @@ public class PushBuyingActivity extends BaseActivity {
                 try {
                     double usdt = Double.parseDouble(data.getUSDT());
                     double cny = Double.parseDouble(data.getRate());
-                    DecimalFormat df = new DecimalFormat("#.000000");
+                    DecimalFormat df = new DecimalFormat("0.00");
                     String price = df.format(cny * usdt);
-                    mTvPrice.setText(price);
+                    mEtPrice.setHint(getString(R.string.reference_value) + price);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -300,7 +323,7 @@ public class PushBuyingActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.rl_buy_sell:
-                showDialog(mModeOfPayment, mBuySellArr, BUYSELL, "买卖");
+                showDialog(mModeOfPayment, mBuySellList, BUYSELL, getString(R.string.buysell));
                 break;
             case R.id.iv_question:
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));
@@ -327,7 +350,7 @@ public class PushBuyingActivity extends BaseActivity {
                     showPWDialog();
                 break;
             case R.id.rl_payment_time:
-                showDialog(mModeOfPayment, mTimeArr, TIMESIGN, getString(R.string.selector_payment_time));
+                showDialog(mModeOfPayment, mTimeList, TIMESIGN, getString(R.string.selector_payment_time));
                 break;
         }
     }
@@ -367,7 +390,7 @@ public class PushBuyingActivity extends BaseActivity {
                 mBottomDialog.dismiss();
             }
         });
-        tvTitle.setText("选择币种");
+        tvTitle.setText(getString(R.string.selector_coin));
     }
 
     //验证手机号和密码
@@ -380,7 +403,7 @@ public class PushBuyingActivity extends BaseActivity {
             Toast.makeText(this, getResources().getString(R.string.toast_state), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mTvState);
         } else if (mTvBuySell.getText().toString().trim().isEmpty()) {
-            Toast.makeText(this, "买卖不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_buy_sell), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mTvBuySell);
         } else if (mTvPayment.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, getResources().getString(R.string.toast_legal_tender), Toast.LENGTH_SHORT).show();
@@ -397,6 +420,9 @@ public class PushBuyingActivity extends BaseActivity {
         } else if (mEtMaxLimit.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, getResources().getString(R.string.toast_max_limit), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtMaxLimit);
+        }else if (mEtPrice.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, getResources().getString(R.string.toast_price), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mEtPrice);
         } /*else if (Double.parseDouble(mEtMinLimit.getText().toString()) < 100) {
             Toast.makeText(this, "最小量不能小于100", Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtMinLimit);
@@ -469,9 +495,9 @@ public class PushBuyingActivity extends BaseActivity {
         valueList = virtualKeyboardView.getValueList();
         countCoin.setText(count + coins);
         if (mType == 1)
-            coin.setText("发布买入" + coins + "信息");
+            coin.setText(getString(R.string.push_buy) + coins + getString(R.string.msg));
         else
-            coin.setText("发布卖出" + coins + "信息");
+            coin.setText(getString(R.string.push_sell) + coins + getString(R.string.msg));
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -548,7 +574,7 @@ public class PushBuyingActivity extends BaseActivity {
         String state = mTvState.getText().toString();
         String payment = mTvPayment.getText().toString();
         String paymentTime = mTvPaymentTime.getText().toString();
-        String price = mTvPrice.getText().toString();
+        String price = mEtPrice.getText().toString();
         String maxLimit = mEtMaxLimit.getText().toString();
         String minLimit = mEtMinLimit.getText().toString();
         String remark = mEtRemark.getText().toString();
@@ -557,7 +583,7 @@ public class PushBuyingActivity extends BaseActivity {
         }
         String count = mEtCount.getText().toString();
         String buySell = mTvBuySell.getText().toString();
-        if (buySell.equals("买")) {
+        if (buySell.equals(getString(R.string.mai))) {
             mType = 1;
         } else {
             mType = 2;
@@ -568,7 +594,7 @@ public class PushBuyingActivity extends BaseActivity {
 
     private Map<String, Integer> mMap = new HashMap<>();
 
-    private void showDialog(Map<String, Boolean> modeOfPayment, String[] arr, final int sign, String title) {
+    private void showDialog(Map<String, Boolean> modeOfPayment, List<String> list, final int sign, String title) {
         mBottomDialog = new Dialog(this, R.style.BottomDialog2);
         View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom, null);
         //获得dialog的window窗口
@@ -587,11 +613,11 @@ public class PushBuyingActivity extends BaseActivity {
         mRecyclerView = (RecyclerView) mBottomDialog.findViewById(R.id.recycler_view);
         final Button button = (Button) mBottomDialog.findViewById(R.id.btn_cancel);
         if (sign == PAYSIGN || sign == PAYSIGN2)
-            button.setText("确定");
+            button.setText(getString(R.string.confirm));
         TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
         tvTitle.setText(title);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mBottomDialogRVAdapter = new BottomDialogRVAdapter(this, modeOfPayment, arr, sign, new BottomDialogRVAdapter.CallBack() {
+        mBottomDialogRVAdapter = new BottomDialogRVAdapter(this, modeOfPayment, list, sign, new BottomDialogRVAdapter.CallBack() {
             @Override
             public void send(String name, boolean isChecked, int position) {
                 if (isChecked) {
@@ -671,6 +697,7 @@ public class PushBuyingActivity extends BaseActivity {
         mBottomDialog.dismiss();
         mCoinName = name;
         initData(name);
+        mTvHint.setText(getString(R.string.push_ad_hint) + mServiceCharge + "%" + getString(R.string.sxf));
 //        mEtMaxLimit.setText("");
 //        mEtMinLimit.setText("");
         mTvCurrency.setText(name);

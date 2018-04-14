@@ -60,11 +60,11 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_hint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/y20"
-                android:text="餘額需大於0.05,發佈廣告才能正常顯示"
                 android:textSize="@dimen/x26"/>
 
             <TextView
@@ -482,14 +482,20 @@
                         android:background="@color/light"/>
 
 
-                    <TextView
-                        android:id="@+id/tv_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x30"
+                    <EditText
+                        android:id="@+id/et_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toLeftOf="@+id/tv_units"
                         android:layout_toRightOf="@+id/xx5"
-                        android:textColor="@android:color/black"/>
+                        android:background="@android:color/transparent"
+                        android:paddingLeft="@dimen/x30"
+                        android:paddingRight="@dimen/x20"
+                        android:inputType="numberDecimal"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textCursorDrawable="@null"
+                        android:textSize="@dimen/x30"/>
 
                     <TextView
                         android:id="@+id/tv_units"
@@ -545,9 +551,9 @@
                         android:layout_toRightOf="@+id/xx10"
                         android:background="@android:color/transparent"
                         android:hint="@string/et_count"
-                        android:singleLine="true"
                         android:inputType="numberDecimal"
                         android:paddingLeft="@dimen/x30"
+                        android:singleLine="true"
                         android:textColor="@android:color/black"
                         android:textCursorDrawable="@null"
                         android:textSize="@dimen/x30"/>
@@ -601,13 +607,13 @@
                     <EditText
                         android:id="@+id/et_min_limit"
                         android:layout_width="@dimen/x400"
-                        android:singleLine="true"
                         android:layout_height="match_parent"
                         android:layout_toRightOf="@+id/xx6"
                         android:background="@android:color/transparent"
                         android:hint="@string/et_min_limit"
                         android:inputType="numberDecimal"
                         android:paddingLeft="@dimen/x30"
+                        android:singleLine="true"
                         android:textColor="@android:color/black"
                         android:textCursorDrawable="@null"
                         android:textSize="@dimen/x30"/>
@@ -666,8 +672,8 @@
                         android:background="@android:color/transparent"
                         android:hint="@string/et_max_limit"
                         android:inputType="numberDecimal"
-                        android:singleLine="true"
                         android:paddingLeft="@dimen/x30"
+                        android:singleLine="true"
                         android:textColor="@android:color/black"
                         android:textCursorDrawable="@null"
                         android:textSize="@dimen/x30"/>

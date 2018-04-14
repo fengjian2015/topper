@@ -118,7 +118,7 @@ public class InCoinActivity extends BaseActivity {
             case R.id.btn_copy:
                 ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 cm.setText(mTvSite.getText().toString());
-                Toast.makeText(this, "复制成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.copy_succeed), Toast.LENGTH_SHORT).show();
                 break;
         }
     }

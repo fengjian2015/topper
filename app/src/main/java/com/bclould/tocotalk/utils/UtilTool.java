@@ -295,6 +295,7 @@ public class UtilTool {
     }
 
     public static String saveImages(Bitmap bitmap, String user, Context context, DBManager mgr) {
+        UtilTool.Log("保存頭像", user + "");
         try {
             File file = new File(context.getFilesDir().getAbsolutePath() + "/images");
             if (!file.exists()) {

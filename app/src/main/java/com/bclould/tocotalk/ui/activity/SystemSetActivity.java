@@ -102,7 +102,7 @@ public class SystemSetActivity extends BaseActivity {
     private void showDialog() {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
         deleteCacheDialog.show();
-        deleteCacheDialog.setTitle("确定要退出登录吗？");
+        deleteCacheDialog.setTitle(getString(R.string.quit_hint));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
         cancel.setOnClickListener(new View.OnClickListener() {

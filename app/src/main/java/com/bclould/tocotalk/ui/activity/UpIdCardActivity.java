@@ -171,9 +171,9 @@ public class UpIdCardActivity extends BaseActivity {
 
     private boolean HuzhaoCheck() {
         if (mHuzhaoMap.get(HUZHENGMIAN) == null) {
-            Toast.makeText(this, "护照正面不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_huzhao_zhengmian), Toast.LENGTH_SHORT).show();
         } else if (mHuzhaoMap.get(HUSHOUCHI) == null) {
-            Toast.makeText(this, "手持护照不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_huzhao_shouchi), Toast.LENGTH_SHORT).show();
         } else {
             return true;
         }
@@ -182,11 +182,11 @@ public class UpIdCardActivity extends BaseActivity {
 
     private boolean ShenfenCheck() {
         if (mShenfenMap.get(ZHENGMIAN) == null) {
-            Toast.makeText(this, "身份证正面不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_idcard_zhengmian), Toast.LENGTH_SHORT).show();
         } else if (mShenfenMap.get(FANMIAN) == null) {
-            Toast.makeText(this, "身份证反面不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_idcard_fanmian), Toast.LENGTH_SHORT).show();
         } else if (mShenfenMap.get(SHOUCHI) == null) {
-            Toast.makeText(this, "手持身份证不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_idcard_shouchi), Toast.LENGTH_SHORT).show();
         } else {
             return true;
         }
@@ -196,7 +196,7 @@ public class UpIdCardActivity extends BaseActivity {
     private void showDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(this);
-            mProgressDialog.setMessage("上传中...");
+            mProgressDialog.setMessage(getString(R.string.uploading));
         }
 
         mProgressDialog.show();
@@ -235,7 +235,7 @@ public class UpIdCardActivity extends BaseActivity {
             @Override
             public void send(int status) {
                 if (status == 1) {
-                    Toast.makeText(UpIdCardActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpIdCardActivity.this, getString(R.string.up_succeed), Toast.LENGTH_SHORT).show();
                     finish();
                 }
                 hideDialog();
@@ -295,7 +295,7 @@ public class UpIdCardActivity extends BaseActivity {
                                         s3Client.putObject(por);
                                     } catch (AmazonClientException e) {
                                         hideDialog();
-                                        Toast.makeText(UpIdCardActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(UpIdCardActivity.this, getString(R.string.up_error), Toast.LENGTH_SHORT).show();
                                         e.printStackTrace();
                                     }
                                 }

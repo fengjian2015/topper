@@ -44,7 +44,7 @@ public class ReceiptPaymentPresenter {
     private void showDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(mContext);
-            mProgressDialog.setMessage("加载中...");
+            mProgressDialog.setMessage(mContext.getString(R.string.loading));
         }
 
         mProgressDialog.show();
@@ -75,7 +75,7 @@ public class ReceiptPaymentPresenter {
                         public void onNext(BaseInfo baseInfo) {
                             if (baseInfo.getStatus() == 1) {
                                 callBack.send(baseInfo.getData());
-                            } else if (baseInfo.getMessage().equals("请先进行实名认证")) {
+                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.real_name_authentication_hint))) {
                                 showHintDialog(0);
                             } else {
                                 Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
@@ -85,7 +85,7 @@ public class ReceiptPaymentPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -114,14 +114,14 @@ public class ReceiptPaymentPresenter {
 
                         @Override
                         public void onNext(ReceiptInfo receiptInfo) {
-                            if (receiptInfo.getMessage().equals("尚未设置交易密码")) {
+                            if (receiptInfo.getMessage().equals(mContext.getString(R.string.set_pay_pw_hint))) {
                                 showHintDialog(1);
-                            } else if (receiptInfo.getMessage().equals("交易密码不正确")) {
+                            } else if (receiptInfo.getMessage().equals(mContext.getString(R.string.payment_pw_error))) {
                                 PaymentActivity activity = (PaymentActivity) mContext;
                                 activity.showHintDialog();
                             } else if (receiptInfo.getStatus() == 1) {
                                 callBack2.send(receiptInfo.getData());
-                            } else if (receiptInfo.getMessage().equals("请先进行实名认证")) {
+                            } else if (receiptInfo.getMessage().equals(mContext.getString(R.string.real_name_authentication_hint))) {
                                 showHintDialog(0);
                             } else {
                                 Toast.makeText(mContext, receiptInfo.getMessage(), Toast.LENGTH_SHORT).show();
@@ -131,7 +131,7 @@ public class ReceiptPaymentPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -149,10 +149,10 @@ public class ReceiptPaymentPresenter {
         deleteCacheDialog.show();
         switch (type) {
             case 0:
-                deleteCacheDialog.setTitle("请先实名认证！");
+                deleteCacheDialog.setTitle(mContext.getString(R.string.real_name_authentication_hint));
                 break;
             case 1:
-                deleteCacheDialog.setTitle("请先设置交易密码！");
+                deleteCacheDialog.setTitle(mContext.getString(R.string.set_pay_pw_hint));
                 break;
         }
         Button retry = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
@@ -194,14 +194,14 @@ public class ReceiptPaymentPresenter {
 
                         @Override
                         public void onNext(BaseInfo baseInfo) {
-                            if (baseInfo.getMessage().equals("尚未设置交易密码")) {
+                            if (baseInfo.getMessage().equals(mContext.getString(R.string.set_pay_pw_hint))) {
                                 showHintDialog(1);
-                            } else if (baseInfo.getMessage().equals("交易密码不正确")) {
+                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.payment_pw_error))) {
                                 PaymentActivity activity = (PaymentActivity) mContext;
                                 activity.showHintDialog();
                             } else if (baseInfo.getStatus() == 1) {
                                 callBack3.send(baseInfo.getData().getUrl());
-                            } else if (baseInfo.getMessage().equals("请先进行实名认证")) {
+                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.real_name_authentication_hint))) {
                                 showHintDialog(0);
                             }
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
@@ -210,7 +210,7 @@ public class ReceiptPaymentPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -246,7 +246,7 @@ public class ReceiptPaymentPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -276,7 +276,7 @@ public class ReceiptPaymentPresenter {
                         public void onNext(ReceiptInfo receiptInfo) {
                             if (receiptInfo.getStatus() == 1) {
                                 callBack5.send(receiptInfo.getData());
-                            } else if (receiptInfo.getMessage().equals("请先进行实名认证")) {
+                            } else if (receiptInfo.getMessage().equals(mContext.getString(R.string.real_name_authentication_hint))) {
                                 showHintDialog(0);
                             }
                             Toast.makeText(mContext, receiptInfo.getMessage(), Toast.LENGTH_SHORT).show();
@@ -286,7 +286,7 @@ public class ReceiptPaymentPresenter {
                         public void onError(Throwable e) {
                             hideDialog();
                             UtilTool.Log("错误", e.getMessage());
-                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

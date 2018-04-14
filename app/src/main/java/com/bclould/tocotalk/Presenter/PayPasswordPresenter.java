@@ -36,7 +36,7 @@ public class PayPasswordPresenter {
     private void showDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(mPayPasswordActivity);
-            mProgressDialog.setMessage("加载中...");
+            mProgressDialog.setMessage(mPayPasswordActivity.getString(R.string.loading));
         }
 
         mProgressDialog.show();
@@ -68,7 +68,7 @@ public class PayPasswordPresenter {
                         public void onNext(@NonNull BaseInfo baseInfo) {
                             if (baseInfo.getStatus() == 1)
                                 mPayPasswordActivity.finish();
-                            if (baseInfo.getMessage().equals("请先绑定谷歌验证"))
+                            if (baseInfo.getMessage().equals(mPayPasswordActivity.getString(R.string.binding_google_hint1)))
                                 mPayPasswordActivity.startActivity(new Intent(mPayPasswordActivity, GoogleVerificationActivity.class));
                             hideDialog();
                             Toast.makeText(mPayPasswordActivity, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
@@ -78,7 +78,7 @@ public class PayPasswordPresenter {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
-                            Toast.makeText(mPayPasswordActivity, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mPayPasswordActivity, mPayPasswordActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
 
                         }
 

@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="钱包"
+            android:text="@string/wallet"
             android:textColor="@color/white"
             android:textSize="@dimen/x32"/>
 

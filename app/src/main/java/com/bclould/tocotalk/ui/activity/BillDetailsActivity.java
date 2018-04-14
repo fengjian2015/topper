@@ -141,13 +141,13 @@ public class BillDetailsActivity extends BaseActivity {
         Intent intent = getIntent();
         mType = intent.getIntExtra("type", 0);
         if (mType == 0) {
-            mTvTitle.setText("充币记录");
+            mTvTitle.setText(getString(R.string.in_coin) + getString(R.string.record));
             mCoinName = intent.getStringExtra("coin_name");
         } else if (mType == 1) {
-            mTvTitle.setText("提币记录");
+            mTvTitle.setText(getString(R.string.out_coin) + getString(R.string.record));
             mCoinName = intent.getStringExtra("coin_name");
         } else {
-            mTvTitle.setText("转账记录");
+            mTvTitle.setText(getString(R.string.transfer) + getString(R.string.record));
         }
     }
 

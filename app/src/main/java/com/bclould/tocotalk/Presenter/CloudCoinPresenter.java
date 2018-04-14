@@ -37,7 +37,7 @@ public class CloudCoinPresenter {
     private void showDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(mActivity);
-            mProgressDialog.setMessage("加载中...");
+            mProgressDialog.setMessage(mActivity.getString(R.string.loading));
         }
 
         mProgressDialog.show();
@@ -76,7 +76,7 @@ public class CloudCoinPresenter {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
-                            Toast.makeText(mActivity, "网络连接错误，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mActivity, mActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

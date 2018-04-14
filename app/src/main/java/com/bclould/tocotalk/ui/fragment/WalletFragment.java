@@ -91,7 +91,7 @@ public class WalletFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        if (msg.equals("转账")) {
+        if (msg.equals(getString(R.string.transfer))) {
             initData();
         }
     }

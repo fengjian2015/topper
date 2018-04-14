@@ -112,7 +112,11 @@ public class RedPacketActivity extends AppCompatActivity {
                     mTvCount.setSpacing(2);
                     mTvRemark.setText(data.getIntro());
                     mTvName.setText(data.getSend_rp_user_name());
-                    mIvTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfos.get(0).getPath()));
+                    try {
+                        mIvTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfos.get(0).getPath()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }

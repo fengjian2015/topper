@@ -82,7 +82,7 @@ public class OutCoinSiteRVAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mOutCoinSiteActivity);
                     deleteCacheDialog.show();
-                    deleteCacheDialog.setTitle("确定要删除地址吗？");
+                    deleteCacheDialog.setTitle(mOutCoinSiteActivity.getString(R.string.delete_site_hint));
                     dialogClick(deleteCacheDialog);
                 }
 

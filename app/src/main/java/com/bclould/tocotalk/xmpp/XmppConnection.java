@@ -87,7 +87,7 @@ import static org.jivesoftware.smack.provider.ProviderManager.addIQProvider;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class XmppConnection {
     private int SERVER_PORT = Constants.OPENFIRE_PORT;
-    private String SERVER_HOST = Constants.OPENFIRE_IP;
+    private String SERVER_HOST = Constants.DOMAINNAME;
     private String SERVER_NAME = Constants.DOMAINNAME;
     private AbstractXMPPConnection connection = null;
     private static XmppConnection xmppConnection = new XmppConnection();
@@ -138,13 +138,7 @@ public class XmppConnection {
                 config.setXmppDomain(SERVER_NAME);
                 //设置端口号：默认5222
                 config.setPort(SERVER_PORT);
-                //禁用SSL连接
-                /*SSLContext sc = SSLContext.getInstance("TLS");
-                MemorizingTrustManager mtm = new MemorizingTrustManager(mContext);
-                sc.init(null, new X509TrustManager[]{mtm}, new java.security.SecureRandom());
-                config.setCustomSSLContext(sc);
-                config.setHostnameVerifier(
-                        mtm.wrapHostnameVerifier(new org.apache.http.conn.ssl.StrictHostnameVerifier()));*/
+
                 SSLContext sslContext = SSLContext.getInstance("TLS");
                 MyX509TrustManager myX509TrustManager = new MyX509TrustManager(mContext.getResources().getAssets().open("keystore.bks"), "changeit");
                 sslContext.init(null, new TrustManager[]{myX509TrustManager},
@@ -173,7 +167,7 @@ public class XmppConnection {
                 return true;
             }
         } catch (Exception xe) {
-            EventBus.getDefault().post(new MessageEvent("登录失败"));
+            EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.login_error)));
             mHandler.sendEmptyMessage(0);
             UtilTool.Log("fsdafa", "连接失败");
             xe.printStackTrace();
@@ -232,7 +226,7 @@ public class XmppConnection {
             setPresence(0);
 
             // 添加连接监听
-            connectionListener = new XMConnectionListener(account, password, mContext);
+            connectionListener = new XMConnectionListener(mContext);
             getConnection().removeConnectionListener(connectionListener);
             getConnection().addConnectionListener(connectionListener);
             return true;

@@ -84,11 +84,11 @@ public class BuyFragment extends Fragment {
         } else if (event.getState() != null) {
             mState = event.getState();
         }
-        if (msg.equals("幣種切換")) {
+        if (msg.equals(getString(R.string.coin_switchover))) {
             initData(mCoinName, mState);
-        } else if (msg.equals("发布交易")) {
+        } else if (msg.equals(getString(R.string.publish_deal))) {
             initData(mCoinName, mState);
-        } else if (msg.equals("国家切换")) {
+        } else if (msg.equals(getString(R.string.state_switchover))) {
             initData(mCoinName, mState);
         }
     }

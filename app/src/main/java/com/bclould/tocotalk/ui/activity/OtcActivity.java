@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,7 +35,10 @@ import com.bclould.tocotalk.ui.adapter.PayManageGVAdapter;
 import com.bclould.tocotalk.ui.fragment.BuyFragment;
 import com.bclould.tocotalk.ui.fragment.OrderFormFragment;
 import com.bclould.tocotalk.ui.fragment.SellFragment;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -100,6 +104,12 @@ public class OtcActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otc);
         ButterKnife.bind(this);
+        mType = getResources().getString(R.string.all);
+        mFiltrateList.add(getString(R.string.all));
+        mFiltrateList.add(getString(R.string.off_the_stocks));
+        mFiltrateList.add(getString(R.string.dengdai_fk));
+        mFiltrateList.add(getString(R.string.dengdai_fb));
+        mFiltrateList.add(getString(R.string.canceled_canc));
         initFragment();
         init();
     }
@@ -116,7 +126,34 @@ public class OtcActivity extends BaseActivity {
         initViewPager();
         initTopMenu();
         initData();
-        mMap.put("筛选", 0);
+        mMap.put(getString(R.string.filtrate), 0);
+        boolean aBoolean = MySharedPreferences.getInstance().getBoolean(Constants.OTC_DISCLAIMER);
+        if (!aBoolean)
+            showDisclaimerDialog();
+    }
+
+    boolean isCheckBox = false;
+
+    private void showDisclaimerDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_otc_disclaimer, this);
+        deleteCacheDialog.show();
+        final LinearLayout showHide = (LinearLayout) deleteCacheDialog.findViewById(R.id.ll_show_hide);
+        final CheckBox checkBox = (CheckBox) deleteCacheDialog.findViewById(R.id.check_box);
+        final Button roger = (Button) deleteCacheDialog.findViewById(R.id.btn_roger);
+        roger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        showHide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isCheckBox = !isCheckBox;
+                checkBox.setChecked(isCheckBox);
+                MySharedPreferences.getInstance().setBoolean(Constants.OTC_DISCLAIMER, isCheckBox);
+            }
+        });
     }
 
     private void initData() {
@@ -125,7 +162,7 @@ public class OtcActivity extends BaseActivity {
             coinPresenter.coinLists("otc", new CoinPresenter.CallBack() {
                 @Override
                 public void send(List<CoinListInfo.DataBean> data) {
-                    UtilTool.Log("币种", data.size() + "");
+                    UtilTool.Log(getString(R.string.coins), data.size() + "");
                     MyApp.getInstance().mOtcCoinList.addAll(data);
                 }
             });
@@ -249,8 +286,8 @@ public class OtcActivity extends BaseActivity {
         }
     }
 
-    String mType = "全部";
-    String[] mFiltrateArr = {"全部", "已完成", "等待付款", "等待放币", "已取消"};
+    String mType = "";
+    List<String> mFiltrateList = new ArrayList<>();
     private Map<String, Integer> mMap = new HashMap<>();
 
     private void showFiltrateDialog() {
@@ -277,14 +314,14 @@ public class OtcActivity extends BaseActivity {
                 mBottomDialog.dismiss();
             }
         });
-        gridView.setAdapter(new PayManageGVAdapter(this, mFiltrateArr, mMap, new PayManageGVAdapter.CallBack() {
+        gridView.setAdapter(new PayManageGVAdapter(this, mFiltrateList, mMap, new PayManageGVAdapter.CallBack() {
             //接口回调
             @Override
             public void send(int position, String typeName) {
                 mType = typeName;
-                mMap.put("筛选", position);
+                mMap.put(getString(R.string.filtrate), position);
                 mBottomDialog.dismiss();
-                MessageEvent messageEvent = new MessageEvent("交易订单筛选");
+                MessageEvent messageEvent = new MessageEvent(getString(R.string.deal_order_filtrate));
                 messageEvent.setFiltrate(mType);
                 EventBus.getDefault().post(messageEvent);
             }
@@ -326,7 +363,7 @@ public class OtcActivity extends BaseActivity {
                 mBottomDialog.dismiss();
             }
         });
-        tvTitle.setText("选择币种");
+        tvTitle.setText(getString(R.string.selector_coin));
     }
 
     private void showStateDialog() {
@@ -355,7 +392,7 @@ public class OtcActivity extends BaseActivity {
                 mStateDialog.dismiss();
             }
         });
-        tvTitle.setText("选择国家");
+        tvTitle.setText(getString(R.string.selecotr_state));
         if (MyApp.getInstance().mCoinList.size() != 0) {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);
@@ -370,7 +407,7 @@ public class OtcActivity extends BaseActivity {
     public void hideDialog(String name, int id) {
         mBottomDialog.dismiss();
         mTvCoinName.setText(name);
-        MessageEvent messageEvent = new MessageEvent("幣種切換");
+        MessageEvent messageEvent = new MessageEvent(getString(R.string.coin_switchover));
         messageEvent.setCoinName(name);
         EventBus.getDefault().post(messageEvent);
     }
@@ -380,7 +417,7 @@ public class OtcActivity extends BaseActivity {
         mId = id;
         mName_zh = name;
         mTvState.setText(name);
-        MessageEvent messageEvent = new MessageEvent("国家切换");
+        MessageEvent messageEvent = new MessageEvent(getString(R.string.state_switchover));
         messageEvent.setState(name);
         EventBus.getDefault().post(messageEvent);
     }

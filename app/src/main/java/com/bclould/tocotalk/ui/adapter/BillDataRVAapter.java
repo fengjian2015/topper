@@ -94,7 +94,7 @@ public class BillDataRVAapter extends RecyclerView.Adapter {
         @RequiresApi(api = Build.VERSION_CODES.M)
         public void setData(TransferInfo.DataBean dataBean) {
             mDataBean = dataBean;
-            if (dataBean.getDesc().equals("转入")) {
+            if (dataBean.getDesc().equals(mContext.getString(R.string.shift_to))) {
                 mTypeName.setText(dataBean.getSend_name());
                 mCoinCount.setText("+" + dataBean.getNumber() + " " + dataBean.getCoin_name());
                 mCoinCount.setTextColor(mContext.getColor(R.color.red));

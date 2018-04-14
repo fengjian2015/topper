@@ -107,11 +107,11 @@ public class PaymentActivity extends BaseActivity {
         if (mType.equals(Constants.MONEYIN)) {
             mUserId = getIntent().getStringExtra("userId");
         } else if (mType.equals(Constants.MONEYOUT)) {
-            mTvTitle.setText("生成付款码");
-            mBtnPayment.setText("确定");
+            mTvTitle.setText(getString(R.string.create_fk_code));
+            mBtnPayment.setText(getString(R.string.confirm));
         } else if (mType.equals(Constants.QRMONEYIN)) {
-            mTvTitle.setText("生成收款码");
-            mBtnPayment.setText("确定");
+            mTvTitle.setText(getString(R.string.create_sk_code));
+            mBtnPayment.setText(getString(R.string.confirm));
         } else {
             mUserId = getIntent().getStringExtra("userId");
             mCoinId = getIntent().getStringExtra("coinId");
@@ -203,13 +203,13 @@ public class PaymentActivity extends BaseActivity {
         });
         valueList = virtualKeyboardView.getValueList();
         if (mType.equals(Constants.MONEYIN)) {
-            coin.setText("扫码支付");
+            coin.setText(getString(R.string.scan_qr_code_pay));
         } else if (mType.equals(Constants.MONEYOUT)) {
-            coin.setText("生成付款码");
+            coin.setText(getString(R.string.create_fk_code));
         } else if (mType.equals(Constants.QRMONEYIN)) {
-            coin.setText("生成收款码");
+            coin.setText(getString(R.string.create_sk_code));
         } else {
-            coin.setText("扫码支付");
+            coin.setText(getString(R.string.scan_qr_code_pay));
         }
         String count = mEtCount.getText().toString();
         String coinName = mTvCoin.getText().toString();
@@ -264,7 +264,7 @@ public class PaymentActivity extends BaseActivity {
                 bundle.putString("type", Constants.MONEYIN);
                 intent.putExtras(bundle);
                 startActivity(intent);
-                Toast.makeText(PaymentActivity.this, "付款成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PaymentActivity.this, getString(R.string.fk_succeed), Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
@@ -401,7 +401,7 @@ public class PaymentActivity extends BaseActivity {
                 mBottomDialog.dismiss();
             }
         });
-        tvTitle.setText("选择币种");
+        tvTitle.setText(getString(R.string.selector_coin));
     }
 
     public void hideDialog(String name, int id) {
@@ -414,10 +414,10 @@ public class PaymentActivity extends BaseActivity {
     private boolean checkEidt() {
         if (mEtCount.getText().toString().isEmpty()) {
             AnimatorTool.getInstance().editTextAnimator(mEtCount);
-            Toast.makeText(this, "数量不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_count), Toast.LENGTH_SHORT).show();
         } else if (mTvCoin.getText().toString().isEmpty()) {
             AnimatorTool.getInstance().editTextAnimator(mRlSelectorCoin);
-            Toast.makeText(this, "请选择币种", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.selector_coin), Toast.LENGTH_SHORT).show();
         } else {
             return true;
         }
@@ -438,7 +438,7 @@ public class PaymentActivity extends BaseActivity {
                 bundle.putString("type", Constants.MONEYIN);
                 intent.putExtras(bundle);
                 startActivity(intent);
-                Toast.makeText(PaymentActivity.this, "付款成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PaymentActivity.this, getString(R.string.fk_succeed), Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

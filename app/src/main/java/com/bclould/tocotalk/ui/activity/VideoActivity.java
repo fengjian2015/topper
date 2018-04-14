@@ -141,13 +141,13 @@ public class VideoActivity extends AppCompatActivity {
         mVideoPlayer.setOnStatueListener(new VideoPlayer.onStatueListener() {
             @Override
             public void onStart() {
-                mTvPlay.setText("暂停");
+                mTvPlay.setText(getString(R.string.stop));
                 UIhandler.sendEmptyMessage(1);
             }
 
             @Override
             public void onPause() {
-                mTvPlay.setText("播放");
+                mTvPlay.setText(getString(R.string.play));
                 UIhandler.sendEmptyMessage(0);
             }
         });

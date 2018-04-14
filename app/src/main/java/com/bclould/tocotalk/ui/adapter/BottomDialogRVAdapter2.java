@@ -16,6 +16,7 @@ import com.bclould.tocotalk.ui.activity.ChatTransferActivity;
 import com.bclould.tocotalk.ui.activity.OtcActivity;
 import com.bclould.tocotalk.ui.activity.PaymentActivity;
 import com.bclould.tocotalk.ui.activity.PushBuyingActivity;
+import com.bclould.tocotalk.ui.activity.SendQRCodeRedActivity;
 import com.bclould.tocotalk.ui.activity.SendRedPacketActivity;
 import com.bumptech.glide.Glide;
 
@@ -71,7 +72,6 @@ public class BottomDialogRVAdapter2 extends RecyclerView.Adapter {
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-
             view.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
@@ -90,6 +90,9 @@ public class BottomDialogRVAdapter2 extends RecyclerView.Adapter {
                         activity.hideDialog2(mName, mId);
                     } else if (mContext instanceof ChatTransferActivity) {
                         ChatTransferActivity activity = (ChatTransferActivity) mContext;
+                        activity.hideDialog(mName, mId);
+                    }else if (mContext instanceof SendQRCodeRedActivity) {
+                        SendQRCodeRedActivity activity = (SendQRCodeRedActivity) mContext;
                         activity.hideDialog(mName, mId);
                     }
                 }

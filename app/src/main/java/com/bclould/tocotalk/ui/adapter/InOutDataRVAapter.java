@@ -73,12 +73,12 @@ public class InOutDataRVAapter extends RecyclerView.Adapter {
             mTypeName.setText(dataBean.getUser_name());
             mTime.setText(dataBean.getCreated_at());
             if (mType == 0) {
-                mTvRealityTransfer.setText("實際充幣" + " " + dataBean.getNumber() + " " + mCoinName);
-                mTvReailtyIncome.setText("實際到幣" + " " + dataBean.getNumber_u() + " " + mCoinName);
+                mTvRealityTransfer.setText(mContext.getString(R.string.shiji_in_coin) + " " + dataBean.getNumber() + " " + mCoinName);
+                mTvReailtyIncome.setText(mContext.getString(R.string.shiji_out_coin) + " " + dataBean.getNumber_u() + " " + mCoinName);
             } else {
 
-                mTvRealityTransfer.setText("實際提幣" + " " + dataBean.getNumber() + " " + mCoinName);
-                mTvReailtyIncome.setText("實際到幣" + " " + dataBean.getNumber_u() + " " + mCoinName);
+                mTvRealityTransfer.setText(mContext.getString(R.string.shiji_in_coin2) + " " + dataBean.getNumber() + " " + mCoinName);
+                mTvReailtyIncome.setText(mContext.getString(R.string.shiji_out_coin) + " " + dataBean.getNumber_u() + " " + mCoinName);
             }
         }
     }

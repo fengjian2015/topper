@@ -102,7 +102,7 @@ public class OutCoinActivity extends BaseActivity {
         currencyInOutPresenter.outCoinDesc(mId, new CurrencyInOutPresenter.CallBack() {
             @Override
             public void send(BaseInfo.DataBean data) {
-                if(data.getDesc() != null){
+                if (data.getDesc() != null) {
                     String desc = data.getDesc().replace("\\n", "\n");
                     mTvDesc.setText(desc);
                 }
@@ -134,8 +134,10 @@ public class OutCoinActivity extends BaseActivity {
                 break;
             case R.id.btn_selector_site:
                 Intent intent = new Intent(this, OutCoinSiteActivity.class);
-                intent.putExtra("id", mId);
-                intent.putExtra("coinNanme", mCoinName);
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", mId);
+                bundle.putString("coinName", mCoinName);
+                intent.putExtras(bundle);
                 startActivityForResult(intent, SELECTORSITE);
                 break;
             case R.id.btn_confirm:
@@ -318,13 +320,13 @@ public class OutCoinActivity extends BaseActivity {
 
     private boolean editCheck() {
         if (mTvOutCoinSite.getText().toString().isEmpty()) {
-            Toast.makeText(this, "提币地址不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_out_coin_site), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mTvOutCoinSite);
         } else if (mEtCoinCount.getText().toString().isEmpty()) {
-            Toast.makeText(this, "数量不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_count), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtCoinCount);
         } else if (mEtGoogleCode.getText().toString().isEmpty()) {
-            Toast.makeText(this, "谷歌验证吗不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_google_code), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtGoogleCode);
         } else {
             return true;

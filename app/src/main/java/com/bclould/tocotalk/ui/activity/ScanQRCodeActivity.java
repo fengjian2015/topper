@@ -129,13 +129,13 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                         }
                         if (!mMgr.findUser(name)) {
                             Roster.getInstanceFor(XmppConnection.getInstance().getConnection()).createEntry(JidCreate.entityBareFrom(name), null, new String[]{"Friends"});
-                            Toast.makeText(this, "发送请求成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, getString(R.string.send_request_succeed), Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(this, "已在好友列表", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, getString(R.string.have_friend), Toast.LENGTH_SHORT).show();
                         }
                         finish();
                     } catch (Exception e) {
-                        Toast.makeText(this, "发送请求失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.send_request_error), Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
                 } else if (result.contains(Constants.MONEYIN)) {
@@ -162,7 +162,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                         }
                         finish();
                     } catch (Exception e) {
-                        Toast.makeText(this, "扫描二维码失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.scan_qr_code_error), Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
                 } else if (result.contains(Constants.MONEYOUT)) {
@@ -190,7 +190,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                             });
                         }
                     } catch (Exception e) {
-                        Toast.makeText(this, "扫描二维码失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.scan_qr_code_error), Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
                 } else {
@@ -214,7 +214,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
     //扫描失败后调用的方法
     @Override
     public void onScanQRCodeOpenCameraError() {
-        Toast.makeText(this, "相机打开失败", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.open_camera_error), Toast.LENGTH_SHORT).show();
     }
 
     /*@Override

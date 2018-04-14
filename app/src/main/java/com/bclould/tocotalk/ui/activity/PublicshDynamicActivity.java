@@ -209,7 +209,7 @@ public class PublicshDynamicActivity extends BaseActivity {
                     LocalMedia localMedia = selectList.get(0);
                     String postfix = UtilTool.getPostfix(localMedia.getPath());
                     if (postfix.equals("Video") && selectList.size() != 1) {
-                        Toast.makeText(this, "只能选择一个视频", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.selecotr_video_hint), Toast.LENGTH_SHORT).show();
                         mType = true;
                         selectList.clear();
                         selectList.add(localMedia);
@@ -247,7 +247,7 @@ public class PublicshDynamicActivity extends BaseActivity {
     private void showDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(this);
-            mProgressDialog.setMessage("上传中...");
+            mProgressDialog.setMessage(getString(R.string.uploading));
         }
 
         mProgressDialog.show();
@@ -275,7 +275,7 @@ public class PublicshDynamicActivity extends BaseActivity {
                         e.printStackTrace();
                     }
                 } else {
-                    Toast.makeText(this, "不能为空", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.no_null), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -321,7 +321,7 @@ public class PublicshDynamicActivity extends BaseActivity {
                             }
                         } catch (Exception e) {
                             hideDialog();
-                            Toast.makeText(PublicshDynamicActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PublicshDynamicActivity.this, getString(R.string.up_error), Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         }
                     }
@@ -419,7 +419,7 @@ public class PublicshDynamicActivity extends BaseActivity {
             public void send() {
                 hideDialog();
                 finish();
-                EventBus.getDefault().post(new MessageEvent("发表动态"));
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.publish_dynamic)));
             }
         });
     }

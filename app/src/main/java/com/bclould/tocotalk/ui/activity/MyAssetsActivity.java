@@ -91,7 +91,7 @@ public class MyAssetsActivity extends BaseActivity {
                 @Override
                 public void send(String data) {
                     if (data != null) {
-                        mTvCurrency.setText("总资产(USD)");
+                        mTvCurrency.setText(getString(R.string. total_assets_usd));
                         mTvTotal.setText("≈" + data);
                     }
                 }
@@ -104,7 +104,7 @@ public class MyAssetsActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        if (msg.equals("转账")) {
+        if (msg.equals(getString(R.string.transfer))) {
             initData();
         }
     }

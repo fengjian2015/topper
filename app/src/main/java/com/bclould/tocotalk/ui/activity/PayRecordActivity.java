@@ -64,16 +64,27 @@ public class PayRecordActivity extends BaseActivity {
     private Dialog mBottomDialog;
     String mPage = "1";
     String mPageSize = "1000";
-    String mType = "全部";
+    String mType = "";
     String mDate = "";
     private Map<String, Integer> mMap = new HashMap<>();
     private ReceiptPaymentPresenter mReceiptPaymentPresenter;
+    private List<String> mFiltrateList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_record);
         ButterKnife.bind(this);
+        mType = getResources().getString(R.string.all);
+        mFiltrateList.add(getString(R.string.all));
+        mFiltrateList.add(getString(R.string.red_package));
+        mFiltrateList.add(getString(R.string.transfer));
+        mFiltrateList.add(getString(R.string.receipt_payment));
+        mFiltrateList.add(getString(R.string.in_coin));
+        mFiltrateList.add(getString(R.string.out_coin));
+        mFiltrateList.add(getString(R.string.bank_card));
+        mFiltrateList.add(getString(R.string.ru_zhang));
+        mFiltrateList.add(getString(R.string.qi_ta));
         getOptionData();
         mTvDate.setText(mDate);
         mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);
@@ -83,7 +94,7 @@ public class PayRecordActivity extends BaseActivity {
     }
 
     private void initMap() {
-        mMap.put("筛选", 0);
+        mMap.put(getString(R.string.filtrate), 0);
     }
 
     List<TransferListInfo.DataBean> mDataBeanList = new ArrayList<>();
@@ -147,7 +158,7 @@ public class PayRecordActivity extends BaseActivity {
                     .setTextColorCenter(Color.BLACK)
                     .isRestoreItem(true)//切换时是否还原，设置默认选中第一项。
                     .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
-                    .setLabels("年", "月", "日")
+                    .setLabels(getString(R.string.year), getString(R.string.month), getString(R.string.day))
                     .setBackgroundId(0x00000000) //设置外部遮罩颜色
                     .build();
         }
@@ -209,7 +220,7 @@ public class PayRecordActivity extends BaseActivity {
     }
 
     //显示账单筛选dialog
-    String[] mFiltrateArr = {"全部", "红包", "转账", "收付款", "充币", "提币", "银行卡", "入账", "其他"};
+
 
     private void showFiltrateDialog() {
         mBottomDialog = new Dialog(this, R.style.BottomDialog2);
@@ -235,13 +246,13 @@ public class PayRecordActivity extends BaseActivity {
                 mBottomDialog.dismiss();
             }
         });
-        gridView.setAdapter(new PayManageGVAdapter(this, mFiltrateArr, mMap, new PayManageGVAdapter.CallBack() {
+        gridView.setAdapter(new PayManageGVAdapter(this, mFiltrateList, mMap, new PayManageGVAdapter.CallBack() {
             //接口回调
             @Override
             public void send(int position, String typeName) {
                 mType = typeName;
                 initData();
-                mMap.put("筛选", position);
+                mMap.put(getString(R.string.filtrate), position);
                 mBottomDialog.dismiss();
             }
         }));

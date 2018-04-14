@@ -323,6 +323,7 @@ public class DBManager {
     }
 
     public void addUser(String user, String path) {
+        UtilTool.Log("添加", user);
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("my_user", UtilTool.getJid());

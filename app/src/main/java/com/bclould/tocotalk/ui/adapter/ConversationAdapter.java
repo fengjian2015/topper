@@ -102,7 +102,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
                     mNumber.setVisibility(View.GONE);
                     mMgr.updateConversation(mConversationInfo.getUser(), 0, mConversationInfo.getMessage(), mConversationInfo.getTime());
-                    EventBus.getDefault().post(new MessageEvent("处理未读消息"));
+                    EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
                 }
             });
         }

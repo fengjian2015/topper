@@ -28,6 +28,7 @@ import com.bclould.tocotalk.model.ReceiptInfo;
 import com.bclould.tocotalk.model.RedRecordInfo;
 import com.bclould.tocotalk.model.ReviewListInfo;
 import com.bclould.tocotalk.model.StateInfo;
+import com.bclould.tocotalk.model.TransRecordInfo;
 import com.bclould.tocotalk.model.TransferInfo;
 import com.bclould.tocotalk.model.TransferListInfo;
 
@@ -753,4 +754,12 @@ public interface MyService {
             @Field("coin_id") int coin_id
     );
 
+    //支付記錄詳情
+    @POST("common/transRecordInfo")
+    @FormUrlEncoded
+    Observable<TransRecordInfo> transRecord(
+            @Header("Authorization") String token,
+            @Field("log_id") String log_id,
+            @Field("type_number") String type_number
+    );
 }

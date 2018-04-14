@@ -66,7 +66,7 @@ public class ImageViewFragment extends Fragment {
                                 mArtworkMaster.setVisibility(View.GONE);
                                 loadBar.setVisibility(View.GONE);
                                 mMgr.updateImageType(mId + "", 1);
-                                MessageEvent messageEvent = new MessageEvent("查看原图");
+                                MessageEvent messageEvent = new MessageEvent(getString(R.string.look_original));
                                 messageEvent.setId(mId + "");
                                 EventBus.getDefault().post(messageEvent);
                             }
@@ -103,7 +103,7 @@ public class ImageViewFragment extends Fragment {
         return imageUrl;
     }
 
-    public void setImageUrl(String imageUrl, String bigImgUrl, DBManager mgr, int id) {
+    public void setImageUrl(String imageUrl, String bigImgUrl, DBManager mgr, Integer id) {
         this.imageUrl = imageUrl;
         this.mBigImgUrl = bigImgUrl;
         mMgr = mgr;

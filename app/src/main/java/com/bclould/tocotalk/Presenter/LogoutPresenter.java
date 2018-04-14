@@ -43,7 +43,7 @@ public class LogoutPresenter {
     private void showDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(mSystemSetActivity);
-            mProgressDialog.setMessage("退出中...");
+            mProgressDialog.setMessage(mSystemSetActivity.getString(R.string.kitson));
         }
 
         mProgressDialog.show();
@@ -83,7 +83,7 @@ public class LogoutPresenter {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
-                            Toast.makeText(mSystemSetActivity, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mSystemSetActivity, mSystemSetActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

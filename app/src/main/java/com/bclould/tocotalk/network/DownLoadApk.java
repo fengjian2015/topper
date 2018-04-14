@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.bclould.tocotalk.R;
+
 /**
  * Created by lenovo on 2018/2/1 0001.
  */
@@ -48,7 +50,7 @@ public class DownLoadApk {
 
     private static void start(Context context, String url, String title,String appName) {
         long id = FileDownloadManager.getInstance(context).startDownload(url,
-                title, "下载完成后点击打开",appName);
+                title, context.getString(R.string.download_completes_open),appName);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().putLong(DownloadManager.EXTRA_DOWNLOAD_ID,id).commit();
         Log.d(TAG, "apk start download " + id);

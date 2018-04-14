@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#2B353F"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/y20"
+        android:text="@string/tocotalk_agreement"
+        android:textColor="@color/white"
+        android:textSize="@dimen/x32"/>
+
+    <TextView
+        android:id="@+id/xx"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y2"
+        android:layout_below="@+id/tv_title"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y20"
+        android:background="@color/white"/>
+
+    <WebView
+        android:background="#2B353F"
+        android:id="@+id/web_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/xx2"
+        android:layout_below="@+id/xx"
+        android:layout_marginBottom="@dimen/y20"
+        android:layout_marginLeft="@dimen/x40"
+        android:layout_marginRight="@dimen/x40"
+        android:layout_marginTop="@dimen/y20"></WebView>
+
+    <!--<ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/xx2"
+        android:layout_below="@+id/xx"
+        android:layout_marginBottom="@dimen/y20"
+        android:layout_marginLeft="@dimen/x40"
+        android:layout_marginRight="@dimen/x40"
+        android:layout_marginTop="@dimen/y20"
+        android:fillViewport="true">
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:lineSpacingExtra="@dimen/x20"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/service_agreement_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/x24"/>
+    </ScrollView>-->
+
+    <TextView
+        android:id="@+id/xx2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y2"
+        android:layout_above="@+id/tv_consent"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:background="@color/white"/>
+
+    <TextView
+        android:id="@+id/tv_consent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/y40"
+        android:layout_marginTop="@dimen/y10"
+        android:paddingBottom="@dimen/y20"
+        android:paddingTop="@dimen/y20"
+        android:text="@string/consent_agreement"
+        android:textColor="@color/blue2"
+        android:textSize="@dimen/x28"/>
+
+</RelativeLayout>

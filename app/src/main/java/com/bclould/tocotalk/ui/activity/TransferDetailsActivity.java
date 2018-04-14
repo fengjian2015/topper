@@ -59,15 +59,15 @@ public class TransferDetailsActivity extends BaseActivity {
         String time = intent.getStringExtra("time");
         int type = intent.getIntExtra("type", 0);
         if(type == 0){
-            mTvHint.setText("已收入钱包");
+            mTvHint.setText(getString(R.string.received_money));
         }else {
-            mTvHint.setText("已转入对方钱包");
+            mTvHint.setText(getString(R.string.out_money));
         }
         DecimalFormat df = new DecimalFormat("#.00");
         String countd = df.format(Double.parseDouble(count));
         mTvCoin.setText(coin);
         mTvCount.setText(countd);
-        mTvTime.setText("转账时间：" + time);
+        mTvTime.setText(getString(R.string.transfer_time) + "：" + time);
     }
 
     @OnClick({R.id.bark, R.id.tv_transfer_record})

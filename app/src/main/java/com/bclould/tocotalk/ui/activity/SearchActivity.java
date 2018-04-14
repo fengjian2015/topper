@@ -49,16 +49,20 @@ public class SearchActivity extends AppCompatActivity {
     private void initListView() {
         DBManager dbManager = new DBManager(this);
         List<UserInfo> userInfos = dbManager.queryAllUser();
-        for (UserInfo info : userInfos){
+        for (UserInfo info : userInfos) {
             String user = info.getUser();
-            String name = user.substring(0, user.indexOf("@"));
+            String name = "";
+            if (user.contains("@"))
+                name = user.substring(0, user.indexOf("@"));
+            else
+                name = user;
             mList.add(name);
         }
         mListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mList));
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView textView = (TextView)view;
+                TextView textView = (TextView) view;
                 Intent intent = new Intent(SearchActivity.this, ConversationActivity.class);
                 intent.putExtra("name", textView.getText());
                 intent.putExtra("user", textView.getText() + "@" + Constants.DOMAINNAME);
