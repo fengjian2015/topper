@@ -2,18 +2,17 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,6 +32,7 @@ import butterknife.OnClick;
  * Created by GA on 2017/9/20.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class RegisterActivity extends AppCompatActivity {
 
 
@@ -44,22 +44,20 @@ public class RegisterActivity extends AppCompatActivity {
     EditText mEtEmail;
     @Bind(R.id.btn_next)
     Button mBtnNext;
-    @Bind(R.id.ll_step_tow)
-    LinearLayout mLlStepTow;
+    @Bind(R.id.ll_step_one)
+    LinearLayout mLlStepOne;
     @Bind(R.id.et_password)
     EditText mEtPassword;
     @Bind(R.id.iv_eye)
     ImageView mIvEye;
     @Bind(R.id.et_email_code)
     EditText mEtEmailCode;
-    @Bind(R.id.check_box)
-    CheckBox mCheckBox;
-    @Bind(R.id.btn_register)
-    Button mBtnRegister;
-    @Bind(R.id.ll_step_one)
-    LinearLayout mLlStepOne;
     @Bind(R.id.btn_last_step)
     Button mBtnLastStep;
+    @Bind(R.id.btn_register)
+    Button mBtnRegister;
+    @Bind(R.id.ll_step_tow)
+    LinearLayout mLlStepTow;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,11 +65,11 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register2);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
-        listener();
-        setEdit();
+//        listener();
+//        setEdit();
     }
 
-    //不能回车
+    /*//不能回车
     private void setEdit() {
         mEtEmail.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -99,21 +97,21 @@ public class RegisterActivity extends AppCompatActivity {
                 return true;
             }
         });
-    }
+    }*/
 
-    private void listener() {
-        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    mBtnRegister.setBackground(getDrawable(R.drawable.bg_blue_shape));
-                } else {
-                    mBtnRegister.setBackground(getDrawable(R.drawable.bg_gray_shape));
-                }
-            }
-        });
-    }
-
+    /*  private void listener() {
+          mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+              @Override
+              public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                  if (b) {
+                      mBtnRegister.setBackground(getDrawable(R.drawable.bg_blue_shape));
+                  } else {
+                      mBtnRegister.setBackground(getDrawable(R.drawable.bg_gray_shape));
+                  }
+              }
+          });
+      }
+  */
     //显示隐藏密码
     boolean isEye = false;
 
@@ -201,9 +199,9 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (mEtEmailCode.getText().toString().trim().equals("")) {
             Toast.makeText(this, getResources().getString(R.string.toast_vcode), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtEmailCode);
-        } else if (!mCheckBox.isChecked()) {
+        } /*else if (!mCheckBox.isChecked()) {
             Toast.makeText(this, getResources().getString(R.string.toast_agreement), Toast.LENGTH_SHORT).show();
-        } else {
+        }*/ else {
             return true;
         }
         return false;
@@ -239,8 +237,19 @@ public class RegisterActivity extends AppCompatActivity {
                 showHidePassword();
                 break;
             case R.id.btn_register:
-                if (checkEdit2())
-                    register();
+                if (checkEdit2()) {
+                    String vcode = mEtEmailCode.getText().toString().trim();
+                    String password = mEtPassword.getText().toString().trim();
+                    String email = mEtEmail.getText().toString().trim();
+                    String user = mEtUser.getText().toString().trim();
+                    Intent intent = new Intent(this, ServiceAgreementActivity.class);
+                    intent.putExtra("user", user);
+                    intent.putExtra("email", email);
+                    intent.putExtra("password", password);
+                    intent.putExtra("vcode", vcode);
+                    startActivity(intent);
+                }
+//                    register();
                 break;
             case R.id.btn_last_step:
                 mLlStepTow.setVisibility(View.GONE);

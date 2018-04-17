@@ -79,21 +79,21 @@ public class AppsAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     CharSequence name = viewHolder.tv_name.getText();
-                    if (name.equals("红包")) {
+                    if (name.equals(mContext.getString(R.string.red_package))) {
                         Intent intent = new Intent(mContext, SendRedPacketActivity.class);
                         intent.putExtra("user", mUser);
                         mContext.startActivity(intent);
-                    } else if (name.equals("图片")) {
-                        EventBus.getDefault().post(new MessageEvent("打开相册"));
-                    } else if (name.equals("拍照")) {
-                        EventBus.getDefault().post(new MessageEvent("打开相机"));
-                    } else if (name.equals("文件")) {
-                        EventBus.getDefault().post(new MessageEvent("打开文件管理"));
-                    } else if (name.equals("视频")) {
-                        EventBus.getDefault().post(new MessageEvent("打开摄像机"));
-                    } else if (name.equals("位置")) {
+                    } else if (name.equals(mContext.getString(R.string.image))) {
+                        EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.open_photo_album)));
+                    } else if (name.equals(mContext.getString(R.string.paizhao))) {
+                        EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.open_camera)));
+                    } else if (name.equals(mContext.getString(R.string.file))) {
+                        EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.open_file_manage)));
+                    } else if (name.equals(mContext.getString(R.string.video))) {
+                        EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.open_vidicon)));
+                    } else if (name.equals(mContext.getString(R.string.location))) {
                         mContext.startActivity(new Intent(mContext, LocationActivity.class));
-                    }else if (name.equals("转账")) {
+                    }else if (name.equals(mContext.getString(R.string.transfer))) {
                         Intent intent = new Intent(mContext, ChatTransferActivity.class);
                         intent.putExtra("user", mUser);
                         mContext.startActivity(intent);

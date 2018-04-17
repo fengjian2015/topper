@@ -163,21 +163,26 @@ public class ChatAdapter extends RecyclerView.Adapter {
     }
 
     HashMap<String, String> mImageMap = new HashMap<>();
+    ArrayList<Integer> mIntegerList = new ArrayList<>();
 
     public void upDateImage() {
         mImageList.clear();
         mImageMap.clear();
+        mIntegerList.clear();
         for (final MessageInfo info : mMessageList) {
             if (info.getMsgType() == TO_IMG_MSG) {
                 mImageList.add(info.getMessage());
                 mImageMap.put(info.getMessage(), "");
+                mIntegerList.add(info.getId());
             } else if (info.getMsgType() == FROM_IMG_MSG) {
                 if (info.getImageType() != 0) {
                     mImageList.add(info.getMessage());
                     mImageMap.put(info.getMessage(), "");
+                    mIntegerList.add(info.getId());
                 } else {
                     mImageList.add(info.getVoice());
                     mImageMap.put(info.getVoice(), info.getMessage());
+                    mIntegerList.add(info.getId());
                 }
             }
         }
@@ -294,7 +299,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } catch (Exception e) {
             e.printStackTrace();
             ivWarning.setVisibility(View.VISIBLE);
-            Toast.makeText(mContext, "发送失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, mContext.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -336,7 +341,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
             mIvTouxiang.setImageBitmap(mToBitmap);
-            mTvCoinRedpacket.setText(messageInfo.getCoin() + "红包");
+            mTvCoinRedpacket.setText(messageInfo.getCoin() + mContext.getString(R.string.red_package));
             mTvRemark.setText(messageInfo.getRemark());
             mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -354,10 +359,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
             });
             if (messageInfo.getState() == 1) {
                 mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.transfer));
-                mTvExamine.setText("已領取紅包");
+                mTvExamine.setText(mContext.getString(R.string.took_red_packet));
             } else {
                 mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket2));
-                mTvExamine.setText("查看红包");
+                mTvExamine.setText(mContext.getString(R.string.look_red_packet));
             }
         }
     }
@@ -398,11 +403,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
             mIvTouxiang.setImageBitmap(mFromBitmap);
-            mTvCoinRedpacket.setText(messageInfo.getCoin() + "红包");
+            mTvCoinRedpacket.setText(messageInfo.getCoin() + mContext.getString(R.string.red_package));
             mTvRemark.setText(messageInfo.getRemark());
             if (messageInfo.getState() == 1) {
                 mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.transfer));
-                mTvExamine.setText("已領取紅包");
+                mTvExamine.setText(mContext.getString(R.string. took_red_packet));
                 mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -419,7 +424,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 });
             } else {
                 mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket2));
-                mTvExamine.setText("查看红包");
+                mTvExamine.setText(mContext.getString(R.string.look_red_packet));
                 mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -443,7 +448,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         TextView tvRemark = (TextView) mCurrencyDialog.findViewById(R.id.tv_remark);
         ImageView bark = (ImageView) mCurrencyDialog.findViewById(R.id.iv_bark);
         Button open = (Button) mCurrencyDialog.findViewById(R.id.btn_open);
-        from.setText("給你發了一個" + messageInfo.getCoin() + "紅包");
+        from.setText(mContext.getString(R.string.red_package_hint) + messageInfo.getCoin() + mContext.getString(R.string.red_package));
         name.setText(mUser.substring(0, mUser.indexOf("@")));
         tvRemark.setText(messageInfo.getRemark());
         touxiang.setImageBitmap(mFromBitmap);
@@ -529,17 +534,17 @@ public class ChatAdapter extends RecyclerView.Adapter {
             VoiceInfo voiceInfo = new VoiceInfo();
             voiceInfo.setElementText(base64);
             int duration = UtilTool.getFileDuration(messageInfo.getVoice(), mContext);
-            message.setBody("[audio]:" + duration + "秒");
+            message.setBody("[audio]:" + duration + mContext.getString(R.string.second));
             message.addExtension(voiceInfo);
             chat.sendMessage(message);
             ivWarning.setVisibility(View.GONE);
             messageInfo.setSendStatus(0);
             mMgr.updateMessageHint(messageInfo.getId(), 0);
-            EventBus.getDefault().post(new MessageEvent("自己发了消息"));
+            EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.oneself_send_msg)));
         } catch (Exception e) {
             e.printStackTrace();
             ivWarning.setVisibility(View.VISIBLE);
-            Toast.makeText(mContext, "发送失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, mContext.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -673,6 +678,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, ImageViewActivity.class);
                     intent.putStringArrayListExtra("images", mImageList);
+                    intent.putIntegerArrayListExtra("msgId", mIntegerList);
                     SerMap serMap = new SerMap();
                     serMap.setMap(mImageMap);
                     intent.putExtra("imgMap", serMap);
@@ -709,6 +715,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, ImageViewActivity.class);
                     intent.putStringArrayListExtra("images", mImageList);
+                    intent.putIntegerArrayListExtra("msgId", mIntegerList);
                     SerMap serMap = new SerMap();
                     serMap.setMap(mImageMap);
                     intent.putExtra("imgMap", serMap);
@@ -725,7 +732,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
                         }
                     }
                     intent.putExtra("clickedIndex", position);
-                    intent.putExtra("id", messageInfo.getId());
                     mContext.startActivity(intent);
                 }
             });
@@ -876,7 +882,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 mTvRemark.setText(messageInfo.getRemark());
             } else {
                 mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket3));
-                mTvRemark.setText("转账已被领取");
+                mTvRemark.setText(mContext.getString(R.string.transfer_took));
             }
             mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                 @Override

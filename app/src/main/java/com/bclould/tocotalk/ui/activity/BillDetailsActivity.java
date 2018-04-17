@@ -20,6 +20,7 @@ import com.bclould.tocotalk.model.InOutInfo;
 import com.bclould.tocotalk.model.TransferInfo;
 import com.bclould.tocotalk.ui.adapter.BillDataRVAapter;
 import com.bclould.tocotalk.ui.adapter.InOutDataRVAapter;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,12 +48,15 @@ public class BillDetailsActivity extends BaseActivity {
     RecyclerView mRecyclerView;
     @Bind(R.id.tv_title)
     TextView mTvTitle;
+    @Bind(R.id.tv_hint)
+    TextView mTvHint;
     private int mType;
     private DillDataPresenter mDillDataPresenter;
     List<TransferInfo.DataBean> mTransferList = new ArrayList<>();
     List<InOutInfo.DataBean> mInOutList = new ArrayList<>();
     private BillDataRVAapter mBillDataRVAapter;
     private InOutDataRVAapter mInOutDataRVAapter;
+    private String mCoinName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,14 +77,16 @@ public class BillDetailsActivity extends BaseActivity {
             mRecyclerView.setAdapter(mBillDataRVAapter);
         } else {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            mInOutDataRVAapter = new InOutDataRVAapter(this, mInOutList);
+            mInOutDataRVAapter = new InOutDataRVAapter(this, mInOutList, mType, mCoinName);
             mRecyclerView.setAdapter(mInOutDataRVAapter);
         }
     }
 
     private void initData() {
         if (mType == 0) {
-            mDillDataPresenter.getInOutData("充币", new DillDataPresenter.CallBack2() {
+            mTvHint.setText(getString(R.string.no_receipt_in_coin_record));
+            String coinId = getIntent().getStringExtra("coin_id");
+            mDillDataPresenter.getInOutData("1", coinId, new DillDataPresenter.CallBack2() {
                 @Override
                 public void send(List<InOutInfo.DataBean> data) {
                     if (data.size() != 0) {
@@ -95,9 +101,12 @@ public class BillDetailsActivity extends BaseActivity {
                 }
             });
         } else if (mType == 1) {
-            mDillDataPresenter.getInOutData("提币", new DillDataPresenter.CallBack2() {
+            mTvHint.setText(getString(R.string.no_receipt_out_coin_record));
+            String coinId = getIntent().getStringExtra("coin_id");
+            mDillDataPresenter.getInOutData("2", coinId, new DillDataPresenter.CallBack2() {
                 @Override
                 public void send(List<InOutInfo.DataBean> data) {
+                    UtilTool.Log("充提幣", data.size() + "");
                     if (data.size() != 0) {
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
@@ -110,6 +119,7 @@ public class BillDetailsActivity extends BaseActivity {
                 }
             });
         } else {
+            mTvHint.setText(getString(R.string.receipt_of_transfer_record));
             mDillDataPresenter.getTransfer(new DillDataPresenter.CallBack() {
                 @Override
                 public void send(List<TransferInfo.DataBean> data) {
@@ -131,11 +141,13 @@ public class BillDetailsActivity extends BaseActivity {
         Intent intent = getIntent();
         mType = intent.getIntExtra("type", 0);
         if (mType == 0) {
-            mTvTitle.setText("充币记录");
+            mTvTitle.setText(getString(R.string.in_coin) + getString(R.string.record));
+            mCoinName = intent.getStringExtra("coin_name");
         } else if (mType == 1) {
-            mTvTitle.setText("提币记录");
+            mTvTitle.setText(getString(R.string.out_coin) + getString(R.string.record));
+            mCoinName = intent.getStringExtra("coin_name");
         } else {
-            mTvTitle.setText("转账记录");
+            mTvTitle.setText(getString(R.string.transfer) + getString(R.string.record));
         }
     }
 

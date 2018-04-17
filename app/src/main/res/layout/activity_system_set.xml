@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="系统设置"
+            android:text="@string/system_set"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -40,10 +40,10 @@
         app:cardCornerRadius="@dimen/x15">
 
         <RelativeLayout
-            android:visibility="gone"
             android:id="@+id/rl_concern_we"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
+            android:layout_height="@dimen/y120"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_concern_we"
@@ -59,7 +59,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/iv_concern_we"
-                android:text="关于我们"
+                android:text="@string/guanyu_me"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
 
@@ -102,7 +102,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/iv_inform"
-                android:text="通知"
+                android:text="@string/inform"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
 
@@ -112,7 +112,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x50"
                 android:layout_toRightOf="@+id/tv_inform"
-                android:text="有新消息时接受语音提示"
+                android:text="@string/inform_hint"
                 android:textSize="@dimen/x26"/>
 
             <ImageView
@@ -157,7 +157,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/iv_private"
-                android:text="隐私"
+                android:text="@string/pricate"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
 
@@ -167,7 +167,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x50"
                 android:layout_toRightOf="@+id/tv_private"
-                android:text="保存登录密码"
+                android:text="@string/private_hint"
                 android:textSize="@dimen/x26"/>
 
             <ImageView
@@ -212,7 +212,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/iv_help"
-                android:text="帮助"
+                android:text="@string/help"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
 
@@ -222,7 +222,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x50"
                 android:layout_toRightOf="@+id/tv_help"
-                android:text="问题反馈"
+                android:text="@string/probelm_feedback"
                 android:textSize="@dimen/x26"/>
 
             <ImageView
@@ -265,7 +265,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/iv_cache"
-                android:text="缓存"
+                android:text="@string/cache"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
 
@@ -275,7 +275,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x50"
                 android:layout_toRightOf="@+id/tv_cache"
-                android:text="清除缓存"
+                android:text="@string/delete_cache"
                 android:textSize="@dimen/x26"/>
 
             <TextView
@@ -299,7 +299,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y60"
         android:background="@drawable/btn_blue_selector"
-        android:text="退出"
+        android:text="@string/exit"
         android:textColor="@color/white"/>
 
 </LinearLayout>

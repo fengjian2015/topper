@@ -174,19 +174,19 @@ public class ConversationFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        if (msg.equals("登录成功")) {
+        if (msg.equals(getString(R.string.login_succeed))) {
             getOfflineMessage();
             initListener();
             initData();
-        } else if (msg.equals("自己发了消息")) {
+        } else if (msg.equals(getString(R.string.oneself_send_msg))) {
             initData();
-        } else if (msg.equals("发红包了")) {
+        } else if (msg.equals(getString(R.string.send_red_packet_le))) {
             initData();
-        } else if (msg.equals("处理未读消息")) {
+        } else if (msg.equals(getString(R.string.dispose_unread_msg))) {
             initData();
-        } else if (msg.equals("新的好友")) {
+        } else if (msg.equals(getString(R.string.new_friend))) {
             initData();
-        } else if (msg.equals("登录失败")) {
+        } else if (msg.equals(getString(R.string.login_error))) {
             mRlUnunited.setVisibility(View.VISIBLE);
         }
 
@@ -343,7 +343,7 @@ public class ConversationFragment extends Fragment {
                         String fileName = "";
                         String path = "";
                         if (chatMsg.contains("[audio]")) {
-                            redpacket = "[语音]";
+                            redpacket = "[" + getString(R.string.voice) + "]";
                             msgType = FROM_VOICE_MSG;
                             fileName = UtilTool.createtFileName() + ".amr";
                             path = getContext().getFilesDir().getAbsolutePath() + File.separator
@@ -369,7 +369,7 @@ public class ConversationFragment extends Fragment {
                             String url = s3Client.generatePresignedUrl(urlRequest).toString();
 
                             chatMsg = url;
-                            redpacket = "[图片]";
+                            redpacket = "[" + getString(R.string.image) + "]";
                             msgType = FROM_IMG_MSG;
                             fileName = UtilTool.createtFileName() + ".jpg";
                             path = getContext().getFilesDir().getAbsolutePath() + File.separator
@@ -395,7 +395,7 @@ public class ConversationFragment extends Fragment {
                             String url = s3Client.generatePresignedUrl(urlRequest).toString();
 
                             chatMsg = url;
-                            redpacket = "[视频]";
+                            redpacket = "[" + getString(R.string.video) + "]";
                             msgType = FROM_VIDEO_MSG;
                             fileName = UtilTool.createtFileName() + ".mp4";
                             path = getContext().getFilesDir().getAbsolutePath() + File.separator
@@ -431,7 +431,7 @@ public class ConversationFragment extends Fragment {
                     count = split[3];
                     msgType = FROM_RED_MSG;
                     redId = Integer.parseInt(split[4]);
-                    redpacket = "[红包]";
+                    redpacket = "[" + getString(R.string.red_package) + "]";
                 } else if (chatMsg.contains(Constants.TRANSFER)) {
                     String s = chatMsg.replace(Constants.CHUANCODE, ",");
                     String[] split = s.split(",");
@@ -439,7 +439,7 @@ public class ConversationFragment extends Fragment {
                     coin = split[2];
                     count = split[3];
                     msgType = FROM_TRANSFER_MSG;
-                    redpacket = "[转账]";
+                    redpacket = "[" + getString(R.string.transfer) + "]";
                 }
 
                 //添加数据库
@@ -466,7 +466,7 @@ public class ConversationFragment extends Fragment {
                     info.setMessage(redpacket);
                     mgr.addConversation(info);
                 }
-                EventBus.getDefault().post(new MessageEvent("消息数据库更新"));
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.msg_database_update)));
                 initData();
             } catch (Exception e) {
                 e.printStackTrace();

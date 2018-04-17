@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="设置金额"
+            android:text="@string/set_money"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -42,9 +42,10 @@
         <EditText
             android:id="@+id/et_count"
             android:layout_width="match_parent"
+            android:singleLine="true"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
-            android:hint="收币数量"
+            android:hint="@string/et_count"
             android:paddingLeft="@dimen/x20"
             android:paddingRight="@dimen/x20"
             android:textColor="@color/black"
@@ -65,8 +66,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
-            android:hint="添加备注"
+            android:hint="@string/et_memo"
             android:paddingLeft="@dimen/x20"
+            android:singleLine="true"
             android:paddingRight="@dimen/x20"
             android:textColor="@color/black"
             android:textSize="@dimen/x30"/>
@@ -80,7 +82,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y60"
         android:background="@drawable/btn_blue_selector"
-        android:text="完成"
+        android:text="@string/finish"
         android:textColor="@color/white"/>
 
 </LinearLayout>

@@ -24,7 +24,6 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x20"
             android:layout_toLeftOf="@+id/jiantou"
-            android:text="转账限额是多少？"
             android:textSize="@dimen/x28"/>
 
         <ImageView

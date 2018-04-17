@@ -102,12 +102,12 @@ public class LocationActivity extends AppCompatActivity implements
 
     public void initView() {
 
-        appTitle.setCenterTitle("位置").setLeftButtonClickListener(new View.OnClickListener() {
+        appTitle.setCenterTitle(getString(R.string.location)).setLeftButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
-        }).setRightText("发送").setRightTextClickListener(new View.OnClickListener() {
+        }).setRightText(getString(R.string.send)).setRightTextClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mapView.getMap().getScreenShot(new TencentMap.OnScreenShotListener() {
@@ -116,7 +116,7 @@ public class LocationActivity extends AppCompatActivity implements
                     public void onMapScreenShot(Bitmap arg0) {
                         // TODO Auto-generated method stub
 
-                        Toast toast = Toast.makeText(context, "截屏成功", Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(context, getString(R.string.screen_shot_succeed), Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         ImageView imageView = new ImageView(context);
                         imageView.setImageBitmap(arg0);

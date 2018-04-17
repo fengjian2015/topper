@@ -91,7 +91,7 @@ public class BuySellRVAdapter extends RecyclerView.Adapter {
             if (mType) {
                 mBtnSellBuy.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape2));
                 mBtnSellBuy.setTextColor(mContext.getColor(R.color.sell));
-                mBtnSellBuy.setText("出售");
+                mBtnSellBuy.setText(mContext.getString(R.string.work_off));
                 mTvPayWay.setBackground(mContext.getDrawable(R.drawable.bg_payway_shape2));
             }
             mBtnSellBuy.setOnClickListener(new View.OnClickListener() {
@@ -110,11 +110,11 @@ public class BuySellRVAdapter extends RecyclerView.Adapter {
         public void setData(DealListInfo.DataBean dataBean) {
             mDataBean = dataBean;
             mTvPayWay.setText(dataBean.getPay_type());
-            mTvPrice.setText(dataBean.getPrice());
+            mTvPrice.setText(dataBean.getPrice() + " " + dataBean.getCurrency());
             mTvUsername.setText(dataBean.getUsername());
-            mTvTradeCount.setText("交易 " + dataBean.getCount_trans_number());
-            mTvCoinCount.setText("数量 " + dataBean.getNumber() + dataBean.getCoin_name());
-            mTvLimit.setText("限额 " + dataBean.getMin_amount() + "-" + dataBean.getMax_amount() + " " + dataBean.getCurrency());
+            mTvTradeCount.setText(mContext.getString(R.string.deal) + " " + dataBean.getCount_trans_number());
+            mTvCoinCount.setText(mContext.getString(R.string.count) + " " + dataBean.getNumber() + dataBean.getCoin_name());
+            mTvLimit.setText(mContext.getString(R.string.limit) + " " + dataBean.getMin_amount() + "-" + dataBean.getMax_amount() + " " + dataBean.getCurrency());
         }
     }
 }

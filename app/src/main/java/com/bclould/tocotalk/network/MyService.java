@@ -28,6 +28,7 @@ import com.bclould.tocotalk.model.ReceiptInfo;
 import com.bclould.tocotalk.model.RedRecordInfo;
 import com.bclould.tocotalk.model.ReviewListInfo;
 import com.bclould.tocotalk.model.StateInfo;
+import com.bclould.tocotalk.model.TransRecordInfo;
 import com.bclould.tocotalk.model.TransferInfo;
 import com.bclould.tocotalk.model.TransferListInfo;
 
@@ -435,7 +436,8 @@ public interface MyService {
     @FormUrlEncoded
     Observable<InOutInfo> coinOutLog(
             @Header("Authorization") String token,
-            @Field("opt_type") String opt_type
+            @Field("opt_type") String opt_type,
+            @Field("coin_id") String coin_id
     );
 
     //实名认证
@@ -742,5 +744,22 @@ public interface MyService {
     @POST("question/lists")
     Observable<QuestionInfo> getQuestionList(
             @Header("Authorization") String token
+    );
+
+    //提幣說明
+    @POST("finance/coinoutDesc")
+    @FormUrlEncoded
+    Observable<BaseInfo> outCoinDesc(
+            @Header("Authorization") String token,
+            @Field("coin_id") int coin_id
+    );
+
+    //支付記錄詳情
+    @POST("common/transRecordInfo")
+    @FormUrlEncoded
+    Observable<TransRecordInfo> transRecord(
+            @Header("Authorization") String token,
+            @Field("log_id") String log_id,
+            @Field("type_number") String type_number
     );
 }

@@ -9,7 +9,9 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -35,8 +38,11 @@ import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.model.ExchangeOrderInfo;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tocotalk.ui.adapter.CoinExchangeRVAdapter;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
+import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bumptech.glide.Glide;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
@@ -95,6 +101,7 @@ public class CoinExchangeActivity extends BaseActivity {
     private GridView mGridView;
     private CoinExchangeRVAdapter mCoinExchangeRVAdapter;
     private String mPrice = "";
+    private String mServiceCharge;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,9 +111,37 @@ public class CoinExchangeActivity extends BaseActivity {
         initListener();
         initRecylerView();
         initData();
+        boolean aBoolean = MySharedPreferences.getInstance().getBoolean(Constants.EXCHANGE_DISCLAIMER);
+        if (!aBoolean)
+            showDisclaimerDialog();
+    }
+
+    boolean isCheckBox = false;
+
+    private void showDisclaimerDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_otc_disclaimer, this);
+        deleteCacheDialog.show();
+        final LinearLayout showHide = (LinearLayout) deleteCacheDialog.findViewById(R.id.ll_show_hide);
+        final CheckBox checkBox = (CheckBox) deleteCacheDialog.findViewById(R.id.check_box);
+        final Button roger = (Button) deleteCacheDialog.findViewById(R.id.btn_roger);
+        roger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        showHide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isCheckBox = !isCheckBox;
+                checkBox.setChecked(isCheckBox);
+                MySharedPreferences.getInstance().setBoolean(Constants.EXCHANGE_DISCLAIMER, isCheckBox);
+            }
+        });
     }
 
     private void initListener() {
+        mEtCount.setFilters(new InputFilter[]{lengthFilter});
         mEtCount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -122,7 +157,8 @@ public class CoinExchangeActivity extends BaseActivity {
                 if (counts != null && !counts.isEmpty() && mPrice != null && !mPrice.isEmpty()) {
                     double count = Double.parseDouble(counts);
                     double price = Double.parseDouble(mPrice);
-                    int sum = (int) (count * price);
+                    DecimalFormat df = new DecimalFormat("0.000000");
+                    String sum = df.format(count * price);
                     mTvPrice.setText(sum + "");
                 } else {
                     mTvPrice.setText(mPrice);
@@ -130,6 +166,33 @@ public class CoinExchangeActivity extends BaseActivity {
             }
         });
     }
+
+    private InputFilter lengthFilter = new InputFilter() {
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end,
+                                   Spanned dest, int dstart, int dend) {
+            // source:当前输入的字符
+            // start:输入字符的开始位置
+            // end:输入字符的结束位置
+            // dest：当前已显示的内容
+            // dstart:当前光标开始位置
+            // dent:当前光标结束位置
+            if (dest.length() == 0 && source.equals(".")) {
+                return "0.";
+            }
+            String dValue = dest.toString();
+            String[] splitArray = dValue.split("\\.");
+            if (splitArray.length > 1) {
+                String dotValue = splitArray[1];
+                if (dotValue.length() == 2) {
+                    return "";
+                }
+            }
+            return null;
+        }
+
+    };
 
     private void initRecylerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -147,17 +210,21 @@ public class CoinExchangeActivity extends BaseActivity {
             @Override
             public void send(BaseInfo.DataBean data) {
                 try {
-                    double usdt = Double.parseDouble(data.getUSDT());
-                    double cny = Double.parseDouble(data.getRate());
-                    DecimalFormat df = new DecimalFormat("#.00");
-                    String price = df.format(cny * usdt);
-                    mTvPrice.setText(data.getUSDT());
-                    mPrice = mTvPrice.getText().toString();
-                    mTvCny.setText("≈ " + price + " CNY");
-                    if (data.getTrend().contains("-")) {
-                        mBtnFloat.setText(data.getTrend() + "% ↓");
-                    } else {
-                        mBtnFloat.setText(data.getTrend() + "% ↑");
+                    if (data.getUSDT() != null && data.getRate() != null && data.getTrend() != null) {
+                        if (!data.getUSDT().isEmpty() && !data.getRate().isEmpty() && !data.getTrend().isEmpty()) {
+                            double usdt = Double.parseDouble(data.getUSDT());
+                            double cny = Double.parseDouble(data.getRate());
+                            DecimalFormat df = new DecimalFormat("#.00");
+                            String price = df.format(cny * usdt);
+                            mTvPrice.setText(data.getUSDT());
+                            mPrice = mTvPrice.getText().toString();
+                            mTvCny.setText("≈ " + price + " CNY");
+                            if (data.getTrend().contains("-")) {
+                                mBtnFloat.setText(data.getTrend() + "% ↓");
+                            } else {
+                                mBtnFloat.setText(data.getTrend() + "% ↑");
+                            }
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -191,6 +258,7 @@ public class CoinExchangeActivity extends BaseActivity {
                 try {
                     mCoinList.addAll(data);
                     mCoin.add(data.get(0).getName());
+                    mServiceCharge = data.get(0).getOut_exchange();
                     mTvRemain.setText("当前可用 " + data.get(0).getCoin_over() + " " + data.get(0).getName());
                     mTvCoin.setText(data.get(0).getName());
                     Glide.with(CoinExchangeActivity.this).load(data.get(0).getLogo()).into(mIvLogo);
@@ -271,6 +339,8 @@ public class CoinExchangeActivity extends BaseActivity {
         String count = mEtCount.getText().toString();
         TextView coin = (TextView) mRedDialog.findViewById(R.id.tv_coin);
         TextView countCoin = (TextView) mRedDialog.findViewById(R.id.tv_count_coin);
+        TextView hint = (TextView) mRedDialog.findViewById(R.id.tv_hint);
+        hint.setVisibility(View.VISIBLE);
         mEtPassword = (MNPasswordEditText) mRedDialog.findViewById(R.id.et_password);
         // 设置不调用系统键盘
         if (Build.VERSION.SDK_INT <= 10) {
@@ -301,6 +371,7 @@ public class CoinExchangeActivity extends BaseActivity {
         valueList = virtualKeyboardView.getValueList();
         countCoin.setText(count + coins);
         coin.setText(coins + "兑换USDT");
+        hint.setText("本次兌換需要扣除" + mServiceCharge + "%手續費");
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -441,7 +512,7 @@ public class CoinExchangeActivity extends BaseActivity {
         tvTitle.setText("选择币种");
     }
 
-    public void hideDialog(String name, int id, String logo, String coin_over) {
+    public void hideDialog(String name, int id, String logo, String coin_over, String serviceCharge) {
         mCoin.clear();
         mCoin.add(name);
         initListData(name);
@@ -450,6 +521,7 @@ public class CoinExchangeActivity extends BaseActivity {
         mTvRemain.setText("当前可用 " + coin_over + " " + name);
         Glide.with(CoinExchangeActivity.this).load(logo).into(mIvLogo);
         mTvExchange.setText(name + "/" + "USDT");
+        mServiceCharge = serviceCharge;
         initPrice(name);
     }
 }

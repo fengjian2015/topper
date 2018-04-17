@@ -1,12 +1,14 @@
 package com.bclould.tocotalk.Presenter;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
-import com.bclould.tocotalk.ui.activity.RegisterActivity;
+import com.bclould.tocotalk.ui.activity.ServiceAgreementActivity;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.UtilTool;
 
@@ -20,6 +22,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by GA on 2017/11/15.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class RegisterPresenter {
 
     private final Context mContext;
@@ -32,7 +35,7 @@ public class RegisterPresenter {
     private void showDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(mContext);
-            mProgressDialog.setMessage("加载中...");
+            mProgressDialog.setMessage(mContext.getString(R.string.loading));
         }
 
         mProgressDialog.show();
@@ -70,7 +73,7 @@ public class RegisterPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -99,15 +102,15 @@ public class RegisterPresenter {
 
                         @Override
                         public void onNext(@NonNull BaseInfo baseInfo) {
-                            RegisterActivity registerActivity = (RegisterActivity) mContext;
-                            registerActivity.finish();
+                            ServiceAgreementActivity serviceAgreementActivity = (ServiceAgreementActivity) mContext;
+                            serviceAgreementActivity.finish();
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
 
                         }
 

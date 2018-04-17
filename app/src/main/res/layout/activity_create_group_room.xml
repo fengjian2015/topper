@@ -66,6 +66,7 @@
             <EditText
                 android:id="@+id/et_group_name"
                 android:layout_width="match_parent"
+                android:singleLine="true"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:hint="@string/et_group_name"

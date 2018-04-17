@@ -120,7 +120,7 @@ public class AddFriendActivity extends BaseActivity {
             mProgressDialog = LoadingProgressDialog.createDialog(this);
             mProgressDialog.setCanceledOnTouchOutside(false);
             mProgressDialog.setCancelable(false);
-            mProgressDialog.setMessage("搜索中...");
+            mProgressDialog.setMessage(getString(R.string.search_underway));
         }
 
         mProgressDialog.show();

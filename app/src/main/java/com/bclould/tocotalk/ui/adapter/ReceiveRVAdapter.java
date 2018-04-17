@@ -99,7 +99,7 @@ public class ReceiveRVAdapter extends RecyclerView.Adapter {
                             mContext.startActivity(intent);
                         } else {
                             Intent intent = new Intent(mContext, QRCodeRedActivity.class);
-                            intent.putExtra("code", UtilTool.base64PetToJson(Constants.REDPACKAGE, "redID", mLogBean.getId() + "", "红包"));
+                            intent.putExtra("code", UtilTool.base64PetToJson(Constants.REDPACKAGE, "redID", mLogBean.getId() + "", mContext.getString(R.string.red_package)));
                             intent.putExtra("type", false);
                             mContext.startActivity(intent);
                         }
@@ -116,16 +116,16 @@ public class ReceiveRVAdapter extends RecyclerView.Adapter {
                 mTvName.setText(logBean.getName());
                 mTvType.setVisibility(View.VISIBLE);
                 if (logBean.getRp_type() == 1) {
-                    mTvType.setText("个");
+                    mTvType.setText(mContext.getString(R.string.individual));
                 } else {
-                    mTvType.setText("扫");
+                    mTvType.setText(mContext.getString(R.string.sao));
                 }
             } else {
                 mTvType.setVisibility(View.GONE);
                 if (logBean.getRp_type() == 1) {
-                    mTvName.setText("普通红包");
+                    mTvName.setText(mContext.getString(R.string.putong_red));
                 } else {
-                    mTvName.setText("二维码红包");
+                    mTvName.setText(mContext.getString(R.string.qr_code_red_packet));
                 }
             }
         }

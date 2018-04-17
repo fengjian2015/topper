@@ -50,7 +50,7 @@ public class CoinExchangeRVAdapter extends RecyclerView.Adapter {
     }
 
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.tv_name)
         TextView mTvName;
         @Bind(R.id.tv_type)
@@ -66,8 +66,8 @@ public class CoinExchangeRVAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(ExchangeOrderInfo.DataBeanX.DataBean dataBean) {
-            mTvName.setText("兑换");
-            mTvType.setText("数量 - " + dataBean.getNumber() + " | 价格 - " + dataBean.getPrice());
+            mTvName.setText(mContext.getString(R.string.exchange));
+            mTvType.setText(mContext.getString(R.string.count) + " - " + dataBean.getNumber() + " | " + mContext.getString(R.string.price) +" - " + dataBean.getPrice());
             double sum = Double.parseDouble(dataBean.getNumber()) * Double.parseDouble(dataBean.getPrice());
             DecimalFormat df = new DecimalFormat("#.##");
             String str = df.format(sum);

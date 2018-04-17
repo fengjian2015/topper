@@ -39,7 +39,7 @@ public class DillDataPresenter {
     private void showDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(mContext);
-            mProgressDialog.setMessage("加载中...");
+            mProgressDialog.setMessage(mContext.getString(R.string.loading));
         }
         mProgressDialog.show();
     }
@@ -89,12 +89,13 @@ public class DillDataPresenter {
         }
     }
 
-    public void getInOutData(String type, final CallBack2 callBack) {
+    public void getInOutData(String type, String id, final CallBack2 callBack) {
+        UtilTool.Log("充提幣", id);
         if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .coinOutLog(UtilTool.getToken(), type)
+                    .coinOutLog(UtilTool.getToken(), type, id)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<InOutInfo>() {
@@ -106,14 +107,17 @@ public class DillDataPresenter {
                         @Override
                         public void onNext(@NonNull InOutInfo inOutInfo) {
                             hideDialog();
-                            if(inOutInfo.getStatus() == 1){
+                            if (inOutInfo.getStatus() == 1) {
                                 callBack.send(inOutInfo.getData());
+                            }else {
+                                Toast.makeText(mContext, inOutInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
+                            UtilTool.Log("充提幣", e.getMessage());
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -142,7 +146,7 @@ public class DillDataPresenter {
 
                         @Override
                         public void onNext(@NonNull AwsInfo awsInfo) {
-                            if(awsInfo.getStatus() == 1){
+                            if (awsInfo.getStatus() == 1) {
                                 callBack3.send(awsInfo.getData());
                                 UtilTool.Log("日志", awsInfo.getData().getAccessKeyId());
                                 UtilTool.Log("日志", awsInfo.getData().getSecretAccessKey());

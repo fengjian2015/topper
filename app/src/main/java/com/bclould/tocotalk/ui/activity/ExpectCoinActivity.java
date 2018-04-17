@@ -66,10 +66,10 @@ public class ExpectCoinActivity extends BaseActivity {
     private boolean checkEdit() {
         if (mEtContact.getText().toString().isEmpty()) {
             AnimatorTool.getInstance().editTextAnimator(mEtContact);
-            Toast.makeText(this, "联系方式不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_contact_information), Toast.LENGTH_SHORT).show();
         } else if (mEtContent.getText().toString().isEmpty()) {
             AnimatorTool.getInstance().editTextAnimator(mEtContent);
-            Toast.makeText(this, "期望币种不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_expect_coin), Toast.LENGTH_SHORT).show();
         } else {
             return true;
         }

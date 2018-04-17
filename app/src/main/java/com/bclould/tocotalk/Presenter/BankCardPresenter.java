@@ -39,7 +39,7 @@ public class BankCardPresenter {
     private void showDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(mContext);
-            mProgressDialog.setMessage("加载中...");
+            mProgressDialog.setMessage(mContext.getString(R.string.loading));
         }
 
         mProgressDialog.show();

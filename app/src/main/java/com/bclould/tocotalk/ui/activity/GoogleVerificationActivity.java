@@ -162,7 +162,7 @@ public class GoogleVerificationActivity extends BaseActivity {
     private void copySecretKey() {
         ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         cm.setText(mSecretKey.getText());
-        Toast.makeText(this, "复制成功", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getString(R.string.copy_succeed), Toast.LENGTH_LONG).show();
     }
 
     public void setData(GoogleInfo googleInfo) {
@@ -201,7 +201,7 @@ public class GoogleVerificationActivity extends BaseActivity {
                 if (!UtilTool.isFastClick()) {
                     sendVcode();
                 } else {
-                    Toast.makeText(this, "请60秒之后再发送", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.toast_after_time), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.tv_unbinding:
@@ -220,7 +220,7 @@ public class GoogleVerificationActivity extends BaseActivity {
         if (mDeleteCacheDialog == null)
             mDeleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
         mDeleteCacheDialog.show();
-        mDeleteCacheDialog.setTitle("确定下载谷歌验证器？");
+        mDeleteCacheDialog.setTitle(getString(R.string.download_google_verify));
         Button cancel = (Button) mDeleteCacheDialog.findViewById(R.id.btn_cancel);
         Button confirm = (Button) mDeleteCacheDialog.findViewById(R.id.btn_confirm);
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -282,7 +282,7 @@ public class GoogleVerificationActivity extends BaseActivity {
         mRegisterPresenter.sendRegcode(mEmail, new RegisterPresenter.CallBack() {
             @Override
             public void send() {
-                Toast.makeText(GoogleVerificationActivity.this, "发送成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(GoogleVerificationActivity.this, getString(R.string.send_succeed), Toast.LENGTH_SHORT).show();
             }
         });
     }

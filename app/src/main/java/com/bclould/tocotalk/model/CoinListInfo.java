@@ -11,7 +11,7 @@ public class CoinListInfo {
     /**
      * status : 1
      * message : success
-     * data : [{"id":1,"name":"CNY","logo":"https://hyhc.s3-ap-southeast-1.amazonaws.com/d875ea0c438bc5d4ed792b0957fa1c6e99e9c8e0.png/SRxeFft6sQ05vXCC5gir24o8B6gDzuwck0R9mXg2.png","coin_over":"100"},{"id":27,"name":"USDT","logo":"https://topperex.s3-ap-northeast-1.amazonaws.com/exchange/gLauR2QEsSnZwKf5h39y4LA0B7Chz4zr8s4Pslqr.png","coin_over":"100"},"..."]
+     * data : [{"id":2,"name":"BTC","logo":"https://topperex.s3.ap-northeast-1.amazonaws.com/exchange/I4DOR2YWZ6DIkm2rVteK74oB4RglrEJVYri30uVQ.png","coin_over":"98.890388","out_otc":"0","out_exchange":"0"},{"id":28,"name":"TPC","logo":"https://topperex.s3.ap-northeast-1.amazonaws.com/exchange/kuOFxXaZKWNVZJ3yTS1bNUR4leHd4e8gbpLheqmZ.png","coin_over":"44","out_otc":"0","out_exchange":"0"}]
      */
 
     private int status;
@@ -44,16 +44,20 @@ public class CoinListInfo {
 
     public static class DataBean {
         /**
-         * id : 1
-         * name : CNY
-         * logo : https://hyhc.s3-ap-southeast-1.amazonaws.com/d875ea0c438bc5d4ed792b0957fa1c6e99e9c8e0.png/SRxeFft6sQ05vXCC5gir24o8B6gDzuwck0R9mXg2.png
-         * coin_over : 100
+         * id : 2
+         * name : BTC
+         * logo : https://topperex.s3.ap-northeast-1.amazonaws.com/exchange/I4DOR2YWZ6DIkm2rVteK74oB4RglrEJVYri30uVQ.png
+         * coin_over : 98.890388
+         * out_otc : 0
+         * out_exchange : 0
          */
 
         private int id;
         private String name;
         private String logo;
         private String coin_over;
+        private String out_otc;
+        private String out_exchange;
 
         public int getId() {
             return id;
@@ -85,6 +89,22 @@ public class CoinListInfo {
 
         public void setCoin_over(String coin_over) {
             this.coin_over = coin_over;
+        }
+
+        public String getOut_otc() {
+            return out_otc;
+        }
+
+        public void setOut_otc(String out_otc) {
+            this.out_otc = out_otc;
+        }
+
+        public String getOut_exchange() {
+            return out_exchange;
+        }
+
+        public void setOut_exchange(String out_exchange) {
+            this.out_exchange = out_exchange;
         }
     }
 }

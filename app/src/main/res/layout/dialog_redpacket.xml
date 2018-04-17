@@ -28,7 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y30"
-        android:text="安子"
         android:textColor="#EACD99"
         android:textSize="@dimen/x30"/>
 
@@ -38,7 +37,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y20"
-        android:text="给你发了一个BTC红包"
         android:textColor="#EACD99"
         android:textSize="@dimen/x30"/>
 
@@ -48,7 +46,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y50"
-        android:text="恭喜发财，大吉大利"
         android:textColor="#EACD99"
         android:textSize="@dimen/x45"/>
 

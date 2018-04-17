@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="收付款"
+            android:text="@string/receipt_payment"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -35,7 +35,7 @@
             android:drawableRight="@mipmap/iocn_two_c"
             android:gravity="center"
             android:padding="@dimen/x20"
-            android:text="收款"
+            android:text="@string/receipt"
             android:textColor="#60798E"
             android:textSize="@dimen/x28"/>
 
@@ -52,7 +52,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/y30"
         android:layout_marginTop="@dimen/y30"
-        android:text="扫二维码向我付款"
+        android:text="@string/receipt_payment_hint"
         android:textColor="#60798E"
         android:textSize="@dimen/x28"/>
 
@@ -79,7 +79,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="币种:"
+                    android:text="@string/coins"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x28"/>
 
@@ -99,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_coin"
                     android:layout_marginTop="@dimen/y5"
-                    android:text="数量:"
+                    android:text="@string/count"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x28"/>
 
@@ -121,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_count"
                     android:layout_marginTop="@dimen/y5"
-                    android:text="备注:"
+                    android:text="@string/remark"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x28"/>
 
@@ -132,7 +132,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/tv_count"
                     android:layout_marginTop="@dimen/y5"
-                    android:text="飞机撒开了"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x28"/>
 
@@ -159,7 +158,7 @@
                 android:textSize="@dimen/x32"
                 android:textColor="@color/black"
                 android:gravity="center"
-                android:text="设置金额和币种"/>
+                android:text="@string/set_money_coin"/>
 
         </RelativeLayout>
 
@@ -189,7 +188,7 @@
                     android:id="@+id/tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="收付款记录"
+                    android:text="@string/receipt_payment_record"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x32"/>
 
@@ -198,7 +197,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv"
                     android:layout_marginTop="@dimen/y20"
-                    android:text="查看详情"
+                    android:text="@string/view_details"
                     android:textSize="@dimen/x26"/>
 
             </LinearLayout>

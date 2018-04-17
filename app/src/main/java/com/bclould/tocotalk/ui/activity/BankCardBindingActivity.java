@@ -54,16 +54,16 @@ public class BankCardBindingActivity extends BaseActivity {
         realNamePresenter.realNameInfo(new RealNamePresenter.CallBack2() {
             @Override
             public void send(String message) {
-                if (message.equals("未认证")) {
+                if (message.equals(getString(R.string.unverified))) {
                     showDialog();
                     mBtnNext.setClickable(false);
-                } else if (message.equals("认证失败")) {
+                } else if (message.equals(getString(R.string.verify_error))) {
                     showDialog();
                     mBtnNext.setClickable(false);
-                    Toast.makeText(BankCardBindingActivity.this, "实名认证失败，请重新认证", Toast.LENGTH_SHORT).show();
-                } else if (message.equals("待审核")) {
+                    Toast.makeText(BankCardBindingActivity.this, getString(R.string.verify_error_hint), Toast.LENGTH_SHORT).show();
+                } else if (message.equals(getString(R.string.check_pending))) {
                     mBtnNext.setClickable(false);
-                    Toast.makeText(BankCardBindingActivity.this, "实名认证审核中", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BankCardBindingActivity.this, getString(R.string.verify_check_pending), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -73,7 +73,7 @@ public class BankCardBindingActivity extends BaseActivity {
     //验证手机号和密码
     private boolean checkEdit() {
         if (mEtCardNumber.getText().toString().trim().isEmpty()) {
-            Toast.makeText(this, "卡号不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_card_number), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtCardNumber);
         } else {
             return true;
@@ -117,7 +117,7 @@ public class BankCardBindingActivity extends BaseActivity {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
         deleteCacheDialog.show();
         deleteCacheDialog.setCanceledOnTouchOutside(false);
-        deleteCacheDialog.setTitle("您还没有实名认证，请先去实名认证");
+        deleteCacheDialog.setTitle(getString(R.string.real_name_authentication_hint));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override

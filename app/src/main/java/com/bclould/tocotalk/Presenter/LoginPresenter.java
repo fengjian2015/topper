@@ -56,7 +56,7 @@ public class LoginPresenter {
     private void showDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(mContext);
-            mProgressDialog.setMessage("登录中...");
+            mProgressDialog.setMessage(mContext.getString(R.string.login_in));
         }
 
         mProgressDialog.show();
@@ -106,7 +106,7 @@ public class LoginPresenter {
                                 MySharedPreferences.getInstance().setString(LOGINPW, password);
                                 MySharedPreferences.getInstance().setString(CURRENCY, baseInfo.getData().getCurrency());
                                 if (baseInfo.getData().getCountry() == null) {
-                                    MySharedPreferences.getInstance().setString(STATE, "中国 - 大陆");
+                                    MySharedPreferences.getInstance().setString(STATE, mContext.getString(R.string.china_mainland));
                                 } else {
                                     MySharedPreferences.getInstance().setString(STATE, baseInfo.getData().getCountry());
                                 }
@@ -122,7 +122,7 @@ public class LoginPresenter {
                         public void onError(Throwable e) {
                             hideDialog();
                             UtilTool.Log("登录", e.getMessage());
-                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -158,7 +158,7 @@ public class LoginPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -195,7 +195,7 @@ public class LoginPresenter {
         final EditText etGoogle = (EditText) deleteCacheDialog.findViewById(R.id.et_google_code);
         etGoogle.setHint(mContext.getString(R.string.et_vcode));
         TextView tvTitle = (TextView) deleteCacheDialog.findViewById(R.id.tv_title);
-        tvTitle.setText("邮箱验证码");
+        tvTitle.setText(mContext.getString(R.string.vcode));
         Button btnConfirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,7 +236,7 @@ public class LoginPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -279,7 +279,7 @@ public class LoginPresenter {
                         public void onError(Throwable e) {
                             hideDialog();
                             UtilTool.Log("登录设置", e.getMessage());
-                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

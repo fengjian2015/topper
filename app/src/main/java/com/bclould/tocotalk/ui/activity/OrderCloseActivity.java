@@ -90,40 +90,40 @@ public class OrderCloseActivity extends BaseActivity {
             public void send(OrderInfo2.DataBean data) {
                 mInfo.setData(data);
                 if (data.getTo_user_name().equals(UtilTool.getUser())) {
-                    mTvWho.setText("买家");
+                    mTvWho.setText(getString(R.string.buyer));
                     mTvName.setText(data.getUser_name());
                 } else {
-                    mTvWho.setText("卖家");
+                    mTvWho.setText(getString(R.string.seller));
                     mTvName.setText(data.getTo_user_name());
                 }
                 if (data.getType() == 1) {
                     if (data.getStatus() == 0) {
-                        mTvOrderType.setText("订单已取消");
+                        mTvOrderType.setText(getString(R.string.order_cancel));
                     } else if (data.getStatus() == 3) {
-                        mTvOrderType.setText("订单已完成");
+                        mTvOrderType.setText(getString(R.string.order_finish));
                         mLlFinish.setVisibility(View.VISIBLE);
                     } else if (data.getStatus() == 4) {
-                        mTvOrderType.setText("訂單異常");
+                        mTvOrderType.setText(getString(R.string.order_exception));
                         mLlExceptionBuy.setVisibility(View.VISIBLE);
                         mTvOrderType.setTextColor(getColor(R.color.color_orange));
                     }
-                    mTvTitle.setText("购买" + data.getCoin_name());
+                    mTvTitle.setText(getString(R.string.seller) + data.getCoin_name());
                 } else {
                     if (data.getStatus() == 0) {
-                        mTvOrderType.setText("订单已取消");
+                        mTvOrderType.setText(getString(R.string.order_cancel));
                     } else if (data.getStatus() == 3) {
-                        mTvOrderType.setText("订单已完成");
+                        mTvOrderType.setText(getString(R.string.order_finish));
                         mLlFinish.setVisibility(View.VISIBLE);
                     } else if (data.getStatus() == 4) {
-                        mTvOrderType.setText("訂單異常");
+                        mTvOrderType.setText(getString(R.string.order_exception));
                         mLlExceptionSell.setVisibility(View.VISIBLE);
                         mTvOrderType.setTextColor(getColor(R.color.color_orange));
                     }
-                    mTvTitle.setText("售出" + data.getCoin_name());
+                    mTvTitle.setText(getString(R.string.work_off) + data.getCoin_name());
                 }
                 mTvMoney.setText(data.getTrans_amount());
                 mTvPrice.setText(data.getPrice());
-                mTvHintCount.setText("交易数量(" + data.getCoin_name() + ")");
+                mTvHintCount.setText(getString(R.string.deal_count) + "(" + data.getCoin_name() + ")");
                 mTvCount.setText(data.getNumber());
                 mTvOrderNumber.setText(data.getOrder_no());
                 mTvTime.setText(data.getCreated_at());
@@ -136,12 +136,12 @@ public class OrderCloseActivity extends BaseActivity {
         mStatus = getIntent().getIntExtra("status", 0);
         mId = getIntent().getStringExtra("id");
         if (mStatus == 0) {
-            mTvOrderType.setText("订单已取消");
+            mTvOrderType.setText(getString(R.string.order_cancel));
         } else if (mStatus == 3) {
-            mTvOrderType.setText("订单已完成");
+            mTvOrderType.setText(getString(R.string.order_finish));
             mLlFinish.setVisibility(View.VISIBLE);
         } else if (mStatus == 4) {
-            mTvOrderType.setText("訂單異常");
+            mTvOrderType.setText(getString(R.string.order_exception));
             mTvOrderType.setTextColor(getColor(R.color.color_orange));
         }
     }
@@ -164,7 +164,7 @@ public class OrderCloseActivity extends BaseActivity {
     public void showDialog() {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
         deleteCacheDialog.show();
-        deleteCacheDialog.setTitle("是否确认放币？");
+        deleteCacheDialog.setTitle(getString(R.string.out_coin_hint3));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,10 +187,10 @@ public class OrderCloseActivity extends BaseActivity {
         mOrderDetailsPresenter.confirmGiveCoin(mInfo.getData().getTrans_id(), mInfo.getData().getId(), new OrderDetailsPresenter.CallBack2() {
             @Override
             public void send() {
-                MessageEvent messageEvent = new MessageEvent("确认放币");
+                MessageEvent messageEvent = new MessageEvent(getString(R.string.confirm_fb));
                 messageEvent.setId(mInfo.getData().getId() + "");
                 EventBus.getDefault().post(messageEvent);
-                Toast.makeText(OrderCloseActivity.this, "完成交易", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrderCloseActivity.this, getString(R.string.deal_finish), Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

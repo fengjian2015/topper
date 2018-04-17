@@ -23,7 +23,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="购买BTC"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -35,7 +34,7 @@
             android:layout_centerVertical="true"
             android:gravity="center"
             android:paddingRight="@dimen/x20"
-            android:text="帮助"
+            android:text="@string/help"
             android:textColor="@color/blue2"
             android:textSize="@dimen/x30"/>
 
@@ -91,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_order_number"
                     android:layout_marginTop="@dimen/y15"
-                    android:text="剩余"
+                    android:text="@string/surplus"
                     android:textColor="@color/bar_grey"
                     android:textSize="@dimen/x28"/>
 
@@ -132,7 +131,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="交易金额"
+                    android:text="@string/trading_money"
                     android:textSize="@dimen/x26"/>
 
                 <TextView
@@ -154,7 +153,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="交易数量"
+                    android:text="@string/trading_count"
                     android:textSize="@dimen/x26"/>
 
                 <TextView
@@ -177,7 +176,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="交易价格"
+                    android:text="@string/trading_price"
                     android:textSize="@dimen/x26"/>
 
                 <TextView
@@ -208,7 +207,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/y15"
-                android:text="备注：先钱后币，非诚勿扰"
+                android:text="@string/remark"
                 android:textColor="@color/bar_grey"
                 android:textSize="@dimen/x24"/>
 
@@ -391,7 +390,7 @@
                         android:layout_height="@dimen/y58"
                         android:layout_marginRight="@dimen/x20"
                         android:background="@drawable/bg_tixian_shape"
-                        android:text="取消订单"
+                        android:text="@string/cancel_order"
                         android:textColor="@color/white"
                         android:textSize="@dimen/x24"/>
 
@@ -400,7 +399,7 @@
                         android:layout_width="@dimen/x150"
                         android:layout_height="@dimen/y58"
                         android:background="@drawable/bg_blue_shape"
-                        android:text="确认放币"
+                        android:text="@string/confirm_send_coin"
                         android:textColor="@color/white"
                         android:textSize="@dimen/x24"/>
 
@@ -421,7 +420,7 @@
                         android:layout_height="@dimen/y58"
                         android:layout_marginRight="@dimen/x20"
                         android:background="@drawable/bg_tixian_shape"
-                        android:text="取消订单"
+                        android:text="@string/cancel_order"
                         android:textColor="@color/white"
                         android:textSize="@dimen/x24"/>
 
@@ -430,7 +429,7 @@
                         android:layout_width="@dimen/x150"
                         android:layout_height="@dimen/y58"
                         android:background="@drawable/bg_blue_shape"
-                        android:text="确认付款"
+                        android:text="@string/confirm_payment"
                         android:textColor="@color/white"
                         android:textSize="@dimen/x24"/>
 
@@ -471,7 +470,7 @@
                     android:drawableLeft="@mipmap/icon_remind"
                     android:drawablePadding="@dimen/x10"
                     android:gravity="center"
-                    android:text="交易提示:"
+                    android:text="@string/trading_hint"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x26"/>
 
@@ -480,7 +479,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/y20"
                     android:lineSpacingExtra="@dimen/x8"
-                    android:text="1、OTC交易中，买家的汇款将直接进入卖家账号，交易过程中卖家出售的数字资产将由平台托管。\n2、请在规定时间内完成付款，并务必点击”确认付款“，卖家确认收款后，系统会将数字资产划转至您的账户。\n3、请勿频繁取消订单，否则将导致限制交易。"
+                    android:text="@string/trading_hint2"
                     android:textSize="@dimen/x26"/>
 
             </LinearLayout>

@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="付款"
+            android:text="@string/payment"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -59,7 +59,7 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/x20"
                     android:paddingRight="@dimen/x20"
-                    android:text="选择币种"
+                    android:text="@string/selector_coin"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x30"/>
 
@@ -105,7 +105,7 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/x20"
                     android:paddingRight="@dimen/x20"
-                    android:text="输入数量"
+                    android:text="@string/et_count"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x30"/>
 
@@ -113,6 +113,7 @@
                     android:id="@+id/et_count"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:singleLine="true"
                     android:background="@android:color/transparent"
                     android:gravity="right|center_vertical"
                     android:inputType="numberDecimal"
@@ -145,13 +146,14 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/x20"
                     android:paddingRight="@dimen/x20"
-                    android:text="输入备注"
+                    android:text="@string/et_memo"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x30"/>
 
                 <EditText
                     android:id="@+id/et_remark"
                     android:layout_width="match_parent"
+                    android:singleLine="true"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
                     android:gravity="right|center_vertical"
@@ -247,7 +249,7 @@
         android:layout_height="@dimen/y80"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/btn_blue_selector"
-        android:text="付款"
+        android:text="@string/payment"
         android:textColor="@color/white"/>
 
 </LinearLayout>

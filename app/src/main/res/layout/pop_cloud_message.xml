@@ -15,7 +15,7 @@
         android:layout_weight="1"
         android:drawableLeft="@mipmap/icon_scrode"
         android:gravity="center"
-        android:text="扫一扫"
+        android:text="@string/rich_scan"
         android:textColor="@android:color/black"
         android:textSize="@dimen/x28"/>
 
@@ -26,7 +26,7 @@
         android:layout_weight="1"
         android:drawableLeft="@mipmap/icon_redpocket"
         android:gravity="center"
-        android:text="二维码红包"
+        android:text="@string/qr_code_red_packet"
         android:textColor="@android:color/black"
         android:textSize="@dimen/x28"/>
 
@@ -37,7 +37,7 @@
         android:layout_weight="1"
         android:drawableLeft="@mipmap/icon_add"
         android:gravity="center"
-        android:text="添加好友"
+        android:text="@string/add_friend"
         android:textColor="@android:color/black"
         android:textSize="@dimen/x28"/>
 
@@ -46,9 +46,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:drawableLeft="@mipmap/icon_push"
+        android:drawableLeft="@mipmap/icon_talk_push"
         android:gravity="center"
-        android:text="发布动态"
+        android:text="@string/publish_dynamic"
         android:textColor="@android:color/black"
         android:textSize="@dimen/x28"/>
 

@@ -228,7 +228,7 @@ public class DynamicDetailActivity extends BaseActivity {
                 break;
             case R.id.send:
                 if (mCommentEt.getText().toString().isEmpty()) {
-                    Toast.makeText(this, "评论不能为空", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.toast_comment), Toast.LENGTH_SHORT).show();
                 } else {
                     sendComment();
                 }
@@ -249,7 +249,7 @@ public class DynamicDetailActivity extends BaseActivity {
                 mDynamicDetailRVAdapter.notifyItemInserted(0);
                 mDynamicDetailRVAdapter.notifyItemRangeChanged(0, mDataList.size() - 0);
                 //发送消息通知
-                MessageEvent messageEvent = new MessageEvent("发表评论");
+                MessageEvent messageEvent = new MessageEvent(getString(R.string.publish_comment));
                 messageEvent.setReviewCount(mDataList.size() + "");
                 messageEvent.setId(mId);
                 EventBus.getDefault().post(messageEvent);
@@ -268,7 +268,7 @@ public class DynamicDetailActivity extends BaseActivity {
                     mLlZan.setSelected(false);
                 }
                 //发送消息通知
-                MessageEvent messageEvent = new MessageEvent("点赞");
+                MessageEvent messageEvent = new MessageEvent(getString(R.string.zan));
                 messageEvent.setLikeCount(data.getLikeCounts() + "");
                 messageEvent.setId(mId);
                 messageEvent.setType(data.getStatus() == 1 ? true : false);

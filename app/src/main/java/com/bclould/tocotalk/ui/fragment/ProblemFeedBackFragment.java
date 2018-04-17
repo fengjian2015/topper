@@ -262,7 +262,7 @@ public class ProblemFeedBackFragment extends Fragment {
     private void showDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(getContext());
-            mProgressDialog.setMessage("上传中...");
+            mProgressDialog.setMessage(getString(R.string.uploading));
         }
 
         mProgressDialog.show();
@@ -346,7 +346,7 @@ public class ProblemFeedBackFragment extends Fragment {
                     }
                 } catch (AmazonClientException e) {
                     hideDialog();
-                    Toast.makeText(getContext(), "上传失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.up_error), Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
             }
@@ -356,7 +356,7 @@ public class ProblemFeedBackFragment extends Fragment {
     private boolean checkEdit() {
         if (mFeedbackContent.getText().toString().isEmpty()) {
             AnimatorTool.getInstance().editTextAnimator(mFeedbackContent);
-            Toast.makeText(getContext(), "内容不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.toast_content), Toast.LENGTH_SHORT).show();
         } else {
             return true;
         }
@@ -369,12 +369,12 @@ public class ProblemFeedBackFragment extends Fragment {
             @Override
             public void send(int status) {
                 if (status == 1) {
-                    Toast.makeText(getActivity(), "上传成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.up_succeed), Toast.LENGTH_SHORT).show();
                     mSelectList.clear();
                     adapter.notifyDataSetChanged();
                     mFeedbackContent.setText("");
                 } else {
-                    Toast.makeText(getActivity(), "上传失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.up_error), Toast.LENGTH_SHORT).show();
                 }
                 hideDialog();
             }

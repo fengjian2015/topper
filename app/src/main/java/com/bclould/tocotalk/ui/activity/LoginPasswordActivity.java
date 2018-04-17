@@ -108,7 +108,7 @@ public class LoginPasswordActivity extends BaseActivity {
             Toast.makeText(this, getString(R.string.toast_password), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtVcode);
         } else if (password.length() <= 6) {
-            Toast.makeText(this, "密码不能小于六位", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.limit_digit), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtPayPassword);
 
         } else {

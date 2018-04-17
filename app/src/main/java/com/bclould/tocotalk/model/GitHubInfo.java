@@ -12,20 +12,20 @@ public class GitHubInfo {
      * url : https://api.github.com/repos/bclould/tocotalk/releases/10063008
      * assets_url : https://api.github.com/repos/bclould/tocotalk/releases/10063008/assets
      * upload_url : https://uploads.github.com/repos/bclould/tocotalk/releases/10063008/assets{?name,label}
-     * html_url : https://github.com/bclould/tocotalk/releases/tag/2.8
+     * html_url : https://github.com/bclould/tocotalk/releases/tag/v0.01
      * id : 10063008
-     * tag_name : 2.8
+     * tag_name : v0.01
      * target_commitish : master
      * name : TocoTalk
      * draft : false
      * author : {"login":"Liaolinan","id":26948595,"avatar_url":"https://avatars0.githubusercontent.com/u/26948595?v=4","gravatar_id":"","url":"https://api.github.com/users/Liaolinan","html_url":"https://github.com/Liaolinan","followers_url":"https://api.github.com/users/Liaolinan/followers","following_url":"https://api.github.com/users/Liaolinan/following{/other_user}","gists_url":"https://api.github.com/users/Liaolinan/gists{/gist_id}","starred_url":"https://api.github.com/users/Liaolinan/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/Liaolinan/subscriptions","organizations_url":"https://api.github.com/users/Liaolinan/orgs","repos_url":"https://api.github.com/users/Liaolinan/repos","events_url":"https://api.github.com/users/Liaolinan/events{/privacy}","received_events_url":"https://api.github.com/users/Liaolinan/received_events","type":"User","site_admin":false}
      * prerelease : false
-     * created_at : 2018-02-27T03:33:05Z
+     * created_at : 2018-03-29T12:56:42Z
      * published_at : 2018-03-14T02:35:26Z
-     * assets : [{"url":"https://api.github.com/repos/bclould/tocotalk/releases/assets/6502517","id":6502517,"name":"v2.8_tocotalk_releasve.apk","label":null,"uploader":{"login":"Liaolinan","id":26948595,"avatar_url":"https://avatars0.githubusercontent.com/u/26948595?v=4","gravatar_id":"","url":"https://api.github.com/users/Liaolinan","html_url":"https://github.com/Liaolinan","followers_url":"https://api.github.com/users/Liaolinan/followers","following_url":"https://api.github.com/users/Liaolinan/following{/other_user}","gists_url":"https://api.github.com/users/Liaolinan/gists{/gist_id}","starred_url":"https://api.github.com/users/Liaolinan/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/Liaolinan/subscriptions","organizations_url":"https://api.github.com/users/Liaolinan/orgs","repos_url":"https://api.github.com/users/Liaolinan/repos","events_url":"https://api.github.com/users/Liaolinan/events{/privacy}","received_events_url":"https://api.github.com/users/Liaolinan/received_events","type":"User","site_admin":false},"content_type":"application/vnd.android.package-archive","state":"uploaded","size":23406442,"download_count":1,"created_at":"2018-03-14T02:33:27Z","updated_at":"2018-03-14T02:34:10Z","browser_download_url":"https://github.com/bclould/tocotalk/releases/download/2.8/v2.8_tocotalk_releasve.apk"}]
-     * tarball_url : https://api.github.com/repos/bclould/tocotalk/tarball/2.8
-     * zipball_url : https://api.github.com/repos/bclould/tocotalk/zipball/2.8
-     * body : 新版本特性【新增】扫码添加好友，短语音聊天，发送图片，发送视频【修改】我的界面，钱包页面，发现界面
+     * assets : [{"url":"https://api.github.com/repos/bclould/tocotalk/releases/assets/6807559","id":6807559,"name":"tocotalk-release-v0.01.apk","label":null,"uploader":{"login":"hyhc2016","id":5828315,"avatar_url":"https://avatars2.githubusercontent.com/u/5828315?v=4","gravatar_id":"","url":"https://api.github.com/users/hyhc2016","html_url":"https://github.com/hyhc2016","followers_url":"https://api.github.com/users/hyhc2016/followers","following_url":"https://api.github.com/users/hyhc2016/following{/other_user}","gists_url":"https://api.github.com/users/hyhc2016/gists{/gist_id}","starred_url":"https://api.github.com/users/hyhc2016/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/hyhc2016/subscriptions","organizations_url":"https://api.github.com/users/hyhc2016/orgs","repos_url":"https://api.github.com/users/hyhc2016/repos","events_url":"https://api.github.com/users/hyhc2016/events{/privacy}","received_events_url":"https://api.github.com/users/hyhc2016/received_events","type":"User","site_admin":false},"content_type":"application/vnd.android.package-archive","state":"uploaded","size":22448078,"download_count":1,"created_at":"2018-04-11T12:55:36Z","updated_at":"2018-04-11T12:55:43Z","browser_download_url":"https://github.com/bclould/tocotalk/releases/download/v0.01/tocotalk-release-v0.01.apk"}]
+     * tarball_url : https://api.github.com/repos/bclould/tocotalk/tarball/v0.01
+     * zipball_url : https://api.github.com/repos/bclould/tocotalk/zipball/v0.01
+     * body : 筛选数字资产，不可转账，不可提币，不可充币。多语言，订单异常，隐藏关于我们，指纹密码提示待开放，otc币种筛选
      */
 
     private String url;
@@ -360,18 +360,18 @@ public class GitHubInfo {
 
     public static class AssetsBean {
         /**
-         * url : https://api.github.com/repos/bclould/tocotalk/releases/assets/6502517
-         * id : 6502517
-         * name : v2.8_tocotalk_releasve.apk
+         * url : https://api.github.com/repos/bclould/tocotalk/releases/assets/6807559
+         * id : 6807559
+         * name : tocotalk-release-v0.01.apk
          * label : null
-         * uploader : {"login":"Liaolinan","id":26948595,"avatar_url":"https://avatars0.githubusercontent.com/u/26948595?v=4","gravatar_id":"","url":"https://api.github.com/users/Liaolinan","html_url":"https://github.com/Liaolinan","followers_url":"https://api.github.com/users/Liaolinan/followers","following_url":"https://api.github.com/users/Liaolinan/following{/other_user}","gists_url":"https://api.github.com/users/Liaolinan/gists{/gist_id}","starred_url":"https://api.github.com/users/Liaolinan/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/Liaolinan/subscriptions","organizations_url":"https://api.github.com/users/Liaolinan/orgs","repos_url":"https://api.github.com/users/Liaolinan/repos","events_url":"https://api.github.com/users/Liaolinan/events{/privacy}","received_events_url":"https://api.github.com/users/Liaolinan/received_events","type":"User","site_admin":false}
+         * uploader : {"login":"hyhc2016","id":5828315,"avatar_url":"https://avatars2.githubusercontent.com/u/5828315?v=4","gravatar_id":"","url":"https://api.github.com/users/hyhc2016","html_url":"https://github.com/hyhc2016","followers_url":"https://api.github.com/users/hyhc2016/followers","following_url":"https://api.github.com/users/hyhc2016/following{/other_user}","gists_url":"https://api.github.com/users/hyhc2016/gists{/gist_id}","starred_url":"https://api.github.com/users/hyhc2016/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/hyhc2016/subscriptions","organizations_url":"https://api.github.com/users/hyhc2016/orgs","repos_url":"https://api.github.com/users/hyhc2016/repos","events_url":"https://api.github.com/users/hyhc2016/events{/privacy}","received_events_url":"https://api.github.com/users/hyhc2016/received_events","type":"User","site_admin":false}
          * content_type : application/vnd.android.package-archive
          * state : uploaded
-         * size : 23406442
+         * size : 22448078
          * download_count : 1
-         * created_at : 2018-03-14T02:33:27Z
-         * updated_at : 2018-03-14T02:34:10Z
-         * browser_download_url : https://github.com/bclould/tocotalk/releases/download/2.8/v2.8_tocotalk_releasve.apk
+         * created_at : 2018-04-11T12:55:36Z
+         * updated_at : 2018-04-11T12:55:43Z
+         * browser_download_url : https://github.com/bclould/tocotalk/releases/download/v0.01/tocotalk-release-v0.01.apk
          */
 
         private String url;
@@ -485,21 +485,21 @@ public class GitHubInfo {
 
         public static class UploaderBean {
             /**
-             * login : Liaolinan
-             * id : 26948595
-             * avatar_url : https://avatars0.githubusercontent.com/u/26948595?v=4
+             * login : hyhc2016
+             * id : 5828315
+             * avatar_url : https://avatars2.githubusercontent.com/u/5828315?v=4
              * gravatar_id :
-             * url : https://api.github.com/users/Liaolinan
-             * html_url : https://github.com/Liaolinan
-             * followers_url : https://api.github.com/users/Liaolinan/followers
-             * following_url : https://api.github.com/users/Liaolinan/following{/other_user}
-             * gists_url : https://api.github.com/users/Liaolinan/gists{/gist_id}
-             * starred_url : https://api.github.com/users/Liaolinan/starred{/owner}{/repo}
-             * subscriptions_url : https://api.github.com/users/Liaolinan/subscriptions
-             * organizations_url : https://api.github.com/users/Liaolinan/orgs
-             * repos_url : https://api.github.com/users/Liaolinan/repos
-             * events_url : https://api.github.com/users/Liaolinan/events{/privacy}
-             * received_events_url : https://api.github.com/users/Liaolinan/received_events
+             * url : https://api.github.com/users/hyhc2016
+             * html_url : https://github.com/hyhc2016
+             * followers_url : https://api.github.com/users/hyhc2016/followers
+             * following_url : https://api.github.com/users/hyhc2016/following{/other_user}
+             * gists_url : https://api.github.com/users/hyhc2016/gists{/gist_id}
+             * starred_url : https://api.github.com/users/hyhc2016/starred{/owner}{/repo}
+             * subscriptions_url : https://api.github.com/users/hyhc2016/subscriptions
+             * organizations_url : https://api.github.com/users/hyhc2016/orgs
+             * repos_url : https://api.github.com/users/hyhc2016/repos
+             * events_url : https://api.github.com/users/hyhc2016/events{/privacy}
+             * received_events_url : https://api.github.com/users/hyhc2016/received_events
              * type : User
              * site_admin : false
              */

@@ -89,8 +89,6 @@ public class FriendListFragment extends Fragment {
     TextView mNumber;
     @Bind(R.id.news_friend)
     RelativeLayout mNewsFriend;
-    @Bind(R.id.my_group)
-    LinearLayout mMyGroup;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.refresh_layout)
@@ -158,14 +156,14 @@ public class FriendListFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        if (msg.equals("登录成功")) {
+        if (msg.equals(getString(R.string.login_succeed))) {
             addFriendListener();
             initData();
             getMyImage();
             rosterListener();
-        } else if (msg.equals("新的好友")) {
+        } else if (msg.equals(getString(R.string.new_friend))) {
             initData();
-        } else if (msg.equals("新的好友")) {
+        } else if (msg.equals(getString(R.string.new_friend))) {
             updateData();
         }
     }
@@ -246,7 +244,7 @@ public class FriendListFragment extends Fragment {
                     //裁剪JID得到对方用户名
                     alertSubName = alertName.substring(0, alertName.indexOf("@"));
                 }
-                if (acceptAdd.equals("收到添加请求！")) {
+                if (acceptAdd.equals(getString(R.string.receive_add_request))) {
                     //弹出一个对话框，包含同意和拒绝按钮
                     SharedPreferences sp = getContext().getSharedPreferences(SETTING, 0);
                     if (sp.contains(INFORM)) {
@@ -261,9 +259,9 @@ public class FriendListFragment extends Fragment {
                     mNumber.setText(mNewFriend + "");
                     mNumber.setVisibility(View.VISIBLE);
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setTitle("添加好友请求");
-                    builder.setMessage("用户" + alertSubName + "请求添加你为好友");
-                    builder.setPositiveButton("同意", new DialogInterface.OnClickListener() {
+                    builder.setTitle(getString(R.string.add_request));
+                    builder.setMessage(getString(R.string.user) + alertSubName + getString(R.string.request_add));
+                    builder.setPositiveButton(getString(R.string.consent), new DialogInterface.OnClickListener() {
                         //同意按钮监听事件，发送同意Presence包及添加对方为好友的申请
                         @Override
                         public void onClick(DialogInterface dialog, int arg1) {
@@ -280,7 +278,7 @@ public class FriendListFragment extends Fragment {
 
                         }
                     });
-                    builder.setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton(getString(R.string.reject), new DialogInterface.OnClickListener() {
                         //拒绝按钮监听事件，发送拒绝Presence包
                         @Override
                         public void onClick(DialogInterface dialog, int arg1) {
@@ -334,7 +332,7 @@ public class FriendListFragment extends Fragment {
                     UtilTool.Log("日志1", mMgr.findUser(from) + "");
                     UtilTool.Log("发", from);
                     if (!mMgr.findUser(from)) {
-                        acceptAdd = "收到添加请求！";
+                        acceptAdd = getString(R.string.receive_add_request);
                         Intent intent = new Intent();
                         intent.putExtra("fromName", from);
                         intent.putExtra("acceptAdd", acceptAdd);
@@ -345,7 +343,7 @@ public class FriendListFragment extends Fragment {
                 } else if (presence.getType().equals(
                         Presence.Type.subscribed)) {
                     //发送广播传递response字符串
-                    response = "恭喜，对方同意添加好友！";
+                    response = getString(R.string.ta_consent_add_friend);
                     Intent intent = new Intent();
                     intent.putExtra("response", response);
                     intent.setAction("com.example.eric_jqm_chat.SearchActivity");
@@ -360,7 +358,7 @@ public class FriendListFragment extends Fragment {
                 } else if (presence.getType().equals(
                         Presence.Type.unsubscribe)) {
                     //发送广播传递response字符串
-                    response = "抱歉，对方拒绝添加好友，将你从好友列表移除！";
+                    response = getString(R.string.ta_reject_add_friend);
                     try {
                         Roster roster = Roster.getInstanceFor(XmppConnection.getInstance().getConnection());
                         RosterEntry entry = roster.getEntry(JidCreate.entityBareFrom(from));
@@ -426,8 +424,10 @@ public class FriendListFragment extends Fragment {
                 try {
                     Collection<RosterGroup> rosterGroups = cloudMessagePresenter.getContact();
                     if (rosterGroups != null) {
+                        UtilTool.Log("分組", rosterGroups.size() + "");
                         for (RosterGroup group : rosterGroups) {
                             List<RosterEntry> entries = group.getEntries();
+                            UtilTool.Log("好友2", entries.size() + "");
                             for (RosterEntry rosterEntry : entries) {
                                 if (!mMgr.findUser(rosterEntry.getUser())) {
                                     byte[] bytes = UtilTool.getUserImage(XmppConnection.getInstance().getConnection(), rosterEntry.getUser());
@@ -459,16 +459,22 @@ public class FriendListFragment extends Fragment {
     }
 
     private void queryUser() {
-        mUsers.removeAll(mUsers);
+        mUsers.clear();
         List<UserInfo> userInfos = mMgr.queryAllUser();
         UserInfo userInfo = null;
+        UserInfo userInfo2 = null;
         for (UserInfo info : userInfos) {
             if (info.getUser().equals(UtilTool.getJid())) {
                 userInfo = info;
+            } else if (info.getUser().isEmpty()) {
+                userInfo2 = info;
             }
         }
         userInfos.remove(userInfo);
+        if (userInfo2 != null)
+            userInfos.remove(userInfo2);
         mUsers.addAll(userInfos);
+        UtilTool.Log("好友", mUsers.size() + "");
     }
 
     private void initRecylerView() {
@@ -484,7 +490,7 @@ public class FriendListFragment extends Fragment {
     }
 
 
-    @OnClick({R.id.ll_search, R.id.news_friend, R.id.my_group})
+    @OnClick({R.id.ll_search, R.id.news_friend})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_search:
@@ -498,13 +504,13 @@ public class FriendListFragment extends Fragment {
                 mNumber.setVisibility(View.GONE);
                 mNewFriend = 0;
                 break;
-            case R.id.my_group:
+            /*case R.id.my_group:
 
                 startActivity(new Intent(getActivity(), GroupListActivity.class));
 
                 XmppConnection.getInstance().joinMultiUserChat(Constants.MYUSER, "群聊六", mMgr);
 
-                break;
+                break;*/
         }
     }
 }

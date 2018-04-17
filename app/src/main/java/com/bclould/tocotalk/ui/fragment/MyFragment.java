@@ -80,7 +80,7 @@ public class MyFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        if (msg.equals("修改头像")) {
+        if (msg.equals(getString(R.string.xg_touxaing))) {
             Bitmap bitmap = UtilTool.getMyImage(mMgr, UtilTool.getJid());
             if (bitmap != null)
                 mIvTouxiang.setImageBitmap(bitmap);

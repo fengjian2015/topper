@@ -111,9 +111,9 @@ public class BankCardActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        if ("银行卡绑定解绑".equals(msg)) {
+        if (getString(R.string.bank_binding_unbinding).equals(msg)) {
             initData();
-        }else if ("设置默认银行卡".equals(msg)) {
+        }else if (getString(R.string.set_the_default_bank_card).equals(msg)) {
             initData();
         }
     }
@@ -151,7 +151,7 @@ public class BankCardActivity extends BaseActivity {
                         }
                     }
                 }else {
-                    Toast.makeText(this, "您还没有添加银行卡", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.no_binding_bank), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -210,7 +210,7 @@ public class BankCardActivity extends BaseActivity {
             }
         });
         valueList = virtualKeyboardView.getValueList();
-        countCoin.setText("请输入支付密码，以验证身份");
+        countCoin.setText(getString(R.string.verify_pay_pw));
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

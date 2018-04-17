@@ -17,6 +17,7 @@ import com.bclould.tocotalk.Presenter.BuySellPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.OrderListInfo;
+import com.bclould.tocotalk.model.TransRecordInfo;
 import com.bclould.tocotalk.ui.adapter.OrderRVAdapter;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -48,8 +49,8 @@ public class OrderFormFragment extends Fragment {
     ImageView mIv;
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
-    private String mCoinName = "BTC";
-    private String mFiltrate = "全部";
+    private String mCoinName = "TPC";
+    private String mFiltrate = "";
     private List<OrderListInfo.DataBean> mDataList = new ArrayList<>();
     private OrderRVAdapter mOrderRVAdapter;
     private DBManager mMgr;
@@ -59,6 +60,7 @@ public class OrderFormFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_buy, container, false);
         ButterKnife.bind(this, view);
+        mFiltrate = getString(R.string.all);
         mMgr = new DBManager(getContext());
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
@@ -77,9 +79,9 @@ public class OrderFormFragment extends Fragment {
         } else if (event.getFiltrate() != null) {
             mFiltrate = event.getFiltrate();
         }
-        if (msg.equals("幣種切換")) {
+        if (msg.equals(getString(R.string.coin_switchover))) {
             initData(mCoinName, mFiltrate);
-        } else if (msg.equals("确认付款")) {
+        } else if (msg.equals(getString(R.string.confirm_fk))) {
             initData(mCoinName, mFiltrate);
            /* for (OrderListInfo.DataBean info : mDataList) {
                 if (info.getId() == Integer.parseInt(event.getId())) {
@@ -88,27 +90,27 @@ public class OrderFormFragment extends Fragment {
                     mOrderRVAdapter.notifyDataSetChanged();
                 }
             }*/
-        } else if (msg.equals("取消订单")) {
+        } else if (msg.equals(getString(R.string.cancel_order))) {
             for (OrderListInfo.DataBean info : mDataList) {
                 if (info.getId() == Integer.parseInt(event.getId())) {
-                    info.setStatus_name("已取消");
+                    info.setStatus_name(getString(R.string.canceled_canc));
                     info.setStatus(0);
                     mOrderRVAdapter.notifyDataSetChanged();
                 }
             }
-        } else if (msg.equals("确认放币")) {
+        } else if (msg.equals(getString(R.string.confirm_fb))) {
             for (OrderListInfo.DataBean info : mDataList) {
                 if (info.getId() == Integer.parseInt(event.getId())) {
-                    info.setStatus_name("已完成");
+                    info.setStatus_name(getString(R.string.off_the_stocks));
                     info.setStatus(3);
                     mOrderRVAdapter.notifyDataSetChanged();
                 }
             }
-        } else if (msg.equals("创建订单")) {
+        } else if (msg.equals(getString(R.string.create_order))) {
             initData(mCoinName, mFiltrate);
-        } else if (msg.equals("创建订单")) {
+        } else if (msg.equals(getString(R.string.create_order))) {
             initData(mCoinName, mFiltrate);
-        } else if (msg.equals("交易订单筛选")) {
+        } else if (msg.equals(getString(R.string.deal_order_filtrate))) {
             initData(mCoinName, mFiltrate);
         }
     }
@@ -144,6 +146,11 @@ public class OrderFormFragment extends Fragment {
                     mRecyclerView.setVisibility(View.GONE);
                     mLlNoData.setVisibility(View.VISIBLE);
                 }
+            }
+
+            @Override
+            public void send2(TransRecordInfo.DataBean data) {
+
             }
         });
     }

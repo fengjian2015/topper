@@ -12,7 +12,7 @@
         android:layout_height="@dimen/y70"
         android:layout_marginLeft="@dimen/x40"
         android:background="@drawable/bg_green_shape"
-        android:text="充币"
+        android:text="@string/in_coin"
         android:textColor="@color/white"
         android:textSize="@dimen/x28"/>
 
@@ -22,7 +22,7 @@
         android:layout_height="@dimen/y70"
         android:layout_marginLeft="@dimen/x30"
         android:background="@drawable/bg_payway_shape"
-        android:text="提币"
+        android:text="@string/out_coin"
         android:textColor="@color/white"
         android:textSize="@dimen/x28"/>
 
@@ -32,7 +32,7 @@
         android:layout_height="@dimen/y70"
         android:layout_marginLeft="@dimen/x30"
         android:background="@drawable/bg_btc4_shape"
-        android:text="转账"
+        android:text="@string/transfer"
         android:textColor="@color/white"
         android:textSize="@dimen/x28"/>
 

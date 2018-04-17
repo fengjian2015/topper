@@ -105,11 +105,11 @@ public class OrderDetailsActivity extends BaseActivity {
                     mRecLen--;
                     int second = mRecLen % 60;
                     int minute = mRecLen / 60;
-                    mTvTime.setText(minute + "分" + second + "秒");
+                    mTvTime.setText(minute + getString(R.string.fen) + second + getString(R.string.second));
                     if (mRecLen < 0) {
                         mTimer.cancel();
                         finish();
-                        Toast.makeText(OrderDetailsActivity.this, "订单超时", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OrderDetailsActivity.this, getString(R.string.order_timeout), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -129,7 +129,7 @@ public class OrderDetailsActivity extends BaseActivity {
         mOrderDetailsPresenter = new OrderDetailsPresenter(this);
         Intent intent = getIntent();
         mType = intent.getStringExtra("type");
-        if (mType.equals("订单")) {
+        if (mType.equals(getString(R.string.order))) {
             String id = intent.getStringExtra("id");
             initData(id);
         } else {
@@ -137,24 +137,24 @@ public class OrderDetailsActivity extends BaseActivity {
             mRecLen = mData.getDeadline();
             mTimer.schedule(mTask, 1000, 1000);
             if (mData.getType() == 1) {
-                mTvTitle.setText("购买" + mData.getCoin_name());
+                mTvTitle.setText(getString(R.string.buy) + mData.getCoin_name());
                 mLlBuyer.setVisibility(View.VISIBLE);
                 mLlSeller.setVisibility(View.GONE);
-                mTvPaymentType.setText("付款方式:");
-                mTvPayType.setText("等待付款");
+                mTvPaymentType.setText(getString(R.string.payment_method));
+                mTvPayType.setText(getString(R.string.dengdai_fk));
             } else {
                 mLlBuyer.setVisibility(View.GONE);
                 mLlSeller.setVisibility(View.VISIBLE);
-                mTvTitle.setText("售出" + mData.getCoin_name());
-                mTvPaymentType.setText("收款方式:");
-                mTvPayType.setText("等待收款");
+                mTvTitle.setText(getString(R.string.work_off) + mData.getCoin_name());
+                mTvPaymentType.setText(getString(R.string.shoukuan_fs));
+                mTvPayType.setText(getString(R.string.dengdai_sk));
             }
-            mTvBuysell.setText("卖家:" + mData.getTo_user_name());
-            mTvBuysell2.setText("买家:" + mData.getUser_name());
+            mTvBuysell.setText(getString(R.string.seller) + ":" + mData.getTo_user_name());
+            mTvBuysell2.setText(getString(R.string.buyer) + ":" + mData.getUser_name());
             mTvCount.setText(mData.getNumber());
             mTvMoney.setText(mData.getTrans_amount());
             mTvPrice.setText(mData.getPrice());
-            mTvOrderNumber.setText("订单号:" + mData.getOrder_no());
+            mTvOrderNumber.setText(getString(R.string.order_number) + ":" + mData.getOrder_no());
             try {
                 mTvBankName.setText(mData.getBank().getCard_name());
                 mTvBankNumber.setText(mData.getBank().getCard_number());
@@ -178,28 +178,28 @@ public class OrderDetailsActivity extends BaseActivity {
             @Override
             public void send(OrderInfo2.DataBean data) {
                 mInfo.setData(data);
-                mTvOrderNumber.setText("订单号:" + data.getOrder_no());
+                mTvOrderNumber.setText(getString(R.string.order_number) + ":" + data.getOrder_no());
                 mRecLen = data.getDeadline();
                 mTimer.schedule(mTask, 1000, 1000);
                 if (data.getType() == 1) {
                     mLlBuyer.setVisibility(View.VISIBLE);
                     mLlSeller.setVisibility(View.GONE);
-                    mTvTitle.setText("购买" + data.getCoin_name());
+                    mTvTitle.setText(getString(R.string.buy) + data.getCoin_name());
                 } else {
                     mLlBuyer.setVisibility(View.GONE);
                     mLlSeller.setVisibility(View.VISIBLE);
-                    mTvTitle.setText("售出" + data.getCoin_name());
+                    mTvTitle.setText(getString(R.string.work_off) + data.getCoin_name());
                 }
                 if (data.getStatus() == 0) {
                     mTimer.cancel();
-                    mTvTime.setText("0分钟");
+                    mTvTime.setText(getString(R.string.no_time));
                 } else if (data.getStatus() == 1) {
                 } else if (data.getStatus() == 2) {
                 } else if (data.getStatus() == 3) {
                 } else if (data.getStatus() == 4) {
                 }
-                mTvBuysell.setText("卖家:" + data.getTo_user_name());
-                mTvBuysell2.setText("买家:" + data.getUser_name());
+                mTvBuysell.setText(getString(R.string.seller) + ":" + data.getTo_user_name());
+                mTvBuysell2.setText(getString(R.string.buyer) + ":" + data.getUser_name());
                 mTvCount.setText(data.getNumber());
                 mTvMoney.setText(data.getTrans_amount());
                 mTvPrice.setText(data.getPrice());
@@ -225,16 +225,16 @@ public class OrderDetailsActivity extends BaseActivity {
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));
                 break;
             case R.id.btn_buy_cancel:
-                showDialog("取消");
+                showDialog(getString(R.string.cancel));
                 break;
             case R.id.btn_sell_cancel:
-                showDialog("取消");
+                showDialog(getString(R.string.cancel));
                 break;
             case R.id.btn_buy_confirm:
                 confirmPay();
                 break;
             case R.id.btn_sell_confirm:
-                showDialog("放币");
+                showDialog(getString(R.string.fb));
                 break;
         }
     }
@@ -242,10 +242,10 @@ public class OrderDetailsActivity extends BaseActivity {
     public void showDialog(final String type) {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
         deleteCacheDialog.show();
-        if (type.equals("取消"))
-            deleteCacheDialog.setTitle("是否取消订单？");
+        if (type.equals(getString(R.string.cancel)))
+            deleteCacheDialog.setTitle(getString(R.string.cancel_order_hint));
         else
-            deleteCacheDialog.setTitle("是否确认放币？");
+            deleteCacheDialog.setTitle(getString(R.string.fb_hint));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -257,23 +257,24 @@ public class OrderDetailsActivity extends BaseActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (type.equals("取消"))
+                if (type.equals(getString(R.string.cancel)))
                     cancel();
                 else
                     confirmGiveCoin();
+                deleteCacheDialog.dismiss();
             }
         });
     }
 
     private void confirmGiveCoin() {
-        if (mType.equals("订单")) {
+        if (mType.equals(getString(R.string.order))) {
             mOrderDetailsPresenter.confirmGiveCoin(mInfo.getData().getTrans_id(), mInfo.getData().getId(), new OrderDetailsPresenter.CallBack2() {
                 @Override
                 public void send() {
-                    MessageEvent messageEvent = new MessageEvent("确认放币");
+                    MessageEvent messageEvent = new MessageEvent(getString(R.string.confirm_fb));
                     messageEvent.setId(mInfo.getData().getId() + "");
                     EventBus.getDefault().post(messageEvent);
-                    Toast.makeText(OrderDetailsActivity.this, "完成交易", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OrderDetailsActivity.this, getString(R.string.deal_finish), Toast.LENGTH_SHORT).show();
                     finish();
                 }
             });
@@ -281,10 +282,10 @@ public class OrderDetailsActivity extends BaseActivity {
             mOrderDetailsPresenter.confirmGiveCoin(mData.getTrans_id(), mData.getId(), new OrderDetailsPresenter.CallBack2() {
                 @Override
                 public void send() {
-                    MessageEvent messageEvent = new MessageEvent("确认放币");
+                    MessageEvent messageEvent = new MessageEvent(getString(R.string.confirm_fb));
                     messageEvent.setId(mData.getId() + "");
                     EventBus.getDefault().post(messageEvent);
-                    Toast.makeText(OrderDetailsActivity.this, "完成交易", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OrderDetailsActivity.this, getString(R.string.deal_finish), Toast.LENGTH_SHORT).show();
                     finish();
                 }
             });
@@ -292,26 +293,26 @@ public class OrderDetailsActivity extends BaseActivity {
     }
 
     private void confirmPay() {
-        if (mType.equals("订单")) {
+        if (mType.equals(getString(R.string.order))) {
             mOrderDetailsPresenter.confirmPay(mInfo.getData().getTrans_id(), mInfo.getData().getId(), new OrderDetailsPresenter.CallBack2() {
                 @Override
                 public void send() {
-                    mTvPayType.setText("等待放币");
-                    MessageEvent messageEvent = new MessageEvent("确认付款");
+                    mTvPayType.setText(getString(R.string.dengdai_fb));
+                    MessageEvent messageEvent = new MessageEvent(getString(R.string.confirm_fk));
                     messageEvent.setId(mInfo.getData().getId() + "");
                     EventBus.getDefault().post(messageEvent);
-                    Toast.makeText(OrderDetailsActivity.this, "确认付款成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OrderDetailsActivity.this, getString(R.string.fk_succeed), Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
             mOrderDetailsPresenter.confirmPay(mData.getTrans_id(), mData.getId(), new OrderDetailsPresenter.CallBack2() {
                 @Override
                 public void send() {
-                    mTvPayType.setText("等待放币");
-                    MessageEvent messageEvent = new MessageEvent("确认付款");
+                    mTvPayType.setText(getString(R.string.dengdai_fb));
+                    MessageEvent messageEvent = new MessageEvent(getString(R.string.confirm_fk));
                     messageEvent.setId(mData.getId() + "");
                     EventBus.getDefault().post(messageEvent);
-                    Toast.makeText(OrderDetailsActivity.this, "确认付款成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OrderDetailsActivity.this, getString(R.string.fk_succeed), Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -322,10 +323,10 @@ public class OrderDetailsActivity extends BaseActivity {
             mOrderDetailsPresenter.cancel(mInfo.getData().getTrans_id(), mInfo.getData().getId(), new OrderDetailsPresenter.CallBack2() {
                 @Override
                 public void send() {
-                    MessageEvent messageEvent = new MessageEvent("取消订单");
+                    MessageEvent messageEvent = new MessageEvent(getString(R.string.cancel_order));
                     messageEvent.setId(mInfo.getData().getId() + "");
                     EventBus.getDefault().post(messageEvent);
-                    Toast.makeText(OrderDetailsActivity.this, "取消交易", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OrderDetailsActivity.this, getString(R.string.cancel_order), Toast.LENGTH_SHORT).show();
                     finish();
                 }
             });
@@ -333,10 +334,10 @@ public class OrderDetailsActivity extends BaseActivity {
             mOrderDetailsPresenter.cancel(mData.getTrans_id(), mData.getId(), new OrderDetailsPresenter.CallBack2() {
                 @Override
                 public void send() {
-                    MessageEvent messageEvent = new MessageEvent("取消订单");
+                    MessageEvent messageEvent = new MessageEvent(getString(R.string.cancel_order));
                     messageEvent.setId(mData.getId() + "");
                     EventBus.getDefault().post(messageEvent);
-                    Toast.makeText(OrderDetailsActivity.this, "取消交易", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OrderDetailsActivity.this, getString(R.string.cancel_order), Toast.LENGTH_SHORT).show();
                     finish();
                 }
             });

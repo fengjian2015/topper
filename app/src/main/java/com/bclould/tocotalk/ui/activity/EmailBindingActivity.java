@@ -73,7 +73,7 @@ public class EmailBindingActivity extends BaseActivity {
 
         }
 
-        mBindingPhoneNumber.setText("当前绑定手机号：" + phone);
+        mBindingPhoneNumber.setText(getString(R.string.present_phone_number) + phone);
 
 
     }

@@ -1,6 +1,8 @@
 package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,7 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/10/12.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class NewFriendRVAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;
@@ -86,9 +89,9 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
                         XmppConnection.getInstance().getConnection().sendStanza(presenceRes);
                         Roster.getInstanceFor(XmppConnection.getInstance().getConnection()).createEntry(JidCreate.entityBareFrom(mAddRequestInfo.getUser()), null, new String[]{"Friends"});
                         mMgr.updateRequest(mAddRequestInfo.getId(), 1);
-                        EventBus.getDefault().post("新的好友");
+                        EventBus.getDefault().post(mContext.getString(R.string.new_friend));
                         mBtnConsent.setBackgroundColor(mContext.getColor(R.color.white));
-                        mBtnConsent.setText("已同意");
+                        mBtnConsent.setText(mContext.getString(R.string.agrd_agreed));
                         mBtnConsent.setTextColor(mContext.getColor(R.color.gray));
                         mBtnConsent.setEnabled(false);
                     } catch (Exception e) {
@@ -103,7 +106,7 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
             mName.setText(addRequestInfo.getUser().substring(0, addRequestInfo.getUser().indexOf("@")));
             if (addRequestInfo.getType() == 1) {
                 mBtnConsent.setBackgroundColor(mContext.getColor(R.color.white));
-                mBtnConsent.setText("已同意");
+                mBtnConsent.setText(mContext.getString(R.string.agrd_agreed));
                 mBtnConsent.setTextColor(mContext.getColor(R.color.gray));
                 mBtnConsent.setEnabled(false);
             }

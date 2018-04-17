@@ -64,7 +64,7 @@ public class FriendListVPAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        if (mUsers != null) {
+        if (mUsers.size() != 0) {
             return mUsers.size();
         }
         return 0;
@@ -94,7 +94,7 @@ public class FriendListVPAdapter extends RecyclerView.Adapter {
                         bundle.putByteArray("image", mDatas);
                     intent.putExtras(bundle);
                     mMgr.updateNumber(user, 0);
-                    EventBus.getDefault().post(new MessageEvent("处理未读消息"));
+                    EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
                     mContext.startActivity(intent);
                 }
             });

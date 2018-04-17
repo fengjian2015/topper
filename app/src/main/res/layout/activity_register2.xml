@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginTop="@dimen/y20"
-            android:text="注册"
+            android:text="@string/register"
             android:textColor="@color/white"
             android:textSize="@dimen/x40"/>
 
@@ -27,7 +27,7 @@
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
             android:paddingRight="@dimen/x30"
-            android:text="登录"
+            android:text="@string/login"
             android:textColor="@color/white"/>
 
     </RelativeLayout>
@@ -61,7 +61,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="用户名"
+                android:text="@string/username"
                 android:textSize="@dimen/x30"/>
 
             <EditText
@@ -71,9 +71,9 @@
                 android:hint="@string/et_username"
                 android:inputType="text"
                 android:lines="1"
-                android:singleLine="true"
                 android:maxLength="20"
                 android:maxLines="1"
+                android:singleLine="true"
                 android:textColor="@android:color/black"
                 android:textCursorDrawable="@null"
                 android:textSize="@dimen/x32"
@@ -83,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/y20"
-                android:text="邮箱"
+                android:text="@string/email"
                 android:textSize="@dimen/x30"/>
 
             <EditText
@@ -94,8 +94,8 @@
                 android:inputType="textWebEmailAddress"
                 android:lines="1"
                 android:maxLength="28"
-                android:singleLine="true"
                 android:maxLines="1"
+                android:singleLine="true"
                 android:textColor="@android:color/black"
                 android:textCursorDrawable="@null"
                 android:textSize="@dimen/x32"
@@ -110,7 +110,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/y20"
             android:background="@drawable/bg_blue_shape"
-            android:text="下一步"
+            android:text="@string/next_step"
             android:textColor="@color/white"
             android:textSize="@dimen/x35"/>
 
@@ -133,12 +133,12 @@
             android:orientation="vertical"
             android:paddingLeft="@dimen/x50"
             android:paddingRight="@dimen/x50"
-            android:paddingTop="@dimen/y130">
+            android:paddingTop="@dimen/y150">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="密码"
+                android:text="@string/password"
                 android:textSize="@dimen/x30"/>
 
             <RelativeLayout
@@ -153,8 +153,8 @@
                     android:inputType="textPassword"
                     android:lines="1"
                     android:maxLength="20"
-                    android:singleLine="true"
                     android:maxLines="1"
+                    android:singleLine="true"
                     android:textColor="@android:color/black"
                     android:textCursorDrawable="@null"
                     android:textSize="@dimen/x32"
@@ -177,7 +177,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/y20"
-                android:text="邮箱验证码"
+                android:text="@string/vcode"
                 android:textSize="@dimen/x30"/>
 
             <EditText
@@ -186,16 +186,16 @@
                 android:layout_height="@dimen/y120"
                 android:hint="@string/et_vcode"
                 android:inputType="number"
-                android:singleLine="true"
                 android:lines="1"
                 android:maxLength="20"
                 android:maxLines="1"
+                android:singleLine="true"
                 android:textColor="@android:color/black"
                 android:textCursorDrawable="@null"
                 android:textSize="@dimen/x32"
                 android:theme="@style/MyEditText"/>
 
-            <LinearLayout
+           <!-- <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -211,11 +211,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x20"
-                    android:text="同意服务协议"
+                    android:text="@string/agree_with_the_protocol"
                     android:textColor="@color/blue2"
                     android:textSize="@dimen/x30"/>
 
-            </LinearLayout>
+            </LinearLayout>-->
 
         </LinearLayout>
 
@@ -232,7 +232,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/y20"
                 android:background="@drawable/bg_blue_shape"
-                android:text="上一步"
+                android:text="@string/last_step"
                 android:textColor="@color/white"
                 android:textSize="@dimen/x35"/>
 
@@ -243,8 +243,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/y20"
-                android:background="@drawable/bg_gray_shape"
-                android:text="注册"
+                android:background="@drawable/bg_blue_shape"
+                android:text="@string/register"
                 android:textColor="@color/white"
                 android:textSize="@dimen/x35"/>
 

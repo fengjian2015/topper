@@ -87,7 +87,7 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
 
         public void setData(final OrderListInfo.DataBean dataBean) {
 
-            mTvMoney.setText("交易金额" + dataBean.getTrans_amount());
+            mTvMoney.setText(mContext.getString(R.string.deal_money) + dataBean.getTrans_amount());
             mTvTime.setText(dataBean.getCreated_at());
             mTvType.setText(dataBean.getStatus_name());
             if(dataBean.getStatus() == 4){
@@ -140,7 +140,7 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
                         mContext.startActivity(intent);
                     } else {
                         Intent intent = new Intent(mContext, OrderDetailsActivity.class);
-                        intent.putExtra("type", "订单");
+                        intent.putExtra("type", mContext.getString(R.string.order));
                         intent.putExtra("id", dataBean.getId() + "");
                         mContext.startActivity(intent);
                     }

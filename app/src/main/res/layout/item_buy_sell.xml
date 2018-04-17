@@ -112,7 +112,7 @@
                 android:layout_width="@dimen/x120"
                 android:layout_height="@dimen/y60"
                 android:background="@drawable/bg_buysell_shape"
-                android:text="購買"
+                android:text="@string/buy"
                 android:textAllCaps="false"
                 android:textColor="@color/blue2"
                 android:textSize="@dimen/x26"/>

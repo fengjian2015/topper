@@ -98,10 +98,10 @@ public class BankCardBindingActivity2 extends BaseActivity {
             public void send(int status) {
                 if (status == 1) {
                     finish();
-                    Toast.makeText(BankCardBindingActivity2.this, "绑定成功", Toast.LENGTH_SHORT).show();
-                    EventBus.getDefault().post(new MessageEvent("银行卡绑定解绑"));
+                    Toast.makeText(BankCardBindingActivity2.this, getString(R.string.binding_succeed), Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.bank_binding_unbinding)));
                 } else {
-                    Toast.makeText(BankCardBindingActivity2.this, "绑定失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BankCardBindingActivity2.this, getString(R.string.binding_error), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -109,7 +109,7 @@ public class BankCardBindingActivity2 extends BaseActivity {
 
     private boolean checkEdit() {
         if (mEtOpeningBank.getText().toString().trim().isEmpty()) {
-            Toast.makeText(this, "开户行不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_open_bank), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtOpeningBank);
         }else {
             return true;

@@ -186,7 +186,7 @@ public class SendRedPacketActivity extends AppCompatActivity {
         });
         valueList = virtualKeyboardView.getValueList();
         countCoin.setText(count + coins);
-        coin.setText(coins + "红包");
+        coin.setText(coins + getString(R.string.red_package));
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -246,7 +246,7 @@ public class SendRedPacketActivity extends AppCompatActivity {
         mCount = Double.parseDouble(mEtCount.getText().toString());
         mRemark = mEtRemark.getText().toString();
         if (mRemark.isEmpty())
-            mRemark = Constants.REDDEFAULT;
+            mRemark = getString(R.string.congratulation);
         int type = 1;
         int redCount = 1;
         double redSum = 0;
@@ -293,7 +293,7 @@ public class SendRedPacketActivity extends AppCompatActivity {
                 mBottomDialog.dismiss();
             }
         });
-        tvTitle.setText("选择币种");
+        tvTitle.setText(getString(R.string.selector_coin));
         if (MyApp.getInstance().mCoinList.size() != 0) {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);
@@ -374,7 +374,7 @@ public class SendRedPacketActivity extends AppCompatActivity {
             messageInfo.setState(0);
             messageInfo.setRedId(id);
             mMgr.addMessage(messageInfo);
-            String hint = "[红包]";
+            String hint = "[" + getString(R.string.red_package) + "]";
             if (mMgr.findConversation(mUser)) {
                 mMgr.updateConversation(mUser, 0, hint, time);
             } else {
@@ -385,7 +385,7 @@ public class SendRedPacketActivity extends AppCompatActivity {
                 info.setMessage(hint);
                 mMgr.addConversation(info);
             }
-            EventBus.getDefault().post(new MessageEvent("发红包了"));
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.send_red_packet_le)));
             finish();
         } catch (Exception e) {
             e.printStackTrace();

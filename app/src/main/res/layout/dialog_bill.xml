@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
         android:gravity="center"
-        android:text="账单筛选"
+        android:text="@string/filtrate"
         android:textColor="@android:color/black"
         android:textSize="@dimen/x36"/>
 
@@ -41,7 +41,7 @@
         android:layout_marginBottom="@dimen/y20"
         android:layout_marginTop="@dimen/y20"
         android:background="@drawable/btn_blue_selector"
-        android:text="取消"
+        android:text="@string/cancel"
         android:textColor="@android:color/white"
         android:textSize="@dimen/x32"/>
 

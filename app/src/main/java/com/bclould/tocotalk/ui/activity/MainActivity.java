@@ -13,6 +13,7 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,6 +41,8 @@ import com.bclould.tocotalk.xmpp.XmppConnection;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.AbstractXMPPConnection;
+import org.jivesoftware.smackx.ping.PingFailedListener;
+import org.jivesoftware.smackx.ping.PingManager;
 
 import java.util.List;
 import java.util.Map;
@@ -140,17 +143,73 @@ public class MainActivity extends BaseActivity {
         //初始化底部菜单
         initBottomMenu();
         //获取权限
-        UtilTool.getPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, "获取储存权限失败");
-        UtilTool.getPermissions(this, Manifest.permission.CAMERA, "", "获取相机权限失败");
-        UtilTool.getPermissions(this, Manifest.permission.RECORD_AUDIO, "", "获取语音权限失败");
+        UtilTool.getPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, getString(R.string.jurisdiction_store_hint));
+        UtilTool.getPermissions(this, Manifest.permission.CAMERA, "", getString(R.string.jurisdiction_camera_hint));
+        UtilTool.getPermissions(this, Manifest.permission.RECORD_AUDIO, "", getString(R.string.jurisdiction_voice_hint));
         //自动登录即时通讯
         loginIM();
+        pingService();
         //检测版本更新
         checkVersion();
         //获取币种
         getCoinList();
         //获取国家
         getStateList();
+    }
+
+    private Timer tExit;
+
+    private void pingService() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                PingManager pingManager = PingManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+                pingManager.setPingInterval(200);
+                try {
+                    pingManager.pingMyServer();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                pingManager.registerPingFailedListener(new PingFailedListener() {
+                    @Override
+                    public void pingFailed() {
+                        if (tExit == null) {
+                            tExit = new Timer();
+                            tExit.schedule(new TimeTask(), 1000);
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
+
+    private class TimeTask extends TimerTask {
+        @Override
+        public void run() {
+
+            if (UtilTool.getUser() != null && UtilTool.getpw() != null) {
+                Log.i("XMConnectionListener", "尝试登录");
+                // 连接服务器
+                try {
+                    if (!XmppConnection.getInstance().isAuthenticated()) {// 用户未登录
+                        if (XmppConnection.getInstance().login(UtilTool.getUser(), UtilTool.getpw())) {
+                            Log.i("XMConnectionListener", "登录成功");
+                            EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
+                            Intent intent = new Intent();
+                            intent.setAction("XMPPConnectionListener");
+                            intent.putExtra("type", true);
+                            sendBroadcast(intent);
+                        } else {
+                            Log.i("XMConnectionListener", "重新登录");
+                            tExit.schedule(new TimeTask(), 1000);
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.i("XMConnectionListener", "尝试登录,出现异常!");
+                    Log.i("XMConnectionListener", e.getMessage());
+                }
+            }
+        }
     }
 
     private void getStateList() {
@@ -180,7 +239,13 @@ public class MainActivity extends BaseActivity {
                         public void onNext(GitHubInfo baseInfo) {
                             //判断是否需要更新
                             float version = Float.parseFloat(UtilTool.getVersionCode(MainActivity.this));
-                            float tag = Float.parseFloat(baseInfo.getTag_name());
+                            String tag_version = "";
+                            if (baseInfo.getTag_name().contains("v")) {
+                                tag_version = baseInfo.getTag_name().replace("v", "");
+                            } else {
+                                tag_version = baseInfo.getTag_name();
+                            }
+                            float tag = Float.parseFloat(tag_version);
                             if (version < tag)
                                 showUpdateDialog(baseInfo);
                         }
@@ -213,7 +278,7 @@ public class MainActivity extends BaseActivity {
         //显示更新dialog
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
         deleteCacheDialog.show();
-        deleteCacheDialog.setTitle("检测到有新版本！");
+        deleteCacheDialog.setTitle(getString(R.string.check_new_version));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -279,7 +344,7 @@ public class MainActivity extends BaseActivity {
             mProgressDialog = LoadingProgressDialog.createDialog(this);
             mProgressDialog.setCanceledOnTouchOutside(false);
             mProgressDialog.setCancelable(false);
-            mProgressDialog.setMessage("登录中...");
+            mProgressDialog.setMessage(getString(R.string.login_underway));
         }
         mProgressDialog.show();
     }
@@ -299,7 +364,7 @@ public class MainActivity extends BaseActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                    Toast.makeText(MainActivity.this, "网络异常，请稍后重试", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                     break;
                 case 1:
                     hideDialog();
@@ -336,7 +401,7 @@ public class MainActivity extends BaseActivity {
                         String myUser = UtilTool.getJid();
                         String user = myUser.substring(0, myUser.indexOf("@"));
                         connection.login(user, UtilTool.getpw());
-                        connection.addConnectionListener(new XMConnectionListener(user, UtilTool.getpw(), MainActivity.this));
+                        connection.addConnectionListener(new XMConnectionListener(MainActivity.this));
                         /*if (connection.isAuthenticated()) {//登录成功
                             PingManager.setDefaultPingInterval(10);
                             PingManager myPingManager = PingManager.getInstanceFor(connection);
@@ -348,7 +413,7 @@ public class MainActivity extends BaseActivity {
                             });
                         }*/
                         //登录成功发送通知
-                        EventBus.getDefault().post(new MessageEvent("登录成功"));
+                        EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
                         UtilTool.Log("fsdafa", "登录成功");
                         Message message = new Message();
                         message.what = 1;
@@ -356,7 +421,7 @@ public class MainActivity extends BaseActivity {
                     }
                 } catch (Exception e) {
                     //发送登录失败通知
-                    EventBus.getDefault().post(new MessageEvent("登录失败"));
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.login_error)));
                     Message message = new Message();
                     mHandler.sendMessage(message);
                     message.what = 0;
@@ -478,7 +543,7 @@ public class MainActivity extends BaseActivity {
         Timer tExit = null;
         if (isExit == false) {
             isExit = true; // 准备退出
-            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_quit_hint), Toast.LENGTH_SHORT).show();
             tExit = new Timer();
             tExit.schedule(new TimerTask() {
                 @Override

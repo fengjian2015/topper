@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:background="@color/gray"
         android:gravity="center"
-        android:text="开发当中，敬请期待"
+        android:text="@string/hint_unfinished"
         android:textSize="@dimen/x55"/>
 
     <LinearLayout

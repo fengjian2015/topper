@@ -10,7 +10,7 @@
         android:layout_height="@dimen/y60"
         android:layout_marginLeft="@dimen/x20"
         android:gravity="center"
-        android:text="问题和意见"
+        android:text="@string/opinions_and_questions"
         android:textSize="@dimen/x26"/>
 
     <EditText
@@ -19,7 +19,7 @@
         android:layout_height="@dimen/y200"
         android:background="@color/white"
         android:gravity="top"
-        android:hint="请填写10个字以上的问题描述以便我们提供更好的帮助服务。"
+        android:hint="@string/probelm_feedback_hint"
         android:maxLength="150"
         android:paddingLeft="@dimen/x20"
         android:paddingRight="@dimen/x20"
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x20"
             android:layout_marginTop="@dimen/y20"
-            android:text="图片(截图上传)"
+            android:text="@string/upload_Screenshot"
             android:textColor="@color/black"
             android:textSize="@dimen/x26"/>
 
@@ -101,7 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginTop="@dimen/y10"
-        android:text="十分感谢您的反馈！"
+        android:text="@string/thank_hint"
         android:textSize="@dimen/y26"/>
 
     <Button
@@ -111,7 +111,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y30"
         android:background="@drawable/bg_login_shape"
-        android:text="完成"
+        android:text="@string/submit"
         android:textColor="@color/white"
         android:textSize="@dimen/x28"/>
 

@@ -6,7 +6,9 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
+import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.ConnectionListener;
@@ -22,14 +24,12 @@ import java.util.TimerTask;
 public class XMConnectionListener implements ConnectionListener {
     private final Context mContext;
     private Timer tExit;
-    private String username;
-    private String password;
     private int loginTime = 1000;
 
-    public XMConnectionListener(String username, String password, Context context) {
+
+
+    public XMConnectionListener(Context context) {
         super();
-        this.username = username;
-        this.password = password;
         mContext = context;
     }
 
@@ -74,18 +74,18 @@ public class XMConnectionListener implements ConnectionListener {
         }
     }
 
-    private class TimeTask extends TimerTask {
+    public class TimeTask extends TimerTask {
         @Override
         public void run() {
 
-            if (username != null && password != null) {
+            if (UtilTool.getUser() != null && UtilTool.getpw() != null) {
                 Log.i("XMConnectionListener", "尝试登录");
                 // 连接服务器
                 try {
                     if (!XmppConnection.getInstance().isAuthenticated()) {// 用户未登录
-                        if (XmppConnection.getInstance().login(username, password)) {
+                        if (XmppConnection.getInstance().login(UtilTool.getUser(), UtilTool.getpw())) {
                             Log.i("XMConnectionListener", "登录成功");
-                            EventBus.getDefault().post(new MessageEvent("登录成功"));
+                            EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.login_succeed)));
                             Intent intent = new Intent();
                             intent.setAction("XMPPConnectionListener");
                             intent.putExtra("type", true);

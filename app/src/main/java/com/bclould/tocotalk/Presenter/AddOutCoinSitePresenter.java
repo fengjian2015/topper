@@ -32,7 +32,7 @@ public class AddOutCoinSitePresenter {
     private void showDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(mAddOutCoinSiteActivity);
-            mProgressDialog.setMessage("加载中...");
+            mProgressDialog.setMessage(mAddOutCoinSiteActivity.getString(R.string.loading));
         }
 
         mProgressDialog.show();
@@ -67,14 +67,15 @@ public class AddOutCoinSitePresenter {
                             if (baseInfo.getStatus() == 1) {
                                 mAddOutCoinSiteActivity.finish();
                             }
-                            if (baseInfo.getMessage().equals("请先绑定谷歌验证"))
+//                            if (baseInfo.getMessage().equals("请先绑定谷歌验证"))
+                            if (baseInfo.getMessage().equals(mAddOutCoinSiteActivity.getString(R.string.binding_google_hint1)))
                                 mAddOutCoinSiteActivity.startActivity(new Intent(mAddOutCoinSiteActivity, GoogleVerificationActivity.class));
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mAddOutCoinSiteActivity, "网络连接错误，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mAddOutCoinSiteActivity, mAddOutCoinSiteActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

@@ -88,15 +88,15 @@ public class ReceiptPaymentActivity extends BaseActivity {
     }
 
     private void moneyIn() {
-        mTvSet.setText("设置金额和币种");
+        mTvSet.setText(getString(R.string.set_money_coin));
         mRlData.setVisibility(View.GONE);
         mXx.setVisibility(View.VISIBLE);
         mTvSet.setVisibility(View.VISIBLE);
-        mTvHint.setText("扫描二维码向我付款");
+        mTvHint.setText(getString(R.string.scan_qr_code_pay_hint));
         mReceiptPaymentPresenter.generateReceiptQrCode("", "", "", new ReceiptPaymentPresenter.CallBack() {
             @Override
             public void send(BaseInfo.DataBean data) {
-                String code = UtilTool.base64PetToJson(Constants.MONEYIN, "redID", data.getId() + "", "收付款");
+                String code = UtilTool.base64PetToJson(Constants.MONEYIN, "redID", data.getId() + "", getString(R.string.receipt_payment));
                 Bitmap bitmap = UtilTool.createQRImage(code);
                 mIvQr.setBackground(new BitmapDrawable(bitmap));
             }
@@ -169,7 +169,7 @@ public class ReceiptPaymentActivity extends BaseActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == MONEYOUT) {
                 mType = true;
-                mTvSet.setText("更改设置");
+                mTvSet.setText(getString(R.string.gg_set));
                 mRlData.setVisibility(View.VISIBLE);
                 String url = data.getStringExtra("url");
                 String coinName = data.getStringExtra("coinName");
@@ -191,11 +191,11 @@ public class ReceiptPaymentActivity extends BaseActivity {
                 }
                 mTvCoin.setText(coinName);
                 mTvCount.setText(count);
-                mTvHint.setText("出示付款码，向对方付款");
+                mTvHint.setText(getString(R.string.qr_coder_pay));
             } else if (requestCode == MONEYIN) {
                 mType = false;
                 mRlData.setVisibility(View.VISIBLE);
-                mTvSet.setText("更改设置");
+                mTvSet.setText(getString(R.string.gg_set));
                 String coinId = data.getStringExtra("coinId");
                 String coinName = data.getStringExtra("coinName");
                 String count = data.getStringExtra("count");

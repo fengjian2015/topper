@@ -35,7 +35,7 @@
         android:layout_marginRight="@dimen/x20"
         android:background="@color/green"
         android:gravity="center"
-        android:text="同意"
+        android:text="@string/consent"
         android:textColor="@color/white"
         android:textSize="@dimen/x26"/>
 

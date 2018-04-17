@@ -192,7 +192,7 @@ public class TransferAccountsActivity extends BaseActivity {
         });
         valueList = virtualKeyboardView.getValueList();
         countCoin.setText(count + mCoinName);
-        coin.setText(mCoinName + "提币");
+        coin.setText(mCoinName + getString(R.string.out_coin));
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -275,13 +275,13 @@ public class TransferAccountsActivity extends BaseActivity {
 
     private boolean editCheck() {
         if (mEtEmail.getText().toString().isEmpty()) {
-            Toast.makeText(this, "提币地址不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_address), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtEmail);
         } else if (mEtCoinCount.getText().toString().isEmpty()) {
-            Toast.makeText(this, "数量不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_count), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtCoinCount);
         } else if (mEtGoogleCode.getText().toString().isEmpty()) {
-            Toast.makeText(this, "谷歌验证吗不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_google_code), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtGoogleCode);
         } else {
             return true;

@@ -61,7 +61,7 @@ public class RemarkActivity extends BaseActivity {
 
         if(remarkName.isEmpty()){
 
-            Toast.makeText(this, "备注不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_remark), Toast.LENGTH_SHORT).show();
 
         }
 

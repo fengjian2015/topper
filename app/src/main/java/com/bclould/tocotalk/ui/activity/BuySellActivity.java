@@ -121,7 +121,7 @@ public class BuySellActivity extends BaseActivity {
 
     private void setListener() {
         mEtCny.setFilters(new InputFilter[]{lengthFilter});
-        mEtCoin.setFilters(new InputFilter[]{lengthFilter2});
+        mEtCoin.setFilters(new InputFilter[]{lengthFilter});
         mEtCoin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -157,9 +157,9 @@ public class BuySellActivity extends BaseActivity {
                 double max_amount = mData.getMax_amount();
                 double money = count * mPrice;
                 if (money < min_amount) {
-                    mTvCoinHint.setText("不能低于限额");
+                    mTvCoinHint.setText(getString(R.string.no_less_than_the_limit));
                 } else if (money > max_amount) {
-                    mTvCoinHint.setText("不能高于限额");
+                    mTvCoinHint.setText(getString(R.string.no_exceed_than_the_limit));
                 } else {
                     mTvCoinHint.setText("");
                 }
@@ -180,9 +180,9 @@ public class BuySellActivity extends BaseActivity {
                 double max_amount = mData.getMax_amount();
                 double money = count * mPrice;
                 if (money < min_amount) {
-                    mTvCoinHint.setText("不能低于限额");
+                    mTvCoinHint.setText(getString(R.string.no_less_than_the_limit));
                 } else if (money > max_amount) {
-                    mTvCoinHint.setText("不能高于限额");
+                    mTvCoinHint.setText(getString(R.string.no_exceed_than_the_limit));
                 } else {
                     mTvCoinHint.setText("");
                 }
@@ -209,9 +209,9 @@ public class BuySellActivity extends BaseActivity {
                 double min_amount = mData.getMin_amount();
                 double max_amount = mData.getMax_amount();
                 if (money < min_amount) {
-                    mTvCnyHint.setText("不能低于限额");
+                    mTvCoinHint.setText(getString(R.string.no_less_than_the_limit));
                 } else if (money > max_amount) {
-                    mTvCnyHint.setText("不能高于限额");
+                    mTvCoinHint.setText(getString(R.string.no_exceed_than_the_limit));
                 } else {
                     mTvCnyHint.setText("");
                 }
@@ -232,9 +232,9 @@ public class BuySellActivity extends BaseActivity {
                 double min_amount = mData.getMin_amount();
                 double max_amount = mData.getMax_amount();
                 if (money < min_amount) {
-                    mTvCnyHint.setText("不能低于限额");
+                    mTvCoinHint.setText(getString(R.string.no_less_than_the_limit));
                 } else if (money > max_amount) {
-                    mTvCnyHint.setText("不能高于限额");
+                    mTvCoinHint.setText(getString(R.string.no_exceed_than_the_limit));
                 } else {
                     mTvCnyHint.setText("");
                 }
@@ -321,13 +321,13 @@ public class BuySellActivity extends BaseActivity {
         mTvRemark.setText(mData.getRemark());
         mTvPrice.setText(mPrice + "");
         mEtCny.setHint(mData.getMin_amount() + "-" + mData.getMax_amount() + mData.getCurrency());
-        mTvReputation.setText("交易 " + mData.getCount_trans_number() + " | 数量 " + mData.getNumber() + " " + mData.getCoin_name());
-        mTvTitle.setText("购买" + mData.getCoin_name());
+        mTvReputation.setText(getString(R.string.deal) + " " + mData.getCount_trans_number() + " | " + getString(R.string.count) + mData.getNumber() + " " + mData.getCoin_name());
+        mTvTitle.setText(getString(R.string.buy) + mData.getCoin_name());
         if (mType) {
-            mTvBuysellCount.setText("售出数量");
-            mBtnSellBuy.setText("售出");
-            mEtCoin.setHint("售出数量");
-            mTvTitle.setText("售出" + mData.getCoin_name());
+            mTvBuysellCount.setText(getString(R.string.sell_count));
+            mBtnSellBuy.setText(getString(R.string.work_off));
+            mEtCoin.setHint(getString(R.string.sell_count));
+            mTvTitle.setText(getString(R.string.work_off) + mData.getCoin_name());
             mEtCoin.setBackground(getResources().getDrawable(R.drawable.bg_blue_border2));
             mEtCny.setBackground(getResources().getDrawable(R.drawable.bg_blue_border2));
             mBtnSellBuy.setBackground(getResources().getDrawable(R.drawable.bg_green_shape2));
@@ -361,7 +361,7 @@ public class BuySellActivity extends BaseActivity {
                     showPWDialog();
             }
         } else {
-            Toast.makeText(this, "金额或者数量不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_money_count), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -420,7 +420,7 @@ public class BuySellActivity extends BaseActivity {
         });
         valueList = virtualKeyboardView.getValueList();
         countCoin.setText(count + mData.getCoin_name());
-        coin.setText("售出" + mData.getCoin_name());
+        coin.setText(getString(R.string.work_off) + mData.getCoin_name());
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -520,9 +520,9 @@ public class BuySellActivity extends BaseActivity {
             @Override
             public void send(OrderInfo.DataBean data) {
                 Intent intent = new Intent(BuySellActivity.this, OrderDetailsActivity.class);
-                intent.putExtra("type", "广告");
+                intent.putExtra("type", getString(R.string.ad));
                 intent.putExtra("data", data);
-                EventBus.getDefault().post(new MessageEvent("创建订单"));
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.create_order)));
                 startActivity(intent);
                 finish();
             }

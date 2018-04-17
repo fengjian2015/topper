@@ -16,7 +16,7 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="您未设置交易密码，去设置交易密码"
+            android:text="@string/set_pay_pw_hint"
             android:textColor="@android:color/black"
             android:textSize="@dimen/x28"/>
 
@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/white"
-            android:text="取消"
+            android:text="@string/cancel"
             android:textColor="#99000000"
             android:textSize="@dimen/x28"/>
 
@@ -54,7 +54,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/white"
-            android:text="确定"
+            android:text="@string/confirm"
             android:textColor="@color/blue"
             android:textSize="@dimen/x28"/>
 

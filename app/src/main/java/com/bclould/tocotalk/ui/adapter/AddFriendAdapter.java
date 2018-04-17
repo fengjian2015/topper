@@ -82,9 +82,9 @@ public class AddFriendAdapter extends BaseAdapter {
                 try {
                     Roster.getInstanceFor(XmppConnection.getInstance().getConnection()).createEntry(JidCreate.entityBareFrom(mRowList.get(itemId) + "@" + Constants.DOMAINNAME), null, new String[]{"Friends"});
                     mAddFriendActivity.finish();
-                    Toast.makeText(mAddFriendActivity, "发送请求成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mAddFriendActivity, mAddFriendActivity.getString(R.string.send_request_succeed), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
-                    Toast.makeText(mAddFriendActivity, "发送请求失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mAddFriendActivity, mAddFriendActivity.getString(R.string.send_request_error), Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
             }

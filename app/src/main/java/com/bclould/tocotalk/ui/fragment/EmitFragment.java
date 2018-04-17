@@ -108,7 +108,7 @@ public class EmitFragment extends Fragment {
                     List<UserInfo> userInfos = mDbManager.queryUser(Constants.MYUSER);
                     Bitmap bitmap = BitmapFactory.decodeFile(userInfos.get(0).getPath());
                     mIvTouxiang.setImageBitmap(bitmap);
-                    mTvName.setText(data.getName() + "共发出");
+                    mTvName.setText(data.getName() + getString(R.string.sum_send));
                     mTvCount.setText(data.getTotal_money() + "");
                     mTvRedCount.setText(data.getRp_number() + "");
                     mTvMaxMoney.setText(data.getMax_money());

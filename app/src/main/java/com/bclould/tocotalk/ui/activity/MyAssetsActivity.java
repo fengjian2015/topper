@@ -90,8 +90,10 @@ public class MyAssetsActivity extends BaseActivity {
             mSubscribeCoinPresenter.getTotal(new SubscribeCoinPresenter.CallBack3() {
                 @Override
                 public void send(String data) {
-                    mTvCurrency.setText("总资产(USD)");
-                    mTvTotal.setText("≈" + data);
+                    if (data != null) {
+                        mTvCurrency.setText(getString(R.string. total_assets_usd));
+                        mTvTotal.setText("≈" + data);
+                    }
                 }
             });
         } catch (Exception e) {
@@ -102,7 +104,7 @@ public class MyAssetsActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        if (msg.equals("转账")) {
+        if (msg.equals(getString(R.string.transfer))) {
             initData();
         }
     }
@@ -223,11 +225,13 @@ public class MyAssetsActivity extends BaseActivity {
             inCoin.setVisibility(View.VISIBLE);
         } else if (dataBean.getCan_in() == 2) {
             inCoin.setVisibility(View.GONE);
-        } else if (dataBean.getCan_out() == 1) {
+        }
+        if (dataBean.getCan_out() == 1) {
             outCoin.setVisibility(View.VISIBLE);
         } else if (dataBean.getCan_out() == 2) {
             outCoin.setVisibility(View.GONE);
-        } else if (dataBean.getCan_trans() == 1) {
+        }
+        if (dataBean.getCan_trans() == 1) {
             transferAccounts.setVisibility(View.VISIBLE);
         } else if (dataBean.getCan_trans() == 2) {
             transferAccounts.setVisibility(View.GONE);

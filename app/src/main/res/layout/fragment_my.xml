@@ -11,7 +11,7 @@
         android:layout_height="@dimen/y100"
         android:background="@color/white"
         android:gravity="center"
-        android:text="我"
+        android:text="@string/person"
         android:textColor="@color/black"
         android:textSize="@dimen/x35"/>
 
@@ -47,7 +47,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_toRightOf="@+id/iv_touxiang"
-                android:text="安子"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x35"/>
 
@@ -133,7 +132,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_toRightOf="@+id/iv2"
-                android:text="安全中心"
+                android:text="@string/user_safety"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 
@@ -176,7 +175,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_toRightOf="@+id/iv3"
-                android:text="系统设置"
+                android:text="@string/system_set"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 

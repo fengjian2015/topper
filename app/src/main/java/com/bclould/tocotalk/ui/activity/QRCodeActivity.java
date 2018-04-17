@@ -78,9 +78,9 @@ public class QRCodeActivity extends BaseActivity {
                 break;
             case R.id.btn_save_qr:
                 if(UtilTool.saveBitmap(mRlQr)){
-                    Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.save_success), Toast.LENGTH_SHORT).show();
                 }else {
-                    Toast.makeText(this, "保存失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.save_error), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.more:

@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="紅包詳情"
+            android:text="@string/red_package_details"
             android:textColor="@color/white"
             android:textSize="@dimen/x32"/>
 
@@ -34,7 +34,7 @@
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:paddingRight="@dimen/x20"
-            android:text="紅包記錄"
+            android:text="@string/red_package_record"
             android:textColor="@color/white"
             android:textSize="@dimen/x26"/>
 
@@ -59,7 +59,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y30"
-            android:text="安子"
             android:textColor="@color/black"
             android:textSize="@dimen/x34"/>
 
@@ -68,7 +67,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y30"
-            android:text="恭喜发财，大吉大利"
             android:textSize="@dimen/x30"/>
 
         <LinearLayout
@@ -80,7 +78,6 @@
                 android:id="@+id/tv_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0.05"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/x80"
                 android:textStyle="bold"/>
@@ -90,7 +87,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x10"
-                android:text="BTC"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x35"/>
 
@@ -100,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y10"
-            android:text="已存入钱包，可直接转账"
+            android:text="@string/red_packet_hint"
             android:textColor="@color/blue2"
             android:textSize="@dimen/x30"/>
 

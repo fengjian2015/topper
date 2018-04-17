@@ -72,25 +72,16 @@
                     android:textColor="@color/eth"
                     android:textSize="@dimen/x50"/>
 
-                <TextView
-                    android:id="@+id/tv_usdt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/y10"
-                    android:textSize="@dimen/x30"/>
-
                 <ImageView
                     android:id="@+id/iv_site_qr"
-                    android:layout_width="@dimen/x250"
-                    android:layout_height="@dimen/x250"
-                    android:layout_marginTop="@dimen/y20"/>
+                    android:layout_width="@dimen/x350"
+                    android:layout_height="@dimen/x350"/>
 
                 <TextView
                     android:id="@+id/tv_site"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/y100"
-                    android:layout_marginTop="@dimen/y20"
                     android:background="@drawable/bg_gray_shape"
                     android:paddingBottom="@dimen/y5"
                     android:paddingLeft="@dimen/x20"
@@ -108,7 +99,7 @@
             android:layout_width="@dimen/x130"
             android:layout_height="@dimen/x130"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/y590"
+            android:layout_marginTop="@dimen/y600"
             android:background="@drawable/bg_menu_shape"
             android:text="@string/copy"
             android:textColor="@color/white"
@@ -139,22 +130,21 @@
                 android:src="@mipmap/icon_remind"/>
 
             <TextView
-                android:id="@+id/tv"
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x10"
                 android:layout_toRightOf="@+id/iv"
-                android:text="@string/in_coin_hint"
                 android:textColor="@color/redpacket2"
                 android:textSize="@dimen/x26"/>
 
             <TextView
+                android:id="@+id/tv_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv"
+                android:layout_below="@+id/tv_title"
                 android:layout_marginLeft="@dimen/x10"
                 android:layout_toRightOf="@+id/iv"
-                android:text="@string/in_coin_hint2"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x26"/>
 

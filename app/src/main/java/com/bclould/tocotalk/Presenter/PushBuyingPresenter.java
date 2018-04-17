@@ -44,7 +44,7 @@ public class PushBuyingPresenter {
     private void showDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(mContext);
-            mProgressDialog.setMessage("加载中...");
+            mProgressDialog.setMessage(mContext.getString(R.string.loading));
         }
 
         mProgressDialog.show();
@@ -83,13 +83,13 @@ public class PushBuyingPresenter {
                             if (baseInfo.getStatus() == 1) {
                                 PushBuyingActivity activity = (PushBuyingActivity) mContext;
                                 activity.finish();
-                                EventBus.getDefault().post(new MessageEvent("发布交易"));
-                            } else if (baseInfo.getMessage().equals("尚未设置交易密码")) {
+                                EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.publish_deal)));
+                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.set_pay_pw_hint))) {
                                 showHintDialog(1);
-                            } else if (baseInfo.getMessage().equals("交易密码不正确")) {
+                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.payment_pw_error))) {
                                 PushBuyingActivity activity = (PushBuyingActivity) mContext;
                                 activity.showHintDialog();
-                            } else if (baseInfo.getMessage().equals("请先绑定银行卡")) {
+                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.binding_bank_hint))) {
                                 showHintDialog(0);
                             }
                             hideDialog();
@@ -100,7 +100,7 @@ public class PushBuyingPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -119,10 +119,10 @@ public class PushBuyingPresenter {
         deleteCacheDialog.show();
         switch (type) {
             case 0:
-                deleteCacheDialog.setTitle("请先绑定银行卡！");
+                deleteCacheDialog.setTitle(mContext.getString(R.string.binding_bank_hint));
                 break;
             case 1:
-                deleteCacheDialog.setTitle("请先设置交易密码！");
+                deleteCacheDialog.setTitle(mContext.getString(R.string.set_pay_pw_hint));
                 break;
         }
         Button retry = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
@@ -172,7 +172,7 @@ public class PushBuyingPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

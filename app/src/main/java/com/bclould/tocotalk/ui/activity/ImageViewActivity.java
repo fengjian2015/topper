@@ -32,7 +32,7 @@ public class ImageViewActivity extends FragmentActivity {
     private int currentPage;
     private HashMap<String, String> mImageMap;
     private DBManager mMgr;
-    private int mId;
+    private ArrayList<Integer> mIdList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +51,8 @@ public class ImageViewActivity extends FragmentActivity {
                 SerMap serMap = (SerMap) bundle.getSerializable("imgMap");
                 mImageMap = serMap.getMap();
             }
-            if (bundle.containsKey("id")) {
-                mId = bundle.getInt("id");
+            if (bundle.containsKey("msgId")) {
+                mIdList = bundle.getIntegerArrayList("msgId");
             }
         }
         setContentView(R.layout.activity_images_view);
@@ -64,7 +64,7 @@ public class ImageViewActivity extends FragmentActivity {
         fragList = new ArrayList<Fragment>();
         for (int i = 0; i < imageList.size(); i++) {
             ImageViewFragment imageVF = new ImageViewFragment();
-            imageVF.setImageUrl(imageList.get(i), mImageMap.get(imageList.get(i)), mMgr, mId);
+            imageVF.setImageUrl(imageList.get(i), mImageMap.get(imageList.get(i)), mMgr, mIdList.get(i));
             fragList.add(imageVF);
         }
         // 类似缓存

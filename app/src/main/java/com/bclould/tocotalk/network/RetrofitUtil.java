@@ -61,7 +61,7 @@ public class RetrofitUtil {
                 String cacheControl = request.cacheControl().toString();
                 return originalResponse.newBuilder()
                         //这里设置的为0就是说不进行缓存，我们也可以设置缓存时间
-                        .header("Cache-Control", "public, max-age=" + 0)
+                        .header("Cache-Control", "public, max-age=" + 10)
                         .removeHeader("Pragma")
                         .build();
             } else {
@@ -84,7 +84,7 @@ public class RetrofitUtil {
         OkHttpClient client = new OkHttpClient.Builder()
                 .retryOnConnectionFailure(true)//连接失败后是否重新连接
 //                .cookieJar(cookieJar)
-                .connectTimeout(15, TimeUnit.SECONDS)//超时时间15S
+                .connectTimeout(20, TimeUnit.SECONDS)//超时时间20S
                 .addInterceptor(new CacheInterceptor())//也就这里不同
                 .addNetworkInterceptor(new CacheInterceptor())//也就这里不同
                 .cache(cache)

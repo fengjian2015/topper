@@ -74,7 +74,7 @@ public class StartActivity extends AppCompatActivity {
                                             finish();
                                             startActivity(new Intent(StartActivity.this, MainActivity.class));
                                         }
-                                        Toast.makeText(StartActivity.this, "网络连接错误，请重启重试", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(StartActivity.this, getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                                         UtilTool.Log("日志", e.getMessage());
                                     }
 

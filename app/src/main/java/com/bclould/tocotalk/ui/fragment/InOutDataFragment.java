@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import com.bclould.tocotalk.Presenter.DillDataPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.InOutInfo;
-import com.bclould.tocotalk.ui.adapter.InOutDataRVAapter;
 
 import java.util.List;
 
@@ -59,7 +58,7 @@ public class InOutDataFragment extends Fragment {
 
     private void initData() {
         DillDataPresenter dillDataPresenter = new DillDataPresenter(getContext());
-        dillDataPresenter.getInOutData("提币", new DillDataPresenter.CallBack2() {
+        dillDataPresenter.getInOutData(getString(R.string.out_coin),"1", new DillDataPresenter.CallBack2() {
             @Override
             public void send(List<InOutInfo.DataBean> data) {
                 if (data.size() == 0) {
@@ -79,7 +78,7 @@ public class InOutDataFragment extends Fragment {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mRecyclerView.setAdapter(new InOutDataRVAapter(getContext(), data));
+//        mRecyclerView.setAdapter(new InOutDataRVAapter(getContext(), data, mType, mCoinName));
 
     }
 

@@ -164,7 +164,7 @@ public class SendQRCodeRedActivity extends AppCompatActivity {
         });
         valueList = virtualKeyboardView.getValueList();
         countCoin.setText(count + coins);
-        coin.setText(coins + "红包");
+        coin.setText(coins + getString(R.string.red_package));
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -270,7 +270,7 @@ public class SendQRCodeRedActivity extends AppCompatActivity {
                 mBottomDialog.dismiss();
             }
         });
-        tvTitle.setText("选择币种");
+        tvTitle.setText(getString(R.string.selector_coin));
         if (MyApp.getInstance().mCoinList.size() != 0) {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);
@@ -282,7 +282,7 @@ public class SendQRCodeRedActivity extends AppCompatActivity {
         }
     }
 
-    public void hideDialog(String name) {
+    public void hideDialog(String name, int id) {
         mBottomDialog.dismiss();
         mTvCoin.setText(name);
     }
@@ -292,10 +292,10 @@ public class SendQRCodeRedActivity extends AppCompatActivity {
         int count = Integer.parseInt(mEtRedCount.getText().toString());
         double money = Double.parseDouble(mEtMoneyCount.getText().toString());
         double single = money / count;
-        mRedPacketPresenter.sendRedPacket("code", 2, coin, Constants.REDDEFAULT, 2, count, single, money, password, new RedPacketPresenter.CallBack() {
+        mRedPacketPresenter.sendRedPacket("code", 2, coin, getString(R.string.congratulation), 2, count, single, money, password, new RedPacketPresenter.CallBack() {
             @Override
             public void send(int id) {
-                String code = UtilTool.base64PetToJson(Constants.REDPACKAGE, "redID", id + "", "红包");
+                String code = UtilTool.base64PetToJson(Constants.REDPACKAGE, "redID", id + "", getString(R.string.red_package));
                 Intent intent = new Intent(SendQRCodeRedActivity.this, QRCodeRedActivity.class);
                 intent.putExtra("code", code);
                 intent.putExtra("type", true);

@@ -98,25 +98,25 @@ public class RealNameC1Activity extends BaseActivity {
         mRealNamePresenter.realNameInfo(new RealNamePresenter.CallBack2() {
             @Override
             public void send(String message) {
-                if (message.equals("认证成功")) {
+                if (message.equals(getString(R.string.verify_succeed))) {
                     mLlNoPass.setVisibility(View.GONE);
                     mBtnAuth.setVisibility(View.GONE);
                     mTvAuthType.setText(message);
                     mLlPass.setVisibility(View.VISIBLE);
-                } else if (message.equals("认证失败")) {
+                } else if (message.equals(getString(R.string.verify_error))) {
                     mIvAuthType.setImageResource(R.mipmap.shenheshibai);
                     mLlNoPass.setVisibility(View.GONE);
                     mLlPass.setVisibility(View.VISIBLE);
                     mTvAuthType.setText(message);
                     mBtnAuth.setVisibility(View.VISIBLE);
                     mTvAuthType.setText(message);
-                } else if (message.equals("待审核")) {
+                } else if (message.equals(getString(R.string.check_pending))) {
                     mIvAuthType.setImageResource(R.mipmap.shenhezhong);
                     mLlNoPass.setVisibility(View.GONE);
                     mBtnAuth.setVisibility(View.GONE);
                     mTvAuthType.setText(message);
                     mLlPass.setVisibility(View.VISIBLE);
-                } else if (message.equals("未认证")) {
+                } else if (message.equals(getString(R.string.unverified))) {
                     mLlNoPass.setVisibility(View.VISIBLE);
                     mLlPass.setVisibility(View.GONE);
                 }
@@ -173,7 +173,7 @@ public class RealNameC1Activity extends BaseActivity {
                 mBottomDialog.dismiss();
             }
         });
-        tvTitle.setText("选择国家");
+        tvTitle.setText(getString(R.string.selecotr_state));
         if (MyApp.getInstance().mCoinList.size() != 0) {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);
@@ -200,7 +200,7 @@ public class RealNameC1Activity extends BaseActivity {
             public void onClick(View view) {
                 mPopupWindow.dismiss();
                 mCardType.setText(shenfen.getText());
-                mTv.setText("身份证号码");
+                mTv.setText(getString(R.string.id_card_number));
             }
         });
         final TextView huzhao = (TextView) mView.findViewById(R.id.tv_huzhao);
@@ -209,7 +209,7 @@ public class RealNameC1Activity extends BaseActivity {
             public void onClick(View view) {
                 mPopupWindow.dismiss();
                 mCardType.setText(huzhao.getText());
-                mTv.setText("护照号码");
+                mTv.setText(R.string.passport_number);
             }
         });
     }
@@ -219,7 +219,7 @@ public class RealNameC1Activity extends BaseActivity {
         String cardNumber = mEtNumber.getText().toString().trim();
         String cardType = mCardType.getText().toString().trim();
         mType = "";
-        if (cardType.equals("身份证")) {
+        if (cardType.equals(getString(R.string.id_card))) {
             mType = "1";
         } else {
             mType = "2";
@@ -238,16 +238,16 @@ public class RealNameC1Activity extends BaseActivity {
 
     private boolean checkEdit() {
         if (mEtName.getText().toString().trim().isEmpty()) {
-            Toast.makeText(this, "姓名不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_name), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtName);
         } else if (mEtNumber.getText().toString().trim().isEmpty()) {
-            Toast.makeText(this, "证件号码不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_id_card), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtNumber);
         } else if (mCardType.getText().toString().trim().isEmpty()) {
-            Toast.makeText(this, "证件类型不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_id_card_type), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mCardType);
         } else if (mTvState.getText().toString().trim().isEmpty()) {
-            Toast.makeText(this, "国籍不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_nationality), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mRlSelectorState);
         } else {
             return true;

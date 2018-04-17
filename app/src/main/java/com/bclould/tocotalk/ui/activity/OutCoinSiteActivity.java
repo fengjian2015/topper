@@ -14,12 +14,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.Presenter.OutCoinSitePresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
+import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.OutCoinSiteInfo;
 import com.bclould.tocotalk.ui.adapter.OutCoinSiteRVAdapter;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import java.util.List;
 
@@ -53,6 +54,7 @@ public class OutCoinSiteActivity extends BaseActivity {
     RelativeLayout mRlAddSite;
     private int mId;
     private OutCoinSitePresenter mOutCoinSitePresenter;
+    private String mCoinName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,9 +71,15 @@ public class OutCoinSiteActivity extends BaseActivity {
         //获取地址
         getSite();
     }
+
     //初始化界面
     private void initInterface() {
-        mId = getIntent().getIntExtra("id", 0);//获取上个界面传递的Id
+        Bundle bundle = getIntent().getExtras();
+        mCoinName = bundle.getString("coinName");
+        mId = bundle.getInt("id", 0);//获取上个界面传递的Id
+        UtilTool.Log("地址", mCoinName);
+        UtilTool.Log("地址", mId + "");
+        //获取上个界面传递的Id
         getSite();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -99,6 +107,7 @@ public class OutCoinSiteActivity extends BaseActivity {
                 Intent intent = new Intent();
                 intent.setClass(this, AddOutCoinSiteActivity.class);
                 intent.putExtra("id", mId);
+                intent.putExtra("coinName", mCoinName);
                 startActivity(intent);
                 break;
         }

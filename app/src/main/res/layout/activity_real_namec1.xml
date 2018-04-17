@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="实名验证"
+            android:text="@string/real_name_verify"
             android:textColor="@android:color/black"
             android:textSize="@dimen/x32"/>
 
@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/y20"
-                android:text="为确保用户权限及安全，请务必填写真实信息"
+                android:text="@string/real_name_hint"
                 android:textSize="@dimen/x26"/>
 
 
@@ -106,19 +106,20 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/x30"
-                        android:text="姓名:"
+                        android:text="@string/compellation"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/x28"/>
 
                     <EditText
                         android:id="@+id/et_name"
                         android:layout_width="@dimen/x500"
+                        android:singleLine="true"
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="@dimen/x30"
                         android:background="@color/transparent"
                         android:gravity="right|center"
-                        android:hint="请填写真实姓名"
+                        android:hint="@string/et_name"
                         android:inputType="textPersonName"
                         android:maxLength="20"
                         android:textCursorDrawable="@null"
@@ -147,7 +148,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/x30"
-                        android:text="国家地区:"
+                        android:text="@string/nationality"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x28"/>
 
@@ -159,7 +160,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/x20"
                         android:layout_toLeftOf="@+id/iv_jiantou2"
-                        android:hint="选择国籍"
+                        android:hint="@string/selector_nationality"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x28"/>
 
@@ -195,7 +196,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/x30"
-                        android:text="证件类型:"
+                        android:text="@string/id_card_type"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x28"/>
 
@@ -207,7 +208,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/x20"
                         android:layout_toLeftOf="@+id/iv_jiantou"
-                        android:hint="选择证件"
+                        android:hint="@string/selector_id_card"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x28"/>
 
@@ -240,9 +241,13 @@
                         android:id="@+id/tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x30"
-                        android:text="身份证号码:"
+                        android:layout_alignBaseline="@+id/et_number"
+                        android:layout_alignBottom="@+id/et_number"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginLeft="17dp"
+                        android:layout_marginStart="17dp"
+                        android:text="@string/id_card_number"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/x28"/>
 
@@ -252,11 +257,12 @@
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="@dimen/x30"
+                        android:singleLine="true"
                         android:layout_toRightOf="@+id/tv"
                         android:background="@color/transparent"
                         android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:gravity="right|center"
-                        android:hint="请填写完整身份证号码"
+                        android:hint="@string/et_id_card_number"
                         android:textCursorDrawable="@null"
                         android:textSize="@dimen/x28"/>
 
@@ -271,7 +277,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/y50"
                 android:background="@drawable/btn_blue_selector"
-                android:text="下一步"
+                android:text="@string/next_step"
                 android:textColor="@color/white"/>
 
             <android.support.v7.widget.CardView
@@ -298,7 +304,7 @@
                         android:drawableLeft="@mipmap/icon_remind"
                         android:drawablePadding="@dimen/x10"
                         android:gravity="center"
-                        android:text="为了您的账户安全，请实名认证"
+                        android:text="@string/real_name_hint2"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x26"/>
 
@@ -307,7 +313,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/y25"
                         android:lineSpacingExtra="@dimen/x8"
-                        android:text="1.真实姓名经实名认证后将不能够更改，请如实填写。\n2.本站只接受实名充值，提现时银行卡等姓名信息必须与您的认证姓名一致。\n3.本站有合理的理由怀疑用户提供虚假身份信息时，有权拒绝注册或者冻结、注销已经注册的账户及资产。"
+                        android:text="@string/real_name_hint3"
                         android:textSize="@dimen/x25"/>
 
                 </LinearLayout>

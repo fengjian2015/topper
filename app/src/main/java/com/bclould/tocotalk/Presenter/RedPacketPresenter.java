@@ -42,7 +42,7 @@ public class RedPacketPresenter {
     private void showDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(mContext);
-            mProgressDialog.setMessage("加载中...");
+            mProgressDialog.setMessage(mContext.getString(R.string.loading));
         }
 
         mProgressDialog.show();
@@ -73,8 +73,8 @@ public class RedPacketPresenter {
                         public void onNext(BaseInfo baseInfo) {
                             if (baseInfo.getStatus() == 1) {
                                 callBack.send(baseInfo.getData().getId());
-                                Toast.makeText(mContext, "已发送", Toast.LENGTH_SHORT).show();
-                            } else if (baseInfo.getMessage().equals("交易密码不正确")) {
+                                Toast.makeText(mContext, mContext.getString(R.string.sent), Toast.LENGTH_SHORT).show();
+                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.payment_pw_error))) {
                                 if (mContext instanceof SendRedPacketActivity) {
                                     SendRedPacketActivity activity = (SendRedPacketActivity) mContext;
                                     activity.showHintDialog();
@@ -82,7 +82,7 @@ public class RedPacketPresenter {
                                     SendQRCodeRedActivity activity = (SendQRCodeRedActivity) mContext;
                                     activity.showHintDialog();
                                 }
-                            } else if (baseInfo.getMessage().equals("尚未设置交易密码")) {
+                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.set_pay_pw_hint))) {
                                 showSetPwDialog();
                             } else {
                                 Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
@@ -93,7 +93,7 @@ public class RedPacketPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -158,7 +158,7 @@ public class RedPacketPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -191,9 +191,9 @@ public class RedPacketPresenter {
                             if (baseInfo.getStatus() == 1) {
                                 ChatTransferActivity activity = (ChatTransferActivity) mContext;
                                 activity.sendMessage();
-                            } else if (baseInfo.getMessage().equals("尚未设置交易密码")) {
+                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.set_pay_pw_hint))) {
                                 showSetPwDialog();
-                            } else if (baseInfo.getMessage().equals("交易密码不正确")) {
+                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.payment_pw_error))) {
                                 ChatTransferActivity activity = (ChatTransferActivity) mContext;
                                 activity.showHintDialog();
                             }
@@ -203,7 +203,7 @@ public class RedPacketPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

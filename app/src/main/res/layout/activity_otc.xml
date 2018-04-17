@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="BTC"
+            android:text="TPC"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
@@ -93,7 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="购买"
+                android:text="@string/buy"
                 android:textColor="@drawable/text_otc_selector"
                 android:textSize="@dimen/x30"/>
 
@@ -115,7 +115,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="出售"
+                android:text="@string/sell"
                 android:textColor="@drawable/text_otc_selector"
                 android:textSize="@dimen/x30"/>
 
@@ -137,7 +137,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="订单"
+                android:text="@string/order"
                 android:textColor="@drawable/text_otc_selector"
                 android:textSize="@dimen/x30"/>
 
@@ -178,7 +178,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/white"
-            android:text="选择币种"
+            android:text="@string/selector_coin"
             android:textColor="@color/black"
             android:textSize="@dimen/x30"/>
 
@@ -193,7 +193,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/white"
-            android:text="发布广告"
+            android:text="@string/push_ad"
             android:textColor="@color/black"
             android:textSize="@dimen/x30"/>
 

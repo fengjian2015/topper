@@ -78,7 +78,7 @@ public class DynamicFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        if (msg.equals("发表评论")) {
+        if (msg.equals(getString(R.string.publish_comment))) {
             String id = event.getId();
             for (DynamicListInfo.DataBean info : mDataList) {
                 if ((info.getId() + "").equals(id)) {
@@ -86,7 +86,7 @@ public class DynamicFragment extends Fragment {
                 }
             }
             mDynamicRVAdapter.notifyDataSetChanged();
-        } else if (msg.equals("点赞")) {
+        } else if (msg.equals(getString(R.string.zan))) {
             String id = event.getId();
             for (DynamicListInfo.DataBean info : mDataList) {
                 if ((info.getId() + "").equals(id)) {
@@ -99,7 +99,7 @@ public class DynamicFragment extends Fragment {
                 }
             }
             mDynamicRVAdapter.notifyDataSetChanged();
-        } else if (msg.equals("发表动态")) {
+        } else if (msg.equals(getString(R.string.publish_dynamic))) {
             initData(mPage, mPageSize);
         }
 

@@ -58,13 +58,13 @@ public class PayReceiptResultActivity extends BaseActivity {
         String number = bundle.getString("number");
         String type = bundle.getString("type");
         if (type.equals(Constants.MONEYIN)) {
-            mTvWho.setText("收款人");
+            mTvWho.setText(getString(R.string.sk_person));
             mIvResult.setImageResource(R.mipmap.icon_pay_c1);
-            mTvPayType.setText("支付成功");
+            mTvPayType.setText(getString(R.string.payment_succeed));
         } else {
             mIvResult.setImageResource(R.mipmap.icon_get_c1);
-            mTvWho.setText("付款人");
-            mTvPayType.setText("收款成功");
+            mTvWho.setText(getString(R.string.fk_person));
+            mTvPayType.setText(getString(R.string.sk_succeed));
         }
         mTvCoinCount.setText(number + coinName);
         mTvName.setText(name);

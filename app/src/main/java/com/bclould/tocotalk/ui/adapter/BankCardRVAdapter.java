@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,8 +68,8 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
 
     //ViewHolder控制条目
     class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.image)
-        ImageView mImage;
+        @Bind(R.id.tv_logo)
+        TextView mTvLogo;
         @Bind(R.id.bank_name)
         TextView mBankName;
         @Bind(R.id.card_type)
@@ -99,6 +98,8 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
             String bankName = data.getBank_name();
             String[] split = bankName.split("-");
             mBankName.setText(split[0]);
+            String logo = split[0].substring(0, 1);
+            mTvLogo.setText(logo);
             mCardType.setText(split[split.length - 1]);
             mBankCardNumber.setText(data.getCard_number());
             if (data.getIs_default() == 1) {
@@ -122,9 +123,9 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         TextView title = (TextView) deleteCacheDialog.findViewById(R.id.tv_title);
         if (type == 0) {
-            title.setText("确定要删除银行卡吗？");
+            title.setText(mActivity.getString(R.string.delete_bank_card_hint));
         } else {
-            title.setText("是否设置为默认收款银行卡？");
+            title.setText(mActivity.getString(R.string.set_the_default_bank_card_hint));
         }
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,11 +143,11 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
                         @Override
                         public void send(int status) {
                             if (status == 1) {
-                                Toast.makeText(mActivity, "解绑成功", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mActivity, mActivity.getString(R.string.unbinding_succeed), Toast.LENGTH_SHORT).show();
                                 mCardList.remove(data);
                                 notifyDataSetChanged();
                             } else {
-                                Toast.makeText(mActivity, "解绑失败", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mActivity, mActivity.getString(R.string.unbinding_error), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -155,7 +156,7 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
                         @Override
                         public void send(int status) {
                             if (status == 1) {
-                                EventBus.getDefault().post(new MessageEvent("设置默认银行卡"));
+                                EventBus.getDefault().post(new MessageEvent(mActivity.getString(R.string.set_the_default_bank_card)));
                             }
                         }
                     });

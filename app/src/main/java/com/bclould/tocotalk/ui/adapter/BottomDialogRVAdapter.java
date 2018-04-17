@@ -13,13 +13,11 @@ import android.widget.Toast;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.ui.activity.PushBuyingActivity;
 
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
-import static com.bclould.tocotalk.ui.activity.PushBuyingActivity.PAYSIGN;
-import static com.bclould.tocotalk.ui.activity.PushBuyingActivity.PAYSIGN2;
 
 /**
  * Created by GA on 2017/11/22.
@@ -29,13 +27,13 @@ import static com.bclould.tocotalk.ui.activity.PushBuyingActivity.PAYSIGN2;
 public class BottomDialogRVAdapter extends RecyclerView.Adapter {
 
     private final PushBuyingActivity mPushBuyingActivity;
-    private final String[] mArr;
+    private final List<String> mArr;
     private final int mSign;
     private final CallBack mCallBack;
     private final Map<String, Integer> mMap;
     private final Map<String, Boolean> mModeOfPayment;
 
-    public BottomDialogRVAdapter(PushBuyingActivity pushBuyingActivity, Map<String, Boolean> modeOfPayment, String[] arr, int sign, CallBack callBack, Map<String, Integer> map) {
+    public BottomDialogRVAdapter(PushBuyingActivity pushBuyingActivity, Map<String, Boolean> modeOfPayment, List<String> arr, int sign, CallBack callBack, Map<String, Integer> map) {
         mPushBuyingActivity = pushBuyingActivity;
         mSign = sign;
         mArr = arr;
@@ -62,17 +60,17 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (mSign == 2 || mSign == 5) {
             ViewHolder2 viewHolder2 = (ViewHolder2) holder;
-            viewHolder2.setData(mArr[position], position);
+            viewHolder2.setData(mArr.get(position), position);
         } else {
             ViewHolder viewHolder = (ViewHolder) holder;
-            viewHolder.setData(mArr[position]);
+            viewHolder.setData(mArr.get(position));
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return mArr.length;
+        return mArr.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -123,7 +121,7 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
                         }
                         mCallBack.send(mName, isChecked, mPosition);
                     } else {
-                        Toast.makeText(mPushBuyingActivity, "请先绑定" + mName, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mPushBuyingActivity, mPushBuyingActivity.getString(R.string.please_bind) + mName, Toast.LENGTH_SHORT).show();
                     }
                 }/* else {
                         isChecked = !isChecked;
@@ -143,7 +141,7 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
             if (mModeOfPayment.get(name)) {
                 mTvName.setText(name);
             } else {
-                mTvName.setText(name + "(未绑定)");
+                mTvName.setText(name + "(" + mPushBuyingActivity.getString(R.string.not_bound) + ")");
             }
             mPosition = position;
             for (String key : mMap.keySet()) {

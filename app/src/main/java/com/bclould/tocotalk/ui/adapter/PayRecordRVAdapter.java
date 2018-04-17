@@ -1,6 +1,7 @@
 package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.TransferListInfo;
+import com.bclould.tocotalk.ui.activity.PayDetailsActivity;
 
 import java.util.List;
 
@@ -69,6 +71,15 @@ public class PayRecordRVAdapter extends RecyclerView.Adapter {
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, PayDetailsActivity.class);
+                    intent.putExtra("id", mDataBean.getLog_id() + "");
+                    intent.putExtra("type_number", mDataBean.getType_number() + "");
+                    mContext.startActivity(intent);
+                }
+            });
         }
 
         public void setData(TransferListInfo.DataBean dataBean) {

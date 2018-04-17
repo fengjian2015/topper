@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -21,11 +22,11 @@ import butterknife.ButterKnife;
 public class PayManageGVAdapter extends BaseAdapter {
 
     private final Context mContext;
-    private final String[] mFiltrateArr;
+    private final List<String> mFiltrateArr;
     private final Map<String, Integer> mMap;
     private final CallBack mCallBack;
 
-    public PayManageGVAdapter(Context context, String[] filtrateArr, Map<String, Integer> map, CallBack callBack) {
+    public PayManageGVAdapter(Context context, List<String> filtrateArr, Map<String, Integer> map, CallBack callBack) {
         mContext = context;
         mFiltrateArr = filtrateArr;
         mMap = map;
@@ -34,15 +35,15 @@ public class PayManageGVAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if (mFiltrateArr.length != 0)
-            return mFiltrateArr.length;
+        if (mFiltrateArr.size() != 0)
+            return mFiltrateArr.size();
         return 0;
     }
 
     @Override
     public Object getItem(int i) {
-        if (mFiltrateArr[i] != null)
-            return mFiltrateArr[i];
+        if (mFiltrateArr.get(i) != null)
+            return mFiltrateArr.get(i);
         return null;
     }
 
@@ -80,8 +81,8 @@ public class PayManageGVAdapter extends BaseAdapter {
         }
 
         public void setData(final int i) {
-            mTextview.setText(mFiltrateArr[i]);
-            if (mMap.get("筛选") == i) {
+            mTextview.setText(mFiltrateArr.get(i));
+            if (mMap.get(mContext.getString(R.string.filtrate)) == i) {
                 mTextview.setSelected(true);
             } else {
                 mTextview.setSelected(false);
