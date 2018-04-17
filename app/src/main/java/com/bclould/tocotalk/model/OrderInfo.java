@@ -16,6 +16,15 @@ public class OrderInfo implements Serializable {
     private int status;
     private DataBean data;
     private String message;
+    private int type;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public String getMessage() {
         return message;

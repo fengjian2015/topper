@@ -53,15 +53,15 @@ public class BankCardBindingActivity extends BaseActivity {
         RealNamePresenter realNamePresenter = new RealNamePresenter(this);
         realNamePresenter.realNameInfo(new RealNamePresenter.CallBack2() {
             @Override
-            public void send(String message) {
-                if (message.equals(getString(R.string.unverified))) {
+            public void send(int type, String mark) {
+                if (type == 1) {
                     showDialog();
                     mBtnNext.setClickable(false);
-                } else if (message.equals(getString(R.string.verify_error))) {
+                } else if (type == 4) {
                     showDialog();
                     mBtnNext.setClickable(false);
                     Toast.makeText(BankCardBindingActivity.this, getString(R.string.verify_error_hint), Toast.LENGTH_SHORT).show();
-                } else if (message.equals(getString(R.string.check_pending))) {
+                } else if (type == 2) {
                     mBtnNext.setClickable(false);
                     Toast.makeText(BankCardBindingActivity.this, getString(R.string.verify_check_pending), Toast.LENGTH_SHORT).show();
                 }

@@ -154,18 +154,17 @@ public class BuySellPresenter {
                             hideDialog();
                             if (baseInfo.getStatus() == 1) {
                                 callBack2.send(baseInfo.getData());
-//                            } else if (baseInfo.getMessage().equals("尚未设置交易密码")) {
-                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.set_payment_pw_hint))) {
-                                showHintDialog(1);
-                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.payment_pw_error))) {
-//                            } else if (baseInfo.getMessage().equals("交易密码不正确")) {
-                                BuySellActivity activity = (BuySellActivity) mContext;
-                                activity.showHintDialog();
-//                            } else if (baseInfo.getMessage().equals("请先绑定银行卡")) {
-                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.binding_bank_hint))) {
-                                showHintDialog(0);
-                            } else {
-                                Toast.makeText(mContext, baseInfo.getMessage() + "", Toast.LENGTH_SHORT).show();
+                            } else if (baseInfo.getStatus() == 2) {
+                                if (baseInfo.getType() == 4) {
+                                    showHintDialog(1);
+                                } else if (baseInfo.getType() == 6) {
+                                    BuySellActivity activity = (BuySellActivity) mContext;
+                                    activity.showHintDialog();
+                                } else if (baseInfo.getType() == 2) {
+                                    showHintDialog(0);
+                                } else {
+                                    Toast.makeText(mContext, baseInfo.getMessage() + "", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
 
@@ -202,7 +201,7 @@ public class BuySellPresenter {
                         @Override
                         public void onNext(BaseInfo baseInfo) {
                             if (baseInfo.getStatus() == 1) {
-                            } else {
+                            } else if (baseInfo.getType() == 2) {
                                 showHintDialog(0);
                             }
                         }
@@ -292,6 +291,42 @@ public class BuySellPresenter {
         }
     }
 
+    public void cancelAd(int id, final CallBack4 callBack4) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .cancelTrans(UtilTool.getToken(), id + "")
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(BaseInfo baseInfo) {
+                            if (baseInfo.getStatus() == 1) {
+                                callBack4.send();
+                            }
+                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     //定义接口
     public interface CallBack {
         void send(List<DealListInfo.DataBean> dataBean, String coin);
@@ -307,5 +342,10 @@ public class BuySellPresenter {
         void send(List<OrderListInfo.DataBean> data);
 
         void send2(TransRecordInfo.DataBean data);
+    }//定义接口
+
+    public interface CallBack4 {
+
+        void send();
     }
 }

@@ -14,6 +14,7 @@ import com.bclould.tocotalk.model.GrabRedInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.activity.ChatTransferActivity;
 import com.bclould.tocotalk.ui.activity.PayPasswordActivity;
+import com.bclould.tocotalk.ui.activity.RealNameC1Activity;
 import com.bclould.tocotalk.ui.activity.SendQRCodeRedActivity;
 import com.bclould.tocotalk.ui.activity.SendRedPacketActivity;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
@@ -74,7 +75,7 @@ public class RedPacketPresenter {
                             if (baseInfo.getStatus() == 1) {
                                 callBack.send(baseInfo.getData().getId());
                                 Toast.makeText(mContext, mContext.getString(R.string.sent), Toast.LENGTH_SHORT).show();
-                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.payment_pw_error))) {
+                            } else if (baseInfo.getType() == 6) {
                                 if (mContext instanceof SendRedPacketActivity) {
                                     SendRedPacketActivity activity = (SendRedPacketActivity) mContext;
                                     activity.showHintDialog();
@@ -82,7 +83,9 @@ public class RedPacketPresenter {
                                     SendQRCodeRedActivity activity = (SendQRCodeRedActivity) mContext;
                                     activity.showHintDialog();
                                 }
-                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.set_pay_pw_hint))) {
+                            } else if (baseInfo.getType() == 1) {
+                                showHintDialog();
+                            } else if (baseInfo.getType() == 4) {
                                 showSetPwDialog();
                             } else {
                                 Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
@@ -104,6 +107,28 @@ public class RedPacketPresenter {
         } else {
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void showHintDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(mContext.getString(R.string.real_name_authentication_hint));
+        Button retry = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        Button findPassword = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        findPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                mContext.startActivity(new Intent(mContext, RealNameC1Activity.class));
+
+            }
+        });
     }
 
     private void showSetPwDialog() {
@@ -191,11 +216,13 @@ public class RedPacketPresenter {
                             if (baseInfo.getStatus() == 1) {
                                 ChatTransferActivity activity = (ChatTransferActivity) mContext;
                                 activity.sendMessage();
-                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.set_pay_pw_hint))) {
+                            } else if (baseInfo.getType() == 4) {
                                 showSetPwDialog();
-                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.payment_pw_error))) {
+                            } else if (baseInfo.getType() == 6) {
                                 ChatTransferActivity activity = (ChatTransferActivity) mContext;
                                 activity.showHintDialog();
+                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.real_name_authentication_hint))) {
+                                showHintDialog();
                             }
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }

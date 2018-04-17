@@ -45,7 +45,7 @@ public class DBManager {
         values.put("user", messageInfo.getUsername());
         values.put("time", messageInfo.getTime());
         values.put("coin", messageInfo.getCoin());
-        values.put("state", messageInfo.getState());
+        values.put("state", messageInfo.getStatus());
         values.put("redId", messageInfo.getRedId());
         values.put("voice", messageInfo.getVoice());
         values.put("voiceStatus", messageInfo.getVoiceStatus());
@@ -86,7 +86,7 @@ public class DBManager {
                 messageInfo.setCount(c.getString(c.getColumnIndex("count")));
                 messageInfo.setCoin(c.getString(c.getColumnIndex("coin")));
                 messageInfo.setRemark(c.getString(c.getColumnIndex("remark")));
-                messageInfo.setState(c.getInt(c.getColumnIndex("state")));
+                messageInfo.setStatus(c.getInt(c.getColumnIndex("state")));
                 messageInfo.setId(c.getInt(c.getColumnIndex("id")));
                 messageInfo.setRedId(c.getInt(c.getColumnIndex("redId")));
                 messageInfo.setVoiceStatus(c.getInt(c.getColumnIndex("voiceStatus")));
@@ -148,7 +148,7 @@ public class DBManager {
                 messageInfo.setCount(c.getString(c.getColumnIndex("count")));
                 messageInfo.setCoin(c.getString(c.getColumnIndex("coin")));
                 messageInfo.setRemark(c.getString(c.getColumnIndex("remark")));
-                messageInfo.setState(c.getInt(c.getColumnIndex("state")));
+                messageInfo.setStatus(c.getInt(c.getColumnIndex("state")));
                 messageInfo.setId(c.getInt(c.getColumnIndex("id")));
                 messageInfo.setRedId(c.getInt(c.getColumnIndex("redId")));
                 messageInfo.setVoiceStatus(c.getInt(c.getColumnIndex("voiceStatus")));

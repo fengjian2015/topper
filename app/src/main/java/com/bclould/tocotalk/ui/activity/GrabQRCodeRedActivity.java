@@ -3,8 +3,10 @@ package com.bclould.tocotalk.ui.activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,6 +33,7 @@ import butterknife.OnClick;
  * Created by GA on 2018/1/23.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class GrabQRCodeRedActivity extends AppCompatActivity {
 
     @Bind(R.id.bark)

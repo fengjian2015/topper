@@ -840,7 +840,7 @@ public class XmppConnection {
             messageInfo.setCount(count);
             messageInfo.setCoin(coin);
             messageInfo.setRemark(remark);
-            messageInfo.setState(0);
+            messageInfo.setStatus(0);
             mMgr.addMessage(messageInfo);
             if (mMgr.findConversation(from)) {
                 mMgr.updateConversation(from, 0, chatMsg, time);

@@ -80,6 +80,8 @@ public class RealNameC1Activity extends BaseActivity {
     RelativeLayout mRlSelectorState;
     @Bind(R.id.iv_jiantou)
     ImageView mIvJiantou;
+    @Bind(R.id.tv_cause)
+    TextView mTvCause;
     private ViewGroup mView;
     private PopupWindow mPopupWindow;
     private RealNamePresenter mRealNamePresenter;
@@ -97,26 +99,29 @@ public class RealNameC1Activity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         mRealNamePresenter.realNameInfo(new RealNamePresenter.CallBack2() {
             @Override
-            public void send(String message) {
-                if (message.equals(getString(R.string.verify_succeed))) {
+            public void send(int type, String mark) {
+                if (type == 3) {
                     mLlNoPass.setVisibility(View.GONE);
                     mBtnAuth.setVisibility(View.GONE);
-                    mTvAuthType.setText(message);
+                    mTvAuthType.setText(getString(R.string.verify_succeed));
+                    mTvCause.setVisibility(View.GONE);
                     mLlPass.setVisibility(View.VISIBLE);
-                } else if (message.equals(getString(R.string.verify_error))) {
+                } else if (type == 4) {
+                    mTvCause.setVisibility(View.VISIBLE);
+                    mTvCause.setText(mark);
                     mIvAuthType.setImageResource(R.mipmap.shenheshibai);
                     mLlNoPass.setVisibility(View.GONE);
                     mLlPass.setVisibility(View.VISIBLE);
-                    mTvAuthType.setText(message);
+                    mTvAuthType.setText(getString(R.string.verify_error));
                     mBtnAuth.setVisibility(View.VISIBLE);
-                    mTvAuthType.setText(message);
-                } else if (message.equals(getString(R.string.check_pending))) {
+                } else if (type == 2) {
+                    mTvCause.setVisibility(View.GONE);
                     mIvAuthType.setImageResource(R.mipmap.shenhezhong);
                     mLlNoPass.setVisibility(View.GONE);
                     mBtnAuth.setVisibility(View.GONE);
-                    mTvAuthType.setText(message);
+                    mTvAuthType.setText(getString(R.string.check_pending));
                     mLlPass.setVisibility(View.VISIBLE);
-                } else if (message.equals(getString(R.string.unverified))) {
+                } else if (type == 1) {
                     mLlNoPass.setVisibility(View.VISIBLE);
                     mLlPass.setVisibility(View.GONE);
                 }
@@ -166,7 +171,8 @@ public class RealNameC1Activity extends BaseActivity {
         mBottomDialog.show();
         RecyclerView recyclerView = (RecyclerView) mBottomDialog.findViewById(R.id.recycler_view);
         TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
-        Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);Button cancel = (Button) mBottomDialog.findViewById(R.id.btn_cancel);
+        Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
+        Button cancel = (Button) mBottomDialog.findViewById(R.id.btn_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

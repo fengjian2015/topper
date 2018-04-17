@@ -762,4 +762,12 @@ public interface MyService {
             @Field("log_id") String log_id,
             @Field("type_number") String type_number
     );
+
+    //支付記錄詳情
+    @POST("trans/cancelTrans")
+    @FormUrlEncoded
+    Observable<BaseInfo> cancelTrans(
+            @Header("Authorization") String token,
+            @Field("trans_id") String trans_id
+    );
 }

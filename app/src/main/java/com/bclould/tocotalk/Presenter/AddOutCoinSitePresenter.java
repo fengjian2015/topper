@@ -66,10 +66,13 @@ public class AddOutCoinSitePresenter {
                             Toast.makeText(mAddOutCoinSiteActivity, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             if (baseInfo.getStatus() == 1) {
                                 mAddOutCoinSiteActivity.finish();
+                            } else if (baseInfo.getStatus() == 2) {
+                                if (baseInfo.getType() == 3)
+                                    mAddOutCoinSiteActivity.startActivity(new Intent(mAddOutCoinSiteActivity, GoogleVerificationActivity.class));
+                                Toast.makeText(mAddOutCoinSiteActivity, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             }
 //                            if (baseInfo.getMessage().equals("请先绑定谷歌验证"))
-                            if (baseInfo.getMessage().equals(mAddOutCoinSiteActivity.getString(R.string.binding_google_hint1)))
-                                mAddOutCoinSiteActivity.startActivity(new Intent(mAddOutCoinSiteActivity, GoogleVerificationActivity.class));
+
                         }
 
                         @Override

@@ -90,9 +90,9 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             mTvMoney.setText(mContext.getString(R.string.deal_money) + dataBean.getTrans_amount());
             mTvTime.setText(dataBean.getCreated_at());
             mTvType.setText(dataBean.getStatus_name());
-            if(dataBean.getStatus() == 4){
+            if (dataBean.getStatus() == 4) {
                 mTvType.setTextColor(mContext.getColor(R.color.color_orange));
-            }else {
+            } else {
                 mTvType.setTextColor(mContext.getColor(R.color.black));
             }
             mTvCoinType.setText(dataBean.getCoin_name() + dataBean.getType_name());
@@ -110,8 +110,10 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             } else {
                 try {
                     String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
-                    Bitmap bitmap = BitmapFactory.decodeFile(mMgr.queryUser(jid).get(0).getPath());
-                    mIvTouxiang.setImageBitmap(bitmap);
+                    if (mMgr.queryUser(jid).size() != 0) {
+                        Bitmap bitmap = BitmapFactory.decodeFile(mMgr.queryUser(jid).get(0).getPath());
+                        mIvTouxiang.setImageBitmap(bitmap);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

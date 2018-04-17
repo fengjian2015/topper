@@ -113,7 +113,7 @@ public class BuyFragment extends Fragment {
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mBuySellRVAdapter = new BuySellRVAdapter(getActivity(), false, mDataList);
+        mBuySellRVAdapter = new BuySellRVAdapter(getActivity(), false, mDataList, mBuySellPresenter);
         mRecyclerView.setAdapter(mBuySellRVAdapter);
     }
 

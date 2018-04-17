@@ -3,8 +3,10 @@ package com.bclould.tocotalk.ui.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,6 +35,7 @@ import butterknife.OnClick;
  * Created by GA on 2017/12/29.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class RedPacketActivity extends AppCompatActivity {
 
     @Bind(R.id.bark)
@@ -112,11 +115,9 @@ public class RedPacketActivity extends AppCompatActivity {
                     mTvCount.setSpacing(2);
                     mTvRemark.setText(data.getIntro());
                     mTvName.setText(data.getSend_rp_user_name());
-                    try {
+                    if (userInfos.size() != 0)
                         mIvTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfos.get(0).getPath()));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+
                 }
             });
         }

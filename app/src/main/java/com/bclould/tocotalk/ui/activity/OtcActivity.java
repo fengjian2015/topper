@@ -104,12 +104,12 @@ public class OtcActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otc);
         ButterKnife.bind(this);
-        mType = getResources().getString(R.string.all);
+        mType = "2";
         mFiltrateList.add(getString(R.string.all));
-        mFiltrateList.add(getString(R.string.off_the_stocks));
-        mFiltrateList.add(getString(R.string.dengdai_fk));
-        mFiltrateList.add(getString(R.string.dengdai_fb));
         mFiltrateList.add(getString(R.string.canceled_canc));
+        mFiltrateList.add(getString(R.string.underway));
+        mFiltrateList.add(getString(R.string.off_the_stocks));
+        mFiltrateList.add(getString(R.string.exception));
         initFragment();
         init();
     }
@@ -318,7 +318,17 @@ public class OtcActivity extends BaseActivity {
             //接口回调
             @Override
             public void send(int position, String typeName) {
-                mType = typeName;
+                if (typeName.equals(getString(R.string.all))) {
+                    mType = "2";
+                } else if (typeName.equals(getString(R.string.canceled_canc))) {
+                    mType = "0";
+                } else if (typeName.equals(getString(R.string.off_the_stocks))) {
+                    mType = "3";
+                } else if (typeName.equals(getString(R.string.underway))) {
+                    mType = "1";
+                } else if (typeName.equals(getString(R.string.exception))) {
+                    mType = "4";
+                }
                 mMap.put(getString(R.string.filtrate), position);
                 mBottomDialog.dismiss();
                 MessageEvent messageEvent = new MessageEvent(getString(R.string.deal_order_filtrate));

@@ -16,6 +16,15 @@ public class BaseInfo {
     private int status;
     private String message;
     private DataBean data;
+    private int type;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public int getStatus() {
         return status;
@@ -58,6 +67,15 @@ public class BaseInfo {
         private String currency;
         private String title;
         private String desc;
+        private int type;
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
 
         public String getTitle() {
             return title;

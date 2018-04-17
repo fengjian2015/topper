@@ -16,6 +16,7 @@ import com.bclould.tocotalk.ui.activity.BankCardBindingActivity;
 import com.bclould.tocotalk.ui.activity.GoogleVerificationActivity;
 import com.bclould.tocotalk.ui.activity.OutCoinActivity;
 import com.bclould.tocotalk.ui.activity.PayPasswordActivity;
+import com.bclould.tocotalk.ui.activity.RealNameC1Activity;
 import com.bclould.tocotalk.ui.activity.TransferAccountsActivity;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
@@ -77,17 +78,19 @@ public class CurrencyInOutPresenter {
 
                         @Override
                         public void onNext(@NonNull BaseInfo baseInfo) {
-                            if (baseInfo.getMessage().equals(mContext.getString(R.string.set_payment_pw_hint))) {
-                                showSetPwDialog();
-                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.binding_google_hint1))) {
-                                mContext.startActivity(new Intent(mContext, GoogleVerificationActivity.class));
-                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.payment_pw_error))) {
-                                OutCoinActivity activity = (OutCoinActivity) mContext;
-                                activity.showHintDialog();
-                            } else if (baseInfo.getStatus() == 1) {
+                            if (baseInfo.getStatus() == 1) {
                                 EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.transfer)));
                                 OutCoinActivity activity = (OutCoinActivity) mContext;
                                 activity.finish();
+                            } else if (baseInfo.getType() == 4) {
+                                showSetPwDialog();
+                            } else if (baseInfo.getType() == 3) {
+                                mContext.startActivity(new Intent(mContext, GoogleVerificationActivity.class));
+                            } else if (baseInfo.getType() == 6) {
+                                OutCoinActivity activity = (OutCoinActivity) mContext;
+                                activity.showHintDialog();
+                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.real_name_authentication_hint))) {
+                                showHintDialog();
                             }
                             hideDialog();
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
@@ -151,17 +154,19 @@ public class CurrencyInOutPresenter {
                         @Override
                         public void onNext(@NonNull BaseInfo baseInfo) {
                             hideDialog();
-                            if (baseInfo.getMessage().equals(mContext.getString(R.string.binding_google_hint1))) {
-                                mContext.startActivity(new Intent(mContext, GoogleVerificationActivity.class));
-                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.set_pay_pw_hint))) {
-                                showSetPwDialog();
-                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.payment_pw_error_hint))) {
-                                TransferAccountsActivity activity = (TransferAccountsActivity) mContext;
-                                activity.showHintDialog();
-                            } else if (baseInfo.getStatus() == 1) {
+                            if (baseInfo.getStatus() == 1) {
                                 EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.transfer)));
                                 TransferAccountsActivity activity = (TransferAccountsActivity) mContext;
                                 activity.finish();
+                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.binding_google_hint1))) {
+                                mContext.startActivity(new Intent(mContext, GoogleVerificationActivity.class));
+                            } else if (baseInfo.getType() == 4) {
+                                showSetPwDialog();
+                            } else if (baseInfo.getType() == 6) {
+                                TransferAccountsActivity activity = (TransferAccountsActivity) mContext;
+                                activity.showHintDialog();
+                            }  else if (baseInfo.getMessage().equals(mContext.getString(R.string.real_name_authentication_hint))) {
+                                showHintDialog();
                             }
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -221,6 +226,28 @@ public class CurrencyInOutPresenter {
         }
     }
 
+    private void showHintDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(mContext.getString(R.string.real_name_authentication_hint));
+        Button retry = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        Button findPassword = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        retry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        findPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                mContext.startActivity(new Intent(mContext, RealNameC1Activity.class));
+
+            }
+        });
+    }
+
     public void check(String password) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
@@ -238,9 +265,9 @@ public class CurrencyInOutPresenter {
                         @Override
                         public void onNext(@NonNull BaseInfo baseInfo) {
                             hideDialog();
-                            if (baseInfo.getMessage().equals(mContext.getString(R.string.set_pay_pw_hint))) {
+                            if (baseInfo.getType() == 4) {
                                 showSetPwDialog();
-                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.payment_pw_error_hint))) {
+                            } else if (baseInfo.getType() == 6) {
                                 BankCardActivity activity = (BankCardActivity) mContext;
                                 activity.showHintDialog();
                             } else if (baseInfo.getStatus() == 1) {

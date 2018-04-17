@@ -75,16 +75,16 @@ public class PayRecordActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_record);
         ButterKnife.bind(this);
-        mType = getResources().getString(R.string.all);
+        mType = "0";
         mFiltrateList.add(getString(R.string.all));
         mFiltrateList.add(getString(R.string.red_package));
         mFiltrateList.add(getString(R.string.transfer));
         mFiltrateList.add(getString(R.string.receipt_payment));
         mFiltrateList.add(getString(R.string.in_coin));
-        mFiltrateList.add(getString(R.string.out_coin));
+        mFiltrateList.add(getString(R.string.out_coin));/*
         mFiltrateList.add(getString(R.string.bank_card));
         mFiltrateList.add(getString(R.string.ru_zhang));
-        mFiltrateList.add(getString(R.string.qi_ta));
+        mFiltrateList.add(getString(R.string.qi_ta));*/
         getOptionData();
         mTvDate.setText(mDate);
         mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);
@@ -250,7 +250,19 @@ public class PayRecordActivity extends BaseActivity {
             //接口回调
             @Override
             public void send(int position, String typeName) {
-                mType = typeName;
+                if (typeName.equals(getString(R.string.all))) {
+                    mType = "0";
+                } else if (typeName.equals(getString(R.string.transfer))) {
+                    mType = "1";
+                } else if (typeName.equals(getString(R.string.red_package))) {
+                    mType = "2";
+                } else if (typeName.equals(getString(R.string.receipt_payment))) {
+                    mType = "3";
+                } else if (typeName.equals(getString(R.string.in_coin))) {
+                    mType = "4";
+                } else if (typeName.equals(getString(R.string.out_coin))) {
+                    mType = "5";
+                }
                 initData();
                 mMap.put(getString(R.string.filtrate), position);
                 mBottomDialog.dismiss();

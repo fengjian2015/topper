@@ -51,6 +51,15 @@
                 android:src="@mipmap/shenhetongguo"/>
 
             <TextView
+                android:id="@+id/tv_cause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20"
+                android:visibility="gone"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+
+            <TextView
                 android:id="@+id/tv_auth_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -78,7 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -113,7 +122,6 @@
                     <EditText
                         android:id="@+id/et_name"
                         android:layout_width="@dimen/x500"
-                        android:singleLine="true"
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="@dimen/x30"
@@ -122,6 +130,7 @@
                         android:hint="@string/et_name"
                         android:inputType="textPersonName"
                         android:maxLength="20"
+                        android:singleLine="true"
                         android:textCursorDrawable="@null"
                         android:textSize="@dimen/x28"/>
 
@@ -154,12 +163,12 @@
 
                     <TextView
                         android:id="@+id/tv_state"
-                        android:gravity="right"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/x20"
                         android:layout_toLeftOf="@+id/iv_jiantou2"
+                        android:gravity="right"
                         android:hint="@string/selector_nationality"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x28"/>
@@ -202,12 +211,12 @@
 
                     <TextView
                         android:id="@+id/card_type"
-                        android:gravity="right"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/x20"
                         android:layout_toLeftOf="@+id/iv_jiantou"
+                        android:gravity="right"
                         android:hint="@string/selector_id_card"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x28"/>
@@ -257,12 +266,12 @@
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="@dimen/x30"
-                        android:singleLine="true"
                         android:layout_toRightOf="@+id/tv"
                         android:background="@color/transparent"
                         android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:gravity="right|center"
                         android:hint="@string/et_id_card_number"
+                        android:singleLine="true"
                         android:textCursorDrawable="@null"
                         android:textSize="@dimen/x28"/>
 

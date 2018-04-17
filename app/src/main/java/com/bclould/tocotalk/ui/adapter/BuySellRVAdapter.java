@@ -14,9 +14,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bclould.tocotalk.Presenter.BuySellPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.ui.activity.BuySellActivity;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 
 import java.util.List;
 
@@ -33,10 +35,12 @@ public class BuySellRVAdapter extends RecyclerView.Adapter {
     private final Context mContext;
     private final boolean mType;
     private final List<DealListInfo.DataBean> mDataBeanList;
+    private final BuySellPresenter mBuySellPresenter;
 
-    public BuySellRVAdapter(Context context, boolean type, List<DealListInfo.DataBean> dataBeanList) {
+    public BuySellRVAdapter(Context context, boolean type, List<DealListInfo.DataBean> dataBeanList, BuySellPresenter buySellPresenter) {
         mContext = context;
         mDataBeanList = dataBeanList;
+        mBuySellPresenter = buySellPresenter;
         mType = type;
     }
 
@@ -83,32 +87,45 @@ public class BuySellRVAdapter extends RecyclerView.Adapter {
         TextView mTvLimit;
         @Bind(R.id.btn_sell_buy)
         Button mBtnSellBuy;
-        private DealListInfo.DataBean mDataBean;
 
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            if (mType) {
-                mBtnSellBuy.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape2));
-                mBtnSellBuy.setTextColor(mContext.getColor(R.color.sell));
-                mBtnSellBuy.setText(mContext.getString(R.string.work_off));
-                mTvPayWay.setBackground(mContext.getDrawable(R.drawable.bg_payway_shape2));
-            }
-            mBtnSellBuy.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, BuySellActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putBoolean("type", mType);
-                    bundle.putSerializable("data", mDataBean);
-                    intent.putExtras(bundle);
-                    mContext.startActivity(intent);
-                }
-            });
         }
 
-        public void setData(DealListInfo.DataBean dataBean) {
-            mDataBean = dataBean;
+        public void setData(final DealListInfo.DataBean dataBean) {
+            if (dataBean.getSelf_trans() == 1) {
+                if (mType) {
+                    mTvPayWay.setBackground(mContext.getDrawable(R.drawable.bg_payway_shape2));
+                }
+                mBtnSellBuy.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape3));
+                mBtnSellBuy.setTextColor(mContext.getColor(R.color.red));
+                mBtnSellBuy.setText(mContext.getString(R.string.sold_out));
+                mBtnSellBuy.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showDialog(dataBean);
+                    }
+                });
+            } else {
+                if (mType) {
+                    mBtnSellBuy.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape2));
+                    mBtnSellBuy.setTextColor(mContext.getColor(R.color.sell));
+                    mBtnSellBuy.setText(mContext.getString(R.string.work_off));
+                    mTvPayWay.setBackground(mContext.getDrawable(R.drawable.bg_payway_shape2));
+                }
+                mBtnSellBuy.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(mContext, BuySellActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putBoolean("type", mType);
+                        bundle.putSerializable("data", dataBean);
+                        intent.putExtras(bundle);
+                        mContext.startActivity(intent);
+                    }
+                });
+            }
             mTvPayWay.setText(dataBean.getPay_type());
             mTvPrice.setText(dataBean.getPrice() + " " + dataBean.getCurrency());
             mTvUsername.setText(dataBean.getUsername());
@@ -116,5 +133,32 @@ public class BuySellRVAdapter extends RecyclerView.Adapter {
             mTvCoinCount.setText(mContext.getString(R.string.count) + " " + dataBean.getNumber() + dataBean.getCoin_name());
             mTvLimit.setText(mContext.getString(R.string.limit) + " " + dataBean.getMin_amount() + "-" + dataBean.getMax_amount() + " " + dataBean.getCurrency());
         }
+    }
+
+    private void showDialog(final DealListInfo.DataBean dataBean) {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(mContext.getString(R.string.sold_out_hint));
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBuySellPresenter.cancelAd(dataBean.getId(), new BuySellPresenter.CallBack4() {
+                    @Override
+                    public void send() {
+                        mDataBeanList.remove(dataBean);
+                        notifyDataSetChanged();
+                        deleteCacheDialog.dismiss();
+                    }
+                });
+            }
+        });
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
     }
 }

@@ -2,6 +2,8 @@ package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,7 @@ import butterknife.ButterKnife;
  * Created by GA on 2018/1/17.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class RedPacketRVAdapter extends RecyclerView.Adapter {
 
     private final List<GrabRedInfo.DataBean.LogBean> mLogBeanList;
@@ -74,11 +77,9 @@ public class RedPacketRVAdapter extends RecyclerView.Adapter {
             mTvName.setText(logBean.getName());
             mTvTime.setText(logBean.getTime());
             mTvMoney.setText(logBean.getMoney());
-            try {
+            if (mMgr.findUser(logBean.getName() + "@" + Constants.DOMAINNAME))
                 mIvTouxiang.setImageBitmap(BitmapFactory.decodeFile(mMgr.queryUser(logBean.getName() + "@" + Constants.DOMAINNAME).get(0).getPath()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
         }
     }
 }

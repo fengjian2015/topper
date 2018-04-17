@@ -148,13 +148,13 @@ public class MainActivity extends BaseActivity {
         UtilTool.getPermissions(this, Manifest.permission.RECORD_AUDIO, "", getString(R.string.jurisdiction_voice_hint));
         //自动登录即时通讯
         loginIM();
-        pingService();
         //检测版本更新
         checkVersion();
         //获取币种
         getCoinList();
         //获取国家
         getStateList();
+
     }
 
     private Timer tExit;
@@ -164,7 +164,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void run() {
                 PingManager pingManager = PingManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-                pingManager.setPingInterval(200);
+                pingManager.setPingInterval(60);
                 try {
                     pingManager.pingMyServer();
                 } catch (Exception e) {
@@ -368,6 +368,7 @@ public class MainActivity extends BaseActivity {
                     break;
                 case 1:
                     hideDialog();
+                    pingService();
                     break;
             }
         }

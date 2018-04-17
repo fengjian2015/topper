@@ -34,25 +34,37 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.bclould.tocotalk.Presenter.DillDataPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.model.AuthStatusInfo;
 import com.bclould.tocotalk.model.AwsInfo;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
+import com.bclould.tocotalk.model.OtcOrderStatusInfo;
+import com.bclould.tocotalk.model.RedExpiredInfo;
 import com.bclould.tocotalk.ui.adapter.ConversationAdapter;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jivesoftware.smack.AbstractXMPPConnection;
+import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.StanzaListener;
 import org.jivesoftware.smack.chat.Chat;
 import org.jivesoftware.smack.chat.ChatManager;
 import org.jivesoftware.smack.chat.ChatManagerListener;
 import org.jivesoftware.smack.chat.ChatMessageListener;
+import org.jivesoftware.smack.filter.FlexibleStanzaTypeFilter;
+import org.jivesoftware.smack.filter.MessageTypeFilter;
+import org.jivesoftware.smack.filter.OrFilter;
+import org.jivesoftware.smack.filter.StanzaFilter;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
+import org.jivesoftware.smack.packet.Stanza;
 import org.jivesoftware.smackx.offline.OfflineMessageManager;
 
 import java.io.ByteArrayInputStream;
@@ -76,6 +88,9 @@ import static com.bclould.tocotalk.ui.activity.ConversationActivity.ACCESSKEYID;
 import static com.bclould.tocotalk.ui.activity.ConversationActivity.SECRETACCESSKEY;
 import static com.bclould.tocotalk.ui.activity.ConversationActivity.SESSIONTOKEN;
 import static com.bclould.tocotalk.ui.activity.SystemSetActivity.INFORM;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_AUTH_STATUS_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_OTC_ORDER_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_RED_PACKET_EXPIRED_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_IMG_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_RED_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_TEXT_MSG;
@@ -176,8 +191,9 @@ public class ConversationFragment extends Fragment {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.login_succeed))) {
             getOfflineMessage();
-            initListener();
+//            initListener();
             initData();
+            initBroadcastListener();
         } else if (msg.equals(getString(R.string.oneself_send_msg))) {
             initData();
         } else if (msg.equals(getString(R.string.send_red_packet_le))) {
@@ -191,6 +207,38 @@ public class ConversationFragment extends Fragment {
         }
 
     }
+
+    private void initBroadcastListener() {
+        AbstractXMPPConnection connection = XmppConnection.getInstance().getConnection();
+        connection.addAsyncStanzaListener(new StanzaListener() {
+            @Override
+            public void processStanza(Stanza packet) throws SmackException.NotConnectedException, InterruptedException {
+                Message message = (Message) packet;
+                if (message.getBody() != null) {
+                    android.os.Message msg = new android.os.Message();
+                    msg.obj = message;
+                    handler.sendMessage(msg);
+                    SharedPreferences sp = getContext().getSharedPreferences(SETTING, 0);
+                    if (sp.contains(INFORM)) {
+                        if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
+                            UtilTool.playHint(getContext());
+                        }
+                    } else {
+                        UtilTool.playHint(getContext());
+                    }
+                }
+            }
+        }, packetFilter);
+    }
+
+    private final StanzaFilter packetFilter = new OrFilter(MessageTypeFilter.CHAT, new FlexibleStanzaTypeFilter<Message>() {
+
+        @Override
+        protected boolean acceptSpecific(Message message) {
+            return true;
+        }
+
+    });
 
     @Override
     public void onDestroy() {
@@ -285,7 +333,6 @@ public class ConversationFragment extends Fragment {
             }
         };
         manager.addChatListener(chatManagerListener);
-
     }
 
     private List<ConversationInfo> getSimpleData() {
@@ -318,6 +365,9 @@ public class ConversationFragment extends Fragment {
 
                 //获取Jid和用户名
                 String from = message.getFrom().toString();
+                if (from.equals(Constants.DOMAINNAME)) {
+                    from = Constants.ADMINISTRATOR_NAME;
+                }
                 String friend = from;
                 if (from.contains("/"))
                     from = from.substring(0, from.indexOf("/"));
@@ -326,6 +376,7 @@ public class ConversationFragment extends Fragment {
                 String remark = null;
                 String coin = null;
                 String count = null;
+                int status = 0;
                 int redId = 0;
                 String redpacket = null;
                 redpacket = chatMsg;
@@ -421,9 +472,7 @@ public class ConversationFragment extends Fragment {
                         if (msgType == FROM_VOICE_MSG)
                             messageInfo.setVoiceTime(UtilTool.getFileDuration(file.getAbsolutePath(), getContext()) + "");
                     }
-                }
-
-                if (chatMsg.contains(Constants.REDBAG)) {
+                } else if (chatMsg.contains(Constants.REDBAG)) {
                     String s = chatMsg.replace(Constants.CHUANCODE, ",");
                     String[] split = s.split(",");
                     remark = split[1];
@@ -440,8 +489,37 @@ public class ConversationFragment extends Fragment {
                     count = split[3];
                     msgType = FROM_TRANSFER_MSG;
                     redpacket = "[" + getString(R.string.transfer) + "]";
+                } else if (chatMsg.contains(Constants.OTC_ORDER)) {
+                    msgType = ADMINISTRATOR_OTC_ORDER_MSG;
+                    String json = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
+                    Gson gson = new Gson();
+                    OtcOrderStatusInfo otcOrderStatusInfo = gson.fromJson(json, OtcOrderStatusInfo.class);
+                    time = otcOrderStatusInfo.getCreated_at();
+                    redId = otcOrderStatusInfo.getId();
+                    count = otcOrderStatusInfo.getOrder_no();
+                    coin = otcOrderStatusInfo.getCoin_name();
+                    status = otcOrderStatusInfo.getStatus();
+                    redpacket = "[" + getString(R.string.order) + "]";
+                } else if (chatMsg.contains(Constants.RED_PACKET_EXPIRED)) {
+                    msgType = ADMINISTRATOR_RED_PACKET_EXPIRED_MSG;
+                    String json = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
+                    Gson gson = new Gson();
+                    RedExpiredInfo redExpiredInfo = gson.fromJson(json, RedExpiredInfo.class);
+                    time = redExpiredInfo.getCreated_at();
+                    redId = redExpiredInfo.getId();
+                    count = redExpiredInfo.getNumber();
+                    coin = redExpiredInfo.getCoin_name();
+                    status = redExpiredInfo.getRp_type();
+                    redpacket = "[" + getString(R.string.red_expired) + "]";
+                } else if (chatMsg.contains(Constants.AUTH_STATUS)) {
+                    msgType = ADMINISTRATOR_AUTH_STATUS_MSG;
+                    String json = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
+                    Gson gson = new Gson();
+                    AuthStatusInfo authStatusInfo = gson.fromJson(json, AuthStatusInfo.class);
+                    time = authStatusInfo.getCreated_at();
+                    status = authStatusInfo.getStatus();
+                    redpacket = "[" + getString(R.string.real_name_verify) + "]";
                 }
-
                 //添加数据库
                 messageInfo.setUsername(from);
                 messageInfo.setMessage(chatMsg);
@@ -451,7 +529,7 @@ public class ConversationFragment extends Fragment {
                 messageInfo.setCoin(coin);
                 messageInfo.setMsgType(msgType);
                 messageInfo.setRemark(remark);
-                messageInfo.setState(0);
+                messageInfo.setStatus(status);
                 messageInfo.setRedId(redId);
                 mgr.addMessage(messageInfo);
                 int number = mgr.queryNumber(from);
