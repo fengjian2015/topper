@@ -170,7 +170,6 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/y15"
                 android:layout_marginTop="@dimen/y15">
 
                 <TextView
@@ -189,6 +188,52 @@
                     android:textStyle="bold"/>
 
             </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y15">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/service_charge"
+                    android:textSize="@dimen/x26"/>
+
+                <TextView
+                    android:id="@+id/tv_service_charge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/x30"
+                    android:textStyle="bold"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/y15"
+                android:layout_marginTop="@dimen/y15">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shiji_out_coin"
+                    android:textSize="@dimen/x26"/>
+
+                <TextView
+                    android:id="@+id/tv_shiji"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/x30"
+                    android:textStyle="bold"/>
+
+            </RelativeLayout>
+
 
             <TextView
                 style="@style/HCutOffRule"/>

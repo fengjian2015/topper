@@ -52,6 +52,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tocotalk.Presenter.LoginPresenter.STATE;
 import static com.bclould.tocotalk.R.style.BottomDialog;
 
 
@@ -105,6 +106,7 @@ public class OtcActivity extends BaseActivity {
         setContentView(R.layout.activity_otc);
         ButterKnife.bind(this);
         mType = "2";
+        mTvState.setText(MySharedPreferences.getInstance().getString(STATE));
         mFiltrateList.add(getString(R.string.all));
         mFiltrateList.add(getString(R.string.canceled_canc));
         mFiltrateList.add(getString(R.string.underway));

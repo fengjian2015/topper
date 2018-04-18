@@ -35,7 +35,7 @@
             android:gravity="center"
             android:padding="@dimen/x20"
             android:text="@string/help"
-            android:textColor="@color/blue"
+            android:textColor="@color/blue2"
             android:textSize="@dimen/x28"/>
 
     </RelativeLayout>
@@ -114,6 +114,50 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20">
+
+                <TextView
+                    android:id="@+id/tv_service_charge_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/service_charge"
+                    android:textSize="@dimen/x26"/>
+
+                <TextView
+                    android:id="@+id/tv_service_charge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x26"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20">
+
+                <TextView
+                    android:id="@+id/tv_shiji_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shiji_out_coin"
+                    android:textSize="@dimen/x26"/>
+
+                <TextView
+                    android:id="@+id/tv_shiji"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x26"/>
+
+            </RelativeLayout>
+
             <TextView
                 style="@style/HCutOffRule"
                 android:layout_marginTop="@dimen/y20"/>
@@ -183,6 +227,7 @@
                     android:textSize="@dimen/x26"/>
 
             </RelativeLayout>
+
 
             <LinearLayout
                 android:id="@+id/ll_finish"

@@ -587,5 +587,16 @@
     <string name="auth_error_hint">認證失敗，請重新認證</string>
     <string name="ordinary_red_packet">普通紅包</string>
     <string name="pending">待處理</string>
+    <string name="default_state">中國 - 大陸</string>
+    <string name="pay_inform">付款通知</string>
+    <string name="pay_count">支付數量</string>
+    <string name="payee">收款方</string>
+    <string name="receipt_inform">收款通知</string>
+    <string name="payer">付款方</string>
+    <string name="receipt_count">收款數量</string>
+    <string name="wait_get_red">等候對方領取紅包</string>
+    <string name="ta_already_received">對方已領取</string>
+    <string name="order_update">訂單更新</string>
+    <string name="service_charge">交易扣除</string>
 
 </resources>

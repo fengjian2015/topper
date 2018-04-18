@@ -364,10 +364,12 @@ public class MainActivity extends BaseActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
+                    hideDialog();
                     Toast.makeText(MainActivity.this, getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                     break;
                 case 1:
                     hideDialog();
+                    MyApp.getInstance().isLogin = true;
                     pingService();
                     break;
             }
@@ -426,7 +428,6 @@ public class MainActivity extends BaseActivity {
                     Message message = new Message();
                     mHandler.sendMessage(message);
                     message.what = 0;
-                    hideDialog();
                     UtilTool.Log("日志", e.getMessage());
                     e.printStackTrace();
                 }

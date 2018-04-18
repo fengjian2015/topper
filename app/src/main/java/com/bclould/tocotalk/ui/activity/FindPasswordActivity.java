@@ -32,6 +32,7 @@ import butterknife.OnClick;
 
 public class FindPasswordActivity extends AppCompatActivity {
 
+
     @Bind(R.id.et_email)
     EditText mEtEmail;
     @Bind(R.id.btn_next)
@@ -40,8 +41,8 @@ public class FindPasswordActivity extends AppCompatActivity {
     LinearLayout mLlStepOne;
     @Bind(R.id.et_password)
     EditText mEtPassword;
-    @Bind(R.id.iv_eye)
-    ImageView mIvEye;
+    @Bind(R.id.eye)
+    ImageView mEye;
     @Bind(R.id.et_email_code)
     EditText mEtEmailCode;
     @Bind(R.id.btn_last_step)
@@ -140,17 +141,17 @@ public class FindPasswordActivity extends AppCompatActivity {
 
     private void showHidePassword() {
         if (isEye) {
-            mIvEye.setSelected(true);
+            mEye.setSelected(true);
             mEtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             mEtPassword.setSelection(mEtPassword.length());
         } else {
             mEtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
             mEtPassword.setSelection(mEtPassword.length());
-            mIvEye.setSelected(false);
+            mEye.setSelected(false);
         }
     }
 
-    @OnClick({R.id.btn_next, R.id.iv_eye, R.id.btn_last_step, R.id.btn_submit})
+    @OnClick({R.id.btn_next, R.id.eye, R.id.btn_last_step, R.id.btn_submit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_next:
@@ -165,7 +166,7 @@ public class FindPasswordActivity extends AppCompatActivity {
                     });
                 }
                 break;
-            case R.id.iv_eye:
+            case R.id.eye:
                 isEye = !isEye;
                 showHidePassword();
                 break;

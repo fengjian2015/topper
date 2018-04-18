@@ -35,6 +35,7 @@ public class MyApp extends Application {
     public List<CoinInfo.DataBean> mCoinList = new ArrayList<>();
     public List<StateInfo.DataBean> mStateList = new ArrayList<>();
     public List<CoinListInfo.DataBean> mOtcCoinList = new ArrayList<>();
+    public boolean isLogin = false;
 
     //单例
     public static MyApp getInstance() {

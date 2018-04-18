@@ -61,6 +61,10 @@ public class StartActivity extends AppCompatActivity {
                                             UtilTool.Log("日志", baseInfo.getMessage());
                                             startActivity(new Intent(StartActivity.this, MainActivity.class));
                                             finish();
+                                        } else {
+                                            finish();
+                                            MySharedPreferences.getInstance().setString(TOKEN, "");
+                                            startActivity(new Intent(StartActivity.this, LoginActivity.class));
                                         }
                                     }
 
@@ -73,6 +77,10 @@ public class StartActivity extends AppCompatActivity {
                                         } else if (e.getMessage().equals("connect timed out")) {
                                             finish();
                                             startActivity(new Intent(StartActivity.this, MainActivity.class));
+                                        } else {
+                                            finish();
+                                            MySharedPreferences.getInstance().setString(TOKEN, "");
+                                            startActivity(new Intent(StartActivity.this, LoginActivity.class));
                                         }
                                         Toast.makeText(StartActivity.this, getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                                         UtilTool.Log("日志", e.getMessage());

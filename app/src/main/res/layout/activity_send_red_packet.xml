@@ -13,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@color/redpacket2">
+        android:background="@color/redpacket4">
 
         <ImageView
             android:id="@+id/bark"

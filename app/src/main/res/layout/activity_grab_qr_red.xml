@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
         android:layout_alignParentTop="true"
-        android:background="@color/redpacket2">
+        android:background="@color/redpacket4">
 
         <ImageView
             android:id="@+id/bark"

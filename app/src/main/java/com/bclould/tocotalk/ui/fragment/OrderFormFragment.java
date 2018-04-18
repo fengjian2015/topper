@@ -112,6 +112,8 @@ public class OrderFormFragment extends Fragment {
             initData(mCoinName, mFiltrate);
         } else if (msg.equals(getString(R.string.deal_order_filtrate))) {
             initData(mCoinName, mFiltrate);
+        } else if (msg.equals(getString(R.string.order_update))) {
+            initData(mCoinName, mFiltrate);
         }
     }
 

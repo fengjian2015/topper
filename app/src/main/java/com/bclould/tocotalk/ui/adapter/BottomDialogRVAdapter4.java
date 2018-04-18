@@ -83,7 +83,7 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
                         activity.hideDialog(mName, mId);
                     } else if (mContext instanceof PushBuyingActivity) {
                         PushBuyingActivity activity = (PushBuyingActivity) mContext;
-                        activity.hideDialog2(mName, mId);
+                        activity.hideDialog2(mName, mId, mServiceCharge);
                     }
                 }
             });

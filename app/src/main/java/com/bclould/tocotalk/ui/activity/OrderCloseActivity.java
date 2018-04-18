@@ -70,6 +70,16 @@ public class OrderCloseActivity extends BaseActivity {
     LinearLayout mLlExceptionBuy;
     @Bind(R.id.ll_exception_sell)
     LinearLayout mLlExceptionSell;
+    @Bind(R.id.tv_service_charge_hint)
+    TextView mTvServiceChargeHint;
+    @Bind(R.id.tv_service_charge)
+    TextView mTvServiceCharge;
+    @Bind(R.id.tv_shiji_hint)
+    TextView mTvShijiHint;
+    @Bind(R.id.tv_shiji)
+    TextView mTvShiji;
+    @Bind(R.id.btn_confirm)
+    Button mBtnConfirm;
     private String mId;
     private int mStatus;
     private OrderDetailsPresenter mOrderDetailsPresenter;
@@ -126,6 +136,8 @@ public class OrderCloseActivity extends BaseActivity {
                 mTvHintCount.setText(getString(R.string.deal_count) + "(" + data.getCoin_name() + ")");
                 mTvCount.setText(data.getNumber());
                 mTvOrderNumber.setText(data.getOrder_no());
+                mTvServiceCharge.setText(Double.parseDouble(data.getOtc_free()) * 100 + "%");
+                mTvShiji.setText(data.getActual_number());
                 mTvTime.setText(data.getCreated_at());
                 mTvLimit.setText(data.getMin_amount() + " - " + data.getMax_amount());
             }

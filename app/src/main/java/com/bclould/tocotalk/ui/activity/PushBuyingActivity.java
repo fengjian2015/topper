@@ -54,6 +54,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tocotalk.Presenter.LoginPresenter.CURRENCY;
 import static com.bclould.tocotalk.Presenter.LoginPresenter.STATE;
 import static com.bclould.tocotalk.R.style.BottomDialog;
 
@@ -186,12 +187,15 @@ public class PushBuyingActivity extends BaseActivity {
     private int mType;
     private CoinPresenter mCoinPresenter;
     private PushBuyingPresenter mPushBuyingPresenter;
-    private String mServiceCharge = MyApp.getInstance().mOtcCoinList.get(0).getOut_otc();
+    private String mServiceCharge = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_buying);
+        if (MyApp.getInstance().mOtcCoinList.size() != 0) {
+            mServiceCharge = MyApp.getInstance().mOtcCoinList.get(0).getOut_otc();
+        }
         mCoinPresenter = new CoinPresenter(this);
         mPushBuyingPresenter = new PushBuyingPresenter(this);
         if (MyApp.getInstance().mOtcCoinList.size() != 0) {
@@ -236,6 +240,9 @@ public class PushBuyingActivity extends BaseActivity {
     private void init() {
         mTvCurrency.setText(mCoinName);
         mTvState.setText(MySharedPreferences.getInstance().getString(STATE));
+        mTvUnits.setText(MySharedPreferences.getInstance().getString(CURRENCY));
+        mTvUnits2.setText(MySharedPreferences.getInstance().getString(CURRENCY));
+        mTvUnits3.setText(MySharedPreferences.getInstance().getString(CURRENCY));
         /*mEtMinLimit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -420,7 +427,7 @@ public class PushBuyingActivity extends BaseActivity {
         } else if (mEtMaxLimit.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, getResources().getString(R.string.toast_max_limit), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtMaxLimit);
-        }else if (mEtPrice.getText().toString().trim().isEmpty()) {
+        } else if (mEtPrice.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, getResources().getString(R.string.toast_price), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtPrice);
         } /*else if (Double.parseDouble(mEtMinLimit.getText().toString()) < 100) {
@@ -693,11 +700,12 @@ public class PushBuyingActivity extends BaseActivity {
     }
 
 
-    public void hideDialog2(String name, int id) {
+    public void hideDialog2(String name, int id, String serviceCharge) {
         mBottomDialog.dismiss();
         mCoinName = name;
         initData(name);
-        mTvHint.setText(getString(R.string.push_ad_hint) + mServiceCharge + "%" + getString(R.string.sxf));
+        mServiceCharge = serviceCharge;
+        mTvHint.setText(getString(R.string.push_ad_hint) + serviceCharge + "%" + getString(R.string.sxf));
 //        mEtMaxLimit.setText("");
 //        mEtMinLimit.setText("");
         mTvCurrency.setText(name);

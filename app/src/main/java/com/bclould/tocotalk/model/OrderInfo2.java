@@ -76,6 +76,34 @@ public class OrderInfo2 {
         private String status_name;
         private String min_amount;
         private String max_amount;
+        private String remark;
+        private String otc_free;
+
+        public String getOtc_free() {
+            return otc_free;
+        }
+
+        public void setOtc_free(String otc_free) {
+            this.otc_free = otc_free;
+        }
+
+        public String getActual_number() {
+            return actual_number;
+        }
+
+        public void setActual_number(String actual_number) {
+            this.actual_number = actual_number;
+        }
+
+        private String actual_number;
+
+        public String getRemark() {
+            return remark;
+        }
+
+        public void setRemark(String remark) {
+            this.remark = remark;
+        }
 
         public String getMin_amount() {
             return min_amount;

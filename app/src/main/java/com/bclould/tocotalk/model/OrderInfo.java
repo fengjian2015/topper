@@ -94,6 +94,35 @@ public class OrderInfo implements Serializable {
         private int status;
         private String created_at;
         private String status_name;
+        private String remark;
+        private String actual_number;
+
+        public String getActual_number() {
+            return actual_number;
+        }
+
+        public void setActual_number(String actual_number) {
+            this.actual_number = actual_number;
+        }
+
+        public String getOtc_free() {
+            return otc_free;
+        }
+
+        public void setOtc_free(String otc_free) {
+            this.otc_free = otc_free;
+        }
+
+        private String otc_free;
+
+        public String getRemark() {
+            return remark;
+        }
+
+        public void setRemark(String remark) {
+            this.remark = remark;
+        }
+
         private int deadline;
         private BankBean bank;
         private AlipayBean alipay;

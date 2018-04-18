@@ -58,6 +58,8 @@ public class RedPacketActivity extends AppCompatActivity {
     LinearLayout mLlDetails;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.tv_hint)
+    TextView mTvHint;
     private String mCoin;
     private String mCount;
     private String mRemark;
@@ -68,7 +70,7 @@ public class RedPacketActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setStatusBarColor(getColor(R.color.redpacket2));
+        getWindow().setStatusBarColor(getColor(R.color.redpacket4));
         setContentView(R.layout.activity_red_packet);
         mMgr = new DBManager(this);
         ButterKnife.bind(this);
@@ -89,10 +91,21 @@ public class RedPacketActivity extends AppCompatActivity {
             byte[] bytes = bundle.getByteArray("image");
             mUser = bundle.getString("user");
             GrabRedInfo grabRedInfo = (GrabRedInfo) bundle.getSerializable("grabRedInfo");
+            int who = intent.getIntExtra("who", 0);
+
             mCount = grabRedInfo.getData().getTotal_money();
             mCoin = grabRedInfo.getData().getCoin_name();
             mRemark = grabRedInfo.getData().getIntro();
             List<GrabRedInfo.DataBean.LogBean> mLogBeanList = grabRedInfo.getData().getLog();
+            if (who == 0) {
+                if (mLogBeanList.size() == 0) {
+                    mTvHint.setText(getString(R.string.wait_get_red));
+                } else {
+                    mTvHint.setText(getString(R.string.ta_already_received));
+                }
+            } else if (who == 1) {
+                mTvHint.setText(getString(R.string.red_packet_hint));
+            }
             initRecylerView(mLogBeanList);
             mBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             mTvCoin.setText(mCoin);
