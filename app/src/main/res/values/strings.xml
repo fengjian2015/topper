@@ -598,5 +598,11 @@
     <string name="ta_already_received">對方已領取</string>
     <string name="order_update">訂單更新</string>
     <string name="service_charge">交易扣除</string>
+    <string name="connect_xmpp">連接即時通訊中....</string>
+    <string name="transfer_inform">轉賬通知</string>
+    <string name="transfer_count">轉賬數量</string>
+    <string name="in_account_inform">到賬通知</string>
+    <string name="in_account_count">到賬數量</string>
+    <string name="blockchain_gamble">區塊鏈競猜</string>
 
 </resources>

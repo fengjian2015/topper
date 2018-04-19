@@ -136,7 +136,7 @@ public class XmppConnection {
                 config.setHostAddress(InetAddress.getByName(SERVER_HOST));
                 //设置openfire服务器名称
                 config.setXmppDomain(SERVER_NAME);
-                //设置端口号：默认5222
+                //设置端口号：默认5288
                 config.setPort(SERVER_PORT);
 
                 SSLContext sslContext = SSLContext.getInstance("TLS");

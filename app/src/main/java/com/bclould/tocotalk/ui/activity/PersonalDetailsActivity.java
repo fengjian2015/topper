@@ -7,12 +7,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bclould.tocotalk.Presenter.PersonalDetailsPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
@@ -22,7 +23,6 @@ import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.compress.Luban;
 import com.luck.picture.lib.config.PictureConfig;
@@ -31,6 +31,7 @@ import com.luck.picture.lib.entity.LocalMedia;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,11 +69,13 @@ public class PersonalDetailsActivity extends BaseActivity {
 
     private List<LocalMedia> selectList = new ArrayList<>();
     private DBManager mMgr;
+    private PersonalDetailsPresenter mPersonalDetailsPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_detail);
+        mPersonalDetailsPresenter = new PersonalDetailsPresenter(this);
         mMgr = new DBManager(this);
         ButterKnife.bind(this);
         initInterface();
@@ -104,23 +107,42 @@ public class PersonalDetailsActivity extends BaseActivity {
             switch (requestCode) {
                 case PictureConfig.CHOOSE_REQUEST:
                     // 图片选择结果回调
-                    selectList = PictureSelector.obtainMultipleResult(data);
-                    Bitmap bitmap = BitmapFactory.decodeFile(selectList.get(0).getCompressPath());
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                    byte[] bytes = baos.toByteArray();
-                    boolean type = XmppConnection.getInstance().changeImage(bytes);
-                    if (type) {
-                        List<UserInfo> userInfos = mMgr.queryUser(UtilTool.getJid());
-                        mTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfos.get(0).getPath()));
-                        EventBus.getDefault().post(new MessageEvent(getString(R.string.xg_touxaing)));
-                        Toast.makeText(this, getString(R.string.xg_succeed), Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, getString(R.string.xg_error), Toast.LENGTH_SHORT).show();
+                    try {
+                        upImage(data);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
                     }
                     break;
             }
         }
+    }
+
+    //上傳頭像
+    private void upImage(Intent data) throws UnsupportedEncodingException {
+        selectList = PictureSelector.obtainMultipleResult(data);
+        final Bitmap bitmap = BitmapFactory.decodeFile(selectList.get(0).getCompressPath());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] bytes = baos.toByteArray();
+        String Base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+        UtilTool.Log("編碼", Base64Image);
+        mPersonalDetailsPresenter.upImage(Base64Image, new PersonalDetailsPresenter.CallBack() {
+            @Override
+            public void send() {
+                UtilTool.saveImages(bitmap, UtilTool.getJid(), PersonalDetailsActivity.this, mMgr);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.xg_touxaing)));
+                mTouxiang.setImageBitmap(UtilTool.getMyImage(mMgr, UtilTool.getJid()));
+            }
+        });
+        /*boolean type = XmppConnection.getInstance().changeImage(bytes);
+        if (type) {
+            List<UserInfo> userInfos = mMgr.queryUser(UtilTool.getJid());
+            mTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfos.get(0).getPath()));
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.xg_touxaing)));
+            Toast.makeText(this, getString(R.string.xg_succeed), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, getString(R.string.xg_error), Toast.LENGTH_SHORT).show();
+        }*/
     }
 
     @OnClick({R.id.bark, R.id.rl_touxiang, R.id.rl_qr_card})

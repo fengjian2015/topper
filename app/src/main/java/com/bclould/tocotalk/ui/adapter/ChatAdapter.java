@@ -182,6 +182,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } else if (viewType == ADMINISTRATOR_RECEIPT_PAY_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_receipt_pay, parent, false);
             holder = new ReceiptPayHolder(view);
+        } else if (viewType == ADMINISTRATOR_TRANSFER_MSG) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_transfer, parent, false);
+            holder = new TransferInformHolder(view);
         }
         return holder;
     }
@@ -281,6 +284,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
             case ADMINISTRATOR_RECEIPT_PAY_MSG:
                 ReceiptPayHolder receiptPayHolder = (ReceiptPayHolder) holder;
                 receiptPayHolder.setData(mMessageList.get(position));
+                break;
+            case ADMINISTRATOR_TRANSFER_MSG:
+                TransferInformHolder transferInformHolder = (TransferInformHolder) holder;
+                transferInformHolder.setData(mMessageList.get(position));
                 break;
         }
     }
@@ -1120,6 +1127,57 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 mTvWhoHint.setText(mContext.getString(R.string.payee));
                 mTvTypeMsg.setText(mContext.getString(R.string.pay_inform));
                 mTvStatusHint.setText(mContext.getString(R.string.pay_count));
+            }
+            mLlRedExpriedMsg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, PayDetailsActivity.class);
+                    intent.putExtra("id", messageInfo.getRedId() + "");
+                    intent.putExtra("type_number", messageInfo.getType() + "");
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+    }
+
+    class TransferInformHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.tv_type_msg)
+        TextView mTvTypeMsg;
+        @Bind(R.id.tv_coin)
+        TextView mTvCoin;
+        @Bind(R.id.tv_who_hint)
+        TextView mTvWhoHint;
+        @Bind(R.id.tv_who)
+        TextView mTvWho;
+        @Bind(R.id.tv_status_hint)
+        TextView mTvStatusHint;
+        @Bind(R.id.tv_count)
+        TextView mTvCount;
+        @Bind(R.id.tv_time_hint)
+        TextView mTvTimeHint;
+        @Bind(R.id.tv_time)
+        TextView mTvTime;
+        @Bind(R.id.ll_red_expried_msg)
+        LinearLayout mLlRedExpriedMsg;
+
+        TransferInformHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final MessageInfo messageInfo) {
+            mTvCoin.setText(messageInfo.getCoin());
+            mTvCount.setText(messageInfo.getCount());
+            mTvWho.setText(messageInfo.getRemark());
+            mTvTime.setText(messageInfo.getTime());
+            if (messageInfo.getStatus() == 1) {
+                mTvWhoHint.setText(mContext.getString(R.string.payer));
+                mTvTypeMsg.setText(mContext.getString(R.string.in_account_inform));
+                mTvStatusHint.setText(mContext.getString(R.string.in_account_count));
+            } else {
+                mTvWhoHint.setText(mContext.getString(R.string.payee));
+                mTvTypeMsg.setText(mContext.getString(R.string.transfer_inform));
+                mTvStatusHint.setText(mContext.getString(R.string.transfer_count));
             }
             mLlRedExpriedMsg.setOnClickListener(new View.OnClickListener() {
                 @Override

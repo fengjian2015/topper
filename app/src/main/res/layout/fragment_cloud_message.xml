@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:clickable="false"
               android:orientation="vertical">
 
     <View
@@ -23,9 +24,11 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/ll_chat"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:clickable="false"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -47,10 +50,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_friend"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/x70"
                 android:layout_weight="1"
+                android:clickable="false"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -72,7 +77,6 @@
             </LinearLayout>
 
 
-
         </LinearLayout>
 
         <RelativeLayout
@@ -80,7 +84,8 @@
             android:layout_width="@dimen/x100"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true">
+            android:layout_centerVertical="true"
+            android:clickable="false">
 
             <ImageView
                 android:layout_width="@dimen/x35"
@@ -95,10 +100,40 @@
         android:id="@+id/xx"
         style="@style/HCutOffRule"/>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/cloud_circle_vp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v4.view.ViewPager>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/cloud_circle_vp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v4.view.ViewPager>
+
+        <LinearLayout
+            android:id="@+id/ll_login"
+            android:layout_width="@dimen/x400"
+            android:layout_height="@dimen/x400"
+            android:layout_centerInParent="true"
+            android:background="@color/gray"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_anim"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/anim_progress"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/connect_xmpp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x28"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

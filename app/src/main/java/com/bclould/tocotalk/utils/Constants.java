@@ -20,13 +20,12 @@ public class Constants {
     public Constants(Context context) {
         mContext = context;
     }
-
-//        public static final String OPENFIRE_IP = "xmpp.bclould.com";
+    //        public static final String OPENFIRE_IP = "xmpp.bclould.com";
 //    public static final int OPENFIRE_PORT = 5288;
     public static final int OPENFIRE_PORT = 2018;
-//    public static final String BASE_URL = "https://www.bclould.com:8112/api/";
-                public static final String BASE_URL = "https://api.cnblocklink.com/api/";
-//    public static final String DOMAINNAME = "xmpp.bclould.com";
+    //    public static final String BASE_URL = "https://www.bclould.com:8112/api/";
+    public static final String BASE_URL = "https://api.cnblocklink.com/api/";
+    //    public static final String DOMAINNAME = "xmpp.bclould.com";
     public static final String DOMAINNAME = "xmpp.coingbank.com";
     public static final String CHUANCODE = "爨^(&";
     public static final String REDBAG = "[redBag]";
@@ -50,5 +49,6 @@ public class Constants {
     public static final String RED_PACKET_EXPIRED = "[RedPacketExpired]:";
     public static final String AUTH_STATUS = "[AuthStatus]:";
     public static final String QRCODE_RECEIPT_PAYMENT = "[QrcodeReceiptPayment]:";
+    public static final String TRANSFER_INFORM = "[Transfer]:";
     public static final String EXCHANGE_DISCLAIMER = "exchange_disclaimer";
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -55,7 +56,6 @@ public class FriendListVPAdapter extends RecyclerView.Adapter {
         return new ViewHolder(view);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
@@ -103,8 +103,14 @@ public class FriendListVPAdapter extends RecyclerView.Adapter {
         public void setData(UserInfo userInfo) {
             mUserInfo = userInfo;
             String user = userInfo.getUser();
-            String path = userInfo.getPath();
-            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            Bitmap bitmap = null;
+            if (!userInfo.getPath().isEmpty()) {
+                String path = userInfo.getPath();
+                bitmap = BitmapFactory.decodeFile(path);
+            } else {
+                BitmapDrawable bitmapDrawable = (BitmapDrawable) mContext.getDrawable(R.mipmap.img_nfriend_headshot1);
+                bitmap = bitmapDrawable.getBitmap();
+            }
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             try {
                 if (baos != null && bitmap != null)
@@ -116,7 +122,7 @@ public class FriendListVPAdapter extends RecyclerView.Adapter {
                 e.printStackTrace();
             }
             mFriendChildTouxiang.setImageBitmap(bitmap);
-            UtilTool.Log("好友", user );
+            UtilTool.Log("好友", user);
             if (user.contains("@"))
                 mFriendChildName.setText(user.substring(0, user.indexOf("@")));
             /*if (userInfo.getStatus() == 1) {

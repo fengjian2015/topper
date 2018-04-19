@@ -1,24 +1,31 @@
 package com.bclould.tocotalk.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.QrRedInfo;
 import com.bclould.tocotalk.ui.activity.AddFriendActivity;
 import com.bclould.tocotalk.ui.activity.GrabQRCodeRedActivity;
@@ -26,9 +33,21 @@ import com.bclould.tocotalk.ui.activity.PublicshDynamicActivity;
 import com.bclould.tocotalk.ui.activity.ScanQRCodeActivity;
 import com.bclould.tocotalk.ui.activity.SendQRCodeRedActivity;
 import com.bclould.tocotalk.ui.adapter.CloudMessageVPAdapter;
+import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
+import com.bclould.tocotalk.xmpp.XMConnectionListener;
+import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.EventBus;
+import org.jivesoftware.smack.AbstractXMPPConnection;
+import org.jivesoftware.smackx.ping.PingFailedListener;
+import org.jivesoftware.smackx.ping.PingManager;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -59,11 +78,23 @@ public class CloudMessageFragment extends Fragment {
     RelativeLayout mCloudCircleAdd;
     @Bind(R.id.cloud_circle_vp)
     ViewPager mCloudCircleVp;
+    @Bind(R.id.ll_login)
+    LinearLayout mLlLogin;
+    @Bind(R.id.iv_anim)
+    ImageView mIvAnim;
+    @Bind(R.id.ll_chat)
+    LinearLayout mLlChat;
+    @Bind(R.id.ll_friend)
+    LinearLayout mLlFriend;
     private DisplayMetrics mDm;
     private int mHeightPixels;
     private ViewGroup mView;
     private PopupWindow mPopupWindow;
     private int QRCODE = 1;
+    private LoadingProgressDialog mProgressDialog;
+    private Timer tExit;
+    private AnimationDrawable mAnim;
+    private boolean isLogin = false;
 
     public static CloudMessageFragment getInstance() {
 
@@ -92,18 +123,10 @@ public class CloudMessageFragment extends Fragment {
     //初始化界面
     private void initInterface() {
 
-        getPhoneSize();
+        loginIM();
 
-//        mStatusBarFix.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, StatusBarCompat.getStateBarHeight(getActivity())));//填充状态栏
-
-        setSelector(0);
-
-        mCloudCircleVp.setCurrentItem(0);
-
-        initTopMenu();
-
-        initViewPager();
     }
+
 
     //初始化ViewPager
     private void initViewPager() {
@@ -132,6 +155,162 @@ public class CloudMessageFragment extends Fragment {
 
     }
 
+    //登录即时通讯
+    private void loginIM() {
+        mLlLogin.setVisibility(View.VISIBLE);
+        mAnim = (AnimationDrawable) mIvAnim.getBackground();
+        mAnim.start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //连接openfile
+                    AbstractXMPPConnection connection = XmppConnection.getInstance().getConnection();
+                    //判断是否连接
+                    if (connection != null && connection.isConnected()) {
+                        String myUser = UtilTool.getJid();
+                        String user = myUser.substring(0, myUser.indexOf("@"));
+                        connection.login(user, UtilTool.getpw());
+                        connection.addConnectionListener(new XMConnectionListener(getContext()));
+                        /*if (connection.isAuthenticated()) {//登录成功
+                            PingManager.setDefaultPingInterval(10);
+                            PingManager myPingManager = PingManager.getInstanceFor(connection);
+                            myPingManager.registerPingFailedListener(new PingFailedListener() {
+                                @Override
+                                public void pingFailed() {
+                                    Toast.makeText(MainActivity.this, "发送心跳包失败", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }*/
+                        //登录成功发送通知
+                        EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
+                        UtilTool.Log("fsdafa", "登录成功");
+                        Message message = new Message();
+                        message.what = 1;
+                        mHandler.sendMessage(message);
+                    }
+                } catch (Exception e) {
+                    //发送登录失败通知
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.login_error)));
+                    Message message = new Message();
+                    mHandler.sendMessage(message);
+                    message.what = 0;
+                    UtilTool.Log("日志", e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    //显示登录中Dialog
+    public void showDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = LoadingProgressDialog.createDialog(getContext());
+            mProgressDialog.setCanceledOnTouchOutside(false);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.setMessage(getString(R.string.login_underway));
+        }
+        mProgressDialog.show();
+    }
+
+    //隐藏登录中dialog
+    public void hideDialog() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
+    }
+
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    mLlChat.setClickable(true);
+                    mLlFriend.setClickable(true);
+                    mCloudCircleAdd.setClickable(true);
+                    getPhoneSize();
+                    setSelector(0);
+                    mCloudCircleVp.setCurrentItem(0);
+                    initTopMenu();
+                    initViewPager();
+                    mAnim.stop();
+                    mLlLogin.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                    break;
+                case 1:
+                    mLlChat.setClickable(true);
+                    mLlFriend.setClickable(true);
+                    mCloudCircleAdd.setClickable(true);
+                    getPhoneSize();
+                    setSelector(0);
+                    mCloudCircleVp.setCurrentItem(0);
+                    initTopMenu();
+                    initViewPager();
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
+                    mAnim.stop();
+                    mLlLogin.setVisibility(View.GONE);
+                    isLogin = true;
+                    MyApp.getInstance().isLogin = true;
+                    pingService();
+                    break;
+            }
+        }
+    };
+
+    private class TimeTask extends TimerTask {
+        @Override
+        public void run() {
+
+            if (UtilTool.getUser() != null && UtilTool.getpw() != null) {
+                Log.i("XMConnectionListener", "尝试登录");
+                // 连接服务器
+                try {
+                    if (!XmppConnection.getInstance().isAuthenticated()) {// 用户未登录
+                        if (XmppConnection.getInstance().login(UtilTool.getUser(), UtilTool.getpw())) {
+                            Log.i("XMConnectionListener", "登录成功");
+                            EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
+                            Intent intent = new Intent();
+                            intent.setAction("XMPPConnectionListener");
+                            intent.putExtra("type", true);
+                            getContext().sendBroadcast(intent);
+                        } else {
+                            Log.i("XMConnectionListener", "重新登录");
+                            tExit.schedule(new TimeTask(), 1000);
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.i("XMConnectionListener", "尝试登录,出现异常!");
+                    Log.i("XMConnectionListener", e.getMessage());
+                }
+            }
+        }
+    }
+
+    private void pingService() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                PingManager pingManager = PingManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+                pingManager.setPingInterval(60);
+                try {
+                    pingManager.pingMyServer();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                pingManager.registerPingFailedListener(new PingFailedListener() {
+                    @Override
+                    public void pingFailed() {
+                        if (tExit == null) {
+                            tExit = new Timer();
+                            tExit.schedule(new TimeTask(), 1000);
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
 
     //初始化顶部菜单栏
     private void initTopMenu() {
@@ -198,7 +377,9 @@ public class CloudMessageFragment extends Fragment {
 
     @OnClick(R.id.cloud_circle_add)
     public void onViewClicked() {
-        initPopWindow();
+        if (isLogin) {
+            initPopWindow();
+        }
     }
 
     //获取屏幕高度

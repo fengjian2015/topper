@@ -33,18 +33,15 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.bclould.tocotalk.Presenter.DillDataPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.AuthStatusInfo;
-import com.bclould.tocotalk.model.AwsInfo;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.OtcOrderStatusInfo;
 import com.bclould.tocotalk.model.QrcodeReceiptPayInfo;
 import com.bclould.tocotalk.model.RedExpiredInfo;
-import com.bclould.tocotalk.ui.activity.MainActivity;
 import com.bclould.tocotalk.ui.adapter.ConversationAdapter;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.Constants;
@@ -68,9 +65,6 @@ import org.jivesoftware.smack.chat.Chat;
 import org.jivesoftware.smack.chat.ChatManager;
 import org.jivesoftware.smack.chat.ChatManagerListener;
 import org.jivesoftware.smack.chat.ChatMessageListener;
-import org.jivesoftware.smack.filter.FlexibleStanzaTypeFilter;
-import org.jivesoftware.smack.filter.MessageTypeFilter;
-import org.jivesoftware.smack.filter.OrFilter;
 import org.jivesoftware.smack.filter.StanzaFilter;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
@@ -108,6 +102,7 @@ import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_AUTH_STA
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_OTC_ORDER_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_RECEIPT_PAY_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_RED_PACKET_EXPIRED_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_TRANSFER_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_IMG_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_RED_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_TEXT_MSG;
@@ -174,7 +169,7 @@ public class ConversationFragment extends Fragment {
         handler = new FragmentOneHandler();
         initRecyclerView();
         initData();
-        initAWS();
+//        initAWS();
         return view;
     }
 
@@ -327,18 +322,6 @@ public class ConversationFragment extends Fragment {
     }
 
 
-    private void initAWS() {
-        DillDataPresenter dillDataPresenter = new DillDataPresenter(getContext());
-        dillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
-            @Override
-            public void send(AwsInfo.DataBean data) {
-                MySharedPreferences.getInstance().setString(ACCESSKEYID, data.getAccessKeyId());
-                MySharedPreferences.getInstance().setString(SECRETACCESSKEY, data.getSecretAccessKey());
-                MySharedPreferences.getInstance().setString(SESSIONTOKEN, data.getSessionToken());
-            }
-        });
-    }
-
     @OnClick(R.id.rl_ununited)
     public void onViewClicked() {
         startActivity(new Intent(Settings.ACTION_SETTINGS));
@@ -362,10 +345,10 @@ public class ConversationFragment extends Fragment {
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.login_succeed))) {
+            initBroadcastListener();
             getOfflineMessage();
 //            initListener();
             initData();
-            initBroadcastListener();
         } else if (msg.equals(getString(R.string.oneself_send_msg))) {
             initData();
         } else if (msg.equals(getString(R.string.send_red_packet_le))) {
@@ -400,17 +383,13 @@ public class ConversationFragment extends Fragment {
                     }
                 }
             }
-        }, packetFilter);
+        }, new StanzaFilter() {
+            @Override
+            public boolean accept(Stanza stanza) {
+                return stanza instanceof Message;
+            }
+        });
     }
-
-    private final StanzaFilter packetFilter = new OrFilter(MessageTypeFilter.CHAT, new FlexibleStanzaTypeFilter<Message>() {
-
-        @Override
-        protected boolean acceptSpecific(Message message) {
-            return true;
-        }
-
-    });
 
     @Override
     public void onDestroy() {
@@ -454,7 +433,7 @@ public class ConversationFragment extends Fragment {
                     UtilTool.playHint(getContext());
                 }
                 for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i) != null && list.get(i).getBody() != null && !list.get(i).getBody().equals("null")) {
+                    if (list.get(i) != null && list.get(i).getBody() != null && !list.get(i).getBody().equals("")) {
                         android.os.Message msg = new android.os.Message();
                         msg.obj = list.get(i);
                         handler.sendMessage(msg);
@@ -713,6 +692,23 @@ public class ConversationFragment extends Fragment {
                         redpacket = "[" + getString(R.string.receipt_inform) + "]";
                     } else {
                         redpacket = "[" + getString(R.string.pay_inform) + "]";
+                    }
+                } else if (chatMsg.contains(Constants.TRANSFER_INFORM)) {
+                    msgType = ADMINISTRATOR_TRANSFER_MSG;
+                    String json = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
+                    Gson gson = new Gson();
+                    QrcodeReceiptPayInfo transferInformInfo = gson.fromJson(json, QrcodeReceiptPayInfo.class);
+                    time = transferInformInfo.getCreated_at();
+                    redId = transferInformInfo.getId();
+                    count = transferInformInfo.getNumber();
+                    coin = transferInformInfo.getCoin_name();
+                    status = transferInformInfo.getType();
+                    remark = transferInformInfo.getName();
+                    type = transferInformInfo.getType_number();
+                    if (transferInformInfo.getType() == 1) {
+                        redpacket = "[" + getString(R.string.in_account_inform) + "]";
+                    } else {
+                        redpacket = "[" + getString(R.string.transfer_inform) + "]";
                     }
                 }
                 //添加数据库
