@@ -46,7 +46,7 @@ public class QRCodeRedActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_code_red);
-        getWindow().setStatusBarColor(getColor(R.color.redpacket2));
+        getWindow().setStatusBarColor(getColor(R.color.redpacket4));
         ButterKnife.bind(this);
         init();
     }

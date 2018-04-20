@@ -14,19 +14,19 @@ import static com.bclould.tocotalk.ui.activity.ConversationActivity.SESSIONTOKEN
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class Constants {
+    public static final String ADMINISTRATOR_NAME = "TOCOTALK";
     private final Context mContext;
 
     public Constants(Context context) {
         mContext = context;
     }
-
-//    public static final String OPENFIRE_IP = "xmpp.bclould.com";
+    //        public static final String OPENFIRE_IP = "xmpp.bclould.com";
 //    public static final int OPENFIRE_PORT = 5288;
-        public static final int OPENFIRE_PORT = 2018;
-//    public static final String BASE_URL = "https://www.bclould.com:8112/api/";
-        public static final String BASE_URL = "https://api.cnblocklink.com/api/";
-//    public static final String DOMAINNAME = "xmpp.bclould.com";
-        public static final String DOMAINNAME = "xmpp.coingbank.com";
+    public static final int OPENFIRE_PORT = 2018;
+    //    public static final String BASE_URL = "https://www.bclould.com:8112/api/";
+    public static final String BASE_URL = "https://api.cnblocklink.com/api/";
+    //    public static final String DOMAINNAME = "xmpp.bclould.com";
+    public static final String DOMAINNAME = "xmpp.coingbank.com";
     public static final String CHUANCODE = "爨^(&";
     public static final String REDBAG = "[redBag]";
     public static final String TRANSFER = "[transfer]";
@@ -45,5 +45,10 @@ public class Constants {
     public static final String DATAMONEYIN = "dataMoneyIn";
     public static final String HINT_TYPE = "hint_type";
     public static final String OTC_DISCLAIMER = "otc_disclaimer";
+    public static final String OTC_ORDER = "[OtcOrder]:";
+    public static final String RED_PACKET_EXPIRED = "[RedPacketExpired]:";
+    public static final String AUTH_STATUS = "[AuthStatus]:";
+    public static final String QRCODE_RECEIPT_PAYMENT = "[QrcodeReceiptPayment]:";
+    public static final String TRANSFER_INFORM = "[Transfer]:";
     public static final String EXCHANGE_DISCLAIMER = "exchange_disclaimer";
 }

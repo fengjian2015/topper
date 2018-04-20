@@ -16,6 +16,7 @@ import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.activity.BankCardActivity;
 import com.bclould.tocotalk.ui.activity.PayPasswordActivity;
 import com.bclould.tocotalk.ui.activity.PushBuyingActivity;
+import com.bclould.tocotalk.ui.activity.RealNameC1Activity;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -84,13 +85,15 @@ public class PushBuyingPresenter {
                                 PushBuyingActivity activity = (PushBuyingActivity) mContext;
                                 activity.finish();
                                 EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.publish_deal)));
-                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.set_pay_pw_hint))) {
+                            } else if (baseInfo.getType() == 4) {
                                 showHintDialog(1);
-                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.payment_pw_error))) {
+                            } else if (baseInfo.getType() == 6) {
                                 PushBuyingActivity activity = (PushBuyingActivity) mContext;
                                 activity.showHintDialog();
-                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.binding_bank_hint))) {
+                            } else if (baseInfo.getType() == 2) {
                                 showHintDialog(0);
+                            } else if (baseInfo.getType() == 1) {
+                                showHintDialog(2);
                             }
                             hideDialog();
                             UtilTool.Log("PushBuyingPresenter", baseInfo.getMessage());
@@ -124,6 +127,9 @@ public class PushBuyingPresenter {
             case 1:
                 deleteCacheDialog.setTitle(mContext.getString(R.string.set_pay_pw_hint));
                 break;
+            case 2:
+                deleteCacheDialog.setTitle(mContext.getString(R.string.real_name_authentication_hint));
+                break;
         }
         Button retry = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         Button findPassword = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
@@ -143,6 +149,9 @@ public class PushBuyingPresenter {
                         break;
                     case 1:
                         mContext.startActivity(new Intent(mContext, PayPasswordActivity.class));
+                        break;
+                    case 2:
+                        mContext.startActivity(new Intent(mContext, RealNameC1Activity.class));
                         break;
                 }
             }

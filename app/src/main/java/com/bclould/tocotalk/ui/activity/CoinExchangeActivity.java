@@ -56,6 +56,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tocotalk.Presenter.LoginPresenter.CURRENCY;
+import static com.bclould.tocotalk.Presenter.LoginPresenter.STATE;
 import static com.bclould.tocotalk.R.style.BottomDialog;
 
 /**
@@ -218,7 +220,7 @@ public class CoinExchangeActivity extends BaseActivity {
                             String price = df.format(cny * usdt);
                             mTvPrice.setText(data.getUSDT());
                             mPrice = mTvPrice.getText().toString();
-                            mTvCny.setText("≈ " + price + " CNY");
+                            mTvCny.setText("≈ " + price + " " + MySharedPreferences.getInstance().getString(CURRENCY));
                             if (data.getTrend().contains("-")) {
                                 mBtnFloat.setText(data.getTrend() + "% ↓");
                             } else {
@@ -371,7 +373,7 @@ public class CoinExchangeActivity extends BaseActivity {
         valueList = virtualKeyboardView.getValueList();
         countCoin.setText(count + coins);
         coin.setText(coins + "兑换USDT");
-        hint.setText("本次兌換需要扣除" + mServiceCharge + "%手續費");
+        hint.setText("本次兌換需要扣除" + Double.parseDouble(mServiceCharge) * 100 + "%手續費");
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

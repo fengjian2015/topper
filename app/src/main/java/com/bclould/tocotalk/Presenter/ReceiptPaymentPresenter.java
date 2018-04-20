@@ -75,7 +75,7 @@ public class ReceiptPaymentPresenter {
                         public void onNext(BaseInfo baseInfo) {
                             if (baseInfo.getStatus() == 1) {
                                 callBack.send(baseInfo.getData());
-                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.real_name_authentication_hint))) {
+                            } else if (baseInfo.getType() == 1) {
                                 showHintDialog(0);
                             } else {
                                 Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
@@ -114,14 +114,14 @@ public class ReceiptPaymentPresenter {
 
                         @Override
                         public void onNext(ReceiptInfo receiptInfo) {
-                            if (receiptInfo.getMessage().equals(mContext.getString(R.string.set_pay_pw_hint))) {
+                            if (receiptInfo.getStatus() == 1) {
+                                callBack2.send(receiptInfo.getData());
+                            } else if (receiptInfo.getType() == 4) {
                                 showHintDialog(1);
-                            } else if (receiptInfo.getMessage().equals(mContext.getString(R.string.payment_pw_error))) {
+                            } else if (receiptInfo.getType() == 6) {
                                 PaymentActivity activity = (PaymentActivity) mContext;
                                 activity.showHintDialog();
-                            } else if (receiptInfo.getStatus() == 1) {
-                                callBack2.send(receiptInfo.getData());
-                            } else if (receiptInfo.getMessage().equals(mContext.getString(R.string.real_name_authentication_hint))) {
+                            } else if (receiptInfo.getType() == 1) {
                                 showHintDialog(0);
                             } else {
                                 Toast.makeText(mContext, receiptInfo.getMessage(), Toast.LENGTH_SHORT).show();
@@ -194,14 +194,14 @@ public class ReceiptPaymentPresenter {
 
                         @Override
                         public void onNext(BaseInfo baseInfo) {
-                            if (baseInfo.getMessage().equals(mContext.getString(R.string.set_pay_pw_hint))) {
+                            if (baseInfo.getStatus() == 1) {
+                                callBack3.send(baseInfo.getData().getUrl());
+                            } else if (baseInfo.getType() == 4) {
                                 showHintDialog(1);
-                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.payment_pw_error))) {
+                            } else if (baseInfo.getType() == 6) {
                                 PaymentActivity activity = (PaymentActivity) mContext;
                                 activity.showHintDialog();
-                            } else if (baseInfo.getStatus() == 1) {
-                                callBack3.send(baseInfo.getData().getUrl());
-                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.real_name_authentication_hint))) {
+                            } else if (baseInfo.getType() == 1) {
                                 showHintDialog(0);
                             }
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
@@ -276,7 +276,7 @@ public class ReceiptPaymentPresenter {
                         public void onNext(ReceiptInfo receiptInfo) {
                             if (receiptInfo.getStatus() == 1) {
                                 callBack5.send(receiptInfo.getData());
-                            } else if (receiptInfo.getMessage().equals(mContext.getString(R.string.real_name_authentication_hint))) {
+                            } else if (receiptInfo.getType() == 1) {
                                 showHintDialog(0);
                             }
                             Toast.makeText(mContext, receiptInfo.getMessage(), Toast.LENGTH_SHORT).show();

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginTop="@dimen/y20"
+    android:layout_marginBottom="@dimen/y20"
+    android:layout_marginLeft="@dimen/x50"
+    android:layout_marginRight="@dimen/x50"
+    app:cardCornerRadius="@dimen/x15">
+
+    <LinearLayout
+        android:id="@+id/ll_order_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/x20">
+
+        <TextView
+            android:id="@+id/tv_type_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/otc_order_msg_hint"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y30"
+            android:text="@string/deal_coin"
+            android:textSize="@dimen/x26"/>
+
+        <TextView
+            android:id="@+id/tv_coin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y20"
+            android:text="BTC"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x45"
+            android:textStyle="bold"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y30">
+
+            <TextView
+                android:id="@+id/tv_number_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/order_number"
+                android:textSize="@dimen/x26"/>
+
+            <TextView
+                android:id="@+id/tv_order_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/tv_number_hint"
+                android:text="20180417124564613"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x26"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20">
+
+            <TextView
+                android:id="@+id/tv_status_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/deal_status"
+                android:textSize="@dimen/x26"/>
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/tv_status_hint"
+                android:text="訂單已取消"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x26"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20">
+
+            <TextView
+                android:id="@+id/tv_time_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/deal_time"
+                android:textSize="@dimen/x26"/>
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/tv_time_hint"
+                android:text="2018-04-17 19:20:30"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x26"/>
+
+        </RelativeLayout>
+
+        <TextView
+            style="@style/HCutOffRule"
+            android:layout_marginTop="@dimen/y20"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/x20"
+                android:text="@string/look_details"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x28"/>
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/x20"
+                android:src="@mipmap/iocn_person_turn"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

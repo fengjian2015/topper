@@ -84,6 +84,15 @@ public class DealListInfo implements Serializable {
         private String created_at;
         private int count_trans_number;
         private String username;
+        private int self_trans;
+
+        public int getSelf_trans() {
+            return self_trans;
+        }
+
+        public void setSelf_trans(int self_trans) {
+            this.self_trans = self_trans;
+        }
 
         public int getId() {
             return id;

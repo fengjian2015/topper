@@ -68,7 +68,7 @@ public class LoginPasswordPresenter {
                         public void onNext(@NonNull BaseInfo baseInfo) {
                             if (baseInfo.getStatus() == 1)
                                 mLoginPasswordActivity.finish();
-                            if (baseInfo.getMessage().equals(mLoginPasswordActivity.getString(R.string.binding_google_hint1)))
+                            if (baseInfo.getType() == 3)
                                 mLoginPasswordActivity.startActivity(new Intent(mLoginPasswordActivity, GoogleVerificationActivity.class));
                             hideDialog();
                             Toast.makeText(mLoginPasswordActivity, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();

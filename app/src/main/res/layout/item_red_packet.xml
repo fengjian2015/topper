@@ -7,6 +7,7 @@
                 android:paddingRight="@dimen/x20">
 
     <ImageView
+        android:src="@mipmap/img_nfriend_headshot1"
         android:id="@+id/iv_touxiang"
         android:layout_width="@dimen/x100"
         android:layout_height="@dimen/x100"

@@ -13,7 +13,7 @@ public class MessageInfo {
     private String time;
     private String remark;
     private int type;
-    private int state;
+    private int status;
     private int id;
     private int redId;
     private String voice;
@@ -127,12 +127,12 @@ public class MessageInfo {
         this.type = type;
     }
 
-    public int getState() {
-        return state;
+    public int getStatus() {
+        return status;
     }
 
-    public void setState(int state) {
-        this.state = state;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public int getId() {
@@ -161,7 +161,7 @@ public class MessageInfo {
                 ", time='" + time + '\'' +
                 ", remark='" + remark + '\'' +
                 ", type=" + type +
-                ", state=" + state +
+                ", state=" + status +
                 ", id=" + id +
                 ", redId=" + redId +
                 ", voice='" + voice + '\'' +

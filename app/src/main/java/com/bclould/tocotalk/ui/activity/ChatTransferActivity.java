@@ -386,7 +386,7 @@ public class ChatTransferActivity extends BaseActivity {
             messageInfo.setCoin(mCoin);
             messageInfo.setMsgType(TO_TRANSFER_MSG);
             messageInfo.setCount(mCount);
-            messageInfo.setState(0);
+            messageInfo.setStatus(0);
             mMgr.addMessage(messageInfo);
             String hint = "[" + getString(R.string.transfer) + "]";
             if (mMgr.findConversation(mUser)) {

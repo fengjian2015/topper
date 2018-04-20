@@ -91,6 +91,10 @@ public class OrderDetailsActivity extends BaseActivity {
     Button mBtnBuyCancel;
     @Bind(R.id.btn_buy_confirm)
     Button mBtnBuyConfirm;
+    @Bind(R.id.tv_service_charge)
+    TextView mTvServiceCharge;
+    @Bind(R.id.tv_shiji)
+    TextView mTvShiji;
     private OrderInfo.DataBean mData;
     Timer mTimer = new Timer();
     private int mRecLen = 0;
@@ -154,6 +158,10 @@ public class OrderDetailsActivity extends BaseActivity {
             mTvCount.setText(mData.getNumber());
             mTvMoney.setText(mData.getTrans_amount());
             mTvPrice.setText(mData.getPrice());
+            mTvServiceCharge.setText(Double.parseDouble(mData.getOtc_free()) * 100 + "%");
+            mTvShiji.setText(mData.getActual_number());
+            if (mData.getRemark() != null)
+                mTvRemark.setText(getString(R.string.remark) + ":" + mData.getRemark());
             mTvOrderNumber.setText(getString(R.string.order_number) + ":" + mData.getOrder_no());
             try {
                 mTvBankName.setText(mData.getBank().getCard_name());
@@ -193,6 +201,8 @@ public class OrderDetailsActivity extends BaseActivity {
                 if (data.getStatus() == 0) {
                     mTimer.cancel();
                     mTvTime.setText(getString(R.string.no_time));
+                    finish();
+                    Toast.makeText(OrderDetailsActivity.this, getString(R.string.order_cancel), Toast.LENGTH_SHORT).show();
                 } else if (data.getStatus() == 1) {
                 } else if (data.getStatus() == 2) {
                 } else if (data.getStatus() == 3) {
@@ -204,6 +214,10 @@ public class OrderDetailsActivity extends BaseActivity {
                 mTvMoney.setText(data.getTrans_amount());
                 mTvPrice.setText(data.getPrice());
                 mTvPayType.setText(data.getStatus_name());
+                mTvServiceCharge.setText(Double.parseDouble(data.getOtc_free()) * 100 + "%");
+                mTvShiji.setText(data.getActual_number());
+                if (data.getRemark() != null)
+                    mTvRemark.setText(getString(R.string.remark) + ":" + data.getRemark());
                 try {
                     mTvBankName.setText(data.getBank().getCard_name());
                     mTvBankNumber.setText(data.getBank().getCard_number());

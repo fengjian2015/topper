@@ -102,7 +102,7 @@ public class SendRedPacketActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setStatusBarColor(getColor(R.color.redpacket2));
+        getWindow().setStatusBarColor(getColor(R.color.redpacket4));
         mMgr = new DBManager(this);
         setContentView(R.layout.activity_send_red_packet);
         mUser = getIntent().getStringExtra("user");
@@ -371,7 +371,7 @@ public class SendRedPacketActivity extends AppCompatActivity {
             messageInfo.setCoin(mCoin);
             messageInfo.setMsgType(TO_RED_MSG);
             messageInfo.setCount(mCount + "");
-            messageInfo.setState(0);
+            messageInfo.setStatus(0);
             messageInfo.setRedId(id);
             mMgr.addMessage(messageInfo);
             String hint = "[" + getString(R.string.red_package) + "]";

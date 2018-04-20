@@ -56,6 +56,7 @@ public class SellFragment extends BaseFragment {
     private String mState = MySharedPreferences.getInstance().getString(STATE);
     private List<DealListInfo.DataBean> mDataList = new ArrayList<>();
     private BuySellRVAdapter mBuySellRVAdapter;
+    private BuySellPresenter mBuySellPresenter;
 
 
     @Nullable
@@ -64,6 +65,7 @@ public class SellFragment extends BaseFragment {
         if (mView == null)
             mView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_buy, container, false);
         ButterKnife.bind(this, mView);
+        mBuySellPresenter = new BuySellPresenter(getContext());
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         initRecyclerView();
@@ -101,7 +103,7 @@ public class SellFragment extends BaseFragment {
     private void initRecyclerView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
-        mBuySellRVAdapter = new BuySellRVAdapter(getActivity(), true, mDataList);
+        mBuySellRVAdapter = new BuySellRVAdapter(getActivity(), true, mDataList, mBuySellPresenter);
         mRecyclerView.setAdapter(mBuySellRVAdapter);
     }
 
@@ -117,8 +119,7 @@ public class SellFragment extends BaseFragment {
 
     private void initData(String coinName, String state) {
         mDataList.clear();
-        BuySellPresenter buySellPresenter = new BuySellPresenter(getContext());
-        buySellPresenter.getDealList(2, coinName, state, new BuySellPresenter.CallBack() {
+        mBuySellPresenter.getDealList(2, coinName, state, new BuySellPresenter.CallBack() {
             @Override
             public void send(List<DealListInfo.DataBean> dataBean, String coin) {
                 if (dataBean.size() != 0) {

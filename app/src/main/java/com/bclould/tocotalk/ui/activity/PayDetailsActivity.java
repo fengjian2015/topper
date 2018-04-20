@@ -72,8 +72,8 @@ public class PayDetailsActivity extends BaseActivity {
 
             @Override
             public void send2(TransRecordInfo.DataBean data) {
-                mTvName.setText(data.getName());
-                mTvLimit.setText(data.getType_name());
+                mTvName.setText(data.getType_name());
+                mTvLimit.setText(data.getName());
                 mTvMoney.setText(data.getNumber());
                 mTvCount.setText(data.getCoin_name());
                 mTvPrice.setText(data.getCreated_at());

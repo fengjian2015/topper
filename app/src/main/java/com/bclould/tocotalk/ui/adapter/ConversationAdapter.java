@@ -111,7 +111,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
             mConversationInfo = conversationInfo;
             List<UserInfo> userInfos = mMgr.queryUser(conversationInfo.getUser());
             Bitmap bitmap = null;
-            if (userInfos.size() != 0) {
+            if (userInfos.size() != 0 && !userInfos.get(0).getPath().isEmpty()) {
                 bitmap = BitmapFactory.decodeFile(userInfos.get(0).getPath());
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);

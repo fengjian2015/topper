@@ -25,22 +25,23 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.Presenter.CoinPresenter;
+import com.bclould.tocotalk.Presenter.DillDataPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.FragmentFactory;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.model.AwsInfo;
 import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.network.DownLoadApk;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bclould.tocotalk.xmpp.XMConnectionListener;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 
 import org.greenrobot.eventbus.EventBus;
-import org.jivesoftware.smack.AbstractXMPPConnection;
 import org.jivesoftware.smackx.ping.PingFailedListener;
 import org.jivesoftware.smackx.ping.PingManager;
 
@@ -55,6 +56,10 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.bclould.tocotalk.ui.activity.ConversationActivity.ACCESSKEYID;
+import static com.bclould.tocotalk.ui.activity.ConversationActivity.SECRETACCESSKEY;
+import static com.bclould.tocotalk.ui.activity.ConversationActivity.SESSIONTOKEN;
 
 @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
 public class MainActivity extends BaseActivity {
@@ -147,14 +152,27 @@ public class MainActivity extends BaseActivity {
         UtilTool.getPermissions(this, Manifest.permission.CAMERA, "", getString(R.string.jurisdiction_camera_hint));
         UtilTool.getPermissions(this, Manifest.permission.RECORD_AUDIO, "", getString(R.string.jurisdiction_voice_hint));
         //自动登录即时通讯
-        loginIM();
-        pingService();
+//        loginIM();
+        initAWS();
         //检测版本更新
         checkVersion();
         //获取币种
         getCoinList();
         //获取国家
         getStateList();
+
+    }
+
+    private void initAWS() {
+        DillDataPresenter dillDataPresenter = new DillDataPresenter(this);
+        dillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
+            @Override
+            public void send(AwsInfo.DataBean data) {
+                MySharedPreferences.getInstance().setString(ACCESSKEYID, data.getAccessKeyId());
+                MySharedPreferences.getInstance().setString(SECRETACCESSKEY, data.getSecretAccessKey());
+                MySharedPreferences.getInstance().setString(SESSIONTOKEN, data.getSessionToken());
+            }
+        });
     }
 
     private Timer tExit;
@@ -164,7 +182,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void run() {
                 PingManager pingManager = PingManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-                pingManager.setPingInterval(200);
+                pingManager.setPingInterval(60);
                 try {
                     pingManager.pingMyServer();
                 } catch (Exception e) {
@@ -364,10 +382,13 @@ public class MainActivity extends BaseActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
+                    hideDialog();
                     Toast.makeText(MainActivity.this, getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                     break;
                 case 1:
                     hideDialog();
+                    MyApp.getInstance().isLogin = true;
+                    pingService();
                     break;
             }
         }
@@ -387,7 +408,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    //登录即时通讯
+    /*//登录即时通讯
     private void loginIM() {
         showDialog();
         new Thread(new Runnable() {
@@ -402,7 +423,7 @@ public class MainActivity extends BaseActivity {
                         String user = myUser.substring(0, myUser.indexOf("@"));
                         connection.login(user, UtilTool.getpw());
                         connection.addConnectionListener(new XMConnectionListener(MainActivity.this));
-                        /*if (connection.isAuthenticated()) {//登录成功
+                        *//*if (connection.isAuthenticated()) {//登录成功
                             PingManager.setDefaultPingInterval(10);
                             PingManager myPingManager = PingManager.getInstanceFor(connection);
                             myPingManager.registerPingFailedListener(new PingFailedListener() {
@@ -411,7 +432,7 @@ public class MainActivity extends BaseActivity {
                                     Toast.makeText(MainActivity.this, "发送心跳包失败", Toast.LENGTH_SHORT).show();
                                 }
                             });
-                        }*/
+                        }*//*
                         //登录成功发送通知
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
                         UtilTool.Log("fsdafa", "登录成功");
@@ -425,14 +446,13 @@ public class MainActivity extends BaseActivity {
                     Message message = new Message();
                     mHandler.sendMessage(message);
                     message.what = 0;
-                    hideDialog();
                     UtilTool.Log("日志", e.getMessage());
                     e.printStackTrace();
                 }
             }
         }).start();
     }
-
+*/
     //初始化底部菜单栏
     private void initBottomMenu() {
 

@@ -8,6 +8,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,10 +28,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.Presenter.CloudMessagePresenter;
+import com.bclould.tocotalk.Presenter.PersonalDetailsPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.model.AuatarListInfo;
 import com.bclould.tocotalk.model.UserInfo;
-import com.bclould.tocotalk.ui.activity.GroupListActivity;
 import com.bclould.tocotalk.ui.activity.NewFriendActivity;
 import com.bclould.tocotalk.ui.activity.SearchActivity;
 import com.bclould.tocotalk.ui.adapter.FriendListVPAdapter;
@@ -39,6 +42,8 @@ import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -101,9 +106,9 @@ public class FriendListFragment extends Fragment {
             switch (msg.what) {
                 case 0:
                     queryUser();
+                    mFriendListVPAdapter.notifyDataSetChanged();
                     break;
             }
-            mFriendListVPAdapter.notifyDataSetChanged();
         }
     };
     private MyReceiver receiver;
@@ -111,6 +116,7 @@ public class FriendListFragment extends Fragment {
     private DBManager mMgr;
     private int mId;
     private int mNewFriend;
+    private PersonalDetailsPresenter mPersonalDetailsPresenter;
 
     public static FriendListFragment getInstance() {
 
@@ -134,6 +140,7 @@ public class FriendListFragment extends Fragment {
             mNumber.setVisibility(View.VISIBLE);
         }
         mMgr = new DBManager(getContext());
+        mPersonalDetailsPresenter = new PersonalDetailsPresenter(getContext());
         queryUser();
         initRecylerView();
         setListener();
@@ -160,11 +167,16 @@ public class FriendListFragment extends Fragment {
             addFriendListener();
             initData();
             getMyImage();
-            rosterListener();
+//            rosterListener();
         } else if (msg.equals(getString(R.string.new_friend))) {
             initData();
+//            updateData();
         } else if (msg.equals(getString(R.string.new_friend))) {
-            updateData();
+            initData();
+//            updateData();
+        } else if (msg.equals(getString(R.string.delete_friend))) {
+            queryUser();
+            mFriendListVPAdapter.notifyDataSetChanged();
         }
     }
 
@@ -289,7 +301,8 @@ public class FriendListFragment extends Fragment {
                                 Roster roster = Roster.getInstanceFor(XmppConnection.getInstance().getConnection());
                                 RosterEntry entry = roster.getEntry(JidCreate.entityBareFrom(alertName));
                                 roster.removeEntry(entry);
-                                initData();
+                                queryUser();
+                                mFriendListVPAdapter.notifyDataSetChanged();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -350,7 +363,6 @@ public class FriendListFragment extends Fragment {
                     try {
                         Roster.getInstanceFor(XmppConnection.getInstance().getConnection()).createEntry(JidCreate.entityBareFrom(from), null, new String[]{"Friends"});
                         UtilTool.Log("fsdafa", "恭喜，对方同意添加好友！");
-                        initData();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -365,7 +377,8 @@ public class FriendListFragment extends Fragment {
                         roster.removeEntry(entry);
                         UtilTool.Log("fsdafa", "删除成功！");
                         mMgr.deleteUser(from);
-                        initData();
+                        queryUser();
+                        mFriendListVPAdapter.notifyDataSetChanged();
                     } catch (Exception e) {
                         e.printStackTrace();
                         UtilTool.Log("fsdafa", e.getMessage());
@@ -418,19 +431,45 @@ public class FriendListFragment extends Fragment {
 
     private void initData() {
         final CloudMessagePresenter cloudMessagePresenter = new CloudMessagePresenter();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Collection<RosterGroup> rosterGroups = cloudMessagePresenter.getContact();
-                    if (rosterGroups != null) {
-                        UtilTool.Log("分組", rosterGroups.size() + "");
-                        for (RosterGroup group : rosterGroups) {
-                            List<RosterEntry> entries = group.getEntries();
-                            UtilTool.Log("好友2", entries.size() + "");
-                            for (RosterEntry rosterEntry : entries) {
-                                if (!mMgr.findUser(rosterEntry.getUser())) {
-                                    byte[] bytes = UtilTool.getUserImage(XmppConnection.getInstance().getConnection(), rosterEntry.getUser());
+        try {
+            Collection<RosterGroup> rosterGroups = cloudMessagePresenter.getContact();
+            if (rosterGroups != null) {
+                UtilTool.Log("分組", rosterGroups.size() + "");
+                for (RosterGroup group : rosterGroups) {
+                    List<RosterEntry> entries = group.getEntries();
+                    UtilTool.Log("好友2", entries.size() + "");
+                    for (final RosterEntry rosterEntry : entries) {
+                        if (!mMgr.findUser(rosterEntry.getUser())) {
+                            String user = rosterEntry.getUser().substring(0, rosterEntry.getUser().indexOf("@"));
+                            UtilTool.Log("好友2", user);
+                            mPersonalDetailsPresenter.getFriendImageList(user, new PersonalDetailsPresenter.CallBack2() {
+                                @Override
+                                public void send(final AuatarListInfo.DataBean dataBean) {
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (!dataBean.getAvatar().isEmpty()) {
+                                                try {
+                                                    UtilTool.Log("頭像", dataBean.getAvatar());
+                                                    Drawable drawable = Glide.with(getContext())
+                                                            .load(dataBean.getAvatar())
+                                                            .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                                                            .get();
+                                                    BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+                                                    Bitmap bitmap = bitmapDrawable.getBitmap();
+                                                    UtilTool.saveImages(bitmap, rosterEntry.getUser(), getContext(), mMgr);
+                                                } catch (Exception e) {
+                                                }
+                                            } else {
+                                                mMgr.addUser(rosterEntry.getUser(), "");
+                                            }
+                                            Message message = new Message();
+                                            myHandler.sendMessage(message);
+                                        }
+                                    }).start();
+                                }
+                            });
+                                   /* byte[] bytes = UtilTool.getUserImage(XmppConnection.getInstance().getConnection(), rosterEntry.getUser());
                                     Bitmap bitmap = null;
                                     if (bytes != null) {
                                         bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -438,24 +477,16 @@ public class FriendListFragment extends Fragment {
                                     } else {
                                         bitmap = UtilTool.setDefaultimage(getContext());
                                         UtilTool.Log("日志", "默认的头像");
-                                    }
-                                    String path = UtilTool.saveImages(bitmap, rosterEntry.getUser(), getContext(), mMgr);
-                                    UserInfo userInfo = new UserInfo();
-                                    userInfo.setUser(rosterEntry.getUser());
-                                    userInfo.setPath(path);
-                                    mUsers.add(userInfo);
-                                }
-                            }
-                        }
-                        Message message = new Message();
-                        myHandler.sendMessage(message);
-                    }
+                                    }*/
 
-                } catch (Exception e) {
-                    UtilTool.Log("日志", e.getMessage());
+                        }
+                    }
                 }
             }
-        }).start();
+
+        } catch (Exception e) {
+            UtilTool.Log("日志", e.getMessage());
+        }
     }
 
     private void queryUser() {

@@ -40,12 +40,15 @@ import static com.bclould.tocotalk.ui.activity.SystemSetActivity.PRIVATE;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class LoginActivity extends AppCompatActivity {
 
+
+    @Bind(R.id.tv_register)
+    TextView mTvRegister;
     @Bind(R.id.et_emily)
     EditText mEtEmily;
     @Bind(R.id.et_password)
     EditText mEtPassword;
-    @Bind(R.id.iv_eye)
-    ImageView mIvEye;
+    @Bind(R.id.eye)
+    ImageView mEye;
     @Bind(R.id.tv_find_password)
     TextView mTvFindPassword;
     @Bind(R.id.btn_login)
@@ -134,10 +137,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.iv_eye, R.id.tv_find_password, R.id.btn_login, R.id.tv_register})
+    @OnClick({R.id.eye, R.id.tv_find_password, R.id.btn_login, R.id.tv_register})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_eye:
+            case R.id.eye:
                 isEye = !isEye;
                 showHidePassword();//隐藏显示密码
                 break;
@@ -162,13 +165,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showHidePassword() {
         if (isEye) {
-            mIvEye.setSelected(true);
+            mEye.setSelected(true);
             mEtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             mEtPassword.setSelection(mEtPassword.length());
         } else {
             mEtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
             mEtPassword.setSelection(mEtPassword.length());
-            mIvEye.setSelected(false);
+            mEye.setSelected(false);
         }
     }
 

@@ -107,7 +107,9 @@ public class RealNamePresenter {
                         @Override
                         public void onNext(BaseInfo baseInfo) {
                             hideDialog();
-                            callBack.send(baseInfo.getMessage());
+                            if(baseInfo.getStatus() == 1) {
+                                callBack.send(baseInfo.getData().getType(), baseInfo.getData().getRemark());
+                            }
                         }
 
                         @Override
@@ -235,7 +237,7 @@ public class RealNamePresenter {
 
     //定义接口
     public interface CallBack2 {
-        void send(String status);
+        void send(int type, String mark);
     }
 
     //定义接口

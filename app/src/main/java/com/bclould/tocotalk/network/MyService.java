@@ -1,6 +1,7 @@
 package com.bclould.tocotalk.network;
 
 
+import com.bclould.tocotalk.model.AuatarListInfo;
 import com.bclould.tocotalk.model.AwsInfo;
 import com.bclould.tocotalk.model.BankCardInfo;
 import com.bclould.tocotalk.model.BaseInfo;
@@ -761,5 +762,29 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("log_id") String log_id,
             @Field("type_number") String type_number
+    );
+
+    //支付記錄詳情
+    @POST("trans/cancelTrans")
+    @FormUrlEncoded
+    Observable<BaseInfo> cancelTrans(
+            @Header("Authorization") String token,
+            @Field("trans_id") String trans_id
+    );
+
+    //修改頭像
+    @POST("user/uploadAvatar")
+    @FormUrlEncoded
+    Observable<BaseInfo> uploadAvatar(
+            @Header("Authorization") String token,
+            @Field("content") String content
+    );
+
+    //修改頭像
+    @POST("user/avatarList")
+    @FormUrlEncoded
+    Observable<AuatarListInfo> avatarList(
+            @Header("Authorization") String token,
+            @Field("names") String names
     );
 }

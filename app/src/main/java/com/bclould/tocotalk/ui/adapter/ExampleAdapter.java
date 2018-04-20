@@ -216,7 +216,7 @@ public class ExampleAdapter extends BaseAdapter {
                             mGrabRedPresenter.grabRedPacket(redId, id, position, type);
                         }
                     });
-                    if (mMessageList.get(position).getState() == 1) {
+                    if (mMessageList.get(position).getStatus() == 1) {
                         viewHolder.mCvRedpacket2.setCardBackgroundColor(mContext.getColor(R.color.redpacket));
                         viewHolder.mTvExamine2.setText("已領取紅包");
                     } else {
@@ -340,7 +340,7 @@ public class ExampleAdapter extends BaseAdapter {
                     viewHolder.mCvRedpacket.setVisibility(View.VISIBLE);
                     viewHolder.mTvCoinRedpacket.setText(coin + "红包");
                     viewHolder.mTvRemark.setText(remark);
-                    if (mMessageList.get(position).getState() == 1) {
+                    if (mMessageList.get(position).getStatus() == 1) {
                         viewHolder.mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket));
                         viewHolder.mTvExamine.setText("已領取紅包");
                         viewHolder.mCvRedpacket.setOnClickListener(new View.OnClickListener() {
@@ -538,7 +538,7 @@ public class ExampleAdapter extends BaseAdapter {
         else
             skip(baseInfo, mBitmap, Constants.MYUSER);
         mMgr.updateMessageState(id, 1);
-        mMessageList.get(position).setState(1);
+        mMessageList.get(position).setStatus(1);
         notifyDataSetChanged();
     }
 

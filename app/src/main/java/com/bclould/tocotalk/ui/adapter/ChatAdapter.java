@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +32,12 @@ import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.SerMap;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.model.VoiceInfo;
+import com.bclould.tocotalk.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tocotalk.ui.activity.ImageViewActivity;
+import com.bclould.tocotalk.ui.activity.OrderCloseActivity;
+import com.bclould.tocotalk.ui.activity.OrderDetailsActivity;
+import com.bclould.tocotalk.ui.activity.PayDetailsActivity;
+import com.bclould.tocotalk.ui.activity.RealNameC1Activity;
 import com.bclould.tocotalk.ui.activity.RedPacketActivity;
 import com.bclould.tocotalk.ui.activity.TransferDetailsActivity;
 import com.bclould.tocotalk.ui.activity.VideoActivity;
@@ -81,6 +87,12 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public static final int TO_FILE_MSG = 11;//发送文件消息类型
     public static final int FROM_TRANSFER_MSG = 12;//接受红包消息类型
     public static final int TO_TRANSFER_MSG = 13;//发送红包消息类型
+    public static final int ADMINISTRATOR_OTC_ORDER_MSG = 14;//管理員otc訂單消息
+    public static final int ADMINISTRATOR_RED_PACKET_EXPIRED_MSG = 15;//管理員紅包過期消息
+    public static final int ADMINISTRATOR_AUTH_STATUS_MSG = 16;//管理員實名認證消息
+    public static final int ADMINISTRATOR_RECEIPT_PAY_MSG = 17;//管理員收付款消息
+    public static final int ADMINISTRATOR_TRANSFER_MSG = 18;//管理員轉賬消息
+    public static final int ADMINISTRATOR_IN_OUT_COIN_MSG = 19;//管理員充幣消息
     private final Context mContext;
     private final List<MessageInfo> mMessageList;
     private final Bitmap mFromBitmap;
@@ -158,6 +170,21 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } else if (viewType == FROM_TRANSFER_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_transfer, parent, false);
             holder = new FromTransferHolder(view);
+        } else if (viewType == ADMINISTRATOR_OTC_ORDER_MSG) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_otc_order, parent, false);
+            holder = new OtcOrderStatusHolder(view);
+        } else if (viewType == ADMINISTRATOR_RED_PACKET_EXPIRED_MSG) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_red_expired, parent, false);
+            holder = new RedExpiredHolder(view);
+        } else if (viewType == ADMINISTRATOR_AUTH_STATUS_MSG) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_auth_status, parent, false);
+            holder = new AuthStatusHolder(view);
+        } else if (viewType == ADMINISTRATOR_RECEIPT_PAY_MSG) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_receipt_pay, parent, false);
+            holder = new ReceiptPayHolder(view);
+        } else if (viewType == ADMINISTRATOR_TRANSFER_MSG) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_transfer, parent, false);
+            holder = new TransferInformHolder(view);
         }
         return holder;
     }
@@ -241,6 +268,26 @@ public class ChatAdapter extends RecyclerView.Adapter {
             case FROM_TRANSFER_MSG:
                 FromTransferHolder fromTransferHolder = (FromTransferHolder) holder;
                 fromTransferHolder.setData(mMessageList.get(position));
+                break;
+            case ADMINISTRATOR_OTC_ORDER_MSG:
+                OtcOrderStatusHolder orderStatusHolder = (OtcOrderStatusHolder) holder;
+                orderStatusHolder.setData(mMessageList.get(position));
+                break;
+            case ADMINISTRATOR_RED_PACKET_EXPIRED_MSG:
+                RedExpiredHolder redExpiredHolder = (RedExpiredHolder) holder;
+                redExpiredHolder.setData(mMessageList.get(position));
+                break;
+            case ADMINISTRATOR_AUTH_STATUS_MSG:
+                AuthStatusHolder authStatusHolder = (AuthStatusHolder) holder;
+                authStatusHolder.setData(mMessageList.get(position));
+                break;
+            case ADMINISTRATOR_RECEIPT_PAY_MSG:
+                ReceiptPayHolder receiptPayHolder = (ReceiptPayHolder) holder;
+                receiptPayHolder.setData(mMessageList.get(position));
+                break;
+            case ADMINISTRATOR_TRANSFER_MSG:
+                TransferInformHolder transferInformHolder = (TransferInformHolder) holder;
+                transferInformHolder.setData(mMessageList.get(position));
                 break;
         }
     }
@@ -350,24 +397,22 @@ public class ChatAdapter extends RecyclerView.Adapter {
                         @Override
                         public void send(GrabRedInfo info) {
                             mMgr.updateMessageState(messageInfo.getId() + "", 1);
-                            messageInfo.setState(1);
+                            messageInfo.setStatus(1);
                             notifyDataSetChanged();
-                            skip(info, mToBitmap, UtilTool.getJid());
+                            skip(info, mToBitmap, UtilTool.getJid(), 0);
                         }
                     });
                 }
             });
-            if (messageInfo.getState() == 1) {
+            if (messageInfo.getStatus() == 1) {
                 mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.transfer));
-                mTvExamine.setText(mContext.getString(R.string.took_red_packet));
             } else {
                 mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket2));
-                mTvExamine.setText(mContext.getString(R.string.look_red_packet));
             }
         }
     }
 
-    private void skip(GrabRedInfo baseInfo, Bitmap bitmap, String user) {
+    private void skip(GrabRedInfo baseInfo, Bitmap bitmap, String user, int who) {
         Intent intent = new Intent(mContext, RedPacketActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("user", user);
@@ -379,6 +424,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         intent.putExtras(bundle);
         intent.putExtra("from", true);
         intent.putExtra("type", true);
+        intent.putExtra("who", who);
         mContext.startActivity(intent);
     }
 
@@ -405,9 +451,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mIvTouxiang.setImageBitmap(mFromBitmap);
             mTvCoinRedpacket.setText(messageInfo.getCoin() + mContext.getString(R.string.red_package));
             mTvRemark.setText(messageInfo.getRemark());
-            if (messageInfo.getState() == 1) {
+            if (messageInfo.getStatus() == 1) {
                 mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.transfer));
-                mTvExamine.setText(mContext.getString(R.string. took_red_packet));
+                mTvExamine.setText(mContext.getString(R.string.took_red_packet));
                 mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -415,9 +461,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
                             @Override
                             public void send(GrabRedInfo info) {
                                 mMgr.updateMessageState(messageInfo.getId() + "", 1);
-                                messageInfo.setState(1);
+                                messageInfo.setStatus(1);
                                 notifyDataSetChanged();
-                                skip(info, mFromBitmap, mUser);
+                                skip(info, mFromBitmap, mUser, 1);
                             }
                         });
                     }
@@ -465,9 +511,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     @Override
                     public void send(GrabRedInfo info) {
                         mMgr.updateMessageState(messageInfo.getId() + "", 1);
-                        messageInfo.setState(1);
+                        messageInfo.setStatus(1);
                         notifyDataSetChanged();
-                        skip(info, mFromBitmap, mUser);
+                        skip(info, mFromBitmap, mUser, 1);
                     }
                 });
                 mCurrencyDialog.dismiss();
@@ -833,7 +879,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mIvTouxiang.setImageBitmap(mToBitmap);
             mTvRemark.setText(messageInfo.getRemark());
             mTvCoinCount.setText(messageInfo.getCount() + messageInfo.getCoin());
-            if (messageInfo.getState() == 0) {
+            if (messageInfo.getStatus() == 0) {
                 mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket));
                 mTvRemark.setText(messageInfo.getRemark());
             } else {
@@ -843,7 +889,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     mMgr.updateMessageState(messageInfo.getId() + "", 1);
-                    messageInfo.setState(1);
+                    messageInfo.setStatus(1);
                     notifyDataSetChanged();
                     Intent intent = new Intent(mContext, TransferDetailsActivity.class);
                     intent.putExtra("count", messageInfo.getCount());
@@ -877,7 +923,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mIvTouxiang.setImageBitmap(mFromBitmap);
             mTvRemark.setText(messageInfo.getRemark());
             mTvCoinCount.setText(messageInfo.getCount() + messageInfo.getCoin());
-            if (messageInfo.getState() == 0) {
+            if (messageInfo.getStatus() == 0) {
                 mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket));
                 mTvRemark.setText(messageInfo.getRemark());
             } else {
@@ -888,13 +934,257 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     mMgr.updateMessageState(messageInfo.getId() + "", 1);
-                    messageInfo.setState(1);
+                    messageInfo.setStatus(1);
                     notifyDataSetChanged();
                     Intent intent = new Intent(mContext, TransferDetailsActivity.class);
                     intent.putExtra("count", messageInfo.getCount());
                     intent.putExtra("coin", messageInfo.getCoin());
                     intent.putExtra("time", messageInfo.getTime());
                     intent.putExtra("type", 0);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+    }
+
+    class OtcOrderStatusHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.tv_type_msg)
+        TextView mTvTypeMsg;
+        @Bind(R.id.tv_coin)
+        TextView mTvCoin;
+        @Bind(R.id.tv_number_hint)
+        TextView mTvNumberHint;
+        @Bind(R.id.tv_order_number)
+        TextView mTvOrderNumber;
+        @Bind(R.id.tv_status_hint)
+        TextView mTvStatusHint;
+        @Bind(R.id.tv_status)
+        TextView mTvStatus;
+        @Bind(R.id.tv_time_hint)
+        TextView mTvTimeHint;
+        @Bind(R.id.tv_time)
+        TextView mTvTime;
+        @Bind(R.id.ll_order_msg)
+        LinearLayout mLlOrderMsg;
+
+        OtcOrderStatusHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final MessageInfo messageInfo) {
+            mTvCoin.setText(messageInfo.getCoin());
+            mTvOrderNumber.setText(messageInfo.getCount());
+            mTvTime.setText(messageInfo.getTime());
+            if (messageInfo.getStatus() == 0) {
+                mTvStatus.setText(mContext.getString(R.string.canceled_canc));
+            } else if (messageInfo.getStatus() == 4) {
+                mTvStatus.setText(mContext.getString(R.string.order_timeout));
+            } else if (messageInfo.getStatus() == 3) {
+                mTvStatus.setText(mContext.getString(R.string.finish));
+            } else if (messageInfo.getStatus() == 1) {
+                mTvStatus.setText(mContext.getString(R.string.pending));
+            }
+            mLlOrderMsg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (messageInfo.getStatus() == 1) {
+                        Intent intent = new Intent(mContext, OrderDetailsActivity.class);
+                        intent.putExtra("type", mContext.getString(R.string.order));
+                        intent.putExtra("id", messageInfo.getRedId() + "");
+                        mContext.startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(mContext, OrderCloseActivity.class);
+                        intent.putExtra("status", messageInfo.getStatus());
+                        intent.putExtra("id", messageInfo.getRedId() + "");
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
+        }
+    }
+
+    class RedExpiredHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.tv_type_msg)
+        TextView mTvTypeMsg;
+        @Bind(R.id.tv_coin)
+        TextView mTvCoin;
+        @Bind(R.id.tv_red_type_hint)
+        TextView mTvRedTypeHint;
+        @Bind(R.id.tv_red_type)
+        TextView mTvRedType;
+        @Bind(R.id.tv_status_hint)
+        TextView mTvStatusHint;
+        @Bind(R.id.tv_count)
+        TextView mTvCount;
+        @Bind(R.id.tv_time_hint)
+        TextView mTvTimeHint;
+        @Bind(R.id.tv_time)
+        TextView mTvTime;
+        @Bind(R.id.ll_red_expried_msg)
+        LinearLayout mLlRedExpriedMsg;
+
+        RedExpiredHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final MessageInfo messageInfo) {
+            mTvCoin.setText(messageInfo.getCoin());
+            mTvCount.setText(messageInfo.getCount());
+            mTvTime.setText(messageInfo.getTime());
+            if (messageInfo.getStatus() == 1) {
+                mTvRedType.setText(mContext.getString(R.string.ordinary_red_packet));
+            } else if (messageInfo.getStatus() == 2) {
+                mTvRedType.setText(mContext.getString(R.string.qr_code_red_packet));
+            }
+            mLlRedExpriedMsg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (messageInfo.getStatus() == 1) {
+                        Intent intent = new Intent(mContext, RedPacketActivity.class);
+                        intent.putExtra("type", true);
+                        intent.putExtra("from", false);
+                        intent.putExtra("id", messageInfo.getRedId() + "");
+                        mContext.startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(mContext, GrabQRCodeRedActivity.class);
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
+        }
+    }
+
+    class AuthStatusHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.tv_status_hint)
+        TextView mTvStatusHint;
+        @Bind(R.id.tv_status)
+        TextView mTvStatus;
+        @Bind(R.id.tv_time_hint)
+        TextView mTvTimeHint;
+        @Bind(R.id.tv_time)
+        TextView mTvTime;
+        @Bind(R.id.ll_auth_status_msg)
+        LinearLayout mLlAuthStatusMsg;
+
+        AuthStatusHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(MessageInfo messageInfo) {
+            mTvTime.setText(messageInfo.getTime());
+            if (messageInfo.getStatus() == 3) {
+                mTvStatus.setText(mContext.getString(R.string.auth_succeed));
+            } else if (messageInfo.getStatus() == 4) {
+                mTvStatus.setText(mContext.getString(R.string.auth_error_hint));
+            }
+            mLlAuthStatusMsg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mContext.startActivity(new Intent(mContext, RealNameC1Activity.class));
+                }
+            });
+        }
+    }
+
+    class ReceiptPayHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.tv_type_msg)
+        TextView mTvTypeMsg;
+        @Bind(R.id.tv_coin)
+        TextView mTvCoin;
+        @Bind(R.id.tv_who_hint)
+        TextView mTvWhoHint;
+        @Bind(R.id.tv_who)
+        TextView mTvWho;
+        @Bind(R.id.tv_status_hint)
+        TextView mTvStatusHint;
+        @Bind(R.id.tv_count)
+        TextView mTvCount;
+        @Bind(R.id.tv_time_hint)
+        TextView mTvTimeHint;
+        @Bind(R.id.tv_time)
+        TextView mTvTime;
+        @Bind(R.id.ll_red_expried_msg)
+        LinearLayout mLlRedExpriedMsg;
+
+        ReceiptPayHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final MessageInfo messageInfo) {
+            mTvCoin.setText(messageInfo.getCoin());
+            mTvCount.setText(messageInfo.getCount());
+            mTvWho.setText(messageInfo.getRemark());
+            mTvTime.setText(messageInfo.getTime());
+            if (messageInfo.getStatus() == 1) {
+                mTvWhoHint.setText(mContext.getString(R.string.payer));
+                mTvTypeMsg.setText(mContext.getString(R.string.receipt_inform));
+                mTvStatusHint.setText(mContext.getString(R.string.receipt_count));
+            } else {
+                mTvWhoHint.setText(mContext.getString(R.string.payee));
+                mTvTypeMsg.setText(mContext.getString(R.string.pay_inform));
+                mTvStatusHint.setText(mContext.getString(R.string.pay_count));
+            }
+            mLlRedExpriedMsg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, PayDetailsActivity.class);
+                    intent.putExtra("id", messageInfo.getRedId() + "");
+                    intent.putExtra("type_number", messageInfo.getType() + "");
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+    }
+
+    class TransferInformHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.tv_type_msg)
+        TextView mTvTypeMsg;
+        @Bind(R.id.tv_coin)
+        TextView mTvCoin;
+        @Bind(R.id.tv_who_hint)
+        TextView mTvWhoHint;
+        @Bind(R.id.tv_who)
+        TextView mTvWho;
+        @Bind(R.id.tv_status_hint)
+        TextView mTvStatusHint;
+        @Bind(R.id.tv_count)
+        TextView mTvCount;
+        @Bind(R.id.tv_time_hint)
+        TextView mTvTimeHint;
+        @Bind(R.id.tv_time)
+        TextView mTvTime;
+        @Bind(R.id.ll_red_expried_msg)
+        LinearLayout mLlRedExpriedMsg;
+
+        TransferInformHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final MessageInfo messageInfo) {
+            mTvCoin.setText(messageInfo.getCoin());
+            mTvCount.setText(messageInfo.getCount());
+            mTvWho.setText(messageInfo.getRemark());
+            mTvTime.setText(messageInfo.getTime());
+            if (messageInfo.getStatus() == 1) {
+                mTvWhoHint.setText(mContext.getString(R.string.payer));
+                mTvTypeMsg.setText(mContext.getString(R.string.in_account_inform));
+                mTvStatusHint.setText(mContext.getString(R.string.in_account_count));
+            } else {
+                mTvWhoHint.setText(mContext.getString(R.string.payee));
+                mTvTypeMsg.setText(mContext.getString(R.string.transfer_inform));
+                mTvStatusHint.setText(mContext.getString(R.string.transfer_count));
+            }
+            mLlRedExpriedMsg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, PayDetailsActivity.class);
+                    intent.putExtra("id", messageInfo.getRedId() + "");
+                    intent.putExtra("type_number", messageInfo.getType() + "");
                     mContext.startActivity(intent);
                 }
             });

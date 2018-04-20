@@ -60,7 +60,7 @@ public class OrderFormFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_buy, container, false);
         ButterKnife.bind(this, view);
-        mFiltrate = getString(R.string.all);
+        mFiltrate = "2";
         mMgr = new DBManager(getContext());
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
@@ -111,6 +111,8 @@ public class OrderFormFragment extends Fragment {
         } else if (msg.equals(getString(R.string.create_order))) {
             initData(mCoinName, mFiltrate);
         } else if (msg.equals(getString(R.string.deal_order_filtrate))) {
+            initData(mCoinName, mFiltrate);
+        } else if (msg.equals(getString(R.string.order_update))) {
             initData(mCoinName, mFiltrate);
         }
     }

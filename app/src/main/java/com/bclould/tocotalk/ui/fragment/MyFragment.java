@@ -67,6 +67,8 @@ public class MyFragment extends Fragment {
         return instance;
     }
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

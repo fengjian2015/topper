@@ -68,7 +68,7 @@ public class PayPasswordPresenter {
                         public void onNext(@NonNull BaseInfo baseInfo) {
                             if (baseInfo.getStatus() == 1)
                                 mPayPasswordActivity.finish();
-                            if (baseInfo.getMessage().equals(mPayPasswordActivity.getString(R.string.binding_google_hint1)))
+                            if (baseInfo.getType() == 3)
                                 mPayPasswordActivity.startActivity(new Intent(mPayPasswordActivity, GoogleVerificationActivity.class));
                             hideDialog();
                             Toast.makeText(mPayPasswordActivity, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();

@@ -247,9 +247,25 @@ public class UpIdCardActivity extends BaseActivity {
         showDialog();
         for (Map.Entry<Integer, String> entry : map.entrySet()) {
             File file = new File(entry.getValue());
-            String jid = UtilTool.getJid();
-            String myName = jid.substring(0, jid.indexOf("@"));
-            final String key = myName + UtilTool.createtFileName() + file.getName();
+            String key = "";
+            switch (entry.getKey()) {
+                case ZHENGMIAN:
+                    key = 1 + UtilTool.getUser() + UtilTool.createtFileName() + file.getName();
+                    break;
+                case FANMIAN:
+                    key = 2 + UtilTool.getUser() + UtilTool.createtFileName() + file.getName();
+                    break;
+                case SHOUCHI:
+                    key = 3 + UtilTool.getUser() + UtilTool.createtFileName() + file.getName();
+                    break;
+                case HUZHENGMIAN:
+                    key = 1 + UtilTool.getUser() + UtilTool.createtFileName() + file.getName();
+                    break;
+                case HUSHOUCHI:
+                    key = 2 + UtilTool.getUser() + UtilTool.createtFileName() + file.getName();
+                    break;
+            }
+            final String key2 = key;
             Luban.with(UpIdCardActivity.this)
                     .load(file)                                   // 传人要压缩的图片列表
                     .ignoreBy(100)                                  // 忽略不压缩图片的大小
@@ -282,7 +298,7 @@ public class UpIdCardActivity extends BaseActivity {
                                             @Override
                                             public void afterResponse(Request<?> request, Response<?> response) {
                                                 Message message = new Message();
-                                                message.obj = key;
+                                                message.obj = key2;
                                                 handler.sendMessage(message);
                                             }
 
@@ -291,7 +307,7 @@ public class UpIdCardActivity extends BaseActivity {
 
                                             }
                                         });
-                                        PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
+                                        PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key2, file);
                                         s3Client.putObject(por);
                                     } catch (AmazonClientException e) {
                                         hideDialog();
