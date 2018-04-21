@@ -86,17 +86,10 @@ public class PersonalDetailsActivity extends BaseActivity {
     private void initInterface() {
         String state = MySharedPreferences.getInstance().getString(STATE);
         mTvLocation.setText(state);
-        DBManager mgr = new DBManager(this);
-        List<UserInfo> userInfos = mgr.queryUser(Constants.MYUSER);
-        if (userInfos.size() != 0) {
-            String path = userInfos.get(0).getPath();
-            mTouxiang.setImageBitmap(BitmapFactory.decodeFile(path));
-        } else {
-            mTouxiang.setImageBitmap(UtilTool.setDefaultimage(this));
-        }
-        String jid = UtilTool.getJid();
-        String myName = jid.substring(0, jid.indexOf("@"));
-        mTvUsername.setText(myName);
+        Bitmap bitmap = UtilTool.getMyImage(mMgr, UtilTool.getJid());
+        if (bitmap != null)
+            mTouxiang.setImageBitmap(bitmap);
+        mTvUsername.setText(UtilTool.getUser());
     }
 
     //拿到选择的图片

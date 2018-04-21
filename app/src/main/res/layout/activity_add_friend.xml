@@ -33,7 +33,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:text="@string/cancel"
+            android:text="@string/search"
             android:textSize="@dimen/x24"/>
 
         <TextView
@@ -56,7 +56,7 @@
             android:layout_marginLeft="@dimen/x24"
             android:layout_toRightOf="@+id/imageview"
             android:background="@color/transparent"
-            android:hint="@string/search"
+            android:hint="@string/et_search_friend"
             android:textCursorDrawable="@null"
             android:textSize="@dimen/x24"/>
 

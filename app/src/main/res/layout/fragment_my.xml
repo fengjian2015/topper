@@ -170,6 +170,7 @@
                 android:src="@mipmap/iocn_person_set"/>
 
             <TextView
+                android:id="@+id/tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -178,6 +179,20 @@
                 android:text="@string/system_set"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_new_update"
+                android:layout_width="@dimen/x80"
+                android:layout_height="@dimen/y40"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/tv"
+                android:textSize="@dimen/x28"
+                android:background="@drawable/bg_new_update"
+                android:gravity="center"
+                android:text="New"
+                android:textColor="@color/white"/>
 
             <ImageView
                 android:layout_width="wrap_content"

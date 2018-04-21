@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
@@ -77,6 +78,24 @@ public class AddFriendActivity extends BaseActivity {
         mListView.setAdapter(mAddFriendAdapter);
     }
 
+    private void showDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = LoadingProgressDialog.createDialog(this);
+            mProgressDialog.setCanceledOnTouchOutside(false);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.setMessage(getString(R.string.loading));
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideDialog() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
+    }
+
     //监听输入框
     private void listenerEditText() {
 
@@ -115,55 +134,69 @@ public class AddFriendActivity extends BaseActivity {
         }
     }
 
-    private void showDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = LoadingProgressDialog.createDialog(this);
-            mProgressDialog.setCanceledOnTouchOutside(false);
-            mProgressDialog.setCancelable(false);
-            mProgressDialog.setMessage(getString(R.string.search_underway));
-        }
-
-        mProgressDialog.show();
-    }
-
-    private void hideDialog() {
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-        }
-    }
 
     Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            hideDialog();
-            mAddFriendAdapter.notifyDataSetChanged();
+            switch (msg.what) {
+                case 0:
+                    hideDialog();
+                    Toast.makeText(AddFriendActivity.this, getString(R.string.search_error), Toast.LENGTH_SHORT).show();
+                    break;
+                case 1:
+                    hideDialog();
+                    List<ReportedData.Row> rowList = (List<ReportedData.Row>) msg.obj;
+                    String text = mEtSearch.getText().toString();
+                    mLlHot.setVisibility(View.GONE);
+                    mListView.setVisibility(View.VISIBLE);
+                    for (int i = 0; i < rowList.size(); i++) {
+                        if (rowList.get(i).getValues("Username").get(0).equals(text) && !rowList.get(i).getValues("Username").get(0).equals(UtilTool.getUser())) {
+                            mRowList.add(rowList.get(i).getValues("Username").get(0));
+                        }
+                    }
+                    if (mRowList.size() == 0) {
+                        Toast.makeText(AddFriendActivity.this, getString(R.string.no_user), Toast.LENGTH_SHORT).show();
+                    } else {
+                        mAddFriendAdapter.notifyDataSetChanged();
+                    }
+                    break;
+                case 2:
+                    Toast.makeText(AddFriendActivity.this, getString(R.string.no_user), Toast.LENGTH_SHORT).show();
+                    break;
+            }
         }
     };
 
     private void search() {
-        try {
-            String text = mEtSearch.getText().toString();
-            UserSearchManager search = new UserSearchManager(XmppConnection.getInstance().getConnection());
-            Form searchForm = search.getSearchForm(JidCreate.domainBareFrom("search." + Constants.DOMAINNAME));
-            Form answerForm = searchForm.createAnswerForm();
-            answerForm.setAnswer("Username", true);
-            answerForm.setAnswer("search", text.trim());
-            ReportedData data = search.getSearchResults(answerForm, JidCreate.domainBareFrom("search." + Constants.DOMAINNAME));
-            List<ReportedData.Row> rowList = data.getRows();
-            if (rowList != null) {
-                mLlHot.setVisibility(View.GONE);
-                mListView.setVisibility(View.VISIBLE);
-                mRowList.removeAll(mRowList);
-                for (int i = 0; i < rowList.size(); i++) {
-                    mRowList.add(rowList.get(i).getValues("Username").get(0));
+        showDialog();
+        mRowList.clear();
+        final String text = mEtSearch.getText().toString();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    UserSearchManager search = new UserSearchManager(XmppConnection.getInstance().getConnection());
+                    Form searchForm = search.getSearchForm(JidCreate.domainBareFrom("search." + Constants.DOMAINNAME));
+                    Form answerForm = searchForm.createAnswerForm();
+                    answerForm.setAnswer("Username", true);
+                    answerForm.setAnswer("search", text.trim());
+                    ReportedData data = search.getSearchResults(answerForm, JidCreate.domainBareFrom("search." + Constants.DOMAINNAME));
+                    List<ReportedData.Row> rowList = data.getRows();
+                    if (rowList != null) {
+                        Message message = new Message();
+                        message.obj = rowList;
+                        message.what = 1;
+                        mHandler.sendMessage(message);
+                    } else {
+                        mHandler.sendEmptyMessage(2);
+                    }
+                } catch (Exception e) {
+                    mHandler.sendEmptyMessage(0);
+                    UtilTool.Log("fsdafa", e.getMessage());
                 }
-
             }
-        } catch (Exception e) {
-            hideDialog();
-            UtilTool.Log("fsdafa", e.getMessage());
-        }
+        }).start();
+
     }
 }

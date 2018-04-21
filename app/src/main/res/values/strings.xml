@@ -604,5 +604,13 @@
     <string name="in_account_inform">到賬通知</string>
     <string name="in_account_count">到賬數量</string>
     <string name="blockchain_gamble">區塊鏈競猜</string>
+    <string name="search_error">搜索失敗</string>
+    <string name="no_user">沒有這個用戶</string>
+    <string name="et_search_friend">用戶名查找</string>
+    <string name="version_updating">版本更新</string>
+    <string name="already_new_version">已經是最新版本</string>
+    <string name="order_inform">訂單通知</string>
+    <string name="order_inform_hint">您有一個新訂單消息,點擊查看詳情</string>
+    <string name="transfer_inform_hint">您有一個新轉賬消息,點擊查看詳情</string>
 
 </resources>

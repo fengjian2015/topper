@@ -43,7 +43,7 @@ public class CoinPresenter {
             mProgressDialog = LoadingProgressDialog.createDialog(mContext);
             mProgressDialog.setCanceledOnTouchOutside(false);
             mProgressDialog.setCancelable(false);
-            mProgressDialog.setMessage("加载中...");
+            mProgressDialog.setMessage(mContext.getString(R.string.loading));
         }
 
         mProgressDialog.show();

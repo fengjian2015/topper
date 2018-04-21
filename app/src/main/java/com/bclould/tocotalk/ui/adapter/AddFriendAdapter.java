@@ -74,6 +74,8 @@ public class AddFriendAdapter extends BaseAdapter {
         if (userImage != null) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(userImage, 0, userImage.length);
             mViewHolder.mIvTouxiang.setImageBitmap(bitmap);
+        }else {
+            mViewHolder.mIvTouxiang.setImageResource(R.mipmap.img_nfriend_headshot1);
         }
         mViewHolder.mTvName.setText(user);
         mViewHolder.mBtnAdd.setOnClickListener(new View.OnClickListener() {

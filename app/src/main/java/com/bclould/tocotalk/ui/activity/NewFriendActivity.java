@@ -53,7 +53,7 @@ public class NewFriendActivity extends BaseActivity {
     }
 
     private void initData() {
-        ArrayList<AddRequestInfo> addRequestInfos = mMgr.queryRequest();
+        ArrayList<AddRequestInfo> addRequestInfos = mMgr.queryAllRequest();
         Collections.reverse(addRequestInfos);
         mAddRequestInfos.addAll(addRequestInfos);
         mNewFriendRVAdapter.notifyDataSetChanged();

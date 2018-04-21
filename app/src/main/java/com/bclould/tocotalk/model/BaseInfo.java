@@ -68,6 +68,15 @@ public class BaseInfo {
         private String title;
         private String desc;
         private int type;
+        private int is_cn;
+
+        public int getIs_cn() {
+            return is_cn;
+        }
+
+        public void setIs_cn(int is_cn) {
+            this.is_cn = is_cn;
+        }
 
         public int getType() {
             return type;

@@ -5,6 +5,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,20 +29,26 @@ import android.widget.Toast;
 
 import com.bclould.tocotalk.Presenter.CoinPresenter;
 import com.bclould.tocotalk.Presenter.DillDataPresenter;
+import com.bclould.tocotalk.Presenter.PersonalDetailsPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.FragmentFactory;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.model.AuatarListInfo;
 import com.bclould.tocotalk.model.AwsInfo;
 import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.network.DownLoadApk;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smackx.ping.PingFailedListener;
@@ -73,6 +82,7 @@ public class MainActivity extends BaseActivity {
     private FragmentManager mSupportFragmentManager;
     private LoadingProgressDialog mProgressDialog;
     private CoinPresenter mCoinPresenter;
+    private DBManager mMgr;
 
     //单例
     public static MainActivity getInstance() {
@@ -95,6 +105,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         mCoinPresenter = new CoinPresenter(this);
         ButterKnife.bind(this);
+        mMgr = new DBManager(this);
         initInterface();
         MyApp.getInstance().addActivity(this);
     }
@@ -141,6 +152,7 @@ public class MainActivity extends BaseActivity {
 
     //初始化界面
     private void initInterface() {
+        getMyImage();
         //开始选中聊天Fragment
         setSelector(0);
         //切换Fragment
@@ -151,6 +163,7 @@ public class MainActivity extends BaseActivity {
         UtilTool.getPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, getString(R.string.jurisdiction_store_hint));
         UtilTool.getPermissions(this, Manifest.permission.CAMERA, "", getString(R.string.jurisdiction_camera_hint));
         UtilTool.getPermissions(this, Manifest.permission.RECORD_AUDIO, "", getString(R.string.jurisdiction_voice_hint));
+        //儲存自己信息
         //自动登录即时通讯
 //        loginIM();
         initAWS();
@@ -161,6 +174,51 @@ public class MainActivity extends BaseActivity {
         //获取国家
         getStateList();
 
+    }
+
+    private void getMyImage() {
+        if (!mMgr.findUser(UtilTool.getJid())) {
+            PersonalDetailsPresenter personalDetailsPresenter = new PersonalDetailsPresenter(this);
+            personalDetailsPresenter.getFriendImageList(UtilTool.getUser(), new PersonalDetailsPresenter.CallBack2() {
+                @Override
+                public void send(final AuatarListInfo.DataBean dataBean) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (dataBean != null && !dataBean.getAvatar().isEmpty()) {
+                                try {
+                                    UtilTool.Log("頭像", dataBean.getAvatar());
+                                    Drawable drawable = Glide.with(MainActivity.this)
+                                            .load(dataBean.getAvatar())
+                                            .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                                            .get();
+                                    BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+                                    Bitmap bitmap = bitmapDrawable.getBitmap();
+                                    UtilTool.saveImages(bitmap, UtilTool.getJid(), MainActivity.this, mMgr);
+                                } catch (Exception e) {
+                                }
+                            } else {
+                                mMgr.addUser(UtilTool.getJid(), "");
+                            }
+                        }
+                    }).start();
+                }
+            });
+        }
+        /*try {
+            if (!mMgr.findUser(Constants.MYUSER)) {
+                byte[] myImage = UtilTool.getUserImage(XmppConnection.getInstance().getConnection(), Constants.MYUSER);
+                if (myImage != null) {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(myImage, 0, myImage.length);
+                    UtilTool.saveImages(bitmap, Constants.MYUSER, MainActivity.this, mMgr);
+                } else {
+                    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.img_nfriend_headshot1);
+                    UtilTool.saveImages(bitmap, Constants.MYUSER, MainActivity.this, mMgr);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
     }
 
     private void initAWS() {
@@ -264,8 +322,13 @@ public class MainActivity extends BaseActivity {
                                 tag_version = baseInfo.getTag_name();
                             }
                             float tag = Float.parseFloat(tag_version);
-                            if (version < tag)
+                            if (version < tag) {
                                 showUpdateDialog(baseInfo);
+                            } else {
+                                MySharedPreferences.getInstance().setString(Constants.NEW_APK_URL, "");
+                                MySharedPreferences.getInstance().setString(Constants.NEW_APK_NAME, "");
+                                MySharedPreferences.getInstance().setString(Constants.NEW_APK_BODY, "");
+                            }
                         }
 
                         @Override
@@ -293,6 +356,9 @@ public class MainActivity extends BaseActivity {
         final String appName = gitHubInfo.getName();
         //更新描述
         final String body = gitHubInfo.getBody();
+        MySharedPreferences.getInstance().setString(Constants.NEW_APK_URL, url);
+        MySharedPreferences.getInstance().setString(Constants.NEW_APK_NAME, appName);
+        MySharedPreferences.getInstance().setString(Constants.NEW_APK_BODY, body);
         //显示更新dialog
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
         deleteCacheDialog.show();
