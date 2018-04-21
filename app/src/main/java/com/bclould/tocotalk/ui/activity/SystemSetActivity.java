@@ -17,6 +17,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 
 import butterknife.Bind;
@@ -71,12 +72,21 @@ public class SystemSetActivity extends BaseActivity {
     Button mBtnBrak;
     @Bind(R.id.tv_cache_count)
     TextView mTvCacheCount;
+    @Bind(R.id.tv)
+    TextView mTv;
+    @Bind(R.id.tv_new_update)
+    TextView mTvNewUpdate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_system_set);
         ButterKnife.bind(this);
+        if (!MySharedPreferences.getInstance().getString(Constants.NEW_APK_URL).isEmpty()) {
+            mTvNewUpdate.setVisibility(View.VISIBLE);
+        } else {
+            mTvNewUpdate.setVisibility(View.GONE);
+        }
         MyApp.getInstance().addActivity(this);
         init();
     }

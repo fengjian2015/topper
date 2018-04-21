@@ -1,10 +1,15 @@
 package com.bclould.tocotalk.ui.fragment;
 
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,6 +18,7 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -42,6 +48,9 @@ import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.OtcOrderStatusInfo;
 import com.bclould.tocotalk.model.QrcodeReceiptPayInfo;
 import com.bclould.tocotalk.model.RedExpiredInfo;
+import com.bclould.tocotalk.ui.activity.OrderCloseActivity;
+import com.bclould.tocotalk.ui.activity.OrderDetailsActivity;
+import com.bclould.tocotalk.ui.activity.PayDetailsActivity;
 import com.bclould.tocotalk.ui.adapter.ConversationAdapter;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.Constants;
@@ -92,6 +101,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.bclould.tocotalk.Presenter.LoginPresenter.CURRENCY;
 import static com.bclould.tocotalk.Presenter.LoginPresenter.STATE;
 import static com.bclould.tocotalk.ui.activity.ConversationActivity.ACCESSKEYID;
@@ -141,6 +151,9 @@ public class ConversationFragment extends Fragment {
     private ConversationAdapter mConversationAdapter;
     private MyReceiver receiver;
     private LoadingProgressDialog mProgressDialog;
+    private NotificationManager mNotificationManager;
+    private PendingIntent mResultIntent;
+    private NotificationCompat.Builder mBuilder;
 
     public static ConversationFragment getInstance() {
 
@@ -170,7 +183,13 @@ public class ConversationFragment extends Fragment {
         initRecyclerView();
         initData();
 //        initAWS();
+        initNotification();
         return view;
+    }
+
+    private void initNotification() {
+        mNotificationManager = (NotificationManager) getContext().getSystemService(NOTIFICATION_SERVICE);
+        mBuilder = new NotificationCompat.Builder(getContext());
     }
 
     //显示登录中Dialog
@@ -497,6 +516,7 @@ public class ConversationFragment extends Fragment {
     }
 
     public class FragmentOneHandler extends Handler {
+        @SuppressLint("WrongConstant")
         @Override
         public void handleMessage(android.os.Message msg) {
             super.handleMessage(msg);
@@ -647,6 +667,27 @@ public class ConversationFragment extends Fragment {
                     String json = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
                     Gson gson = new Gson();
                     OtcOrderStatusInfo otcOrderStatusInfo = gson.fromJson(json, OtcOrderStatusInfo.class);
+                    if (otcOrderStatusInfo.getStatus() == 1) {
+                        Intent intent = new Intent(getContext(), OrderDetailsActivity.class);
+                        intent.putExtra("type", getString(R.string.order));
+                        intent.putExtra("id", messageInfo.getRedId() + "");
+                        mResultIntent = PendingIntent.getActivity(getContext(), 1, intent,
+                                PendingIntent.FLAG_UPDATE_CURRENT);
+                    } else {
+                        Intent intent = new Intent(getContext(), OrderCloseActivity.class);
+                        intent.putExtra("status", otcOrderStatusInfo.getStatus() + "");
+                        intent.putExtra("id", otcOrderStatusInfo.getId() + "");
+                        mResultIntent = PendingIntent.getActivity(getContext(), 1, intent,
+                                PendingIntent.FLAG_UPDATE_CURRENT);
+                    }
+                    mBuilder.setSmallIcon(R.mipmap.logo);
+                    mBuilder.setContentTitle(getString(R.string.order_inform));
+                    mBuilder.setContentText(getString(R.string.order_inform_hint));
+                    mBuilder.setContentIntent(mResultIntent);
+                    mBuilder.setDefaults(Notification.DEFAULT_ALL);
+                    mBuilder.setAutoCancel(true);
+                    Notification notification = mBuilder.build();
+                    mNotificationManager.notify(0, notification);
                     time = otcOrderStatusInfo.getCreated_at();
                     redId = otcOrderStatusInfo.getId();
                     count = otcOrderStatusInfo.getOrder_no();
@@ -698,6 +739,21 @@ public class ConversationFragment extends Fragment {
                     String json = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
                     Gson gson = new Gson();
                     QrcodeReceiptPayInfo transferInformInfo = gson.fromJson(json, QrcodeReceiptPayInfo.class);
+                    if (transferInformInfo.getType() == 1) {
+                        Intent intent = new Intent(getContext(), PayDetailsActivity.class);
+                        intent.putExtra("id", transferInformInfo.getId() + "");
+                        intent.putExtra("type_number", transferInformInfo.getType_number() + "");
+                        mResultIntent = PendingIntent.getActivity(getContext(), 1, intent,
+                                PendingIntent.FLAG_UPDATE_CURRENT);
+                        mBuilder.setSmallIcon(R.mipmap.logo);
+                        mBuilder.setContentTitle(getString(R.string.transfer_inform));
+                        mBuilder.setContentText(getString(R.string.transfer_inform_hint));
+                        mBuilder.setContentIntent(mResultIntent);
+                        mBuilder.setDefaults(Notification.DEFAULT_ALL);
+                        mBuilder.setAutoCancel(true);
+                        Notification notification = mBuilder.build();
+                        mNotificationManager.notify(0, notification);
+                    }
                     time = transferInformInfo.getCreated_at();
                     redId = transferInformInfo.getId();
                     count = transferInformInfo.getNumber();

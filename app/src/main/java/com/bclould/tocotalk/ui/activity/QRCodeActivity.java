@@ -60,7 +60,11 @@ public class QRCodeActivity extends BaseActivity {
         try {
             DBManager mgr = new DBManager(this);
             List<UserInfo> userInfos = mgr.queryUser(UtilTool.getJid());
-            mTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfos.get(0).getPath()));
+            if (!userInfos.get(0).getPath().isEmpty())
+                mTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfos.get(0).getPath()));
+            else {
+                mTouxiang.setImageResource(R.mipmap.img_nfriend_headshot1);
+            }
             Bitmap bitmap = UtilTool.createQRImage(UtilTool.base64PetToJson(Constants.BUSINESSCARD, "name", UtilTool.getJid(), "名片"));
             mQrCodeIv.setImageBitmap(bitmap);
         } catch (Exception e) {
@@ -77,9 +81,9 @@ public class QRCodeActivity extends BaseActivity {
 
                 break;
             case R.id.btn_save_qr:
-                if(UtilTool.saveBitmap(mRlQr)){
+                if (UtilTool.saveBitmap(mRlQr)) {
                     Toast.makeText(this, getString(R.string.save_success), Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     Toast.makeText(this, getString(R.string.save_error), Toast.LENGTH_SHORT).show();
                 }
                 break;

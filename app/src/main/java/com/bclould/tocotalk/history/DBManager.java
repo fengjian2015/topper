@@ -195,11 +195,7 @@ public class DBManager {
         values.put("my_user", UtilTool.getJid());
         values.put("user", user);
         values.put("type", type);
-        db.insert("AddRequest", null, values);
-        Cursor cursor = db.rawQuery("select last_insert_rowid() from AddRequest", null);
-        int id = 0;
-        if (cursor.moveToFirst())
-            id = cursor.getInt(0);
+        int id = (int) db.insert("AddRequest", null, values);
         db.close();
         Log.e("wgy", "添加请求数据库成功");
         return id;
@@ -207,12 +203,27 @@ public class DBManager {
 
     public boolean findRequest(String user) {
         db = helper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from ConversationRecord where user=? and my_user=?",
+        Cursor cursor = db.rawQuery("select * from AddRequest where user=? and my_user=?",
                 new String[]{user, UtilTool.getJid()});
         boolean result = cursor.moveToNext();
         cursor.close();
         db.close();
         return result;
+    }
+
+    public AddRequestInfo queryRequest(String user) {
+        db = helper.getWritableDatabase();
+        String sql = "select * from AddRequest where my_user=? and user=?";
+        Cursor c = db.rawQuery(sql, new String[]{UtilTool.getJid(), user});
+        AddRequestInfo addRequestInfo = new AddRequestInfo();
+        while (c.moveToNext()) {
+           addRequestInfo.setUser(c.getString(c.getColumnIndex("user")));
+            addRequestInfo.setId(c.getInt(c.getColumnIndex("id")));
+            addRequestInfo.setType(c.getInt(c.getColumnIndex("type")));
+        }
+        c.close();
+        db.close();
+        return addRequestInfo;
     }
 
     public void updateRequest(int id, int type) {
@@ -223,7 +234,7 @@ public class DBManager {
         db.close();
     }
 
-    public ArrayList<AddRequestInfo> queryRequest() {
+    public ArrayList<AddRequestInfo> queryAllRequest() {
         db = helper.getReadableDatabase();
         ArrayList<AddRequestInfo> addRequestInfos = new ArrayList<>();
         String sql = "select * from AddRequest where my_user=?";

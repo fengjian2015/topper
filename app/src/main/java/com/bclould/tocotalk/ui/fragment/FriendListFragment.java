@@ -31,6 +31,7 @@ import com.bclould.tocotalk.Presenter.CloudMessagePresenter;
 import com.bclould.tocotalk.Presenter.PersonalDetailsPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.model.AddRequestInfo;
 import com.bclould.tocotalk.model.AuatarListInfo;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.activity.NewFriendActivity;
@@ -108,6 +109,23 @@ public class FriendListFragment extends Fragment {
                     queryUser();
                     mFriendListVPAdapter.notifyDataSetChanged();
                     break;
+                case 1:
+                    String from = (String) msg.obj;
+                    mNewFriend += 1;
+                    MySharedPreferences.getInstance().setInteger(NEWFRIEND, mNewFriend);
+                    mNumber.setText(mNewFriend + "");
+                    mNumber.setVisibility(View.VISIBLE);
+                    mId = mMgr.addRequest(from, 0);
+                    break;
+                case 2:
+                    String from2 = (String) msg.obj;
+                    mNewFriend += 1;
+                    MySharedPreferences.getInstance().setInteger(NEWFRIEND, mNewFriend);
+                    mNumber.setText(mNewFriend + "");
+                    mNumber.setVisibility(View.VISIBLE);
+                    int id = mMgr.queryRequest(from2).getId();
+                    mMgr.updateRequest(id, 0);
+                    break;
             }
         }
     };
@@ -166,7 +184,7 @@ public class FriendListFragment extends Fragment {
         if (msg.equals(getString(R.string.login_succeed))) {
             addFriendListener();
             initData();
-            getMyImage();
+//            getMyImage();
 //            rosterListener();
         } else if (msg.equals(getString(R.string.new_friend))) {
             initData();
@@ -187,7 +205,34 @@ public class FriendListFragment extends Fragment {
         mFriendListVPAdapter.notifyDataSetChanged();
     }
 
-    private void getMyImage() {
+    /*private void getMyImage() {
+        mPersonalDetailsPresenter.getFriendImageList(UtilTool.getUser(), new PersonalDetailsPresenter.CallBack2() {
+            @Override
+            public void send(final AuatarListInfo.DataBean dataBean) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (dataBean != null && !dataBean.getAvatar().isEmpty()) {
+                            try {
+                                UtilTool.Log("頭像", dataBean.getAvatar());
+                                Drawable drawable = Glide.with(getContext())
+                                        .load(dataBean.getAvatar())
+                                        .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                                        .get();
+                                BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+                                Bitmap bitmap = bitmapDrawable.getBitmap();
+                                UtilTool.saveImages(bitmap, UtilTool.getUser(), getContext(), mMgr);
+                            } catch (Exception e) {
+                            }
+                        } else {
+                            mMgr.addUser(UtilTool.getUser(), "");
+                        }
+                        Message message = new Message();
+                        myHandler.sendMessage(message);
+                    }
+                }).start();
+            }
+        });
         try {
             if (!mMgr.findUser(Constants.MYUSER)) {
                 byte[] myImage = UtilTool.getUserImage(XmppConnection.getInstance().getConnection(), Constants.MYUSER);
@@ -202,7 +247,7 @@ public class FriendListFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     private void rosterListener() {
         Roster roster = Roster.getInstanceFor(XmppConnection.getInstance().getConnection());
@@ -266,10 +311,6 @@ public class FriendListFragment extends Fragment {
                     } else {
                         UtilTool.playHint(getContext());
                     }
-                    mNewFriend += 1;
-                    MySharedPreferences.getInstance().setInteger(NEWFRIEND, mNewFriend);
-                    mNumber.setText(mNewFriend + "");
-                    mNumber.setVisibility(View.VISIBLE);
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     builder.setTitle(getString(R.string.add_request));
                     builder.setMessage(getString(R.string.user) + alertSubName + getString(R.string.request_add));
@@ -345,13 +386,31 @@ public class FriendListFragment extends Fragment {
                     UtilTool.Log("日志1", mMgr.findUser(from) + "");
                     UtilTool.Log("发", from);
                     if (!mMgr.findUser(from)) {
-                        acceptAdd = getString(R.string.receive_add_request);
-                        Intent intent = new Intent();
-                        intent.putExtra("fromName", from);
-                        intent.putExtra("acceptAdd", acceptAdd);
-                        intent.setAction("com.example.eric_jqm_chat.SearchActivity");
-                        getContext().sendBroadcast(intent);
-                        mId = mMgr.addRequest(from, 0);
+                        if (!mMgr.findRequest(from)) {
+                            acceptAdd = getString(R.string.receive_add_request);
+                            Intent intent = new Intent();
+                            intent.putExtra("fromName", from);
+                            intent.putExtra("acceptAdd", acceptAdd);
+                            intent.setAction("com.example.eric_jqm_chat.SearchActivity");
+                            getContext().sendBroadcast(intent);
+                            Message message = new Message();
+                            message.what = 1;
+                            message.obj = from;
+                            myHandler.sendMessage(message);
+                        } else if (mMgr.queryRequest(from).getType() == 1) {
+                            acceptAdd = getString(R.string.receive_add_request);
+                            Intent intent = new Intent();
+                            intent.putExtra("fromName", from);
+                            intent.putExtra("acceptAdd", acceptAdd);
+                            intent.setAction("com.example.eric_jqm_chat.SearchActivity");
+                            getContext().sendBroadcast(intent);
+                            Message message = new Message();
+                            message.what = 2;
+                            message.obj = from;
+                            myHandler.sendMessage(message);
+                        } else {
+
+                        }
                     }
                 } else if (presence.getType().equals(
                         Presence.Type.subscribed)) {
@@ -448,7 +507,7 @@ public class FriendListFragment extends Fragment {
                                     new Thread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            if (!dataBean.getAvatar().isEmpty()) {
+                                            if (dataBean != null && !dataBean.getAvatar().isEmpty()) {
                                                 try {
                                                     UtilTool.Log("頭像", dataBean.getAvatar());
                                                     Drawable drawable = Glide.with(getContext())

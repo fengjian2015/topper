@@ -20,7 +20,9 @@ import com.bclould.tocotalk.ui.activity.PersonalDetailsActivity;
 import com.bclould.tocotalk.ui.activity.RealNameC1Activity;
 import com.bclould.tocotalk.ui.activity.SystemSetActivity;
 import com.bclould.tocotalk.ui.activity.UserSafetyActivity;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -57,6 +59,10 @@ public class MyFragment extends Fragment {
     ImageView mIv3;
     @Bind(R.id.rl_system_set)
     RelativeLayout mRlSystemSet;
+    @Bind(R.id.tv)
+    TextView mTv;
+    @Bind(R.id.tv_new_update)
+    TextView mTvNewUpdate;
 
     private DBManager mMgr;
 
@@ -68,12 +74,16 @@ public class MyFragment extends Fragment {
     }
 
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_my, container, false);
         ButterKnife.bind(this, view);
+        if (!MySharedPreferences.getInstance().getString(Constants.NEW_APK_URL).isEmpty()) {
+            mTvNewUpdate.setVisibility(View.VISIBLE);
+        } else {
+            mTvNewUpdate.setVisibility(View.GONE);
+        }
         EventBus.getDefault().register(this);
         init();
         return view;
