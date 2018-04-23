@@ -109,6 +109,7 @@ import static com.bclould.tocotalk.ui.activity.ConversationActivity.SECRETACCESS
 import static com.bclould.tocotalk.ui.activity.ConversationActivity.SESSIONTOKEN;
 import static com.bclould.tocotalk.ui.activity.SystemSetActivity.INFORM;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_AUTH_STATUS_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_IN_OUT_COIN_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_OTC_ORDER_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_RECEIPT_PAY_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_RED_PACKET_EXPIRED_MSG;
@@ -766,6 +767,30 @@ public class ConversationFragment extends Fragment {
                     } else {
                         redpacket = "[" + getString(R.string.transfer_inform) + "]";
                     }
+                } else if (chatMsg.contains(Constants.INOUT_COIN_INFORM)) {
+                    msgType = ADMINISTRATOR_IN_OUT_COIN_MSG;
+                    String json = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
+                    Gson gson = new Gson();
+                    QrcodeReceiptPayInfo transferInformInfo = gson.fromJson(json, QrcodeReceiptPayInfo.class);
+                    Intent intent = new Intent(getContext(), PayDetailsActivity.class);
+                    intent.putExtra("id", transferInformInfo.getId() + "");
+                    intent.putExtra("type_number", transferInformInfo.getType_number() + "");
+                    mResultIntent = PendingIntent.getActivity(getContext(), 1, intent,
+                            PendingIntent.FLAG_UPDATE_CURRENT);
+                    mBuilder.setSmallIcon(R.mipmap.logo);
+                    mBuilder.setContentTitle(getString(R.string.out_coin_inform));
+                    mBuilder.setContentText(getString(R.string.out_coin_inform_hint));
+                    mBuilder.setContentIntent(mResultIntent);
+                    mBuilder.setDefaults(Notification.DEFAULT_ALL);
+                    mBuilder.setAutoCancel(true);
+                    Notification notification = mBuilder.build();
+                    mNotificationManager.notify(0, notification);
+                    time = transferInformInfo.getCreated_at();
+                    redId = transferInformInfo.getId();
+                    count = transferInformInfo.getNumber();
+                    coin = transferInformInfo.getCoin_name();
+                    type = transferInformInfo.getType_number();
+                    redpacket = "[" + getString(R.string.out_coin_inform) + "]";
                 }
                 //添加数据库
                 messageInfo.setUsername(from);

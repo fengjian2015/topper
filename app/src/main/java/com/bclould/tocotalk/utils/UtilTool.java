@@ -513,7 +513,7 @@ public class UtilTool {
     }
 
 
-    public static Bitmap getMyImage(DBManager mgr, String myUser) {
+    public static Bitmap getImage(DBManager mgr, String myUser) {
         List<UserInfo> info = mgr.queryUser(myUser);
         if (info.size() != 0)
             return BitmapFactory.decodeFile(info.get(0).getPath());

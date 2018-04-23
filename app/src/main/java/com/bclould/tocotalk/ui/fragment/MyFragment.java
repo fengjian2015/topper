@@ -93,7 +93,7 @@ public class MyFragment extends Fragment {
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.xg_touxaing))) {
-            Bitmap bitmap = UtilTool.getMyImage(mMgr, UtilTool.getJid());
+            Bitmap bitmap = UtilTool.getImage(mMgr, UtilTool.getJid());
             if (bitmap != null)
                 mIvTouxiang.setImageBitmap(bitmap);
         }
@@ -108,7 +108,7 @@ public class MyFragment extends Fragment {
     private void init() {
         mTvName.setText(UtilTool.getJid().substring(0, UtilTool.getJid().lastIndexOf("@")));
         mMgr = new DBManager(getContext());
-        Bitmap bitmap = UtilTool.getMyImage(mMgr, UtilTool.getJid());
+        Bitmap bitmap = UtilTool.getImage(mMgr, UtilTool.getJid());
         if (bitmap != null)
             mIvTouxiang.setImageBitmap(bitmap);
     }

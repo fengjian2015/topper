@@ -564,14 +564,13 @@ public class MainActivity extends BaseActivity {
         Fragment fragment = fragmentFactory.createMainFragment(index);
 
         if (mSupportFragmentManager.getFragments() == null) {
-
-            ft.add(R.id.main_fl, fragment);
-
-
+            if (!fragment.isAdded()) {
+                ft.add(R.id.main_fl, fragment);
+            }
         } else if (!mSupportFragmentManager.getFragments().contains(fragment)) {
-
-            ft.add(R.id.main_fl, fragment);
-
+            if (!fragment.isAdded()) {
+                ft.add(R.id.main_fl, fragment);
+            }
         }
 
         ft.hide(LastFragment);

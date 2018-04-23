@@ -26,6 +26,7 @@ import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.activity.DynamicDetailActivity;
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.jaeger.ninegridimageview.ItemImageClickListener;
@@ -197,10 +198,10 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
 
         public void setData(final DynamicListInfo.DataBean dataBean) {
             mDataBean = dataBean;
-            try {
-                mTouxiang.setImageBitmap(getImage(dataBean.getUser_name()));
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (mMgr.queryUser(dataBean.getUser_name() + "@" + Constants.DOMAINNAME).get(0).getPath().isEmpty()) {
+                mTouxiang.setImageResource(R.mipmap.img_nfriend_headshot1);
+            } else {
+                mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, dataBean.getUser_name() + "@" + Constants.DOMAINNAME));
             }
             mTime.setText(dataBean.getCreated_at());
             mName.setText(dataBean.getUser_name());
@@ -366,10 +367,10 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             mCompressImgList = (ArrayList<String>) dataBean.getKey_compress_urls();
             mImgList = (ArrayList<String>) dataBean.getKey_urls();
             mNglImages.setImagesData(mCompressImgList);
-            try {
-                mIvTouxiang.setImageBitmap(getImage(dataBean.getUser_name()));
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (mMgr.queryUser(dataBean.getUser_name() + "@" + Constants.DOMAINNAME).get(0).getPath().isEmpty()) {
+                mIvTouxiang.setImageResource(R.mipmap.img_nfriend_headshot1);
+            } else {
+                mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, dataBean.getUser_name() + "@" + Constants.DOMAINNAME));
             }
             mTvTime.setText(dataBean.getCreated_at());
             mTvName.setText(dataBean.getUser_name());

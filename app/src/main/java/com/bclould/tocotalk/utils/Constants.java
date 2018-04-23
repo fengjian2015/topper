@@ -50,6 +50,7 @@ public class Constants {
     public static final String AUTH_STATUS = "[AuthStatus]:";
     public static final String QRCODE_RECEIPT_PAYMENT = "[QrcodeReceiptPayment]:";
     public static final String TRANSFER_INFORM = "[Transfer]:";
+    public static final String INOUT_COIN_INFORM = "[CoinOut]:";
     public static final String EXCHANGE_DISCLAIMER = "exchange_disclaimer";
     public static final String NEW_APK_URL = "new_apk_url";
     public static final String NEW_APK_NAME = "new_apk_name";

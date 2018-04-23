@@ -649,7 +649,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 //.sizeMultiplier(0.5f)// glide 加载图片大小 0~1之间 如设置 .glideOverride()无效
                 .glideOverride(200, 200)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
                 .hideBottomControls(true)// 是否显示uCrop工具栏，默认不显示
-                .isGif(true)// 是否显示gif图片
+                .isGif(false)// 是否显示gif图片
                 .freeStyleCropEnabled(true)// 裁剪框是否可拖拽
                 .circleDimmedLayer(false)// 是否圆形裁剪
                 .showCropFrame(true)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false
