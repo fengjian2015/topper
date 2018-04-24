@@ -184,7 +184,7 @@ public class FriendListFragment extends Fragment {
         if (msg.equals(getString(R.string.login_succeed))) {
             addFriendListener();
             initData();
-//            getMyImage();
+//            getImage();
 //            rosterListener();
         } else if (msg.equals(getString(R.string.new_friend))) {
             initData();
@@ -205,7 +205,7 @@ public class FriendListFragment extends Fragment {
         mFriendListVPAdapter.notifyDataSetChanged();
     }
 
-    /*private void getMyImage() {
+    /*private void getImage() {
         mPersonalDetailsPresenter.getFriendImageList(UtilTool.getUser(), new PersonalDetailsPresenter.CallBack2() {
             @Override
             public void send(final AuatarListInfo.DataBean dataBean) {

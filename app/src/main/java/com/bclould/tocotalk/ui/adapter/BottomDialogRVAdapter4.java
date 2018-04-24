@@ -15,6 +15,7 @@ import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.ui.activity.CoinExchangeActivity;
 import com.bclould.tocotalk.ui.activity.OtcActivity;
 import com.bclould.tocotalk.ui.activity.PushBuyingActivity;
+import com.bclould.tocotalk.ui.activity.StartGuessActivity;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -83,6 +84,9 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
                         activity.hideDialog(mName, mId);
                     } else if (mContext instanceof PushBuyingActivity) {
                         PushBuyingActivity activity = (PushBuyingActivity) mContext;
+                        activity.hideDialog2(mName, mId, mServiceCharge);
+                    } else if (mContext instanceof StartGuessActivity) {
+                        StartGuessActivity activity = (StartGuessActivity) mContext;
                         activity.hideDialog2(mName, mId, mServiceCharge);
                     }
                 }

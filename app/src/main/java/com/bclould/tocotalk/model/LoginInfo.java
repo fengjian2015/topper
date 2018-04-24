@@ -52,6 +52,15 @@ public class LoginInfo {
 
         private String country;
         private String currency;
+        private String xmpp;
+
+        public String getXmpp() {
+            return xmpp;
+        }
+
+        public void setXmpp(String xmpp) {
+            this.xmpp = xmpp;
+        }
 
         public String getCurrency() {
             return currency;

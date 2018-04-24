@@ -569,6 +569,48 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
+        <!--區塊鏈競猜界面-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.BlockchainGambleActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--競猜詳情界面-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.GuessDetailsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--競猜記錄界面-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.GuessRecordActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--競猜規則聲明界面-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.RegulationStatementActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--發起競猜界面-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.StartGuessActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--我參與的競猜界面-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.MyJoinActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--我發起的競猜界面-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.MyStartActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
         <!--交易关闭界面-->
         <activity
             android:name="com.bclould.tocotalk.ui.activity.ServiceAgreementActivity"

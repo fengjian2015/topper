@@ -14,6 +14,7 @@ import com.bclould.tocotalk.model.ExchangeOrderInfo;
 import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.model.GoogleInfo;
 import com.bclould.tocotalk.model.GrabRedInfo;
+import com.bclould.tocotalk.model.GuessListInfo;
 import com.bclould.tocotalk.model.InOutInfo;
 import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.model.LoginInfo;
@@ -786,5 +787,14 @@ public interface MyService {
     Observable<AuatarListInfo> avatarList(
             @Header("Authorization") String token,
             @Field("names") String names
+    );
+
+    //競猜列表
+    @POST("bet/list")
+    @FormUrlEncoded
+    Observable<GuessListInfo> GuessList(
+            @Header("Authorization") String token,
+            @Field("page") String page,
+            @Field("page_size") String page_size
     );
 }

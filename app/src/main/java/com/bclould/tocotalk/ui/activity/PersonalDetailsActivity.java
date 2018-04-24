@@ -18,8 +18,6 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
-import com.bclould.tocotalk.model.UserInfo;
-import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
@@ -86,7 +84,7 @@ public class PersonalDetailsActivity extends BaseActivity {
     private void initInterface() {
         String state = MySharedPreferences.getInstance().getString(STATE);
         mTvLocation.setText(state);
-        Bitmap bitmap = UtilTool.getMyImage(mMgr, UtilTool.getJid());
+        Bitmap bitmap = UtilTool.getImage(mMgr, UtilTool.getJid());
         if (bitmap != null)
             mTouxiang.setImageBitmap(bitmap);
         mTvUsername.setText(UtilTool.getUser());
@@ -124,7 +122,7 @@ public class PersonalDetailsActivity extends BaseActivity {
             public void send() {
                 UtilTool.saveImages(bitmap, UtilTool.getJid(), PersonalDetailsActivity.this, mMgr);
                 EventBus.getDefault().post(new MessageEvent(getString(R.string.xg_touxaing)));
-                mTouxiang.setImageBitmap(UtilTool.getMyImage(mMgr, UtilTool.getJid()));
+                mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, UtilTool.getJid()));
             }
         });
         /*boolean type = XmppConnection.getInstance().changeImage(bytes);
@@ -165,7 +163,7 @@ public class PersonalDetailsActivity extends BaseActivity {
                         .glideOverride(160, 160)// int glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
                         .withAspectRatio(1, 1)// int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
                         .hideBottomControls(true)// 是否显示uCrop工具栏，默认不显示 true or false
-                        .isGif(true)// 是否显示gif图片 true or false
+                        .isGif(false)// 是否显示gif图片 true or false
                         .freeStyleCropEnabled(true)// 裁剪框是否可拖拽 true or false
                         .circleDimmedLayer(false)// 是否圆形裁剪 true or false
                         .showCropFrame(true)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false

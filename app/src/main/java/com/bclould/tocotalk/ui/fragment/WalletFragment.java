@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.bclould.tocotalk.Presenter.SubscribeCoinPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.ui.activity.BankCardActivity;
+import com.bclould.tocotalk.ui.activity.BlockchainGambleActivity;
 import com.bclould.tocotalk.ui.activity.CoinExchangeActivity;
 import com.bclould.tocotalk.ui.activity.FinancingActivity;
 import com.bclould.tocotalk.ui.activity.MyAssetsActivity;
@@ -159,7 +160,7 @@ public class WalletFragment extends Fragment {
                 startActivity(new Intent(getActivity(), SafeActivity.class));
                 break;
             case R.id.ll_blockchain_gamble:
-                startActivity(new Intent(getActivity(), SafeActivity.class));
+                startActivity(new Intent(getActivity(), BlockchainGambleActivity.class));
                 break;
         }
     }
