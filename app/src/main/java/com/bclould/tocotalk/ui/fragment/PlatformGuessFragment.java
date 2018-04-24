@@ -91,6 +91,8 @@ public class PlatformGuessFragment extends Fragment {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
                 if (data.size() != 0) {
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    mLlNoData.setVisibility(View.GONE);
                     mDataList.addAll(data);
                     mGuessListRVAdapter.notifyDataSetChanged();
                 } else {

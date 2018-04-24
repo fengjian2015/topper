@@ -622,12 +622,12 @@
     <string name="start_guess">發起競猜</string>
     <string name="my_join">我參與的</string>
     <string name="my_start">我發起的</string>
-    <string name="kaijiang">開獎時間</string>
+    <string name="kaijiang_time">開獎時間</string>
     <string name="bonus_chi">獎金池</string>
     <string name="insert_coins_count">投幣數量</string>
     <string name="kaijiang_result">開獎結果</string>
     <string name="zhong_jiang">中獎</string>
-    <string name="no_zhong_jiang">未中獎</string>
+    <string name="no_zhong_jiang">未中獎!</string>
     <string name="coin_quiz_detail">投幣競猜-詳情</string>
     <string name="bet">投注</string>
     <string name="present_periods">當前期數</string>
@@ -641,10 +641,18 @@
     <string name="et_guess_title">輸入競猜標題</string>
     <string name="guess_deadline">競猜期限</string>
     <string name="selector_deadline">選擇期限</string>
-    <string name="time_deadline">三個小時</string>
-    <string name="time_deadline2">六個小時</string>
-    <string name="time_deadline3">十二個小時</string>
-    <string name="time_deadline4">二十四個小時</string>
+    <string name="time_deadline">3小時</string>
+    <string name="time_deadline2">6小時</string>
+    <string name="time_deadline3">12小時</string>
+    <string name="time_deadline4">24小時</string>
     <string name="qi">期</string>
+    <string name="push_guess">發佈競猜</string>
+    <string name="toast_guess_title">競猜標題不能為空</string>
+    <string name="toast_dealine">競猜期限不能為空</string>
+    <string name="single_insert_count">單筆投幣數量</string>
+    <string name="usdt">USDT</string>
+    <string name="dqky">當前可用 </string>
+    <string name="publish_succeed">發佈成功</string>
+    <string name="hr">小時</string>
 
 </resources>

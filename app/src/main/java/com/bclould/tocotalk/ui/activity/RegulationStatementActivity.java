@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
+import com.bclould.tocotalk.utils.Constants;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,6 +31,7 @@ public class RegulationStatementActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_regulation_statement);
         ButterKnife.bind(this);
+        mWebView.loadUrl(Constants.GUESS_WEB_URL);
     }
 
     @OnClick(R.id.bark)

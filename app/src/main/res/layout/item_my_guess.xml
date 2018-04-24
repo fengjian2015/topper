@@ -10,6 +10,7 @@
     app:cardCornerRadius="@dimen/x15">
 
     <LinearLayout
+        android:id="@+id/ll_all"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -23,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/kaijiang"
+            android:text="@string/kaijiang_time"
             android:textColor="@color/blue2"
             android:textSize="@dimen/x24"/>
 
@@ -170,6 +171,28 @@
                 android:textSize="@dimen/x26"/>
 
         </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_guess_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/HCutOffRule"
+                android:layout_marginTop="@dimen/y30"/>
+
+            <TextView
+                android:id="@+id/tv_guess_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/y30"
+                android:text="@string/no_zhong_jiang"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x32"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

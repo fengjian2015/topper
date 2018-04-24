@@ -17,9 +17,14 @@ import com.bclould.tocotalk.Presenter.BlockchainGuessPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.GuessListInfo;
 import com.bclould.tocotalk.ui.adapter.GuessListRVAdapter;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,8 +56,18 @@ public class PersonageGuessFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_personage_guess, container, false);
         ButterKnife.bind(this, view);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         init();
         return view;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(getString(R.string.push_guess))) {
+            initData();
+        }
     }
 
     private void init() {
@@ -82,10 +97,12 @@ public class PersonageGuessFragment extends Fragment {
 
     private void initData() {
         mDataList.clear();
-        mBlockchainGuessPresenter.getGuessList(mPage, mPageSize, 1 ,new BlockchainGuessPresenter.CallBack() {
+        mBlockchainGuessPresenter.getGuessList(mPage, mPageSize, 1, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
                 if (data.size() != 0) {
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    mLlNoData.setVisibility(View.GONE);
                     mDataList.addAll(data);
                     mGuessListRVAdapter.notifyDataSetChanged();
                 } else {
@@ -99,6 +116,7 @@ public class PersonageGuessFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        ButterKnife.unbind(this);
         ButterKnife.unbind(this);
     }
 }

@@ -798,4 +798,17 @@ public interface MyService {
             @Field("page_size") String page_size,
             @Field("type") int type
     );
+
+    //發佈競猜
+    @POST("bet/publish")
+    @FormUrlEncoded
+    Observable<BaseInfo> publishGuess(
+            @Header("Authorization") String token,
+            @Field("title") String title,
+            @Field("limit_people_number") String limit_people_number,
+            @Field("limit_number") String limit_number,
+            @Field("coin_id") String coin_id,
+            @Field("deadline") String deadline,
+            @Field("second_password") String second_password
+    );
 }

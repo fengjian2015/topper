@@ -55,4 +55,6 @@ public class Constants {
     public static final String NEW_APK_URL = "new_apk_url";
     public static final String NEW_APK_NAME = "new_apk_name";
     public static final String NEW_APK_BODY = "new_apk_body";
+    public static final String KEFU = "W2tlZnVdOkp1bXBjdXN0b21lcnNlcnZpY2VpbnRlcmZhY2U=";
+    public static final String GUESS_WEB_URL = "https://www.bclould.com:8112/api/bet/rule";
 }

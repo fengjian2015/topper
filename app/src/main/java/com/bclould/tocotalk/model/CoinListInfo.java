@@ -58,6 +58,15 @@ public class CoinListInfo {
         private String coin_over;
         private String out_otc;
         private String out_exchange;
+        private String single_coin;
+
+        public String getSingle_coin() {
+            return single_coin;
+        }
+
+        public void setSingle_coin(String single_coin) {
+            this.single_coin = single_coin;
+        }
 
         public int getId() {
             return id;
