@@ -26,6 +26,7 @@ import com.bclould.tocotalk.ui.activity.PayRecordActivity;
 import com.bclould.tocotalk.ui.activity.ReceiptPaymentActivity;
 import com.bclould.tocotalk.ui.activity.SafeActivity;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -85,8 +86,13 @@ public class WalletFragment extends Fragment {
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         ButterKnife.bind(this, view);
-        initData();
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        initData();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -124,7 +130,6 @@ public class WalletFragment extends Fragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
         EventBus.getDefault().unregister(this);
-        ;
     }
 
     @OnClick({R.id.ll_blockchain_gamble, R.id.iv_more, R.id.ll_inout, R.id.ll_usdt, R.id.ll_bank_card, R.id.ll_asserts, R.id.ll_exchange, R.id.ll_otc, R.id.ll_financing, R.id.ll_pawn, R.id.ll_safe})
@@ -160,7 +165,11 @@ public class WalletFragment extends Fragment {
                 startActivity(new Intent(getActivity(), SafeActivity.class));
                 break;
             case R.id.ll_blockchain_gamble:
-                startActivity(new Intent(getActivity(), BlockchainGambleActivity.class));
+                if (UtilTool.getUser().equals("liaolinan2") || UtilTool.getUser().equals("conn")) {
+                    startActivity(new Intent(getActivity(), BlockchainGambleActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), SafeActivity.class));
+                }
                 break;
         }
     }

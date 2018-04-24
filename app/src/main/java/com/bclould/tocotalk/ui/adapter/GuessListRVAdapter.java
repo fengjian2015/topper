@@ -1,18 +1,17 @@
 package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.GuessListInfo;
-import com.bclould.tocotalk.ui.activity.GuessDetailsActivity;
 
 import java.util.List;
 
@@ -24,7 +23,6 @@ import butterknife.ButterKnife;
  */
 
 public class GuessListRVAdapter extends RecyclerView.Adapter {
-
     private final List<GuessListInfo.DataBean> mDataList;
     private final Context mContext;
 
@@ -51,7 +49,7 @@ public class GuessListRVAdapter extends RecyclerView.Adapter {
         if (mDataList.size() != 0) {
             return mDataList.size();
         }
-        return 20;
+        return 0;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -71,23 +69,33 @@ public class GuessListRVAdapter extends RecyclerView.Adapter {
         TextView mTvBonusChi;
         @Bind(R.id.kaijiang_result)
         TextView mKaijiangResult;
-        private GuessListInfo.DataBean mDataBean;
+        @Bind(R.id.ll_all)
+        LinearLayout mLlAll;
 
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, GuessDetailsActivity.class);
-//                    intent.putExtra("id", mDataBean.getId() + "");
-                    mContext.startActivity(intent);
-                }
-            });
         }
 
         public void setData(GuessListInfo.DataBean dataBean) {
-            mDataBean = dataBean;
+            mTvGuessTitle.setText(dataBean.getTitle());
+            mInsertCoinsCount.setText(dataBean.getPeriod_qty() + mContext.getString(R.string.qi));
+            mTvKaijiangTime.setText(dataBean.getLottery_time());
+            mTvBonusChi.setText(dataBean.getPrize_pool_number() + "/" + dataBean.getLimit_number() + " " + dataBean.getCoin_name());
+            mKaijiangResult.setText(dataBean.getWin_number());
+            mTvName.setText(dataBean.getCreated_at());
+            if (dataBean.getStatus() == 1) {
+
+            } else {
+                if(dataBean.getLottery_status() == 0){
+
+                }else if(dataBean.getLottery_status() == 1){
+
+                }else if(dataBean.getLottery_status() == 2){
+
+                }
+            }
+
         }
     }
 }

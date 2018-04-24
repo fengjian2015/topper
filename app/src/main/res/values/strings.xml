@@ -645,5 +645,6 @@
     <string name="time_deadline2">六個小時</string>
     <string name="time_deadline3">十二個小時</string>
     <string name="time_deadline4">二十四個小時</string>
+    <string name="qi">期</string>
 
 </resources>

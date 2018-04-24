@@ -115,7 +115,7 @@ public class OrderCloseActivity extends BaseActivity {
                     } else if (data.getStatus() == 4) {
                         mTvOrderType.setText(getString(R.string.order_exception));
                         mLlExceptionBuy.setVisibility(View.VISIBLE);
-                        mTvOrderType.setTextColor(getColor(R.color.color_orange));
+                        mTvOrderType.setTextColor(getResources().getColor(R.color.color_orange));
                     }
                     mTvTitle.setText(getString(R.string.seller) + data.getCoin_name());
                 } else {
@@ -127,7 +127,7 @@ public class OrderCloseActivity extends BaseActivity {
                     } else if (data.getStatus() == 4) {
                         mTvOrderType.setText(getString(R.string.order_exception));
                         mLlExceptionSell.setVisibility(View.VISIBLE);
-                        mTvOrderType.setTextColor(getColor(R.color.color_orange));
+                        mTvOrderType.setTextColor(getResources().getColor(R.color.color_orange));
                     }
                     mTvTitle.setText(getString(R.string.work_off) + data.getCoin_name());
                 }
@@ -154,7 +154,7 @@ public class OrderCloseActivity extends BaseActivity {
             mLlFinish.setVisibility(View.VISIBLE);
         } else if (mStatus == 4) {
             mTvOrderType.setText(getString(R.string.order_exception));
-            mTvOrderType.setTextColor(getColor(R.color.color_orange));
+            mTvOrderType.setTextColor(getResources().getColor(R.color.color_orange));
         }
     }
 

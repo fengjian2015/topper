@@ -245,19 +245,19 @@ public class OtcActivity extends BaseActivity {
                 mLlMenu.getChildAt(i).setSelected(true);
                 switch (index) {
                     case 0:
-                        mTvXx.setBackgroundColor(getColor(R.color.black));
-                        mTvXx2.setBackgroundColor(getColor(R.color.blue2));
-                        mTvXx3.setBackgroundColor(getColor(R.color.blue2));
+                        mTvXx.setBackgroundColor(getResources().getColor(R.color.black));
+                        mTvXx2.setBackgroundColor(getResources().getColor(R.color.blue2));
+                        mTvXx3.setBackgroundColor(getResources().getColor(R.color.blue2));
                         break;
                     case 1:
-                        mTvXx.setBackgroundColor(getColor(R.color.blue2));
-                        mTvXx2.setBackgroundColor(getColor(R.color.black));
-                        mTvXx3.setBackgroundColor(getColor(R.color.blue2));
+                        mTvXx.setBackgroundColor(getResources().getColor(R.color.blue2));
+                        mTvXx2.setBackgroundColor(getResources().getColor(R.color.black));
+                        mTvXx3.setBackgroundColor(getResources().getColor(R.color.blue2));
                         break;
                     case 2:
-                        mTvXx.setBackgroundColor(getColor(R.color.blue2));
-                        mTvXx2.setBackgroundColor(getColor(R.color.blue2));
-                        mTvXx3.setBackgroundColor(getColor(R.color.black));
+                        mTvXx.setBackgroundColor(getResources().getColor(R.color.blue2));
+                        mTvXx2.setBackgroundColor(getResources().getColor(R.color.blue2));
+                        mTvXx3.setBackgroundColor(getResources().getColor(R.color.black));
                         break;
                 }
             } else {

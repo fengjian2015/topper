@@ -187,7 +187,7 @@ public class SubscribeCoinPresenter {
 
                         @Override
                         public void onNext(BaseInfo baseInfo) {
-                            if (baseInfo.getStatus() == 1) {
+                            if (baseInfo.getStatus() == 1 && baseInfo.getData().getUsd() != null) {
                                 callBack3.send(baseInfo.getData().getUsd());
                             } else {
                                 Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();

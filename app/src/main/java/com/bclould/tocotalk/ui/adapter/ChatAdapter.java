@@ -412,9 +412,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 }
             });
             if (messageInfo.getStatus() == 1) {
-                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.transfer));
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.transfer));
             } else {
-                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket2));
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket2));
             }
         }
     }
@@ -459,7 +459,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mTvCoinRedpacket.setText(messageInfo.getCoin() + mContext.getString(R.string.red_package));
             mTvRemark.setText(messageInfo.getRemark());
             if (messageInfo.getStatus() == 1) {
-                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.transfer));
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.transfer));
                 mTvExamine.setText(mContext.getString(R.string.took_red_packet));
                 mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -476,7 +476,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     }
                 });
             } else {
-                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket2));
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket2));
                 mTvExamine.setText(mContext.getString(R.string.look_red_packet));
                 mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -887,10 +887,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mTvRemark.setText(messageInfo.getRemark());
             mTvCoinCount.setText(messageInfo.getCount() + messageInfo.getCoin());
             if (messageInfo.getStatus() == 0) {
-                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket));
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket));
                 mTvRemark.setText(messageInfo.getRemark());
             } else {
-                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket3));
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket3));
             }
             mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -931,10 +931,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mTvRemark.setText(messageInfo.getRemark());
             mTvCoinCount.setText(messageInfo.getCount() + messageInfo.getCoin());
             if (messageInfo.getStatus() == 0) {
-                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket));
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket));
                 mTvRemark.setText(messageInfo.getRemark());
             } else {
-                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket3));
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket3));
                 mTvRemark.setText(mContext.getString(R.string.transfer_took));
             }
             mCvRedpacket.setOnClickListener(new View.OnClickListener() {

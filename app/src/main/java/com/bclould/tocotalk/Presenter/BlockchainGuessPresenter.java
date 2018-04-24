@@ -30,11 +30,11 @@ public class BlockchainGuessPresenter {
         mContext = context;
     }
 
-    public void getGuessList(String page, String page_size, final CallBack callBack) {
+    public void getGuessList(String page, String page_size, int type, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .GuessList(UtilTool.getToken(), page, page_size)
+                    .GuessList(UtilTool.getToken(), page, page_size, type)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<GuessListInfo>() {

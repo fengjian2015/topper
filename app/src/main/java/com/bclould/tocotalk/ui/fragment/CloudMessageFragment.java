@@ -2,6 +2,7 @@ package com.bclould.tocotalk.ui.fragment;
 
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -110,21 +111,20 @@ public class CloudMessageFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_cloud_message, container, false);
-
         ButterKnife.bind(this, view);
-
-        initInterface();
-
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initInterface();
     }
 
     //初始化界面
     private void initInterface() {
-
         loginIM();
-
     }
 
 
@@ -183,15 +183,12 @@ public class CloudMessageFragment extends Fragment {
                             });
                         }*/
                         //登录成功发送通知
-                        EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
                         UtilTool.Log("fsdafa", "登录成功");
                         Message message = new Message();
                         message.what = 1;
                         mHandler.sendMessage(message);
                     }
                 } catch (Exception e) {
-                    //发送登录失败通知
-                    EventBus.getDefault().post(new MessageEvent(getString(R.string.login_error)));
                     Message message = new Message();
                     mHandler.sendMessage(message);
                     message.what = 0;
@@ -235,6 +232,8 @@ public class CloudMessageFragment extends Fragment {
                     mCloudCircleVp.setCurrentItem(0);
                     initTopMenu();
                     initViewPager();
+                    //发送登录失败通知
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.login_error)));
                     mAnim.stop();
                     mLlLogin.setVisibility(View.GONE);
                     Toast.makeText(getContext(), getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
@@ -244,10 +243,10 @@ public class CloudMessageFragment extends Fragment {
                     mLlFriend.setClickable(true);
                     mCloudCircleAdd.setClickable(true);
                     getPhoneSize();
-                    setSelector(0);
-                    mCloudCircleVp.setCurrentItem(0);
                     initTopMenu();
                     initViewPager();
+                    setSelector(0);
+                    mCloudCircleVp.setCurrentItem(0);
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
                     mAnim.stop();
                     mLlLogin.setVisibility(View.GONE);
@@ -400,7 +399,7 @@ public class CloudMessageFragment extends Fragment {
         mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_cloud_message, null);
 
         mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 4, true);
-
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
         // 设置背景颜色变暗
         WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
         lp.alpha = 0.9f;

@@ -795,6 +795,7 @@ public interface MyService {
     Observable<GuessListInfo> GuessList(
             @Header("Authorization") String token,
             @Field("page") String page,
-            @Field("page_size") String page_size
+            @Field("page_size") String page_size,
+            @Field("type") int type
     );
 }

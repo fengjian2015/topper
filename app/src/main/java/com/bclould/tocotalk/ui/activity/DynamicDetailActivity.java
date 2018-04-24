@@ -2,7 +2,6 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
@@ -224,7 +223,7 @@ public class DynamicDetailActivity extends BaseActivity {
                 break;
             case R.id.touxiang:
                 //跳转个人资料页面
-                startActivity(new Intent(this, FriendDataActivity.class));
+//                startActivity(new Intent(this, FriendDataActivity.class));
                 break;
             case R.id.send:
                 if (mCommentEt.getText().toString().isEmpty()) {

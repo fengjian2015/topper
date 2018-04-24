@@ -281,15 +281,19 @@ public class ProblemFeedBackFragment extends Fragment {
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            String key = (String) msg.obj;
-            if (count == 1) {
-                keyList = key;
-            } else {
-                keyList += "," + key;
-            }
-            count++;
-            if (count == mSelectList.size()) {
-                submit(keyList);
+            if (msg.what == 0) {
+                String key = (String) msg.obj;
+                if (count == 1) {
+                    keyList = key;
+                } else {
+                    keyList += "," + key;
+                }
+                count++;
+                if (count == mSelectList.size()) {
+                    submit(keyList);
+                }
+            }else {
+                Toast.makeText(getContext(), getString(R.string.up_error), Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -333,6 +337,7 @@ public class ProblemFeedBackFragment extends Fragment {
                             public void afterResponse(Request<?> request, Response<?> response) {
                                 Message message = new Message();
                                 message.obj = key;
+                                message.what = 0;
                                 handler.sendMessage(message);
                             }
 
@@ -346,7 +351,7 @@ public class ProblemFeedBackFragment extends Fragment {
                     }
                 } catch (AmazonClientException e) {
                     hideDialog();
-                    Toast.makeText(getContext(), getString(R.string.up_error), Toast.LENGTH_SHORT).show();
+                    handler.sendEmptyMessage(1);
                     e.printStackTrace();
                 }
             }

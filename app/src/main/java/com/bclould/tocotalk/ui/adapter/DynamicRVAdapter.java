@@ -367,10 +367,12 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             mCompressImgList = (ArrayList<String>) dataBean.getKey_compress_urls();
             mImgList = (ArrayList<String>) dataBean.getKey_urls();
             mNglImages.setImagesData(mCompressImgList);
-            if (mMgr.queryUser(dataBean.getUser_name() + "@" + Constants.DOMAINNAME).get(0).getPath().isEmpty()) {
-                mIvTouxiang.setImageResource(R.mipmap.img_nfriend_headshot1);
-            } else {
-                mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, dataBean.getUser_name() + "@" + Constants.DOMAINNAME));
+            if (mMgr.findUser(dataBean.getUser_name() + "@" + Constants.DOMAINNAME)) {
+                if (mMgr.queryUser(dataBean.getUser_name() + "@" + Constants.DOMAINNAME).get(0).getPath().isEmpty()) {
+                    mIvTouxiang.setImageResource(R.mipmap.img_nfriend_headshot1);
+                } else {
+                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, dataBean.getUser_name() + "@" + Constants.DOMAINNAME));
+                }
             }
             mTvTime.setText(dataBean.getCreated_at());
             mTvName.setText(dataBean.getUser_name());

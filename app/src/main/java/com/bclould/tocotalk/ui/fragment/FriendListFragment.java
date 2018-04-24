@@ -18,6 +18,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,14 +32,11 @@ import com.bclould.tocotalk.Presenter.CloudMessagePresenter;
 import com.bclould.tocotalk.Presenter.PersonalDetailsPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
-import com.bclould.tocotalk.model.AddRequestInfo;
 import com.bclould.tocotalk.model.AuatarListInfo;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.activity.NewFriendActivity;
 import com.bclould.tocotalk.ui.activity.SearchActivity;
 import com.bclould.tocotalk.ui.adapter.FriendListVPAdapter;
-import com.bclould.tocotalk.utils.Constants;
-import com.bclould.tocotalk.utils.FullyLinearLayoutManager;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
@@ -568,7 +566,7 @@ public class FriendListFragment extends Fragment {
     }
 
     private void initRecylerView() {
-        mRecyclerView.setLayoutManager(new FullyLinearLayoutManager(getContext()));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mFriendListVPAdapter = new FriendListVPAdapter(getContext(), mUsers, mMgr);
         mRecyclerView.setAdapter(mFriendListVPAdapter);
     }

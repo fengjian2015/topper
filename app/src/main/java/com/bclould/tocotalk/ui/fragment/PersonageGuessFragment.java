@@ -82,11 +82,16 @@ public class PersonageGuessFragment extends Fragment {
 
     private void initData() {
         mDataList.clear();
-        mBlockchainGuessPresenter.getGuessList(mPage, mPageSize, new BlockchainGuessPresenter.CallBack() {
+        mBlockchainGuessPresenter.getGuessList(mPage, mPageSize, 1 ,new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
-                mDataList.addAll(data);
-                mGuessListRVAdapter.notifyDataSetChanged();
+                if (data.size() != 0) {
+                    mDataList.addAll(data);
+                    mGuessListRVAdapter.notifyDataSetChanged();
+                } else {
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

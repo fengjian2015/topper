@@ -91,9 +91,9 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             mTvTime.setText(dataBean.getCreated_at());
             mTvType.setText(dataBean.getStatus_name());
             if (dataBean.getStatus() == 4) {
-                mTvType.setTextColor(mContext.getColor(R.color.color_orange));
+                mTvType.setTextColor(mContext.getResources().getColor(R.color.color_orange));
             } else {
-                mTvType.setTextColor(mContext.getColor(R.color.black));
+                mTvType.setTextColor(mContext.getResources().getColor(R.color.black));
             }
             mTvCoinType.setText(dataBean.getCoin_name() + dataBean.getType_name());
             if (dataBean.getType() == 1) {
@@ -106,7 +106,7 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
                 }
                 mTvName.setText(dataBean.getUser_name());
                 mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape));
-                mTvCoinType.setTextColor(mContext.getColor(R.color.blue2));
+                mTvCoinType.setTextColor(mContext.getResources().getColor(R.color.blue2));
             } else {
                 try {
                     String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
@@ -119,7 +119,7 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
                 }
                 mTvName.setText(dataBean.getUser_name());
                 mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape2));
-                mTvCoinType.setTextColor(mContext.getColor(R.color.green2));
+                mTvCoinType.setTextColor(mContext.getResources().getColor(R.color.green2));
             }
 
             mRlItme.setOnClickListener(new View.OnClickListener() {

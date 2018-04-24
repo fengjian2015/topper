@@ -90,9 +90,9 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
                         Roster.getInstanceFor(XmppConnection.getInstance().getConnection()).createEntry(JidCreate.entityBareFrom(mAddRequestInfo.getUser()), null, new String[]{"Friends"});
                         mMgr.updateRequest(mAddRequestInfo.getId(), 1);
                         EventBus.getDefault().post(mContext.getString(R.string.new_friend));
-                        mBtnConsent.setBackgroundColor(mContext.getColor(R.color.white));
+                        mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                         mBtnConsent.setText(mContext.getString(R.string.agrd_agreed));
-                        mBtnConsent.setTextColor(mContext.getColor(R.color.gray));
+                        mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.gray));
                         mBtnConsent.setEnabled(false);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -105,9 +105,9 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
             mAddRequestInfo = addRequestInfo;
             mName.setText(addRequestInfo.getUser().substring(0, addRequestInfo.getUser().indexOf("@")));
             if (addRequestInfo.getType() == 1) {
-                mBtnConsent.setBackgroundColor(mContext.getColor(R.color.white));
+                mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                 mBtnConsent.setText(mContext.getString(R.string.agrd_agreed));
-                mBtnConsent.setTextColor(mContext.getColor(R.color.gray));
+                mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.gray));
                 mBtnConsent.setEnabled(false);
             }
         }

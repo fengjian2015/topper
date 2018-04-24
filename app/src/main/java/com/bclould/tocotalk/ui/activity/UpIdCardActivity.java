@@ -212,17 +212,24 @@ public class UpIdCardActivity extends BaseActivity {
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            String key = (String) msg.obj;
-            keyList += "," + key;
-            count++;
-            if (mType.equals("1")) {
-                if (count == 3) {
-                    submit(keyList);
-                }
-            } else {
-                if (count == 2) {
-                    submit(keyList);
-                }
+            switch (msg.what) {
+                case 0:
+                    String key = (String) msg.obj;
+                    keyList += "," + key;
+                    count++;
+                    if (mType.equals("1")) {
+                        if (count == 3) {
+                            submit(keyList);
+                        }
+                    } else {
+                        if (count == 2) {
+                            submit(keyList);
+                        }
+                    }
+                    break;
+                case 1:
+                    Toast.makeText(UpIdCardActivity.this, getString(R.string.up_error), Toast.LENGTH_SHORT).show();
+                    break;
             }
         }
     };
@@ -299,6 +306,7 @@ public class UpIdCardActivity extends BaseActivity {
                                             public void afterResponse(Request<?> request, Response<?> response) {
                                                 Message message = new Message();
                                                 message.obj = key2;
+                                                message.what = 0;
                                                 handler.sendMessage(message);
                                             }
 
@@ -311,7 +319,7 @@ public class UpIdCardActivity extends BaseActivity {
                                         s3Client.putObject(por);
                                     } catch (AmazonClientException e) {
                                         hideDialog();
-                                        Toast.makeText(UpIdCardActivity.this, getString(R.string.up_error), Toast.LENGTH_SHORT).show();
+                                        handler.sendEmptyMessage(1);
                                         e.printStackTrace();
                                     }
                                 }
