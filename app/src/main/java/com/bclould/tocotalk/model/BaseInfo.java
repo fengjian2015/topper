@@ -67,16 +67,26 @@ public class BaseInfo {
         private String currency;
         private String title;
         private String desc;
+        private String bet_coin;
         private int type;
-        private int is_cn;
+        private String xmpp;
 
-        public int getIs_cn() {
-            return is_cn;
+        public String getXmpp() {
+            return xmpp;
         }
 
-        public void setIs_cn(int is_cn) {
-            this.is_cn = is_cn;
+        public void setXmpp(String xmpp) {
+            this.xmpp = xmpp;
         }
+
+        public String getBet_coin() {
+            return bet_coin;
+        }
+
+        public void setBet_coin(String bet_coin) {
+            this.bet_coin = bet_coin;
+        }
+
 
         public int getType() {
             return type;

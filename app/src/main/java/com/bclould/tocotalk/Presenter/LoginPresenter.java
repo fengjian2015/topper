@@ -7,6 +7,7 @@ import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class LoginPresenter {
     public static final String LOGINSET = "login_set";
     public static final String STATE = "state";
     public static final String CURRENCY = "currency";
+    private static final String XMPP_SERVER = "xmpp_server";
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
     public static final String MYUSERNAME = "my_username";
@@ -95,7 +97,11 @@ public class LoginPresenter {
                                         showGoogleDialog(email, password);
                                     }
                                 } else {
-                                    Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                                    if (baseInfo.getType() == 7) {
+                                        showHintDialog(baseInfo.getMessage());
+                                    } else {
+                                        Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             } else if (baseInfo.getStatus() == 1) {
                                 UtilTool.Log("日志", baseInfo.getData().getName());
@@ -105,6 +111,8 @@ public class LoginPresenter {
                                 MySharedPreferences.getInstance().setString(EMAIL, email);
                                 MySharedPreferences.getInstance().setString(LOGINPW, password);
                                 MySharedPreferences.getInstance().setString(CURRENCY, baseInfo.getData().getCurrency());
+                                MySharedPreferences.getInstance().setString(XMPP_SERVER, baseInfo.getData().getXmpp());
+                                UtilTool.Log("登錄", baseInfo.getData().getXmpp());
                                 if (baseInfo.getData().getCountry() == null) {
                                     MySharedPreferences.getInstance().setString(STATE, mContext.getString(R.string.default_state));
                                 } else {
@@ -135,6 +143,23 @@ public class LoginPresenter {
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
 
         }
+    }
+
+    private void showHintDialog(String message) {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_freeze, mContext);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setCanceledOnTouchOutside(false);
+        deleteCacheDialog.setCancelable(false);
+        TextView content = (TextView) deleteCacheDialog.findViewById(R.id.tv_content);
+        ImageView ivClose = (ImageView) deleteCacheDialog.findViewById(R.id.iv_close);
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        content.setText(message);
+
     }
 
     private void sendVcode(String email) {

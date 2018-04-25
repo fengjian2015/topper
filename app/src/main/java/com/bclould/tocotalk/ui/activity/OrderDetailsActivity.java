@@ -19,6 +19,7 @@ import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.model.OrderInfo2;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -95,6 +96,12 @@ public class OrderDetailsActivity extends BaseActivity {
     TextView mTvServiceCharge;
     @Bind(R.id.tv_shiji)
     TextView mTvShiji;
+    @Bind(R.id.tv_email)
+    TextView mTvEmail;
+    @Bind(R.id.tv_phone)
+    TextView mTvPhone;
+    @Bind(R.id.btn_contact)
+    Button mBtnContact;
     private OrderInfo.DataBean mData;
     Timer mTimer = new Timer();
     private int mRecLen = 0;
@@ -120,6 +127,9 @@ public class OrderDetailsActivity extends BaseActivity {
         }
     };
     private String mType;
+    private int mType1;
+    private String mTo_user_name;
+    private String mUser_name;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -139,6 +149,7 @@ public class OrderDetailsActivity extends BaseActivity {
         } else {
             mData = (OrderInfo.DataBean) intent.getSerializableExtra("data");
             mRecLen = mData.getDeadline();
+            mType1 = mData.getType();
             mTimer.schedule(mTask, 1000, 1000);
             if (mData.getType() == 1) {
                 mTvTitle.setText(getString(R.string.buy) + mData.getCoin_name());
@@ -153,11 +164,15 @@ public class OrderDetailsActivity extends BaseActivity {
                 mTvPaymentType.setText(getString(R.string.shoukuan_fs));
                 mTvPayType.setText(getString(R.string.dengdai_sk));
             }
+            mTo_user_name = mData.getTo_user_name();
+            mUser_name = mData.getUser_name();
             mTvBuysell.setText(getString(R.string.seller) + ":" + mData.getTo_user_name());
             mTvBuysell2.setText(getString(R.string.buyer) + ":" + mData.getUser_name());
             mTvCount.setText(mData.getNumber());
             mTvMoney.setText(mData.getTrans_amount());
             mTvPrice.setText(mData.getPrice());
+            mTvEmail.setText(mData.getEmail());
+            mTvPhone.setText(mData.getMobile());
             mTvServiceCharge.setText(Double.parseDouble(mData.getOtc_free()) * 100 + "%");
             mTvShiji.setText(mData.getActual_number());
             if (mData.getRemark() != null)
@@ -185,6 +200,7 @@ public class OrderDetailsActivity extends BaseActivity {
         mOrderDetailsPresenter.orderInfo(id, new OrderDetailsPresenter.CallBack() {
             @Override
             public void send(OrderInfo2.DataBean data) {
+                mType1 = data.getType();
                 mInfo.setData(data);
                 mTvOrderNumber.setText(getString(R.string.order_number) + ":" + data.getOrder_no());
                 mRecLen = data.getDeadline();
@@ -208,12 +224,16 @@ public class OrderDetailsActivity extends BaseActivity {
                 } else if (data.getStatus() == 3) {
                 } else if (data.getStatus() == 4) {
                 }
+                mTo_user_name = data.getTo_user_name();
+                mUser_name = data.getUser_name();
                 mTvBuysell.setText(getString(R.string.seller) + ":" + data.getTo_user_name());
                 mTvBuysell2.setText(getString(R.string.buyer) + ":" + data.getUser_name());
                 mTvCount.setText(data.getNumber());
                 mTvMoney.setText(data.getTrans_amount());
                 mTvPrice.setText(data.getPrice());
                 mTvPayType.setText(data.getStatus_name());
+                mTvEmail.setText(data.getEmail());
+                mTvPhone.setText(data.getMobile());
                 mTvServiceCharge.setText(Double.parseDouble(data.getOtc_free()) * 100 + "%");
                 mTvShiji.setText(data.getActual_number());
                 if (data.getRemark() != null)
@@ -229,11 +249,32 @@ public class OrderDetailsActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.bark, R.id.tv_help, R.id.btn_buy_cancel, R.id.btn_sell_cancel, R.id.btn_buy_confirm, R.id.btn_sell_confirm})
+    @OnClick({R.id.btn_contact, R.id.bark, R.id.tv_help, R.id.btn_buy_cancel, R.id.btn_sell_cancel, R.id.btn_buy_confirm, R.id.btn_sell_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.btn_contact:
+                if (!mTvBuysell.getText().toString().isEmpty() && !mTvBuysell2.getText().toString().isEmpty()) {
+                    if (mType1 == 1) {
+                        Intent intent = new Intent(this, ConversationActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("name", mTo_user_name);
+                        bundle.putString("user", mTo_user_name + "@" + Constants.DOMAINNAME);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(this, ConversationActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("name", mUser_name);
+                        bundle.putString("user", mUser_name + "@" + Constants.DOMAINNAME);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                } else {
+                    Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.tv_help:
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));

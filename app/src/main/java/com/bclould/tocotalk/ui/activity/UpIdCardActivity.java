@@ -3,8 +3,7 @@ package com.bclould.tocotalk.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -353,26 +352,26 @@ public class UpIdCardActivity extends BaseActivity {
 
     //把选中的图片设置到ImageView
     private void showImage(String imagePath, int requestCode) {
-        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+        Drawable drawable = Drawable.createFromPath(imagePath);
         switch (requestCode) {
             case ZHENGMIAN:
-                mZhengmianIv.setImageBitmap(bitmap);
+                mZhengmianIv.setImageDrawable(drawable);
                 mShenfenMap.put(ZHENGMIAN, imagePath);
                 break;
             case FANMIAN:
-                mFanmianIv.setImageBitmap(bitmap);
+                mFanmianIv.setImageDrawable(drawable);
                 mShenfenMap.put(FANMIAN, imagePath);
                 break;
             case SHOUCHI:
-                mShouchiIv.setImageBitmap(bitmap);
+                mShouchiIv.setImageDrawable(drawable);
                 mShenfenMap.put(SHOUCHI, imagePath);
                 break;
             case HUSHOUCHI:
-                mIvHuFanmian.setImageBitmap(bitmap);
+                mIvHuFanmian.setImageDrawable(drawable);
                 mHuzhaoMap.put(HUSHOUCHI, imagePath);
                 break;
             case HUZHENGMIAN:
-                mIvHuZhengmian.setImageBitmap(bitmap);
+                mIvHuZhengmian.setImageDrawable(drawable);
                 mHuzhaoMap.put(HUZHENGMIAN, imagePath);
                 break;
         }

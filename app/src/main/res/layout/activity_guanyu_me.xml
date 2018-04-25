@@ -93,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="www.tocotalk.io"
+                android:text="www.tocotalk.org"
                 android:textSize="@dimen/x28"/>
 
         </RelativeLayout>

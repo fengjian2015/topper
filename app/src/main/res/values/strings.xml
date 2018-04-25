@@ -451,7 +451,7 @@
     <string name="order_exception">訂單異常</string>
     <string name="deal_count">交易數量</string>
     <string name="out_coin_hint3">是否確認放幣？</string>
-    <string name="confirm_fb">確認放幣</string>
+    <string name="confirm_fb">確認放行</string>
     <string name="deal_finish">交易完成</string>
     <string name="fen">分</string>
     <string name="order_timeout">訂單超時</string>
@@ -462,10 +462,10 @@
     <string name="no_time">0分鐘</string>
     <string name="fb">放幣</string>
     <string name="cancel_order_hint">是否取消訂單?</string>
-    <string name="fb_hint">是否確認放幣？</string>
+    <string name="fb_hint">是否確認放行？</string>
     <string name="confirm_fk">確認付款</string>
     <string name="fk_succeed">付款成功</string>
-    <string name="dengdai_fb">等待放幣</string>
+    <string name="dengdai_fb">等待放行</string>
     <string name="all">全部</string>
     <string name="off_the_stocks">已完成</string>
     <string name="canceled_canc">已取消</string>
@@ -654,5 +654,24 @@
     <string name="dqky">當前可用 </string>
     <string name="publish_succeed">發佈成功</string>
     <string name="hr">小時</string>
+    <string name="kaijiang_count_down">開獎倒計時(天時分秒):</string>
+    <string name="et_phone">輸入手機號碼</string>
+    <string name="toast_phone">手機號不能為空</string>
+    <string name="fa_qi_ren">發起人</string>
+    <string name="single_insert_coins">單註投幣</string>
+    <string name="present_invest_count">當前參與人數</string>
+    <string name="et_digits">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="random">隨機</string>
+    <string name="no1">No.1</string>
+    <string name="no2">No.2</string>
+    <string name="no3">No.3</string>
+    <string name="no4">No.4</string>
+    <string name="guess">競猜</string>
+    <string name="toast_array">數組不能為空</string>
+    <string name="bet_array">投注數組</string>
+    <string name="contact_opposite">聯繫對方</string>
+    <string name="opposite_email">對方郵箱</string>
+    <string name="seller_phone">賣家手機</string>
+    <string name="phone_number2">手機號碼</string>
 
 </resources>

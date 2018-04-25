@@ -50,7 +50,7 @@ public class OrderInfo implements Serializable {
         this.data = data;
     }
 
-    public static class DataBean implements Serializable{
+    public static class DataBean implements Serializable {
         /**
          * id : 66
          * order_no : 2018032710250101
@@ -96,6 +96,24 @@ public class OrderInfo implements Serializable {
         private String status_name;
         private String remark;
         private String actual_number;
+        private String mobile;
+        private String email;
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getMobile() {
+            return mobile;
+        }
+
+        public void setMobile(String mobile) {
+            this.mobile = mobile;
+        }
 
         public String getActual_number() {
             return actual_number;
@@ -304,7 +322,7 @@ public class OrderInfo implements Serializable {
             this.wechat = wechat;
         }
 
-        public static class BankBean implements Serializable{
+        public static class BankBean implements Serializable {
             /**
              * bank_site : 高新园
              * card_name : 习红卫
@@ -350,7 +368,7 @@ public class OrderInfo implements Serializable {
             }
         }
 
-        public static class AlipayBean implements Serializable{
+        public static class AlipayBean implements Serializable {
             /**
              * name : xihongwei
              * alipay :
@@ -376,7 +394,7 @@ public class OrderInfo implements Serializable {
             }
         }
 
-        public static class WechatBean implements Serializable{
+        public static class WechatBean implements Serializable {
             /**
              * name : xihongwei
              * wechat :

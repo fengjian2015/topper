@@ -58,19 +58,19 @@ public class PushBuyingPresenter {
         }
     }
 
-    public void pushing(int type, String coin, String state, String price, String count, String paymentTime, String payment, String minLimit, String maxLimit, String remark, String password) {
+    public void pushing(int type, String coin, String state, String price, String count, String paymentTime, String payment, String minLimit, String maxLimit, String remark, String password, String phoneNumber) {
         double priced = Double.parseDouble(price);
         double countd = Double.parseDouble(count);
         double mind = Double.parseDouble(minLimit);
         double maxd = Double.parseDouble(maxLimit);
-        String s = paymentTime.substring(0, paymentTime.indexOf("分"));
+        String s = paymentTime.substring(0, paymentTime.indexOf(mContext.getString(R.string.fen)));
         int time = Integer.parseInt(s);
 
         if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .publishDeal(UtilTool.getToken(), type, coin, state, "CNY", priced, countd, time, payment, mind, maxd, remark, password)
+                    .publishDeal(UtilTool.getToken(), type, coin, state, "CNY", priced, countd, time, payment, mind, maxd, remark, password, phoneNumber)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<BaseInfo>() {

@@ -1066,18 +1066,21 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         } else {
             mName = bundle.getString("name");
             mUser = bundle.getString("user");
-            byte[] images = bundle.getByteArray("image");
-            if (images == null) {
-                mUserImage = UtilTool.setDefaultimage(this);
+            if (mMgr.findUser(mUser)) {
+                if (mMgr.queryUser(mUser).get(0).getPath().isEmpty()) {
+                    mUserImage = UtilTool.setDefaultimage(this);
+                } else {
+                    mUserImage = UtilTool.getImage(mMgr, mUser);
+                }
             } else {
-                mUserImage = BitmapFactory.decodeByteArray(images, 0, images.length);
+                mUserImage = UtilTool.setDefaultimage(this);
             }
         }
-        mType = intent.getStringExtra("type");
+       /* mType = intent.getStringExtra("type");
         if (mType != null)
             mLlOrder.setVisibility(View.VISIBLE);
         else
-            mLlOrder.setVisibility(View.GONE);
+            mLlOrder.setVisibility(View.GONE);*/
         mTitleName.setText(mName);
     }
 

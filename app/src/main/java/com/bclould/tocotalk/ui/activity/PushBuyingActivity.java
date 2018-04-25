@@ -172,7 +172,14 @@ public class PushBuyingActivity extends BaseActivity {
     Button mBtnPushing;
     @Bind(R.id.rl_bottom)
     RelativeLayout mRlBottom;
-
+    @Bind(R.id.tv11)
+    TextView mTv11;
+    @Bind(R.id.xx11)
+    TextView mXx11;
+    @Bind(R.id.et_phone_number)
+    EditText mEtPhoneNumber;
+    @Bind(R.id.rl_phone_number)
+    RelativeLayout mRlPhoneNumber;
 
     private Dialog mBottomDialog;
     private RecyclerView mRecyclerView;
@@ -403,15 +410,18 @@ public class PushBuyingActivity extends BaseActivity {
     //验证手机号和密码
     private boolean checkEdit() {
 
-        if (mTvCurrency.getText().toString().trim().isEmpty()) {
-            Toast.makeText(this, getResources().getString(R.string.toast_coin), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mTvCurrency);
+        if (mTvBuySell.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, getString(R.string.toast_buy_sell), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mTvBuySell);
         } else if (mTvState.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, getResources().getString(R.string.toast_state), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mTvState);
-        } else if (mTvBuySell.getText().toString().trim().isEmpty()) {
-            Toast.makeText(this, getString(R.string.toast_buy_sell), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mTvBuySell);
+        } else if (mTvCurrency.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, getResources().getString(R.string.toast_coin), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mTvCurrency);
+        } else if (mEtPhoneNumber.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, getResources().getString(R.string.toast_phone), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mRlPhoneNumber);
         } else if (mTvPayment.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, getResources().getString(R.string.toast_legal_tender), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mTvPayment);
@@ -585,6 +595,7 @@ public class PushBuyingActivity extends BaseActivity {
         String maxLimit = mEtMaxLimit.getText().toString();
         String minLimit = mEtMinLimit.getText().toString();
         String remark = mEtRemark.getText().toString();
+        String phoneNumber = mEtPhoneNumber.getText().toString();
         if (remark == null) {
             remark = "";
         }
@@ -596,7 +607,7 @@ public class PushBuyingActivity extends BaseActivity {
             mType = 2;
         }
 
-        mPushBuyingPresenter.pushing(mType, coin, state, price, count, paymentTime, payment, minLimit, maxLimit, remark, password);
+        mPushBuyingPresenter.pushing(mType, coin, state, price, count, paymentTime, payment, minLimit, maxLimit, remark, password,phoneNumber);
     }
 
     private Map<String, Integer> mMap = new HashMap<>();

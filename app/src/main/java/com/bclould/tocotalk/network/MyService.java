@@ -5,6 +5,7 @@ import com.bclould.tocotalk.model.AuatarListInfo;
 import com.bclould.tocotalk.model.AwsInfo;
 import com.bclould.tocotalk.model.BankCardInfo;
 import com.bclould.tocotalk.model.BaseInfo;
+import com.bclould.tocotalk.model.BetInfo;
 import com.bclould.tocotalk.model.CardListInfo;
 import com.bclould.tocotalk.model.CoinInfo;
 import com.bclould.tocotalk.model.CoinListInfo;
@@ -14,6 +15,7 @@ import com.bclould.tocotalk.model.ExchangeOrderInfo;
 import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.model.GoogleInfo;
 import com.bclould.tocotalk.model.GrabRedInfo;
+import com.bclould.tocotalk.model.GuessInfo;
 import com.bclould.tocotalk.model.GuessListInfo;
 import com.bclould.tocotalk.model.InOutInfo;
 import com.bclould.tocotalk.model.LikeInfo;
@@ -300,7 +302,8 @@ public interface MyService {
             @Field("min_amount") double min_amount,
             @Field("max_amount") double max_amount,
             @Field("remark") String remark,
-            @Field("second_password") String second_password
+            @Field("second_password") String second_password,
+            @Field("mobile") String mobile
     );
 
     //交易列表
@@ -809,6 +812,33 @@ public interface MyService {
             @Field("limit_number") String limit_number,
             @Field("coin_id") String coin_id,
             @Field("deadline") String deadline,
+            @Field("second_password") String second_password
+    );
+
+    //競猜詳情
+    @POST("bet/info")
+    @FormUrlEncoded
+    Observable<GuessInfo> GuessInfo(
+            @Header("Authorization") String token,
+            @Field("bet_id") int bet_id,
+            @Field("period_qty") int period_qty
+    );
+
+    //獲取隨機數組
+    @POST("bet/randomNumber")
+    Observable<BaseInfo> getRandom(
+            @Header("Authorization") String token
+    );
+
+    //投注
+    @POST("bet/coin")
+    @FormUrlEncoded
+    Observable<BetInfo> bet(
+            @Header("Authorization") String token,
+            @Field("bet_id") int bet_id,
+            @Field("period_qty") int period_qty,
+            @Field("coin_id") String coin_id,
+            @Field("bet_number") String bet_number,
             @Field("second_password") String second_password
     );
 }
