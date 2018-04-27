@@ -42,8 +42,8 @@ public class PlatformGuessFragment extends Fragment {
     @Bind(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
-    private String mPage = "1";
-    private String mPageSize = "1000";
+    private int mPage = 1;
+    private int mPageSize = 1000;
     private GuessListRVAdapter mGuessListRVAdapter;
 
     @Nullable
@@ -86,13 +86,13 @@ public class PlatformGuessFragment extends Fragment {
     List<GuessListInfo.DataBean> mDataList = new ArrayList<>();
 
     private void initData() {
-        mDataList.clear();
         mBlockchainGuessPresenter.getGuessList(mPage, mPageSize, 2, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
                 if (data.size() != 0) {
                     mRecyclerView.setVisibility(View.VISIBLE);
                     mLlNoData.setVisibility(View.GONE);
+                    mDataList.clear();
                     mDataList.addAll(data);
                     mGuessListRVAdapter.notifyDataSetChanged();
                 } else {

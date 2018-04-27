@@ -170,7 +170,6 @@ public class CoinPresenter {
 
     public void coinLists(String type, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .coinLists(UtilTool.getToken(), type)

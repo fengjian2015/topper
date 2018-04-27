@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.DealListInfo;
+import com.bclould.tocotalk.model.MyAdListInfo;
 import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.model.OrderListInfo;
 import com.bclould.tocotalk.model.TransRecordInfo;
@@ -327,6 +328,43 @@ public class BuySellPresenter {
         }
     }
 
+    public void getUserAdList(int type, int page, int page_size, int status, String coinName, final CallBack5 callBack5) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .getMyAdList(UtilTool.getToken(), type, page, page_size, coinName, status)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<MyAdListInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(MyAdListInfo myAdListInfo) {
+                            if (myAdListInfo.getStatus() == 1) {
+                                callBack5.send(myAdListInfo.getData());
+                            } else {
+                                Toast.makeText(mContext, myAdListInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     //定义接口
     public interface CallBack {
         void send(List<DealListInfo.DataBean> dataBean, String coin);
@@ -342,10 +380,16 @@ public class BuySellPresenter {
         void send(List<OrderListInfo.DataBean> data);
 
         void send2(TransRecordInfo.DataBean data);
-    }//定义接口
+    }
 
+    //定义接口
     public interface CallBack4 {
-
         void send();
+    }
+
+    //定义接口
+    public interface CallBack5 {
+
+        void send(List<MyAdListInfo.DataBean> data);
     }
 }

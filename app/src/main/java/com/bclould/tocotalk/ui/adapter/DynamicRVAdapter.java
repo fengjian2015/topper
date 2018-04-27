@@ -198,10 +198,14 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
 
         public void setData(final DynamicListInfo.DataBean dataBean) {
             mDataBean = dataBean;
-            if (mMgr.queryUser(dataBean.getUser_name() + "@" + Constants.DOMAINNAME).get(0).getPath().isEmpty()) {
-                mTouxiang.setImageResource(R.mipmap.img_nfriend_headshot1);
+            if (mMgr.queryUser(dataBean.getUser_name() + "@" + Constants.DOMAINNAME).size() != 0) {
+                if (mMgr.queryUser(dataBean.getUser_name() + "@" + Constants.DOMAINNAME).get(0).getPath().isEmpty()) {
+                    mTouxiang.setImageResource(R.mipmap.img_nfriend_headshot1);
+                } else {
+                    mTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));
+                }
             } else {
-                mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, dataBean.getUser_name() + "@" + Constants.DOMAINNAME));
+                mTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));
             }
             mTime.setText(dataBean.getCreated_at());
             mName.setText(dataBean.getUser_name());

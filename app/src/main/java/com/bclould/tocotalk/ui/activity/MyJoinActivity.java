@@ -1,12 +1,19 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,14 +22,19 @@ import com.bclould.tocotalk.Presenter.BlockchainGuessPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.model.GuessListInfo;
-import com.bclould.tocotalk.ui.adapter.MyJoinRVAdapter;
+import com.bclould.tocotalk.ui.adapter.GuessListRVAdapter;
+import com.bclould.tocotalk.ui.adapter.PayManageGVAdapter;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.bclould.tocotalk.R.style.BottomDialog;
 
 /**
  * Created by GA on 2018/4/23.
@@ -30,24 +42,30 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class MyJoinActivity extends BaseActivity {
+
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.tv_title)
     TextView mTvTitle;
-    @Bind(R.id.xx)
-    TextView mXx;
-    @Bind(R.id.xx2)
-    TextView mXx2;
-    @Bind(R.id.xx3)
-    TextView mXx3;
-    @Bind(R.id.xx4)
-    TextView mXx4;
-    @Bind(R.id.ll_top_menu)
-    LinearLayout mLlTopMenu;
+    @Bind(R.id.tv_filtrate)
+    TextView mTvFiltrate;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    private MyJoinRVAdapter mMyJoinRVAdapter;
+    @Bind(R.id.iv)
+    ImageView mIv;
+    @Bind(R.id.ll_no_data)
+    LinearLayout mLlNoData;
+    @Bind(R.id.refreshLayout)
+    SmartRefreshLayout mRefreshLayout;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
+    private int mType;
+    private int mStatus = 0;
+    private List<String> mFiltrateList = new ArrayList<>();
+    private int mPage = 1;
+    private int mPage_size = 1000;
+    private GuessListRVAdapter mGuessListRVAdapter;
+    private Dialog mBottomDialog;
+    private HashMap<String, Integer> mMap = new HashMap<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,70 +76,101 @@ public class MyJoinActivity extends BaseActivity {
     }
 
     private void init() {
-        initTopMenu();
-        setSelector(0);
+        mMap.put(getString(R.string.filtrate), 0);
+        setList();
         mBlockchainGuessPresenter = new BlockchainGuessPresenter(this);
-        initData();
         initRecyclerView();
+        initData(mStatus);
     }
 
-    private void initTopMenu() {
-        for (int i = 0; i < mLlTopMenu.getChildCount(); i++) {
-            View childAt = mLlTopMenu.getChildAt(i);
-            childAt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int index = mLlTopMenu.indexOfChild(view);
-                    setSelector(index);
-                    initData();
-                }
-            });
-        }
-    }
-
-    private void setSelector(int index) {
-        switch (index) {
-            case 0:
-                mXx.setVisibility(View.VISIBLE);
-                mXx2.setVisibility(View.INVISIBLE);
-                mXx3.setVisibility(View.INVISIBLE);
-                mXx4.setVisibility(View.INVISIBLE);
-                break;
-            case 1:
-                mXx.setVisibility(View.INVISIBLE);
-                mXx2.setVisibility(View.VISIBLE);
-                mXx3.setVisibility(View.INVISIBLE);
-                mXx4.setVisibility(View.INVISIBLE);
-                break;
-            case 2:
-                mXx.setVisibility(View.INVISIBLE);
-                mXx2.setVisibility(View.INVISIBLE);
-                mXx3.setVisibility(View.VISIBLE);
-                mXx4.setVisibility(View.INVISIBLE);
-                break;
-            case 3:
-                mXx.setVisibility(View.INVISIBLE);
-                mXx2.setVisibility(View.INVISIBLE);
-                mXx3.setVisibility(View.INVISIBLE);
-                mXx4.setVisibility(View.VISIBLE);
-                break;
-        }
+    private void setList() {
+        mFiltrateList.add(getString(R.string.all));
+        mFiltrateList.add(getString(R.string.dengdai_kj));
+        mFiltrateList.add(getString(R.string.no_zhong_jiang));
+        mFiltrateList.add(getString(R.string.zhong_jiang_le));
+        mFiltrateList.add(getString(R.string.qi_ta));
     }
 
     List<GuessListInfo.DataBean> mDataList = new ArrayList<>();
 
-    private void initData() {
-
+    private void initData(int status) {
+        mDataList.clear();
+        mBlockchainGuessPresenter.getMyJoin(mPage, mPage_size, status, new BlockchainGuessPresenter.CallBack() {
+            @Override
+            public void send(List<GuessListInfo.DataBean> data) {
+                if (data.size() != 0) {
+                    mDataList.addAll(data);
+                    mGuessListRVAdapter.notifyDataSetChanged();
+                } else {
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     private void initRecyclerView() {
-        mMyJoinRVAdapter = new MyJoinRVAdapter(this, mDataList);
+        mGuessListRVAdapter = new GuessListRVAdapter(mDataList, this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mMyJoinRVAdapter);
+        mRecyclerView.setAdapter(mGuessListRVAdapter);
     }
 
-    @OnClick(R.id.bark)
-    public void onViewClicked() {
-        finish();
+
+    @OnClick({R.id.bark, R.id.tv_filtrate})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.bark:
+                finish();
+                break;
+            case R.id.tv_filtrate:
+                showDialog();
+                break;
+        }
+    }
+
+    private void showDialog() {
+        mBottomDialog = new Dialog(this, R.style.BottomDialog2);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bill, null);
+        //获得dialog的window窗口
+        Window window = mBottomDialog.getWindow();
+        window.getDecorView().setPadding(0, 0, 0, 0);
+        //获得window窗口的属性
+        WindowManager.LayoutParams lp = window.getAttributes();
+        //设置窗口宽度为充满全屏
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        //将设置好的属性set回去
+        window.setAttributes(lp);
+        window.setGravity(Gravity.BOTTOM);
+        window.setWindowAnimations(BottomDialog);
+        mBottomDialog.setContentView(contentView);
+        mBottomDialog.show();
+        GridView gridView = (GridView) mBottomDialog.findViewById(R.id.grid_view);
+        Button cancel = (Button) mBottomDialog.findViewById(R.id.btn_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBottomDialog.dismiss();
+            }
+        });
+        gridView.setAdapter(new PayManageGVAdapter(this, mFiltrateList, mMap, new PayManageGVAdapter.CallBack() {
+            //接口回调
+            @Override
+            public void send(int position, String typeName) {
+                if (typeName.equals(getString(R.string.all))) {
+                    mType = 0;
+                } else if (typeName.equals(getString(R.string.dengdai_kj))) {
+                    mType = 1;
+                } else if (typeName.equals(getString(R.string.no_zhong_jiang))) {
+                    mType = 2;
+                } else if (typeName.equals(getString(R.string.zhong_jiang_le))) {
+                    mType = 3;
+                } else if (typeName.equals(getString(R.string.qi_ta))) {
+                    mType = 4;
+                }
+                initData(mType);
+                mMap.put(getString(R.string.filtrate), position);
+                mBottomDialog.dismiss();
+            }
+        }));
     }
 }

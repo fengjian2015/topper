@@ -22,6 +22,7 @@ import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.model.LoginInfo;
 import com.bclould.tocotalk.model.LoginRecordInfo;
 import com.bclould.tocotalk.model.ModeOfPaymentInfo;
+import com.bclould.tocotalk.model.MyAdListInfo;
 import com.bclould.tocotalk.model.MyAssetsInfo;
 import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.model.OrderInfo2;
@@ -797,8 +798,8 @@ public interface MyService {
     @FormUrlEncoded
     Observable<GuessListInfo> GuessList(
             @Header("Authorization") String token,
-            @Field("page") String page,
-            @Field("page_size") String page_size,
+            @Field("page") int page,
+            @Field("page_size") int page_size,
             @Field("type") int type
     );
 
@@ -840,5 +841,39 @@ public interface MyService {
             @Field("coin_id") String coin_id,
             @Field("bet_number") String bet_number,
             @Field("second_password") String second_password
+    );
+
+    //投注
+    @POST("bet/userPublishList")
+    @FormUrlEncoded
+    Observable<GuessListInfo> getMyStart(
+            @Header("Authorization") String token,
+            @Field("page") int page,
+            @Field("page_size") int page_size,
+            @Field("status") int status
+    );
+
+    //投注
+    @POST("bet/userJoinList")
+    @FormUrlEncoded
+    Observable<GuessListInfo> getMyJoin(
+            @Header("Authorization") String token,
+            @Field("page") int page,
+            @Field("page_size") int page_size,
+            @Field("status") int status
+    );
+
+
+
+    //我的廣告列表
+    @POST("trans/userLists")
+    @FormUrlEncoded
+    Observable<MyAdListInfo> getMyAdList(
+            @Header("Authorization") String token,
+            @Field("type") int type,
+            @Field("page") int page,
+            @Field("page_size") int page_size,
+            @Field("coin_name") String coin_name,
+            @Field("status") int status
     );
 }

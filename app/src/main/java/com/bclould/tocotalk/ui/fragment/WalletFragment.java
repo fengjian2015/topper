@@ -13,8 +13,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bclould.tocotalk.Presenter.CoinPresenter;
 import com.bclould.tocotalk.Presenter.SubscribeCoinPresenter;
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.ui.activity.BankCardActivity;
 import com.bclould.tocotalk.ui.activity.BlockchainGambleActivity;
 import com.bclould.tocotalk.ui.activity.CoinExchangeActivity;
@@ -31,6 +34,8 @@ import com.bclould.tocotalk.utils.UtilTool;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -117,6 +122,17 @@ public class WalletFragment extends Fragment {
             });
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if (MyApp.getInstance().mOtcCoinList.size() == 0) {
+            CoinPresenter coinPresenter = new CoinPresenter(getContext());
+            coinPresenter.coinLists("otc", new CoinPresenter.CallBack() {
+                @Override
+                public void send(List<CoinListInfo.DataBean> data) {
+                    UtilTool.Log(getString(R.string.coins), data.size() + "");
+                    MyApp.getInstance().mOtcCoinList.addAll(data);
+                }
+            });
         }
     }
 

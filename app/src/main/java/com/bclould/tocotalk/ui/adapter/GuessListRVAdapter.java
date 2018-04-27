@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
@@ -35,30 +36,14 @@ public class GuessListRVAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = null;
-        RecyclerView.ViewHolder holder = null;
-        if (viewType == 1) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_guess, parent, false);
-            holder = new ViewHolder(view);
-        } else if (viewType == 2) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_my_guess, parent, false);
-            holder = new ViewHolder2(view);
-        }
-        return holder;
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_my_guess, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        switch (getItemViewType(position)) {
-            case 1:
-                ViewHolder viewHolder = (ViewHolder) holder;
-                viewHolder.setData(mDataList.get(position));
-                break;
-            case 2:
-                ViewHolder2 viewHolder2 = (ViewHolder2) holder;
-                viewHolder2.setData(mDataList.get(position));
-                break;
-        }
+        ViewHolder viewHolder = (ViewHolder) holder;
+        viewHolder.setData(mDataList.get(position));
     }
 
     @Override
@@ -69,65 +54,10 @@ public class GuessListRVAdapter extends RecyclerView.Adapter {
         return 0;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return mDataList.get(position).getStatus();
-    }
-
-    class ViewHolder2 extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_kaijiang_time)
-        TextView mTvKaijiangTime;
-        @Bind(R.id.iv_touxiang)
-        ImageView mIvTouxiang;
-        @Bind(R.id.tv_guess_title)
-        TextView mTvGuessTitle;
-        @Bind(R.id.tv_name)
-        TextView mTvName;
-        @Bind(R.id.insert_coins_count)
-        TextView mInsertCoinsCount;
-        @Bind(R.id.tv_bonus_chi)
-        TextView mTvBonusChi;
-        @Bind(R.id.tv_count)
-        TextView mTvCount;
-        @Bind(R.id.tv_join_time)
-        TextView mTvJoinTime;
-        @Bind(R.id.tv_kaijiang_result)
-        TextView mTvKaijiangResult;
-        @Bind(R.id.tv_guess_status)
-        TextView mTvGuessStatus;
-        @Bind(R.id.ll_guess_status)
-        LinearLayout mLlGuessStatus;
-        @Bind(R.id.ll_all)
-        LinearLayout mLlAll;
-
-        ViewHolder2(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
-
-        public void setData(final GuessListInfo.DataBean dataBean) {
-            mTvGuessTitle.setText(dataBean.getTitle());
-            mInsertCoinsCount.setText(dataBean.getPeriod_qty() + mContext.getString(R.string.qi));
-            mTvKaijiangTime.setText(mContext.getString(R.string.kaijiang_time) + dataBean.getLottery_time());
-            mTvBonusChi.setText(dataBean.getPrize_pool_number() + "/" + dataBean.getLimit_number() + " " + dataBean.getCoin_name());
-            mTvKaijiangResult.setText(dataBean.getWin_number());
-            mTvName.setText(dataBean.getCreated_at());
-            if (dataBean.getStatus() == 1) {
-            } else {
-            }
-            mLlAll.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, GuessDetailsActivity.class);
-                    intent.putExtra("bet_id", dataBean.getId());
-                    intent.putExtra("period_qty", dataBean.getPeriod_qty());
-                    mContext.startActivity(intent);
-                }
-            });
-        }
-    }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.iv_guess_status)
+        ImageView mIvGuessStatus;
         @Bind(R.id.tv_kaijiang_time)
         TextView mTvKaijiangTime;
         @Bind(R.id.iv_touxiang)
@@ -140,10 +70,28 @@ public class GuessListRVAdapter extends RecyclerView.Adapter {
         Button mBtnBet;
         @Bind(R.id.insert_coins_count)
         TextView mInsertCoinsCount;
+        @Bind(R.id.rl_dangqian)
+        RelativeLayout mRlDangqian;
         @Bind(R.id.tv_bonus_chi)
         TextView mTvBonusChi;
-        @Bind(R.id.kaijiang_result)
-        TextView mKaijiangResult;
+        @Bind(R.id.rl_jiangjin)
+        RelativeLayout mRlJiangjin;
+        @Bind(R.id.tv_count)
+        TextView mTvCount;
+        @Bind(R.id.rl_count)
+        RelativeLayout mRlCount;
+        @Bind(R.id.tv_join_time)
+        TextView mTvJoinTime;
+        @Bind(R.id.rl_time)
+        RelativeLayout mRlTime;
+        @Bind(R.id.tv_kaijiang_result)
+        TextView mTvKaijiangResult;
+        @Bind(R.id.rl_result)
+        RelativeLayout mRlResult;
+        @Bind(R.id.tv_award_status)
+        TextView mTvAwardStatus;
+        @Bind(R.id.ll_guess_status)
+        LinearLayout mLlGuessStatus;
         @Bind(R.id.ll_all)
         LinearLayout mLlAll;
 
@@ -157,22 +105,63 @@ public class GuessListRVAdapter extends RecyclerView.Adapter {
             mInsertCoinsCount.setText(dataBean.getPeriod_qty() + mContext.getString(R.string.qi));
             mTvKaijiangTime.setText(mContext.getString(R.string.kaijiang_time) + dataBean.getLottery_time());
             mTvBonusChi.setText(dataBean.getPrize_pool_number() + "/" + dataBean.getLimit_number() + " " + dataBean.getCoin_name());
-            mKaijiangResult.setText(dataBean.getWin_number());
-            mTvName.setText(dataBean.getCreated_at());
+            mTvKaijiangResult.setText(dataBean.getWin_number());
+            mTvName.setText(mContext.getString(R.string.fa_qi_time) + dataBean.getCreated_at());
             if (dataBean.getStatus() == 1) {
+                mRlTime.setVisibility(View.GONE);
+                mRlCount.setVisibility(View.GONE);
+                mLlGuessStatus.setVisibility(View.GONE);
+                mIvGuessStatus.setImageResource(R.mipmap.icon_jc_ing);
                 mBtnBet.setVisibility(View.VISIBLE);
+                mBtnBet.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(mContext, GuessDetailsActivity.class);
+                        intent.putExtra("bet_id", dataBean.getId());
+                        intent.putExtra("period_qty", dataBean.getPeriod_qty());
+                        mContext.startActivity(intent);
+                    }
+                });
             } else {
-                mBtnBet.setVisibility(View.GONE);
-            }
-            mBtnBet.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, GuessDetailsActivity.class);
-                    intent.putExtra("bet_id", dataBean.getId());
-                    intent.putExtra("period_qty", dataBean.getPeriod_qty());
-                    mContext.startActivity(intent);
+                if (dataBean.getStatus() == 2) {
+                    mTvKaijiangTime.setTextColor(mContext.getResources().getColor(R.color.black));
+                    mRlTime.setVisibility(View.GONE);
+                    mRlCount.setVisibility(View.GONE);
+                    mLlGuessStatus.setVisibility(View.GONE);
+                    mIvGuessStatus.setImageResource(R.mipmap.icon_jc_wait);
+                } else if (dataBean.getStatus() == 3) {
+                    mTvKaijiangTime.setTextColor(mContext.getResources().getColor(R.color.black));
+                    mTvCount.setText(dataBean.getCoin_count());
+                    mTvJoinTime.setText(dataBean.getJoin_created_at());
+                    if (dataBean.getLottery_status() == 0) {
+                        mTvAwardStatus.setText(mContext.getString(R.string.no_join));
+                    } else if (dataBean.getLottery_status() == 2) {
+                        mTvAwardStatus.setText(mContext.getString(R.string.zhong_jiang_le));
+                        mTvAwardStatus.setTextColor(mContext.getResources().getColor(R.color.yikaijiang));
+                    } else if (dataBean.getLottery_status() == 3) {
+                        mTvAwardStatus.setText(mContext.getString(R.string.no_zhong_jiang));
+                    }
+                    mRlTime.setVisibility(View.VISIBLE);
+                    mRlCount.setVisibility(View.VISIBLE);
+                    mLlGuessStatus.setVisibility(View.VISIBLE);
+                    mIvGuessStatus.setImageResource(R.mipmap.icon_jc_pass);
+                } else if (dataBean.getStatus() == 4) {
+                    mRlTime.setVisibility(View.GONE);
+                    mRlCount.setVisibility(View.GONE);
+                    mLlGuessStatus.setVisibility(View.GONE);
+                    mIvGuessStatus.setImageResource(R.mipmap.icon_jc_cancel);
                 }
-            });
+                mBtnBet.setVisibility(View.GONE);
+                mLlAll.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(mContext, GuessDetailsActivity.class);
+                        intent.putExtra("bet_id", dataBean.getId());
+                        intent.putExtra("period_qty", dataBean.getPeriod_qty());
+                        mContext.startActivity(intent);
+                    }
+                });
+            }
         }
     }
 }

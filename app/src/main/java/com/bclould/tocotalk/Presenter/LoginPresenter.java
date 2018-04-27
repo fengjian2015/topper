@@ -45,7 +45,7 @@ public class LoginPresenter {
     public static final String LOGINSET = "login_set";
     public static final String STATE = "state";
     public static final String CURRENCY = "currency";
-    private static final String XMPP_SERVER = "xmpp_server";
+    public static final String XMPP_SERVER = "xmpp_server";
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
     public static final String MYUSERNAME = "my_username";
@@ -107,12 +107,13 @@ public class LoginPresenter {
                                 UtilTool.Log("日志", baseInfo.getData().getName());
                                 MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
                                 MySharedPreferences.getInstance().setInteger(USERID, baseInfo.getData().getUser_id());
-                                MySharedPreferences.getInstance().setString(MYUSERNAME, baseInfo.getData().getName() + "@" + Constants.DOMAINNAME);
+                                MySharedPreferences.getInstance().setString(MYUSERNAME, baseInfo.getData().getName() + "@" + baseInfo.getData().getXmpp());
                                 MySharedPreferences.getInstance().setString(EMAIL, email);
                                 MySharedPreferences.getInstance().setString(LOGINPW, password);
                                 MySharedPreferences.getInstance().setString(CURRENCY, baseInfo.getData().getCurrency());
                                 MySharedPreferences.getInstance().setString(XMPP_SERVER, baseInfo.getData().getXmpp());
-                                UtilTool.Log("登錄", baseInfo.getData().getXmpp());
+                                Constants.DOMAINNAME2 = baseInfo.getData().getXmpp();
+                                UtilTool.Log("服務器", Constants.DOMAINNAME2);
                                 if (baseInfo.getData().getCountry() == null) {
                                     MySharedPreferences.getInstance().setString(STATE, mContext.getString(R.string.default_state));
                                 } else {

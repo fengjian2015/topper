@@ -56,17 +56,16 @@ import static com.bclould.tocotalk.R.style.BottomDialog;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class BuySellActivity extends BaseActivity {
 
-
     @Bind(R.id.bark)
     ImageView mBark;
+    @Bind(R.id.tv_title)
+    TextView mTvTitle;
     @Bind(R.id.tv_help)
     TextView mTvHelp;
     @Bind(R.id.iv_touxiang)
     ImageView mIvTouxiang;
     @Bind(R.id.tv_name)
     TextView mTvName;
-    @Bind(R.id.tv_id)
-    TextView mTvId;
     @Bind(R.id.tv_reputation)
     TextView mTvReputation;
     @Bind(R.id.tv2)
@@ -79,8 +78,14 @@ public class BuySellActivity extends BaseActivity {
     TextView mTv;
     @Bind(R.id.tv3)
     TextView mTv3;
+    @Bind(R.id.tv_remark)
+    TextView mTvRemark;
     @Bind(R.id.tv_buysell_count)
     TextView mTvBuysellCount;
+    @Bind(R.id.tv_cny_hint)
+    TextView mTvCnyHint;
+    @Bind(R.id.tv_coin_hint)
+    TextView mTvCoinHint;
     @Bind(R.id.tv4)
     TextView mTv4;
     @Bind(R.id.et_cny)
@@ -91,14 +96,6 @@ public class BuySellActivity extends BaseActivity {
     EditText mEtCoin;
     @Bind(R.id.btn_sell_buy)
     Button mBtnSellBuy;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
-    @Bind(R.id.tv_remark)
-    TextView mTvRemark;
-    @Bind(R.id.tv_cny_hint)
-    TextView mTvCnyHint;
-    @Bind(R.id.tv_coin_hint)
-    TextView mTvCoinHint;
     private boolean mType;
     private DealListInfo.DataBean mData;
     private double mPrice;
@@ -163,7 +160,7 @@ public class BuySellActivity extends BaseActivity {
                 } else {
                     mTvCoinHint.setText("");
                 }
-                DecimalFormat df = new DecimalFormat("#.##");
+                DecimalFormat df = new DecimalFormat("#.######");
                 String str = df.format(money);
                 mEtCny.setText(str);
             } else {
@@ -186,7 +183,7 @@ public class BuySellActivity extends BaseActivity {
                 } else {
                     mTvCoinHint.setText("");
                 }
-                DecimalFormat df = new DecimalFormat("#.##");
+                DecimalFormat df = new DecimalFormat("#.######");
                 String str = df.format(money);
                 mEtCny.setText(str);
             } else {
@@ -216,7 +213,7 @@ public class BuySellActivity extends BaseActivity {
                     mTvCnyHint.setText("");
                 }
                 double count = money / mPrice;
-                DecimalFormat df = new DecimalFormat("#.######");
+                DecimalFormat df = new DecimalFormat("#.##");
                 String str = df.format(count);
                 mEtCoin.setText(str);
             } else {
@@ -239,7 +236,7 @@ public class BuySellActivity extends BaseActivity {
                     mTvCnyHint.setText("");
                 }
                 double count = money / mPrice;
-                DecimalFormat df = new DecimalFormat("#.######");
+                DecimalFormat df = new DecimalFormat("#.##");
                 String str = df.format(count);
                 mEtCoin.setText(str);
             } else {
@@ -280,33 +277,6 @@ public class BuySellActivity extends BaseActivity {
 
     };
 
-    private InputFilter lengthFilter2 = new InputFilter() {
-
-        @Override
-        public CharSequence filter(CharSequence source, int start, int end,
-                                   Spanned dest, int dstart, int dend) {
-            // source:当前输入的字符
-            // start:输入字符的开始位置
-            // end:输入字符的结束位置
-            // dest：当前已显示的内容
-            // dstart:当前光标开始位置
-            // dent:当前光标结束位置
-            if (dest.length() == 0 && source.equals(".")) {
-                return "0.";
-            }
-            String dValue = dest.toString();
-            String[] splitArray = dValue.split("\\.");
-            if (splitArray.length > 1) {
-                String dotValue = splitArray[1];
-                if (dotValue.length() == 6) {
-                    return "";
-                }
-            }
-            return null;
-        }
-
-    };
-
     private void initInterface() {
         Bundle bundle = getIntent().getExtras();
         mType = bundle.getBoolean("type", false);
@@ -315,7 +285,7 @@ public class BuySellActivity extends BaseActivity {
         mId = mData.getId();
         mTvName.setText(mData.getUsername());
         mTvCoin.setText(mData.getCoin_name());
-        mTvId.setText("ID：" + mData.getUser_id() + "");
+//        mTvId.setText("ID：" + mData.getUser_id() + "");
         mTvQuota.setText(mData.getMin_amount() + "-" + mData.getMax_amount() + " " + mData.getCurrency());
         mTv4.setText(mData.getCurrency());
         mTvRemark.setText(mData.getRemark());
@@ -393,7 +363,7 @@ public class BuySellActivity extends BaseActivity {
         TextView countCoin = (TextView) mRedDialog.findViewById(R.id.tv_count_coin);
         mEtPassword = (MNPasswordEditText) mRedDialog.findViewById(R.id.et_password);
         // 设置不调用系统键盘
-        if (android.os.Build.VERSION.SDK_INT <= 10) {
+        if (Build.VERSION.SDK_INT <= 10) {
             mEtPassword.setInputType(InputType.TYPE_NULL);
         } else {
             this.getWindow().setSoftInputMode(

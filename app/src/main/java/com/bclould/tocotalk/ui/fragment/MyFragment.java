@@ -96,6 +96,8 @@ public class MyFragment extends Fragment {
             Bitmap bitmap = UtilTool.getImage(mMgr, UtilTool.getJid());
             if (bitmap != null)
                 mIvTouxiang.setImageBitmap(bitmap);
+        } else if (msg.equals(getString(R.string.check_new_version))) {
+            mTvNewUpdate.setVisibility(View.VISIBLE);
         }
     }
 

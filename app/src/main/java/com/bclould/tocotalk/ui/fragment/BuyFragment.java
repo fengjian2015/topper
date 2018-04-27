@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.bclould.tocotalk.Presenter.BuySellPresenter;
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.ui.adapter.BuySellRVAdapter;
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -51,7 +52,7 @@ public class BuyFragment extends Fragment {
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
     private View mView;
-    private String mCoinName = "TPC";
+    private String mCoinName = "";
     private String mState = MySharedPreferences.getInstance().getString(STATE);
     private List<DealListInfo.DataBean> mDataList = new ArrayList<>();
     private BuySellRVAdapter mBuySellRVAdapter;
@@ -61,13 +62,16 @@ public class BuyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mView == null)
             mView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_buy, container, false);
+        if (MyApp.getInstance().mOtcCoinList.size() != 0) {
+            mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();
+        }
         ButterKnife.bind(this, mView);
         mBuySellPresenter = new BuySellPresenter(getContext());
         initRecyclerView();
-        initData(mCoinName, mState);
-        bindBankStatus();
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
+        initData(mCoinName, mState);
+        bindBankStatus();
         initListener();
         return mView;
     }

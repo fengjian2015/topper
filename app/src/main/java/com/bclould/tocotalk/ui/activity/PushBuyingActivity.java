@@ -200,23 +200,19 @@ public class PushBuyingActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_buying);
-        if (MyApp.getInstance().mOtcCoinList.size() != 0) {
-            mServiceCharge = MyApp.getInstance().mOtcCoinList.get(0).getOut_otc();
-        }
         mCoinPresenter = new CoinPresenter(this);
-        mPushBuyingPresenter = new PushBuyingPresenter(this);
+        mPushBuyingPresenter = new PushBuyingPresenter(this);/*
         if (MyApp.getInstance().mOtcCoinList.size() != 0) {
             mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();
         }
+       getModeOfPayment();
+        if (MyApp.getInstance().mOtcCoinList.size() != 0) {
+            mServiceCharge = MyApp.getInstance().mOtcCoinList.get(0).getOut_otc();
+        }*/
         setData();
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
         init();
-        if (!mCoinName.isEmpty()) {
-            initData(mCoinName);
-        }
-        mTvHint.setText(getString(R.string.push_ad_hint) + mServiceCharge + "%" + getString(R.string.sxf));
-//        getModeOfPayment();
     }
 
     private void setData() {
@@ -245,11 +241,18 @@ public class PushBuyingActivity extends BaseActivity {
     }
 
     private void init() {
+        mCoinName = getIntent().getStringExtra("coinName");
+        mServiceCharge = getIntent().getStringExtra("serviceCharge");
         mTvCurrency.setText(mCoinName);
         mTvState.setText(MySharedPreferences.getInstance().getString(STATE));
         mTvUnits.setText(MySharedPreferences.getInstance().getString(CURRENCY));
         mTvUnits2.setText(MySharedPreferences.getInstance().getString(CURRENCY));
         mTvUnits3.setText(MySharedPreferences.getInstance().getString(CURRENCY));
+        if (!mCoinName.isEmpty()) {
+            initData(mCoinName);
+        }
+
+        mTvHint.setText(getString(R.string.push_ad_hint) + mServiceCharge + "%" + getString(R.string.sxf));
         /*mEtMinLimit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -343,7 +346,7 @@ public class PushBuyingActivity extends BaseActivity {
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));
                 break;
             case R.id.rl_selector_currency:
-                showCoinDialog();
+//                showCoinDialog();
                 break;
             case R.id.rl_county:
                 break;
@@ -369,7 +372,7 @@ public class PushBuyingActivity extends BaseActivity {
         }
     }
 
-    private void showCoinDialog() {
+   /* private void showCoinDialog() {
         mBottomDialog = new Dialog(this, R.style.BottomDialog2);
         View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom, null);
         //获得dialog的window窗口
@@ -405,7 +408,7 @@ public class PushBuyingActivity extends BaseActivity {
             }
         });
         tvTitle.setText(getString(R.string.selector_coin));
-    }
+    }*/
 
     //验证手机号和密码
     private boolean checkEdit() {
@@ -607,7 +610,7 @@ public class PushBuyingActivity extends BaseActivity {
             mType = 2;
         }
 
-        mPushBuyingPresenter.pushing(mType, coin, state, price, count, paymentTime, payment, minLimit, maxLimit, remark, password,phoneNumber);
+        mPushBuyingPresenter.pushing(mType, coin, state, price, count, paymentTime, payment, minLimit, maxLimit, remark, password, phoneNumber);
     }
 
     private Map<String, Integer> mMap = new HashMap<>();
@@ -717,8 +720,8 @@ public class PushBuyingActivity extends BaseActivity {
         initData(name);
         mServiceCharge = serviceCharge;
         mTvHint.setText(getString(R.string.push_ad_hint) + serviceCharge + "%" + getString(R.string.sxf));
-//        mEtMaxLimit.setText("");
-//        mEtMinLimit.setText("");
+        mEtMaxLimit.setText("");
+        mEtMinLimit.setText("");
         mTvCurrency.setText(name);
     }
 }

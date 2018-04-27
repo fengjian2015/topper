@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.bclould.tocotalk.Presenter.BuySellPresenter;
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.OrderListInfo;
 import com.bclould.tocotalk.model.TransRecordInfo;
@@ -49,7 +50,7 @@ public class OrderFormFragment extends Fragment {
     ImageView mIv;
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
-    private String mCoinName = "TPC";
+    private String mCoinName = "";
     private String mFiltrate = "";
     private List<OrderListInfo.DataBean> mDataList = new ArrayList<>();
     private OrderRVAdapter mOrderRVAdapter;
@@ -59,17 +60,19 @@ public class OrderFormFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_buy, container, false);
+        if (MyApp.getInstance().mOtcCoinList.size() != 0) {
+            mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();
+        }
         ButterKnife.bind(this, view);
         mFiltrate = "2";
         mMgr = new DBManager(getContext());
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         initRecyclerView();
-        initListener();
         initData(mCoinName, mFiltrate);
+        initListener();
         return view;
     }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {

@@ -82,7 +82,7 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
                         activity.hideDialog(mName, mId, mLogo, mCoin_over, mServiceCharge);
                     } else if (mContext instanceof OtcActivity) {
                         OtcActivity activity = (OtcActivity) mContext;
-                        activity.hideDialog(mName, mId);
+                        activity.hideDialog(mName, mId,mData.getOut_otc());
                     } else if (mContext instanceof PushBuyingActivity) {
                         PushBuyingActivity activity = (PushBuyingActivity) mContext;
                         activity.hideDialog2(mName, mId, mServiceCharge);

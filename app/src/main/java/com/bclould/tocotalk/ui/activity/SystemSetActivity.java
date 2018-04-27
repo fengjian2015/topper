@@ -18,7 +18,12 @@ import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -81,6 +86,8 @@ public class SystemSetActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_system_set);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         ButterKnife.bind(this);
         if (!MySharedPreferences.getInstance().getString(Constants.NEW_APK_URL).isEmpty()) {
             mTvNewUpdate.setVisibility(View.VISIBLE);
@@ -89,6 +96,21 @@ public class SystemSetActivity extends BaseActivity {
         }
         MyApp.getInstance().addActivity(this);
         init();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(getString(R.string.check_new_version))) {
+            mTvNewUpdate.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+        ButterKnife.unbind(this);
     }
 
     private void init() {

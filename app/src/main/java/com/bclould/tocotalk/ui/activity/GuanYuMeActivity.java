@@ -18,17 +18,26 @@ import android.widget.Toast;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.network.DownLoadApk;
+import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by GA on 2017/9/22.
@@ -75,10 +84,68 @@ public class GuanYuMeActivity extends BaseActivity {
                 String body = MySharedPreferences.getInstance().getString(Constants.NEW_APK_BODY);
                 if (!url.isEmpty()) {
                     showDialog(url, apkName, body);
-                }else {
-                    Toast.makeText(this, getString(R.string.already_new_version), Toast.LENGTH_SHORT).show();
+                } else {
+                    checkVersion();
                 }
                 break;
+        }
+    }
+
+    //检测版本更新
+    private void checkVersion() {
+        //判断是否开启网络
+        if (UtilTool.isNetworkAvailable(this)) {
+            RetrofitUtil.getInstance(this)
+                    .getServer()
+                    .checkVersion("https://api.github.com/repos/bclould/tocotalk/releases/latest")//githua获取版本更新
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<GitHubInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(GitHubInfo baseInfo) {
+                            //判断是否需要更新
+                            float version = Float.parseFloat(UtilTool.getVersionCode(GuanYuMeActivity.this));
+                            String tag_version = "";
+                            if (baseInfo.getTag_name().contains("v")) {
+                                tag_version = baseInfo.getTag_name().replace("v", "");
+                            } else {
+                                tag_version = baseInfo.getTag_name();
+                            }
+                            float tag = Float.parseFloat(tag_version);
+                            if (version < tag) {
+                                MySharedPreferences.getInstance().setString(Constants.NEW_APK_URL, baseInfo.getUrl());
+                                MySharedPreferences.getInstance().setString(Constants.NEW_APK_NAME, baseInfo.getName());
+                                MySharedPreferences.getInstance().setString(Constants.NEW_APK_BODY, baseInfo.getBody());
+                                showDialog(baseInfo.getUrl(), baseInfo.getName(), baseInfo.getBody());
+                                mTvNewUpdate.setVisibility(View.VISIBLE);
+                                EventBus.getDefault().post(new MessageEvent(getString(R.string.check_new_version)));
+                            } else {
+                                mTvNewUpdate.setVisibility(View.GONE);
+                                MySharedPreferences.getInstance().setString(Constants.NEW_APK_URL, "");
+                                MySharedPreferences.getInstance().setString(Constants.NEW_APK_NAME, "");
+                                MySharedPreferences.getInstance().setString(Constants.NEW_APK_BODY, "");
+                                Toast.makeText(GuanYuMeActivity.this, getString(R.string.already_new_version), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            UtilTool.Log("日志", e.getMessage());
+                            Toast.makeText(GuanYuMeActivity.this, getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(GuanYuMeActivity.this, getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
 

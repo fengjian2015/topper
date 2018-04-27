@@ -61,25 +61,19 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/y25"
+            android:layout_alignTop="@+id/iv_touxiang"
+            android:layout_marginTop="@dimen/y10"
             android:layout_toRightOf="@+id/iv_touxiang"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
-        <TextView
-            android:id="@+id/tv_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_name"
-            android:layout_marginTop="@dimen/y5"
-            android:layout_toRightOf="@+id/iv_touxiang"
-            android:textSize="@dimen/x26"/>
 
         <TextView
             android:id="@+id/tv_reputation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_id"
+            android:layout_alignBottom="@+id/iv_touxiang"
+            android:layout_marginBottom="@dimen/y10"
             android:layout_marginTop="@dimen/y5"
             android:layout_toRightOf="@+id/iv_touxiang"
             android:textSize="@dimen/x24"/>
@@ -168,10 +162,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/tv3"
-            android:layout_below="@+id/tv2"
+            android:layout_marginLeft="@dimen/x20"
             android:layout_marginTop="@dimen/y20"
             android:layout_toRightOf="@+id/tv3"
-            android:textSize="@dimen/x26"/>
+            android:text="123456"
+            android:textSize="@dimen/x30"/>
 
     </RelativeLayout>
 
@@ -235,12 +230,12 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/tv4"
             android:layout_marginRight="@dimen/x20"
-            android:singleLine="true"
             android:layout_marginTop="@dimen/y10"
             android:background="@drawable/bg_blue_border"
             android:inputType="numberDecimal"
             android:paddingLeft="@dimen/x20"
             android:paddingRight="@dimen/x20"
+            android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="@dimen/x28"/>
 
@@ -269,7 +264,6 @@
             android:layout_width="@dimen/x315"
             android:layout_height="@dimen/y100"
             android:layout_below="@+id/tv4"
-            android:singleLine="true"
             android:layout_marginLeft="@dimen/x20"
             android:layout_marginTop="@dimen/y10"
             android:background="@drawable/bg_blue_border"
@@ -277,6 +271,7 @@
             android:inputType="numberDecimal"
             android:paddingLeft="@dimen/x20"
             android:paddingRight="@dimen/x20"
+            android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="@dimen/x28"/>
 

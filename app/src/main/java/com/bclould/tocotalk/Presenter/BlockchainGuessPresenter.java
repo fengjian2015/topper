@@ -51,7 +51,7 @@ public class BlockchainGuessPresenter {
         mContext = context;
     }
 
-    public void getGuessList(String page, String page_size, int type, final CallBack callBack) {
+    public void getGuessList(int page, int page_size, int type, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
                     .getServer()
@@ -226,6 +226,86 @@ public class BlockchainGuessPresenter {
                                 callBack5.send(betInfo.getData());
                             } else {
                                 Toast.makeText(mContext, betInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            UtilTool.Log("發佈競猜", e.getMessage());
+                            hideDialog();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void getMyStart(int page, int page_size, int status, final CallBack callBack) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .getMyStart(UtilTool.getToken(), page, page_size, status)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<GuessListInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(GuessListInfo guessListInfo) {
+                            hideDialog();
+                            if (guessListInfo.getStatus() == 1) {
+                                callBack.send(guessListInfo.getData());
+                            } else {
+                                Toast.makeText(mContext, guessListInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            UtilTool.Log("發佈競猜", e.getMessage());
+                            hideDialog();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void getMyJoin(int page, int page_size, int status, final CallBack callBack) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .getMyJoin(UtilTool.getToken(), page, page_size, status)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<GuessListInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(GuessListInfo guessListInfo) {
+                            hideDialog();
+                            if (guessListInfo.getStatus() == 1) {
+                                callBack.send(guessListInfo.getData());
+                            } else {
+                                Toast.makeText(mContext, guessListInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
 

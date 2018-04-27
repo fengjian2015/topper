@@ -1,7 +1,6 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,20 +10,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -117,6 +117,38 @@ public class GuessDetailsActivity extends BaseActivity {
     Button mBtnBet;
     @Bind(R.id.scrollView)
     ScrollView mScrollView;
+    @Bind(R.id.ll_no)
+    LinearLayout mLlNo;
+    @Bind(R.id.tv_number)
+    TextView mTvNumber;
+    @Bind(R.id.tv_number2)
+    TextView mTvNumber2;
+    @Bind(R.id.tv_number3)
+    TextView mTvNumber3;
+    @Bind(R.id.tv_number4)
+    TextView mTvNumber4;
+    @Bind(R.id.tv_kaijiang_time)
+    TextView mTvKaijiangTime;
+    @Bind(R.id.tv_title2)
+    TextView mTvTitle2;
+    @Bind(R.id.tv_start_time2)
+    TextView mTvStartTime2;
+    @Bind(R.id.tv_present_periods2)
+    TextView mTvPresentPeriods2;
+    @Bind(R.id.tv_who2)
+    TextView mTvWho2;
+    @Bind(R.id.tv_coin2)
+    TextView mTvCoin2;
+    @Bind(R.id.tv_single_insert_count3)
+    TextView mTvSingleInsertCount3;
+    @Bind(R.id.tv_present_invest_count2)
+    TextView mTvPresentInvestCount2;
+    @Bind(R.id.tv_bonus_count)
+    TextView mTvBonusCount;
+    @Bind(R.id.recycler_view2)
+    RecyclerView mRecyclerView2;
+    @Bind(R.id.ll_already)
+    LinearLayout mLlAlready;
     private Animation mEnterAnim;
     private Animation mExitAnim;
     private Dialog mRedDialog;
@@ -179,7 +211,7 @@ public class GuessDetailsActivity extends BaseActivity {
                     mTvSecond.setText(seconds);
                     if (mCountdown <= 0) {
                         mTimer.cancel();
-                        Toast.makeText(GuessDetailsActivity.this, getString(R.string.order_timeout), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GuessDetailsActivity.this, getString(R.string.guess_timeout), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -189,6 +221,8 @@ public class GuessDetailsActivity extends BaseActivity {
     private String mRandom;
     private String mSingle_coin;
     private int mCurrent_people_number;
+    private int mOver_count_num;
+    private int mStatus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -214,27 +248,60 @@ public class GuessDetailsActivity extends BaseActivity {
         mBlockchainGuessPresenter.getGuessInfo(mBet_id, mPeriod_qty, new BlockchainGuessPresenter.CallBack3() {
             @Override
             public void send(GuessInfo.DataBean data) {
-                mCountdown = data.getCountdown();
-                UtilTool.Log("倒計時", data.getCountdown() + "");
-                mTimer.schedule(mTask, 1000, 1000);
+                UtilTool.Log("次數", data.getOver_count_num() + "");
                 mDataList.addAll(data.getBetList());
                 mGuessBetRVAdapter.notifyDataSetChanged();
                 mTvPresentPeriods.setText(data.getPeriod_qty() + getString(R.string.qi));
+                mTvPresentPeriods2.setText(data.getPeriod_qty() + getString(R.string.qi));
                 mTvWho.setText(data.getUser_name());
+                mTvWho2.setText(data.getUser_name());
                 mTvCoin.setText(data.getCoin_name());
+                mTvCoin2.setText(data.getCoin_name());
                 mTvSingleInsertCount.setText(data.getSingle_coin() + "/" + data.getCoin_name());
                 mTvSingleInsertCount2.setText(data.getSingle_coin() + "/" + data.getCoin_name());
+                mTvSingleInsertCount3.setText(data.getSingle_coin() + "/" + data.getCoin_name());
                 mTvPresentInvestCount.setText(data.getCurrent_people_number() + "");
-                mTvStartTime.setText(data.getCreated_at());
+                mTvPresentInvestCount2.setText(data.getCurrent_people_number() + "");
+                mTvStartTime.setText(getString(R.string.fa_qi_time) + data.getCreated_at());
+                mTvStartTime2.setText(data.getCreated_at());
                 mTvSumCoin.setText(data.getLimit_number() + data.getCoin_name());
+                mTvBonusCount.setText(data.getLimit_number() + data.getCoin_name());
                 mTvPresentCoinCount.setText(data.getPrize_pool_number() + data.getCoin_name());
                 mTvTitle.setText(data.getTitle());
+                mTvTitle2.setText(data.getTitle());
                 mProgressBar.setMax(Integer.parseInt(data.getLimit_number()));
                 mProgressBar.setProgress(Integer.parseInt(data.getPrize_pool_number()));
                 mPrize_pool_number = data.getPrize_pool_number();
                 mCoin_id = data.getCoin_id();
                 mSingle_coin = data.getSingle_coin();
                 mCurrent_people_number = data.getCurrent_people_number();
+                mOver_count_num = data.getOver_count_num();
+                mStatus = data.getStatus();
+                if (data.getOver_count_num() == 0) {
+                    mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
+                    mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
+                }
+                if (data.getStatus() == 1 || data.getStatus() == 2) {
+                    mLlNo.setVisibility(View.VISIBLE);
+                    mLlAlready.setVisibility(View.GONE);
+                    if (data.getStatus() == 2) {
+                        mBtnBet.setBackground(getDrawable(R.drawable.bg_grey_shape));
+                        mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape));
+                    } else {
+                        mCountdown = data.getCountdown();
+                        UtilTool.Log("倒計時", data.getCountdown() + "");
+                        mTimer.schedule(mTask, 1000, 1000);
+                    }
+                } else if (data.getStatus() == 3) {
+                    mLlNo.setVisibility(View.GONE);
+                    mLlAlready.setVisibility(View.VISIBLE);
+                    String[] split = data.getWin_number().split("_");
+                    mTvNumber.setText(split[0]);
+                    mTvNumber2.setText(split[1]);
+                    mTvNumber3.setText(split[2]);
+                    mTvNumber4.setText(split[3]);
+                }
+
             }
         });
     }
@@ -248,6 +315,123 @@ public class GuessDetailsActivity extends BaseActivity {
 
 
     private void initEidt() {
+        mEtArray.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    mEtArray2.requestFocus();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        mEtArray2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    mEtArray3.requestFocus();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        mEtArray3.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    mEtArray4.requestFocus();
+                    return true;
+                }
+                return false;
+            }
+        });
+/*
+        mEtArray2.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                String array2 = mEtArray2.getText().toString();
+                if (array2.isEmpty()) {
+                    String array = mEtArray.getText().toString();
+                    mEtArray.requestFocus();
+                    if (!array.isEmpty()) {
+                        mEtArray.setSelection(mEtArray2.getText().length());
+                        int index = mEtArray.getSelectionStart();
+                        Editable text = mEtArray.getText();
+                        text.delete(index - 1, index);
+                    } else {
+                        mEtArray.setSelection(0);
+                    }
+                }
+                return false;
+            }
+        });
+        mEtArray3.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                String array3 = mEtArray3.getText().toString();
+                if (array3.isEmpty()) {
+                    String array2 = mEtArray2.getText().toString();
+                    if (!array2.isEmpty()) {
+                        mEtArray2.requestFocus();
+                        mEtArray2.setSelection(mEtArray2.getText().length());
+                        int index = mEtArray2.getSelectionStart();
+                        Editable text = mEtArray2.getText();
+                        text.delete(index - 1, index);
+                    } else {
+                        String array = mEtArray.getText().toString();
+                        mEtArray.requestFocus();
+                        if (!array.isEmpty()) {
+                            mEtArray.setSelection(mEtArray2.getText().length());
+                            int index = mEtArray.getSelectionStart();
+                            Editable text = mEtArray.getText();
+                            text.delete(index - 1, index);
+                        } else {
+                            mEtArray.setSelection(0);
+                        }
+                    }
+                }
+                return false;
+            }
+        });
+        mEtArray4.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                String array4 = mEtArray4.getText().toString();
+                if (array4.isEmpty()) {
+                    String array3 = mEtArray3.getText().toString();
+                    if (!array3.isEmpty()) {
+                        mEtArray3.requestFocus();
+                        mEtArray3.setSelection(mEtArray2.getText().length());
+                        int index = mEtArray3.getSelectionStart();
+                        Editable text = mEtArray3.getText();
+                        text.delete(index - 1, index);
+                    } else {
+                        String array2 = mEtArray2.getText().toString();
+                        if (!array2.isEmpty()) {
+                            mEtArray2.requestFocus();
+                            mEtArray2.setSelection(mEtArray2.getText().length());
+                            int index = mEtArray2.getSelectionStart();
+                            Editable text = mEtArray2.getText();
+                            text.delete(index - 1, index);
+                        } else {
+                            String array = mEtArray.getText().toString();
+                            mEtArray.requestFocus();
+                            if (!array.isEmpty()) {
+                                mEtArray.setSelection(mEtArray2.getText().length());
+                                int index = mEtArray.getSelectionStart();
+                                Editable text = mEtArray.getText();
+                                text.delete(index - 1, index);
+                            } else {
+                                mEtArray.setSelection(0);
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+        });
         mEtArray.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -256,15 +440,15 @@ public class GuessDetailsActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                String array = mEtArray.getText().toString();
+                if (charSequence.length() == 2) {
+                    mEtArray2.requestFocus();
+                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String array = mEtArray.getText().toString();
-                if (array.length() == 2) {
-                    mEtArray2.requestFocus();
-                }
+
             }
         });
         mEtArray2.addTextChangedListener(new TextWatcher() {
@@ -275,15 +459,16 @@ public class GuessDetailsActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String array = mEtArray2.getText().toString();
-                if (array.length() == 0) {
-                    mEtArray.requestFocus();
-                }
+
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
                 String array = mEtArray2.getText().toString();
+                if (array.length() == 0) {
+                    mEtArray.requestFocus();
+                    mEtArray.setSelection(mEtArray.getText().length());
+                }
                 if (array.length() == 2) {
                     mEtArray3.requestFocus();
                 }
@@ -297,15 +482,16 @@ public class GuessDetailsActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String array = mEtArray3.getText().toString();
-                if (array.length() == 0) {
-                    mEtArray2.requestFocus();
-                }
+
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
                 String array = mEtArray3.getText().toString();
+                if (array.length() == 0) {
+                    mEtArray2.requestFocus();
+                    mEtArray2.setSelection(mEtArray.getText().length());
+                }
                 if (array.length() == 2) {
                     mEtArray4.requestFocus();
                 }
@@ -319,15 +505,16 @@ public class GuessDetailsActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String array = mEtArray4.getText().toString();
-                if (array.length() == 0) {
-                    mEtArray3.requestFocus();
-                }
+
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
                 String array = mEtArray4.getText().toString();
+                if (array.length() == 0) {
+                    mEtArray3.requestFocus();
+                    mEtArray3.setSelection(mEtArray.getText().length());
+                }
                 if (array.length() == 2) {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     boolean isOpen = imm.isActive();//isOpen若返回true，则表示输入法打开
@@ -336,7 +523,7 @@ public class GuessDetailsActivity extends BaseActivity {
                     }
                 }
             }
-        });
+        });*/
     }
 
     private void showPWDialog() {
@@ -362,8 +549,6 @@ public class GuessDetailsActivity extends BaseActivity {
     }
 
     private void initDialog() {
-        String coins = mEtArray.getText().toString();
-        String count = mEtArray.getText().toString();
         TextView coin = (TextView) mRedDialog.findViewById(R.id.tv_coin);
         TextView countCoin = (TextView) mRedDialog.findViewById(R.id.tv_count_coin);
         mEtPassword = (MNPasswordEditText) mRedDialog.findViewById(R.id.et_password);
@@ -394,8 +579,8 @@ public class GuessDetailsActivity extends BaseActivity {
             }
         });
         valueList = virtualKeyboardView.getValueList();
-        countCoin.setText(count + coins);
-        coin.setText(getString(R.string.bet) + coins + getString(R.string.guess));
+        countCoin.setText(mSingle_coin + mTvCoin.getText().toString());
+        coin.setText(getString(R.string.bet) + mTvCoin.getText().toString() + getString(R.string.guess));
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -474,11 +659,28 @@ public class GuessDetailsActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_random:
-                getRandom();
+                if (mStatus == 1) {
+                    if (mOver_count_num != 0) {
+                        getRandom();
+                    } else {
+                        Toast.makeText(this, getString(R.string.bet_zuiduo_cishu), Toast.LENGTH_SHORT).show();
+                    }
+                } else if (mStatus == 2) {
+                    Toast.makeText(this, getString(R.string.sum_jiangjin_chi), Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             case R.id.btn_bet:
-                if (checkEdit()) {
-                    showPWDialog();
+                if (mStatus == 1) {
+                    if (mOver_count_num != 0) {
+                        if (checkEdit()) {
+                            showPWDialog();
+                        }
+                    } else {
+                        Toast.makeText(this, getString(R.string.bet_zuiduo_cishu), Toast.LENGTH_SHORT).show();
+                    }
+                } else if (mStatus == 2) {
+                    Toast.makeText(this, getString(R.string.sum_jiangjin_chi), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -507,11 +709,17 @@ public class GuessDetailsActivity extends BaseActivity {
         mBlockchainGuessPresenter.getRandom(new BlockchainGuessPresenter.CallBack4() {
             @Override
             public void send(String data) {
+                mOver_count_num--;
+                if (mOver_count_num == 0) {
+                    mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
+                    mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
+                }
                 String[] split = data.split(":");
                 mEtArray.setText(split[0]);
                 mEtArray2.setText(split[1]);
                 mEtArray3.setText(split[2]);
                 mEtArray4.setText(split[3]);
+                mEtArray4.setSelection(2);
                 mRandom = data;
             }
         });
@@ -521,9 +729,14 @@ public class GuessDetailsActivity extends BaseActivity {
         mBlockchainGuessPresenter.bet(mBet_id, mPeriod_qty, mCoin_id, mRandom, password, new BlockchainGuessPresenter.CallBack5() {
             @Override
             public void send(BetInfo.DataBean data) {
+                mEtArray.requestFocus();
+                mEtArray.setText("");
+                mEtArray2.setText("");
+                mEtArray3.setText("");
+                mEtArray4.setText("");
                 mPrize_pool_number = Integer.parseInt(mPrize_pool_number) + Integer.parseInt(mSingle_coin) + "";
                 mCurrent_people_number = mCurrent_people_number + 1;
-                mTvPresentInvestCount.setText(mCurrent_people_number);
+                mTvPresentInvestCount.setText(mCurrent_people_number + "");
                 mTvPresentCoinCount.setText(mPrize_pool_number + mTvCoin.getText().toString());
                 mProgressBar.setProgress(Integer.parseInt(mPrize_pool_number));
                 GuessInfo.DataBean.BetListBean betListBean = new GuessInfo.DataBean.BetListBean();

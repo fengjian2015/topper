@@ -615,7 +615,12 @@
         <activity
             android:name="com.bclould.tocotalk.ui.activity.ServiceAgreementActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/TranslucentTheme"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--我發佈的廣告界面-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.MyPushAdActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
         <!--監聽系統語言切換-->

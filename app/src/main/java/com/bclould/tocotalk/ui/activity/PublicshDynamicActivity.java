@@ -334,6 +334,9 @@ public class PublicshDynamicActivity extends BaseActivity {
 
 
     private void upImage(final String key, File file, final boolean type) {
+        UtilTool.Log("aws", Constants.ACCESS_KEY_ID);
+        UtilTool.Log("aws", Constants.SECRET_ACCESS_KEY);
+        UtilTool.Log("aws", Constants.SESSION_TOKEN);
         BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
                 Constants.ACCESS_KEY_ID,
                 Constants.SECRET_ACCESS_KEY,

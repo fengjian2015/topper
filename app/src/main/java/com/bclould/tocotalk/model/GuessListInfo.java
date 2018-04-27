@@ -11,7 +11,7 @@ public class GuessListInfo {
     /**
      * status : 1
      * message : ok
-     * data : [{"id":3,"title":"我的竞猜你看着办","period_qty":1,"status":1,"created_at":"2018-04-22 20:22:01","coin_id":28,"single_coin":"2","limit_number":"20","user_name":"xihongwei","coin_name":"TPC","lottery_time":"2018-04-22 20:22:01","win_number":"0","prize_pool_number":"0","lottery_status":1},{"id":2,"title":"","period_qty":2,"status":1,"created_at":"2018-04-20 15:16:05","coin_id":28,"single_coin":"2","limit_number":"20","user_name":"xihongwei","coin_name":"TPC","lottery_time":"2018-04-20 15:16:05","win_number":"","prize_pool_number":"0","lottery_status":0},"..."]
+     * data : [{"id":6,"title":"咯哦哦","period_qty":1,"status":1,"created_at":"2018-04-26 15:31:57","coin_id":28,"single_coin":"2","limit_number":"10","user_name":"liaolinan2","coin_name":"TPC","lottery_time":"2018-04-26 15:31:57","win_number":"----","prize_pool_number":"10","lottery_status":1,"join_created_at":"2018-04-25 17:10:17","coin_count":"8"},{"id":3,"title":"我的竞猜你看着办","period_qty":1,"status":2,"created_at":"2018-04-22 20:22:01","coin_id":28,"single_coin":"2","limit_number":"20","user_name":"xihongwei","coin_name":"TPC","lottery_time":"2018-04-22 20:22:01","win_number":"----","prize_pool_number":"0","lottery_status":1,"join_created_at":"2018-04-23 15:31:18","coin_count":"2"}]
      */
 
     private int status;
@@ -44,20 +44,22 @@ public class GuessListInfo {
 
     public static class DataBean {
         /**
-         * id : 3
-         * title : 我的竞猜你看着办
+         * id : 6
+         * title : 咯哦哦
          * period_qty : 1
          * status : 1
-         * created_at : 2018-04-22 20:22:01
+         * created_at : 2018-04-26 15:31:57
          * coin_id : 28
          * single_coin : 2
-         * limit_number : 20
-         * user_name : xihongwei
+         * limit_number : 10
+         * user_name : liaolinan2
          * coin_name : TPC
-         * lottery_time : 2018-04-22 20:22:01
-         * win_number : 0
-         * prize_pool_number : 0
+         * lottery_time : 2018-04-26 15:31:57
+         * win_number : ----
+         * prize_pool_number : 10
          * lottery_status : 1
+         * join_created_at : 2018-04-25 17:10:17
+         * coin_count : 8
          */
 
         private int id;
@@ -74,6 +76,8 @@ public class GuessListInfo {
         private String win_number;
         private String prize_pool_number;
         private int lottery_status;
+        private String join_created_at;
+        private String coin_count;
 
         public int getId() {
             return id;
@@ -185,6 +189,22 @@ public class GuessListInfo {
 
         public void setLottery_status(int lottery_status) {
             this.lottery_status = lottery_status;
+        }
+
+        public String getJoin_created_at() {
+            return join_created_at;
+        }
+
+        public void setJoin_created_at(String join_created_at) {
+            this.join_created_at = join_created_at;
+        }
+
+        public String getCoin_count() {
+            return coin_count;
+        }
+
+        public void setCoin_count(String coin_count) {
+            this.coin_count = coin_count;
         }
     }
 }

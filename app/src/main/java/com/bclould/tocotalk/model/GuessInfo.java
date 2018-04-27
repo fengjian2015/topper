@@ -8,10 +8,11 @@ import java.util.List;
 
 public class GuessInfo {
 
+
     /**
      * status : 1
      * message : ok
-     * data : {"id":2,"title":"","period_qty":2,"status":1,"created_at":"2018-04-20 15:16:05","coin_id":28,"single_coin":"2","limit_number":"20","user_name":"xihongwei","countdown":0,"coin_name":"TPC","current_people_number":1,"prize_pool_number":"30","betList":[{"bet_number":"yt:ue:s8:71","created_at":"2018-04-20 15:23:09","bonus_number":"4.80000000","winning_type":"1","status":3}]}
+     * data : {"id":2,"title":"","period_qty":2,"status":1,"created_at":"2018-04-20 15:16:05","coin_id":28,"single_coin":"2","limit_number":"20","user_name":"xihongwei","countdown":0,"coin_name":"TPC","current_people_number":1,"prize_pool_number":"30","over_count_num":1,"betList":[{"bet_number":"yt:ue:s8:71","created_at":"2018-04-20 15:23:09","bonus_number":"4.80000000","winning_type":"1","status":3}]}
      */
 
     private int status;
@@ -57,6 +58,7 @@ public class GuessInfo {
          * coin_name : TPC
          * current_people_number : 1
          * prize_pool_number : 30
+         * over_count_num : 1
          * betList : [{"bet_number":"yt:ue:s8:71","created_at":"2018-04-20 15:23:09","bonus_number":"4.80000000","winning_type":"1","status":3}]
          */
 
@@ -73,6 +75,17 @@ public class GuessInfo {
         private String coin_name;
         private int current_people_number;
         private String prize_pool_number;
+        private String win_number;
+
+        public String getWin_number() {
+            return win_number;
+        }
+
+        public void setWin_number(String win_number) {
+            this.win_number = win_number;
+        }
+
+        private int over_count_num;
         private List<BetListBean> betList;
 
         public int getId() {
@@ -177,6 +190,14 @@ public class GuessInfo {
 
         public void setPrize_pool_number(String prize_pool_number) {
             this.prize_pool_number = prize_pool_number;
+        }
+
+        public int getOver_count_num() {
+            return over_count_num;
+        }
+
+        public void setOver_count_num(int over_count_num) {
+            this.over_count_num = over_count_num;
         }
 
         public List<BetListBean> getBetList() {

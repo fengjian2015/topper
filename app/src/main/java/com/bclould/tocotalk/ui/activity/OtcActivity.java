@@ -87,8 +87,6 @@ public class OtcActivity extends BaseActivity {
     ViewPager mCloudCircleVp;
     @Bind(R.id.xx2)
     TextView mXx2;
-    @Bind(R.id.btn_selector_coin)
-    Button mBtnSelectorCoin;
     @Bind(R.id.btn_push_ad)
     Button mBtnPushAd;
     @Bind(R.id.ll_bottom)
@@ -98,7 +96,9 @@ public class OtcActivity extends BaseActivity {
     private Dialog mBottomDialog;
     private int mId;
     private String mName_zh;
+    private String mCoinName = "";
     private Dialog mStateDialog;
+    private String mServiceCharge;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,7 +112,6 @@ public class OtcActivity extends BaseActivity {
         mFiltrateList.add(getString(R.string.underway));
         mFiltrateList.add(getString(R.string.off_the_stocks));
         mFiltrateList.add(getString(R.string.exception));
-        initFragment();
         init();
     }
 
@@ -125,9 +124,16 @@ public class OtcActivity extends BaseActivity {
     }
 
     private void init() {
+        initData();
+        mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();
+        mTvCoinName.setText(mCoinName);
+        mServiceCharge = MyApp.getInstance().mOtcCoinList.get(0).getOut_otc();
+        mCloudCircleVp.setCurrentItem(0);
+        mLlMenu.getChildAt(0).setSelected(true);
+        mTvXx.setVisibility(View.VISIBLE);
+        initFragment();
         initViewPager();
         initTopMenu();
-        initData();
         mMap.put(getString(R.string.filtrate), 0);
         boolean aBoolean = MySharedPreferences.getInstance().getBoolean(Constants.OTC_DISCLAIMER);
         if (!aBoolean)
@@ -245,19 +251,19 @@ public class OtcActivity extends BaseActivity {
                 mLlMenu.getChildAt(i).setSelected(true);
                 switch (index) {
                     case 0:
-                        mTvXx.setBackgroundColor(getResources().getColor(R.color.black));
-                        mTvXx2.setBackgroundColor(getResources().getColor(R.color.blue2));
-                        mTvXx3.setBackgroundColor(getResources().getColor(R.color.blue2));
+                        mTvXx.setVisibility(View.VISIBLE);
+                        mTvXx2.setVisibility(View.GONE);
+                        mTvXx3.setVisibility(View.GONE);
                         break;
                     case 1:
-                        mTvXx.setBackgroundColor(getResources().getColor(R.color.blue2));
-                        mTvXx2.setBackgroundColor(getResources().getColor(R.color.black));
-                        mTvXx3.setBackgroundColor(getResources().getColor(R.color.blue2));
+                        mTvXx.setVisibility(View.GONE);
+                        mTvXx2.setVisibility(View.VISIBLE);
+                        mTvXx3.setVisibility(View.GONE);
                         break;
                     case 2:
-                        mTvXx.setBackgroundColor(getResources().getColor(R.color.blue2));
-                        mTvXx2.setBackgroundColor(getResources().getColor(R.color.blue2));
-                        mTvXx3.setBackgroundColor(getResources().getColor(R.color.black));
+                        mTvXx.setVisibility(View.GONE);
+                        mTvXx2.setVisibility(View.GONE);
+                        mTvXx3.setVisibility(View.VISIBLE);
                         break;
                 }
             } else {
@@ -266,7 +272,7 @@ public class OtcActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.rl_selector_state, R.id.bark, R.id.btn_selector_coin, R.id.btn_push_ad, R.id.tv_filtrate})
+    @OnClick({R.id.tv_coin_name, R.id.rl_selector_state, R.id.bark, R.id.my_publish, R.id.btn_push_ad, R.id.tv_filtrate})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_selector_state:
@@ -275,14 +281,21 @@ public class OtcActivity extends BaseActivity {
             case R.id.bark:
                 finish();
                 break;
+            case R.id.tv_coin_name:
+                showCoinDialog();
+                break;
             case R.id.tv_filtrate:
                 showFiltrateDialog();
                 break;
-            case R.id.btn_selector_coin:
-                showCoinDialog();
+            case R.id.my_publish:
+                Intent intent2 = new Intent(this, MyPushAdActivity.class);
+                intent2.putExtra("coinName", mCoinName);
+                startActivity(intent2);
                 break;
             case R.id.btn_push_ad:
                 Intent intent = new Intent(this, PushBuyingActivity.class);
+                intent.putExtra("coinName", mCoinName);
+                intent.putExtra("serviceCharge", mServiceCharge);
                 startActivity(intent);
                 break;
         }
@@ -416,9 +429,11 @@ public class OtcActivity extends BaseActivity {
         }
     }
 
-    public void hideDialog(String name, int id) {
+    public void hideDialog(String name, int id, String serviceCharge) {
         mBottomDialog.dismiss();
         mTvCoinName.setText(name);
+        mCoinName = name;
+        mServiceCharge = serviceCharge;
         MessageEvent messageEvent = new MessageEvent(getString(R.string.coin_switchover));
         messageEvent.setCoinName(name);
         EventBus.getDefault().post(messageEvent);

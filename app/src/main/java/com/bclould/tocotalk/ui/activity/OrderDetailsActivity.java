@@ -102,6 +102,10 @@ public class OrderDetailsActivity extends BaseActivity {
     TextView mTvPhone;
     @Bind(R.id.btn_contact)
     Button mBtnContact;
+    @Bind(R.id.tv_transfer_hint)
+    TextView mTvTransferHint;
+    @Bind(R.id.tv_deal_number)
+    TextView mTvDealNumber;
     private OrderInfo.DataBean mData;
     Timer mTimer = new Timer();
     private int mRecLen = 0;
@@ -166,25 +170,34 @@ public class OrderDetailsActivity extends BaseActivity {
             }
             mTo_user_name = mData.getTo_user_name();
             mUser_name = mData.getUser_name();
-            mTvBuysell.setText(getString(R.string.seller) + ":" + mData.getTo_user_name());
-            mTvBuysell2.setText(getString(R.string.buyer) + ":" + mData.getUser_name());
+            if (mData.getType() == 1) {
+                mTvTransferHint.setText(getString(R.string.shijidao_transfer));
+                mTvBuysell.setText(getString(R.string.seller) + ":" + mData.getTo_user_name());
+                mTvBuysell2.setText(getString(R.string.buyer) + ":" + mData.getUser_name());
+            } else {
+                mBtnSellCancel.setVisibility(View.GONE);
+                mTvTransferHint.setText(getString(R.string.shijikou_coin));
+                mTvBuysell2.setText(getString(R.string.seller) + ":" + mData.getTo_user_name());
+                mTvBuysell.setText(getString(R.string.buyer) + ":" + mData.getUser_name());
+            }
             mTvCount.setText(mData.getNumber());
             mTvMoney.setText(mData.getTrans_amount());
             mTvPrice.setText(mData.getPrice());
             mTvEmail.setText(mData.getEmail());
             mTvPhone.setText(mData.getMobile());
+            mTvDealNumber.setText(mData.getPayment_no() + "");
+            mTvOrderNumber.setText(getString(R.string.order_number) + ":" + mData.getOrder_no());
             mTvServiceCharge.setText(Double.parseDouble(mData.getOtc_free()) * 100 + "%");
             mTvShiji.setText(mData.getActual_number());
-            if (mData.getRemark() != null)
+            if (mData.getRemark() != null) {
                 mTvRemark.setText(getString(R.string.remark) + ":" + mData.getRemark());
-            mTvOrderNumber.setText(getString(R.string.order_number) + ":" + mData.getOrder_no());
-            try {
+            }
+            if (mData.getBank() != null) {
                 mTvBankName.setText(mData.getBank().getCard_name());
                 mTvBankNumber.setText(mData.getBank().getCard_number());
                 mTvBankSite.setText(mData.getBank().getBank_name());
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+
         }
     }
 
@@ -203,8 +216,6 @@ public class OrderDetailsActivity extends BaseActivity {
                 mType1 = data.getType();
                 mInfo.setData(data);
                 mTvOrderNumber.setText(getString(R.string.order_number) + ":" + data.getOrder_no());
-                mRecLen = data.getDeadline();
-                mTimer.schedule(mTask, 1000, 1000);
                 if (data.getType() == 1) {
                     mLlBuyer.setVisibility(View.VISIBLE);
                     mLlSeller.setVisibility(View.GONE);
@@ -215,36 +226,55 @@ public class OrderDetailsActivity extends BaseActivity {
                     mTvTitle.setText(getString(R.string.work_off) + data.getCoin_name());
                 }
                 if (data.getStatus() == 0) {
-                    mTimer.cancel();
+                    mLlBuyer.setVisibility(View.GONE);
+                    mLlSeller.setVisibility(View.GONE);
+                    /*mTimer.cancel();
                     mTvTime.setText(getString(R.string.no_time));
                     finish();
-                    Toast.makeText(OrderDetailsActivity.this, getString(R.string.order_cancel), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OrderDetailsActivity.this, getString(R.string.order_cancel), Toast.LENGTH_SHORT).show();*/
                 } else if (data.getStatus() == 1) {
+                    mRecLen = data.getDeadline();
+                    mTimer.schedule(mTask, 1000, 1000);
                 } else if (data.getStatus() == 2) {
+                    mRecLen = data.getDeadline();
+                    mTimer.schedule(mTask, 1000, 1000);
                 } else if (data.getStatus() == 3) {
+                    mLlBuyer.setVisibility(View.GONE);
+                    mLlSeller.setVisibility(View.GONE);
                 } else if (data.getStatus() == 4) {
+                    mLlBuyer.setVisibility(View.GONE);
+                    mLlSeller.setVisibility(View.GONE);
                 }
                 mTo_user_name = data.getTo_user_name();
                 mUser_name = data.getUser_name();
-                mTvBuysell.setText(getString(R.string.seller) + ":" + data.getTo_user_name());
-                mTvBuysell2.setText(getString(R.string.buyer) + ":" + data.getUser_name());
+                if (data.getType() == 1) {
+                    mTvTransferHint.setText(getString(R.string.shijidao_transfer));
+                    mTvBuysell.setText(getString(R.string.seller) + ":" + data.getTo_user_name());
+                    mTvBuysell2.setText(getString(R.string.buyer) + ":" + data.getUser_name());
+                } else {
+                    mBtnSellCancel.setVisibility(View.GONE);
+                    mTvTransferHint.setText(getString(R.string.shijikou_coin));
+                    mTvBuysell2.setText(getString(R.string.seller) + ":" + data.getTo_user_name());
+                    mTvBuysell.setText(getString(R.string.buyer) + ":" + data.getUser_name());
+                }
                 mTvCount.setText(data.getNumber());
                 mTvMoney.setText(data.getTrans_amount());
                 mTvPrice.setText(data.getPrice());
                 mTvPayType.setText(data.getStatus_name());
                 mTvEmail.setText(data.getEmail());
                 mTvPhone.setText(data.getMobile());
+                mTvDealNumber.setText(data.getPayment_no() + "");
                 mTvServiceCharge.setText(Double.parseDouble(data.getOtc_free()) * 100 + "%");
                 mTvShiji.setText(data.getActual_number());
-                if (data.getRemark() != null)
+                if (data.getRemark() != null) {
                     mTvRemark.setText(getString(R.string.remark) + ":" + data.getRemark());
-                try {
+                }
+                if (data.getBank() != null) {
                     mTvBankName.setText(data.getBank().getCard_name());
                     mTvBankNumber.setText(data.getBank().getCard_number());
                     mTvBankSite.setText(data.getBank().getBank_name());
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+
             }
         });
     }

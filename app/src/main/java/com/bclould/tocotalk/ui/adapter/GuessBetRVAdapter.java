@@ -31,8 +31,23 @@ public class GuessBetRVAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_guess_bet, parent, false);
-        return new ViewHolder(view);
+        View view = null;
+        RecyclerView.ViewHolder viewHolder = null;
+        switch (viewType) {
+            case 1:
+                view = LayoutInflater.from(mContext).inflate(R.layout.item_guess_bet, parent, false);
+                viewHolder = new ViewHolder(view);
+                break;
+            case 2:
+                view = LayoutInflater.from(mContext).inflate(R.layout.item_guess_bet, parent, false);
+                viewHolder = new ViewHolder(view);
+                break;
+            case 3:
+                view = LayoutInflater.from(mContext).inflate(R.layout.item_guess_bet2, parent, false);
+                viewHolder = new ViewHolder(view);
+                break;
+        }
+        return viewHolder;
     }
 
     @Override
@@ -43,10 +58,15 @@ public class GuessBetRVAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        if(mDataList.size() != 0){
+        if (mDataList.size() != 0) {
             return mDataList.size();
         }
         return 0;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return mDataList.get(position).getStatus();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

@@ -572,12 +572,13 @@ public class MainActivity extends BaseActivity {
                 ft.add(R.id.main_fl, fragment);
             }
         }
+        if (ft != null) {
+            ft.hide(LastFragment);
 
-        ft.hide(LastFragment);
+            ft.show(fragment);
 
-        ft.show(fragment);
-
-        ft.commit();
+            ft.commit();
+        }
 
         lastIndex = index;
 
