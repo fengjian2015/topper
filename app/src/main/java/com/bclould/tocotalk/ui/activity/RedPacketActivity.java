@@ -70,7 +70,7 @@ public class RedPacketActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setStatusBarColor(getColor(R.color.redpacket4));
+        getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket4));
         setContentView(R.layout.activity_red_packet);
         mMgr = new DBManager(this);
         ButterKnife.bind(this);

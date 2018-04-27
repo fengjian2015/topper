@@ -68,6 +68,7 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
         private String mCoin_over;
         private String mLogo;
         private String mServiceCharge;
+        private CoinListInfo.DataBean mData;
 
         ViewHolder(View view) {
             super(view);
@@ -81,19 +82,20 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
                         activity.hideDialog(mName, mId, mLogo, mCoin_over, mServiceCharge);
                     } else if (mContext instanceof OtcActivity) {
                         OtcActivity activity = (OtcActivity) mContext;
-                        activity.hideDialog(mName, mId);
+                        activity.hideDialog(mName, mId,mData.getOut_otc());
                     } else if (mContext instanceof PushBuyingActivity) {
                         PushBuyingActivity activity = (PushBuyingActivity) mContext;
                         activity.hideDialog2(mName, mId, mServiceCharge);
                     } else if (mContext instanceof StartGuessActivity) {
                         StartGuessActivity activity = (StartGuessActivity) mContext;
-                        activity.hideDialog2(mName, mId, mServiceCharge);
+                        activity.hideDialog2(mData);
                     }
                 }
             });
         }
 
         public void setData(CoinListInfo.DataBean data) {
+            mData = data;
             mName = data.getName();
             mCoin_over = data.getCoin_over();
             mLogo = data.getLogo();

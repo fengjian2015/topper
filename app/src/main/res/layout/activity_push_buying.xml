@@ -345,6 +345,57 @@
                 app:cardCornerRadius="@dimen/x10">
 
                 <RelativeLayout
+                    android:id="@+id/rl_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y100">
+
+                    <TextView
+                        android:id="@+id/tv11"
+                        android:layout_width="@dimen/x140"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x30"
+                        android:gravity="center_vertical"
+                        android:text="@string/phone_number"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/x26"/>
+
+
+                    <TextView
+                        android:id="@+id/xx11"
+                        android:layout_width="@dimen/x4"
+                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@+id/tv11"
+                        android:background="@color/light"/>
+
+                    <EditText
+                        android:id="@+id/et_phone_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@+id/xx11"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/et_phone"
+                        android:inputType="number"
+                        android:paddingLeft="@dimen/x30"
+                        android:paddingRight="@dimen/x20"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textCursorDrawable="@null"
+                        android:textSize="@dimen/x30"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginRight="@dimen/x30"
+                android:layout_marginTop="@dimen/y20"
+                app:cardCornerRadius="@dimen/x10">
+
+                <RelativeLayout
                     android:id="@+id/rl_payment_time"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/y100">
@@ -489,9 +540,9 @@
                         android:layout_toLeftOf="@+id/tv_units"
                         android:layout_toRightOf="@+id/xx5"
                         android:background="@android:color/transparent"
+                        android:inputType="numberDecimal"
                         android:paddingLeft="@dimen/x30"
                         android:paddingRight="@dimen/x20"
-                        android:inputType="numberDecimal"
                         android:singleLine="true"
                         android:textColor="@android:color/black"
                         android:textCursorDrawable="@null"

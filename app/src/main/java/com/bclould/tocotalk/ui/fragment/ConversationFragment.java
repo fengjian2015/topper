@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -298,7 +297,7 @@ public class ConversationFragment extends Fragment {
 
     //登录即时通讯
     private void loginIM() {
-        showDialog();
+//        showDialog();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -671,7 +670,7 @@ public class ConversationFragment extends Fragment {
                     if (otcOrderStatusInfo.getStatus() == 1) {
                         Intent intent = new Intent(getContext(), OrderDetailsActivity.class);
                         intent.putExtra("type", getString(R.string.order));
-                        intent.putExtra("id", messageInfo.getRedId() + "");
+                        intent.putExtra("id", otcOrderStatusInfo.getId() + "");
                         mResultIntent = PendingIntent.getActivity(getContext(), 1, intent,
                                 PendingIntent.FLAG_UPDATE_CURRENT);
                     } else {
@@ -694,6 +693,7 @@ public class ConversationFragment extends Fragment {
                     count = otcOrderStatusInfo.getOrder_no();
                     coin = otcOrderStatusInfo.getCoin_name();
                     status = otcOrderStatusInfo.getStatus();
+                    type = otcOrderStatusInfo.getType();
                     redpacket = "[" + getString(R.string.order) + "]";
                 } else if (chatMsg.contains(Constants.RED_PACKET_EXPIRED)) {
                     msgType = ADMINISTRATOR_RED_PACKET_EXPIRED_MSG;

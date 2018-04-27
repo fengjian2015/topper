@@ -1,6 +1,8 @@
 package com.bclould.tocotalk.network;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.bclould.tocotalk.utils.Constants;
@@ -26,6 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class RetrofitUtil {
 
     private static final long DEFAULT_DIR_CACHE = 2000;

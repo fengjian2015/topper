@@ -116,7 +116,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
         mGrabRedPresenter = new GrabRedPresenter(mContext);
         List<UserInfo> userInfos = mMgr.queryUser(Constants.MYUSER);
         if (userInfos.size() != 0) {
-            mToBitmap = BitmapFactory.decodeFile(userInfos.get(0).getPath());
+            if (!userInfos.get(0).getPath().isEmpty()) {
+                mToBitmap = BitmapFactory.decodeFile(userInfos.get(0).getPath());
+            } else {
+                Drawable drawable = mContext.getResources().getDrawable(R.mipmap.img_nfriend_headshot1);
+                BitmapDrawable bd = (BitmapDrawable) drawable;
+                mToBitmap = bd.getBitmap();
+            }
         } else {
             Drawable drawable = mContext.getResources().getDrawable(R.mipmap.img_nfriend_headshot1);
             BitmapDrawable bd = (BitmapDrawable) drawable;
@@ -158,13 +164,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } else if (viewType == FROM_VIDEO_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_video, parent, false);
             holder = new FromVideoHolder(view);
-        } else if (viewType == TO_FILE_MSG) {
+        } /*else if (viewType == TO_FILE_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_to_chat_file, parent, false);
             holder = new FromVideoHolder(view);
         } else if (viewType == FROM_FILE_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_file, parent, false);
             holder = new FromVideoHolder(view);
-        } else if (viewType == TO_TRANSFER_MSG) {
+        } */ else if (viewType == TO_TRANSFER_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_to_chat_transfer, parent, false);
             holder = new ToTransferHolder(view);
         } else if (viewType == FROM_TRANSFER_MSG) {
@@ -412,9 +418,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 }
             });
             if (messageInfo.getStatus() == 1) {
-                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.transfer));
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.transfer));
             } else {
-                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket2));
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket2));
             }
         }
     }
@@ -459,7 +465,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mTvCoinRedpacket.setText(messageInfo.getCoin() + mContext.getString(R.string.red_package));
             mTvRemark.setText(messageInfo.getRemark());
             if (messageInfo.getStatus() == 1) {
-                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.transfer));
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.transfer));
                 mTvExamine.setText(mContext.getString(R.string.took_red_packet));
                 mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -476,7 +482,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     }
                 });
             } else {
-                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket2));
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket2));
                 mTvExamine.setText(mContext.getString(R.string.look_red_packet));
                 mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -887,10 +893,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mTvRemark.setText(messageInfo.getRemark());
             mTvCoinCount.setText(messageInfo.getCount() + messageInfo.getCoin());
             if (messageInfo.getStatus() == 0) {
-                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket));
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket));
                 mTvRemark.setText(messageInfo.getRemark());
             } else {
-                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket3));
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket3));
             }
             mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -931,10 +937,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mTvRemark.setText(messageInfo.getRemark());
             mTvCoinCount.setText(messageInfo.getCount() + messageInfo.getCoin());
             if (messageInfo.getStatus() == 0) {
-                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket));
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket));
                 mTvRemark.setText(messageInfo.getRemark());
             } else {
-                mCvRedpacket.setCardBackgroundColor(mContext.getColor(R.color.redpacket3));
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket3));
                 mTvRemark.setText(mContext.getString(R.string.transfer_took));
             }
             mCvRedpacket.setOnClickListener(new View.OnClickListener() {
@@ -985,17 +991,26 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mTvTime.setText(messageInfo.getTime());
             if (messageInfo.getStatus() == 0) {
                 mTvStatus.setText(mContext.getString(R.string.canceled_canc));
+                mTvTypeMsg.setText(mContext.getString(R.string.order_cancel_hint));
             } else if (messageInfo.getStatus() == 4) {
                 mTvStatus.setText(mContext.getString(R.string.order_timeout));
+                mTvTypeMsg.setText(mContext.getString(R.string.order_timeout_hint));
             } else if (messageInfo.getStatus() == 3) {
                 mTvStatus.setText(mContext.getString(R.string.finish));
+                mTvTypeMsg.setText(mContext.getString(R.string.order_finish_hint));
+            } else if (messageInfo.getStatus() == 2) {
+                if (messageInfo.getType() == 1) {
+                    mTvStatus.setText(mContext.getString(R.string.pay_succeed_dengdai_fb));
+                } else {
+                    mTvStatus.setText(mContext.getString(R.string.relative_pay_dengdai_fb));
+                }
             } else if (messageInfo.getStatus() == 1) {
                 mTvStatus.setText(mContext.getString(R.string.pending));
             }
             mLlOrderMsg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (messageInfo.getStatus() == 1) {
+                    if (messageInfo.getStatus() == 1 || messageInfo.getStatus() == 2) {
                         Intent intent = new Intent(mContext, OrderDetailsActivity.class);
                         intent.putExtra("type", mContext.getString(R.string.order));
                         intent.putExtra("id", messageInfo.getRedId() + "");

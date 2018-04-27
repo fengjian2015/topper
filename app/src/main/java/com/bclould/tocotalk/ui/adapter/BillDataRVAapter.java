@@ -97,11 +97,11 @@ public class BillDataRVAapter extends RecyclerView.Adapter {
             if (dataBean.getDesc().equals(mContext.getString(R.string.shift_to))) {
                 mTypeName.setText(dataBean.getSend_name());
                 mCoinCount.setText("+" + dataBean.getNumber() + " " + dataBean.getCoin_name());
-                mCoinCount.setTextColor(mContext.getColor(R.color.red));
+                mCoinCount.setTextColor(mContext.getResources().getColor(R.color.red));
             } else {
                 mTypeName.setText(dataBean.getReceive_name());
                 mCoinCount.setText("-" + dataBean.getNumber() + " " + dataBean.getCoin_name());
-                mCoinCount.setTextColor(mContext.getColor(R.color.green));
+                mCoinCount.setTextColor(mContext.getResources().getColor(R.color.green));
             }
             mTime.setText(dataBean.getCreated_at());
         }

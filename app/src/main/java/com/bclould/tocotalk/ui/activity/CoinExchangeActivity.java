@@ -261,10 +261,10 @@ public class CoinExchangeActivity extends BaseActivity {
                     mCoinList.addAll(data);
                     mCoin.add(data.get(0).getName());
                     mServiceCharge = data.get(0).getOut_exchange();
-                    mTvRemain.setText("当前可用 " + data.get(0).getCoin_over() + " " + data.get(0).getName());
+                    mTvRemain.setText(getString(R.string.dqky) + data.get(0).getCoin_over() + " " + data.get(0).getName());
                     mTvCoin.setText(data.get(0).getName());
                     Glide.with(CoinExchangeActivity.this).load(data.get(0).getLogo()).into(mIvLogo);
-                    mTvExchange.setText(data.get(0).getName() + "/" + "USDT");
+                    mTvExchange.setText(data.get(0).getName() + "/" + getString(R.string.usdt));
                     initPrice(data.get(0).getName());
                     initListData(data.get(0).getName());
                 } catch (Exception e) {
@@ -372,8 +372,8 @@ public class CoinExchangeActivity extends BaseActivity {
         });
         valueList = virtualKeyboardView.getValueList();
         countCoin.setText(count + coins);
-        coin.setText(coins + "兑换USDT");
-        hint.setText("本次兌換需要扣除" + Double.parseDouble(mServiceCharge) * 100 + "%手續費");
+        coin.setText(coins + getString(R.string.exchange) + getString(R.string.usdt));
+        hint.setText(getString(R.string.start_guess_service_hint) + Double.parseDouble(mServiceCharge) * 100 + "%" + getString(R.string.sxf));
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -511,7 +511,7 @@ public class CoinExchangeActivity extends BaseActivity {
                 mBottomDialog.dismiss();
             }
         });
-        tvTitle.setText("选择币种");
+        tvTitle.setText(getString(R.string.selector_coin));
     }
 
     public void hideDialog(String name, int id, String logo, String coin_over, String serviceCharge) {
@@ -520,9 +520,9 @@ public class CoinExchangeActivity extends BaseActivity {
         initListData(name);
         mBottomDialog.dismiss();
         mTvCoin.setText(name);
-        mTvRemain.setText("当前可用 " + coin_over + " " + name);
+        mTvRemain.setText(getString(R.string.dqky) + coin_over + " " + name);
         Glide.with(CoinExchangeActivity.this).load(logo).into(mIvLogo);
-        mTvExchange.setText(name + "/" + "USDT");
+        mTvExchange.setText(name + "/" + getString(R.string.usdt));
         mServiceCharge = serviceCharge;
         initPrice(name);
     }

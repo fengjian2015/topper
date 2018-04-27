@@ -42,8 +42,8 @@ public class PlatformGuessFragment extends Fragment {
     @Bind(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
-    private String mPage = "1";
-    private String mPageSize = "1000";
+    private int mPage = 1;
+    private int mPageSize = 1000;
     private GuessListRVAdapter mGuessListRVAdapter;
 
     @Nullable
@@ -51,8 +51,13 @@ public class PlatformGuessFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_personage_guess, container, false);
         ButterKnife.bind(this, view);
-        init();
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        init();
     }
 
     private void init() {
@@ -81,12 +86,19 @@ public class PlatformGuessFragment extends Fragment {
     List<GuessListInfo.DataBean> mDataList = new ArrayList<>();
 
     private void initData() {
-        mDataList.clear();
-        mBlockchainGuessPresenter.getGuessList(mPage, mPageSize, new BlockchainGuessPresenter.CallBack() {
+        mBlockchainGuessPresenter.getGuessList(mPage, mPageSize, 2, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
-                mDataList.addAll(data);
-                mGuessListRVAdapter.notifyDataSetChanged();
+                if (data.size() != 0) {
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    mLlNoData.setVisibility(View.GONE);
+                    mDataList.clear();
+                    mDataList.addAll(data);
+                    mGuessListRVAdapter.notifyDataSetChanged();
+                } else {
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

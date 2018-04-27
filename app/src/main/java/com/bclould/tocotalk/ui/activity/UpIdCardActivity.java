@@ -3,8 +3,7 @@ package com.bclould.tocotalk.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -212,17 +211,24 @@ public class UpIdCardActivity extends BaseActivity {
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            String key = (String) msg.obj;
-            keyList += "," + key;
-            count++;
-            if (mType.equals("1")) {
-                if (count == 3) {
-                    submit(keyList);
-                }
-            } else {
-                if (count == 2) {
-                    submit(keyList);
-                }
+            switch (msg.what) {
+                case 0:
+                    String key = (String) msg.obj;
+                    keyList += "," + key;
+                    count++;
+                    if (mType.equals("1")) {
+                        if (count == 3) {
+                            submit(keyList);
+                        }
+                    } else {
+                        if (count == 2) {
+                            submit(keyList);
+                        }
+                    }
+                    break;
+                case 1:
+                    Toast.makeText(UpIdCardActivity.this, getString(R.string.up_error), Toast.LENGTH_SHORT).show();
+                    break;
             }
         }
     };
@@ -299,6 +305,7 @@ public class UpIdCardActivity extends BaseActivity {
                                             public void afterResponse(Request<?> request, Response<?> response) {
                                                 Message message = new Message();
                                                 message.obj = key2;
+                                                message.what = 0;
                                                 handler.sendMessage(message);
                                             }
 
@@ -311,7 +318,7 @@ public class UpIdCardActivity extends BaseActivity {
                                         s3Client.putObject(por);
                                     } catch (AmazonClientException e) {
                                         hideDialog();
-                                        Toast.makeText(UpIdCardActivity.this, getString(R.string.up_error), Toast.LENGTH_SHORT).show();
+                                        handler.sendEmptyMessage(1);
                                         e.printStackTrace();
                                     }
                                 }
@@ -345,26 +352,26 @@ public class UpIdCardActivity extends BaseActivity {
 
     //把选中的图片设置到ImageView
     private void showImage(String imagePath, int requestCode) {
-        Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+        Drawable drawable = Drawable.createFromPath(imagePath);
         switch (requestCode) {
             case ZHENGMIAN:
-                mZhengmianIv.setImageBitmap(bitmap);
+                mZhengmianIv.setImageDrawable(drawable);
                 mShenfenMap.put(ZHENGMIAN, imagePath);
                 break;
             case FANMIAN:
-                mFanmianIv.setImageBitmap(bitmap);
+                mFanmianIv.setImageDrawable(drawable);
                 mShenfenMap.put(FANMIAN, imagePath);
                 break;
             case SHOUCHI:
-                mShouchiIv.setImageBitmap(bitmap);
+                mShouchiIv.setImageDrawable(drawable);
                 mShenfenMap.put(SHOUCHI, imagePath);
                 break;
             case HUSHOUCHI:
-                mIvHuFanmian.setImageBitmap(bitmap);
+                mIvHuFanmian.setImageDrawable(drawable);
                 mHuzhaoMap.put(HUSHOUCHI, imagePath);
                 break;
             case HUZHENGMIAN:
-                mIvHuZhengmian.setImageBitmap(bitmap);
+                mIvHuZhengmian.setImageDrawable(drawable);
                 mHuzhaoMap.put(HUZHENGMIAN, imagePath);
                 break;
         }

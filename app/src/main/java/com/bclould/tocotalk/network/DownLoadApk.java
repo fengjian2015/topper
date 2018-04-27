@@ -41,7 +41,7 @@ public class DownLoadApk {
             } else if (status == DownloadManager.STATUS_FAILED) {
                 start(context, url, title,appName);
             } else {
-                Log.d(TAG, "apk is already downloading");
+                start(context, url, title,appName);
             }
         } else {
             start(context, url, title,appName);

@@ -78,6 +78,24 @@ public class OrderInfo2 {
         private String max_amount;
         private String remark;
         private String otc_free;
+        private String mobile;
+        private String email;
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getMobile() {
+            return mobile;
+        }
+
+        public void setMobile(String mobile) {
+            this.mobile = mobile;
+        }
 
         public String getOtc_free() {
             return otc_free;

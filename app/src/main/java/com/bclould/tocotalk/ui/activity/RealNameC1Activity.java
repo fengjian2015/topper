@@ -2,6 +2,7 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -199,6 +200,7 @@ public class RealNameC1Activity extends BaseActivity {
     private void showPopup() {
         mView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.pop_gong_gao, null);
         mPopupWindow = new PopupWindow(mView, mCvCardType.getWidth(), ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
         mPopupWindow.showAsDropDown(mCvCardType, 0, 10);
         final TextView shenfen = (TextView) mView.findViewById(R.id.tv_shenfen);
         shenfen.setOnClickListener(new View.OnClickListener() {

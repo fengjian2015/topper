@@ -14,11 +14,21 @@ public class MessageEvent {
     private String mMsg;
     private String coinName;
     private String state;
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
     private String reviewCount;
     private String id;
     private String likeCount;
     private boolean type;
     private String filtrate;
+    private int number;
 
     public String getFiltrate() {
         return filtrate;

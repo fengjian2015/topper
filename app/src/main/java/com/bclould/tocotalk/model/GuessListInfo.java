@@ -11,7 +11,7 @@ public class GuessListInfo {
     /**
      * status : 1
      * message : ok
-     * data : [{"id":3,"title":"我的竞猜你看着办","single_coin":"2","limit_people_number":10,"limit_number":"20","coin_id":28,"deadline":60,"period_qty":1,"user_id":34,"type":1,"status":1,"created_at":"2018-04-22 20:22:01","coin_name":"TPC","countdown":2789},{"id":2,"title":"","single_coin":"2","limit_people_number":10,"limit_number":"20","coin_id":28,"deadline":60,"period_qty":1,"user_id":34,"type":1,"status":1,"created_at":"2018-04-20 15:16:05","coin_name":"TPC","countdown":0},"..."]
+     * data : [{"id":6,"title":"咯哦哦","period_qty":1,"status":1,"created_at":"2018-04-26 15:31:57","coin_id":28,"single_coin":"2","limit_number":"10","user_name":"liaolinan2","coin_name":"TPC","lottery_time":"2018-04-26 15:31:57","win_number":"----","prize_pool_number":"10","lottery_status":1,"join_created_at":"2018-04-25 17:10:17","coin_count":"8"},{"id":3,"title":"我的竞猜你看着办","period_qty":1,"status":2,"created_at":"2018-04-22 20:22:01","coin_id":28,"single_coin":"2","limit_number":"20","user_name":"xihongwei","coin_name":"TPC","lottery_time":"2018-04-22 20:22:01","win_number":"----","prize_pool_number":"0","lottery_status":1,"join_created_at":"2018-04-23 15:31:18","coin_count":"2"}]
      */
 
     private int status;
@@ -44,36 +44,40 @@ public class GuessListInfo {
 
     public static class DataBean {
         /**
-         * id : 3
-         * title : 我的竞猜你看着办
-         * single_coin : 2
-         * limit_people_number : 10
-         * limit_number : 20
-         * coin_id : 28
-         * deadline : 60
+         * id : 6
+         * title : 咯哦哦
          * period_qty : 1
-         * user_id : 34
-         * type : 1
          * status : 1
-         * created_at : 2018-04-22 20:22:01
+         * created_at : 2018-04-26 15:31:57
+         * coin_id : 28
+         * single_coin : 2
+         * limit_number : 10
+         * user_name : liaolinan2
          * coin_name : TPC
-         * countdown : 2789
+         * lottery_time : 2018-04-26 15:31:57
+         * win_number : ----
+         * prize_pool_number : 10
+         * lottery_status : 1
+         * join_created_at : 2018-04-25 17:10:17
+         * coin_count : 8
          */
 
         private int id;
         private String title;
-        private String single_coin;
-        private int limit_people_number;
-        private String limit_number;
-        private int coin_id;
-        private int deadline;
         private int period_qty;
-        private int user_id;
-        private int type;
         private int status;
         private String created_at;
+        private int coin_id;
+        private String single_coin;
+        private String limit_number;
+        private String user_name;
         private String coin_name;
-        private int countdown;
+        private String lottery_time;
+        private String win_number;
+        private String prize_pool_number;
+        private int lottery_status;
+        private String join_created_at;
+        private String coin_count;
 
         public int getId() {
             return id;
@@ -91,68 +95,12 @@ public class GuessListInfo {
             this.title = title;
         }
 
-        public String getSingle_coin() {
-            return single_coin;
-        }
-
-        public void setSingle_coin(String single_coin) {
-            this.single_coin = single_coin;
-        }
-
-        public int getLimit_people_number() {
-            return limit_people_number;
-        }
-
-        public void setLimit_people_number(int limit_people_number) {
-            this.limit_people_number = limit_people_number;
-        }
-
-        public String getLimit_number() {
-            return limit_number;
-        }
-
-        public void setLimit_number(String limit_number) {
-            this.limit_number = limit_number;
-        }
-
-        public int getCoin_id() {
-            return coin_id;
-        }
-
-        public void setCoin_id(int coin_id) {
-            this.coin_id = coin_id;
-        }
-
-        public int getDeadline() {
-            return deadline;
-        }
-
-        public void setDeadline(int deadline) {
-            this.deadline = deadline;
-        }
-
         public int getPeriod_qty() {
             return period_qty;
         }
 
         public void setPeriod_qty(int period_qty) {
             this.period_qty = period_qty;
-        }
-
-        public int getUser_id() {
-            return user_id;
-        }
-
-        public void setUser_id(int user_id) {
-            this.user_id = user_id;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-        public void setType(int type) {
-            this.type = type;
         }
 
         public int getStatus() {
@@ -171,6 +119,38 @@ public class GuessListInfo {
             this.created_at = created_at;
         }
 
+        public int getCoin_id() {
+            return coin_id;
+        }
+
+        public void setCoin_id(int coin_id) {
+            this.coin_id = coin_id;
+        }
+
+        public String getSingle_coin() {
+            return single_coin;
+        }
+
+        public void setSingle_coin(String single_coin) {
+            this.single_coin = single_coin;
+        }
+
+        public String getLimit_number() {
+            return limit_number;
+        }
+
+        public void setLimit_number(String limit_number) {
+            this.limit_number = limit_number;
+        }
+
+        public String getUser_name() {
+            return user_name;
+        }
+
+        public void setUser_name(String user_name) {
+            this.user_name = user_name;
+        }
+
         public String getCoin_name() {
             return coin_name;
         }
@@ -179,12 +159,52 @@ public class GuessListInfo {
             this.coin_name = coin_name;
         }
 
-        public int getCountdown() {
-            return countdown;
+        public String getLottery_time() {
+            return lottery_time;
         }
 
-        public void setCountdown(int countdown) {
-            this.countdown = countdown;
+        public void setLottery_time(String lottery_time) {
+            this.lottery_time = lottery_time;
+        }
+
+        public String getWin_number() {
+            return win_number;
+        }
+
+        public void setWin_number(String win_number) {
+            this.win_number = win_number;
+        }
+
+        public String getPrize_pool_number() {
+            return prize_pool_number;
+        }
+
+        public void setPrize_pool_number(String prize_pool_number) {
+            this.prize_pool_number = prize_pool_number;
+        }
+
+        public int getLottery_status() {
+            return lottery_status;
+        }
+
+        public void setLottery_status(int lottery_status) {
+            this.lottery_status = lottery_status;
+        }
+
+        public String getJoin_created_at() {
+            return join_created_at;
+        }
+
+        public void setJoin_created_at(String join_created_at) {
+            this.join_created_at = join_created_at;
+        }
+
+        public String getCoin_count() {
+            return coin_count;
+        }
+
+        public void setCoin_count(String coin_count) {
+            this.coin_count = coin_count;
         }
     }
 }

@@ -151,10 +151,10 @@ public class PayRecordActivity extends BaseActivity {
                     .setContentTextSize(20)//设置滚轮文字大小
                     .setDividerColor(Color.LTGRAY)//设置分割线的颜色
                     .setSelectOptions(0, 0)//默认选中项
-                    .setBgColor(getColor(R.color.white))
-                    .setTitleBgColor(getColor(R.color.gray2))
+                    .setBgColor(getResources().getColor(R.color.white))
+                    .setTitleBgColor(getResources().getColor(R.color.gray2))
                     .setCancelColor(Color.BLACK)
-                    .setSubmitColor(getColor(R.color.blue2))
+                    .setSubmitColor(getResources().getColor(R.color.blue2))
                     .setTextColorCenter(Color.BLACK)
                     .isRestoreItem(true)//切换时是否还原，设置默认选中第一项。
                     .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。

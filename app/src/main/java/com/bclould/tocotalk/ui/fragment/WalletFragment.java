@@ -13,8 +13,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bclould.tocotalk.Presenter.CoinPresenter;
 import com.bclould.tocotalk.Presenter.SubscribeCoinPresenter;
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.ui.activity.BankCardActivity;
 import com.bclould.tocotalk.ui.activity.BlockchainGambleActivity;
 import com.bclould.tocotalk.ui.activity.CoinExchangeActivity;
@@ -26,10 +29,13 @@ import com.bclould.tocotalk.ui.activity.PayRecordActivity;
 import com.bclould.tocotalk.ui.activity.ReceiptPaymentActivity;
 import com.bclould.tocotalk.ui.activity.SafeActivity;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -85,8 +91,13 @@ public class WalletFragment extends Fragment {
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         ButterKnife.bind(this, view);
-        initData();
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        initData();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -112,6 +123,17 @@ public class WalletFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        if (MyApp.getInstance().mOtcCoinList.size() == 0) {
+            CoinPresenter coinPresenter = new CoinPresenter(getContext());
+            coinPresenter.coinLists("otc", new CoinPresenter.CallBack() {
+                @Override
+                public void send(List<CoinListInfo.DataBean> data) {
+                    UtilTool.Log(getString(R.string.coins), data.size() + "");
+                    MyApp.getInstance().mOtcCoinList.addAll(data);
+                }
+            });
+        }
     }
 
     @Override
@@ -124,7 +146,6 @@ public class WalletFragment extends Fragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
         EventBus.getDefault().unregister(this);
-        ;
     }
 
     @OnClick({R.id.ll_blockchain_gamble, R.id.iv_more, R.id.ll_inout, R.id.ll_usdt, R.id.ll_bank_card, R.id.ll_asserts, R.id.ll_exchange, R.id.ll_otc, R.id.ll_financing, R.id.ll_pawn, R.id.ll_safe})
@@ -160,7 +181,11 @@ public class WalletFragment extends Fragment {
                 startActivity(new Intent(getActivity(), SafeActivity.class));
                 break;
             case R.id.ll_blockchain_gamble:
-                startActivity(new Intent(getActivity(), BlockchainGambleActivity.class));
+                if (UtilTool.getUser().equals("liaolinan2") || UtilTool.getUser().equals("conn")) {
+                    startActivity(new Intent(getActivity(), BlockchainGambleActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), SafeActivity.class));
+                }
                 break;
         }
     }

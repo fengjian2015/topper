@@ -2,6 +2,7 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -176,6 +177,7 @@ public class MyAssetsActivity extends BaseActivity {
         view.getLocationOnScreen(location);
         mPopupWindowView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.pop_assets, null);
         mPopupWindow = new PopupWindow(mPopupWindowView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
         mPopupWindow.setAnimationStyle(R.style.AnimationRightFade);
         mPopupWindow.showAtLocation(view, Gravity.NO_GRAVITY, widthPixels - mPopupWindow.getWidth(), location[1]);
         final ImageView back = (ImageView) mPopupWindowView.findViewById(R.id.iv_jiantou);

@@ -10,6 +10,15 @@ public class OtcOrderStatusInfo {
     private String created_at;
     private String order_no;
     private String coin_name;
+    private int type;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public int getId() {
         return id;

@@ -145,7 +145,7 @@ public class ReceiptPaymentActivity extends BaseActivity {
         mView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.pop_receipt_payment, null);
 
         mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 6, true);
-
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
         // 设置背景颜色变暗
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.alpha = 0.9f;

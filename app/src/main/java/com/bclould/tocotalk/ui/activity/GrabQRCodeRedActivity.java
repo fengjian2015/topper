@@ -58,7 +58,7 @@ public class GrabQRCodeRedActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setStatusBarColor(getColor(R.color.redpacket4));
+        getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket4));
         setContentView(R.layout.activity_grab_qr_red);
         ButterKnife.bind(this);
         mMgr = new DBManager(this);

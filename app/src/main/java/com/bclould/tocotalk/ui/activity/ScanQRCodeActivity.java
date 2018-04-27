@@ -193,6 +193,14 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                         Toast.makeText(this, getString(R.string.scan_qr_code_error), Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
+                } else if (result.equals(Constants.KEFU)) {
+                    try {
+                        startActivity(new Intent(this, ProblemFeedBackActivity.class));
+                        finish();
+                    } catch (Exception e) {
+                        Toast.makeText(this, getString(R.string.scan_qr_code_error), Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
                 } else {
                     Intent intent = new Intent(ScanQRCodeActivity.this, CloudMessageFragment.class);
                     intent.putExtra("result", result);

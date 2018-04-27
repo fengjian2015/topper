@@ -5,6 +5,7 @@ import com.bclould.tocotalk.model.AuatarListInfo;
 import com.bclould.tocotalk.model.AwsInfo;
 import com.bclould.tocotalk.model.BankCardInfo;
 import com.bclould.tocotalk.model.BaseInfo;
+import com.bclould.tocotalk.model.BetInfo;
 import com.bclould.tocotalk.model.CardListInfo;
 import com.bclould.tocotalk.model.CoinInfo;
 import com.bclould.tocotalk.model.CoinListInfo;
@@ -14,12 +15,14 @@ import com.bclould.tocotalk.model.ExchangeOrderInfo;
 import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.model.GoogleInfo;
 import com.bclould.tocotalk.model.GrabRedInfo;
+import com.bclould.tocotalk.model.GuessInfo;
 import com.bclould.tocotalk.model.GuessListInfo;
 import com.bclould.tocotalk.model.InOutInfo;
 import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.model.LoginInfo;
 import com.bclould.tocotalk.model.LoginRecordInfo;
 import com.bclould.tocotalk.model.ModeOfPaymentInfo;
+import com.bclould.tocotalk.model.MyAdListInfo;
 import com.bclould.tocotalk.model.MyAssetsInfo;
 import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.model.OrderInfo2;
@@ -300,7 +303,8 @@ public interface MyService {
             @Field("min_amount") double min_amount,
             @Field("max_amount") double max_amount,
             @Field("remark") String remark,
-            @Field("second_password") String second_password
+            @Field("second_password") String second_password,
+            @Field("mobile") String mobile
     );
 
     //交易列表
@@ -794,7 +798,82 @@ public interface MyService {
     @FormUrlEncoded
     Observable<GuessListInfo> GuessList(
             @Header("Authorization") String token,
-            @Field("page") String page,
-            @Field("page_size") String page_size
+            @Field("page") int page,
+            @Field("page_size") int page_size,
+            @Field("type") int type
+    );
+
+    //發佈競猜
+    @POST("bet/publish")
+    @FormUrlEncoded
+    Observable<BaseInfo> publishGuess(
+            @Header("Authorization") String token,
+            @Field("title") String title,
+            @Field("limit_people_number") String limit_people_number,
+            @Field("limit_number") String limit_number,
+            @Field("coin_id") String coin_id,
+            @Field("deadline") String deadline,
+            @Field("second_password") String second_password
+    );
+
+    //競猜詳情
+    @POST("bet/info")
+    @FormUrlEncoded
+    Observable<GuessInfo> GuessInfo(
+            @Header("Authorization") String token,
+            @Field("bet_id") int bet_id,
+            @Field("period_qty") int period_qty
+    );
+
+    //獲取隨機數組
+    @POST("bet/randomNumber")
+    Observable<BaseInfo> getRandom(
+            @Header("Authorization") String token
+    );
+
+    //投注
+    @POST("bet/coin")
+    @FormUrlEncoded
+    Observable<BetInfo> bet(
+            @Header("Authorization") String token,
+            @Field("bet_id") int bet_id,
+            @Field("period_qty") int period_qty,
+            @Field("coin_id") String coin_id,
+            @Field("bet_number") String bet_number,
+            @Field("second_password") String second_password
+    );
+
+    //投注
+    @POST("bet/userPublishList")
+    @FormUrlEncoded
+    Observable<GuessListInfo> getMyStart(
+            @Header("Authorization") String token,
+            @Field("page") int page,
+            @Field("page_size") int page_size,
+            @Field("status") int status
+    );
+
+    //投注
+    @POST("bet/userJoinList")
+    @FormUrlEncoded
+    Observable<GuessListInfo> getMyJoin(
+            @Header("Authorization") String token,
+            @Field("page") int page,
+            @Field("page_size") int page_size,
+            @Field("status") int status
+    );
+
+
+
+    //我的廣告列表
+    @POST("trans/userLists")
+    @FormUrlEncoded
+    Observable<MyAdListInfo> getMyAdList(
+            @Header("Authorization") String token,
+            @Field("type") int type,
+            @Field("page") int page,
+            @Field("page_size") int page_size,
+            @Field("coin_name") String coin_name,
+            @Field("status") int status
     );
 }

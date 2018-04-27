@@ -20,6 +20,7 @@ import com.bclould.tocotalk.model.OrderListInfo;
 import com.bclould.tocotalk.ui.activity.OrderCloseActivity;
 import com.bclould.tocotalk.ui.activity.OrderDetailsActivity;
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import java.util.List;
 
@@ -91,35 +92,51 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             mTvTime.setText(dataBean.getCreated_at());
             mTvType.setText(dataBean.getStatus_name());
             if (dataBean.getStatus() == 4) {
-                mTvType.setTextColor(mContext.getColor(R.color.color_orange));
+                mTvType.setTextColor(mContext.getResources().getColor(R.color.color_orange));
             } else {
-                mTvType.setTextColor(mContext.getColor(R.color.black));
+                mTvType.setTextColor(mContext.getResources().getColor(R.color.black));
             }
             mTvCoinType.setText(dataBean.getCoin_name() + dataBean.getType_name());
             if (dataBean.getType() == 1) {
                 try {
                     String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
-                    Bitmap bitmap = BitmapFactory.decodeFile(mMgr.queryUser(jid).get(0).getPath());
+                    Bitmap bitmap = null;
+                    if (mMgr.findUser(jid)) {
+                        if (!mMgr.queryUser(jid).get(0).getPath().isEmpty()) {
+                            bitmap = BitmapFactory.decodeFile(mMgr.queryUser(jid).get(0).getPath());
+                        } else {
+                            bitmap = UtilTool.setDefaultimage(mContext);
+                        }
+                    } else {
+                        bitmap = UtilTool.setDefaultimage(mContext);
+                    }
                     mIvTouxiang.setImageBitmap(bitmap);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 mTvName.setText(dataBean.getUser_name());
                 mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape));
-                mTvCoinType.setTextColor(mContext.getColor(R.color.blue2));
+                mTvCoinType.setTextColor(mContext.getResources().getColor(R.color.blue2));
             } else {
                 try {
                     String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
-                    if (mMgr.queryUser(jid).size() != 0) {
-                        Bitmap bitmap = BitmapFactory.decodeFile(mMgr.queryUser(jid).get(0).getPath());
-                        mIvTouxiang.setImageBitmap(bitmap);
+                    Bitmap bitmap = null;
+                    if (mMgr.findUser(jid)) {
+                        if (!mMgr.queryUser(jid).get(0).getPath().isEmpty()) {
+                            bitmap = BitmapFactory.decodeFile(mMgr.queryUser(jid).get(0).getPath());
+                        } else {
+                            bitmap = UtilTool.setDefaultimage(mContext);
+                        }
+                    } else {
+                        bitmap = UtilTool.setDefaultimage(mContext);
                     }
+                    mIvTouxiang.setImageBitmap(bitmap);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 mTvName.setText(dataBean.getUser_name());
                 mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape2));
-                mTvCoinType.setTextColor(mContext.getColor(R.color.green2));
+                mTvCoinType.setTextColor(mContext.getResources().getColor(R.color.green2));
             }
 
             mRlItme.setOnClickListener(new View.OnClickListener() {

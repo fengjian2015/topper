@@ -87,8 +87,8 @@ import static org.jivesoftware.smack.provider.ProviderManager.addIQProvider;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class XmppConnection {
     private int SERVER_PORT = Constants.OPENFIRE_PORT;
-    private String SERVER_HOST = Constants.DOMAINNAME;
-    private String SERVER_NAME = Constants.DOMAINNAME;
+    private String SERVER_HOST = Constants.DOMAINNAME2;
+    private String SERVER_NAME = Constants.DOMAINNAME2;
     private AbstractXMPPConnection connection = null;
     private static XmppConnection xmppConnection = new XmppConnection();
     private XMConnectionListener connectionListener;
@@ -133,11 +133,13 @@ public class XmppConnection {
                 SmackConfiguration.DEBUG = true;
                 XMPPTCPConnectionConfiguration.Builder config = XMPPTCPConnectionConfiguration.builder();
                 //设置openfire主机IP
-                config.setHostAddress(InetAddress.getByName(SERVER_HOST));
+                config.setHostAddress(InetAddress.getByName(Constants.DOMAINNAME2));
                 //设置openfire服务器名称
-                config.setXmppDomain(SERVER_NAME);
+                config.setXmppDomain(Constants.DOMAINNAME2);
+                UtilTool.Log("服務器", Constants.DOMAINNAME2);
                 //设置端口号：默认5288
-                config.setPort(SERVER_PORT);
+                config.setPort(Constants.OPENFIRE_PORT);
+//                config.setSecurityMode(ConnectionConfiguration.SecurityMode.disabled);
 
                 SSLContext sslContext = SSLContext.getInstance("TLS");
                 MyX509TrustManager myX509TrustManager = new MyX509TrustManager(mContext.getResources().getAssets().open("keystore.bks"), "changeit");

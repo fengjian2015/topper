@@ -14,8 +14,17 @@ public class LoginInfo {
      */
 
     private int status;
+    private int type;
     private String message;
     private DataBean data;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public int getStatus() {
         return status;
@@ -47,9 +56,7 @@ public class LoginInfo {
          */
 
         private int user_id;
-
         private String name;
-
         private String country;
         private String currency;
         private String xmpp;

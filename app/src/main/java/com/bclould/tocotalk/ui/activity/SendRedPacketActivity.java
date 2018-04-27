@@ -102,7 +102,7 @@ public class SendRedPacketActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setStatusBarColor(getColor(R.color.redpacket4));
+        getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket4));
         mMgr = new DBManager(this);
         setContentView(R.layout.activity_send_red_packet);
         mUser = getIntent().getStringExtra("user");

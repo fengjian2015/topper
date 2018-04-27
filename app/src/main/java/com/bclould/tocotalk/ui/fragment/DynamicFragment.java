@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,6 @@ import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.DynamicListInfo;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.adapter.DynamicRVAdapter;
-import com.bclould.tocotalk.utils.FullyLinearLayoutManager;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -130,7 +130,7 @@ public class DynamicFragment extends Fragment {
 
     private void initRecyclerView() {
 
-        final FullyLinearLayoutManager manager = new FullyLinearLayoutManager(getContext());
+        final LinearLayoutManager manager = new LinearLayoutManager(getContext());
 
         mRecyclerView.setLayoutManager(manager);
         mDynamicRVAdapter = new DynamicRVAdapter(getActivity(), mDataList, mMgr, mDynamicPresenter);

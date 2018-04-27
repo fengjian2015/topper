@@ -172,7 +172,14 @@ public class PushBuyingActivity extends BaseActivity {
     Button mBtnPushing;
     @Bind(R.id.rl_bottom)
     RelativeLayout mRlBottom;
-
+    @Bind(R.id.tv11)
+    TextView mTv11;
+    @Bind(R.id.xx11)
+    TextView mXx11;
+    @Bind(R.id.et_phone_number)
+    EditText mEtPhoneNumber;
+    @Bind(R.id.rl_phone_number)
+    RelativeLayout mRlPhoneNumber;
 
     private Dialog mBottomDialog;
     private RecyclerView mRecyclerView;
@@ -193,23 +200,19 @@ public class PushBuyingActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_buying);
-        if (MyApp.getInstance().mOtcCoinList.size() != 0) {
-            mServiceCharge = MyApp.getInstance().mOtcCoinList.get(0).getOut_otc();
-        }
         mCoinPresenter = new CoinPresenter(this);
-        mPushBuyingPresenter = new PushBuyingPresenter(this);
+        mPushBuyingPresenter = new PushBuyingPresenter(this);/*
         if (MyApp.getInstance().mOtcCoinList.size() != 0) {
             mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();
         }
+       getModeOfPayment();
+        if (MyApp.getInstance().mOtcCoinList.size() != 0) {
+            mServiceCharge = MyApp.getInstance().mOtcCoinList.get(0).getOut_otc();
+        }*/
         setData();
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
         init();
-        if (!mCoinName.isEmpty()) {
-            initData(mCoinName);
-        }
-        mTvHint.setText(getString(R.string.push_ad_hint) + mServiceCharge + "%" + getString(R.string.sxf));
-//        getModeOfPayment();
     }
 
     private void setData() {
@@ -238,11 +241,18 @@ public class PushBuyingActivity extends BaseActivity {
     }
 
     private void init() {
+        mCoinName = getIntent().getStringExtra("coinName");
+        mServiceCharge = getIntent().getStringExtra("serviceCharge");
         mTvCurrency.setText(mCoinName);
         mTvState.setText(MySharedPreferences.getInstance().getString(STATE));
         mTvUnits.setText(MySharedPreferences.getInstance().getString(CURRENCY));
         mTvUnits2.setText(MySharedPreferences.getInstance().getString(CURRENCY));
         mTvUnits3.setText(MySharedPreferences.getInstance().getString(CURRENCY));
+        if (!mCoinName.isEmpty()) {
+            initData(mCoinName);
+        }
+
+        mTvHint.setText(getString(R.string.push_ad_hint) + mServiceCharge + "%" + getString(R.string.sxf));
         /*mEtMinLimit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -336,7 +346,7 @@ public class PushBuyingActivity extends BaseActivity {
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));
                 break;
             case R.id.rl_selector_currency:
-                showCoinDialog();
+//                showCoinDialog();
                 break;
             case R.id.rl_county:
                 break;
@@ -362,7 +372,7 @@ public class PushBuyingActivity extends BaseActivity {
         }
     }
 
-    private void showCoinDialog() {
+   /* private void showCoinDialog() {
         mBottomDialog = new Dialog(this, R.style.BottomDialog2);
         View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_bottom, null);
         //获得dialog的window窗口
@@ -398,20 +408,23 @@ public class PushBuyingActivity extends BaseActivity {
             }
         });
         tvTitle.setText(getString(R.string.selector_coin));
-    }
+    }*/
 
     //验证手机号和密码
     private boolean checkEdit() {
 
-        if (mTvCurrency.getText().toString().trim().isEmpty()) {
-            Toast.makeText(this, getResources().getString(R.string.toast_coin), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mTvCurrency);
+        if (mTvBuySell.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, getString(R.string.toast_buy_sell), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mTvBuySell);
         } else if (mTvState.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, getResources().getString(R.string.toast_state), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mTvState);
-        } else if (mTvBuySell.getText().toString().trim().isEmpty()) {
-            Toast.makeText(this, getString(R.string.toast_buy_sell), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mTvBuySell);
+        } else if (mTvCurrency.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, getResources().getString(R.string.toast_coin), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mTvCurrency);
+        } else if (mEtPhoneNumber.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, getResources().getString(R.string.toast_phone), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mRlPhoneNumber);
         } else if (mTvPayment.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, getResources().getString(R.string.toast_legal_tender), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mTvPayment);
@@ -585,6 +598,7 @@ public class PushBuyingActivity extends BaseActivity {
         String maxLimit = mEtMaxLimit.getText().toString();
         String minLimit = mEtMinLimit.getText().toString();
         String remark = mEtRemark.getText().toString();
+        String phoneNumber = mEtPhoneNumber.getText().toString();
         if (remark == null) {
             remark = "";
         }
@@ -596,7 +610,7 @@ public class PushBuyingActivity extends BaseActivity {
             mType = 2;
         }
 
-        mPushBuyingPresenter.pushing(mType, coin, state, price, count, paymentTime, payment, minLimit, maxLimit, remark, password);
+        mPushBuyingPresenter.pushing(mType, coin, state, price, count, paymentTime, payment, minLimit, maxLimit, remark, password, phoneNumber);
     }
 
     private Map<String, Integer> mMap = new HashMap<>();
@@ -706,8 +720,8 @@ public class PushBuyingActivity extends BaseActivity {
         initData(name);
         mServiceCharge = serviceCharge;
         mTvHint.setText(getString(R.string.push_ad_hint) + serviceCharge + "%" + getString(R.string.sxf));
-//        mEtMaxLimit.setText("");
-//        mEtMinLimit.setText("");
+        mEtMaxLimit.setText("");
+        mEtMinLimit.setText("");
         mTvCurrency.setText(name);
     }
 }
