@@ -125,9 +125,11 @@ public class OtcActivity extends BaseActivity {
 
     private void init() {
         initData();
-        mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();
-        mTvCoinName.setText(mCoinName);
-        mServiceCharge = MyApp.getInstance().mOtcCoinList.get(0).getOut_otc();
+        if (MyApp.getInstance().mOtcCoinList.size() != 0) {
+            mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();
+            mTvCoinName.setText(mCoinName);
+            mServiceCharge = MyApp.getInstance().mOtcCoinList.get(0).getOut_otc();
+        }
         mCloudCircleVp.setCurrentItem(0);
         mLlMenu.getChildAt(0).setSelected(true);
         mTvXx.setVisibility(View.VISIBLE);

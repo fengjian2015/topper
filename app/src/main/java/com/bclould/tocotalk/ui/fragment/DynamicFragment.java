@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.bclould.tocotalk.Presenter.DynamicPresenter;
 import com.bclould.tocotalk.R;
@@ -43,6 +45,10 @@ public class DynamicFragment extends Fragment {
     RecyclerView mRecyclerView;
     @Bind(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.iv)
+    ImageView mIv;
+    @Bind(R.id.ll_no_data)
+    LinearLayout mLlNoData;
     private DynamicPresenter mDynamicPresenter;
     private String mPage = "1";
     private String mPageSize = "100";
@@ -121,8 +127,15 @@ public class DynamicFragment extends Fragment {
         mDynamicPresenter.dynamicList(page, pageSize, userList, new DynamicPresenter.CallBack2() {
             @Override
             public void send(List<DynamicListInfo.DataBean> data) {
-                mDataList.addAll(data);
-                mDynamicRVAdapter.notifyDataSetChanged();
+                if (data.size() != 0) {
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    mLlNoData.setVisibility(View.GONE);
+                    mDataList.addAll(data);
+                    mDynamicRVAdapter.notifyDataSetChanged();
+                } else {
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

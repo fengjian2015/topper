@@ -129,7 +129,7 @@ public class XmppConnection {
     public boolean openConnection() {
 
         try {
-            if (null == connection || !connection.isAuthenticated()) {
+            if (null == connection || !connection.isAuthenticated() || !connection.isConnected()) {
                 SmackConfiguration.DEBUG = true;
                 XMPPTCPConnectionConfiguration.Builder config = XMPPTCPConnectionConfiguration.builder();
                 //设置openfire主机IP

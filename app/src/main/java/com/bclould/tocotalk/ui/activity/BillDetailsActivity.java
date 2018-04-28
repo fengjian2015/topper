@@ -95,8 +95,8 @@ public class BillDetailsActivity extends BaseActivity {
                         mInOutList.addAll(data);
                         mInOutDataRVAapter.notifyDataSetChanged();
                     } else {
-                        mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);
+                        mRecyclerView.setVisibility(View.GONE);
                     }
                 }
             });

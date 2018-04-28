@@ -2,8 +2,6 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +28,7 @@ import com.bclould.tocotalk.model.ReviewListInfo;
 import com.bclould.tocotalk.ui.adapter.DynamicDetailRVAdapter;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.jaeger.ninegridimageview.ItemImageClickListener;
@@ -177,12 +176,8 @@ public class DynamicDetailActivity extends BaseActivity {
         mName.setText(mUserName);
         mTime.setText(mTimes);
         mDynamicText.setText(mContent);
-        try {
-            Bitmap bitmap = BitmapFactory.decodeFile(mMgr.queryUser(mUserName + "@" + Constants.DOMAINNAME).get(0).getPath());
-            mTouxiang.setImageBitmap(bitmap);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String jid = mUserName + "@" + Constants.DOMAINNAME;
+        mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, DynamicDetailActivity.this));
         if (mCompressImgList != null && mCompressImgList.size() != 0) {//判断是否有数据，没有显示另一个状态
             mNglImages.setAdapter(mAdapter);
             mNglImages.setImagesData(mCompressImgList);

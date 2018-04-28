@@ -23,7 +23,6 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.DynamicListInfo;
 import com.bclould.tocotalk.model.LikeInfo;
-import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.activity.DynamicDetailActivity;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
@@ -198,15 +197,8 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
 
         public void setData(final DynamicListInfo.DataBean dataBean) {
             mDataBean = dataBean;
-            if (mMgr.queryUser(dataBean.getUser_name() + "@" + Constants.DOMAINNAME).size() != 0) {
-                if (mMgr.queryUser(dataBean.getUser_name() + "@" + Constants.DOMAINNAME).get(0).getPath().isEmpty()) {
-                    mTouxiang.setImageResource(R.mipmap.img_nfriend_headshot1);
-                } else {
-                    mTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));
-                }
-            } else {
-                mTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));
-            }
+            String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
+            mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
             mTime.setText(dataBean.getCreated_at());
             mName.setText(dataBean.getUser_name());
             mTextContent.setText(dataBean.getContent());
@@ -238,9 +230,16 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
 
     private Bitmap getImage(String user_name) {
         String jid = user_name + "@" + Constants.DOMAINNAME;
-        List<UserInfo> userInfos = mMgr.queryUser(jid);
-        String path = userInfos.get(0).getPath();
-        Bitmap bitmap = BitmapFactory.decodeFile(path);
+        Bitmap bitmap = null;
+        if (mMgr.findUser(jid)) {
+            if (!mMgr.queryUser(jid).getPath().isEmpty()) {
+                bitmap = BitmapFactory.decodeFile(mMgr.queryUser(jid).getPath());
+            } else {
+                bitmap = UtilTool.setDefaultimage(mContext);
+            }
+        } else {
+            bitmap = UtilTool.setDefaultimage(mContext);
+        }
         return bitmap;
     }
 
@@ -371,13 +370,8 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             mCompressImgList = (ArrayList<String>) dataBean.getKey_compress_urls();
             mImgList = (ArrayList<String>) dataBean.getKey_urls();
             mNglImages.setImagesData(mCompressImgList);
-            if (mMgr.findUser(dataBean.getUser_name() + "@" + Constants.DOMAINNAME)) {
-                if (mMgr.queryUser(dataBean.getUser_name() + "@" + Constants.DOMAINNAME).get(0).getPath().isEmpty()) {
-                    mIvTouxiang.setImageResource(R.mipmap.img_nfriend_headshot1);
-                } else {
-                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, dataBean.getUser_name() + "@" + Constants.DOMAINNAME));
-                }
-            }
+            String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
+            mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
             mTvTime.setText(dataBean.getCreated_at());
             mTvName.setText(dataBean.getUser_name());
             mTvContent.setText(dataBean.getContent());

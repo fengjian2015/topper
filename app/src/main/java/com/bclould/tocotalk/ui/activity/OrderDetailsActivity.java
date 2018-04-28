@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -106,6 +107,8 @@ public class OrderDetailsActivity extends BaseActivity {
     TextView mTvTransferHint;
     @Bind(R.id.tv_deal_number)
     TextView mTvDealNumber;
+    @Bind(R.id.scrollView)
+    ScrollView mScrollView;
     private OrderInfo.DataBean mData;
     Timer mTimer = new Timer();
     private int mRecLen = 0;
@@ -151,6 +154,7 @@ public class OrderDetailsActivity extends BaseActivity {
             String id = intent.getStringExtra("id");
             initData(id);
         } else {
+            mScrollView.setVisibility(View.VISIBLE);
             mData = (OrderInfo.DataBean) intent.getSerializableExtra("data");
             mRecLen = mData.getDeadline();
             mType1 = mData.getType();
@@ -213,6 +217,7 @@ public class OrderDetailsActivity extends BaseActivity {
         mOrderDetailsPresenter.orderInfo(id, new OrderDetailsPresenter.CallBack() {
             @Override
             public void send(OrderInfo2.DataBean data) {
+                mScrollView.setVisibility(View.VISIBLE);
                 mType1 = data.getType();
                 mInfo.setData(data);
                 mTvOrderNumber.setText(getString(R.string.order_number) + ":" + data.getOrder_no());
@@ -238,6 +243,13 @@ public class OrderDetailsActivity extends BaseActivity {
                 } else if (data.getStatus() == 2) {
                     mRecLen = data.getDeadline();
                     mTimer.schedule(mTask, 1000, 1000);
+                    if (data.getType() == 1) {
+                        mBtnBuyCancel.setVisibility(View.GONE);
+                        mBtnBuyConfirm.setBackground(getDrawable(R.drawable.bg_gray_shape));
+                        mBtnBuyConfirm.setText(getString(R.string.yi_pay));
+                    } else {
+                        mBtnSellCancel.setVisibility(View.GONE);
+                    }
                 } else if (data.getStatus() == 3) {
                     mLlBuyer.setVisibility(View.GONE);
                     mLlSeller.setVisibility(View.GONE);
@@ -383,6 +395,9 @@ public class OrderDetailsActivity extends BaseActivity {
                 @Override
                 public void send() {
                     mTvPayType.setText(getString(R.string.dengdai_fb));
+                    mBtnBuyCancel.setVisibility(View.GONE);
+                    mBtnBuyConfirm.setBackground(getDrawable(R.drawable.bg_gray_shape));
+                    mBtnBuyConfirm.setText(getString(R.string.yi_pay));
                     MessageEvent messageEvent = new MessageEvent(getString(R.string.confirm_fk));
                     messageEvent.setId(mInfo.getData().getId() + "");
                     EventBus.getDefault().post(messageEvent);
@@ -394,6 +409,9 @@ public class OrderDetailsActivity extends BaseActivity {
                 @Override
                 public void send() {
                     mTvPayType.setText(getString(R.string.dengdai_fb));
+                    mBtnBuyCancel.setVisibility(View.GONE);
+                    mBtnBuyConfirm.setBackground(getDrawable(R.drawable.bg_gray_shape));
+                    mBtnBuyConfirm.setText(getString(R.string.yi_pay));
                     MessageEvent messageEvent = new MessageEvent(getString(R.string.confirm_fk));
                     messageEvent.setId(mData.getId() + "");
                     EventBus.getDefault().post(messageEvent);

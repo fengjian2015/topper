@@ -256,19 +256,19 @@ public class UpIdCardActivity extends BaseActivity {
             String key = "";
             switch (entry.getKey()) {
                 case ZHENGMIAN:
-                    key = 1 + UtilTool.getUser() + UtilTool.createtFileName() + file.getName();
+                    key = "" + 1 + UtilTool.getUserId() + UtilTool.createtFileName() + UtilTool.getPostfix2(file.getName());
                     break;
                 case FANMIAN:
-                    key = 2 + UtilTool.getUser() + UtilTool.createtFileName() + file.getName();
+                    key = "" + 2 + UtilTool.getUserId() + UtilTool.createtFileName() + UtilTool.getPostfix2(file.getName());
                     break;
                 case SHOUCHI:
-                    key = 3 + UtilTool.getUser() + UtilTool.createtFileName() + file.getName();
+                    key = "" + 3 + UtilTool.getUserId() + UtilTool.createtFileName() + UtilTool.getPostfix2(file.getName());
                     break;
                 case HUZHENGMIAN:
-                    key = 1 + UtilTool.getUser() + UtilTool.createtFileName() + file.getName();
+                    key = "" + 1 + UtilTool.getUserId() + UtilTool.createtFileName() + UtilTool.getPostfix2(file.getName());
                     break;
                 case HUSHOUCHI:
-                    key = 2 + UtilTool.getUser() + UtilTool.createtFileName() + file.getName();
+                    key = "" + 2 + UtilTool.getUserId() + UtilTool.createtFileName() + UtilTool.getPostfix2(file.getName());
                     break;
             }
             final String key2 = key;

@@ -41,6 +41,7 @@ import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
 import com.bclould.tocotalk.utils.MySharedPreferences;
+import com.bclould.tocotalk.utils.UtilTool;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;
@@ -251,7 +252,7 @@ public class PushBuyingActivity extends BaseActivity {
         if (!mCoinName.isEmpty()) {
             initData(mCoinName);
         }
-
+        mServiceCharge = Double.parseDouble(mServiceCharge) * 100 + "";
         mTvHint.setText(getString(R.string.push_ad_hint) + mServiceCharge + "%" + getString(R.string.sxf));
         /*mEtMinLimit.addTextChangedListener(new TextWatcher() {
             @Override
@@ -718,6 +719,8 @@ public class PushBuyingActivity extends BaseActivity {
         mBottomDialog.dismiss();
         mCoinName = name;
         initData(name);
+        UtilTool.Log("手續費", serviceCharge);
+        serviceCharge = Double.parseDouble(serviceCharge) * 100 + "";
         mServiceCharge = serviceCharge;
         mTvHint.setText(getString(R.string.push_ad_hint) + serviceCharge + "%" + getString(R.string.sxf));
         mEtMaxLimit.setText("");

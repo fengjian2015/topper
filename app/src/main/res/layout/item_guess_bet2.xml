@@ -4,73 +4,115 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/y5"
     android:layout_marginLeft="@dimen/x20"
     android:layout_marginRight="@dimen/x20"
     android:layout_marginTop="@dimen/y20"
-    android:layout_marginBottom="@dimen/y5"
     android:orientation="vertical"
     app:cardCornerRadius="@dimen/x15">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/y20"
-        android:paddingTop="@dimen/y20">
 
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/icon_jc_win"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/y20"
+            android:paddingTop="@dimen/y20">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_several"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x28"/>
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/x30"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x28"/>
+
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/tv_several"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/x30"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+                style="@style/HCutOffRule"
+                android:layout_marginTop="@dimen/y20"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:layout_marginTop="@dimen/y20"
+                    android:text="@string/bet_array"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x28"/>
+
+                <TextView
+                    android:id="@+id/tv_array"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:layout_marginRight="@dimen/x30"
+                    android:layout_marginTop="@dimen/y20"
+                    android:text="01_02_03_04"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x28"/>
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/x30"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+                style="@style/HCutOffRule"
+                android:layout_marginTop="@dimen/y20"/>
 
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <TextView
-            style="@style/HCutOffRule"
-            android:layout_marginTop="@dimen/y20"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:layout_marginTop="@dimen/y20"
+                    android:text="@string/zhong_jiang_money"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x28"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:layout_marginRight="@dimen/x30"
+                    android:layout_marginTop="@dimen/y20"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x28"/>
+            </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/x30"
-                android:layout_marginTop="@dimen/y20"
-                android:text="@string/bet_array"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+        </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_array"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:layout_marginRight="@dimen/x30"
-                android:layout_marginTop="@dimen/y20"
-                android:text="01_02_03_04"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
-        </RelativeLayout>
-
-    </LinearLayout>
-
+    </RelativeLayout>
 </android.support.v7.widget.CardView>

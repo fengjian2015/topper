@@ -1,7 +1,6 @@
 package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +14,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.GrabRedInfo;
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import java.util.List;
 
@@ -77,9 +77,8 @@ public class RedPacketRVAdapter extends RecyclerView.Adapter {
             mTvName.setText(logBean.getName());
             mTvTime.setText(logBean.getTime());
             mTvMoney.setText(logBean.getMoney());
-            if (mMgr.findUser(logBean.getName() + "@" + Constants.DOMAINNAME))
-                mIvTouxiang.setImageBitmap(BitmapFactory.decodeFile(mMgr.queryUser(logBean.getName() + "@" + Constants.DOMAINNAME).get(0).getPath()));
-
+            String jid = logBean.getName() + "@" + Constants.DOMAINNAME;
+            mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
         }
     }
 }

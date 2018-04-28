@@ -442,7 +442,6 @@ public class BuySellActivity extends BaseActivity {
                     if (!amount.contains(".")) {
                         amount = amount + valueList.get(position).get("name");
                         mEtPassword.setText(amount);
-
                         Editable ea = mEtPassword.getText();
                         mEtPassword.setSelection(ea.length());
                     }

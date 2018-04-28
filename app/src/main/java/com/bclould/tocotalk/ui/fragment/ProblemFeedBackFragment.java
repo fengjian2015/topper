@@ -317,7 +317,7 @@ public class ProblemFeedBackFragment extends Fragment {
                 try {
                     for (LocalMedia info : mSelectList) {
                         File file = new File(info.getCompressPath());
-                        final String key = UtilTool.getUser() + UtilTool.createtFileName() + file.getName();
+                        final String key = UtilTool.getUserId() + UtilTool.createtFileName() + UtilTool.getPostfix2(file.getName());
                         BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
                                 Constants.ACCESS_KEY_ID,
                                 Constants.SECRET_ACCESS_KEY,

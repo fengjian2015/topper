@@ -288,15 +288,11 @@ public class PublicshDynamicActivity extends BaseActivity {
         if (selectList.size() != 0) {
             if (mType) {
                 File file = new File(selectList.get(0).getPath());
-                String fileName = file.getName();
-                String name = fileName.substring(0, fileName.lastIndexOf("."));
-                String jid = UtilTool.getJid();
-                String myName = jid.substring(0, jid.indexOf("@"));
                 Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(selectList.get(0).getPath()
                         , MediaStore.Video.Thumbnails.MINI_KIND);
                 //缩略图储存路径
-                final String key = myName + UtilTool.createtFileName() + file.getName();
-                final String keyCompress = myName + UtilTool.createtFileName() + "compress" + name + ".jpg";
+                final String key = UtilTool.getUserId() + UtilTool.createtFileName() + UtilTool.getPostfix2(file.getName());
+                final String keyCompress = UtilTool.getUserId() + UtilTool.createtFileName() + "compress" + UtilTool.getPostfix2(file.getName());
                 final File newFile = new File(Constants.PUBLICDIR + keyCompress);
                 UtilTool.comp(bitmap, newFile);//压缩图片
                 upVoide(key, file, true);
@@ -309,10 +305,8 @@ public class PublicshDynamicActivity extends BaseActivity {
                             for (int i = 0; i < selectList.size(); i++) {
                                 mPathList.add(selectList.get(i).getCompressPath());
                                 File file = new File(selectList.get(i).getCompressPath());
-                                String jid = UtilTool.getJid();
-                                String myName = jid.substring(0, jid.indexOf("@"));
-                                final String key = myName + UtilTool.createtFileName() + file.getName();
-                                final String keyCompress = myName + UtilTool.createtFileName() + "compress" + file.getName();
+                                final String key = UtilTool.getUserId() + UtilTool.createtFileName() + UtilTool.getPostfix2(file.getName());
+                                final String keyCompress = UtilTool.getUserId() + UtilTool.createtFileName() + "compress" + UtilTool.getPostfix2(file.getName());
                                 //缩略图储存路径
                                 final File newFile = new File(Constants.PUBLICDIR + keyCompress);
                                 UtilTool.comp(BitmapFactory.decodeFile(selectList.get(i).getCompressPath()), newFile);//压缩图片

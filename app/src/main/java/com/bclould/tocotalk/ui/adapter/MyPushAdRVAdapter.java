@@ -16,6 +16,9 @@ import com.bclould.tocotalk.Presenter.BuySellPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.MyAdListInfo;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.utils.MessageEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -146,7 +149,12 @@ public class MyPushAdRVAdapter extends RecyclerView.Adapter {
                 mBuySellPresenter.cancelAd(dataBean.getId(), new BuySellPresenter.CallBack4() {
                     @Override
                     public void send() {
-                        mDataList.remove(dataBean);
+                        dataBean.setStatus(0);
+                        if(mType == 1){
+                            EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.sold_out_buy)));
+                        }else {
+                            EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.sold_out_sell)));
+                        }
                         notifyDataSetChanged();
                         deleteCacheDialog.dismiss();
                     }

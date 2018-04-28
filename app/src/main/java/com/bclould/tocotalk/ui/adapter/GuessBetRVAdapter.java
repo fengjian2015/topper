@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
@@ -44,7 +45,7 @@ public class GuessBetRVAdapter extends RecyclerView.Adapter {
                 break;
             case 3:
                 view = LayoutInflater.from(mContext).inflate(R.layout.item_guess_bet2, parent, false);
-                viewHolder = new ViewHolder(view);
+                viewHolder = new ViewHolder2(view);
                 break;
         }
         return viewHolder;
@@ -52,8 +53,13 @@ public class GuessBetRVAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.setData(mDataList.get(position), position + 1);
+        if (getItemViewType(position) == 1 || getItemViewType(position) == 2) {
+            ViewHolder viewHolder = (ViewHolder) holder;
+            viewHolder.setData(mDataList.get(position), position + 1);
+        } else {
+            ViewHolder2 viewHolder2 = (ViewHolder2) holder;
+            viewHolder2.setData(mDataList.get(position), position + 1);
+        }
     }
 
     @Override
@@ -70,6 +76,8 @@ public class GuessBetRVAdapter extends RecyclerView.Adapter {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.iv_status)
+        ImageView mIvStatus;
         @Bind(R.id.tv_several)
         TextView mTvSeveral;
         @Bind(R.id.tv_array)
@@ -78,6 +86,35 @@ public class GuessBetRVAdapter extends RecyclerView.Adapter {
         TextView mTvTime;
 
         ViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(GuessInfo.DataBean.BetListBean betListBean, int position) {
+            if (betListBean.getStatus() == 1) {
+                mIvStatus.setVisibility(View.GONE);
+            } else {
+                mIvStatus.setVisibility(View.VISIBLE);
+            }
+            mTvArray.setText(betListBean.getBet_number());
+            mTvTime.setText(betListBean.getCreated_at());
+            mTvSeveral.setText("0" + position + mContext.getString(R.string.bet));
+        }
+    }
+
+    class ViewHolder2 extends RecyclerView.ViewHolder {
+        @Bind(R.id.iv_status)
+        ImageView mIvStatus;
+        @Bind(R.id.tv_several)
+        TextView mTvSeveral;
+        @Bind(R.id.tv_time)
+        TextView mTvTime;
+        @Bind(R.id.tv_array)
+        TextView mTvArray;
+        @Bind(R.id.tv_money)
+        TextView mTvMoney;
+
+        ViewHolder2(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }

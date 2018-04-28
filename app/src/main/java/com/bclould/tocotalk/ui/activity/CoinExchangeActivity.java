@@ -258,15 +258,17 @@ public class CoinExchangeActivity extends BaseActivity {
             @Override
             public void send(List<CoinListInfo.DataBean> data) {
                 try {
-                    mCoinList.addAll(data);
-                    mCoin.add(data.get(0).getName());
-                    mServiceCharge = data.get(0).getOut_exchange();
-                    mTvRemain.setText(getString(R.string.dqky) + data.get(0).getCoin_over() + " " + data.get(0).getName());
-                    mTvCoin.setText(data.get(0).getName());
-                    Glide.with(CoinExchangeActivity.this).load(data.get(0).getLogo()).into(mIvLogo);
-                    mTvExchange.setText(data.get(0).getName() + "/" + getString(R.string.usdt));
-                    initPrice(data.get(0).getName());
-                    initListData(data.get(0).getName());
+                    if (data.size() != 0) {
+                        mCoinList.addAll(data);
+                        mCoin.add(data.get(0).getName());
+                        mServiceCharge = data.get(0).getOut_exchange();
+                        mTvRemain.setText(getString(R.string.dqky) + data.get(0).getCoin_over() + " " + data.get(0).getName());
+                        mTvCoin.setText(data.get(0).getName());
+                        Glide.with(CoinExchangeActivity.this).load(data.get(0).getLogo()).into(mIvLogo);
+                        mTvExchange.setText(data.get(0).getName() + "/" + getString(R.string.usdt));
+                        initPrice(data.get(0).getName());
+                        initListData(data.get(0).getName());
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

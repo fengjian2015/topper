@@ -1,8 +1,6 @@
 package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +18,7 @@ import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.model.ReviewListInfo;
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import java.util.List;
 
@@ -120,12 +119,8 @@ public class DynamicDetailRVAdapter extends RecyclerView.Adapter {
             } else {
                 mLlZan.setSelected(false);
             }
-            try {
-                Bitmap bitmap = BitmapFactory.decodeFile(mMgr.queryUser(listBean.getUser_name() + "@" + Constants.DOMAINNAME).get(0).getPath());
-                mTouxiang.setImageBitmap(bitmap);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            String user = listBean.getUser_name() + "@" + Constants.DOMAINNAME;
+            mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, user, mContext));
         }
     }
 }

@@ -94,6 +94,8 @@ public class BuyFragment extends Fragment {
             initData(mCoinName, mState);
         } else if (msg.equals(getString(R.string.state_switchover))) {
             initData(mCoinName, mState);
+        } else if (msg.equals(getString(R.string.sold_out_sell))) {
+            initData(mCoinName, mState);
         }
     }
 
