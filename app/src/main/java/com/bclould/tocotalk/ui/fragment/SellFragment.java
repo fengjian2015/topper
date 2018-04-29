@@ -101,6 +101,8 @@ public class SellFragment extends BaseFragment {
             UtilTool.Log("卖", mState);
         } else if (msg.equals(getString(R.string.state_switchover))) {
             initData(mCoinName, mState);
+        } else if (msg.equals(getString(R.string.sold_out_buy))) {
+            initData(mCoinName, mState);
         }
     }
 

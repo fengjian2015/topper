@@ -41,7 +41,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     private final Context mContext;
     private final Thread.UncaughtExceptionHandler defaultUncaught;
-    File logFile = new File(Constants.LOG_DIR + "ExceptionLog" + UtilTool.getUser() + UtilTool.createtFileName() + ".txt");
+    File logFile = new File(Constants.LOG_DIR + "ExceptionLog" + UtilTool.getUserId() + UtilTool.createtFileName() + ".txt");
 
     public CrashHandler(Context context) {
         super();
@@ -74,7 +74,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         } else {
 
             // 已经记录完log, 提交服务器
-            upLoadErrorFileToServer(logFile);
+//            upLoadErrorFileToServer(logFile);
 
             Intent in = new Intent(mContext, MainActivity.class);
             in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // 如果设置了此标志，这个activity将成为一个新task的历史堆栈中的第一个activity

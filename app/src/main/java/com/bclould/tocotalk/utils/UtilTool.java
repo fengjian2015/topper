@@ -416,6 +416,7 @@ public class UtilTool {
 
     }
 
+
     //打印日志
     public static void Log(String clazzName, String s) {
 
@@ -513,11 +514,19 @@ public class UtilTool {
     }
 
 
-    public static Bitmap getImage(DBManager mgr, String myUser) {
-        List<UserInfo> info = mgr.queryUser(myUser);
-        if (info.size() != 0)
-            return BitmapFactory.decodeFile(info.get(0).getPath());
-        return null;
+    public static Bitmap getImage(DBManager mgr, String myUser, Context context) {
+        Bitmap bitmap = null;
+        if (mgr.findUser(myUser)) {
+            UserInfo info = mgr.queryUser(myUser);
+            if (!info.getPath().isEmpty()) {
+                bitmap = BitmapFactory.decodeFile(info.getPath());
+            } else {
+                bitmap = setDefaultimage(context);
+            }
+        }else {
+            bitmap = setDefaultimage(context);
+        }
+        return bitmap;
     }
 
     public static void playHint(Context context) {
@@ -548,6 +557,10 @@ public class UtilTool {
         } else {
             return "File";
         }
+    }
+
+    public static String getPostfix2(String fileName) {
+        return fileName.substring(fileName.lastIndexOf("."));
     }
 
     public static String getTitles() {

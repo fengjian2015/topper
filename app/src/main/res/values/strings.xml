@@ -500,7 +500,7 @@
     <string name="time_bar4">30分鐘</string>
     <string name="alipay">支付寶</string>
     <string name="we_chat">微信</string>
-    <string name="push_ad_hint">發佈該廣告需收取</string>
+    <string name="push_ad_hint">發佈賣幣廣告需收取</string>
     <string name="sxf">手續費</string>
     <string name="toast_buy_sell">買賣不能為空</string>
     <string name="push_buy">發佈買入</string>
@@ -696,5 +696,11 @@
     <string name="yi_sold_out">已下架</string>
     <string name="deal_zhong">交易中</string>
     <string name="my_ad_filtrate">我的廣告篩選</string>
+    <string name="yi_pay">已付款</string>
+    <string name="sold_out_buy">下架買單</string>
+    <string name="sold_out_sell">下架賣單</string>
+    <string name="no_dynamic_publish">沒有動態發佈</string>
+    <string name="zhong_jiang_money">中獎金額</string>
+    <string name="guess_cancel">競猜已取消</string>
 
 </resources>

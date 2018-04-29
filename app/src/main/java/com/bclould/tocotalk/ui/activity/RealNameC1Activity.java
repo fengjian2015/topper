@@ -181,7 +181,7 @@ public class RealNameC1Activity extends BaseActivity {
             }
         });
         tvTitle.setText(getString(R.string.selecotr_state));
-        if (MyApp.getInstance().mCoinList.size() != 0) {
+        if (MyApp.getInstance().mStateList.size() != 0) {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));

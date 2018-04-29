@@ -28,7 +28,7 @@ import java.io.File;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class LogUpService extends Service {
-    File logFile = new File(Constants.LOG_DIR + UtilTool.getUser() + UtilTool.createtFileName() + ".txt");
+    File logFile = new File(Constants.LOG_DIR + UtilTool.getUserId() + UtilTool.createtFileName() + ".txt");
 
     @Nullable
     @Override

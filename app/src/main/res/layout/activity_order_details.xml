@@ -44,7 +44,8 @@
         style="@style/HCutOffRule"/>
 
     <ScrollView
-
+        android:id="@+id/scrollView"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -294,7 +295,6 @@
 
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/y15"
                         android:layout_marginTop="@dimen/y15">
 
                         <TextView
@@ -308,16 +308,28 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:textColor="@android:color/black"
+                            android:textColor="@color/red"
                             android:textSize="@dimen/x30"
                             android:textStyle="bold"/>
 
                     </RelativeLayout>
 
+
+                    <TextView
+                        android:layout_marginBottom="@dimen/y15"
+                        android:id="@+id/tv_remark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_buysell"
+                        android:layout_marginTop="@dimen/y15"
+                        android:text="@string/remark"
+                        android:textSize="@dimen/x24"/>
+
                     <TextView
                         style="@style/HCutOffRule"/>
 
                     <RelativeLayout
+                        android:layout_marginTop="@dimen/y15"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -325,20 +337,11 @@
                             android:id="@+id/tv_buysell"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/y15"
+                            android:layout_centerVertical="true"
                             android:textColor="@color/bar_grey"
                             android:textSize="@dimen/x28"
                             android:textStyle="bold"/>
 
-                        <TextView
-                            android:id="@+id/tv_remark"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/tv_buysell"
-                            android:layout_marginTop="@dimen/y15"
-                            android:text="@string/remark"
-                            android:textColor="@color/bar_grey"
-                            android:textSize="@dimen/x24"/>
 
                         <Button
                             android:id="@+id/btn_contact"

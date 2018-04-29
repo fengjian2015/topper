@@ -16,7 +16,6 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.model.GuessListInfo;
 import com.bclould.tocotalk.ui.adapter.GuessListRVAdapter;
-import com.bclould.tocotalk.utils.UtilTool;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.ArrayList;
@@ -65,10 +64,9 @@ public class GuessRecordActivity extends BaseActivity {
         mBlockchainGuessPresenter.getGuessList(mPage, mPage_size, mType, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
-                for (GuessListInfo.DataBean info : data) {
-                    UtilTool.Log("競猜", info.getStatus() + "");
-                }
                 if (data.size() != 0) {
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    mLlNoData.setVisibility(View.GONE);
                     mDataList.addAll(data);
                     mGuessListRVAdapter.notifyDataSetChanged();
                 } else {

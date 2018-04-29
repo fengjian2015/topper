@@ -2,8 +2,6 @@ package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
@@ -100,17 +98,7 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             if (dataBean.getType() == 1) {
                 try {
                     String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
-                    Bitmap bitmap = null;
-                    if (mMgr.findUser(jid)) {
-                        if (!mMgr.queryUser(jid).get(0).getPath().isEmpty()) {
-                            bitmap = BitmapFactory.decodeFile(mMgr.queryUser(jid).get(0).getPath());
-                        } else {
-                            bitmap = UtilTool.setDefaultimage(mContext);
-                        }
-                    } else {
-                        bitmap = UtilTool.setDefaultimage(mContext);
-                    }
-                    mIvTouxiang.setImageBitmap(bitmap);
+                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -120,17 +108,7 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             } else {
                 try {
                     String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
-                    Bitmap bitmap = null;
-                    if (mMgr.findUser(jid)) {
-                        if (!mMgr.queryUser(jid).get(0).getPath().isEmpty()) {
-                            bitmap = BitmapFactory.decodeFile(mMgr.queryUser(jid).get(0).getPath());
-                        } else {
-                            bitmap = UtilTool.setDefaultimage(mContext);
-                        }
-                    } else {
-                        bitmap = UtilTool.setDefaultimage(mContext);
-                    }
-                    mIvTouxiang.setImageBitmap(bitmap);
+                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

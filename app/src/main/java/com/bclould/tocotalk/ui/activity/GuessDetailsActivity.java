@@ -38,8 +38,11 @@ import com.bclould.tocotalk.model.GuessInfo;
 import com.bclould.tocotalk.ui.adapter.GuessBetRVAdapter;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -211,6 +214,7 @@ public class GuessDetailsActivity extends BaseActivity {
                     mTvSecond.setText(seconds);
                     if (mCountdown <= 0) {
                         mTimer.cancel();
+                        EventBus.getDefault().post(new MessageEvent(getString(R.string.guess_cancel)));
                         Toast.makeText(GuessDetailsActivity.this, getString(R.string.guess_timeout), Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -240,6 +244,10 @@ public class GuessDetailsActivity extends BaseActivity {
         mGuessBetRVAdapter = new GuessBetRVAdapter(this, mDataList);
         mRecyclerView.setAdapter(mGuessBetRVAdapter);
         mRecyclerView.setNestedScrollingEnabled(false);
+
+        mRecyclerView2.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView2.setAdapter(mGuessBetRVAdapter);
+        mRecyclerView2.setNestedScrollingEnabled(false);
     }
 
     List<GuessInfo.DataBean.BetListBean> mDataList = new ArrayList<>();
@@ -269,8 +277,10 @@ public class GuessDetailsActivity extends BaseActivity {
                 mTvPresentCoinCount.setText(data.getPrize_pool_number() + data.getCoin_name());
                 mTvTitle.setText(data.getTitle());
                 mTvTitle2.setText(data.getTitle());
-                mProgressBar.setMax(Integer.parseInt(data.getLimit_number()));
-                mProgressBar.setProgress(Integer.parseInt(data.getPrize_pool_number()));
+                mProgressBar.setMax((int) Double.parseDouble(data.getLimit_number()));
+                mProgressBar.setProgress((int) Double.parseDouble(data.getPrize_pool_number()));
+                UtilTool.Log("進度", data.getLimit_number());
+                UtilTool.Log("進度", data.getPrize_pool_number());
                 mPrize_pool_number = data.getPrize_pool_number();
                 mCoin_id = data.getCoin_id();
                 mSingle_coin = data.getSingle_coin();
@@ -285,8 +295,8 @@ public class GuessDetailsActivity extends BaseActivity {
                     mLlNo.setVisibility(View.VISIBLE);
                     mLlAlready.setVisibility(View.GONE);
                     if (data.getStatus() == 2) {
-                        mBtnBet.setBackground(getDrawable(R.drawable.bg_grey_shape));
-                        mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape));
+                        mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
+                        mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
                     } else {
                         mCountdown = data.getCountdown();
                         UtilTool.Log("倒計時", data.getCountdown() + "");
@@ -709,11 +719,6 @@ public class GuessDetailsActivity extends BaseActivity {
         mBlockchainGuessPresenter.getRandom(new BlockchainGuessPresenter.CallBack4() {
             @Override
             public void send(String data) {
-                mOver_count_num--;
-                if (mOver_count_num == 0) {
-                    mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
-                    mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
-                }
                 String[] split = data.split(":");
                 mEtArray.setText(split[0]);
                 mEtArray2.setText(split[1]);
@@ -729,16 +734,22 @@ public class GuessDetailsActivity extends BaseActivity {
         mBlockchainGuessPresenter.bet(mBet_id, mPeriod_qty, mCoin_id, mRandom, password, new BlockchainGuessPresenter.CallBack5() {
             @Override
             public void send(BetInfo.DataBean data) {
+                mOver_count_num--;
+                if (mOver_count_num == 0) {
+                    mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
+                    mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
+                }
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.bet)));
                 mEtArray.requestFocus();
                 mEtArray.setText("");
                 mEtArray2.setText("");
                 mEtArray3.setText("");
                 mEtArray4.setText("");
-                mPrize_pool_number = Integer.parseInt(mPrize_pool_number) + Integer.parseInt(mSingle_coin) + "";
+                mPrize_pool_number = Double.parseDouble(mPrize_pool_number) + Double.parseDouble(mSingle_coin) + "";
                 mCurrent_people_number = mCurrent_people_number + 1;
                 mTvPresentInvestCount.setText(mCurrent_people_number + "");
                 mTvPresentCoinCount.setText(mPrize_pool_number + mTvCoin.getText().toString());
-                mProgressBar.setProgress(Integer.parseInt(mPrize_pool_number));
+                mProgressBar.setProgress((int) Double.parseDouble(mPrize_pool_number));
                 GuessInfo.DataBean.BetListBean betListBean = new GuessInfo.DataBean.BetListBean();
                 betListBean.setBet_number(data.getBet_number());
                 betListBean.setBonus_number(data.getBonus_number());

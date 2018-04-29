@@ -2,7 +2,8 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
@@ -114,12 +116,8 @@ public class ChatTransferActivity extends BaseActivity {
         mUser = intent.getStringExtra("user");
         mName = mUser.substring(0, mUser.indexOf("@"));
         mTvName.setText(mName);
-        try {
-            mIvTouxiang.setImageDrawable(Drawable.createFromPath(mMgr.queryUser(mUser).get(0).getPath()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        String jid = mName + "@" + Constants.DOMAINNAME;
+        mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, ChatTransferActivity.this));
     }
 
     @OnClick({R.id.bark, R.id.tv_transfer_record, R.id.rl_selector_coin, R.id.btn_confirm})

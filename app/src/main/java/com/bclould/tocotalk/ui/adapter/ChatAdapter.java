@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,7 +28,6 @@ import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.GrabRedInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.SerMap;
-import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.model.VoiceInfo;
 import com.bclould.tocotalk.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tocotalk.ui.activity.ImageViewActivity;
@@ -42,7 +39,6 @@ import com.bclould.tocotalk.ui.activity.RedPacketActivity;
 import com.bclould.tocotalk.ui.activity.TransferDetailsActivity;
 import com.bclould.tocotalk.ui.activity.VideoActivity;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
-import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
@@ -114,20 +110,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         mMgr = mgr;
         mMediaPlayer = mediaPlayer;
         mGrabRedPresenter = new GrabRedPresenter(mContext);
-        List<UserInfo> userInfos = mMgr.queryUser(Constants.MYUSER);
-        if (userInfos.size() != 0) {
-            if (!userInfos.get(0).getPath().isEmpty()) {
-                mToBitmap = BitmapFactory.decodeFile(userInfos.get(0).getPath());
-            } else {
-                Drawable drawable = mContext.getResources().getDrawable(R.mipmap.img_nfriend_headshot1);
-                BitmapDrawable bd = (BitmapDrawable) drawable;
-                mToBitmap = bd.getBitmap();
-            }
-        } else {
-            Drawable drawable = mContext.getResources().getDrawable(R.mipmap.img_nfriend_headshot1);
-            BitmapDrawable bd = (BitmapDrawable) drawable;
-            mToBitmap = bd.getBitmap();
-        }
+        mToBitmap = UtilTool.getImage(mMgr, UtilTool.getJid(), mContext);
     }
 
     @Override

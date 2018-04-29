@@ -702,11 +702,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     //上传文件到aws
     public void Upload(final String path) {
         final File file = new File(path);//获取文件
-        String fileName = file.getName();//获取文件名
-        String myUser = UtilTool.getJid();//获取自己user
-        String name = myUser.substring(0, myUser.indexOf("@"));//切割user获取name
-        final String postfix = UtilTool.getPostfix(fileName);//获取文件后缀
-        final String key = name + UtilTool.createtFileName() + ".AN." + fileName;//命名aws文件名
+        final String postfix = UtilTool.getPostfix(file.getName());//获取文件后缀
+        final String key = UtilTool.getUserId() + UtilTool.createtFileName() + ".AN." + UtilTool.getPostfix2(file.getName());//命名aws文件名
         Bitmap bitmap = null;
         //获取发送图片或视频第一帧的bitmap
         if (postfix.equals("Video")) {
@@ -1066,15 +1063,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         } else {
             mName = bundle.getString("name");
             mUser = bundle.getString("user");
-            if (mMgr.findUser(mUser)) {
-                if (mMgr.queryUser(mUser).get(0).getPath().isEmpty()) {
-                    mUserImage = UtilTool.setDefaultimage(this);
-                } else {
-                    mUserImage = UtilTool.getImage(mMgr, mUser);
-                }
-            } else {
-                mUserImage = UtilTool.setDefaultimage(this);
-            }
+            mUserImage = UtilTool.getImage(mMgr, mUser, this);
         }
        /* mType = intent.getStringExtra("type");
         if (mType != null)

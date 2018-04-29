@@ -68,6 +68,10 @@ public class PersonageGuessFragment extends Fragment {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.push_guess))) {
             initData();
+        } else if (msg.equals(getString(R.string.bet))) {
+            initData();
+        } else if (msg.equals(getString(R.string.guess_cancel))) {
+            initData();
         }
     }
 
@@ -97,6 +101,7 @@ public class PersonageGuessFragment extends Fragment {
     List<GuessListInfo.DataBean> mDataList = new ArrayList<>();
 
     private void initData() {
+        mDataList.clear();
         mBlockchainGuessPresenter.getGuessList(mPage, mPageSize, 1, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
@@ -106,7 +111,6 @@ public class PersonageGuessFragment extends Fragment {
                     }
                     mRecyclerView.setVisibility(View.VISIBLE);
                     mLlNoData.setVisibility(View.GONE);
-                    mDataList.clear();
                     mDataList.addAll(data);
                     mGuessListRVAdapter.notifyDataSetChanged();
                 } else {
@@ -121,6 +125,6 @@ public class PersonageGuessFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 }

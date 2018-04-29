@@ -17,9 +17,14 @@ import com.bclould.tocotalk.Presenter.BlockchainGuessPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.GuessListInfo;
 import com.bclould.tocotalk.ui.adapter.GuessListRVAdapter;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +56,8 @@ public class PlatformGuessFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_personage_guess, container, false);
         ButterKnife.bind(this, view);
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         return view;
     }
 
@@ -58,6 +65,16 @@ public class PlatformGuessFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         init();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(getString(R.string.bet))) {
+            initData();
+        }else if (msg.equals(getString(R.string.guess_cancel))) {
+            initData();
+        }
     }
 
     private void init() {
@@ -86,13 +103,13 @@ public class PlatformGuessFragment extends Fragment {
     List<GuessListInfo.DataBean> mDataList = new ArrayList<>();
 
     private void initData() {
+        mDataList.clear();
         mBlockchainGuessPresenter.getGuessList(mPage, mPageSize, 2, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
                 if (data.size() != 0) {
                     mRecyclerView.setVisibility(View.VISIBLE);
                     mLlNoData.setVisibility(View.GONE);
-                    mDataList.clear();
                     mDataList.addAll(data);
                     mGuessListRVAdapter.notifyDataSetChanged();
                 } else {
@@ -107,5 +124,6 @@ public class PlatformGuessFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 }

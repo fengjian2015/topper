@@ -192,31 +192,13 @@ public class ConversationFragment extends Fragment {
         mBuilder = new NotificationCompat.Builder(getContext());
     }
 
-    //显示登录中Dialog
-    public void showDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = LoadingProgressDialog.createDialog(getContext());
-            mProgressDialog.setCanceledOnTouchOutside(false);
-            mProgressDialog.setCancelable(false);
-            mProgressDialog.setMessage(getString(R.string.login_underway));
-        }
-        mProgressDialog.show();
-    }
-
-    //隐藏登录中dialog
-    public void hideDialog() {
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-        }
-    }
 
     private void pullToRefresh() {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
-                if (!MyApp.getInstance().isLogin) {
+                if (!XmppConnection.getInstance().getConnection().isAuthenticated()) {
                     loginIM();
                 }
             }
@@ -229,11 +211,13 @@ public class ConversationFragment extends Fragment {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                    hideDialog();
                     Toast.makeText(getContext(), getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                     break;
                 case 1:
-                    hideDialog();
+                    Intent intent = new Intent();
+                    intent.setAction("XMPPConnectionListener");
+                    intent.putExtra("type", true);
+                    getContext().sendBroadcast(intent);
                     pingService();
                     break;
             }

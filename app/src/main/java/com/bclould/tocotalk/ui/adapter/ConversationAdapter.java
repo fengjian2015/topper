@@ -3,7 +3,6 @@ package com.bclould.tocotalk.ui.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -18,15 +17,14 @@ import android.widget.TextView;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.ConversationInfo;
-import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.activity.ConversationActivity;
 import com.bclould.tocotalk.ui.fragment.ConversationFragment;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 import butterknife.Bind;
@@ -109,20 +107,11 @@ public class ConversationAdapter extends RecyclerView.Adapter {
 
         public void setData(ConversationInfo conversationInfo) {
             mConversationInfo = conversationInfo;
-            List<UserInfo> userInfos = mMgr.queryUser(conversationInfo.getUser());
-            Bitmap bitmap = null;
-            if (userInfos.size() != 0 && !userInfos.get(0).getPath().isEmpty()) {
-                bitmap = BitmapFactory.decodeFile(userInfos.get(0).getPath());
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                mDatas = baos.toByteArray();
-                try {
-                    baos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                mTab1ItemImg.setImageBitmap(bitmap);
-            }
+            Bitmap bitmap = UtilTool.getImage(mMgr, conversationInfo.getUser(), mContext);
+            mTab1ItemImg.setImageBitmap(bitmap);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            mDatas = baos.toByteArray();
             mTab1ItemName.setText(conversationInfo.getFriend());
             mTab1ItemText.setText(conversationInfo.getMessage());
             mTime.setText(conversationInfo.getTime());

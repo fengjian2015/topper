@@ -20,10 +20,10 @@ import com.bclould.tocotalk.Presenter.RedRecordPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.GrabRedInfo;
-import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.adapter.RedPacketRVAdapter;
 import com.bclould.tocotalk.ui.widget.ChangeTextSpaceView;
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import java.util.List;
 
@@ -122,15 +122,13 @@ public class RedPacketActivity extends AppCompatActivity {
                 public void send(GrabRedInfo.DataBean data) {
                     List<GrabRedInfo.DataBean.LogBean> logBeanList = data.getLog();
                     initRecylerView(logBeanList);
-                    List<UserInfo> userInfos = mMgr.queryUser(data.getSend_rp_user_name() + "@" + Constants.DOMAINNAME);
                     mTvCoin.setText(data.getCoin_name());
                     mTvCount.setText(data.getTotal_money());
                     mTvCount.setSpacing(2);
                     mTvRemark.setText(data.getIntro());
                     mTvName.setText(data.getSend_rp_user_name());
-                    if (userInfos.size() != 0)
-                        mIvTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfos.get(0).getPath()));
-
+                    String jid = data.getSend_rp_user_name() + "@" + Constants.DOMAINNAME;
+                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, RedPacketActivity.this));
                 }
             });
         }

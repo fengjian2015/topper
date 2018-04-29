@@ -1,9 +1,9 @@
 package com.bclould.tocotalk.ui.fragment;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,10 +18,9 @@ import com.bclould.tocotalk.Presenter.RedRecordPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.RedRecordInfo;
-import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.adapter.ReceiveRVAdapter;
 import com.bclould.tocotalk.ui.widget.ChangeTextSpaceView;
-import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +32,7 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/9/22.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class EmitFragment extends Fragment {
 
     public static EmitFragment instance = null;
@@ -105,9 +105,8 @@ public class EmitFragment extends Fragment {
                         mLlTotal.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
                     }
-                    List<UserInfo> userInfos = mDbManager.queryUser(Constants.MYUSER);
-                    Bitmap bitmap = BitmapFactory.decodeFile(userInfos.get(0).getPath());
-                    mIvTouxiang.setImageBitmap(bitmap);
+
+                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mDbManager, UtilTool.getJid(), getContext()));
                     mTvName.setText(data.getName() + getString(R.string.sum_send));
                     mTvCount.setText(data.getTotal_money() + "");
                     mTvRedCount.setText(data.getRp_number() + "");

@@ -1,8 +1,6 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,13 +15,9 @@ import com.bclould.tocotalk.Presenter.RedPacketPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.GrabRedInfo;
-import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.widget.ChangeTextSpaceView;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bclould.tocotalk.xmpp.XmppConnection;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -84,13 +78,7 @@ public class GrabQRCodeRedActivity extends AppCompatActivity {
                 mTvCount.setText(dataBean.getLog().get(0).getMoney());
                 mTvCoin.setText(dataBean.getCoin_name());
                 String user = dataBean.getSend_rp_user_name() + "@" + Constants.DOMAINNAME;
-                if (mMgr.findUser(user)) {
-                    List<UserInfo> info = mMgr.queryUser(user);
-                    mIvTouxiang.setImageBitmap(BitmapFactory.decodeFile(info.get(0).getPath()));
-                } else {
-                    Drawable image = XmppConnection.getInstance().getUserImage(user);
-                    mIvTouxiang.setImageDrawable(image);
-                }
+                mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, user, GrabQRCodeRedActivity.this));
             }
         });
     }

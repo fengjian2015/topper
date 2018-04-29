@@ -1,7 +1,6 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,11 +15,8 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
-import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -59,12 +55,7 @@ public class QRCodeActivity extends BaseActivity {
     private void init() {
         try {
             DBManager mgr = new DBManager(this);
-            List<UserInfo> userInfos = mgr.queryUser(UtilTool.getJid());
-            if (!userInfos.get(0).getPath().isEmpty())
-                mTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfos.get(0).getPath()));
-            else {
-                mTouxiang.setImageResource(R.mipmap.img_nfriend_headshot1);
-            }
+            mTouxiang.setImageBitmap(UtilTool.getImage(mgr, UtilTool.getJid(), this));
             Bitmap bitmap = UtilTool.createQRImage(UtilTool.base64PetToJson(Constants.BUSINESSCARD, "name", UtilTool.getJid(), "名片"));
             mQrCodeIv.setImageBitmap(bitmap);
         } catch (Exception e) {

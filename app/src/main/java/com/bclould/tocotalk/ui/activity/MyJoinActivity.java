@@ -25,6 +25,8 @@ import com.bclould.tocotalk.model.GuessListInfo;
 import com.bclould.tocotalk.ui.adapter.GuessListRVAdapter;
 import com.bclould.tocotalk.ui.adapter.PayManageGVAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,11 +78,22 @@ public class MyJoinActivity extends BaseActivity {
     }
 
     private void init() {
+        initListener();
         mMap.put(getString(R.string.filtrate), 0);
         setList();
         mBlockchainGuessPresenter = new BlockchainGuessPresenter(this);
         initRecyclerView();
         initData(mStatus);
+    }
+
+    private void initListener() {
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh(2000);
+                initData(mStatus);
+            }
+        });
     }
 
     private void setList() {
@@ -99,6 +112,8 @@ public class MyJoinActivity extends BaseActivity {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
                 if (data.size() != 0) {
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    mLlNoData.setVisibility(View.GONE);
                     mDataList.addAll(data);
                     mGuessListRVAdapter.notifyDataSetChanged();
                 } else {

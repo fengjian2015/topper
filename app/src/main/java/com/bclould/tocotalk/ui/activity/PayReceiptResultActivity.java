@@ -1,6 +1,5 @@
 package com.bclould.tocotalk.ui.activity;
 
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +12,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -68,12 +68,8 @@ public class PayReceiptResultActivity extends BaseActivity {
         }
         mTvCoinCount.setText(number + coinName);
         mTvName.setText(name);
-        try {
-            Drawable drawable = Drawable.createFromPath(mMgr.queryUser(name + "@" + Constants.DOMAINNAME).get(0).getPath());
-            mTvTouxiang.setImageDrawable(drawable);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String jid = name + "@" + Constants.DOMAINNAME;
+        mTvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, PayReceiptResultActivity.this));
     }
 
     @OnClick(R.id.btn_finish)

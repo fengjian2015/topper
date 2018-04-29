@@ -84,7 +84,7 @@ public class PersonalDetailsActivity extends BaseActivity {
     private void initInterface() {
         String state = MySharedPreferences.getInstance().getString(STATE);
         mTvLocation.setText(state);
-        Bitmap bitmap = UtilTool.getImage(mMgr, UtilTool.getJid());
+        Bitmap bitmap = UtilTool.getImage(mMgr, UtilTool.getJid(), PersonalDetailsActivity.this);
         if (bitmap != null)
             mTouxiang.setImageBitmap(bitmap);
         mTvUsername.setText(UtilTool.getUser());
@@ -122,7 +122,7 @@ public class PersonalDetailsActivity extends BaseActivity {
             public void send() {
                 UtilTool.saveImages(bitmap, UtilTool.getJid(), PersonalDetailsActivity.this, mMgr);
                 EventBus.getDefault().post(new MessageEvent(getString(R.string.xg_touxaing)));
-                mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, UtilTool.getJid()));
+                mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, UtilTool.getJid(), PersonalDetailsActivity.this));
             }
         });
         /*boolean type = XmppConnection.getInstance().changeImage(bytes);

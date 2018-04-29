@@ -17,6 +17,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.TransferInfo;
 import com.bclould.tocotalk.ui.adapter.BillDataRVAapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -34,6 +35,7 @@ public class BillDataFragment extends Fragment {
     RecyclerView mRecyclerView;
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
+    private BillDataRVAapter mBillDataRVAapter;
 
     //对外提供方法获取对象
     public static BillDataFragment getInstance() {
@@ -53,33 +55,38 @@ public class BillDataFragment extends Fragment {
 
         View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_bill_data, container, false);
         ButterKnife.bind(this, view);
+        initListView();
         initData();
         return view;
     }
 
+    List<TransferInfo.DataBean> mDataList = new ArrayList<>();
+
     private void initData() {
+        mDataList.clear();
         DillDataPresenter dillDataPresenter = new DillDataPresenter(getContext());
         dillDataPresenter.getTransfer(new DillDataPresenter.CallBack() {
             @Override
             public void send(List<TransferInfo.DataBean> data) {
                 if (data.size() == 0) {
+                    mDataList.addAll(data);
+                    mBillDataRVAapter.notifyDataSetChanged();
                     mLlNoData.setVisibility(View.VISIBLE);
                     mRecyclerView.setVisibility(View.GONE);
                 } else {
                     mLlNoData.setVisibility(View.GONE);
                     mRecyclerView.setVisibility(View.VISIBLE);
                 }
-                initListView(data);
             }
         });
     }
 
     //初始化条目
-    private void initListView(List<TransferInfo.DataBean> data) {
+    private void initListView() {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        mRecyclerView.setAdapter(new BillDataRVAapter(getActivity(), data));
+        mBillDataRVAapter = new BillDataRVAapter(getActivity(), mDataList);
+        mRecyclerView.setAdapter(mBillDataRVAapter);
 
     }
 

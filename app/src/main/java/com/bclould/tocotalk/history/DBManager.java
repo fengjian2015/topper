@@ -345,20 +345,18 @@ public class DBManager {
         db.close();
     }
 
-    public List<UserInfo> queryUser(String user) {
+    public UserInfo queryUser(String user) {
         db = helper.getWritableDatabase();
-        List<UserInfo> userInfos = new ArrayList<>();
+        UserInfo userInfo = new UserInfo();
         String sql = "select * from UserImage where user=? and my_user=?";
         Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid()});
         while (c.moveToNext()) {
-            UserInfo userInfo = new UserInfo();
             userInfo.setUser(c.getString(c.getColumnIndex("user")));
             userInfo.setPath(c.getString(c.getColumnIndex("path")));
-            userInfos.add(userInfo);
         }
         c.close();
         db.close();
-        return userInfos;
+        return userInfo;
     }
 
     public List<UserInfo> queryAllUser() {

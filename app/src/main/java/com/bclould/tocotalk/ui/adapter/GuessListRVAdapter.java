@@ -122,7 +122,19 @@ public class GuessListRVAdapter extends RecyclerView.Adapter {
                         mContext.startActivity(intent);
                     }
                 });
+                mLlAll.setEnabled(false);
             } else {
+                mLlAll.setEnabled(true);
+                mBtnBet.setVisibility(View.GONE);
+                mLlAll.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(mContext, GuessDetailsActivity.class);
+                        intent.putExtra("bet_id", dataBean.getId());
+                        intent.putExtra("period_qty", dataBean.getPeriod_qty());
+                        mContext.startActivity(intent);
+                    }
+                });
                 if (dataBean.getStatus() == 2) {
                     mTvKaijiangTime.setTextColor(mContext.getResources().getColor(R.color.black));
                     mRlTime.setVisibility(View.GONE);
@@ -136,10 +148,10 @@ public class GuessListRVAdapter extends RecyclerView.Adapter {
                     if (dataBean.getLottery_status() == 0) {
                         mTvAwardStatus.setText(mContext.getString(R.string.no_join));
                     } else if (dataBean.getLottery_status() == 2) {
-                        mTvAwardStatus.setText(mContext.getString(R.string.zhong_jiang_le));
+                        mTvAwardStatus.setText(mContext.getString(R.string.no_zhong_jiang));
                         mTvAwardStatus.setTextColor(mContext.getResources().getColor(R.color.yikaijiang));
                     } else if (dataBean.getLottery_status() == 3) {
-                        mTvAwardStatus.setText(mContext.getString(R.string.no_zhong_jiang));
+                        mTvAwardStatus.setText(mContext.getString(R.string.zhong_jiang_le));
                     }
                     mRlTime.setVisibility(View.VISIBLE);
                     mRlCount.setVisibility(View.VISIBLE);
@@ -151,16 +163,6 @@ public class GuessListRVAdapter extends RecyclerView.Adapter {
                     mLlGuessStatus.setVisibility(View.GONE);
                     mIvGuessStatus.setImageResource(R.mipmap.icon_jc_cancel);
                 }
-                mBtnBet.setVisibility(View.GONE);
-                mLlAll.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(mContext, GuessDetailsActivity.class);
-                        intent.putExtra("bet_id", dataBean.getId());
-                        intent.putExtra("period_qty", dataBean.getPeriod_qty());
-                        mContext.startActivity(intent);
-                    }
-                });
             }
         }
     }
