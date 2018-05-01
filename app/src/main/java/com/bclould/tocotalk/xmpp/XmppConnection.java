@@ -146,7 +146,8 @@ public class XmppConnection {
                 sslContext.init(null, new TrustManager[]{myX509TrustManager},
                         new SecureRandom());
                 config.setCustomSSLContext(sslContext);
-                config.setSecurityMode(ConnectionConfiguration.SecurityMode.required);
+//                config.setSecurityMode(ConnectionConfiguration.SecurityMode.required);
+                config.setSecurityMode(ConnectionConfiguration.SecurityMode.ifpossible);
 //                设置Debug
 
                 config.setDebuggerEnabled(true);
@@ -172,7 +173,7 @@ public class XmppConnection {
         } catch (Exception xe) {
             EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.login_error)));
             mHandler.sendEmptyMessage(0);
-            UtilTool.Log("fsdafa", "连接失败");
+            UtilTool.Log("fsdafa", "连接失败 " + xe.getMessage());
             xe.printStackTrace();
             connection = null;
         }
