@@ -18,7 +18,6 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.GuessListInfo;
 import com.bclould.tocotalk.ui.adapter.GuessListRVAdapter;
 import com.bclould.tocotalk.utils.MessageEvent;
-import com.bclould.tocotalk.utils.UtilTool;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -101,21 +100,20 @@ public class PersonageGuessFragment extends Fragment {
     List<GuessListInfo.DataBean> mDataList = new ArrayList<>();
 
     private void initData() {
-        mDataList.clear();
         mBlockchainGuessPresenter.getGuessList(mPage, mPageSize, 1, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
-                if (data.size() != 0) {
-                    for (GuessListInfo.DataBean dataBean : data) {
-                        UtilTool.Log("競猜", dataBean.getStatus() + "");
+                if (mRecyclerView != null) {
+                    if (data.size() != 0) {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mDataList.clear();
+                        mDataList.addAll(data);
+                        mGuessListRVAdapter.notifyDataSetChanged();
+                    } else {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.VISIBLE);
                     }
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                    mLlNoData.setVisibility(View.GONE);
-                    mDataList.addAll(data);
-                    mGuessListRVAdapter.notifyDataSetChanged();
-                } else {
-                    mRecyclerView.setVisibility(View.GONE);
-                    mLlNoData.setVisibility(View.VISIBLE);
                 }
             }
         });

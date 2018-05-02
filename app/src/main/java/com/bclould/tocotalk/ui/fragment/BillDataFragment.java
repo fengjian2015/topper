@@ -63,19 +63,21 @@ public class BillDataFragment extends Fragment {
     List<TransferInfo.DataBean> mDataList = new ArrayList<>();
 
     private void initData() {
-        mDataList.clear();
         DillDataPresenter dillDataPresenter = new DillDataPresenter(getContext());
         dillDataPresenter.getTransfer(new DillDataPresenter.CallBack() {
             @Override
             public void send(List<TransferInfo.DataBean> data) {
-                if (data.size() == 0) {
-                    mDataList.addAll(data);
-                    mBillDataRVAapter.notifyDataSetChanged();
-                    mLlNoData.setVisibility(View.VISIBLE);
-                    mRecyclerView.setVisibility(View.GONE);
-                } else {
-                    mLlNoData.setVisibility(View.GONE);
-                    mRecyclerView.setVisibility(View.VISIBLE);
+                if (mRecyclerView != null) {
+                    if (data.size() != 0) {
+                        mDataList.clear();
+                        mDataList.addAll(data);
+                        mBillDataRVAapter.notifyDataSetChanged();
+                        mLlNoData.setVisibility(View.VISIBLE);
+                        mRecyclerView.setVisibility(View.GONE);
+                    } else {
+                        mLlNoData.setVisibility(View.GONE);
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });

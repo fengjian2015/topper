@@ -401,19 +401,20 @@ public class ConversationFragment extends Fragment {
     }
 
     private void initData() {
-        List<ConversationInfo> conversationInfos = mgr.queryConversation();
-        if (conversationInfos.size() == 0) {
-            mLlNoData.setVisibility(View.VISIBLE);
-            mRecyclerView.setVisibility(View.GONE);
-        } else {
-            mLlNoData.setVisibility(View.GONE);
-            mRecyclerView.setVisibility(View.VISIBLE);
+        if (mRecyclerView != null) {
+            List<ConversationInfo> conversationInfos = mgr.queryConversation();
+            if (conversationInfos.size() == 0) {
+                mLlNoData.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
+            } else {
+                mLlNoData.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.VISIBLE);
+            }
+            showlist.removeAll(showlist);
+            showlist.addAll(conversationInfos);
+            sort();
+            initRecyclerView();
         }
-        showlist.removeAll(showlist);
-        showlist.addAll(conversationInfos);
-        sort();
-        initRecyclerView();
-//        mConversationAdapter.notifyDataSetChanged();
     }
 
     private void initRecyclerView() {

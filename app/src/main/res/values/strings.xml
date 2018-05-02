@@ -638,7 +638,7 @@
     <string name="out_coin_time">提幣時間</string>
     <string name="out_coin_inform_hint">您有一個新提幣消息,點擊查看詳情</string>
     <string name="start_guess_service_hint">個人發起投幣競猜，需支付</string>
-    <string name="et_guess_title">輸入競猜標題</string>
+    <string name="et_guess_title">輸入競猜標題(1到20個字)</string>
     <string name="guess_deadline">競猜期限</string>
     <string name="selector_deadline">選擇期限</string>
     <string name="time_deadline">3小時</string>
@@ -702,5 +702,14 @@
     <string name="no_dynamic_publish">沒有動態發佈</string>
     <string name="zhong_jiang_money">中獎金額</string>
     <string name="guess_cancel">競猜已取消</string>
+    <string name="et_sum_count">總投注數量</string>
+    <string name="et_command">輸入競猜口令(4-8個數字)</string>
+    <string name="toast_command_min">競猜口令不能低於四位</string>
+    <string name="toast_guess_count">投幣次數不能小於零</string>
+    <string name="et_guess_count">輸入投注次數</string>
+    <string name="guess_password_title">此競猜為口令競猜，請輸入口令</string>
+    <string name="toast_guess_pw">口令不能為空</string>
+    <string name="toast_guess_pw_error">口令錯誤</string>
+    <string name="toast_guess_count_null">投幣次數不能為空</string>
 
 </resources>

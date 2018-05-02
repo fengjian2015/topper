@@ -107,18 +107,20 @@ public class MyStartActivity extends BaseActivity {
     List<GuessListInfo.DataBean> mDataList = new ArrayList<>();
 
     private void initData(int status) {
-        mDataList.clear();
         mBlockchainGuessPresenter.getMyStart(mPage, mPage_size, status, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
-                if(data.size() != 0){
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                    mLlNoData.setVisibility(View.GONE);
-                    mDataList.addAll(data);
-                    mGuessListRVAdapter.notifyDataSetChanged();
-                }else {
-                    mRecyclerView.setVisibility(View.GONE);
-                    mLlNoData.setVisibility(View.VISIBLE);
+                if (mRecyclerView != null) {
+                    if(data.size() != 0){
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mDataList.clear();
+                        mDataList.addAll(data);
+                        mGuessListRVAdapter.notifyDataSetChanged();
+                    }else {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });

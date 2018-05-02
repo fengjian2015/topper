@@ -103,18 +103,20 @@ public class PlatformGuessFragment extends Fragment {
     List<GuessListInfo.DataBean> mDataList = new ArrayList<>();
 
     private void initData() {
-        mDataList.clear();
         mBlockchainGuessPresenter.getGuessList(mPage, mPageSize, 2, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
-                if (data.size() != 0) {
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                    mLlNoData.setVisibility(View.GONE);
-                    mDataList.addAll(data);
-                    mGuessListRVAdapter.notifyDataSetChanged();
-                } else {
-                    mRecyclerView.setVisibility(View.GONE);
-                    mLlNoData.setVisibility(View.VISIBLE);
+                if (mRecyclerView != null) {
+                    if (data.size() != 0) {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mDataList.clear();
+                        mDataList.addAll(data);
+                        mGuessListRVAdapter.notifyDataSetChanged();
+                    } else {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });

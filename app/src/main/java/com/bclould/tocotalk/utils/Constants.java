@@ -16,6 +16,7 @@ import static com.bclould.tocotalk.ui.activity.ConversationActivity.SESSIONTOKEN
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class Constants {
     public static final String ADMINISTRATOR_NAME = "TOCOTALK";
+    public static int BET_ARR_COUNT = 4;
     private final Context mContext;
 
     public Constants(Context context) {

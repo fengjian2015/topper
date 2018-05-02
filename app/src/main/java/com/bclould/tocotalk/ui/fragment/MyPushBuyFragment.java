@@ -106,18 +106,20 @@ public class MyPushBuyFragment extends Fragment {
     List<MyAdListInfo.DataBean> mDataList = new ArrayList<>();
 
     private void initData() {
-        mDataList.clear();
         mBuySellPresenter.getUserAdList(mType, mPage, mPage_size, mStatus, mCoinName, new BuySellPresenter.CallBack5() {
             @Override
             public void send(List<MyAdListInfo.DataBean> data) {
-                if (data.size() != 0) {
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                    mLlNoData.setVisibility(View.GONE);
-                    mDataList.addAll(data);
-                    mMyPushAdRVAdapter.notifyDataSetChanged();
-                } else {
-                    mRecyclerView.setVisibility(View.GONE);
-                    mLlNoData.setVisibility(View.VISIBLE);
+                if (mRecyclerView != null) {
+                    if (data.size() != 0) {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mDataList.clear();
+                        mDataList.addAll(data);
+                        mMyPushAdRVAdapter.notifyDataSetChanged();
+                    } else {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });

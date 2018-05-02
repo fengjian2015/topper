@@ -50,7 +50,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Hashtable;
-import java.util.List;
+import java.util.Random;
 import java.util.TimeZone;
 
 import io.reactivex.Observer;
@@ -523,7 +523,7 @@ public class UtilTool {
             } else {
                 bitmap = setDefaultimage(context);
             }
-        }else {
+        } else {
             bitmap = setDefaultimage(context);
         }
         return bitmap;
@@ -592,5 +592,30 @@ public class UtilTool {
             }
         }
         return deadline;
+    }
+
+    private static String[] mRandomArrs = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    private static int[] mRandomArr = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+    public static String[] getRandomArr(int betArrCount) {
+        String[] arr = new String[betArrCount];
+        for (int i = 0; i < betArrCount; i++) {
+            arr[i] = getRandom(i);
+        }
+        return arr;
+    }
+
+    public static String getRandom(int index) {
+        String random = "";
+        for (int i = 0; i < 2; i++) {
+            if (index <= 2) {
+                int randomArrIndex = (int) (Math.random() * mRandomArr.length);
+                random = random + mRandomArr[randomArrIndex];
+            } else {
+                int randomArrsIndex = (int) (Math.random() * mRandomArrs.length);
+                random = random + mRandomArrs[randomArrsIndex];
+            }
+        }
+        return random;
     }
 }

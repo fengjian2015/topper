@@ -86,12 +86,12 @@ public class BlockchainGuessPresenter {
         }
     }
 
-    public void pushingGuess(int id, String title, String count, String timeMinute, String sum, String password, final CallBack2 callBack2) {
+    public void pushingGuess(int id, String title, String count, String timeMinute, String sum, String second_password, String singleCount, String password, final CallBack2 callBack2) {
         showDialog();
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .publishGuess(UtilTool.getToken(), title, sum, count, id + "", timeMinute, password)
+                    .publishGuess(UtilTool.getToken(), title, sum, count, singleCount, id + "", timeMinute, second_password, password)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<BaseInfo>() {
@@ -348,6 +348,6 @@ public class BlockchainGuessPresenter {
 
     //定义接口
     public interface CallBack5 {
-        void send(BetInfo.DataBean data);
+        void send(List<BetInfo.DataBean> data);
     }
 }

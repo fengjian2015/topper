@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/x300"
+    android:minWidth="@dimen/x650"
+    android:background="@drawable/bg_white_shape"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/guess_password_title"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x32"/>
+
+    <LinearLayout
+        android:id="@+id/ll_guess_count"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y80"
+        android:layout_marginTop="@dimen/y50"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/et_guess_password"
+            android:layout_width="@dimen/x450"
+            android:layout_height="match_parent"
+            android:background="@drawable/wf_bule"
+            android:hint="@string/et_command"
+            android:inputType="number"
+            android:maxLength="8"
+            android:paddingLeft="@dimen/x20"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x28"/>
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="@dimen/x114"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/x20"
+            android:background="@drawable/bg_blue"
+            android:gravity="center"
+            android:text="@string/confirm"
+            android:textColor="@color/white"
+            android:textSize="@dimen/x28"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+</LinearLayout>

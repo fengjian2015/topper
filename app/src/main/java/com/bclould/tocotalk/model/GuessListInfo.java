@@ -78,6 +78,15 @@ public class GuessListInfo {
         private int lottery_status;
         private String join_created_at;
         private String coin_count;
+        private String password;
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
 
         public int getId() {
             return id;

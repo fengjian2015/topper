@@ -224,9 +224,11 @@ public class CloudMessageFragment extends Fragment {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                    mLlChat.setClickable(true);
-                    mLlFriend.setClickable(true);
-                    mCloudCircleAdd.setClickable(true);
+                    if (mLlChat != null && mLlFriend != null && mCloudCircleAdd != null) {
+                        mLlChat.setClickable(true);
+                        mLlFriend.setClickable(true);
+                        mCloudCircleAdd.setClickable(true);
+                    }
                     getPhoneSize();
                     setSelector(0);
                     mCloudCircleVp.setCurrentItem(0);
@@ -239,9 +241,11 @@ public class CloudMessageFragment extends Fragment {
                     Toast.makeText(getContext(), getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                     break;
                 case 1:
-                    mLlChat.setClickable(true);
-                    mLlFriend.setClickable(true);
-                    mCloudCircleAdd.setClickable(true);
+                    if (mLlChat != null && mLlFriend != null && mCloudCircleAdd != null) {
+                        mLlChat.setClickable(true);
+                        mLlFriend.setClickable(true);
+                        mCloudCircleAdd.setClickable(true);
+                    }
                     getPhoneSize();
                     initTopMenu();
                     initViewPager();

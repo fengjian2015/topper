@@ -17,9 +17,9 @@
         <ImageView
             android:id="@+id/iv_guess_status"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:src="@mipmap/icon_jc_pass"
-            android:layout_height="wrap_content"/>
+            android:src="@mipmap/icon_jc_pass"/>
 
         <LinearLayout
             android:id="@+id/ll_all"
@@ -56,8 +56,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x20"
+                    android:layout_marginRight="@dimen/x20"
+                    android:layout_toLeftOf="@+id/btn_bet"
                     android:layout_toRightOf="@+id/iv_touxiang"
-                    android:text="TPC 不限額競猜"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="dfasfasdfsadfasdfsadfsdafsdafas"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x28"
                     android:textStyle="bold"/>
@@ -133,10 +137,10 @@
 
             <RelativeLayout
                 android:id="@+id/rl_count"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y30">
+                android:layout_marginTop="@dimen/y30"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -157,10 +161,10 @@
 
             <RelativeLayout
                 android:id="@+id/rl_time"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y30">
+                android:layout_marginTop="@dimen/y30"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -203,11 +207,11 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/ll_guess_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/HCutOffRule"

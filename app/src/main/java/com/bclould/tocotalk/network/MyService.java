@@ -811,9 +811,11 @@ public interface MyService {
             @Field("title") String title,
             @Field("limit_people_number") String limit_people_number,
             @Field("limit_number") String limit_number,
+            @Field("single_coin") String single_coin,
             @Field("coin_id") String coin_id,
             @Field("deadline") String deadline,
-            @Field("second_password") String second_password
+            @Field("second_password") String second_password,
+            @Field("password") String password
     );
 
     //競猜詳情
@@ -862,7 +864,6 @@ public interface MyService {
             @Field("page_size") int page_size,
             @Field("status") int status
     );
-
 
 
     //我的廣告列表

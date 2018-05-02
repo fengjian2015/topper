@@ -7,14 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.GuessListInfo;
 import com.bclould.tocotalk.ui.activity.GuessDetailsActivity;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.utils.AnimatorTool;
 
 import java.util.List;
 
@@ -101,7 +105,7 @@ public class GuessListRVAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final GuessListInfo.DataBean dataBean) {
-            mTvGuessTitle.setText(dataBean.getTitle());
+            mTvGuessTitle.setText("(" + dataBean.getUser_name() + ")" + dataBean.getTitle());
             mInsertCoinsCount.setText(dataBean.getPeriod_qty() + mContext.getString(R.string.qi));
             mTvKaijiangTime.setText(mContext.getString(R.string.kaijiang_time) + dataBean.getLottery_time());
             mTvBonusChi.setText(dataBean.getPrize_pool_number() + "/" + dataBean.getLimit_number() + " " + dataBean.getCoin_name());
@@ -116,10 +120,14 @@ public class GuessListRVAdapter extends RecyclerView.Adapter {
                 mBtnBet.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(mContext, GuessDetailsActivity.class);
-                        intent.putExtra("bet_id", dataBean.getId());
-                        intent.putExtra("period_qty", dataBean.getPeriod_qty());
-                        mContext.startActivity(intent);
+                        if (dataBean.getPassword().isEmpty()) {
+                            Intent intent = new Intent(mContext, GuessDetailsActivity.class);
+                            intent.putExtra("bet_id", dataBean.getId());
+                            intent.putExtra("period_qty", dataBean.getPeriod_qty());
+                            mContext.startActivity(intent);
+                        } else {
+                            showPWDialog(dataBean);
+                        }
                     }
                 });
                 mLlAll.setEnabled(false);
@@ -165,5 +173,33 @@ public class GuessListRVAdapter extends RecyclerView.Adapter {
                 }
             }
         }
+    }
+
+    private void showPWDialog(final GuessListInfo.DataBean dataBean) {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_command, mContext);
+        deleteCacheDialog.show();
+        final EditText etGuessPw = (EditText) deleteCacheDialog.findViewById(R.id.et_guess_password);
+        Button btnConfirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String pw = etGuessPw.getText().toString();
+                if (pw.isEmpty()) {
+                    AnimatorTool.getInstance().editTextAnimator(etGuessPw);
+                    Toast.makeText(mContext, mContext.getString(R.string.toast_guess_pw), Toast.LENGTH_SHORT).show();
+                } else {
+                    if (dataBean.getPassword().equals(pw)) {
+                        Intent intent = new Intent(mContext, GuessDetailsActivity.class);
+                        intent.putExtra("bet_id", dataBean.getId());
+                        intent.putExtra("period_qty", dataBean.getPeriod_qty());
+                        mContext.startActivity(intent);
+                        deleteCacheDialog.dismiss();
+                    } else {
+                        AnimatorTool.getInstance().editTextAnimator(etGuessPw);
+                        Toast.makeText(mContext, mContext.getString(R.string.toast_guess_pw_error), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
     }
 }

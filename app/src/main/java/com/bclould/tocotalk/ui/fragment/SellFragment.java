@@ -124,18 +124,20 @@ public class SellFragment extends BaseFragment {
     }
 
     private void initData(String coinName, String state) {
-        mDataList.clear();
         mBuySellPresenter.getDealList(2, coinName, state, new BuySellPresenter.CallBack() {
             @Override
             public void send(List<DealListInfo.DataBean> dataBean, String coin) {
-                if (dataBean.size() != 0) {
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                    mLlNoData.setVisibility(View.GONE);
-                    mDataList.addAll(dataBean);
-                    mBuySellRVAdapter.notifyDataSetChanged();
-                } else {
-                    mRecyclerView.setVisibility(View.GONE);
-                    mLlNoData.setVisibility(View.VISIBLE);
+                if (mRecyclerView != null) {
+                    if (dataBean.size() != 0) {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mDataList.clear();
+                        mDataList.addAll(dataBean);
+                        mBuySellRVAdapter.notifyDataSetChanged();
+                    } else {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });

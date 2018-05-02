@@ -61,14 +61,16 @@ public class InOutDataFragment extends Fragment {
         dillDataPresenter.getInOutData(getString(R.string.out_coin),"1", new DillDataPresenter.CallBack2() {
             @Override
             public void send(List<InOutInfo.DataBean> data) {
-                if (data.size() == 0) {
-                    mLlNoData.setVisibility(View.VISIBLE);
-                    mRecyclerView.setVisibility(View.GONE);
-                } else {
-                    mLlNoData.setVisibility(View.GONE);
-                    mRecyclerView.setVisibility(View.VISIBLE);
+                if (mRecyclerView != null) {
+                    if (data.size() == 0) {
+                        mLlNoData.setVisibility(View.VISIBLE);
+                        mRecyclerView.setVisibility(View.GONE);
+                    } else {
+                        mLlNoData.setVisibility(View.GONE);
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                    }
+                    initListView(data);
                 }
-                initListView(data);
             }
         });
     }

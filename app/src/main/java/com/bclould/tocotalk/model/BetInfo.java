@@ -1,20 +1,23 @@
 package com.bclould.tocotalk.model;
 
+import java.util.List;
+
 /**
  * Created by GA on 2018/4/25.
  */
 
 public class BetInfo {
 
+
     /**
      * status : 1
      * message : 投注成功!
-     * data : {"bet_number":"yt:ue:s8:71","created_at":"2018-04-25 17:18:45","bonus_number":0,"winning_type":"1","status":1}
+     * data : [{"bet_number":"yt:ue:s8:71","created_at":"2018-04-25 17:18:45","bonus_number":0,"winning_type":"1","status":1}]
      */
 
     private int status;
     private String message;
-    private DataBean data;
+    private List<DataBean> data;
 
     public int getStatus() {
         return status;
@@ -32,11 +35,11 @@ public class BetInfo {
         this.message = message;
     }
 
-    public DataBean getData() {
+    public List<DataBean> getData() {
         return data;
     }
 
-    public void setData(DataBean data) {
+    public void setData(List<DataBean> data) {
         this.data = data;
     }
 

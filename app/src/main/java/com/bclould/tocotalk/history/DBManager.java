@@ -22,7 +22,7 @@ import java.util.List;
 public class DBManager {
     private final Context mContext;
     private DBHelper helper;
-    private SQLiteDatabase db;
+    public SQLiteDatabase db;
     private String mUser = "";
     private int mOffset = 1;
 
@@ -55,7 +55,6 @@ public class DBManager {
         values.put("imageType", messageInfo.getImageType());
         int id = (int) db.insert("MessageRecord", null, values);
         UtilTool.Log("日志", "添加成功" + messageInfo.toString());
-        db.close();
         return id;
     }
 
@@ -66,7 +65,6 @@ public class DBManager {
         cursor.moveToFirst();
         long count = cursor.getLong(0);
         cursor.close();
-        db.close();
         return count;
     }
 
@@ -99,7 +97,6 @@ public class DBManager {
             }
             c.close();
         }
-        db.close();
         return messageInfos;
     }
 
@@ -162,7 +159,6 @@ public class DBManager {
 
             c.close();
         }
-        db.close();
         mUser = user;
         return messageInfos;
     }
@@ -170,7 +166,6 @@ public class DBManager {
     public void deleteMessage(String user) {
         db = helper.getWritableDatabase();
         db.delete("MessageRecord", "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
-        db.close();
     }
 
     public void updateMessageState(String id, int state) {
@@ -178,7 +173,6 @@ public class DBManager {
         ContentValues values = new ContentValues();
         values.put("state", state);
         db.update("MessageRecord", values, "id=?", new String[]{id});
-        db.close();
     }
 
     public void updateImageType(String id, int imageType) {
@@ -186,7 +180,6 @@ public class DBManager {
         ContentValues values = new ContentValues();
         values.put("imageType", imageType);
         db.update("MessageRecord", values, "id=?", new String[]{id});
-        db.close();
     }
 
     public int addRequest(String user, int type) {
@@ -196,7 +189,6 @@ public class DBManager {
         values.put("user", user);
         values.put("type", type);
         int id = (int) db.insert("AddRequest", null, values);
-        db.close();
         Log.e("wgy", "添加请求数据库成功");
         return id;
     }
@@ -207,7 +199,6 @@ public class DBManager {
                 new String[]{user, UtilTool.getJid()});
         boolean result = cursor.moveToNext();
         cursor.close();
-        db.close();
         return result;
     }
 
@@ -222,7 +213,6 @@ public class DBManager {
             addRequestInfo.setType(c.getInt(c.getColumnIndex("type")));
         }
         c.close();
-        db.close();
         return addRequestInfo;
     }
 
@@ -231,7 +221,6 @@ public class DBManager {
         ContentValues values = new ContentValues();
         values.put("type", type);
         db.update("AddRequest", values, "id=? and my_user=?", new String[]{id + "", UtilTool.getJid()});
-        db.close();
     }
 
     public ArrayList<AddRequestInfo> queryAllRequest() {
@@ -247,7 +236,6 @@ public class DBManager {
             addRequestInfos.add(addRequestInfo);
         }
         c.close();
-        db.close();
         return addRequestInfos;
     }
 
@@ -262,7 +250,6 @@ public class DBManager {
         values.put("time", conversationInfo.getTime());
         values.put("friend", conversationInfo.getFriend());
         db.insert("ConversationRecord", null, values);
-        db.close();
     }
 
     public boolean findConversation(String user) {
@@ -271,7 +258,6 @@ public class DBManager {
                 new String[]{user, UtilTool.getJid()});
         boolean result = cursor.moveToNext();
         cursor.close();
-        db.close();
         return result;
     }
 
@@ -282,8 +268,6 @@ public class DBManager {
         cv.put("time", time);
         cv.put("message", chat);
         db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
-        db.close();
-
     }
 
     public List<ConversationInfo> queryConversation() {
@@ -301,7 +285,6 @@ public class DBManager {
             conversationList.add(conversationInfo);
         }
         c.close();
-        db.close();
         return conversationList;
     }
 
@@ -314,7 +297,6 @@ public class DBManager {
             number = c.getInt(c.getColumnIndex("number"));
         }
         c.close();
-        db.close();
         return number;
     }
 
@@ -323,14 +305,11 @@ public class DBManager {
         ContentValues cv = new ContentValues();
         cv.put("number", number);
         db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
-        db.close();
-
     }
 
     public void deleteConversation(String user) {
         db = helper.getWritableDatabase();
         db.delete("ConversationRecord", "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
-        db.close();
     }
 
     public void addUser(String user, String path) {
@@ -342,7 +321,6 @@ public class DBManager {
         values.put("path", path);
         values.put("status", 0);
         db.insert("UserImage", null, values);
-        db.close();
     }
 
     public UserInfo queryUser(String user) {
@@ -355,7 +333,6 @@ public class DBManager {
             userInfo.setPath(c.getString(c.getColumnIndex("path")));
         }
         c.close();
-        db.close();
         return userInfo;
     }
 
@@ -373,7 +350,6 @@ public class DBManager {
                 userInfos.add(userInfo);
             }
             c.close();
-//        db.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -386,7 +362,6 @@ public class DBManager {
                 new String[]{user, UtilTool.getJid()});
         boolean result = cursor.moveToNext();
         cursor.close();
-//        db.close();
         return result;
     }
 
@@ -395,7 +370,6 @@ public class DBManager {
         int type = db.delete("UserImage", "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
         UtilTool.Log("fsdafa", type + "");
         UtilTool.Log("fsdafa", "删除" + user);
-        db.close();
     }
 
     public void updateUser(String user, int status) {
@@ -403,7 +377,6 @@ public class DBManager {
         ContentValues cv = new ContentValues();
         cv.put("status", status);
         db.update("UserImage", cv, "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
-//        db.close();
     }
 
     public void updateMessageHint(int id, int status) {
@@ -411,7 +384,6 @@ public class DBManager {
         ContentValues values = new ContentValues();
         values.put("sendStatus", status);
         db.update("MessageRecord", values, "id=?", new String[]{id + ""});
-        db.close();
     }
 
     public void updateMessageStatus(int id) {
@@ -419,7 +391,6 @@ public class DBManager {
         ContentValues values = new ContentValues();
         values.put("voiceStatus", 1);
         db.update("MessageRecord", values, "id=?", new String[]{id + ""});
-        db.close();
     }
 
     public void updateMessage(String url, int id) {
@@ -427,6 +398,5 @@ public class DBManager {
         ContentValues values = new ContentValues();
         values.put("message", url);
         db.update("MessageRecord", values, "id=?", new String[]{id + ""});
-        db.close();
     }
 }

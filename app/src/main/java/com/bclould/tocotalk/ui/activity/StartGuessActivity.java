@@ -85,6 +85,8 @@ public class StartGuessActivity extends BaseActivity {
     TextView mTv;
     @Bind(R.id.rl_single_insert_count)
     RelativeLayout mRlSingleInsertCount;
+    @Bind(R.id.et_command)
+    EditText mEtCommand;
     private Dialog mBottomDialog;
     private Animation mEnterAnim;
     private Animation mExitAnim;
@@ -159,6 +161,9 @@ public class StartGuessActivity extends BaseActivity {
         } else if (mTvSingleInsertCount.getText().toString().isEmpty()) {
             Toast.makeText(this, getString(R.string.toast_dealine), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mRlSingleInsertCount);
+        } else if (mEtCommand.getText().toString().length() < 4) {
+            Toast.makeText(this, getString(R.string.toast_command_min), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mEtCommand);
         } else {
             return true;
         }
@@ -373,13 +378,15 @@ public class StartGuessActivity extends BaseActivity {
     private void pushing(String password) {
         String title = mEtGuessTitle.getText().toString();
         String count = mEtCount.getText().toString();
+        String singleCount = mTvSingleInsertCount.getText().toString();
+        String command = mEtCommand.getText().toString();
         String singleInsertCount = mTvSingleInsertCount.getText().toString();
         int sum = (int) (Double.parseDouble(count) / Double.parseDouble(singleInsertCount));
         String deadline = mTvDeadline.getText().toString();
         String timeMinute = Integer.parseInt(deadline.substring(0, deadline.lastIndexOf(getString(R.string.hr)))) * 60 + "";
         UtilTool.Log("時間", timeMinute);
         BlockchainGuessPresenter blockchainGuessPresenter = new BlockchainGuessPresenter(this);
-        blockchainGuessPresenter.pushingGuess(mId, title, count, timeMinute, sum + "", password, new BlockchainGuessPresenter.CallBack2() {
+        blockchainGuessPresenter.pushingGuess(mId, title, count, timeMinute, sum + "", password, singleCount, command, new BlockchainGuessPresenter.CallBack2() {
             @Override
             public void send() {
                 Toast.makeText(StartGuessActivity.this, getString(R.string.publish_succeed), Toast.LENGTH_SHORT).show();

@@ -89,14 +89,16 @@ public class BillDetailsActivity extends BaseActivity {
             mDillDataPresenter.getInOutData("1", coinId, new DillDataPresenter.CallBack2() {
                 @Override
                 public void send(List<InOutInfo.DataBean> data) {
-                    if (data.size() != 0) {
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        mLlNoData.setVisibility(View.GONE);
-                        mInOutList.addAll(data);
-                        mInOutDataRVAapter.notifyDataSetChanged();
-                    } else {
-                        mLlNoData.setVisibility(View.VISIBLE);
-                        mRecyclerView.setVisibility(View.GONE);
+                    if (mRecyclerView != null) {
+                        if (data.size() != 0) {
+                            mRecyclerView.setVisibility(View.VISIBLE);
+                            mLlNoData.setVisibility(View.GONE);
+                            mInOutList.addAll(data);
+                            mInOutDataRVAapter.notifyDataSetChanged();
+                        } else {
+                            mLlNoData.setVisibility(View.VISIBLE);
+                            mRecyclerView.setVisibility(View.GONE);
+                        }
                     }
                 }
             });
@@ -107,14 +109,16 @@ public class BillDetailsActivity extends BaseActivity {
                 @Override
                 public void send(List<InOutInfo.DataBean> data) {
                     UtilTool.Log("充提幣", data.size() + "");
-                    if (data.size() != 0) {
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        mLlNoData.setVisibility(View.GONE);
-                        mInOutList.addAll(data);
-                        mInOutDataRVAapter.notifyDataSetChanged();
-                    } else {
-                        mRecyclerView.setVisibility(View.GONE);
-                        mLlNoData.setVisibility(View.VISIBLE);
+                    if (mRecyclerView != null) {
+                        if (data.size() != 0) {
+                            mRecyclerView.setVisibility(View.VISIBLE);
+                            mLlNoData.setVisibility(View.GONE);
+                            mInOutList.addAll(data);
+                            mInOutDataRVAapter.notifyDataSetChanged();
+                        } else {
+                            mRecyclerView.setVisibility(View.GONE);
+                            mLlNoData.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
             });
@@ -123,14 +127,16 @@ public class BillDetailsActivity extends BaseActivity {
             mDillDataPresenter.getTransfer(new DillDataPresenter.CallBack() {
                 @Override
                 public void send(List<TransferInfo.DataBean> data) {
-                    if (data.size() != 0) {
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        mLlNoData.setVisibility(View.GONE);
-                        mTransferList.addAll(data);
-                        mBillDataRVAapter.notifyDataSetChanged();
-                    } else {
-                        mRecyclerView.setVisibility(View.GONE);
-                        mLlNoData.setVisibility(View.VISIBLE);
+                    if (mRecyclerView != null) {
+                        if (data.size() != 0) {
+                            mRecyclerView.setVisibility(View.VISIBLE);
+                            mLlNoData.setVisibility(View.GONE);
+                            mTransferList.addAll(data);
+                            mBillDataRVAapter.notifyDataSetChanged();
+                        } else {
+                            mRecyclerView.setVisibility(View.GONE);
+                            mLlNoData.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
             });

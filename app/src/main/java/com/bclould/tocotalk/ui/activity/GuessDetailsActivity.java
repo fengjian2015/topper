@@ -38,6 +38,7 @@ import com.bclould.tocotalk.model.GuessInfo;
 import com.bclould.tocotalk.ui.adapter.GuessBetRVAdapter;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
@@ -152,6 +153,66 @@ public class GuessDetailsActivity extends BaseActivity {
     RecyclerView mRecyclerView2;
     @Bind(R.id.ll_already)
     LinearLayout mLlAlready;
+    @Bind(R.id.et_bet_count)
+    EditText mEtBetCount;
+    @Bind(R.id.btn_confirm)
+    Button mBtnConfirm;
+    @Bind(R.id.ll_array)
+    LinearLayout mLlArray;
+    @Bind(R.id.et2_array)
+    EditText mEt2Array;
+    @Bind(R.id.et2_array2)
+    EditText mEt2Array2;
+    @Bind(R.id.et2_array3)
+    EditText mEt2Array3;
+    @Bind(R.id.et2_array4)
+    EditText mEt2Array4;
+    @Bind(R.id.btn_random2)
+    Button mBtnRandom2;
+    @Bind(R.id.ll_array2)
+    LinearLayout mLlArray2;
+    @Bind(R.id.et3_array)
+    EditText mEt3Array;
+    @Bind(R.id.et3_array2)
+    EditText mEt3Array2;
+    @Bind(R.id.et3_array3)
+    EditText mEt3Array3;
+    @Bind(R.id.et3_array4)
+    EditText mEt3Array4;
+    @Bind(R.id.btn_random3)
+    Button mBtnRandom3;
+    @Bind(R.id.ll_array3)
+    LinearLayout mLlArray3;
+    @Bind(R.id.et4_array)
+    EditText mEt4Array;
+    @Bind(R.id.et4_array2)
+    EditText mEt4Array2;
+    @Bind(R.id.et4_array3)
+    EditText mEt4Array3;
+    @Bind(R.id.et4_array4)
+    EditText mEt4Array4;
+    @Bind(R.id.btn_random4)
+    Button mBtnRandom4;
+    @Bind(R.id.ll_array4)
+    LinearLayout mLlArray4;
+    @Bind(R.id.et5_array)
+    EditText mEt5Array;
+    @Bind(R.id.et5_array2)
+    EditText mEt5Array2;
+    @Bind(R.id.et5_array3)
+    EditText mEt5Array3;
+    @Bind(R.id.et5_array4)
+    EditText mEt5Array4;
+    @Bind(R.id.btn_random5)
+    Button mBtnRandom5;
+    @Bind(R.id.ll_array5)
+    LinearLayout mLlArray5;
+    @Bind(R.id.scrollView2)
+    ScrollView mScrollView2;
+    @Bind(R.id.ll_guess_count)
+    LinearLayout mLlGuessCount;
+    @Bind(R.id.ll_bet)
+    LinearLayout mLlBet;
     private Animation mEnterAnim;
     private Animation mExitAnim;
     private Dialog mRedDialog;
@@ -162,7 +223,7 @@ public class GuessDetailsActivity extends BaseActivity {
     private int mPeriod_qty;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
     private int mCountdown = 0;
-    private String mPrize_pool_number;
+    private int mPrize_pool_number;
     private GuessBetRVAdapter mGuessBetRVAdapter;
     Timer mTimer = new Timer();
     TimerTask mTask = new TimerTask() {
@@ -222,11 +283,17 @@ public class GuessDetailsActivity extends BaseActivity {
         }
     };
     private int mCoin_id;
-    private String mRandom;
-    private String mSingle_coin;
+    private String mRandom = "";
+    private String mSingle_coin = "";
     private int mCurrent_people_number;
     private int mOver_count_num;
     private int mStatus;
+    private String mRandomArr = "";
+    private String mRandomArr2 = "";
+    private String mRandomArr3 = "";
+    private String mRandomArr4 = "";
+    private String mRandomArr5 = "";
+    private String mRandomSumArr = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -256,7 +323,7 @@ public class GuessDetailsActivity extends BaseActivity {
         mBlockchainGuessPresenter.getGuessInfo(mBet_id, mPeriod_qty, new BlockchainGuessPresenter.CallBack3() {
             @Override
             public void send(GuessInfo.DataBean data) {
-                UtilTool.Log("次數", data.getOver_count_num() + "");
+                UtilTool.Log("投注列表", data.getBetList().size() + "");
                 mDataList.addAll(data.getBetList());
                 mGuessBetRVAdapter.notifyDataSetChanged();
                 mTvPresentPeriods.setText(data.getPeriod_qty() + getString(R.string.qi));
@@ -277,27 +344,33 @@ public class GuessDetailsActivity extends BaseActivity {
                 mTvPresentCoinCount.setText(data.getPrize_pool_number() + data.getCoin_name());
                 mTvTitle.setText(data.getTitle());
                 mTvTitle2.setText(data.getTitle());
-                mProgressBar.setMax((int) Double.parseDouble(data.getLimit_number()));
-                mProgressBar.setProgress((int) Double.parseDouble(data.getPrize_pool_number()));
-                UtilTool.Log("進度", data.getLimit_number());
-                UtilTool.Log("進度", data.getPrize_pool_number());
-                mPrize_pool_number = data.getPrize_pool_number();
+                double limitNumber = Double.parseDouble(data.getLimit_number()) * 1000000;
+                mPrize_pool_number = (int) (Double.parseDouble(data.getPrize_pool_number()) * 1000000);
+                UtilTool.Log("進度", (int) limitNumber + "");
+                UtilTool.Log("進度", mPrize_pool_number + "");
+                mProgressBar.setMax((int) limitNumber);
+                mProgressBar.setProgress(mPrize_pool_number);
                 mCoin_id = data.getCoin_id();
                 mSingle_coin = data.getSingle_coin();
                 mCurrent_people_number = data.getCurrent_people_number();
                 mOver_count_num = data.getOver_count_num();
                 mStatus = data.getStatus();
-                if (data.getOver_count_num() == 0) {
-                    mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
-                    mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
-                }
+
                 if (data.getStatus() == 1 || data.getStatus() == 2) {
                     mLlNo.setVisibility(View.VISIBLE);
                     mLlAlready.setVisibility(View.GONE);
                     if (data.getStatus() == 2) {
+                        mLlGuessCount.setVisibility(View.GONE);
                         mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
                         mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
                     } else {
+                        if (data.getOver_count_num() == 0) {
+                            mLlGuessCount.setVisibility(View.GONE);
+                            mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
+                            mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
+                        } else {
+                            mLlGuessCount.setVisibility(View.VISIBLE);
+                        }
                         mCountdown = data.getCountdown();
                         UtilTool.Log("倒計時", data.getCountdown() + "");
                         mTimer.schedule(mTask, 1000, 1000);
@@ -310,6 +383,11 @@ public class GuessDetailsActivity extends BaseActivity {
                     mTvNumber2.setText(split[1]);
                     mTvNumber3.setText(split[2]);
                     mTvNumber4.setText(split[3]);
+                } else if (data.getStatus() == 4) {
+                    mLlGuessCount.setVisibility(View.GONE);
+                    mLlBet.setVisibility(View.GONE);
+                    mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
+                    mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
                 }
 
             }
@@ -662,23 +740,69 @@ public class GuessDetailsActivity extends BaseActivity {
         }
     };
 
-    @OnClick({R.id.bark, R.id.btn_random, R.id.btn_bet})
+    @OnClick({R.id.bark, R.id.btn_random, R.id.btn_random2, R.id.btn_random3, R.id.btn_random4, R.id.btn_random5, R.id.btn_bet, R.id.btn_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
+            case R.id.btn_confirm:
+                setBetCount();
+                break;
             case R.id.btn_random:
                 if (mStatus == 1) {
                     if (mOver_count_num != 0) {
-                        getRandom();
+                        getRandom(1);
                     } else {
                         Toast.makeText(this, getString(R.string.bet_zuiduo_cishu), Toast.LENGTH_SHORT).show();
                     }
                 } else if (mStatus == 2) {
                     Toast.makeText(this, getString(R.string.sum_jiangjin_chi), Toast.LENGTH_SHORT).show();
                 }
-
+                break;
+            case R.id.btn_random2:
+                if (mStatus == 1) {
+                    if (mOver_count_num != 0) {
+                        getRandom(2);
+                    } else {
+                        Toast.makeText(this, getString(R.string.bet_zuiduo_cishu), Toast.LENGTH_SHORT).show();
+                    }
+                } else if (mStatus == 2) {
+                    Toast.makeText(this, getString(R.string.sum_jiangjin_chi), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.btn_random3:
+                if (mStatus == 1) {
+                    if (mOver_count_num != 0) {
+                        getRandom(3);
+                    } else {
+                        Toast.makeText(this, getString(R.string.bet_zuiduo_cishu), Toast.LENGTH_SHORT).show();
+                    }
+                } else if (mStatus == 2) {
+                    Toast.makeText(this, getString(R.string.sum_jiangjin_chi), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.btn_random4:
+                if (mStatus == 1) {
+                    if (mOver_count_num != 0) {
+                        getRandom(4);
+                    } else {
+                        Toast.makeText(this, getString(R.string.bet_zuiduo_cishu), Toast.LENGTH_SHORT).show();
+                    }
+                } else if (mStatus == 2) {
+                    Toast.makeText(this, getString(R.string.sum_jiangjin_chi), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.btn_random5:
+                if (mStatus == 1) {
+                    if (mOver_count_num != 0) {
+                        getRandom(5);
+                    } else {
+                        Toast.makeText(this, getString(R.string.bet_zuiduo_cishu), Toast.LENGTH_SHORT).show();
+                    }
+                } else if (mStatus == 2) {
+                    Toast.makeText(this, getString(R.string.sum_jiangjin_chi), Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.btn_bet:
                 if (mStatus == 1) {
@@ -696,67 +820,324 @@ public class GuessDetailsActivity extends BaseActivity {
         }
     }
 
-    private boolean checkEdit() {
-        if (mEtArray.getText().toString().isEmpty()) {
-            Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mEtArray);
-        } else if (mEtArray2.getText().toString().isEmpty()) {
-            Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mEtArray2);
-        } else if (mEtArray3.getText().toString().isEmpty()) {
-            Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mEtArray3);
-        } else if (mEtArray4.getText().toString().isEmpty()) {
-            Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mEtArray4);
+    private void setBetCount() {
+        String etBetCount = mEtBetCount.getText().toString();
+        if (!etBetCount.isEmpty()) {
+            int count = Integer.parseInt(etBetCount);
+            if (count > 0) {
+                switch (count) {
+                    case 1:
+                        mLlArray.setVisibility(View.VISIBLE);
+                        mLlArray2.setVisibility(View.GONE);
+                        mLlArray3.setVisibility(View.GONE);
+                        mLlArray4.setVisibility(View.GONE);
+                        mLlArray5.setVisibility(View.GONE);
+                        break;
+                    case 2:
+                        mLlArray.setVisibility(View.VISIBLE);
+                        mLlArray2.setVisibility(View.VISIBLE);
+                        mLlArray3.setVisibility(View.GONE);
+                        mLlArray4.setVisibility(View.GONE);
+                        mLlArray5.setVisibility(View.GONE);
+                        break;
+                    case 3:
+                        mLlArray.setVisibility(View.VISIBLE);
+                        mLlArray2.setVisibility(View.VISIBLE);
+                        mLlArray3.setVisibility(View.VISIBLE);
+                        mLlArray4.setVisibility(View.GONE);
+                        mLlArray5.setVisibility(View.GONE);
+                        break;
+                    case 4:
+                        mLlArray.setVisibility(View.VISIBLE);
+                        mLlArray2.setVisibility(View.VISIBLE);
+                        mLlArray3.setVisibility(View.VISIBLE);
+                        mLlArray4.setVisibility(View.VISIBLE);
+                        mLlArray5.setVisibility(View.GONE);
+                        break;
+                    case 5:
+                        mLlArray.setVisibility(View.VISIBLE);
+                        mLlArray2.setVisibility(View.VISIBLE);
+                        mLlArray3.setVisibility(View.VISIBLE);
+                        mLlArray4.setVisibility(View.VISIBLE);
+                        mLlArray5.setVisibility(View.VISIBLE);
+                        break;
+                }
+            } else {
+                Toast.makeText(this, getString(R.string.toast_guess_count), Toast.LENGTH_SHORT).show();
+            }
         } else {
-            return true;
+            Toast.makeText(this, getString(R.string.toast_guess_count_null), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean checkEdit() {
+        if (mLlArray.getVisibility() == View.VISIBLE) {
+            if (mEtArray.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEtArray);
+            } else if (mEtArray2.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEtArray2);
+            } else if (mEtArray3.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEtArray3);
+            } else if (mEtArray4.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEtArray4);
+            } else {
+                return true;
+            }
+        }
+        if (mLlArray2.getVisibility() == View.VISIBLE) {
+            if (mEt2Array.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEt2Array);
+            } else if (mEt2Array2.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEtArray2);
+            } else if (mEt2Array3.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEt2Array3);
+            } else if (mEt2Array4.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEt2Array4);
+            } else {
+                return true;
+            }
+        }
+        if (mLlArray3.getVisibility() == View.VISIBLE) {
+            if (mEt3Array.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEt3Array);
+            } else if (mEt3Array2.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEt3Array2);
+            } else if (mEt3Array3.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEt3Array3);
+            } else if (mEt3Array4.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEt3Array4);
+            } else {
+                return true;
+            }
+        }
+        if (mLlArray4.getVisibility() == View.VISIBLE) {
+            if (mEt4Array.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEt4Array);
+            } else if (mEt4Array2.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEt4Array2);
+            } else if (mEt4Array3.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEt4Array3);
+            } else if (mEt4Array4.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEt4Array4);
+            } else {
+                return true;
+            }
+        }
+        if (mLlArray5.getVisibility() == View.VISIBLE) {
+            if (mEt5Array.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEt5Array);
+            } else if (mEt5Array2.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEt5Array2);
+            } else if (mEt5Array3.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEt5Array3);
+            } else if (mEt5Array4.getText().toString().isEmpty()) {
+                Toast.makeText(this, getString(R.string.toast_array), Toast.LENGTH_SHORT).show();
+                AnimatorTool.getInstance().editTextAnimator(mEt5Array4);
+            } else {
+                return true;
+            }
         }
         return false;
     }
 
-    private void getRandom() {
-        mBlockchainGuessPresenter.getRandom(new BlockchainGuessPresenter.CallBack4() {
+    private void getRandom(int status) {
+        String[] randomArr = UtilTool.getRandomArr(Constants.BET_ARR_COUNT);
+        /*for (int i = 0; i < randomArr.length; i++) {
+            if (i != 0) {
+                mRandom = mRandom + ":" + randomArr[i];
+            } else {
+                mRandom = randomArr[i];
+            }
+        }
+        UtilTool.Log("隨機數", mRandom);*/
+        switch (status) {
+            case 1:
+                for (int i = 0; i < randomArr.length; i++) {
+                    if (i != 0) {
+                        mRandomArr = mRandomArr + ":" + randomArr[i];
+                    } else {
+                        mRandomArr = randomArr[i];
+                    }
+                }
+                mEtArray.setText(randomArr[0]);
+                mEtArray2.setText(randomArr[1]);
+                mEtArray3.setText(randomArr[2]);
+                mEtArray4.setText(randomArr[3]);
+                mEtArray4.setSelection(2);
+                break;
+            case 2:
+                for (int i = 0; i < randomArr.length; i++) {
+                    if (i != 0) {
+                        mRandomArr2 = mRandomArr2 + ":" + randomArr[i];
+                    } else {
+                        mRandomArr2 = randomArr[i];
+                    }
+                }
+                mEt2Array.setText(randomArr[0]);
+                mEt2Array2.setText(randomArr[1]);
+                mEt2Array3.setText(randomArr[2]);
+                mEt2Array4.setText(randomArr[3]);
+                mEt2Array4.setSelection(2);
+                break;
+            case 3:
+                for (int i = 0; i < randomArr.length; i++) {
+                    if (i != 0) {
+                        mRandomArr3 = mRandomArr3 + ":" + randomArr[i];
+                    } else {
+                        mRandomArr3 = randomArr[i];
+                    }
+                }
+                mEt3Array.setText(randomArr[0]);
+                mEt3Array2.setText(randomArr[1]);
+                mEt3Array3.setText(randomArr[2]);
+                mEt3Array4.setText(randomArr[3]);
+                mEt3Array4.setSelection(2);
+                break;
+            case 4:
+                for (int i = 0; i < randomArr.length; i++) {
+                    if (i != 0) {
+                        mRandomArr4 = mRandomArr4 + ":" + randomArr[i];
+                    } else {
+                        mRandomArr4 = randomArr[i];
+                    }
+                }
+                mEt4Array.setText(randomArr[0]);
+                mEt4Array2.setText(randomArr[1]);
+                mEt4Array3.setText(randomArr[2]);
+                mEt4Array4.setText(randomArr[3]);
+                mEt4Array4.setSelection(2);
+                break;
+            case 5:
+                for (int i = 0; i < randomArr.length; i++) {
+                    if (i != 0) {
+                        mRandomArr5 = mRandomArr5 + ":" + randomArr[i];
+                    } else {
+                        mRandomArr5 = randomArr[i];
+                    }
+                }
+                mEt5Array.setText(randomArr[0]);
+                mEt5Array2.setText(randomArr[1]);
+                mEt5Array3.setText(randomArr[2]);
+                mEt5Array4.setText(randomArr[3]);
+                mEt5Array4.setSelection(2);
+                break;
+        }
+
+        /*mBlockchainGuessPresenter.getRandom(new BlockchainGuessPresenter.CallBack4() {
             @Override
             public void send(String data) {
                 String[] split = data.split(":");
-                mEtArray.setText(split[0]);
-                mEtArray2.setText(split[1]);
-                mEtArray3.setText(split[2]);
-                mEtArray4.setText(split[3]);
-                mEtArray4.setSelection(2);
                 mRandom = data;
             }
-        });
+        });*/
     }
 
     private void bet(String password) {
-        mBlockchainGuessPresenter.bet(mBet_id, mPeriod_qty, mCoin_id, mRandom, password, new BlockchainGuessPresenter.CallBack5() {
+        int count = 0;
+        if (mLlArray5.getVisibility() == View.VISIBLE) {
+            count = 5;
+            mRandomSumArr = mRandomArr + "," + mRandomArr2 + "," + mRandomArr3 + "," + mRandomArr4 + "," + mRandomArr5;
+        } else if (mLlArray4.getVisibility() == View.VISIBLE) {
+            count = 4;
+            mRandomSumArr = mRandomArr + "," + mRandomArr2 + "," + mRandomArr3 + "," + mRandomArr4;
+        } else if (mLlArray3.getVisibility() == View.VISIBLE) {
+            count = 3;
+            mRandomSumArr = mRandomArr + "," + mRandomArr2 + "," + mRandomArr3;
+        } else if (mLlArray2.getVisibility() == View.VISIBLE) {
+            count = 2;
+            mRandomSumArr = mRandomArr + "," + mRandomArr2;
+        } else if (mLlArray.getVisibility() == View.VISIBLE) {
+            count = 1;
+            mRandomSumArr = mRandomArr;
+        }
+        final int count2 = count;
+        UtilTool.Log("數組", mRandomSumArr);
+        mBlockchainGuessPresenter.bet(mBet_id, mPeriod_qty, mCoin_id, mRandomSumArr, password, new BlockchainGuessPresenter.CallBack5() {
             @Override
-            public void send(BetInfo.DataBean data) {
-                mOver_count_num--;
+            public void send(List<BetInfo.DataBean> data) {
+                mOver_count_num -= count2;
                 if (mOver_count_num == 0) {
+                    mLlGuessCount.setVisibility(View.GONE);
                     mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
                     mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
                 }
                 EventBus.getDefault().post(new MessageEvent(getString(R.string.bet)));
-                mEtArray.requestFocus();
-                mEtArray.setText("");
-                mEtArray2.setText("");
-                mEtArray3.setText("");
-                mEtArray4.setText("");
-                mPrize_pool_number = Double.parseDouble(mPrize_pool_number) + Double.parseDouble(mSingle_coin) + "";
-                mCurrent_people_number = mCurrent_people_number + 1;
+                switch (count2) {
+                    case 1:
+                        mEtArray.requestFocus();
+                        mEtArray.setText("");
+                        mEtArray2.setText("");
+                        mEtArray3.setText("");
+                        mEtArray4.setText("");
+                        break;
+                    case 2:
+                        mEt2Array.requestFocus();
+                        mEt2Array.setText("");
+                        mEt2Array2.setText("");
+                        mEt2Array3.setText("");
+                        mEt2Array4.setText("");
+                        break;
+                    case 3:
+                        mEt3Array.requestFocus();
+                        mEt3Array.setText("");
+                        mEt3Array2.setText("");
+                        mEt3Array3.setText("");
+                        mEt3Array4.setText("");
+                        break;
+                    case 4:
+                        mEt4Array.requestFocus();
+                        mEt4Array.setText("");
+                        mEt4Array2.setText("");
+                        mEt4Array3.setText("");
+                        mEt4Array4.setText("");
+                        break;
+                    case 5:
+                        mEt5Array.requestFocus();
+                        mEt5Array.setText("");
+                        mEt5Array2.setText("");
+                        mEt5Array3.setText("");
+                        mEt5Array4.setText("");
+                        break;
+                }
+                mLlArray2.setVisibility(View.GONE);
+                mLlArray3.setVisibility(View.GONE);
+                mLlArray4.setVisibility(View.GONE);
+                mLlArray5.setVisibility(View.GONE);
+                int singleCoin = (int) Double.parseDouble(mSingle_coin) * 1000000;
+                mPrize_pool_number = mPrize_pool_number + singleCoin * count2;
+                double prizePoolNumber = (double) mPrize_pool_number / 1000000;
+                mCurrent_people_number = mCurrent_people_number + count2;
                 mTvPresentInvestCount.setText(mCurrent_people_number + "");
-                mTvPresentCoinCount.setText(mPrize_pool_number + mTvCoin.getText().toString());
-                mProgressBar.setProgress((int) Double.parseDouble(mPrize_pool_number));
-                GuessInfo.DataBean.BetListBean betListBean = new GuessInfo.DataBean.BetListBean();
-                betListBean.setBet_number(data.getBet_number());
-                betListBean.setBonus_number(data.getBonus_number());
-                betListBean.setCreated_at(data.getCreated_at());
-                betListBean.setStatus(data.getStatus());
-                betListBean.setWinning_type(data.getWinning_type());
-                mDataList.add(betListBean);
+                mTvPresentCoinCount.setText(prizePoolNumber + mTvCoin.getText().toString());
+                mProgressBar.setProgress(mPrize_pool_number);
+                for (BetInfo.DataBean info : data) {
+                    GuessInfo.DataBean.BetListBean betListBean = new GuessInfo.DataBean.BetListBean();
+                    betListBean.setBet_number(info.getBet_number());
+                    betListBean.setBonus_number(info.getBonus_number());
+                    betListBean.setCreated_at(info.getCreated_at());
+                    betListBean.setStatus(info.getStatus());
+                    betListBean.setWinning_type(info.getWinning_type());
+                    mDataList.add(betListBean);
+                }
                 mGuessBetRVAdapter.notifyDataSetChanged();
             }
         });

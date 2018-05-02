@@ -114,7 +114,6 @@ public class DynamicFragment extends Fragment {
     List<DynamicListInfo.DataBean> mDataList = new ArrayList<>();
 
     private void initData(String page, String pageSize) {
-        mDataList.clear();
         String userList = "";
         List<UserInfo> userInfos = mMgr.queryAllUser();
         for (int i = 0; i < userInfos.size(); i++) {
@@ -127,14 +126,17 @@ public class DynamicFragment extends Fragment {
         mDynamicPresenter.dynamicList(page, pageSize, userList, new DynamicPresenter.CallBack2() {
             @Override
             public void send(List<DynamicListInfo.DataBean> data) {
-                if (data.size() != 0) {
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                    mLlNoData.setVisibility(View.GONE);
-                    mDataList.addAll(data);
-                    mDynamicRVAdapter.notifyDataSetChanged();
-                } else {
-                    mRecyclerView.setVisibility(View.GONE);
-                    mLlNoData.setVisibility(View.VISIBLE);
+                if (mRecyclerView != null) {
+                    if (data.size() != 0) {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mDataList.clear();
+                        mDataList.addAll(data);
+                        mDynamicRVAdapter.notifyDataSetChanged();
+                    } else {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });

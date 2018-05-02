@@ -137,19 +137,21 @@ public class OrderFormFragment extends Fragment {
     }
 
     private void initData(String coinName, String filtrate) {
-        mDataList.clear();
         BuySellPresenter buySellPresenter = new BuySellPresenter(getContext());
         buySellPresenter.getOrderList(coinName, filtrate, new BuySellPresenter.CallBack3() {
             @Override
             public void send(List<OrderListInfo.DataBean> data) {
-                if (data.size() != 0) {
-                    mRecyclerView.setVisibility(View.VISIBLE);
-                    mLlNoData.setVisibility(View.GONE);
-                    mDataList.addAll(data);
-                    mOrderRVAdapter.notifyDataSetChanged();
-                } else {
-                    mRecyclerView.setVisibility(View.GONE);
-                    mLlNoData.setVisibility(View.VISIBLE);
+                if (mRecyclerView != null) {
+                    if (data.size() != 0) {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mDataList.clear();
+                        mDataList.addAll(data);
+                        mOrderRVAdapter.notifyDataSetChanged();
+                    } else {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 

@@ -59,7 +59,7 @@
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
             android:hint="@string/et_guess_title"
-            android:maxLength="30"
+            android:maxLength="20"
             android:paddingLeft="@dimen/x20"
             android:paddingRight="@dimen/x20"
             android:singleLine="true"
@@ -167,7 +167,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:hint="@string/et_count"
+                android:hint="@string/et_sum_count"
                 android:inputType="numberDecimal"
                 android:maxLength="30"
                 android:paddingLeft="@dimen/x20"
@@ -183,6 +183,36 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/x30"
                 android:text="@string/individual"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x28"/>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y20"
+        app:cardCornerRadius="@dimen/x15">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/et_command"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:hint="@string/et_command"
+                android:inputType="number"
+                android:maxLength="8"
+                android:paddingLeft="@dimen/x20"
+                android:paddingRight="@dimen/x20"
+                android:singleLine="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 
