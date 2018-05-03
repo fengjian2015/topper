@@ -99,6 +99,7 @@ public class OtcActivity extends BaseActivity {
     private String mCoinName = "";
     private Dialog mStateDialog;
     private String mServiceCharge;
+    private String mServiceCharge2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -129,6 +130,7 @@ public class OtcActivity extends BaseActivity {
             mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();
             mTvCoinName.setText(mCoinName);
             mServiceCharge = MyApp.getInstance().mOtcCoinList.get(0).getOut_otc();
+            mServiceCharge2 = MyApp.getInstance().mOtcCoinList.get(0).getIn_otc();
         }
         mCloudCircleVp.setCurrentItem(0);
         mLlMenu.getChildAt(0).setSelected(true);
@@ -298,6 +300,7 @@ public class OtcActivity extends BaseActivity {
                 Intent intent = new Intent(this, PushBuyingActivity.class);
                 intent.putExtra("coinName", mCoinName);
                 intent.putExtra("serviceCharge", mServiceCharge);
+                intent.putExtra("serviceCharge2", mServiceCharge2);
                 startActivity(intent);
                 break;
         }
@@ -431,13 +434,14 @@ public class OtcActivity extends BaseActivity {
         }
     }
 
-    public void hideDialog(String name, int id, String serviceCharge) {
+    public void hideDialog(CoinListInfo.DataBean data) {
         mBottomDialog.dismiss();
-        mTvCoinName.setText(name);
-        mCoinName = name;
-        mServiceCharge = serviceCharge;
+        mTvCoinName.setText(data.getName());
+        mCoinName = data.getName();
+        mServiceCharge = data.getOut_otc();
+        mServiceCharge2 = data.getIn_otc();
         MessageEvent messageEvent = new MessageEvent(getString(R.string.coin_switchover));
-        messageEvent.setCoinName(name);
+        messageEvent.setCoinName(data.getName());
         EventBus.getDefault().post(messageEvent);
     }
 

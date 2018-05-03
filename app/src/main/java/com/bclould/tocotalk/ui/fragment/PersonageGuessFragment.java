@@ -5,11 +5,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -46,6 +50,10 @@ public class PersonageGuessFragment extends Fragment {
     LinearLayout mLlNoData;
     @Bind(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.et_search)
+    EditText mEtSearch;
+    @Bind(R.id.cb_search)
+    CardView mCbSearch;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
     private GuessListRVAdapter mGuessListRVAdapter;
     private int mPage = 1;
@@ -87,6 +95,22 @@ public class PersonageGuessFragment extends Fragment {
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
                 initData();
+            }
+        });
+        mEtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String user = mEtSearch.getText().toString();
             }
         });
     }

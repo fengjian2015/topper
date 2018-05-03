@@ -98,7 +98,7 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
                         activity.hideDialog(mName, mSign);
                     }else  if (mContext instanceof StartGuessActivity) {
                         StartGuessActivity activity = (StartGuessActivity) mContext;
-                        activity.hideDialog(mName);
+                        activity.hideDialog(mName, mSign);
                     }
 
                 }

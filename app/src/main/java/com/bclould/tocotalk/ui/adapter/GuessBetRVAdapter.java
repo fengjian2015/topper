@@ -123,6 +123,7 @@ public class GuessBetRVAdapter extends RecyclerView.Adapter {
             mTvArray.setText(betListBean.getBet_number());
             mTvTime.setText(betListBean.getCreated_at());
             mTvSeveral.setText("0" + position + mContext.getString(R.string.bet));
+            mTvMoney.setText(betListBean.getBonus_number());
         }
     }
 }

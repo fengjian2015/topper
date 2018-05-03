@@ -72,13 +72,16 @@ public class GrabQRCodeRedActivity extends AppCompatActivity {
         redPacketPresenter.grabQrRed(Integer.parseInt(mId), new RedPacketPresenter.CallBack3() {
             @Override
             public void send(GrabRedInfo.DataBean dataBean) {
-                UtilTool.Log("日志", dataBean.getSend_rp_user_name());
-                mTvName.setText(dataBean.getSend_rp_user_name());
-                mTvRemark.setText(dataBean.getIntro());
-                mTvCount.setText(dataBean.getLog().get(0).getMoney());
-                mTvCoin.setText(dataBean.getCoin_name());
-                String user = dataBean.getSend_rp_user_name() + "@" + Constants.DOMAINNAME;
-                mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, user, GrabQRCodeRedActivity.this));
+                if (dataBean != null) {
+                    UtilTool.Log("日志", dataBean.getSend_rp_user_name());
+                    mTvName.setText(dataBean.getSend_rp_user_name());
+                    mTvRemark.setText(dataBean.getIntro());
+                    if (dataBean.getLog().size() != 0)
+                        mTvCount.setText(dataBean.getLog().get(0).getMoney());
+                    mTvCoin.setText(dataBean.getCoin_name());
+                    String user = dataBean.getSend_rp_user_name() + "@" + Constants.DOMAINNAME;
+                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, user, GrabQRCodeRedActivity.this));
+                }
             }
         });
     }

@@ -59,14 +59,16 @@ public class MyWalletRVAapter extends RecyclerView.Adapter {
     class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_coin)
         ImageView mIvCoin;
-        @Bind(R.id.iv_popup)
-        ImageView mIvPopup;
         @Bind(R.id.tv_coin_name)
         TextView mTvCoinName;
-        @Bind(R.id.tv_coin_count)
-        TextView mTvCoinCount;
         @Bind(R.id.tv_coin_value)
         TextView mTvCoinValue;
+        @Bind(R.id.tv_usable_count)
+        TextView mTvUsableCount;
+        @Bind(R.id.tv_freeze_count)
+        TextView mTvFreezeCount;
+        @Bind(R.id.iv_popup)
+        ImageView mIvPopup;
         private MyAssetsInfo.DataBean mLtcBean;
 
         ViewHolder(View view) {
@@ -77,7 +79,8 @@ public class MyWalletRVAapter extends RecyclerView.Adapter {
         public void setData(final MyAssetsInfo.DataBean ltcBean) {
             mLtcBean = ltcBean;
             Glide.with(mContext).load(ltcBean.getLogo()).into(mIvCoin);
-            mTvCoinCount.setText(ltcBean.getTotal());
+            mTvFreezeCount.setText(mContext.getString(R.string.freeze) + " " + ltcBean.getLock());
+            mTvUsableCount.setText(mContext.getString(R.string.usable) + " " + ltcBean.getOver());
             mTvCoinName.setText(ltcBean.getName());
             mTvCoinValue.setText(ltcBean.getNumber() + ltcBean.getCurrency());
             mIvPopup.setOnClickListener(new View.OnClickListener() {

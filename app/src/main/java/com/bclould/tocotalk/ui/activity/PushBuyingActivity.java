@@ -196,6 +196,7 @@ public class PushBuyingActivity extends BaseActivity {
     private CoinPresenter mCoinPresenter;
     private PushBuyingPresenter mPushBuyingPresenter;
     private String mServiceCharge = "";
+    private String mServiceCharge2 = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -244,6 +245,7 @@ public class PushBuyingActivity extends BaseActivity {
     private void init() {
         mCoinName = getIntent().getStringExtra("coinName");
         mServiceCharge = getIntent().getStringExtra("serviceCharge");
+        mServiceCharge2 = getIntent().getStringExtra("serviceCharge2");
         mTvCurrency.setText(mCoinName);
         mTvState.setText(MySharedPreferences.getInstance().getString(STATE));
         mTvUnits.setText(MySharedPreferences.getInstance().getString(CURRENCY));
@@ -252,8 +254,6 @@ public class PushBuyingActivity extends BaseActivity {
         if (!mCoinName.isEmpty()) {
             initData(mCoinName);
         }
-        mServiceCharge = Double.parseDouble(mServiceCharge) * 100 + "";
-        mTvHint.setText(getString(R.string.push_ad_hint) + mServiceCharge + "%" + getString(R.string.sxf));
         /*mEtMinLimit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -680,6 +680,11 @@ public class PushBuyingActivity extends BaseActivity {
                 break;
             case BUYSELL:
                 mTvBuySell.setText(name);
+                if(name.equals(getString(R.string.mai2))) {
+                    mTvHint.setText(getString(R.string.push_ad_hint) + Double.parseDouble(mServiceCharge) * 100 + "%" + getString(R.string.sxf));
+                }else {
+                    mTvHint.setText(getString(R.string.push_ad_hint2) + Double.parseDouble(mServiceCharge2) * 100 + "%" + getString(R.string.sxf));
+                }
                 /*mTvPayment.setText("");
                 mMap.clear();*/
                 break;

@@ -91,7 +91,7 @@ public class BlockchainGuessPresenter {
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .publishGuess(UtilTool.getToken(), title, sum, count, singleCount, id + "", timeMinute, second_password, password)
+                    .publishGuess(UtilTool.getToken(), title, count, singleCount, id + "", timeMinute, second_password, password)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<BaseInfo>() {
@@ -105,6 +105,8 @@ public class BlockchainGuessPresenter {
                             hideDialog();
                             if (baseInfo.getStatus() == 1) {
                                 callBack2.send();
+                            } else {
+                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                             UtilTool.Log("發佈競猜", baseInfo.getMessage());
                         }

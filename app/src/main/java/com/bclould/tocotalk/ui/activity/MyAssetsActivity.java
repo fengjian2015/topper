@@ -92,7 +92,7 @@ public class MyAssetsActivity extends BaseActivity {
                 @Override
                 public void send(String data) {
                     if (data != null) {
-                        mTvCurrency.setText(getString(R.string. total_assets_usd));
+                        mTvCurrency.setText(getString(R.string.total_assets_usd));
                         mTvTotal.setText("≈" + data);
                     }
                 }

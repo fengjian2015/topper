@@ -57,8 +57,27 @@ public class CoinListInfo {
         private String logo;
         private String coin_over;
         private String out_otc;
+        private String in_otc;
         private String out_exchange;
         private String single_coin;
+
+        public String getIn_otc() {
+            return in_otc;
+        }
+
+        public void setIn_otc(String in_otc) {
+            this.in_otc = in_otc;
+        }
+
+        private String bet_fee;
+
+        public String getBet_fee() {
+            return bet_fee;
+        }
+
+        public void setBet_fee(String bet_fee) {
+            this.bet_fee = bet_fee;
+        }
 
         public String getSingle_coin() {
             return single_coin;

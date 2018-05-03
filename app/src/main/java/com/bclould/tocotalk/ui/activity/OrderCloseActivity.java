@@ -117,7 +117,8 @@ public class OrderCloseActivity extends BaseActivity {
                         mLlExceptionBuy.setVisibility(View.VISIBLE);
                         mTvOrderType.setTextColor(getResources().getColor(R.color.color_orange));
                     }
-                    mTvTitle.setText(getString(R.string.seller) + data.getCoin_name());
+                    mTvTitle.setText(getString(R.string.buy) + data.getCoin_name());
+                    mTvShijiHint.setText(getString(R.string.shiji_out_coin));
                 } else {
                     if (data.getStatus() == 0) {
                         mTvOrderType.setText(getString(R.string.order_cancel));
@@ -130,6 +131,7 @@ public class OrderCloseActivity extends BaseActivity {
                         mTvOrderType.setTextColor(getResources().getColor(R.color.color_orange));
                     }
                     mTvTitle.setText(getString(R.string.work_off) + data.getCoin_name());
+                    mTvShijiHint.setText(getString(R.string.shijikouchu));
                 }
                 mTvMoney.setText(data.getTrans_amount());
                 mTvPrice.setText(data.getPrice());

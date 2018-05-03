@@ -31,6 +31,7 @@
                 android:src="@mipmap/icon_dynamics_play"/>
 
             <LinearLayout
+                android:id="@+id/ll_coin_value"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/x20"
@@ -56,22 +57,37 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_coin_count"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/iv_popup"
-                android:text="0.000000"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x26"/>
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/x350"
+                android:layout_marginRight="@dimen/x30"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_usable_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.000000"
+                    android:textSize="@dimen/x26"/>
+
+                <TextView
+                    android:id="@+id/tv_freeze_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y15"
+                    android:text="0.000000"
+                    android:textSize="@dimen/x26"/>
+
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/iv_popup"
-                android:paddingLeft="@dimen/x30"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
+                android:paddingLeft="@dimen/x30"
                 android:paddingRight="@dimen/x30"
                 android:src="@mipmap/icon_push"/>
 

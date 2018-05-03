@@ -810,7 +810,6 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("title") String title,
             @Field("limit_people_number") String limit_people_number,
-            @Field("limit_number") String limit_number,
             @Field("single_coin") String single_coin,
             @Field("coin_id") String coin_id,
             @Field("deadline") String deadline,

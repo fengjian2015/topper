@@ -422,7 +422,7 @@ public class OrderDetailsActivity extends BaseActivity {
     }
 
     private void cancel() {
-        if (mType.equals("订单")) {
+        if (mType.equals(getString(R.string.order))) {
             mOrderDetailsPresenter.cancel(mInfo.getData().getTrans_id(), mInfo.getData().getId(), new OrderDetailsPresenter.CallBack2() {
                 @Override
                 public void send() {

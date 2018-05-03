@@ -65,6 +65,8 @@ import static com.bclould.tocotalk.R.style.BottomDialog;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class GuessDetailsActivity extends BaseActivity {
 
+    private static final int PLUS = 0;
+    private static final int MINUS = 1;
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.tv_title)
@@ -213,6 +215,10 @@ public class GuessDetailsActivity extends BaseActivity {
     LinearLayout mLlGuessCount;
     @Bind(R.id.ll_bet)
     LinearLayout mLlBet;
+    @Bind(R.id.btn_minus)
+    Button mBtnMinus;
+    @Bind(R.id.btn_plus)
+    Button mBtnPlus;
     private Animation mEnterAnim;
     private Animation mExitAnim;
     private Dialog mRedDialog;
@@ -283,7 +289,6 @@ public class GuessDetailsActivity extends BaseActivity {
         }
     };
     private int mCoin_id;
-    private String mRandom = "";
     private String mSingle_coin = "";
     private int mCurrent_people_number;
     private int mOver_count_num;
@@ -740,11 +745,17 @@ public class GuessDetailsActivity extends BaseActivity {
         }
     };
 
-    @OnClick({R.id.bark, R.id.btn_random, R.id.btn_random2, R.id.btn_random3, R.id.btn_random4, R.id.btn_random5, R.id.btn_bet, R.id.btn_confirm})
+    @OnClick({R.id.btn_plus, R.id.btn_minus, R.id.bark, R.id.btn_random, R.id.btn_random2, R.id.btn_random3, R.id.btn_random4, R.id.btn_random5, R.id.btn_bet, R.id.btn_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.btn_plus:
+                PlusMinus(PLUS);
+                break;
+            case R.id.btn_minus:
+                PlusMinus(MINUS);
                 break;
             case R.id.btn_confirm:
                 setBetCount();
@@ -820,6 +831,37 @@ public class GuessDetailsActivity extends BaseActivity {
         }
     }
 
+    private void PlusMinus(int type) {
+        String count = mEtBetCount.getText().toString();
+        if (count.isEmpty()) {
+            if (type == MINUS) {
+                Toast.makeText(this, getString(R.string.toast_count_ling), Toast.LENGTH_SHORT).show();
+            } else {
+                mEtBetCount.setText("1");
+                mEtBetCount.setSelection(mEtBetCount.getText().length());
+            }
+        } else {
+            int counti = Integer.parseInt(count);
+            if (type == MINUS) {
+                if (counti == 1) {
+                    Toast.makeText(this, getString(R.string.toast_count_ling), Toast.LENGTH_SHORT).show();
+                } else {
+                    counti--;
+                    mEtBetCount.setText(counti + "");
+                    mEtBetCount.setSelection(mEtBetCount.getText().length());
+                }
+            } else {
+                if (counti == mOver_count_num) {
+                    Toast.makeText(this, getString(R.string.toast_count_max), Toast.LENGTH_SHORT).show();
+                } else {
+                    counti++;
+                    mEtBetCount.setText(counti + "");
+                    mEtBetCount.setSelection(mEtBetCount.getText().length());
+                }
+            }
+        }
+    }
+
     private void setBetCount() {
         String etBetCount = mEtBetCount.getText().toString();
         if (!etBetCount.isEmpty()) {
@@ -863,7 +905,7 @@ public class GuessDetailsActivity extends BaseActivity {
                         break;
                 }
             } else {
-                Toast.makeText(this, getString(R.string.toast_guess_count), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.toast_count_ling), Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(this, getString(R.string.toast_guess_count_null), Toast.LENGTH_SHORT).show();
@@ -961,14 +1003,6 @@ public class GuessDetailsActivity extends BaseActivity {
 
     private void getRandom(int status) {
         String[] randomArr = UtilTool.getRandomArr(Constants.BET_ARR_COUNT);
-        /*for (int i = 0; i < randomArr.length; i++) {
-            if (i != 0) {
-                mRandom = mRandom + ":" + randomArr[i];
-            } else {
-                mRandom = randomArr[i];
-            }
-        }
-        UtilTool.Log("隨機數", mRandom);*/
         switch (status) {
             case 1:
                 for (int i = 0; i < randomArr.length; i++) {
@@ -1090,28 +1124,68 @@ public class GuessDetailsActivity extends BaseActivity {
                         mEtArray4.setText("");
                         break;
                     case 2:
-                        mEt2Array.requestFocus();
+                        mEtArray.requestFocus();
+                        mEtArray.setText("");
+                        mEtArray2.setText("");
+                        mEtArray3.setText("");
+                        mEtArray4.setText("");
                         mEt2Array.setText("");
                         mEt2Array2.setText("");
                         mEt2Array3.setText("");
                         mEt2Array4.setText("");
                         break;
                     case 3:
-                        mEt3Array.requestFocus();
+                        mEtArray.requestFocus();
+                        mEtArray.setText("");
+                        mEtArray2.setText("");
+                        mEtArray3.setText("");
+                        mEtArray4.setText("");
+                        mEt2Array.setText("");
+                        mEt2Array2.setText("");
+                        mEt2Array3.setText("");
+                        mEt2Array4.setText("");
                         mEt3Array.setText("");
                         mEt3Array2.setText("");
                         mEt3Array3.setText("");
                         mEt3Array4.setText("");
                         break;
                     case 4:
-                        mEt4Array.requestFocus();
+                        mEtArray.requestFocus();
+                        mEtArray.setText("");
+                        mEtArray2.setText("");
+                        mEtArray3.setText("");
+                        mEtArray4.setText("");
+                        mEt2Array.setText("");
+                        mEt2Array2.setText("");
+                        mEt2Array3.setText("");
+                        mEt2Array4.setText("");
+                        mEt3Array.setText("");
+                        mEt3Array2.setText("");
+                        mEt3Array3.setText("");
+                        mEt3Array4.setText("");
                         mEt4Array.setText("");
                         mEt4Array2.setText("");
                         mEt4Array3.setText("");
                         mEt4Array4.setText("");
                         break;
                     case 5:
-                        mEt5Array.requestFocus();
+                        mEtArray.requestFocus();
+                        mEtArray.setText("");
+                        mEtArray2.setText("");
+                        mEtArray3.setText("");
+                        mEtArray4.setText("");
+                        mEt2Array.setText("");
+                        mEt2Array2.setText("");
+                        mEt2Array3.setText("");
+                        mEt2Array4.setText("");
+                        mEt3Array.setText("");
+                        mEt3Array2.setText("");
+                        mEt3Array3.setText("");
+                        mEt3Array4.setText("");
+                        mEt4Array.setText("");
+                        mEt4Array2.setText("");
+                        mEt4Array3.setText("");
+                        mEt4Array4.setText("");
                         mEt5Array.setText("");
                         mEt5Array2.setText("");
                         mEt5Array3.setText("");
