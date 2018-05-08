@@ -661,19 +661,14 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     //调用相机
     private void photograph() {
-        if (Build.VERSION.SDK_INT >= 24) {
-            mImagePath = getFilesDir().getAbsolutePath() + "/images/" + UtilTool.createtFileName() + ".jpg";
-            File file = new File(mImagePath);
-            Uri uri = FileProvider.getUriForFile(this, "com.bclould.tocotalk.provider", file);
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            //添加权限
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-            startActivityForResult(intent, CODE_TAKE_PHOTO);
-        } else {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(intent, CODE_TAKE_PHOTO);
-        }
+        mImagePath = getFilesDir().getAbsolutePath() + "/images/" + UtilTool.createtFileName() + ".jpg";
+        File file = new File(mImagePath);
+        Uri uri = FileProvider.getUriForFile(this, "com.bclould.tocotalk.provider", file);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //添加权限
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        startActivityForResult(intent, CODE_TAKE_PHOTO);
     }
 
     //页面返回数据处理
@@ -682,6 +677,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == CODE_TAKE_PHOTO) {
+                int degree = UtilTool.readPictureDegree(mImagePath);
+                UtilTool.toturn(mImagePath, BitmapFactory.decodeFile(mImagePath), degree);
                 Upload(mImagePath);
             } else if (requestCode == FILE_SELECT_CODE) {
 

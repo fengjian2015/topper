@@ -155,4 +155,13 @@
         android:textColor="@color/white"
         android:textSize="@dimen/x30"/>
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/y30"
+        android:text="@string/send_red_packet_hint"
+        android:textSize="@dimen/x26"/>
+
 </LinearLayout>

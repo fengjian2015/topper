@@ -10,6 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5"
+        android:paddingLeft="@dimen/x20"
+        android:paddingRight="@dimen/x20"
         android:gravity="center">
 
         <TextView
@@ -55,7 +57,7 @@
             android:layout_weight="1"
             android:background="@color/white"
             android:text="@string/confirm"
-            android:textColor="@color/blue"
+            android:textColor="@color/blue2"
             android:textSize="@dimen/x28"/>
 
 

@@ -1,61 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/light">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light">
 
     <TextView
+        android:id="@+id/tv_kaifa"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/gray"
         android:gravity="center"
         android:text="@string/hint_unfinished"
-        android:textSize="@dimen/x55"/>
+        android:textSize="@dimen/x55"
+        android:visibility="gone"/>
 
-    <LinearLayout
-        android:visibility="gone"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <com.scwang.smartrefresh.header.WaterDropHeader
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/x30">
+            android:layout_height="wrap_content"/>
 
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="24小时新闻"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="更多>>"
-                android:textSize="@dimen/x26"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_time"
-                android:layout_marginTop="@dimen/y20"
-                android:lines="1"
-                android:singleLine="true"
-                android:text="发货撒会计法发六块腹肌附件为奇偶四大皆空发了而欧文人家问"
-                android:textColor="@color/black"/>
-
-        </RelativeLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <LinearLayout
+            android:id="@+id/ll_news"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
 
-    </LinearLayout>
+            <com.youth.banner.Banner
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y350"
+                app:delay_time="5000"
+                app:indicator_height="@dimen/x15"
+                app:indicator_margin="@dimen/x15"
+                app:indicator_width="@dimen/x15"
+                app:is_auto_play="true"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </RelativeLayout>

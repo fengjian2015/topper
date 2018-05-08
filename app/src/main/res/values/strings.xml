@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">TocoTalk</string>
-    <string name="toast_network_error">當前網絡不可用</string>
+    <string name="toast_network_error">服務器繁忙，請稍後重試</string>
     <string name="email">郵箱</string>
     <string name="password">密碼</string>
     <string name="et_emily">請輸入郵箱</string>
@@ -160,9 +160,9 @@
     <string name="trading_limit">交易限額</string>
     <string name="buy_count">購買數量</string>
     <string name="warm_prompt">溫馨提示</string>
-    <string name="buy_sell_hint1">1、交易請詳細了解賣家的交易信息</string>
-    <string name="buy_sell_hint2">2、請通過青苔進行溝通協定，并保存好相關聊天信息</string>
-    <string name="buy_sell_hint3">3、如遇到交易糾紛，請通過平台解決問題</string>
+    <string name="buy_sell_hint1">1、交易請詳細了解賣家的交易信息。</string>
+    <string name="buy_sell_hint2">2、請通過平台進行溝通協定，并保存好相關聊天信息。</string>
+    <string name="buy_sell_hint3">3、如遇到交易糾紛，請通過平台解決問題。</string>
     <string name="transfer_record">轉賬記錄</string>
     <string name="transfer_give">轉賬給</string>
     <string name="et_selecotr_coin">選擇幣種</string>
@@ -289,7 +289,7 @@
     <string name="et_money">輸入金額</string>
     <string name="send_red_packet">發紅包</string>
     <string name="congratulation">恭喜發財，大吉大利</string>
-    <string name="send_red_packet_hint">TocoTalk保障安全服務</string>
+    <string name="send_red_packet_hint">未領取的紅包，將於24小時后退款</string>
     <string name="set_money">設置金額</string>
     <string name="inform">通知</string>
     <string name="cache">緩存</string>
@@ -462,7 +462,7 @@
     <string name="no_time">0分鐘</string>
     <string name="fb">放幣</string>
     <string name="cancel_order_hint">是否取消訂單?</string>
-    <string name="fb_hint">是否確認放行？</string>
+    <string name="fb_hint">[提示]為了避免發生錯誤，請務必確認收到款後再進一步操作。</string>
     <string name="confirm_fk">確認付款</string>
     <string name="fk_succeed">付款成功</string>
     <string name="dengdai_fb">等待放行</string>
@@ -617,7 +617,7 @@
     <string name="personage_guess">個人競猜</string>
     <string name="my_guess">我的競猜</string>
     <string name="regulation_statement">規則聲明</string>
-    <string name="guess_record">競猜記錄</string>
+    <string name="guess_record">往期競猜</string>
     <string name="no_guess">暫無競猜...</string>
     <string name="start_guess">發起競猜</string>
     <string name="my_join">我參與的</string>
@@ -723,5 +723,20 @@
     <string name="usable">可用</string>
     <string name="et_guess_who">輸入發起人用戶名</string>
     <string name="et_digits2">0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="et_single_count">輸入單筆投注數量</string>
+    <string name="toast_bet_count">總投注數量不能為空</string>
+    <string name="toast_single_count">單筆投注數量不能為空</string>
+    <string name="buy_coin_hint">[提示]為了避免發生錯誤，請仔細判斷對方身份無風險後再進一步操作。</string>
+    <string name="fk_hint">是否已經付款？</string>
+    <string name="qukuai">區塊</string>
+    <string name="hash_value">的hash值</string>
+    <string name="gonggao">公告</string>
+    <string name="news_details">新聞詳情</string>
+    <string name="hash_details">Hash查詢</string>
+    <string name="news_manager">新聞管理</string>
+    <string name="publish_news">發佈新聞</string>
+    <string name="browse_record">瀏覽記錄</string>
+    <string name="drafts">草稿箱</string>
+    <string name="no_news">暫無新聞....</string>
 
 </resources>

@@ -43,6 +43,8 @@ import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jivesoftware.smack.AbstractXMPPConnection;
 import org.jivesoftware.smackx.ping.PingFailedListener;
 import org.jivesoftware.smackx.ping.PingManager;
@@ -113,6 +115,8 @@ public class CloudMessageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_cloud_message, container, false);
         ButterKnife.bind(this, view);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         return view;
     }
 
@@ -184,14 +188,10 @@ public class CloudMessageFragment extends Fragment {
                         }*/
                         //登录成功发送通知
                         UtilTool.Log("fsdafa", "登录成功");
-                        Message message = new Message();
-                        message.what = 1;
-                        mHandler.sendMessage(message);
+                        mHandler.sendEmptyMessage(1);
                     }
                 } catch (Exception e) {
-                    Message message = new Message();
-                    mHandler.sendMessage(message);
-                    message.what = 0;
+                    mHandler.sendEmptyMessage(0);
                     UtilTool.Log("日志", e.getMessage());
                     e.printStackTrace();
                 }
@@ -215,6 +215,14 @@ public class CloudMessageFragment extends Fragment {
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
             mProgressDialog = null;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(getString(R.string.login_error))) {
+            mHandler.sendEmptyMessage(2);
         }
     }
 
@@ -257,6 +265,26 @@ public class CloudMessageFragment extends Fragment {
                     isLogin = true;
                     MyApp.getInstance().isLogin = true;
                     pingService();
+                    break;
+                case 2:
+                    if (mLlChat != null && mLlFriend != null && mCloudCircleAdd != null) {
+                        mLlChat.setClickable(true);
+                        mLlFriend.setClickable(true);
+                        mCloudCircleAdd.setClickable(true);
+                    }
+                    getPhoneSize();
+                    setSelector(0);
+                    mCloudCircleVp.setCurrentItem(0);
+                    initTopMenu();
+                    initViewPager();
+                    //发送登录失败通知
+                    Intent intent = new Intent();
+                    intent.setAction("XMPPConnectionListener");
+                    intent.putExtra("type", false);
+                    getContext().sendBroadcast(intent);
+                    mAnim.stop();
+                    mLlLogin.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -376,6 +404,7 @@ public class CloudMessageFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 
     @OnClick(R.id.cloud_circle_add)
@@ -390,7 +419,8 @@ public class CloudMessageFragment extends Fragment {
 
         mDm = new DisplayMetrics();
 
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(mDm);
+        if (getActivity() != null)
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(mDm);
 
         mHeightPixels = mDm.heightPixels;
     }

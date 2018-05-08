@@ -31,7 +31,7 @@ public class RegulationStatementActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_regulation_statement);
         ButterKnife.bind(this);
-        mWebView.loadUrl(Constants.GUESS_WEB_URL);
+        mWebView.loadUrl(Constants.BASE_URL + Constants.GUESS_WEB_URL);
     }
 
     @OnClick(R.id.bark)

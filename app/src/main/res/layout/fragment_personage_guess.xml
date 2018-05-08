@@ -17,12 +17,12 @@
 
         <android.support.v7.widget.CardView
             android:id="@+id/cb_search"
-            android:visibility="gone"
             android:layout_width="@dimen/x500"
             android:layout_height="@dimen/y90"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/y30"
+            android:visibility="gone"
             app:cardBackgroundColor="#CCCFD2"
             app:cardCornerRadius="@dimen/x40">
 
@@ -38,12 +38,13 @@
                     android:layout_weight="6"
                     android:background="@android:color/transparent"
                     android:hint="@string/et_guess_who"
-                    android:maxLength="8"
+                    android:imeOptions="actionSearch"
+                    android:maxLength="20"
                     android:paddingLeft="@dimen/x30"
                     android:paddingRight="@dimen/x30"
                     android:singleLine="true"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/x35"/>
+                    android:textSize="@dimen/x28"/>
 
                 <ImageView
                     android:layout_width="0dp"

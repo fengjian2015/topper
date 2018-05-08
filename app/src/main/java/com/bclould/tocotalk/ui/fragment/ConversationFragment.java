@@ -336,10 +336,12 @@ public class ConversationFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             boolean type = intent.getBooleanExtra("type", false);
-            if (type) {
-                mRlUnunited.setVisibility(View.GONE);
-            } else {
-                mRlUnunited.setVisibility(View.VISIBLE);
+            if (mRlUnunited != null) {
+                if (type) {
+                    mRlUnunited.setVisibility(View.GONE);
+                } else {
+                    mRlUnunited.setVisibility(View.VISIBLE);
+                }
             }
         }
     }

@@ -51,11 +51,46 @@ public class BlockchainGuessPresenter {
         mContext = context;
     }
 
-    public void getGuessList(int page, int page_size, int type, final CallBack callBack) {
+    public void getGuessList(int page, int page_size, int type, String user, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .GuessList(UtilTool.getToken(), page, page_size, type)
+                    .GuessList(UtilTool.getToken(), page, page_size, type, user)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<GuessListInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(GuessListInfo guessListInfo) {
+                            if (guessListInfo.getStatus() == 1) {
+                                callBack.send(guessListInfo.getData());
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void getGuessHistory(int page, int page_size, final CallBack callBack) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .getGuessHistory(UtilTool.getToken(), page, page_size)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<GuessListInfo>() {

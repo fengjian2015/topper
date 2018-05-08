@@ -8,8 +8,10 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -45,12 +47,14 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Hashtable;
-import java.util.Random;
+import java.util.List;
 import java.util.TimeZone;
 
 import io.reactivex.Observer;
@@ -86,6 +90,52 @@ public class UtilTool {
 
     public static File getVideoCacheDir(Context context) {
         return new File(context.getExternalCacheDir(), "video-cache");
+    }
+
+    /**
+     * 读取照片exif信息中的旋转角度
+     *
+     * @param path 照片路径
+     * @return角度
+     */
+    public static int readPictureDegree(String path) {
+        int degree = 0;
+        try {
+            ExifInterface exifInterface = new ExifInterface(path);
+            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    degree = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    degree = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    degree = 270;
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return degree;
+    }
+
+    public static Bitmap toturn(String imagePath, Bitmap img, int degress) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(+degress); /*翻转90度*/
+        int width = img.getWidth();
+        int height = img.getHeight();
+        img = Bitmap.createBitmap(img, 0, 0, width, height, matrix, true);
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(new File(imagePath));
+            img.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return img;
     }
 
     public static int getFileDuration(String fileName, Context context) {
@@ -617,5 +667,27 @@ public class UtilTool {
             }
         }
         return random;
+    }
+
+    public static String removeZero(String sum) {
+        char[] chars = sum.toCharArray();
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < chars.length; i++) {
+            list.add(chars[i] + "");
+        }
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (list.get(i).equals("0")) {
+                list.remove(i);
+            } else if (list.get(i).equals(".")) {
+                list.remove(i);
+            } else {
+                break;
+            }
+        }
+        String str = "";
+        for (String s : list) {
+            str += s;
+        }
+        return str;
     }
 }

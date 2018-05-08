@@ -155,11 +155,13 @@ public class GuessListRVAdapter extends RecyclerView.Adapter {
                     mTvJoinTime.setText(dataBean.getJoin_created_at());
                     if (dataBean.getLottery_status() == 0) {
                         mTvAwardStatus.setText(mContext.getString(R.string.no_join));
+                        mTvAwardStatus.setTextColor(mContext.getResources().getColor(R.color.black));
                     } else if (dataBean.getLottery_status() == 2) {
                         mTvAwardStatus.setText(mContext.getString(R.string.no_zhong_jiang));
-                        mTvAwardStatus.setTextColor(mContext.getResources().getColor(R.color.yikaijiang));
+                        mTvAwardStatus.setTextColor(mContext.getResources().getColor(R.color.black));
                     } else if (dataBean.getLottery_status() == 3) {
                         mTvAwardStatus.setText(mContext.getString(R.string.zhong_jiang_le));
+                        mTvAwardStatus.setTextColor(mContext.getResources().getColor(R.color.yikaijiang));
                     }
                     mRlTime.setVisibility(View.VISIBLE);
                     mRlCount.setVisibility(View.VISIBLE);

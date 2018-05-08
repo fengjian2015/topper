@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -26,6 +27,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +38,7 @@ import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.model.BetInfo;
 import com.bclould.tocotalk.model.GuessInfo;
 import com.bclould.tocotalk.ui.adapter.GuessBetRVAdapter;
+import com.bclould.tocotalk.ui.widget.CurrencyDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
 import com.bclould.tocotalk.utils.Constants;
@@ -219,6 +222,10 @@ public class GuessDetailsActivity extends BaseActivity {
     Button mBtnMinus;
     @Bind(R.id.btn_plus)
     Button mBtnPlus;
+    @Bind(R.id.cv_time)
+    CardView mCvTime;
+    @Bind(R.id.ll_hash)
+    LinearLayout mLlHash;
     private Animation mEnterAnim;
     private Animation mExitAnim;
     private Dialog mRedDialog;
@@ -228,8 +235,9 @@ public class GuessDetailsActivity extends BaseActivity {
     private int mBet_id;
     private int mPeriod_qty;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
-    private int mCountdown = 0;
-    private int mPrize_pool_number;
+    private int
+            mCountdown = 0;
+    private double mPrize_pool_number;
     private GuessBetRVAdapter mGuessBetRVAdapter;
     Timer mTimer = new Timer();
     TimerTask mTask = new TimerTask() {
@@ -282,7 +290,7 @@ public class GuessDetailsActivity extends BaseActivity {
                     if (mCountdown <= 0) {
                         mTimer.cancel();
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.guess_cancel)));
-                        Toast.makeText(GuessDetailsActivity.this, getString(R.string.guess_timeout), Toast.LENGTH_SHORT).show();
+                        initData();
                     }
                 }
             });
@@ -299,6 +307,10 @@ public class GuessDetailsActivity extends BaseActivity {
     private String mRandomArr4 = "";
     private String mRandomArr5 = "";
     private String mRandomSumArr = "";
+    private String[] mHashArr;
+    private String[] mIndexArr;
+    private double mLimit_number;
+    private String[] mUrlArr;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -349,21 +361,27 @@ public class GuessDetailsActivity extends BaseActivity {
                 mTvPresentCoinCount.setText(data.getPrize_pool_number() + data.getCoin_name());
                 mTvTitle.setText(data.getTitle());
                 mTvTitle2.setText(data.getTitle());
-                double limitNumber = Double.parseDouble(data.getLimit_number()) * 1000000;
-                mPrize_pool_number = (int) (Double.parseDouble(data.getPrize_pool_number()) * 1000000);
-                UtilTool.Log("進度", (int) limitNumber + "");
+                mHashArr = data.getWin_number_hash().split(",");
+                mIndexArr = data.getWin_number_index().split(",");
+                mUrlArr = data.getWin_number_hash_url().split(",");
+                mPrize_pool_number = Double.parseDouble(data.getPrize_pool_number());
+                mLimit_number = Double.parseDouble(data.getLimit_number());
+                int progress = (int) (Double.parseDouble(data.getPrize_pool_number()) / Double.parseDouble(data.getLimit_number()) * 100);
+                UtilTool.Log("進度", progress + "");
                 UtilTool.Log("進度", mPrize_pool_number + "");
-                mProgressBar.setMax((int) limitNumber);
-                mProgressBar.setProgress(mPrize_pool_number);
+                mProgressBar.setMax(100);
+                mProgressBar.setProgress(progress);
                 mCoin_id = data.getCoin_id();
                 mSingle_coin = data.getSingle_coin();
                 mCurrent_people_number = data.getCurrent_people_number();
                 mOver_count_num = data.getOver_count_num();
                 mStatus = data.getStatus();
-
                 if (data.getStatus() == 1 || data.getStatus() == 2) {
                     mLlNo.setVisibility(View.VISIBLE);
                     mLlAlready.setVisibility(View.GONE);
+                    mCountdown = data.getCountdown();
+                    UtilTool.Log("倒計時", data.getCountdown() + "");
+                    mTimer.schedule(mTask, 1000, 1000);
                     if (data.getStatus() == 2) {
                         mLlGuessCount.setVisibility(View.GONE);
                         mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
@@ -376,9 +394,6 @@ public class GuessDetailsActivity extends BaseActivity {
                         } else {
                             mLlGuessCount.setVisibility(View.VISIBLE);
                         }
-                        mCountdown = data.getCountdown();
-                        UtilTool.Log("倒計時", data.getCountdown() + "");
-                        mTimer.schedule(mTask, 1000, 1000);
                     }
                 } else if (data.getStatus() == 3) {
                     mLlNo.setVisibility(View.GONE);
@@ -389,8 +404,11 @@ public class GuessDetailsActivity extends BaseActivity {
                     mTvNumber3.setText(split[2]);
                     mTvNumber4.setText(split[3]);
                 } else if (data.getStatus() == 4) {
+                    mLlNo.setVisibility(View.VISIBLE);
+                    mLlAlready.setVisibility(View.GONE);
                     mLlGuessCount.setVisibility(View.GONE);
                     mLlBet.setVisibility(View.GONE);
+                    mCvTime.setVisibility(View.GONE);
                     mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
                     mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
                 }
@@ -745,11 +763,14 @@ public class GuessDetailsActivity extends BaseActivity {
         }
     };
 
-    @OnClick({R.id.btn_plus, R.id.btn_minus, R.id.bark, R.id.btn_random, R.id.btn_random2, R.id.btn_random3, R.id.btn_random4, R.id.btn_random5, R.id.btn_bet, R.id.btn_confirm})
+    @OnClick({R.id.ll_hash, R.id.btn_plus, R.id.btn_minus, R.id.bark, R.id.btn_random, R.id.btn_random2, R.id.btn_random3, R.id.btn_random4, R.id.btn_random5, R.id.btn_bet, R.id.btn_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.ll_hash:
+                showHashDialog();
                 break;
             case R.id.btn_plus:
                 PlusMinus(PLUS);
@@ -829,6 +850,69 @@ public class GuessDetailsActivity extends BaseActivity {
                 }
                 break;
         }
+    }
+
+    private void showHashDialog() {
+        final CurrencyDialog dialog = new CurrencyDialog(R.layout.dialog_hash, this, R.style.dialog);
+        dialog.show();
+        TextView hash = (TextView) dialog.findViewById(R.id.tv_hash);
+        TextView number = (TextView) dialog.findViewById(R.id.tv_number);
+        TextView hash2 = (TextView) dialog.findViewById(R.id.tv_hash2);
+        TextView number2 = (TextView) dialog.findViewById(R.id.tv_number2);
+        TextView hash3 = (TextView) dialog.findViewById(R.id.tv_hash3);
+        TextView number3 = (TextView) dialog.findViewById(R.id.tv_number3);
+        TextView hash4 = (TextView) dialog.findViewById(R.id.tv_hash4);
+        TextView number4 = (TextView) dialog.findViewById(R.id.tv_number4);
+        RelativeLayout rlHash = (RelativeLayout) dialog.findViewById(R.id.rl_hash);
+        RelativeLayout rlHash2 = (RelativeLayout) dialog.findViewById(R.id.rl_hash2);
+        RelativeLayout rlHash3 = (RelativeLayout) dialog.findViewById(R.id.rl_hash3);
+        RelativeLayout rlHash4 = (RelativeLayout) dialog.findViewById(R.id.rl_hash4);
+        rlHash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Intent intent = new Intent(GuessDetailsActivity.this, GuessHashActivity.class);
+                intent.putExtra("url", mUrlArr[0]);
+                startActivity(intent);
+            }
+        });
+        rlHash2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Intent intent = new Intent(GuessDetailsActivity.this, GuessHashActivity.class);
+                intent.putExtra("url", mUrlArr[1]);
+                startActivity(intent);
+            }
+        });
+        rlHash3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Intent intent = new Intent(GuessDetailsActivity.this, GuessHashActivity.class);
+                intent.putExtra("url", mUrlArr[2]);
+                startActivity(intent);
+
+            }
+        });
+        rlHash4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Intent intent = new Intent(GuessDetailsActivity.this, GuessHashActivity.class);
+                intent.putExtra("url", mUrlArr[3]);
+                startActivity(intent);
+
+            }
+        });
+        number.setText(mTvNumber.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[0] + getString(R.string.hash_value));
+        number2.setText(mTvNumber2.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[1] + getString(R.string.hash_value));
+        number3.setText(mTvNumber3.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[2] + getString(R.string.hash_value));
+        number4.setText(mTvNumber4.getText().toString() + " = " + mTvCoin.getText().toString() + getString(R.string.qukuai) + mIndexArr[3] + getString(R.string.hash_value));
+        hash.setText(mHashArr[0]);
+        hash2.setText(mHashArr[1]);
+        hash3.setText(mHashArr[2]);
+        hash4.setText(mHashArr[3]);
     }
 
     private void PlusMinus(int type) {
@@ -1196,13 +1280,12 @@ public class GuessDetailsActivity extends BaseActivity {
                 mLlArray3.setVisibility(View.GONE);
                 mLlArray4.setVisibility(View.GONE);
                 mLlArray5.setVisibility(View.GONE);
-                int singleCoin = (int) Double.parseDouble(mSingle_coin) * 1000000;
-                mPrize_pool_number = mPrize_pool_number + singleCoin * count2;
-                double prizePoolNumber = (double) mPrize_pool_number / 1000000;
+                mPrize_pool_number = mPrize_pool_number + Double.parseDouble(mSingle_coin) * count2;
                 mCurrent_people_number = mCurrent_people_number + count2;
+                int progress = (int) (mPrize_pool_number / mLimit_number * 100);
                 mTvPresentInvestCount.setText(mCurrent_people_number + "");
-                mTvPresentCoinCount.setText(prizePoolNumber + mTvCoin.getText().toString());
-                mProgressBar.setProgress(mPrize_pool_number);
+                mTvPresentCoinCount.setText(mPrize_pool_number + mTvCoin.getText().toString());
+                mProgressBar.setProgress(progress);
                 for (BetInfo.DataBean info : data) {
                     GuessInfo.DataBean.BetListBean betListBean = new GuessInfo.DataBean.BetListBean();
                     betListBean.setBet_number(info.getBet_number());

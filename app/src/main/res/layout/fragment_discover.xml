@@ -32,12 +32,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/dynamic"
+                    android:text="@string/gonggao"
                     android:textColor="@drawable/menu_text_color_selector"
                     android:textSize="@dimen/y32"/>
 
                 <TextView
-                    android:id="@+id/dongtai_xx"
+                    android:id="@+id/gonggao_xx"
                     android:layout_width="@dimen/x65"
                     android:layout_height="@dimen/y2"
                     android:layout_marginTop="@dimen/y8"
@@ -71,17 +71,51 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/x70"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dynamic"
+                    android:textColor="@drawable/menu_text_color_selector"
+                    android:textSize="@dimen/y32"/>
+
+                <TextView
+                    android:id="@+id/dongtai_xx"
+                    android:layout_width="@dimen/x65"
+                    android:layout_height="@dimen/y2"
+                    android:layout_marginTop="@dimen/y8"
+                    android:background="@color/black"
+                    android:visibility="invisible"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/iv_more"
+            android:layout_width="@dimen/x75"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_add"/>
+
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_push"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center"
-            android:text="@string/push"
             android:paddingRight="@dimen/x20"
+            android:text="@string/push"
             android:textColor="@color/blue2"
             android:textSize="@dimen/x28"/>
 

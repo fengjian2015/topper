@@ -38,9 +38,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <android.support.v7.widget.CardView
+            android:id="@+id/cv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -511,10 +512,10 @@
                                     android:layout_height="match_parent"
                                     android:layout_marginLeft="@dimen/x20"
                                     android:layout_weight="1"
-                                    android:inputType="number"
                                     android:background="@drawable/wf_bule"
                                     android:gravity="center"
                                     android:hint="00"
+                                    android:inputType="number"
                                     android:maxLength="2"
                                     android:singleLine="true"
                                     android:textColor="@color/blue2"
@@ -640,12 +641,12 @@
                                 <EditText
                                     android:id="@+id/et2_array"
                                     android:layout_width="0dp"
-                                    android:inputType="number"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="@drawable/wf_bule"
                                     android:gravity="center"
                                     android:hint="00"
+                                    android:inputType="number"
                                     android:maxLength="2"
                                     android:singleLine="true"
                                     android:textColor="@color/blue2"
@@ -660,10 +661,10 @@
                                     android:layout_height="match_parent"
                                     android:layout_marginLeft="@dimen/x20"
                                     android:layout_weight="1"
-                                    android:inputType="number"
                                     android:background="@drawable/wf_bule"
                                     android:gravity="center"
                                     android:hint="00"
+                                    android:inputType="number"
                                     android:maxLength="2"
                                     android:singleLine="true"
                                     android:textColor="@color/blue2"
@@ -678,10 +679,10 @@
                                     android:layout_height="match_parent"
                                     android:layout_marginLeft="@dimen/x20"
                                     android:layout_weight="1"
-                                    android:inputType="number"
                                     android:background="@drawable/wf_bule"
                                     android:gravity="center"
                                     android:hint="00"
+                                    android:inputType="number"
                                     android:maxLength="2"
                                     android:singleLine="true"
                                     android:textColor="@color/blue2"
@@ -792,9 +793,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="@drawable/wf_bule"
-                                    android:inputType="number"
                                     android:gravity="center"
                                     android:hint="00"
+                                    android:inputType="number"
                                     android:maxLength="2"
                                     android:singleLine="true"
                                     android:textColor="@color/blue2"
@@ -810,9 +811,9 @@
                                     android:layout_marginLeft="@dimen/x20"
                                     android:layout_weight="1"
                                     android:background="@drawable/wf_bule"
-                                    android:inputType="number"
                                     android:gravity="center"
                                     android:hint="00"
+                                    android:inputType="number"
                                     android:maxLength="2"
                                     android:singleLine="true"
                                     android:textColor="@color/blue2"
@@ -828,9 +829,9 @@
                                     android:layout_marginLeft="@dimen/x20"
                                     android:layout_weight="1"
                                     android:background="@drawable/wf_bule"
-                                    android:inputType="number"
                                     android:gravity="center"
                                     android:hint="00"
+                                    android:inputType="number"
                                     android:maxLength="2"
                                     android:singleLine="true"
                                     android:textColor="@color/blue2"
@@ -941,9 +942,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="@drawable/wf_bule"
-                                    android:inputType="number"
                                     android:gravity="center"
                                     android:hint="00"
+                                    android:inputType="number"
                                     android:maxLength="2"
                                     android:singleLine="true"
                                     android:textColor="@color/blue2"
@@ -959,9 +960,9 @@
                                     android:layout_marginLeft="@dimen/x20"
                                     android:layout_weight="1"
                                     android:background="@drawable/wf_bule"
-                                    android:inputType="number"
                                     android:gravity="center"
                                     android:hint="00"
+                                    android:inputType="number"
                                     android:maxLength="2"
                                     android:singleLine="true"
                                     android:textColor="@color/blue2"
@@ -977,9 +978,9 @@
                                     android:layout_marginLeft="@dimen/x20"
                                     android:layout_weight="1"
                                     android:background="@drawable/wf_bule"
-                                    android:inputType="number"
                                     android:gravity="center"
                                     android:hint="00"
+                                    android:inputType="number"
                                     android:maxLength="2"
                                     android:singleLine="true"
                                     android:textColor="@color/blue2"
@@ -1090,9 +1091,9 @@
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
                                     android:background="@drawable/wf_bule"
-                                    android:inputType="number"
                                     android:gravity="center"
                                     android:hint="00"
+                                    android:inputType="number"
                                     android:maxLength="2"
                                     android:singleLine="true"
                                     android:textColor="@color/blue2"
@@ -1108,9 +1109,9 @@
                                     android:layout_marginLeft="@dimen/x20"
                                     android:layout_weight="1"
                                     android:background="@drawable/wf_bule"
-                                    android:inputType="number"
                                     android:gravity="center"
                                     android:hint="00"
+                                    android:inputType="number"
                                     android:maxLength="2"
                                     android:singleLine="true"
                                     android:textColor="@color/blue2"
@@ -1126,9 +1127,9 @@
                                     android:layout_marginLeft="@dimen/x20"
                                     android:layout_weight="1"
                                     android:background="@drawable/wf_bule"
-                                    android:inputType="number"
                                     android:gravity="center"
                                     android:hint="00"
+                                    android:inputType="number"
                                     android:maxLength="2"
                                     android:singleLine="true"
                                     android:textColor="@color/blue2"
@@ -1285,7 +1286,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/x30">
+                android:paddingLeft="@dimen/x30"
+                android:paddingRight="@dimen/x30"
+                android:paddingTop="@dimen/y30">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1390,6 +1393,35 @@
                         android:text="04"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x28"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y5"
+                    android:layout_marginTop="@dimen/y20"
+                    android:background="@color/light"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_hash"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/y30"
+                    android:paddingTop="@dimen/y20">
+
+                    <TextView
+                        android:layout_width="@dimen/x100"
+                        android:layout_height="@dimen/y5"
+                        android:background="@color/yikaijiang"/>
+
+
+                    <TextView
+                        android:layout_width="@dimen/x100"
+                        android:layout_height="@dimen/y5"
+                        android:layout_marginTop="@dimen/y10"
+                        android:background="@color/yikaijiang"/>
 
                 </LinearLayout>
 

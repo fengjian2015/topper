@@ -1,6 +1,7 @@
 package com.bclould.tocotalk.xmpp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -184,6 +185,10 @@ public class XmppConnection {
         @Override
         public void handleMessage(android.os.Message msg) {
             super.handleMessage(msg);
+            Intent intent = new Intent();
+            intent.setAction("XMPPConnectionListener");
+            intent.putExtra("type", false);
+            mContext.sendBroadcast(intent);
             MainActivity.getInstance().hideDialog();
         }
     };

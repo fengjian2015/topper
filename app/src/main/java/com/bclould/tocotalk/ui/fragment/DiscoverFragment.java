@@ -2,19 +2,26 @@ package com.bclould.tocotalk.ui.fragment;
 
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.ui.activity.NewsEditActivity;
+import com.bclould.tocotalk.ui.activity.NewsManagerActivity;
 import com.bclould.tocotalk.ui.activity.PublicshDynamicActivity;
 import com.bclould.tocotalk.ui.adapter.CloudMessageVPAdapter;
 
@@ -41,6 +48,14 @@ public class DiscoverFragment extends Fragment {
     ViewPager mCloudCircleVp;
     @Bind(R.id.tv_push)
     TextView mTvPush;
+    @Bind(R.id.gonggao_xx)
+    TextView mGonggaoXx;
+    @Bind(R.id.iv_more)
+    ImageView mIvMore;
+    private DisplayMetrics mDm;
+    private int mHeightPixels;
+    private ViewGroup mView;
+    private PopupWindow mPopupWindow;
 
 
     public static DiscoverFragment getInstance() {
@@ -55,6 +70,7 @@ public class DiscoverFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_discover, container, false);
         ButterKnife.bind(this, view);
+        getPhoneSize();
         initInterface();
         return view;
     }
@@ -74,6 +90,7 @@ public class DiscoverFragment extends Fragment {
         CloudMessageVPAdapter cloudMessageVPAdapter = new CloudMessageVPAdapter(getChildFragmentManager(), this);
 
         mCloudCircleVp.setAdapter(cloudMessageVPAdapter);
+        mCloudCircleVp.setOffscreenPageLimit(3);
 
         mCloudCircleVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -83,10 +100,15 @@ public class DiscoverFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 1) {
-                    mTvPush.setVisibility(View.GONE);
-                } else {
+                if (position == 2) {
                     mTvPush.setVisibility(View.VISIBLE);
+                    mIvMore.setVisibility(View.GONE);
+                } else if (position == 1) {
+                    mTvPush.setVisibility(View.GONE);
+                    mIvMore.setVisibility(View.VISIBLE);
+                } else {
+                    mTvPush.setVisibility(View.GONE);
+                    mIvMore.setVisibility(View.GONE);
                 }
                 setSelector(position);
             }
@@ -133,18 +155,19 @@ public class DiscoverFragment extends Fragment {
                 switch (index) {
 
                     case 0:
-
-                        mDongtaiXx.setVisibility(View.VISIBLE);
-
+                        mGonggaoXx.setVisibility(View.VISIBLE);
+                        mDongtaiXx.setVisibility(View.INVISIBLE);
                         mNewXx.setVisibility(View.INVISIBLE);
-
                         break;
                     case 1:
-
+                        mGonggaoXx.setVisibility(View.INVISIBLE);
                         mDongtaiXx.setVisibility(View.INVISIBLE);
-
                         mNewXx.setVisibility(View.VISIBLE);
-
+                        break;
+                    case 2:
+                        mGonggaoXx.setVisibility(View.INVISIBLE);
+                        mDongtaiXx.setVisibility(View.VISIBLE);
+                        mNewXx.setVisibility(View.INVISIBLE);
                         break;
                 }
 
@@ -162,8 +185,68 @@ public class DiscoverFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick(R.id.tv_push)
-    public void onViewClicked() {
-        startActivity(new Intent(getActivity(), PublicshDynamicActivity.class));
+    //获取屏幕高度
+    private void getPhoneSize() {
+        mDm = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(mDm);
+        mHeightPixels = mDm.heightPixels;
+    }
+
+    //初始化pop
+    private void showPopup() {
+
+        int widthPixels = mDm.widthPixels;
+
+        mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_news, null);
+
+        mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 6, true);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        // 设置背景颜色变暗
+        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+        lp.alpha = 0.9f;
+        getActivity().getWindow().setAttributes(lp);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+                lp.alpha = 1f;
+                getActivity().getWindow().setAttributes(lp);
+            }
+        });
+        mPopupWindow.showAsDropDown(mXx, (widthPixels - widthPixels / 100 * 35 - 20), 0);
+        popChildClick();
+    }
+
+    private void popChildClick() {
+        final TextView RegulationStatement = (TextView) mView.findViewById(R.id.tv_regulation_statement);
+        RegulationStatement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPopupWindow.dismiss();
+                startActivity(new Intent(getContext(), NewsManagerActivity.class));
+            }
+        });
+        final TextView guessRecord = (TextView) mView.findViewById(R.id.tv_guess_record);
+        guessRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPopupWindow.dismiss();
+                startActivity(new Intent(getContext(), NewsEditActivity.class));
+
+            }
+        });
+    }
+
+    @OnClick({R.id.iv_more, R.id.tv_push})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_more:
+                showPopup();
+                break;
+            case R.id.tv_push:
+                startActivity(new Intent(getActivity(), PublicshDynamicActivity.class));
+                break;
+        }
     }
 }

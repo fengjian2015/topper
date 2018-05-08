@@ -1,5 +1,6 @@
 package com.bclould.tocotalk.ui.fragment;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,14 +9,16 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bclould.tocotalk.Presenter.BlockchainGuessPresenter;
 import com.bclould.tocotalk.R;
@@ -64,6 +67,7 @@ public class PersonageGuessFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_personage_guess, container, false);
         ButterKnife.bind(this, view);
+        mCbSearch.setVisibility(View.VISIBLE);
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         init();
@@ -74,18 +78,18 @@ public class PersonageGuessFragment extends Fragment {
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.push_guess))) {
-            initData();
+            initData("");
         } else if (msg.equals(getString(R.string.bet))) {
-            initData();
+            initData("");
         } else if (msg.equals(getString(R.string.guess_cancel))) {
-            initData();
+            initData("");
         }
     }
 
     private void init() {
         mBlockchainGuessPresenter = new BlockchainGuessPresenter(getContext());
-        initData();
         initRecyclerView();
+        initData("");
         initListener();
     }
 
@@ -94,23 +98,22 @@ public class PersonageGuessFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
-                initData();
+                initData("");
             }
         });
-        mEtSearch.addTextChangedListener(new TextWatcher() {
+        mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String user = mEtSearch.getText().toString();
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {//修改回车键功能
+                    // 隐藏键盘
+                    ((InputMethodManager) mEtSearch.getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                                    InputMethodManager.HIDE_NOT_ALWAYS);
+                    String user = mEtSearch.getText().toString().trim();
+                    initData(user);
+                    return true;
+                }
+                return false;
             }
         });
     }
@@ -123,15 +126,17 @@ public class PersonageGuessFragment extends Fragment {
 
     List<GuessListInfo.DataBean> mDataList = new ArrayList<>();
 
-    private void initData() {
-        mBlockchainGuessPresenter.getGuessList(mPage, mPageSize, 1, new BlockchainGuessPresenter.CallBack() {
+    private void initData(String user) {
+        mEtSearch.setText("");
+        mDataList.clear();
+        mGuessListRVAdapter.notifyDataSetChanged();
+        mBlockchainGuessPresenter.getGuessList(mPage, mPageSize, 1, user, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
                     if (data.size() != 0) {
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
-                        mDataList.clear();
                         mDataList.addAll(data);
                         mGuessListRVAdapter.notifyDataSetChanged();
                     } else {

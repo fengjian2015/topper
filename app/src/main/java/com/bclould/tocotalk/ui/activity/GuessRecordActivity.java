@@ -17,6 +17,8 @@ import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.model.GuessListInfo;
 import com.bclould.tocotalk.ui.adapter.GuessListRVAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +49,6 @@ public class GuessRecordActivity extends BaseActivity {
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
     private int mPage = 1;
     private int mPage_size = 1000;
-    private int mType = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,10 +58,21 @@ public class GuessRecordActivity extends BaseActivity {
         mBlockchainGuessPresenter = new BlockchainGuessPresenter(this);
         initRecylerView();
         initData();
+        initListener();
+    }
+
+    private void initListener() {
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh(2000);
+                initData();
+            }
+        });
     }
 
     private void initData() {
-        mBlockchainGuessPresenter.getGuessList(mPage, mPage_size, mType, new BlockchainGuessPresenter.CallBack() {
+        mBlockchainGuessPresenter.getGuessHistory(mPage, mPage_size, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
                 if (mRecyclerView != null) {

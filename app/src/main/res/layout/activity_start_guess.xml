@@ -81,12 +81,12 @@
 
     <android.support.v7.widget.CardView
         android:id="@+id/cv_password"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y110"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
         android:layout_marginTop="@dimen/y20"
+        android:visibility="gone"
         app:cardCornerRadius="@dimen/x15">
 
         <RelativeLayout
@@ -183,6 +183,7 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/tv2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -191,13 +192,19 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 
-            <TextView
-                android:id="@+id/tv_single_insert_count"
+            <EditText
+                android:id="@+id/et_single_insert_count"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x10"
+                android:gravity="right|center_vertical"
+                android:background="@android:color/transparent"
+                android:layout_marginRight="@dimen/x20"
+                android:hint="@string/et_single_count"
+                android:inputType="numberDecimal"
+                android:layout_marginLeft="@dimen/x20"
                 android:layout_toLeftOf="@+id/tv"
+                android:layout_toRightOf="@+id/tv2"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 

@@ -118,7 +118,7 @@ public class BuySellActivity extends BaseActivity {
 
     private void setListener() {
         mEtCny.setFilters(new InputFilter[]{lengthFilter});
-        mEtCoin.setFilters(new InputFilter[]{lengthFilter});
+        mEtCoin.setFilters(new InputFilter[]{lengthFilter2});
         mEtCoin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -142,6 +142,7 @@ public class BuySellActivity extends BaseActivity {
                 }
             }
         });
+        mEtCoin.requestFocus();
     }
 
     TextWatcher mTextWatcher = new TextWatcher() {
@@ -149,7 +150,7 @@ public class BuySellActivity extends BaseActivity {
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             String s = mEtCoin.getText().toString();
             if (!s.isEmpty()) {
-                double count = Float.parseFloat(s);
+                double count = Double.parseDouble(s);
                 double min_amount = mData.getMin_amount();
                 double max_amount = mData.getMax_amount();
                 double money = count * mPrice;
@@ -160,7 +161,7 @@ public class BuySellActivity extends BaseActivity {
                 } else {
                     mTvCoinHint.setText("");
                 }
-                DecimalFormat df = new DecimalFormat("#.######");
+                DecimalFormat df = new DecimalFormat("#.##");
                 String str = df.format(money);
                 mEtCny.setText(str);
             } else {
@@ -172,7 +173,7 @@ public class BuySellActivity extends BaseActivity {
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             String s = mEtCoin.getText().toString();
             if (!s.isEmpty()) {
-                double count = Float.parseFloat(s);
+                double count = Double.parseDouble(s);
                 double min_amount = mData.getMin_amount();
                 double max_amount = mData.getMax_amount();
                 double money = count * mPrice;
@@ -183,7 +184,7 @@ public class BuySellActivity extends BaseActivity {
                 } else {
                     mTvCoinHint.setText("");
                 }
-                DecimalFormat df = new DecimalFormat("#.######");
+                DecimalFormat df = new DecimalFormat("#.##");
                 String str = df.format(money);
                 mEtCny.setText(str);
             } else {
@@ -202,7 +203,7 @@ public class BuySellActivity extends BaseActivity {
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             String s = mEtCny.getText().toString();
             if (!s.isEmpty()) {
-                double money = Float.parseFloat(s);
+                double money = Double.parseDouble(s);
                 double min_amount = mData.getMin_amount();
                 double max_amount = mData.getMax_amount();
                 if (money < min_amount) {
@@ -210,10 +211,10 @@ public class BuySellActivity extends BaseActivity {
                 } else if (money > max_amount) {
                     mTvCoinHint.setText(getString(R.string.no_exceed_than_the_limit));
                 } else {
-                    mTvCnyHint.setText("");
+                    mTvCoinHint.setText("");
                 }
                 double count = money / mPrice;
-                DecimalFormat df = new DecimalFormat("#.##");
+                DecimalFormat df = new DecimalFormat("#.######");
                 String str = df.format(count);
                 mEtCoin.setText(str);
             } else {
@@ -225,7 +226,7 @@ public class BuySellActivity extends BaseActivity {
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             String s = mEtCny.getText().toString();
             if (!s.isEmpty()) {
-                double money = Float.parseFloat(s);
+                double money = Double.parseDouble(s);
                 double min_amount = mData.getMin_amount();
                 double max_amount = mData.getMax_amount();
                 if (money < min_amount) {
@@ -233,10 +234,10 @@ public class BuySellActivity extends BaseActivity {
                 } else if (money > max_amount) {
                     mTvCoinHint.setText(getString(R.string.no_exceed_than_the_limit));
                 } else {
-                    mTvCnyHint.setText("");
+                    mTvCoinHint.setText("");
                 }
                 double count = money / mPrice;
-                DecimalFormat df = new DecimalFormat("#.##");
+                DecimalFormat df = new DecimalFormat("#.######");
                 String str = df.format(count);
                 mEtCoin.setText(str);
             } else {
@@ -269,6 +270,33 @@ public class BuySellActivity extends BaseActivity {
             if (splitArray.length > 1) {
                 String dotValue = splitArray[1];
                 if (dotValue.length() == 2) {
+                    return "";
+                }
+            }
+            return null;
+        }
+
+    };
+
+    private InputFilter lengthFilter2 = new InputFilter() {
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end,
+                                   Spanned dest, int dstart, int dend) {
+            // source:当前输入的字符
+            // start:输入字符的开始位置
+            // end:输入字符的结束位置
+            // dest：当前已显示的内容
+            // dstart:当前光标开始位置
+            // dent:当前光标结束位置
+            if (dest.length() == 0 && source.equals(".")) {
+                return "0.";
+            }
+            String dValue = dest.toString();
+            String[] splitArray = dValue.split("\\.");
+            if (splitArray.length > 1) {
+                String dotValue = splitArray[1];
+                if (dotValue.length() == 6) {
                     return "";
                 }
             }
@@ -325,14 +353,36 @@ public class BuySellActivity extends BaseActivity {
         if (!moneys.isEmpty() && !count.isEmpty()) {
             double money = Double.parseDouble(moneys);
             if (money >= mData.getMin_amount() && money <= mData.getMax_amount()) {
-                if (!mType)
-                    createOrder("");
-                else
+                if (!mType) {
+                    showDialog();
+                } else {
                     showPWDialog();
+                }
             }
         } else {
             Toast.makeText(this, getString(R.string.toast_money_count), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void showDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(getString(R.string.buy_coin_hint));
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createOrder("");
+                deleteCacheDialog.dismiss();
+            }
+        });
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
     }
 
     private void showPWDialog() {

@@ -84,8 +84,10 @@ public class StartGuessActivity extends BaseActivity {
     TextView mTvCoin;
     @Bind(R.id.rl_selector_coin)
     RelativeLayout mRlSelectorCoin;
-    @Bind(R.id.tv_single_insert_count)
-    TextView mTvSingleInsertCount;
+    @Bind(R.id.tv2)
+    TextView mTv2;
+    @Bind(R.id.et_single_insert_count)
+    EditText mEtSingleInsertCount;
     @Bind(R.id.tv)
     TextView mTv;
     @Bind(R.id.rl_single_insert_count)
@@ -162,21 +164,24 @@ public class StartGuessActivity extends BaseActivity {
     }
 
     private boolean checkEdit() {
-        if (mEtGuessTitle.getText().toString().isEmpty()) {
+        if (mTvType.getText().toString().isEmpty()) {
+            Toast.makeText(this, getString(R.string.toast_guess_type), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mRlGuessType);
+        } else if (mEtGuessTitle.getText().toString().isEmpty()) {
             Toast.makeText(this, getString(R.string.toast_guess_title), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtGuessTitle);
         } else if (mTvCoin.getText().toString().isEmpty()) {
             Toast.makeText(this, getString(R.string.toast_coin), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mRlSelectorCoin);
         } else if (mEtBetCount.getText().toString().isEmpty()) {
-            Toast.makeText(this, getString(R.string.toast_count), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_bet_count), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtBetCount);
         } else if (mTvDeadline.getText().toString().isEmpty()) {
             Toast.makeText(this, getString(R.string.toast_dealine), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mRlSelectorDeadline);
-        } else if (mTvType.getText().toString().isEmpty()) {
-            Toast.makeText(this, getString(R.string.toast_guess_type), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mRlSelectorDeadline);
+        }else if (mEtSingleInsertCount.getText().toString().isEmpty()) {
+            Toast.makeText(this, getString(R.string.toast_single_count), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mEtSingleInsertCount);
         } else if (mCvPassword.getVisibility() == View.VISIBLE) {
             if (mEtCommand.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_guess_pw), Toast.LENGTH_SHORT).show();
@@ -304,7 +309,8 @@ public class StartGuessActivity extends BaseActivity {
     private void initDialog() {
         String coins = mTvCoin.getText().toString();
         DecimalFormat df = new DecimalFormat("0.000000");
-        String sum = df.format(Double.parseDouble(mEtBetCount.getText().toString()) * Double.parseDouble(mTvSingleInsertCount.getText().toString()));
+        String sum = df.format(Double.parseDouble(mEtBetCount.getText().toString()) * Double.parseDouble(mEtSingleInsertCount.getText().toString()));
+        String str = UtilTool.removeZero(sum);
         TextView coin = (TextView) mRedDialog.findViewById(R.id.tv_coin);
         TextView countCoin = (TextView) mRedDialog.findViewById(R.id.tv_count_coin);
         mEtPassword = (MNPasswordEditText) mRedDialog.findViewById(R.id.et_password);
@@ -335,7 +341,7 @@ public class StartGuessActivity extends BaseActivity {
             }
         });
         valueList = virtualKeyboardView.getValueList();
-        countCoin.setText(sum + coins);
+        countCoin.setText(str + coins);
         coin.setText(getString(R.string.push_guess) + coins + getString(R.string.msg));
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -412,7 +418,7 @@ public class StartGuessActivity extends BaseActivity {
     private void pushing(String password) {
         String title = mEtGuessTitle.getText().toString();
         String count = mEtBetCount.getText().toString();
-        String singleCount = mTvSingleInsertCount.getText().toString();
+        String singleCount = mEtSingleInsertCount.getText().toString();
         String command = mEtCommand.getText().toString();
         String deadline = mTvDeadline.getText().toString();
         String timeMinute = Integer.parseInt(deadline.substring(0, deadline.lastIndexOf(getString(R.string.hr)))) * 60 + "";
@@ -432,7 +438,7 @@ public class StartGuessActivity extends BaseActivity {
         mBottomDialog.dismiss();
         mTvCoin.setText(data.getName());
         mId = data.getId();
-        mTvSingleInsertCount.setText(data.getSingle_coin());
+        mEtSingleInsertCount.setHint(data.getSingle_coin());
         mTvHint.setText(getString(R.string.start_guess_service_hint) + Double.parseDouble(data.getBet_fee()) * 100 + "%" + getString(R.string.sxf));
     }
 }

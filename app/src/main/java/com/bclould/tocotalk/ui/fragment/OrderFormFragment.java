@@ -86,7 +86,7 @@ public class OrderFormFragment extends Fragment {
             initData(mCoinName, mFiltrate);
         } else if (msg.equals(getString(R.string.confirm_fk))) {
             initData(mCoinName, mFiltrate);
-           /* for (OrderListInfo.DataBean info : mDataList) {
+           /* for (OrderListInfo.DataBean info : mNewsList) {
                 if (info.getId() == Integer.parseInt(event.getId())) {
                     info.setStatus_name("等待放币");
                     info.setStatus(2);

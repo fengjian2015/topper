@@ -322,27 +322,30 @@ public class OrderDetailsActivity extends BaseActivity {
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));
                 break;
             case R.id.btn_buy_cancel:
-                showDialog(getString(R.string.cancel));
+                showHintDialog(0);
                 break;
             case R.id.btn_sell_cancel:
-                showDialog(getString(R.string.cancel));
+                showHintDialog(0);
                 break;
             case R.id.btn_buy_confirm:
-                confirmPay();
+                showHintDialog(1);
                 break;
             case R.id.btn_sell_confirm:
-                showDialog(getString(R.string.fb));
+                showHintDialog(2);
                 break;
         }
     }
 
-    public void showDialog(final String type) {
+    public void showHintDialog(final int type) {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
         deleteCacheDialog.show();
-        if (type.equals(getString(R.string.cancel)))
+        if (type == 0) {
             deleteCacheDialog.setTitle(getString(R.string.cancel_order_hint));
-        else
+        } else if (type == 2) {
             deleteCacheDialog.setTitle(getString(R.string.fb_hint));
+        } else {
+            deleteCacheDialog.setTitle(getString(R.string.fk_hint));
+        }
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -354,10 +357,12 @@ public class OrderDetailsActivity extends BaseActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (type.equals(getString(R.string.cancel)))
+                if (type == 0)
                     cancel();
-                else
+                else if (type == 2)
                     confirmGiveCoin();
+                else
+                    confirmPay();
                 deleteCacheDialog.dismiss();
             }
         });

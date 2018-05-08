@@ -184,7 +184,6 @@ public class BlockchainGambleActivity extends BaseActivity {
             public void onClick(View view) {
                 mPopupWindow.dismiss();
                 startActivity(new Intent(BlockchainGambleActivity.this, GuessRecordActivity.class));
-
             }
         });
     }

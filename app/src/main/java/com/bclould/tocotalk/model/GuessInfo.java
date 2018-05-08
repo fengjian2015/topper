@@ -8,11 +8,10 @@ import java.util.List;
 
 public class GuessInfo {
 
-
     /**
      * status : 1
      * message : ok
-     * data : {"id":2,"title":"","period_qty":2,"status":1,"created_at":"2018-04-20 15:16:05","coin_id":28,"single_coin":"2","limit_number":"20","user_name":"xihongwei","countdown":0,"coin_name":"TPC","current_people_number":1,"prize_pool_number":"30","over_count_num":1,"betList":[{"bet_number":"yt:ue:s8:71","created_at":"2018-04-20 15:23:09","bonus_number":"4.80000000","winning_type":"1","status":3}]}
+     * data : {"id":2,"period_qty":23,"status":3,"created_at":"2018-05-07 16:45:57","coin_id":28,"password":"","user_name":"liaolinan2","current_people_number":5,"title":"ppppp","single_coin":"0.1","limit_number":"4.69394607","countdown":0,"coin_name":"TPC","win_number":"98_69_E4_A0","win_number_index":"239142,327999,85984,200727","win_number_hash":"34AEA8EABFC2F5C5D67A44E4BE2966EF955DDFCB463016AC75CD1047CA6D8AB9,E638373ED9DD4CC0D53436AA81095E86DED3F9470F4443601D4A9A27F7FA7269,E522DE35F5067D89DE43FBDF949D9278EA7F3B72E6B6DF4B08344FF303AB18E4,F165C60997EF36A1240DFD5BA2C12953BAA217A7114BCBCE14C3A683CDD32FA0","win_number_hash_url":"https://block.minerpro.club/block/34AEA8EABFC2F5C5D67A44E4BE2966EF955DDFCB463016AC75CD1047CA6D8AB9,https://block.minerpro.club/block/E638373ED9DD4CC0D53436AA81095E86DED3F9470F4443601D4A9A27F7FA7269,https://block.minerpro.club/block/E522DE35F5067D89DE43FBDF949D9278EA7F3B72E6B6DF4B08344FF303AB18E4,https://block.minerpro.club/block/F165C60997EF36A1240DFD5BA2C12953BAA217A7114BCBCE14C3A683CDD32FA0","prize_pool_number":"3.75515686","betList":[{"bet_number":"59:22:22:V0","created_at":"2018-05-07 19:45:11","bonus_number":"0","winning_type":"","status":2},{"bet_number":"71:53:85:1Y","created_at":"2018-05-07 19:45:11","bonus_number":"0","winning_type":"","status":2},{"bet_number":"44:86:63:6Z","created_at":"2018-05-07 19:45:11","bonus_number":"0","winning_type":"","status":2},{"bet_number":"44:81:54:QB","created_at":"2018-05-07 19:45:11","bonus_number":"0","winning_type":"","status":2},{"bet_number":"59:52:95:A4","created_at":"2018-05-07 19:45:11","bonus_number":"0","winning_type":"","status":2}],"over_count_num":0}
      */
 
     private int status;
@@ -46,45 +45,45 @@ public class GuessInfo {
     public static class DataBean {
         /**
          * id : 2
-         * title :
-         * period_qty : 2
-         * status : 1
-         * created_at : 2018-04-20 15:16:05
+         * period_qty : 23
+         * status : 3
+         * created_at : 2018-05-07 16:45:57
          * coin_id : 28
-         * single_coin : 2
-         * limit_number : 20
-         * user_name : xihongwei
+         * password :
+         * user_name : liaolinan2
+         * current_people_number : 5
+         * title : ppppp
+         * single_coin : 0.1
+         * limit_number : 4.69394607
          * countdown : 0
          * coin_name : TPC
-         * current_people_number : 1
-         * prize_pool_number : 30
-         * over_count_num : 1
-         * betList : [{"bet_number":"yt:ue:s8:71","created_at":"2018-04-20 15:23:09","bonus_number":"4.80000000","winning_type":"1","status":3}]
+         * win_number : 98_69_E4_A0
+         * win_number_index : 239142,327999,85984,200727
+         * win_number_hash : 34AEA8EABFC2F5C5D67A44E4BE2966EF955DDFCB463016AC75CD1047CA6D8AB9,E638373ED9DD4CC0D53436AA81095E86DED3F9470F4443601D4A9A27F7FA7269,E522DE35F5067D89DE43FBDF949D9278EA7F3B72E6B6DF4B08344FF303AB18E4,F165C60997EF36A1240DFD5BA2C12953BAA217A7114BCBCE14C3A683CDD32FA0
+         * win_number_hash_url : https://block.minerpro.club/block/34AEA8EABFC2F5C5D67A44E4BE2966EF955DDFCB463016AC75CD1047CA6D8AB9,https://block.minerpro.club/block/E638373ED9DD4CC0D53436AA81095E86DED3F9470F4443601D4A9A27F7FA7269,https://block.minerpro.club/block/E522DE35F5067D89DE43FBDF949D9278EA7F3B72E6B6DF4B08344FF303AB18E4,https://block.minerpro.club/block/F165C60997EF36A1240DFD5BA2C12953BAA217A7114BCBCE14C3A683CDD32FA0
+         * prize_pool_number : 3.75515686
+         * betList : [{"bet_number":"59:22:22:V0","created_at":"2018-05-07 19:45:11","bonus_number":"0","winning_type":"","status":2},{"bet_number":"71:53:85:1Y","created_at":"2018-05-07 19:45:11","bonus_number":"0","winning_type":"","status":2},{"bet_number":"44:86:63:6Z","created_at":"2018-05-07 19:45:11","bonus_number":"0","winning_type":"","status":2},{"bet_number":"44:81:54:QB","created_at":"2018-05-07 19:45:11","bonus_number":"0","winning_type":"","status":2},{"bet_number":"59:52:95:A4","created_at":"2018-05-07 19:45:11","bonus_number":"0","winning_type":"","status":2}]
+         * over_count_num : 0
          */
 
         private int id;
-        private String title;
         private int period_qty;
         private int status;
         private String created_at;
         private int coin_id;
+        private String password;
+        private String user_name;
+        private int current_people_number;
+        private String title;
         private String single_coin;
         private String limit_number;
-        private String user_name;
         private int countdown;
         private String coin_name;
-        private int current_people_number;
-        private String prize_pool_number;
         private String win_number;
-
-        public String getWin_number() {
-            return win_number;
-        }
-
-        public void setWin_number(String win_number) {
-            this.win_number = win_number;
-        }
-
+        private String win_number_index;
+        private String win_number_hash;
+        private String win_number_hash_url;
+        private String prize_pool_number;
         private int over_count_num;
         private List<BetListBean> betList;
 
@@ -94,14 +93,6 @@ public class GuessInfo {
 
         public void setId(int id) {
             this.id = id;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
         }
 
         public int getPeriod_qty() {
@@ -136,6 +127,38 @@ public class GuessInfo {
             this.coin_id = coin_id;
         }
 
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public String getUser_name() {
+            return user_name;
+        }
+
+        public void setUser_name(String user_name) {
+            this.user_name = user_name;
+        }
+
+        public int getCurrent_people_number() {
+            return current_people_number;
+        }
+
+        public void setCurrent_people_number(int current_people_number) {
+            this.current_people_number = current_people_number;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
         public String getSingle_coin() {
             return single_coin;
         }
@@ -150,14 +173,6 @@ public class GuessInfo {
 
         public void setLimit_number(String limit_number) {
             this.limit_number = limit_number;
-        }
-
-        public String getUser_name() {
-            return user_name;
-        }
-
-        public void setUser_name(String user_name) {
-            this.user_name = user_name;
         }
 
         public int getCountdown() {
@@ -176,12 +191,36 @@ public class GuessInfo {
             this.coin_name = coin_name;
         }
 
-        public int getCurrent_people_number() {
-            return current_people_number;
+        public String getWin_number() {
+            return win_number;
         }
 
-        public void setCurrent_people_number(int current_people_number) {
-            this.current_people_number = current_people_number;
+        public void setWin_number(String win_number) {
+            this.win_number = win_number;
+        }
+
+        public String getWin_number_index() {
+            return win_number_index;
+        }
+
+        public void setWin_number_index(String win_number_index) {
+            this.win_number_index = win_number_index;
+        }
+
+        public String getWin_number_hash() {
+            return win_number_hash;
+        }
+
+        public void setWin_number_hash(String win_number_hash) {
+            this.win_number_hash = win_number_hash;
+        }
+
+        public String getWin_number_hash_url() {
+            return win_number_hash_url;
+        }
+
+        public void setWin_number_hash_url(String win_number_hash_url) {
+            this.win_number_hash_url = win_number_hash_url;
         }
 
         public String getPrize_pool_number() {
@@ -210,11 +249,11 @@ public class GuessInfo {
 
         public static class BetListBean {
             /**
-             * bet_number : yt:ue:s8:71
-             * created_at : 2018-04-20 15:23:09
-             * bonus_number : 4.80000000
-             * winning_type : 1
-             * status : 3
+             * bet_number : 59:22:22:V0
+             * created_at : 2018-05-07 19:45:11
+             * bonus_number : 0
+             * winning_type :
+             * status : 2
              */
 
             private String bet_number;
