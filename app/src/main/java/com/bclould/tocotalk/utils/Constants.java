@@ -24,10 +24,11 @@ public class Constants {
     }
 
     //        public static final String OPENFIRE_IP = "xmpp.bclould.com";
-//    public static final int OPENFIRE_PORT = 5288;
+//    public static final int OPENFIRE_PORT = 5288;//测试
     public static final int OPENFIRE_PORT = 2018;
-//    public static final String BASE_URL = "https://www.bclould.com:8112/api/";
-        public static final String BASE_URL = "https://api.cnblocklink.com/api/";
+    public static final String BASE_URL = "https://www.bclould.com:8112/api/";//测试
+//        public static final String BASE_URL = "https://api.cnblocklink.com/api/";
+//    public static String DOMAINNAME = "xmpp.bclould.com";//测试
     public static String DOMAINNAME = "xmpp.coingbank.com";
     public static String DOMAINNAME2 = MySharedPreferences.getInstance().getString(XMPP_SERVER);
     public static String CHUANCODE = "爨^(&";
@@ -60,4 +61,5 @@ public class Constants {
     public static String NEW_APK_BODY = "new_apk_body";
     public static String KEFU = "W2tlZnVdOkp1bXBjdXN0b21lcnNlcnZpY2VpbnRlcmZhY2U=";
     public static String GUESS_WEB_URL = "https://www.bclould.com:8112/api/bet/rule";
+    public static String OTR_REQUEST="?OTRv2?";
 }

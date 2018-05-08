@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.bclould.tocotalk.Presenter.GrabRedPresenter;
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.GrabRedInfo;
 import com.bclould.tocotalk.model.MessageInfo;
@@ -39,6 +40,7 @@ import com.bclould.tocotalk.ui.activity.RedPacketActivity;
 import com.bclould.tocotalk.ui.activity.TransferDetailsActivity;
 import com.bclould.tocotalk.ui.activity.VideoActivity;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
@@ -335,7 +337,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         try {
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
             Chat chat = manager.createChat(JidCreate.entityBareFrom(user), null);
-            chat.sendMessage(message);
+            chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(message,
+                    OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER, String.valueOf(JidCreate.entityBareFrom(mUser)))));
             ivWarning.setVisibility(View.GONE);
             messageInfo.setSendStatus(0);
             mMgr.updateMessageHint(id, 0);
@@ -576,7 +579,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
             VoiceInfo voiceInfo = new VoiceInfo();
             voiceInfo.setElementText(base64);
             int duration = UtilTool.getFileDuration(messageInfo.getVoice(), mContext);
-            message.setBody("[audio]:" + duration + mContext.getString(R.string.second));
+            message.setBody(OtrChatListenerManager.getInstance().sentMessagesChange("[audio]:" + duration + mContext.getString(R.string.second),
+                    OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER, String.valueOf(JidCreate.entityBareFrom(mUser)))));
             message.addExtension(voiceInfo);
             chat.sendMessage(message);
             ivWarning.setVisibility(View.GONE);

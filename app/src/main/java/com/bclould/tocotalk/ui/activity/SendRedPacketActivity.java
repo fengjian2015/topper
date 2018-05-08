@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.bclould.tocotalk.Presenter.RedPacketPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
@@ -358,7 +359,8 @@ public class SendRedPacketActivity extends AppCompatActivity {
         try {
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
             Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
-            chat.sendMessage(message);
+            chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(message,
+                    OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER, String.valueOf(JidCreate.entityBareFrom(mUser)))));
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(mUser);
             messageInfo.setMessage(message);

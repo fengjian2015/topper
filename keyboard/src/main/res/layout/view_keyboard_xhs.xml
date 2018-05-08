@@ -13,15 +13,23 @@
         android:orientation="horizontal"
         android:paddingBottom="8dp"
         android:paddingTop="8dp">
-
+        <!-- 语音/文字切换-->
+        <ImageView
+            android:id="@+id/btn_otr_text"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:src="@drawable/icon_encrypt_no"/>
         <!-- 语音/文字切换-->
         <ImageView
             android:id="@+id/btn_voice_or_text"
             android:layout_width="34dp"
             android:layout_height="34dp"
-            android:layout_centerVertical="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/btn_otr_text"
             android:layout_marginLeft="12dp"
-            android:src="@drawable/btn_voice_or_text"/>
+            android:src="@drawable/btn_voice_or_text" />
 
         <!--语音输入-->
         <Button

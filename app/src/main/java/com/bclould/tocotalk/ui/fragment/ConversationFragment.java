@@ -40,6 +40,8 @@ import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
+import com.bclould.tocotalk.crypto.otr.OtrChatManager;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.AuthStatusInfo;
 import com.bclould.tocotalk.model.ConversationInfo;
@@ -80,6 +82,7 @@ import org.jivesoftware.smack.packet.Stanza;
 import org.jivesoftware.smackx.offline.OfflineMessageManager;
 import org.jivesoftware.smackx.ping.PingFailedListener;
 import org.jivesoftware.smackx.ping.PingManager;
+import org.jxmpp.jid.impl.JidCreate;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -529,6 +532,15 @@ public class ConversationFragment extends Fragment {
                     from = from.substring(0, from.indexOf("/"));
                 if (from.contains("@"))
                     friend = from.substring(0, from.indexOf("@"));
+
+                if(OtrChatListenerManager.getInstance().isOtrEstablishMessage(chatMsg,
+                        OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER, from),getContext())){
+                    return;
+                }
+                if(OtrChatListenerManager.getInstance().isExist(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER, from))){
+                    chatMsg=OtrChatListenerManager.getInstance().receivedMessagesChange(chatMsg,
+                            OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER, from));
+                }
                 String remark = null;
                 String coin = null;
                 String count = null;
@@ -777,7 +789,7 @@ public class ConversationFragment extends Fragment {
                     type = transferInformInfo.getType_number();
                     redpacket = "[" + getString(R.string.out_coin_inform) + "]";
                 }
-                //添加数据库
+                //添加数据库from
                 messageInfo.setUsername(from);
                 messageInfo.setMessage(chatMsg);
                 messageInfo.setTime(time);

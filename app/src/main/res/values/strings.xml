@@ -702,6 +702,8 @@
     <string name="no_dynamic_publish">沒有動態發佈</string>
     <string name="zhong_jiang_money">中獎金額</string>
     <string name="guess_cancel">競猜已取消</string>
+    <string name="otr_isopen">OTR開關</string>
+    <string name="otr_error">無法讀取加密信息，請重新發起加密請求</string>
     <string name="et_sum_count">總投注次數</string>
     <string name="et_command">輸入競猜口令(4-8個數字)</string>
     <string name="toast_command_min">競猜口令不能低於四位</string>
