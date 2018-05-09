@@ -624,6 +624,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             } catch (XmppStringprepException e) {
                 e.printStackTrace();
             }
+        }else if(msg.equals(getString(R.string.delete_friend))){
+            finish();
         }
     }
 
@@ -1199,7 +1201,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                     mMgr.deleteUser(mUser);
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.delete_friend)));
                     deleteCacheDialog.dismiss();
-                    finish();
                 } catch (Exception e) {
                     e.printStackTrace();
                     UtilTool.Log("fsdafa", e.getMessage());
@@ -1287,7 +1288,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             case R.id.rl_outer:
                 break;
             case R.id.iv_else:
-                showDialog();
+//                showDialog();
+                goDetails();
                 break;
             case R.id.ll_details:
                 isClick = !isClick;
@@ -1309,6 +1311,13 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             case R.id.btn_confirm_pay:
                 break;
         }
+    }
+
+    private void goDetails() {
+        Intent intent=new Intent(this,ConversationDetailsActivity.class);
+        intent.putExtra("user",mUser);
+        intent.putExtra("name",mName);
+        startActivity(intent);
     }
 
     private void hideOrderDetails() {
@@ -1372,9 +1381,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 OtrChatListenerManager.getInstance().createOtrChatManager(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,JidCreate.entityBareFrom(mUser).toString()),this);
                 OtrChatListenerManager.getInstance().startMessage(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,JidCreate.entityBareFrom(mUser).toString()),this);
                 OtrChatListenerManager.getInstance().startSession(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,JidCreate.entityBareFrom(mUser).toString()));
-                ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-                Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
-                chat.sendMessage(Constants.OTR_REQUEST);
             }
         }catch (Exception e){
             e.printStackTrace();

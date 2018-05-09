@@ -183,7 +183,7 @@ public class OtrKeyManagerDefaultImpl implements OtrKeyManager {
         if (sessionID == null)
             return false;
 
-        return this.store.getPropertyBoolean(sessionID.getLocalUserId() + ".publicKey.verified", false);
+        return this.store.getPropertyBoolean(sessionID.getRemoteUserId() + ".publicKey.verified", false);
     }
 
     public KeyPair loadLocalKeyPair(SessionID sessionID) {
@@ -258,9 +258,10 @@ public class OtrKeyManagerDefaultImpl implements OtrKeyManager {
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey.getEncoded());
 
         String userID = sessionID.getRemoteUserId();
-
         byte[] keyEnc = x509EncodedKeySpec.getEncoded();
         String keyString = userID + ".publicKey";
+
+        this.store.setProperty(keyString, keyEnc);
 
         byte[] keyExisting = store.getPropertyBytes(keyString);
 

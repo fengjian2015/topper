@@ -29,19 +29,22 @@ import org.jivesoftware.smack.chat.ChatManager;
 import org.jxmpp.jid.impl.JidCreate;
 
 import java.io.IOException;
+import java.security.KeyPair;
 import java.security.PublicKey;
+import java.util.Hashtable;
 
 /**
  * Created by GIjia on 2018/5/4.
  */
 
-public class OtrChatManager implements OtrEngineListener {
+public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost  {
     private final String protocolName="xmpp";
     private final String OPEN_OTR="?OTR";
     private OtrEngineHostImpl otrEngineHost;
     private OtrPolicyImpl otrPolicy;
     private OtrEngineImpl localEngineImpl;
     private Context context;
+    private OtrKeyManagerDefaultImpl otrKeyManagerDefault;
 
     public SessionID sessionID(String localUserId, String remoteUserId){
         if(localUserId.isEmpty()||remoteUserId.isEmpty())return null;
@@ -50,7 +53,8 @@ public class OtrChatManager implements OtrEngineListener {
 
     public void startMessage(SessionID sessionID,Context context){
         this.context=context;
-        OtrKeyManagerDefaultImpl otrKeyManagerDefault=new OtrKeyManagerDefaultImpl(new OtrAndroidKeyManagerImpl(sessionID));
+//        otrKeyManagerDefault=new OtrKeyManagerDefaultImpl(new OtrAndroidKeyManagerImpl(sessionID));
+        otrKeyManagerDefault=new OtrAndroidKeyManagerImpl().OtrAndroidKeyManagerImpl(sessionID);
         otrPolicy=new OtrPolicyImpl(OtrPolicy.OTRL_POLICY_ALWAYS);
         try {
             otrEngineHost=new OtrEngineHostImpl(otrPolicy,otrKeyManagerDefault);
@@ -61,12 +65,16 @@ public class OtrChatManager implements OtrEngineListener {
         localEngineImpl.addOtrEngineListener(this);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public String startSession(SessionID sessionID){
         try {
             localEngineImpl.endSession(sessionID);
             localEngineImpl.startSession(sessionID);
+            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+            Chat chat = manager.createChat(JidCreate.entityBareFrom(sessionID.getRemoteUserId()), null);
+            chat.sendMessage(Constants.OTR_REQUEST);
             return otrEngineHost.lastInjectedMessage;
-        } catch (OtrException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "";
@@ -90,10 +98,14 @@ public class OtrChatManager implements OtrEngineListener {
         try {
             SessionStatus sStatus = localEngineImpl.getSessionStatus(sessionID(Constants.MYUSER,sessionID.getRemoteUserId()));
             if(sStatus==SessionStatus.ENCRYPTED) {
+                otrKeyManagerDefault.verify(sessionID);
+
                 String receivedMessage = localEngineImpl.transformReceiving(sessionID, msg);
                 return receivedMessage;
+            }else if(msg.contains(OPEN_OTR)){
+                return context.getString(R.string.otr_error);
             }
-            return context.getString(R.string.otr_error);
+            return msg;
         } catch (Exception e) {
             e.printStackTrace();
             return msg;
@@ -111,6 +123,18 @@ public class OtrChatManager implements OtrEngineListener {
             e.printStackTrace();
             return msg;
         }
+    }
+
+    public boolean isVerified(SessionID sessionID){
+        return otrKeyManagerDefault.isVerified(sessionID);
+    }
+
+    public String getRemotePublicKey(SessionID sessionID){
+        return otrKeyManagerDefault.getRemoteFingerprint(sessionID);
+    }
+
+    public String getLocalPublicKey(SessionID sessionID){
+        return otrKeyManagerDefault.getLocalFingerprint(sessionID);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -157,37 +181,36 @@ public class OtrChatManager implements OtrEngineListener {
         }
     }
 
+    private Hashtable<String, OtrSm> mOtrSms=new Hashtable<>();
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void sessionStatusChanged(SessionID sessionID) {
         SessionStatus sStatus = localEngineImpl.getSessionStatus(sessionID);
         final Session session = localEngineImpl.getSession(sessionID);
+        OtrSm otrSm = mOtrSms.get(sessionID.toString());
+
         if (sStatus == SessionStatus.ENCRYPTED) {
             OtrChatListenerManager.getInstance().addOTRState(sessionID.getRemoteUserId(),"true");
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.otr_isopen)));
-////                otrKeyManagerDefault1.loadRemotePublicKey(bobSessionID);
-//                PublicKey remoteKey = usBob.getRemotePublicKey(sessionID);
-//                otrEngineHost1.storeRemoteKey(sessionID, remoteKey);
-//
-//                if (otrSm == null) {
-//                    // SMP handler - make sure we only add this once per session!
-//                    otrSm = new OtrSm(session, otrEngineHost1.getKeyManager(),
-//                            sessionID, MainActivity.this);
-//                    session.addTlvHandler(otrSm);
-//
-//                    mOtrSms.put(sessionID.toString(), otrSm);
-//                }
+
+            PublicKey remoteKey = localEngineImpl.getRemotePublicKey(sessionID);
+            otrEngineHost.storeRemoteKey(sessionID, remoteKey);
+
+            if (otrSm == null) {
+                // SMP handler - make sure we only add this once per session!
+                otrSm = new OtrSm(session, otrEngineHost.getKeyManager(),
+                        sessionID, this);
+                session.addTlvHandler(otrSm);
+                mOtrSms.put(sessionID.toString(), otrSm);
+            }
         } else if (sStatus == SessionStatus.PLAINTEXT) {
             OtrChatListenerManager.getInstance().addOTRState(sessionID.getRemoteUserId(),"false");
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.otr_isopen)));
-//                if (otrSm != null) {
-//                    session.removeTlvHandler(otrSm);
-//                    mOtrSms.remove(sessionID.toString());
-//                }
-//
-//                otrEngineHost.removeSessionResource(sessionID);
-
-
+            if (otrSm != null) {
+                session.removeTlvHandler(otrSm);
+                mOtrSms.remove(sessionID.toString());
+            }
+            otrEngineHost.removeSessionResource(sessionID);
         } else if (sStatus == SessionStatus.FINISHED) {
             OtrChatListenerManager.getInstance().addOTRState(sessionID.getRemoteUserId(),"false");
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.otr_isopen)));
@@ -195,5 +218,35 @@ public class OtrChatManager implements OtrEngineListener {
             // restart or end the session, so that they don't send
             // plaintext by mistake.
         }
+    }
+
+    @Override
+    public void injectMessage(SessionID sessionID, String msg) {
+
+    }
+
+    @Override
+    public void showWarning(SessionID sessionID, String warning) {
+
+    }
+
+    @Override
+    public void showError(SessionID sessionID, String error) {
+
+    }
+
+    @Override
+    public OtrPolicy getSessionPolicy(SessionID sessionID) {
+        return null;
+    }
+
+    @Override
+    public KeyPair getKeyPair(SessionID sessionID) {
+        return null;
+    }
+
+    @Override
+    public void askForSecret(SessionID sessionID, String question) {
+
     }
 }

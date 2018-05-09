@@ -30,7 +30,13 @@ public class OtrChatListenerManager {
     }
 
     public String getOTRState(String key){
-        return statehash.get(key);
+        try {
+            String isopen= statehash.get(key);
+            if(isopen==null)return "false";
+            return isopen;
+        }catch (Exception e){
+        }
+        return "false";
     }
 
     public void createOtrChatManager(SessionID sessionID, Context context){
@@ -53,6 +59,31 @@ public class OtrChatListenerManager {
             hashMap.put(sessionID.toString(),otrChatManager);
         }catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+    public boolean isVerified(SessionID sessionID){
+        try {
+            return hashMap.get(sessionID.toString()).isVerified(sessionID);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public String getRemotePublicKey(SessionID sessionID){
+        try {
+            return hashMap.get(sessionID.toString()).getRemotePublicKey(sessionID);
+        }catch (Exception e){
+            return "";
+        }
+    }
+
+    public String getLocalPublicKey(SessionID sessionID){
+        try {
+            return hashMap.get(sessionID.toString()).getLocalPublicKey(sessionID);
+        }catch (Exception e){
+            return "";
         }
     }
 

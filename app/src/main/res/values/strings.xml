@@ -725,5 +725,15 @@
     <string name="usable">可用</string>
     <string name="et_guess_who">輸入發起人用戶名</string>
     <string name="et_digits2">0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
-
+    <string name="session_details">聊天詳情</string>
+    <string name="otr_encipherment">OTR加密</string>
+    <string name="my_otr_encipherment">我的\nOTR加密</string>
+    <string name="looking_for_chat">查找聊天內容</string>
+    <string name="top_chat">置頂聊天</string>
+    <string name="message_free">消息免打擾</string>
+    <string name="empty_talk">清空聊天記錄</string>
+    <string name="otr_authenticated">已驗證</string>
+    <string name="otr_unauthorized">未驗證</string>
+    <string name="detailed_information">詳細信息</string>
+    <string name="personal_dynamic">個人動態</string>
 </resources>

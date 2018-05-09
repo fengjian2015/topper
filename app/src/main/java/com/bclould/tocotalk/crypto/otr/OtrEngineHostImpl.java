@@ -3,12 +3,14 @@ package com.bclould.tocotalk.crypto.otr;
 import android.util.Log;
 
 import net.java.otr4j.OtrEngineHost;
+import net.java.otr4j.OtrKeyManager;
 import net.java.otr4j.OtrKeyManagerDefaultImpl;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
 
 import java.io.IOException;
 import java.security.KeyPair;
+import java.security.PublicKey;
 import java.util.Hashtable;
 
 /**
@@ -38,6 +40,14 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
     public void setSessionPolicy(OtrPolicy policy) {
         mPolicy = policy;
+    }
+
+    public void storeRemoteKey(SessionID sessionID, PublicKey remoteKey) {
+        mOtrKeyManager.savePublicKey(sessionID, remoteKey);
+    }
+
+    public OtrKeyManager getKeyManager() {
+        return mOtrKeyManager;
     }
 
     @Override

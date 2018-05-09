@@ -108,7 +108,7 @@ public class XmppConnection {
      * 创建连接
      */
     public AbstractXMPPConnection getConnection() {
-        if (connection == null) {
+        if (connection == null||!connection.isConnected()) {
             // 开线程打开连接，避免在主线程里面执行HTTP请求
             // Caused by: android.os.NetworkOnMainThreadException
             openConnection();
