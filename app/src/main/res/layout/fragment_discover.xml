@@ -99,14 +99,14 @@
         </LinearLayout>
 
         <ImageView
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/iv_more"
             android:layout_width="@dimen/x75"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:padding="@dimen/x20"
             android:src="@mipmap/icon_nav_add"/>
-
+<!--
         <TextView
             android:visibility="gone"
             android:id="@+id/tv_push"
@@ -117,7 +117,7 @@
             android:paddingRight="@dimen/x20"
             android:text="@string/push"
             android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"/>
+            android:textSize="@dimen/x28"/>-->
 
     </RelativeLayout>
 

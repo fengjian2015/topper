@@ -42,7 +42,8 @@ public class NewsManagerRVAdapter extends RecyclerView.Adapter {
         return 10;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.tv_news_title)
         TextView mTvNewsTitle;
         @Bind(R.id.tv_time)

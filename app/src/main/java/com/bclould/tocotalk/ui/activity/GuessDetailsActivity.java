@@ -1,6 +1,8 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.app.Dialog;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -311,6 +313,7 @@ public class GuessDetailsActivity extends BaseActivity {
     private String[] mIndexArr;
     private double mLimit_number;
     private String[] mUrlArr;
+    private int mLimit_people_number;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -352,10 +355,10 @@ public class GuessDetailsActivity extends BaseActivity {
                 mTvSingleInsertCount.setText(data.getSingle_coin() + "/" + data.getCoin_name());
                 mTvSingleInsertCount2.setText(data.getSingle_coin() + "/" + data.getCoin_name());
                 mTvSingleInsertCount3.setText(data.getSingle_coin() + "/" + data.getCoin_name());
-                mTvPresentInvestCount.setText(data.getCurrent_people_number() + "");
+                mTvPresentInvestCount.setText(data.getCurrent_people_number() + "/" + data.getLimit_people_number());
                 mTvPresentInvestCount2.setText(data.getCurrent_people_number() + "");
                 mTvStartTime.setText(getString(R.string.fa_qi_time) + data.getCreated_at());
-                mTvStartTime2.setText(data.getCreated_at());
+                mTvStartTime2.setText(getString(R.string.fa_qi_time) + data.getCreated_at());
                 mTvSumCoin.setText(data.getLimit_number() + data.getCoin_name());
                 mTvBonusCount.setText(data.getLimit_number() + data.getCoin_name());
                 mTvPresentCoinCount.setText(data.getPrize_pool_number() + data.getCoin_name());
@@ -364,6 +367,7 @@ public class GuessDetailsActivity extends BaseActivity {
                 mHashArr = data.getWin_number_hash().split(",");
                 mIndexArr = data.getWin_number_index().split(",");
                 mUrlArr = data.getWin_number_hash_url().split(",");
+                mLimit_people_number = data.getLimit_people_number();
                 mPrize_pool_number = Double.parseDouble(data.getPrize_pool_number());
                 mLimit_number = Double.parseDouble(data.getLimit_number());
                 int progress = (int) (Double.parseDouble(data.getPrize_pool_number()) / Double.parseDouble(data.getLimit_number()) * 100);
@@ -660,6 +664,23 @@ public class GuessDetailsActivity extends BaseActivity {
     }
 
     private void initDialog() {
+        int count = 0;
+        if (mLlArray5.getVisibility() == View.VISIBLE) {
+            count = 5;
+            mRandomSumArr = mRandomArr + "," + mRandomArr2 + "," + mRandomArr3 + "," + mRandomArr4 + "," + mRandomArr5;
+        } else if (mLlArray4.getVisibility() == View.VISIBLE) {
+            count = 4;
+            mRandomSumArr = mRandomArr + "," + mRandomArr2 + "," + mRandomArr3 + "," + mRandomArr4;
+        } else if (mLlArray3.getVisibility() == View.VISIBLE) {
+            count = 3;
+            mRandomSumArr = mRandomArr + "," + mRandomArr2 + "," + mRandomArr3;
+        } else if (mLlArray2.getVisibility() == View.VISIBLE) {
+            count = 2;
+            mRandomSumArr = mRandomArr + "," + mRandomArr2;
+        } else if (mLlArray.getVisibility() == View.VISIBLE) {
+            count = 1;
+            mRandomSumArr = mRandomArr;
+        }
         TextView coin = (TextView) mRedDialog.findViewById(R.id.tv_coin);
         TextView countCoin = (TextView) mRedDialog.findViewById(R.id.tv_count_coin);
         mEtPassword = (MNPasswordEditText) mRedDialog.findViewById(R.id.et_password);
@@ -690,7 +711,7 @@ public class GuessDetailsActivity extends BaseActivity {
             }
         });
         valueList = virtualKeyboardView.getValueList();
-        countCoin.setText(mSingle_coin + mTvCoin.getText().toString());
+        countCoin.setText((Float.parseFloat(mSingle_coin) * Float.parseFloat(count + "")) + mTvCoin.getText().toString());
         coin.setText(getString(R.string.bet) + mTvCoin.getText().toString() + getString(R.string.guess));
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -711,13 +732,14 @@ public class GuessDetailsActivity extends BaseActivity {
             }
         });
 
+        final int finalCount = count;
         mEtPassword.setOnPasswordChangeListener(new MNPasswordEditText.OnPasswordChangeListener() {
             @Override
             public void onPasswordChange(String password) {
                 if (password.length() == 6) {
                     mRedDialog.dismiss();
                     mEtPassword.setText("");
-                    bet(password);
+                    bet(password, finalCount);
                 }
             }
         });
@@ -779,7 +801,13 @@ public class GuessDetailsActivity extends BaseActivity {
                 PlusMinus(MINUS);
                 break;
             case R.id.btn_confirm:
-                setBetCount();
+                if (!mEtBetCount.getText().toString().isEmpty()) {
+                    if(Integer.parseInt(mEtBetCount.getText().toString()) <= 5){
+                        setBetCount();
+                    }else {
+                        Toast.makeText(this, getString(R.string.bet_hint2), Toast.LENGTH_SHORT).show();
+                    }
+                }
                 break;
             case R.id.btn_random:
                 if (mStatus == 1) {
@@ -855,18 +883,58 @@ public class GuessDetailsActivity extends BaseActivity {
     private void showHashDialog() {
         final CurrencyDialog dialog = new CurrencyDialog(R.layout.dialog_hash, this, R.style.dialog);
         dialog.show();
-        TextView hash = (TextView) dialog.findViewById(R.id.tv_hash);
+        final TextView hash = (TextView) dialog.findViewById(R.id.tv_hash);
         TextView number = (TextView) dialog.findViewById(R.id.tv_number);
-        TextView hash2 = (TextView) dialog.findViewById(R.id.tv_hash2);
+        final TextView hash2 = (TextView) dialog.findViewById(R.id.tv_hash2);
         TextView number2 = (TextView) dialog.findViewById(R.id.tv_number2);
-        TextView hash3 = (TextView) dialog.findViewById(R.id.tv_hash3);
+        final TextView hash3 = (TextView) dialog.findViewById(R.id.tv_hash3);
         TextView number3 = (TextView) dialog.findViewById(R.id.tv_number3);
-        TextView hash4 = (TextView) dialog.findViewById(R.id.tv_hash4);
+        final TextView hash4 = (TextView) dialog.findViewById(R.id.tv_hash4);
         TextView number4 = (TextView) dialog.findViewById(R.id.tv_number4);
         RelativeLayout rlHash = (RelativeLayout) dialog.findViewById(R.id.rl_hash);
         RelativeLayout rlHash2 = (RelativeLayout) dialog.findViewById(R.id.rl_hash2);
         RelativeLayout rlHash3 = (RelativeLayout) dialog.findViewById(R.id.rl_hash3);
         RelativeLayout rlHash4 = (RelativeLayout) dialog.findViewById(R.id.rl_hash4);
+        TextView copy = (TextView) dialog.findViewById(R.id.tv_copy);
+        TextView copy2 = (TextView) dialog.findViewById(R.id.tv_copy2);
+        TextView copy3 = (TextView) dialog.findViewById(R.id.tv_copy3);
+        TextView copy4 = (TextView) dialog.findViewById(R.id.tv_copy4);
+        copy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                // 将文本内容放到系统剪贴板里。
+                cm.setText(hash.getText());
+                Toast.makeText(GuessDetailsActivity.this, getString(R.string.copy_succeed), Toast.LENGTH_LONG).show();
+            }
+        });
+        copy2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                // 将文本内容放到系统剪贴板里。
+                cm.setText(hash2.getText());
+                Toast.makeText(GuessDetailsActivity.this, getString(R.string.copy_succeed), Toast.LENGTH_LONG).show();
+            }
+        });
+        copy3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                // 将文本内容放到系统剪贴板里。
+                cm.setText(hash3.getText());
+                Toast.makeText(GuessDetailsActivity.this, getString(R.string.copy_succeed), Toast.LENGTH_LONG).show();
+            }
+        });
+        copy4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                // 将文本内容放到系统剪贴板里。
+                cm.setText(hash4.getText());
+                Toast.makeText(GuessDetailsActivity.this, getString(R.string.copy_succeed), Toast.LENGTH_LONG).show();
+            }
+        });
         rlHash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1169,37 +1237,20 @@ public class GuessDetailsActivity extends BaseActivity {
         });*/
     }
 
-    private void bet(String password) {
-        int count = 0;
-        if (mLlArray5.getVisibility() == View.VISIBLE) {
-            count = 5;
-            mRandomSumArr = mRandomArr + "," + mRandomArr2 + "," + mRandomArr3 + "," + mRandomArr4 + "," + mRandomArr5;
-        } else if (mLlArray4.getVisibility() == View.VISIBLE) {
-            count = 4;
-            mRandomSumArr = mRandomArr + "," + mRandomArr2 + "," + mRandomArr3 + "," + mRandomArr4;
-        } else if (mLlArray3.getVisibility() == View.VISIBLE) {
-            count = 3;
-            mRandomSumArr = mRandomArr + "," + mRandomArr2 + "," + mRandomArr3;
-        } else if (mLlArray2.getVisibility() == View.VISIBLE) {
-            count = 2;
-            mRandomSumArr = mRandomArr + "," + mRandomArr2;
-        } else if (mLlArray.getVisibility() == View.VISIBLE) {
-            count = 1;
-            mRandomSumArr = mRandomArr;
-        }
-        final int count2 = count;
+    private void bet(String password, final int count) {
+
         UtilTool.Log("數組", mRandomSumArr);
         mBlockchainGuessPresenter.bet(mBet_id, mPeriod_qty, mCoin_id, mRandomSumArr, password, new BlockchainGuessPresenter.CallBack5() {
             @Override
-            public void send(List<BetInfo.DataBean> data) {
-                mOver_count_num -= count2;
+            public void send(BetInfo.DataBean data) {
+                mOver_count_num -= count;
                 if (mOver_count_num == 0) {
                     mLlGuessCount.setVisibility(View.GONE);
                     mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
                     mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
                 }
                 EventBus.getDefault().post(new MessageEvent(getString(R.string.bet)));
-                switch (count2) {
+                switch (count) {
                     case 1:
                         mEtArray.requestFocus();
                         mEtArray.setText("");
@@ -1280,13 +1331,19 @@ public class GuessDetailsActivity extends BaseActivity {
                 mLlArray3.setVisibility(View.GONE);
                 mLlArray4.setVisibility(View.GONE);
                 mLlArray5.setVisibility(View.GONE);
-                mPrize_pool_number = mPrize_pool_number + Double.parseDouble(mSingle_coin) * count2;
-                mCurrent_people_number = mCurrent_people_number + count2;
+
+               /* mPrize_pool_number = mPrize_pool_number + Double.parseDouble(mSingle_coin) * count;
+                mCurrent_people_number = mCurrent_people_number + count;
                 int progress = (int) (mPrize_pool_number / mLimit_number * 100);
                 mTvPresentInvestCount.setText(mCurrent_people_number + "");
                 mTvPresentCoinCount.setText(mPrize_pool_number + mTvCoin.getText().toString());
+                mProgressBar.setProgress(progress);*/
+
+                mTvPresentCoinCount.setText(data.getPrize_pool_number() + mTvCoin.getText().toString());
+                mTvPresentInvestCount.setText(data.getCoin_number() + "/" + mLimit_people_number);
+                int progress = (int) (Double.parseDouble(data.getPrize_pool_number()) / mLimit_number * 100);
                 mProgressBar.setProgress(progress);
-                for (BetInfo.DataBean info : data) {
+                for (BetInfo.DataBean.ListBean info : data.getList()) {
                     GuessInfo.DataBean.BetListBean betListBean = new GuessInfo.DataBean.BetListBean();
                     betListBean.setBet_number(info.getBet_number());
                     betListBean.setBonus_number(info.getBonus_number());

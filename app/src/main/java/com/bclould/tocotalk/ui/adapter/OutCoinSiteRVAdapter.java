@@ -80,7 +80,7 @@ public class OutCoinSiteRVAdapter extends RecyclerView.Adapter {
             mIvDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mOutCoinSiteActivity);
+                    final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mOutCoinSiteActivity, R.style.dialog);
                     deleteCacheDialog.show();
                     deleteCacheDialog.setTitle(mOutCoinSiteActivity.getString(R.string.delete_site_hint));
                     dialogClick(deleteCacheDialog);

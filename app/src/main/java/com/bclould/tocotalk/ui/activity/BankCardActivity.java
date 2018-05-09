@@ -248,7 +248,7 @@ public class BankCardActivity extends BaseActivity {
     }
 
     public void showHintDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this,R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setCanceledOnTouchOutside(false);
         TextView retry = (TextView) deleteCacheDialog.findViewById(R.id.tv_retry);

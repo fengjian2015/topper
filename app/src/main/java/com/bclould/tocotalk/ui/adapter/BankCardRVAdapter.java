@@ -118,7 +118,7 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
     }
 
     private void showDialog(final CardListInfo.DataBean data, final int type) {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mActivity);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mActivity, R.style.dialog);
         deleteCacheDialog.show();
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         TextView title = (TextView) deleteCacheDialog.findViewById(R.id.tv_title);

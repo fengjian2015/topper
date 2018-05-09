@@ -360,7 +360,7 @@ public class MainActivity extends BaseActivity {
         MySharedPreferences.getInstance().setString(Constants.NEW_APK_NAME, appName);
         MySharedPreferences.getInstance().setString(Constants.NEW_APK_BODY, body);
         //显示更新dialog
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.check_new_version));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);

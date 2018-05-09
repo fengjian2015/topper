@@ -176,7 +176,7 @@ public class OrderCloseActivity extends BaseActivity {
     }
 
     public void showDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.out_coin_hint3));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);

@@ -47,6 +47,10 @@ public class GuessBetRVAdapter extends RecyclerView.Adapter {
                 view = LayoutInflater.from(mContext).inflate(R.layout.item_guess_bet2, parent, false);
                 viewHolder = new ViewHolder2(view);
                 break;
+            case 4:
+                view = LayoutInflater.from(mContext).inflate(R.layout.item_guess_bet, parent, false);
+                viewHolder = new ViewHolder(view);
+                break;
         }
         return viewHolder;
     }
@@ -93,12 +97,18 @@ public class GuessBetRVAdapter extends RecyclerView.Adapter {
         public void setData(GuessInfo.DataBean.BetListBean betListBean, int position) {
             if (betListBean.getStatus() == 1) {
                 mIvStatus.setVisibility(View.GONE);
-            } else {
+            } else if (betListBean.getStatus() == 2) {
                 mIvStatus.setVisibility(View.VISIBLE);
+            } else if (betListBean.getStatus() == 4) {
+                mIvStatus.setImageResource(R.mipmap.icon_ji_return);
             }
             mTvArray.setText(betListBean.getBet_number());
             mTvTime.setText(betListBean.getCreated_at());
-            mTvSeveral.setText("0" + position + mContext.getString(R.string.bet));
+            if(position < 9) {
+                mTvSeveral.setText("0" + position + mContext.getString(R.string.bet));
+            }else {
+                mTvSeveral.setText(position + mContext.getString(R.string.bet));
+            }
         }
     }
 

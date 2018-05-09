@@ -46,14 +46,12 @@ public class NewsNoticePresenter {
                         @Override
                         public void onNext(NewsListInfo newsListInfo) {
                             if (newsListInfo.getStatus() == 1) {
-                                UtilTool.Log("新聞", "成功");
                                 callBack.send(newsListInfo.getLists(), newsListInfo.getTop());
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
-                            UtilTool.Log("新聞", e.getMessage());
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 

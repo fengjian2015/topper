@@ -44,6 +44,15 @@ public class TransRecordInfo {
         private String number;
         private String coin_name;
         private String created_at;
+        private String tx_id;
+
+        public String getTx_id() {
+            return tx_id;
+        }
+
+        public void setTx_id(String tx_id) {
+            this.tx_id = tx_id;
+        }
 
         public String getType_name() {
             return type_name;

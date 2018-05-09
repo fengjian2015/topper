@@ -337,7 +337,7 @@ public class OrderDetailsActivity extends BaseActivity {
     }
 
     public void showHintDialog(final int type) {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
         if (type == 0) {
             deleteCacheDialog.setTitle(getString(R.string.cancel_order_hint));

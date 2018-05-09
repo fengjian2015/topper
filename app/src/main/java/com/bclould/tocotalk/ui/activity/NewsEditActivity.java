@@ -2,7 +2,6 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +11,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.base.BaseActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -21,7 +21,7 @@ import butterknife.OnClick;
  * Created by GA on 2018/5/8.
  */
 
-public class NewsEditActivity extends AppCompatActivity {
+public class NewsEditActivity extends BaseActivity {
 
 
     @Bind(R.id.bark)

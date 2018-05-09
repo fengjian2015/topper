@@ -647,6 +647,18 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
+        <!--公告管理頁-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.GonggaoManagerActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--公告詳情頁-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.GonggaoDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
         <!--監聽系統語言切換-->
         <receiver
             android:name="com.bclould.tocotalk.utils.LocaleChangeReceiver"

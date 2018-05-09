@@ -20,10 +20,13 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.ui.activity.GonggaoManagerActivity;
 import com.bclould.tocotalk.ui.activity.NewsEditActivity;
 import com.bclould.tocotalk.ui.activity.NewsManagerActivity;
+import com.bclould.tocotalk.ui.activity.PawnActivity;
 import com.bclould.tocotalk.ui.activity.PublicshDynamicActivity;
 import com.bclould.tocotalk.ui.adapter.CloudMessageVPAdapter;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,26 +35,23 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class DiscoverFragment extends Fragment {
-
     public static DiscoverFragment instance = null;
     @Bind(R.id.status_bar_fix)
     View mStatusBarFix;
-    @Bind(R.id.dongtai_xx)
-    TextView mDongtaiXx;
+    @Bind(R.id.gonggao_xx)
+    TextView mGonggaoXx;
     @Bind(R.id.new_xx)
     TextView mNewXx;
+    @Bind(R.id.dongtai_xx)
+    TextView mDongtaiXx;
     @Bind(R.id.cloud_circle_menu)
     LinearLayout mCloudCircleMenu;
+    @Bind(R.id.iv_more)
+    ImageView mIvMore;
     @Bind(R.id.xx)
     TextView mXx;
     @Bind(R.id.cloud_circle_vp)
     ViewPager mCloudCircleVp;
-    @Bind(R.id.tv_push)
-    TextView mTvPush;
-    @Bind(R.id.gonggao_xx)
-    TextView mGonggaoXx;
-    @Bind(R.id.iv_more)
-    ImageView mIvMore;
     private DisplayMetrics mDm;
     private int mHeightPixels;
     private ViewGroup mView;
@@ -100,16 +100,6 @@ public class DiscoverFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 2) {
-                    mTvPush.setVisibility(View.VISIBLE);
-                    mIvMore.setVisibility(View.GONE);
-                } else if (position == 1) {
-                    mTvPush.setVisibility(View.GONE);
-                    mIvMore.setVisibility(View.VISIBLE);
-                } else {
-                    mTvPush.setVisibility(View.GONE);
-                    mIvMore.setVisibility(View.GONE);
-                }
                 setSelector(position);
             }
 
@@ -199,7 +189,7 @@ public class DiscoverFragment extends Fragment {
 
         mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_news, null);
 
-        mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 6, true);
+        mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 4, true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
         // 设置背景颜色变暗
         WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
@@ -219,33 +209,60 @@ public class DiscoverFragment extends Fragment {
     }
 
     private void popChildClick() {
-        final TextView RegulationStatement = (TextView) mView.findViewById(R.id.tv_regulation_statement);
-        RegulationStatement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPopupWindow.dismiss();
-                startActivity(new Intent(getContext(), NewsManagerActivity.class));
-            }
-        });
-        final TextView guessRecord = (TextView) mView.findViewById(R.id.tv_guess_record);
-        guessRecord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPopupWindow.dismiss();
-                startActivity(new Intent(getContext(), NewsEditActivity.class));
 
-            }
-        });
+        int childCount = mView.getChildCount();
+
+        for (int i = 0; i < childCount; i++) {
+
+            final View childAt = mView.getChildAt(i);
+
+            childAt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    int index = mView.indexOfChild(childAt);
+
+                    switch (index) {
+                        case 0:
+                            if (UtilTool.getUser().equals("liaolinan2") || UtilTool.getUser().equals("conn") || UtilTool.getUser().equals("raymond") || UtilTool.getUser().equals("154323555") || UtilTool.getUser().equals("dev2018") || UtilTool.getUser().equals("xihongwei")) {
+                                startActivity(new Intent(getActivity(), GonggaoManagerActivity.class));
+                            } else {
+                                startActivity(new Intent(getActivity(), PawnActivity.class));
+                            }
+                            mPopupWindow.dismiss();
+                            break;
+                        case 1:
+                            if (UtilTool.getUser().equals("liaolinan2") || UtilTool.getUser().equals("conn") || UtilTool.getUser().equals("raymond") || UtilTool.getUser().equals("154323555") || UtilTool.getUser().equals("dev2018") || UtilTool.getUser().equals("xihongwei")) {
+                                startActivity(new Intent(getActivity(), NewsManagerActivity.class));
+                            } else {
+                                startActivity(new Intent(getActivity(), PawnActivity.class));
+                            }
+                            mPopupWindow.dismiss();
+                            break;
+                        case 2:
+                            if (UtilTool.getUser().equals("liaolinan2") || UtilTool.getUser().equals("conn") || UtilTool.getUser().equals("raymond") || UtilTool.getUser().equals("154323555") || UtilTool.getUser().equals("dev2018") || UtilTool.getUser().equals("xihongwei")) {
+                                startActivity(new Intent(getActivity(), NewsEditActivity.class));
+                            } else {
+                                startActivity(new Intent(getActivity(), PawnActivity.class));
+                            }
+                            mPopupWindow.dismiss();
+                            break;
+                        case 3:
+                            startActivity(new Intent(getActivity(), PublicshDynamicActivity.class));
+                            mPopupWindow.dismiss();
+                            break;
+                    }
+
+                }
+            });
+        }
     }
 
-    @OnClick({R.id.iv_more, R.id.tv_push})
+    @OnClick({R.id.iv_more})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_more:
                 showPopup();
-                break;
-            case R.id.tv_push:
-                startActivity(new Intent(getActivity(), PublicshDynamicActivity.class));
                 break;
         }
     }

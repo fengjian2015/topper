@@ -1,11 +1,13 @@
 package com.bclould.tocotalk.ui.adapter;
 
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.InOutInfo;
@@ -54,15 +56,18 @@ public class InOutDataRVAapter extends RecyclerView.Adapter {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-
         @Bind(R.id.type_name)
         TextView mTypeName;
+        @Bind(R.id.tv_reailty_income)
+        TextView mTvReailtyIncome;
         @Bind(R.id.time)
         TextView mTime;
         @Bind(R.id.tv_reality_transfer)
         TextView mTvRealityTransfer;
-        @Bind(R.id.tv_reailty_income)
-        TextView mTvReailtyIncome;
+        @Bind(R.id.text_id)
+        TextView mTextId;
+        @Bind(R.id.tv_copy)
+        TextView mTvCopy;
 
         ViewHolder(View view) {
             super(view);
@@ -71,6 +76,16 @@ public class InOutDataRVAapter extends RecyclerView.Adapter {
 
         public void setData(InOutInfo.DataBean dataBean) {
             mTypeName.setText(dataBean.getUser_name());
+            mTextId.setText(dataBean.getTxid());
+            mTvCopy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ClipboardManager cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                    // 将文本内容放到系统剪贴板里。
+                    cm.setText(mTextId.getText());
+                    Toast.makeText(mContext, mContext.getString(R.string.copy_succeed), Toast.LENGTH_LONG).show();
+                }
+            });
             mTime.setText(dataBean.getCreated_at());
             if (mType == 0) {
                 mTvRealityTransfer.setText(mContext.getString(R.string.shiji_in_coin) + " " + dataBean.getNumber() + " " + mCoinName);

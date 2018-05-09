@@ -147,7 +147,7 @@ public class OtcActivity extends BaseActivity {
     boolean isCheckBox = false;
 
     private void showDisclaimerDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_otc_disclaimer, this);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_otc_disclaimer, this,R.style.dialog);
         deleteCacheDialog.show();
         final LinearLayout showHide = (LinearLayout) deleteCacheDialog.findViewById(R.id.ll_show_hide);
         final CheckBox checkBox = (CheckBox) deleteCacheDialog.findViewById(R.id.check_box);

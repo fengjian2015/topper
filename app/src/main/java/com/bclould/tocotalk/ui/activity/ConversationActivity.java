@@ -1152,7 +1152,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     //显示删除好友dialog
     private void showDeleteDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.confirm_delete) + " " + mName + " " + getString(R.string.what));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);

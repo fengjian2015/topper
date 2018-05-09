@@ -10,7 +10,7 @@ public class InOutInfo {
 
     /**
      * status : 1
-     * data : [{"user_id":34,"user_name":"xihongwei","number":"100.00000000","number_u":"99.50000000","created_at":1519807152}]
+     * data : [{"user_id":41,"user_name":"liaolinan2","number":"1","number_u":"0.95","created_at":"2018-04-23 17:58:31","txid":"154185234234"},{"user_id":41,"user_name":"liaolinan2","number":"1","number_u":"0.95","created_at":"2018-04-23 17:55:14","txid":"我问问问问为"},"..."]
      */
 
     private int status;
@@ -44,11 +44,12 @@ public class InOutInfo {
 
     public static class DataBean {
         /**
-         * user_id : 34
-         * user_name : xihongwei
-         * number : 100.00000000
-         * number_u : 99.50000000
-         * created_at : 1519807152
+         * user_id : 41
+         * user_name : liaolinan2
+         * number : 1
+         * number_u : 0.95
+         * created_at : 2018-04-23 17:58:31
+         * txid : 154185234234
          */
 
         private int user_id;
@@ -56,6 +57,7 @@ public class InOutInfo {
         private String number;
         private String number_u;
         private String created_at;
+        private String txid;
 
         public int getUser_id() {
             return user_id;
@@ -95,6 +97,14 @@ public class InOutInfo {
 
         public void setCreated_at(String created_at) {
             this.created_at = created_at;
+        }
+
+        public String getTxid() {
+            return txid;
+        }
+
+        public void setTxid(String txid) {
+            this.txid = txid;
         }
     }
 }

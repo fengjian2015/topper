@@ -1,11 +1,16 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bclould.tocotalk.Presenter.BuySellPresenter;
 import com.bclould.tocotalk.R;
@@ -49,6 +54,12 @@ public class PayDetailsActivity extends BaseActivity {
     TextView mTvHintPrice;
     @Bind(R.id.tv_price)
     TextView mTvPrice;
+    @Bind(R.id.tv_tx_id)
+    TextView mTvTxId;
+    @Bind(R.id.tv_copy)
+    TextView mTvCopy;
+    @Bind(R.id.rl_tx_id)
+    RelativeLayout mRlTxId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +74,11 @@ public class PayDetailsActivity extends BaseActivity {
         String id = getIntent().getStringExtra("id");
         String type_number = getIntent().getStringExtra("type_number");
         BuySellPresenter buySellPresenter = new BuySellPresenter(this);
+        if (Integer.parseInt(type_number) == 7 || Integer.parseInt(type_number) == 8) {
+            mRlTxId.setVisibility(View.VISIBLE);
+        } else {
+            mRlTxId.setVisibility(View.GONE);
+        }
         buySellPresenter.transRecordInfo(id, type_number, new BuySellPresenter.CallBack3() {
 
 
@@ -78,6 +94,15 @@ public class PayDetailsActivity extends BaseActivity {
                 mTvMoney.setText(data.getNumber());
                 mTvCount.setText(data.getCoin_name());
                 mTvPrice.setText(data.getCreated_at());
+            }
+        });
+        mTvCopy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                // 将文本内容放到系统剪贴板里。
+                cm.setText(mTvTxId.getText());
+                Toast.makeText(PayDetailsActivity.this, getString(R.string.copy_succeed), Toast.LENGTH_LONG).show();
             }
         });
     }

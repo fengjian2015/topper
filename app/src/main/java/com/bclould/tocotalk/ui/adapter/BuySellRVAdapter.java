@@ -162,7 +162,7 @@ public class BuySellRVAdapter extends RecyclerView.Adapter {
     }
 
     private void showDialog(final DealListInfo.DataBean dataBean) {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(mContext.getString(R.string.sold_out_hint));
         Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);

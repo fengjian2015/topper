@@ -2,8 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:minWidth="@dimen/x600"
+              android:layout_marginLeft="@dimen/x40"
+              android:layout_marginRight="@dimen/x40"
               android:background="@drawable/bg_white_shape"
+              android:minWidth="@dimen/x600"
               android:orientation="vertical">
 
     <TextView
@@ -14,9 +16,9 @@
         android:layout_centerVertical="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y30"
-        android:textSize="@dimen/x32"
         android:text="@string/disclaimer"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:textSize="@dimen/x32"/>
 
 
     <TextView
@@ -31,6 +33,7 @@
         android:layout_below="@+id/tv_title"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
+        android:textColor="@color/bar_grey_90"
         android:layout_marginTop="@dimen/y30"
         android:lineSpacingExtra="@dimen/x20"
         android:text="@string/otc_disclaimer"
@@ -43,16 +46,16 @@
         android:layout_marginTop="@dimen/y30"/>
 
     <RelativeLayout
-        android:paddingLeft="@dimen/x30"
-        android:paddingRight="@dimen/x30"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/x30"
+        android:paddingRight="@dimen/x30">
 
         <LinearLayout
-            android:layout_centerVertical="true"
             android:id="@+id/ll_show_hide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:paddingBottom="@dimen/y30"
             android:paddingTop="@dimen/y30">
 
@@ -67,23 +70,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x20"
-                android:textSize="@dimen/x24"
                 android:text="@string/show_hide"
-                android:textColor="#6099D0"/>
+                android:textColor="#6099D0"
+                android:textSize="@dimen/x24"/>
 
         </LinearLayout>
 
         <Button
             android:id="@+id/btn_roger"
             android:layout_width="@dimen/x200"
+            android:layout_height="@dimen/y80"
             android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/y30"
+            android:layout_marginTop="@dimen/y30"
+            android:background="@drawable/bg_blue_shape"
             android:text="@string/my_roger"
             android:textColor="@color/white"
-            android:textSize="@dimen/x24"
-            android:layout_marginTop="@dimen/y30"
-            android:layout_marginBottom="@dimen/y30"
-            android:background="@drawable/bg_blue_shape"
-            android:layout_height="@dimen/y80"/>
+            android:textSize="@dimen/x24"/>
 
     </RelativeLayout>
 

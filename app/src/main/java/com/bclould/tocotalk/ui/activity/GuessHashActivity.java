@@ -2,13 +2,13 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.base.BaseActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -18,7 +18,7 @@ import butterknife.OnClick;
  * Created by GA on 2018/5/8.
  */
 
-public class GuessHashActivity extends AppCompatActivity {
+public class GuessHashActivity extends BaseActivity {
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.title_name)

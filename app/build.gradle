@@ -30,8 +30,8 @@ android {
         applicationId "com.bclould.tocotalk"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 21
-        versionName "0.21"
+        versionCode 22
+        versionName "0.22"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
@@ -145,6 +145,7 @@ dependencies {
     compile 'org.igniterealtime.smack:smack-android:4.2.0'
     compile 'org.igniterealtime.smack:smack-tcp:4.2.0'
     compile 'org.igniterealtime.smack:smack-im:4.2.0'
+    compile 'org.igniterealtime.smack:smack-resolver-minidns:4.2.0'
     //
     compile 'com.jude:easyrecyclerview:4.0.2'
     compile 'jp.wasabeef:recyclerview-animators:2.2.3'

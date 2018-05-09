@@ -132,7 +132,7 @@ public class SystemSetActivity extends BaseActivity {
 
     //显示退出弹框
     private void showDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.quit_hint));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
@@ -194,7 +194,7 @@ public class SystemSetActivity extends BaseActivity {
     //显示Dialog
     private void showCacheDialog() {
 
-        DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
+        DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
 
         deleteCacheDialog.show();
 

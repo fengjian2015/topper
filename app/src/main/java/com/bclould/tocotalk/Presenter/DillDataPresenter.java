@@ -109,7 +109,7 @@ public class DillDataPresenter {
                             hideDialog();
                             if (inOutInfo.getStatus() == 1) {
                                 callBack.send(inOutInfo.getData());
-                            }else {
+                            } else {
                                 Toast.makeText(mContext, inOutInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }

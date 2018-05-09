@@ -2,8 +2,8 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/x700"
-    android:layout_gravity="center"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
     android:background="@drawable/bg_white_shape"
     android:maxWidth="@dimen/x650"
     android:orientation="vertical"
@@ -31,7 +31,6 @@
             android:layout_alignBottom="@+id/tv"
             android:layout_marginLeft="@dimen/x10"
             android:layout_toRightOf="@+id/tv"
-            android:text="90 = TPC區塊10000峰值的hash值"
             android:textColor="@color/bar_grey"
             android:textSize="@dimen/x26"/>
 
@@ -42,7 +41,22 @@
             android:layout_alignLeft="@+id/tv_number"
             android:layout_below="@+id/tv_number"
             android:layout_marginRight="@dimen/x30"
-            android:text="fjlksajfoiwefsgppotrqweopijgsadflfjsfiofjklsafjlsajflsajflkskjfeiorjwojfsdjfsjfljre"
+            android:layout_marginTop="@dimen/y10"
+            android:lineSpacingExtra="@dimen/y10"
+            android:textColor="@color/blue2"
+            android:textSize="@dimen/x24"/>
+
+        <TextView
+            android:id="@+id/tv_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_hash"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y10"
+            android:paddingLeft="@dimen/x20"
+            android:paddingTop="@dimen/y20"
+            android:text="@string/copy2"
             android:textColor="@color/blue2"
             android:textSize="@dimen/x24"/>
 
@@ -76,7 +90,6 @@
             android:layout_alignBottom="@+id/tv2"
             android:layout_marginLeft="@dimen/x10"
             android:layout_toRightOf="@+id/tv2"
-            android:text="90 = TPC區塊10000峰值的hash值"
             android:textColor="@color/bar_grey"
             android:textSize="@dimen/x26"/>
 
@@ -87,7 +100,22 @@
             android:layout_alignLeft="@+id/tv_number2"
             android:layout_below="@+id/tv_number2"
             android:layout_marginRight="@dimen/x30"
-            android:text="fjlksajfoiwefsgppotrqweopijgsadflfjsfiofjklsafjlsajflsajflkskjfeiorjwojfsdjfsjfljre"
+            android:layout_marginTop="@dimen/y10"
+            android:lineSpacingExtra="@dimen/x10"
+            android:textColor="@color/blue2"
+            android:textSize="@dimen/x24"/>
+
+        <TextView
+            android:id="@+id/tv_copy2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_hash2"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y10"
+            android:paddingLeft="@dimen/x20"
+            android:paddingTop="@dimen/y20"
+            android:text="@string/copy2"
             android:textColor="@color/blue2"
             android:textSize="@dimen/x24"/>
 
@@ -121,7 +149,6 @@
             android:layout_alignBottom="@+id/tv3"
             android:layout_marginLeft="@dimen/x10"
             android:layout_toRightOf="@+id/tv3"
-            android:text="90 = TPC區塊10000峰值的hash值"
             android:textColor="@color/bar_grey"
             android:textSize="@dimen/x26"/>
 
@@ -132,7 +159,22 @@
             android:layout_alignLeft="@+id/tv_number3"
             android:layout_below="@+id/tv_number3"
             android:layout_marginRight="@dimen/x30"
-            android:text="fjlksajfoiwefsgppotrqweopijgsadflfjsfiofjklsafjlsajflsajflkskjfeiorjwojfsdjfsjfljre"
+            android:layout_marginTop="@dimen/y10"
+            android:lineSpacingExtra="@dimen/x10"
+            android:textColor="@color/blue2"
+            android:textSize="@dimen/x24"/>
+
+        <TextView
+            android:id="@+id/tv_copy3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_hash3"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y10"
+            android:paddingLeft="@dimen/x20"
+            android:paddingTop="@dimen/y20"
+            android:text="@string/copy2"
             android:textColor="@color/blue2"
             android:textSize="@dimen/x24"/>
 
@@ -166,7 +208,6 @@
             android:layout_alignBottom="@+id/tv4"
             android:layout_marginLeft="@dimen/x10"
             android:layout_toRightOf="@+id/tv4"
-            android:text="90 = TPC區塊10000峰值的hash值"
             android:textColor="@color/bar_grey"
             android:textSize="@dimen/x26"/>
 
@@ -177,7 +218,22 @@
             android:layout_alignLeft="@+id/tv_number4"
             android:layout_below="@+id/tv_number4"
             android:layout_marginRight="@dimen/x30"
-            android:text="fjlksajfoiwefsgppotrqweopijgsadflfjsfiofjklsafjlsajflsajflkskjfeiorjwojfsdjfsjfljre"
+            android:layout_marginTop="@dimen/y10"
+            android:lineSpacingExtra="@dimen/x10"
+            android:textColor="@color/blue2"
+            android:textSize="@dimen/x24"/>
+
+        <TextView
+            android:id="@+id/tv_copy4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_hash4"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y10"
+            android:paddingLeft="@dimen/x20"
+            android:paddingTop="@dimen/y20"
+            android:text="@string/copy2"
             android:textColor="@color/blue2"
             android:textSize="@dimen/x24"/>
 

@@ -4,13 +4,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.utils.Constants;
 
 import butterknife.Bind;
@@ -22,7 +22,7 @@ import butterknife.OnClick;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class NewsDetailsActivity extends AppCompatActivity {
+public class NewsDetailsActivity extends BaseActivity {
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.title_name)

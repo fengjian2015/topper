@@ -218,7 +218,7 @@ public class GoogleVerificationActivity extends BaseActivity {
 
     private void showDialog() {
         if (mDeleteCacheDialog == null)
-            mDeleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
+            mDeleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         mDeleteCacheDialog.show();
         mDeleteCacheDialog.setTitle(getString(R.string.download_google_verify));
         Button cancel = (Button) mDeleteCacheDialog.findViewById(R.id.btn_cancel);

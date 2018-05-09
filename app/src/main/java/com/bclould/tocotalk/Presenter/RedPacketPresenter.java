@@ -110,7 +110,7 @@ public class RedPacketPresenter {
     }
 
     private void showHintDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(mContext.getString(R.string.real_name_authentication_hint));
         Button retry = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
@@ -132,8 +132,9 @@ public class RedPacketPresenter {
     }
 
     private void showSetPwDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_set_pw, mContext);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(mContext.getString(R.string.set_pay_pw_hint));
         deleteCacheDialog.setCanceledOnTouchOutside(false);
         Button retry = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         Button findPassword = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);

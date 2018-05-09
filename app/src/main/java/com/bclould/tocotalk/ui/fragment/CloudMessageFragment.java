@@ -346,56 +346,60 @@ public class CloudMessageFragment extends Fragment {
     //初始化顶部菜单栏
     private void initTopMenu() {
 
-        for (int i = 0; i < mCloudCircleMenu.getChildCount(); i++) {
+        if (mCloudCircleMenu != null) {
+            for (int i = 0; i < mCloudCircleMenu.getChildCount(); i++) {
 
-            final View childAt = mCloudCircleMenu.getChildAt(i);
+                final View childAt = mCloudCircleMenu.getChildAt(i);
 
-            childAt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+                childAt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
-                    int index = mCloudCircleMenu.indexOfChild(childAt);
+                        int index = mCloudCircleMenu.indexOfChild(childAt);
 
-                    setSelector(index);
+                        setSelector(index);
 
-                    mCloudCircleVp.setCurrentItem(index);
+                        mCloudCircleVp.setCurrentItem(index);
 
-                }
-            });
+                    }
+                });
+            }
         }
     }
 
     //菜单选项选中处理
     private void setSelector(int index) {
 
-        for (int i = 0; i < mCloudCircleMenu.getChildCount(); i++) {
+        if (mCloudCircleMenu != null) {
+            for (int i = 0; i < mCloudCircleMenu.getChildCount(); i++) {
 
-            if (i == index) {
+                if (i == index) {
 
-                mCloudCircleMenu.getChildAt(i).setSelected(true);
+                    mCloudCircleMenu.getChildAt(i).setSelected(true);
 
-                switch (index) {
+                    switch (index) {
 
-                    case 0:
+                        case 0:
 
-                        mYunxinXx.setVisibility(View.VISIBLE);
+                            mYunxinXx.setVisibility(View.VISIBLE);
 
-                        mHaoyouXx.setVisibility(View.INVISIBLE);
+                            mHaoyouXx.setVisibility(View.INVISIBLE);
 
-                        break;
-                    case 1:
+                            break;
+                        case 1:
 
-                        mYunxinXx.setVisibility(View.INVISIBLE);
+                            mYunxinXx.setVisibility(View.INVISIBLE);
 
-                        mHaoyouXx.setVisibility(View.VISIBLE);
+                            mHaoyouXx.setVisibility(View.VISIBLE);
 
-                        break;
+                            break;
+                    }
+
+                } else {
+
+                    mCloudCircleMenu.getChildAt(i).setSelected(false);
+
                 }
-
-            } else {
-
-                mCloudCircleMenu.getChildAt(i).setSelected(false);
-
             }
         }
     }

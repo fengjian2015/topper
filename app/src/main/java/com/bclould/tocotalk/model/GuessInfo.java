@@ -85,6 +85,16 @@ public class GuessInfo {
         private String win_number_hash_url;
         private String prize_pool_number;
         private int over_count_num;
+        private int limit_people_number;
+
+        public int getLimit_people_number() {
+            return limit_people_number;
+        }
+
+        public void setLimit_people_number(int limit_people_number) {
+            this.limit_people_number = limit_people_number;
+        }
+
         private List<BetListBean> betList;
 
         public int getId() {

@@ -198,8 +198,10 @@ public class ConversationFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
-                if (!XmppConnection.getInstance().getConnection().isAuthenticated()) {
-                    loginIM();
+                if (XmppConnection.getInstance().getConnection() != null) {
+                    if (!XmppConnection.getInstance().getConnection().isAuthenticated()) {
+                        loginIM();
+                    }
                 }
             }
         });

@@ -261,6 +261,7 @@ public class BlockchainGuessPresenter {
                             hideDialog();
                             if (betInfo.getStatus() == 1) {
                                 callBack5.send(betInfo.getData());
+                                Toast.makeText(mContext, mContext.getString(R.string.bet_succeed), Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(mContext, betInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -385,6 +386,6 @@ public class BlockchainGuessPresenter {
 
     //定义接口
     public interface CallBack5 {
-        void send(List<BetInfo.DataBean> data);
+        void send(BetInfo.DataBean data);
     }
 }

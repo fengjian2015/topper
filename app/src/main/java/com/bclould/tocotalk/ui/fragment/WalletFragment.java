@@ -181,11 +181,7 @@ public class WalletFragment extends Fragment {
                 startActivity(new Intent(getActivity(), SafeActivity.class));
                 break;
             case R.id.ll_blockchain_gamble:
-                if (UtilTool.getUser().equals("liaolinan2") || UtilTool.getUser().equals("conn")|| UtilTool.getUser().equals("raymond")|| UtilTool.getUser().equals("154323555")|| UtilTool.getUser().equals("dev2018")|| UtilTool.getUser().equals("xihongwei")) {
-                    startActivity(new Intent(getActivity(), BlockchainGambleActivity.class));
-                } else {
-                    startActivity(new Intent(getActivity(), SafeActivity.class));
-                }
+                startActivity(new Intent(getActivity(), BlockchainGambleActivity.class));
                 break;
         }
     }

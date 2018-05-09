@@ -145,7 +145,7 @@ public class ReceiptPaymentPresenter {
     }
 
     private void showHintDialog(final int type) {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();
         switch (type) {
             case 0:

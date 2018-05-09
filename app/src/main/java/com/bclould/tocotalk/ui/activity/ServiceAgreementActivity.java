@@ -5,12 +5,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.Presenter.RegisterPresenter;
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.utils.Constants;
 
 import butterknife.Bind;
@@ -22,7 +22,7 @@ import butterknife.OnClick;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ServiceAgreementActivity extends AppCompatActivity {
+public class ServiceAgreementActivity extends BaseActivity {
 
 
     @Bind(R.id.tv_title)

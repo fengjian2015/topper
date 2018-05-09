@@ -16,8 +16,8 @@ public class DeleteCacheDialog extends Dialog {
 
     private final int mDialog_layout;
 
-    public DeleteCacheDialog(int dialog_layout, @NonNull Context context) {
-        super(context);
+    public DeleteCacheDialog(int dialog_layout, @NonNull Context context, int theme) {
+        super(context, theme);
         mDialog_layout = dialog_layout;
     }
 

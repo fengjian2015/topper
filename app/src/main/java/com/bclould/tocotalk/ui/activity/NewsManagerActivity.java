@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.ui.adapter.NewsManagerPVAdapter;
 
 import butterknife.Bind;
@@ -21,7 +21,7 @@ import butterknife.OnClick;
  * Created by GA on 2018/5/8.
  */
 
-public class NewsManagerActivity extends AppCompatActivity {
+public class NewsManagerActivity extends BaseActivity {
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.tv_push)
