@@ -247,7 +247,7 @@ public class CloudMessageFragment extends Fragment {
                     mAnim.stop();
                     mLlLogin.setVisibility(View.GONE);
                     Toast.makeText(getContext(), getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                    mHandler.sendEmptyMessageDelayed(2,5000);
+                    mHandler.sendEmptyMessageDelayed(3,5000);
                     break;
                 case 1:
                     if (mLlChat != null && mLlFriend != null && mCloudCircleAdd != null) {
@@ -286,6 +286,8 @@ public class CloudMessageFragment extends Fragment {
                     mAnim.stop();
                     mLlLogin.setVisibility(View.GONE);
                     Toast.makeText(getContext(), getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                    break;
+                case 3:
                     loginIM();
                     break;
             }
