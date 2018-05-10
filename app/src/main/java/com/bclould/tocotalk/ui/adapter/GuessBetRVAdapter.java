@@ -57,7 +57,7 @@ public class GuessBetRVAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (getItemViewType(position) == 1 || getItemViewType(position) == 2) {
+        if (getItemViewType(position) == 1 || getItemViewType(position) == 2|| getItemViewType(position) == 4) {
             ViewHolder viewHolder = (ViewHolder) holder;
             viewHolder.setData(mDataList.get(position), position + 1);
         } else {

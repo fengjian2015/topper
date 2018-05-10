@@ -21,9 +21,12 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.NewsListInfo;
 import com.bclould.tocotalk.ui.activity.NewsDetailsActivity;
 import com.bclould.tocotalk.ui.adapter.NewsRVAdapter;
+import com.bclould.tocotalk.utils.SpaceItemDecoration2;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
@@ -39,7 +42,7 @@ import butterknife.ButterKnife;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class NewsFragment extends Fragment {
+public class NewsFragment extends Fragment implements OnBannerListener {
     private static NewsFragment instance;
     @Bind(R.id.tv_kaifa)
     TextView mTvKaifa;
@@ -75,9 +78,25 @@ public class NewsFragment extends Fragment {
             mLlNews.setVisibility(View.GONE);
         }
 //        initBanner();
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initListener();
         initRecylerView();
         initData();
-        return view;
+    }
+
+    private void initListener() {
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshLayout) {
+                refreshLayout.finishRefresh(2000);
+                initData();
+            }
+        });
     }
 
     List<NewsListInfo.ListsBean> mNewsList = new ArrayList<>();
@@ -92,44 +111,55 @@ public class NewsFragment extends Fragment {
                     mNewsList.clear();
                     mTopList.clear();
                     mTopList.addAll(top);
+                    List<String> imgList = new ArrayList<>();
+                    for (NewsListInfo.TopBean info : top) {
+                        imgList.add(info.getIndex_pic());
+                    }
                     mNewsList.addAll(lists);
                     mNewsRVAdapter.notifyDataSetChanged();
-                    initBanner();
+                    initBanner(imgList);
                 }
             }
         });
 
     }
 
-    private void initBanner() {
-        mBanner.setImageLoader(new ImageLoader() {
-            @Override
-            public void displayImage(Context context, Object path, ImageView imageView) {
-                Glide.with(context.getApplicationContext())
-                        .load(path)
-                        .into(imageView);
-            }
-        });
-        mBanner.setImages(mTopList);
-        mBanner.start();
-        mBanner.setOnBannerListener(new OnBannerListener() {
-            @Override
-            public void OnBannerClick(int position) {
-                Intent intent = new Intent(getContext(), NewsDetailsActivity.class);
-                intent.putExtra("id", mTopList.get(position).getId());
-            }
-        });
+    private void initBanner(List<String> top) {
+        List<String> imgList = new ArrayList<>();
+        imgList.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg");
+        imgList.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg");
+        imgList.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg");
+        imgList.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg");
+        mBanner.setImages(top)
+                .setImageLoader(new ImageLoader() {
+                    @Override
+                    public void displayImage(Context context, Object path, ImageView imageView) {
+                        Glide.with(context.getApplicationContext())
+                                .load(path)
+                                .into(imageView);
+                    }
+                })
+                .setOnBannerListener(this)
+                .start();
     }
 
     private void initRecylerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mNewsRVAdapter = new NewsRVAdapter(getContext(), mNewsList);
         mRecyclerView.setAdapter(mNewsRVAdapter);
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration2(40));
+        mRecyclerView.setNestedScrollingEnabled(false);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void OnBannerClick(int position) {
+        Intent intent = new Intent(getContext(), NewsDetailsActivity.class);
+        intent.putExtra("id", mTopList.get(position).getId());
     }
 }

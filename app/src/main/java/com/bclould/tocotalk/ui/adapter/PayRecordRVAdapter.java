@@ -83,6 +83,17 @@ public class PayRecordRVAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(TransferListInfo.DataBean dataBean) {
+            if(dataBean.getType_number() == 1 || dataBean.getType_number() == 2){
+                mIvPhoto.setImageResource(R.mipmap.icon_record_transfer);
+            }else if(dataBean.getType_number() == 3 || dataBean.getType_number() == 4){
+                mIvPhoto.setImageResource(R.mipmap.icon_record_redp);
+            }else if(dataBean.getType_number() == 5 || dataBean.getType_number() == 6){
+                mIvPhoto.setImageResource(R.mipmap.icon_record_money);
+            }else if(dataBean.getType_number() == 7){
+                mIvPhoto.setImageResource(R.mipmap.icon_record_recharge);
+            }else if(dataBean.getType_number() == 8){
+                mIvPhoto.setImageResource(R.mipmap.icon_record_send);
+            }
             mDataBean = dataBean;
             mTvName.setText(dataBean.getType());
             mTvType.setText(dataBean.getType_desc());

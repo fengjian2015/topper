@@ -167,7 +167,7 @@ dependencies {
     //輪播圖
     compile 'com.youth.banner:banner:1.4.10'
     //富文本編輯
-    implementation 'com.github.sendtion:XRichText:1.3'
+    compile 'com.github.huzhenjie:RichTextEditor:1.0.4'
     //    implementation 'com.google.firebase:firebase-messaging:11.6.2'
     //    implementation 'com.pusher:push-notifications-android:0.9.9'
 }

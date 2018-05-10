@@ -1,46 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/x20"
-    android:layout_marginRight="@dimen/x20"
-    app:cardCornerRadius="@dimen/x15">
+    android:background="@color/white"
+    android:padding="@dimen/x20">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_news_title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/x20">
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/iv_jiantou"
+        android:text="放是否連"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x32"/>
 
-        <TextView
-            android:id="@+id/tv_news_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginRight="@dimen/x20"
-            android:layout_toLeftOf="@+id/iv_jiantou"
-            android:text="放是否連接溫柔姐發簡歷斯卡迪姐夫拉克"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_news_title"
+        android:layout_marginTop="@dimen/y10"
+        android:text="2018-10-05 18:20:30"
+        android:textSize="@dimen/x24"/>
 
-        <TextView
-            android:id="@+id/tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_news_title"
-            android:layout_marginTop="@dimen/y10"
-            android:text="2018-10-05 18:20:30"
-            android:textSize="@dimen/x24"/>
 
-        <ImageView
-            android:id="@+id/iv_jiantou"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/iocn_person_turn"/>
-
-    </RelativeLayout>
-
-</android.support.v7.widget.CardView>
+</RelativeLayout>

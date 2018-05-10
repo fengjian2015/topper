@@ -105,7 +105,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:padding="@dimen/x20"
-            android:src="@mipmap/icon_nav_add"/>
+            android:src="@mipmap/ico_find_gl"/>
 <!--
         <TextView
             android:visibility="gone"

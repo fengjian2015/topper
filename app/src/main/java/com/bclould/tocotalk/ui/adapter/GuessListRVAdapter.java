@@ -120,13 +120,20 @@ public class GuessListRVAdapter extends RecyclerView.Adapter {
                 mBtnBet.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (dataBean.getPassword().isEmpty()) {
+                        if (dataBean.getPassword() != null) {
+                            if (dataBean.getPassword().isEmpty()) {
+                                Intent intent = new Intent(mContext, GuessDetailsActivity.class);
+                                intent.putExtra("bet_id", dataBean.getId());
+                                intent.putExtra("period_qty", dataBean.getPeriod_qty());
+                                mContext.startActivity(intent);
+                            } else {
+                                showPWDialog(dataBean);
+                            }
+                        }else {
                             Intent intent = new Intent(mContext, GuessDetailsActivity.class);
                             intent.putExtra("bet_id", dataBean.getId());
                             intent.putExtra("period_qty", dataBean.getPeriod_qty());
                             mContext.startActivity(intent);
-                        } else {
-                            showPWDialog(dataBean);
                         }
                     }
                 });

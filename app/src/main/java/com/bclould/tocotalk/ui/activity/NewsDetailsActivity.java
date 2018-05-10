@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,7 +46,7 @@ public class NewsDetailsActivity extends BaseActivity {
     }
 
     private void initWebView() {
-        mWebView.loadUrl(Constants.BASE_URL + Constants.NEWS_WEB_URL + mId);
+        mWebView.loadUrl(Constants.BASE_URL + Constants.NEWS_WEB_URL + mId + "/" + UtilTool.getUserId());
     }
 
     private void initIntent() {

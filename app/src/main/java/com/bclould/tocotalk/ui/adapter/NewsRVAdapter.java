@@ -28,6 +28,7 @@ public class NewsRVAdapter extends RecyclerView.Adapter {
     private final Context mContext;
     private final List<NewsListInfo.ListsBean> mNewsList;
 
+
     public NewsRVAdapter(Context context, List<NewsListInfo.ListsBean> newsList) {
         mContext = context;
         mNewsList = newsList;
@@ -35,25 +36,81 @@ public class NewsRVAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_news, parent, false);
-        return new ViewHolder(view);
+        RecyclerView.ViewHolder viewHolder = null;
+        View view = null;
+        switch (viewType) {
+            case 0:
+                view = LayoutInflater.from(mContext).inflate(R.layout.item_news_manager, parent, false);
+                viewHolder = new ViewHolder(view);
+                break;
+            case 1:
+                view = LayoutInflater.from(mContext).inflate(R.layout.item_news, parent, false);
+                viewHolder = new ViewHolder2(view);
+                break;
+        }
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.setData(mNewsList.get(position));
+        switch (getItemViewType(position)) {
+            case 0:
+                ViewHolder viewHolder = (ViewHolder) holder;
+                viewHolder.setData(mNewsList.get(position));
+                break;
+            case 1:
+                ViewHolder2 viewHolder2 = (ViewHolder2) holder;
+                viewHolder2.setData(mNewsList.get(position));
+                break;
+        }
     }
 
     @Override
     public int getItemCount() {
-        if(mNewsList.size() != 0){
+        if (mNewsList.size() != 0) {
             return mNewsList.size();
         }
         return 0;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (mNewsList.get(position).getIndex_pic().isEmpty()) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.tv_news_title)
+        TextView mTvNewsTitle;
+        @Bind(R.id.tv_time)
+        TextView mTvTime;
+        private int mId;
+
+        ViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+            ButterKnife.bind(this, view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, NewsDetailsActivity.class);
+                    intent.putExtra("id", mId);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+
+        public void setData(NewsListInfo.ListsBean listsBean) {
+            mId = listsBean.getId();
+            mTvNewsTitle.setText(listsBean.getTitle());
+            mTvTime.setText(listsBean.getCreated_at());
+        }
+    }
+
+    class ViewHolder2 extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_image)
         ImageView mIvImage;
         @Bind(R.id.tv_news_title)
@@ -62,7 +119,7 @@ public class NewsRVAdapter extends RecyclerView.Adapter {
         TextView mTvTime;
         private int mId;
 
-        ViewHolder(View view) {
+        ViewHolder2(View view) {
             super(view);
             ButterKnife.bind(this, view);
             view.setOnClickListener(new View.OnClickListener() {

@@ -13,6 +13,7 @@ import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.model.DynamicListInfo;
 import com.bclould.tocotalk.model.ExchangeOrderInfo;
 import com.bclould.tocotalk.model.GitHubInfo;
+import com.bclould.tocotalk.model.GonggaoListInfo;
 import com.bclould.tocotalk.model.GoogleInfo;
 import com.bclould.tocotalk.model.GrabRedInfo;
 import com.bclould.tocotalk.model.GuessInfo;
@@ -892,6 +893,51 @@ public interface MyService {
     @POST("news/list")
     @FormUrlEncoded
     Observable<NewsListInfo> getNewsList(
+            @Header("Authorization") String token,
+            @Field("page") int page,
+            @Field("page_size") int page_size
+    );
+
+    //我發佈的新聞列表
+    @POST("news/myNews")
+    @FormUrlEncoded
+    Observable<GonggaoListInfo> myNewsList(
+            @Header("Authorization") String token,
+            @Field("page") int page,
+            @Field("page_size") int page_size
+    );
+
+    //草稿箱列表
+    @POST("news/myNewsDraft")
+    @FormUrlEncoded
+    Observable<GonggaoListInfo> NewsDraftList(
+            @Header("Authorization") String token,
+            @Field("page") int page,
+            @Field("page_size") int page_size
+    );
+
+    //刪除新聞
+    @POST("news/delete")
+    @FormUrlEncoded
+    Observable<BaseInfo> deleteNews(
+            @Header("Authorization") String token,
+            @Field("id") int id
+    );
+
+    //公告列表
+    @POST("bulletin/list")
+    @FormUrlEncoded
+    Observable<GonggaoListInfo> GonggaoList(
+            @Header("Authorization") String token,
+            @Field("page") int page,
+            @Field("page_size") int page_size,
+            @Field("status") int status
+    );
+
+    //瀏覽記錄列表
+    @POST("news/history")
+    @FormUrlEncoded
+    Observable<GonggaoListInfo> NewsHistoryList(
             @Header("Authorization") String token,
             @Field("page") int page,
             @Field("page_size") int page_size

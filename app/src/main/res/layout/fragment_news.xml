@@ -25,30 +25,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <LinearLayout
-            android:id="@+id/ll_news"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="visible">
+            android:fillViewport="true">
 
-            <com.youth.banner.Banner
-                android:id="@+id/banner"
+            <LinearLayout
+                android:id="@+id/ll_news"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/y350"
-                app:delay_time="5000"
-                app:indicator_height="@dimen/x15"
-                app:indicator_margin="@dimen/x15"
-                app:indicator_width="@dimen/x15"
-                app:is_auto_play="true"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="visible">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </android.support.v7.widget.RecyclerView>
+                <com.youth.banner.Banner
+                    android:id="@+id/banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y350"
+                    app:delay_time="5000"
+                    app:indicator_height="@dimen/x15"
+                    app:indicator_margin="@dimen/x15"
+                    app:indicator_width="@dimen/x15"
+                    app:is_auto_play="true"/>
 
-        </LinearLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </android.support.v7.widget.RecyclerView>
+
+            </LinearLayout>
+
+        </ScrollView>
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 

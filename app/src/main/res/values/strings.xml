@@ -746,5 +746,10 @@
     <string name="new_notice">新公告</string>
     <string name="gonggao_detail">公告詳情</string>
     <string name="bet_succeed">投注成功</string>
+    <string name="appbar_scrolling_view_behavior">發法撒旦法</string>
+    <string name="et_title">輸入標題</string>
+    <string name="et_content">輸入內容</string>
+    <string name="news_edit">新聞編輯</string>
+    <string name="service">服務</string>
 
 </resources>

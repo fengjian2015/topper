@@ -2,33 +2,41 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y20"
+                android:background="@color/white"
                 android:orientation="vertical"
                 android:padding="@dimen/x20">
 
     <ImageView
         android:id="@+id/iv_image"
         android:layout_width="@dimen/x300"
-        android:layout_height="@dimen/y220"/>
+        android:layout_height="@dimen/y220"
+        android:scaleType="fitXY"/>
 
-    <TextView
-        android:id="@+id/tv_news_title"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x30"
+        android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/iv_image"
-        android:text="噶克里斯多夫记录数据法拉盛家乐福接口积分卡拉斯就发了撒娇了"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/iv_image"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_toRightOf="@+id/iv_image"
-        android:text="3小时前"
-        android:textSize="@dimen/x26"/>
+        <TextView
+            android:id="@+id/tv_news_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x30"
+            android:text="噶克里斯多夫记录数据法拉盛家乐福接口积分卡拉斯就发了撒娇了"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x28"/>
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginTop="@dimen/y30"
+            android:text="3小时前"
+            android:textSize="@dimen/x26"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

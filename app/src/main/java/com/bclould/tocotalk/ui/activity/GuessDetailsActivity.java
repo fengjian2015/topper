@@ -807,6 +807,8 @@ public class GuessDetailsActivity extends BaseActivity {
                     }else {
                         Toast.makeText(this, getString(R.string.bet_hint2), Toast.LENGTH_SHORT).show();
                     }
+                }else {
+                    Toast.makeText(this, getString(R.string.toast_guess_count_null), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btn_random:

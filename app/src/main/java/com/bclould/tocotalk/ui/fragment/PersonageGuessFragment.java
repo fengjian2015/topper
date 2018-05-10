@@ -38,6 +38,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by GA on 2018/4/23.
@@ -57,6 +58,8 @@ public class PersonageGuessFragment extends Fragment {
     EditText mEtSearch;
     @Bind(R.id.cb_search)
     CardView mCbSearch;
+    @Bind(R.id.iv_search)
+    ImageView mIvSearch;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
     private GuessListRVAdapter mGuessListRVAdapter;
     private int mPage = 1;
@@ -153,5 +156,15 @@ public class PersonageGuessFragment extends Fragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
         EventBus.getDefault().unregister(this);
+    }
+
+    @OnClick(R.id.iv_search)
+    public void onViewClicked() {
+        // 隐藏键盘
+        ((InputMethodManager) mEtSearch.getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
+                .hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+        String user = mEtSearch.getText().toString().trim();
+        initData(user);
     }
 }

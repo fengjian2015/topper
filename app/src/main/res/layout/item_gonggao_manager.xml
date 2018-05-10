@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x20"
-            android:src="@mipmap/icon_inform_news"/>
+            android:src="@mipmap/img_infrom"/>
 
         <TextView
             android:id="@+id/tv_title"
