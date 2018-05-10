@@ -12,22 +12,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
 import com.bclould.tocotalk.history.DBManager;
-import com.bclould.tocotalk.model.MessageInfo;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.jxmpp.jid.impl.JidCreate;
-import org.jxmpp.stringprep.XmppStringprepException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -86,17 +85,27 @@ public class ConversationDetailsActivity extends BaseActivity {
         Bitmap mUserImage = UtilTool.getImage(mMgr, mUser, this);
         imageHead.setImageBitmap(mUserImage);
         tvName.setText(mName);
-        if(OtrChatListenerManager.getInstance().isVerified(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,mUser))){
+        changeTop();
+        changeOTRState();
+    }
+
+    private void changeTop() {
+        String istop=mMgr.findConversationIstop(mUser);
+        if("true".equals(istop)){
+            onOffTop.setSelected(true);
+        }else {
+            onOffTop.setSelected(false);
+        }
+    }
+
+    private void changeOTRState(){
+        if(OtrChatListenerManager.getInstance().isVerified(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,mUser),this)){
             tvOtrState.setText(getString(R.string.otr_authenticated));
         }else{
             tvOtrState.setText(getString(R.string.otr_unauthorized));
         }
-        tvOtr.setText(OtrChatListenerManager.getInstance().getRemotePublicKey(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,mUser)));
-        tvMyOtr.setText(OtrChatListenerManager.getInstance().getLocalPublicKey(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,mUser)));
-        changeOTRState();
-    }
-
-    private void changeOTRState(){
+        tvOtr.setText(OtrChatListenerManager.getInstance().getRemotePublicKey(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,mUser),this));
+        tvMyOtr.setText(OtrChatListenerManager.getInstance().getLocalPublicKey(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,mUser),this));
         if("true".equals(OtrChatListenerManager.getInstance().getOTRState(mUser))){
             onOffOtr.setSelected(true);
         }else{
@@ -124,11 +133,51 @@ public class ConversationDetailsActivity extends BaseActivity {
                 break;
             case R.id.on_off_top:
                 // TODO: 2018/5/9 置頂
+                messageTop();
                 break;
             case R.id.rl_empty_talk:
-                // TODO: 2018/5/9 清空消息記錄
+                clearMessage();
                 break;
         }
+    }
+
+    private void messageTop() {
+        if("true".equals(mMgr.findConversationIstop(mUser))){
+            onOffTop.setSelected(false);
+            mMgr.updateConversationIstop(mUser,"false");
+        }else{
+            onOffTop.setSelected(true);
+            mMgr.updateConversationIstop(mUser,"true");
+        }
+        EventBus.getDefault().post(new MessageEvent(getString(R.string.message_top_change)));
+    }
+
+    private void clearMessage() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(getString(R.string.make_sure_clear_transcript));
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    mMgr.deleteMessage(mUser);
+                    Toast.makeText(ConversationDetailsActivity.this, getString(R.string.empty_success), Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.msg_database_update)));
+                    deleteCacheDialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     private void goIndividualDetails() {
@@ -140,14 +189,7 @@ public class ConversationDetailsActivity extends BaseActivity {
 
     private void resultOTR(){
         try {
-            if("true".equals(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(mUser).toString()))){
-                OtrChatListenerManager.getInstance().addOTRState(JidCreate.entityBareFrom(mUser).toString(),"false");
-                OtrChatListenerManager.getInstance().endMessage(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,JidCreate.entityBareFrom(mUser).toString()));
-            }else{
-                OtrChatListenerManager.getInstance().createOtrChatManager(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,JidCreate.entityBareFrom(mUser).toString()),this);
-                OtrChatListenerManager.getInstance().startMessage(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,JidCreate.entityBareFrom(mUser).toString()),this);
-                OtrChatListenerManager.getInstance().startSession(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,JidCreate.entityBareFrom(mUser).toString()));
-            }
+             OtrChatListenerManager.getInstance().changeState(JidCreate.entityBareFrom(mUser).toString(),this);
         }catch (Exception e){
             e.printStackTrace();
         }

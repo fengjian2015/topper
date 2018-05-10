@@ -18,6 +18,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
@@ -175,7 +176,9 @@ public class PersonalDetailsActivity extends BaseActivity {
                         .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
                 break;
             case R.id.rl_qr_card:
-                startActivity(new Intent(this, QRCodeActivity.class));
+                Intent intent=new Intent(this,QRCodeActivity.class);
+                intent.putExtra("user", Constants.MYUSER);
+                startActivity(intent);
                 break;
         }
     }

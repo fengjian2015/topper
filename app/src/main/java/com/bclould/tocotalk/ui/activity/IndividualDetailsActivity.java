@@ -1,11 +1,9 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,16 +11,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bclould.tocotalk.Presenter.IndividualDetailsPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
-import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.model.IndividualInfo;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
-import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
-import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.roster.Roster;
@@ -59,10 +58,17 @@ public class IndividualDetailsActivity extends BaseActivity {
     TextView tvRemark;
     @Bind(R.id.btn_brak)
     Button btnBrak;
+    @Bind(R.id.rl_qr)
+    RelativeLayout rlQr;
+    @Bind(R.id.rl_remark)
+    RelativeLayout rlRemark;
 
     private DBManager mMgr;
-    private String mName;
     private String mUser;
+    private String mName;
+    private IndividualInfo.DataBean individualInfo;
+    private int REMARK=100;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,18 +82,25 @@ public class IndividualDetailsActivity extends BaseActivity {
 
     private void initIntent() {
         Intent intent = getIntent();
-        mName = intent.getStringExtra("name");
         mUser = intent.getStringExtra("user");
+        mName = intent.getStringExtra("name");
     }
 
     private void init() {
-        Bitmap mUserImage = UtilTool.getImage(mMgr, mUser, this);
-        ivHead.setImageBitmap(mUserImage);
-        tvName.setText(mName);
-
+        IndividualDetailsPresenter presenter = new IndividualDetailsPresenter(this);
+        presenter.getIndividual(mName, new IndividualDetailsPresenter.CallBack() {
+            @Override
+            public void send(IndividualInfo.DataBean data) {
+                individualInfo = data;
+                tvName.setText(individualInfo.getName());
+                tvRemark.setText(individualInfo.getRemark());
+                tvRegion.setText(individualInfo.getCountry());
+                Glide.with(IndividualDetailsActivity.this).load(individualInfo.getAvatar()).apply(new RequestOptions().placeholder(R.mipmap.img_nfriend_headshot1)).into(ivHead);
+            }
+        });
     }
 
-    @OnClick({R.id.rl_dynamic, R.id.bark, R.id.btn_brak})
+    @OnClick({R.id.rl_dynamic, R.id.bark, R.id.btn_brak, R.id.rl_qr,R.id.rl_remark})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_dynamic:
@@ -99,10 +112,31 @@ public class IndividualDetailsActivity extends BaseActivity {
             case R.id.btn_brak:
                 showDeleteDialog();
                 break;
+            case R.id.rl_qr:
+                goQR();
+                break;
+            case R.id.rl_remark:
+                goChangeRemark();
+                break;
         }
     }
 
+    private void goChangeRemark() {
+        if (individualInfo == null) {init();return;}
+        Intent intent=new Intent(this,RemarkActivity.class);
+        intent.putExtra("name",mName);
+        intent.putExtra("remark",individualInfo.getRemark());
+        startActivityForResult(intent,REMARK);
+    }
+
+    private void goQR() {
+        Intent intent = new Intent(this, QRCodeActivity.class);
+        intent.putExtra("user", mUser);
+        startActivity(intent);
+    }
+
     private void showDeleteDialog() {
+        if (individualInfo == null) {init();return;}
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.confirm_delete) + " " + mName + " " + getString(R.string.what));
@@ -130,9 +164,18 @@ public class IndividualDetailsActivity extends BaseActivity {
                     finish();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    UtilTool.Log("fsdafa", e.getMessage());
                 }
             }
         });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==REMARK&&data!=null){
+            String remark=data.getStringExtra("remark");
+            tvRemark.setText(remark);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 }

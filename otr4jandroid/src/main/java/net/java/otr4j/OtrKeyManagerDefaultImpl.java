@@ -187,42 +187,43 @@ public class OtrKeyManagerDefaultImpl implements OtrKeyManager {
     }
 
     public KeyPair loadLocalKeyPair(SessionID sessionID) {
-        if (sessionID == null)
-            return null;
-
-        String accountID = sessionID.getLocalUserId();
-        // Load Private Key.
-        byte[] b64PrivKey = this.store.getPropertyBytes(accountID + ".privateKey");
-        if (b64PrivKey == null)
-            return null;
-
-        PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(b64PrivKey);
-
-        // Load Public Key.
-        byte[] b64PubKey = this.store.getPropertyBytes(accountID + ".publicKey");
-        if (b64PubKey == null)
-            return null;
-
-        X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(b64PubKey);
-
-        PublicKey publicKey;
-        PrivateKey privateKey;
-
-        // Generate KeyPair.
-        KeyFactory keyFactory;
         try {
+            if (sessionID == null)
+                return null;
+
+            String accountID = sessionID.getLocalUserId();
+            // Load Private Key.
+            byte[] b64PrivKey = this.store.getPropertyBytes(accountID + ".privateKey");
+            if (b64PrivKey == null)
+                return null;
+
+            PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(b64PrivKey);
+
+            // Load Public Key.
+            byte[] b64PubKey = this.store.getPropertyBytes(accountID + ".publicKey");
+            if (b64PubKey == null)
+                return null;
+
+            X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(b64PubKey);
+
+            PublicKey publicKey;
+            PrivateKey privateKey;
+
+            // Generate KeyPair.
+            KeyFactory keyFactory;
             keyFactory = KeyFactory.getInstance("DSA");
             publicKey = keyFactory.generatePublic(publicKeySpec);
             privateKey = keyFactory.generatePrivate(privateKeySpec);
+            return new KeyPair(publicKey, privateKey);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return null;
-        } catch (InvalidKeySpecException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
 
-        return new KeyPair(publicKey, privateKey);
+
     }
 
     public PublicKey loadRemotePublicKey(SessionID sessionID) {

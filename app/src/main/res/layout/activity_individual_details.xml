@@ -39,6 +39,7 @@
         app:cardCornerRadius="@dimen/x15">
 
         <RelativeLayout
+            android:id="@+id/rl_qr"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y160"
             android:visibility="visible">
@@ -68,6 +69,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/x25"
+                android:src="@mipmap/qr_code"
                 />
 
         </RelativeLayout>
@@ -183,7 +185,7 @@
         app:cardCornerRadius="@dimen/x15">
 
         <RelativeLayout
-            android:id="@+id/rl_cache1"
+            android:id="@+id/rl_remark"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y100">
 
@@ -218,7 +220,7 @@
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="32dp"
-        android:background="@drawable/btn_blue_selector"
+        android:background="@drawable/btn_black_selector"
         android:text="@string/delete"
         android:textColor="@color/white" />
 </LinearLayout>

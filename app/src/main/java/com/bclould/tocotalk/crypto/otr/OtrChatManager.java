@@ -54,7 +54,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
     public void startMessage(SessionID sessionID,Context context){
         this.context=context;
 //        otrKeyManagerDefault=new OtrKeyManagerDefaultImpl(new OtrAndroidKeyManagerImpl(sessionID));
-        otrKeyManagerDefault=new OtrAndroidKeyManagerImpl().OtrAndroidKeyManagerImpl(sessionID);
+        otrKeyManagerDefault=new OtrAndroidKeyManagerImpl().OtrAndroidKeyManagerImpl(sessionID,context);
         otrPolicy=new OtrPolicyImpl(OtrPolicy.OTRL_POLICY_ALWAYS);
         try {
             otrEngineHost=new OtrEngineHostImpl(otrPolicy,otrKeyManagerDefault);

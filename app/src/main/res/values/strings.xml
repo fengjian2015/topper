@@ -736,4 +736,8 @@
     <string name="otr_unauthorized">未驗證</string>
     <string name="detailed_information">詳細信息</string>
     <string name="personal_dynamic">個人動態</string>
+    <string name="make_sure_clear_transcript">確認要清空聊天記錄</string>
+    <string name="empty_success">清空成功</string>
+    <string name="remark_opposite">備註對方</string>
+    <string name="message_top_change">消息置頂改變</string>
 </resources>

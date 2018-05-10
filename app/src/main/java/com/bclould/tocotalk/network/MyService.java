@@ -18,6 +18,7 @@ import com.bclould.tocotalk.model.GrabRedInfo;
 import com.bclould.tocotalk.model.GuessInfo;
 import com.bclould.tocotalk.model.GuessListInfo;
 import com.bclould.tocotalk.model.InOutInfo;
+import com.bclould.tocotalk.model.IndividualInfo;
 import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.model.LoginInfo;
 import com.bclould.tocotalk.model.LoginRecordInfo;
@@ -875,5 +876,21 @@ public interface MyService {
             @Field("page_size") int page_size,
             @Field("coin_name") String coin_name,
             @Field("status") int status
+    );
+    //個人資料
+    @FormUrlEncoded
+    @POST("user/profile/by_name")
+    Observable<IndividualInfo> getIndividual(
+            @Header("Authorization") String token,
+            @Field("name") String name
+    );
+
+    //修改備註
+    @FormUrlEncoded
+    @POST("user/setUserRemark")
+    Observable<IndividualInfo> getChangeRemark(
+            @Header("Authorization") String token,
+            @Field("name") String name,
+            @Field("remark") String remark
     );
 }

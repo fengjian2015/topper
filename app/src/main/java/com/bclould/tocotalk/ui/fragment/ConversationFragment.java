@@ -365,6 +365,8 @@ public class ConversationFragment extends Fragment {
             initData();
         } else if (msg.equals(getString(R.string.login_error))) {
             mRlUnunited.setVisibility(View.VISIBLE);
+        }else if(msg.equals(getString(R.string.message_top_change))){
+            initData();
         }
 
     }
@@ -855,9 +857,15 @@ public class ConversationFragment extends Fragment {
             public int compare(ConversationInfo conversationInfo, ConversationInfo conversationInfo2) {
                 String at = conversationInfo.getTime();
                 String bt = conversationInfo2.getTime();
+                String atop=conversationInfo.getIstop();
+                String btop=conversationInfo2.getIstop();
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 try {
-                    if (formatter.parse(bt).getTime() > formatter.parse(at).getTime()) {
+                    if("true".equals(btop)&&!"true".equals(atop)){
+                        return 1;
+                    }else if(!"true".equals(btop)&&"true".equals(atop)){
+                        return -1;
+                    }else if (formatter.parse(bt).getTime() > formatter.parse(at).getTime()) {
                         return 1;
                     } else if (formatter.parse(bt).getTime() < formatter.parse(at).getTime()) {
                         return -1;

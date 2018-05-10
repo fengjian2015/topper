@@ -5,8 +5,13 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import com.bclould.tocotalk.utils.Constants;
+
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.SessionID;
+
+import org.jxmpp.jid.impl.JidCreate;
+
 import java.util.HashMap;
 
 /**
@@ -39,11 +44,29 @@ public class OtrChatListenerManager {
         return "false";
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void changeState(String mUser,Context context){
+        try {
+            if("true".equals(getOTRState(mUser))){
+                addOTRState(mUser,"false");
+                endMessage(sessionID(Constants.MYUSER,mUser));
+            }else{
+                createOtrChatManager(sessionID(Constants.MYUSER,mUser),context);
+                startMessage(sessionID(Constants.MYUSER,mUser),context);
+               startSession(sessionID(Constants.MYUSER,mUser));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     public void createOtrChatManager(SessionID sessionID, Context context){
         try {
-            OtrChatManager otrChatManager=new OtrChatManager();
-            otrChatManager.startMessage(sessionID,context);
-            hashMap.put(sessionID.toString(),otrChatManager);
+            if(!isExist(sessionID)) {
+                OtrChatManager otrChatManager = new OtrChatManager();
+                otrChatManager.startMessage(sessionID, context);
+                hashMap.put(sessionID.toString(), otrChatManager);
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -62,8 +85,9 @@ public class OtrChatListenerManager {
         }
     }
 
-    public boolean isVerified(SessionID sessionID){
+    public boolean isVerified(SessionID sessionID,Context context){
         try {
+            createOtrChatManager(sessionID,context);
             return hashMap.get(sessionID.toString()).isVerified(sessionID);
         }catch (Exception e){
             e.printStackTrace();
@@ -71,16 +95,18 @@ public class OtrChatListenerManager {
         }
     }
 
-    public String getRemotePublicKey(SessionID sessionID){
+    public String getRemotePublicKey(SessionID sessionID,Context context){
         try {
+            createOtrChatManager(sessionID,context);
             return hashMap.get(sessionID.toString()).getRemotePublicKey(sessionID);
         }catch (Exception e){
             return "";
         }
     }
 
-    public String getLocalPublicKey(SessionID sessionID){
+    public String getLocalPublicKey(SessionID sessionID,Context context){
         try {
+            createOtrChatManager(sessionID,context);
             return hashMap.get(sessionID.toString()).getLocalPublicKey(sessionID);
         }catch (Exception e){
             return "";
@@ -96,6 +122,7 @@ public class OtrChatListenerManager {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void startSession(SessionID sessionID){
         if(!isExist(sessionID))return;
         hashMap.get(sessionID.toString()).startSession(sessionID);
@@ -123,16 +150,8 @@ public class OtrChatListenerManager {
     public void endMessage(SessionID sessionID){
         if(!isExist(sessionID))return;
         hashMap.get(sessionID.toString()).endMessage(sessionID,true);
-        removeOtrChatManager(sessionID);
     }
 
-    public void removeOtrChatManager(SessionID sessionID){
-        try {
-            hashMap.remove(sessionID.toString());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
 
     public boolean isOtrEstablishMessage(String chatMsg, SessionID sessionID,Context context){
         try {

@@ -1,5 +1,6 @@
 package com.bclould.tocotalk.crypto.otr;
 
+import android.content.Context;
 import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
@@ -32,9 +33,13 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManagerStore {
 //        }
 //        return null;
 //    }
-    public OtrKeyManagerDefaultImpl OtrAndroidKeyManagerImpl(SessionID aliceSessionID) {
+    public OtrKeyManagerDefaultImpl OtrAndroidKeyManagerImpl(SessionID aliceSessionID, Context context) {
         try {
-            otrKeystoreAES = new File(Environment.getExternalStorageDirectory(), "otr.properties");
+            File file = new File(context.getFilesDir().getAbsolutePath() + "/otr");
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            otrKeystoreAES = new File(context.getFilesDir().getAbsolutePath() + "/otr/"+aliceSessionID.toString()+".properties");
             OtrKeyManager keyManager = new OtrKeyManagerDefaultImpl(otrKeystoreAES.getAbsolutePath());
             if (keyManager.loadLocalKeyPair(aliceSessionID)==null) {
                 keyManager.generateLocalKeyPair(aliceSessionID);

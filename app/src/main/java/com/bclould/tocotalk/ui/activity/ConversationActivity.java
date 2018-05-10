@@ -1099,7 +1099,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private void initAdapter() {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mChatAdapter = new ChatAdapter(this, mMessageList, mUserImage, mUser, mMgr, mediaPlayer);
+        mChatAdapter = new ChatAdapter(this, mMessageList, mUserImage, mUser, mMgr, mediaPlayer,mName);
         mRecyclerView.setAdapter(mChatAdapter);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -1373,15 +1373,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     @Override
     public void resultOTR() {
         try {
-            if("true".equals(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(mUser).toString()))){
-                OtrChatListenerManager.getInstance().addOTRState(JidCreate.entityBareFrom(mUser).toString(),"false");
-                OtrChatListenerManager.getInstance().endMessage(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,JidCreate.entityBareFrom(mUser).toString()));
-                mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(mUser).toString()));
-            }else{
-                OtrChatListenerManager.getInstance().createOtrChatManager(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,JidCreate.entityBareFrom(mUser).toString()),this);
-                OtrChatListenerManager.getInstance().startMessage(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,JidCreate.entityBareFrom(mUser).toString()),this);
-                OtrChatListenerManager.getInstance().startSession(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,JidCreate.entityBareFrom(mUser).toString()));
-            }
+            OtrChatListenerManager.getInstance().changeState(JidCreate.entityBareFrom(mUser).toString(),this);
+            mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(mUser).toString()));
         }catch (Exception e){
             e.printStackTrace();
         }

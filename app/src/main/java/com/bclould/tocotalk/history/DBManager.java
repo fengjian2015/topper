@@ -249,6 +249,7 @@ public class DBManager {
         values.put("user", conversationInfo.getUser());
         values.put("time", conversationInfo.getTime());
         values.put("friend", conversationInfo.getFriend());
+        values.put("istop",conversationInfo.getIstop());
         db.insert("ConversationRecord", null, values);
     }
 
@@ -270,6 +271,25 @@ public class DBManager {
         db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
     }
 
+    public void updateConversationIstop(String user,String istop){
+        db = helper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("istop", istop);
+        db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
+    }
+
+    public String findConversationIstop(String user) {
+        db = helper.getReadableDatabase();
+        String istop = null;
+        Cursor cursor = db.rawQuery("select istop from ConversationRecord where user=? and my_user=?",
+                new String[]{user, UtilTool.getJid()});
+        while (cursor.moveToNext()) {
+            istop= cursor.getString(cursor.getColumnIndex("istop"));
+        }
+        cursor.close();
+        return istop;
+    }
+
     public List<ConversationInfo> queryConversation() {
         db = helper.getWritableDatabase();
         List<ConversationInfo> conversationList = new ArrayList<>();
@@ -282,6 +302,7 @@ public class DBManager {
             conversationInfo.setTime(c.getString(c.getColumnIndex("time")));
             conversationInfo.setUser(c.getString(c.getColumnIndex("user")));
             conversationInfo.setFriend(c.getString(c.getColumnIndex("friend")));
+            conversationInfo.setIstop(c.getString(c.getColumnIndex("istop")));
             conversationList.add(conversationInfo);
         }
         c.close();

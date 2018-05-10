@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -55,8 +56,9 @@ public class QRCodeActivity extends BaseActivity {
     private void init() {
         try {
             DBManager mgr = new DBManager(this);
-            mTouxiang.setImageBitmap(UtilTool.getImage(mgr, UtilTool.getJid(), this));
-            Bitmap bitmap = UtilTool.createQRImage(UtilTool.base64PetToJson(Constants.BUSINESSCARD, "name", UtilTool.getJid(), "名片"));
+            String user=getIntent().getStringExtra("user");
+            mTouxiang.setImageBitmap(UtilTool.getImage(mgr,user, this));
+            Bitmap bitmap = UtilTool.createQRImage(UtilTool.base64PetToJson(Constants.BUSINESSCARD, "name", user, "名片"));
             mQrCodeIv.setImageBitmap(bitmap);
         } catch (Exception e) {
             e.printStackTrace();
