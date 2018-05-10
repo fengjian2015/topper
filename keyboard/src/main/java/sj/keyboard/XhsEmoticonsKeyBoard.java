@@ -40,6 +40,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     protected LayoutInflater mInflater;
 
     protected ImageView mBtnVoiceOrText;
+    protected ImageView mbtnOtrText;
     protected Button mBtnVoice;
     protected EmoticonsEditText mEtChat;
     protected ImageView mBtnFace;
@@ -55,6 +56,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     protected boolean mDispatchKeyEventPreImeLock = false;
     private RecordIndicator recordIndicator;
     private boolean initRecordIndicator = false;
+    private OnResultOTR onResultOTR;
 
     public XhsEmoticonsKeyBoard(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -74,6 +76,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
 
     protected void initView() {
         mBtnVoiceOrText = ((ImageView) findViewById(R.id.btn_voice_or_text));
+        mbtnOtrText=(ImageView)findViewById(R.id.btn_otr_text);
         mBtnVoice = ((Button) findViewById(R.id.btn_voice));
         mEtChat = ((EmoticonsEditText) findViewById(R.id.et_chat));
         mBtnFace = ((ImageView) findViewById(R.id.btn_face));
@@ -83,6 +86,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         mLyKvml = ((FuncLayout) findViewById(R.id.ly_kvml));
 
         mBtnVoiceOrText.setOnClickListener(this);
+        mbtnOtrText.setOnClickListener(this);
         mBtnFace.setOnClickListener(this);
         mBtnMultimedia.setOnClickListener(this);
         mEtChat.setOnBackKeyClickListener(this);
@@ -160,6 +164,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     public void addFuncView(View view) {
         mLyKvml.addFuncView(FUNC_TYPE_APPPS, view);
     }
+
 
     public void reset() {
         EmoticonsKeyboardUtils.closeSoftKeyboard(this);
@@ -264,7 +269,27 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
             toggleFuncView(FUNC_TYPE_EMOTION);
         } else if (i == R.id.btn_multimedia) {
             toggleFuncView(FUNC_TYPE_APPPS);
+        }else if(i==R.id.btn_otr_text){
+            onResultOTR.resultOTR();
         }
+    }
+
+    public void changeOTR(String isopen) {
+        if("true".equals(isopen)){
+            mbtnOtrText.setImageResource(R.drawable.icon_encrypt_ch);
+            mEtChat.setHint(R.string.intput_otr_ch);
+        }else {
+            mbtnOtrText.setImageResource(R.drawable.icon_encrypt_no);
+            mEtChat.setHint(R.string.intput_otr_no);
+        }
+    }
+
+    public void addOnResultOTR(OnResultOTR onResultOTR){
+        this.onResultOTR=onResultOTR;
+    }
+
+    public interface OnResultOTR{
+        void resultOTR();
     }
 
     @Override

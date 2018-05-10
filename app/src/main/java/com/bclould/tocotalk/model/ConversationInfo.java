@@ -10,6 +10,15 @@ public class ConversationInfo {
     private String time;
     private String user;
     private String friend;
+    private String istop;
+
+    public String getIstop() {
+        return istop;
+    }
+
+    public void setIstop(String istop) {
+        this.istop = istop;
+    }
 
     public int getNumber() {
         return number;
@@ -54,11 +63,12 @@ public class ConversationInfo {
     @Override
     public String toString() {
         return "ConversationInfo{" +
-                "number='" + number + '\'' +
+                "number=" + number +
                 ", message='" + message + '\'' +
                 ", time='" + time + '\'' +
                 ", user='" + user + '\'' +
                 ", friend='" + friend + '\'' +
+                ", istop='" + istop + '\'' +
                 '}';
     }
 }

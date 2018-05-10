@@ -24,6 +24,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Spannable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -51,6 +52,8 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
+import com.bclould.tocotalk.crypto.otr.OtrChatManager;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
@@ -60,6 +63,7 @@ import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.SimpleAppsGridView;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.RecordUtil;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
@@ -84,6 +88,7 @@ import org.jivesoftware.smack.roster.Roster;
 import org.jivesoftware.smack.roster.RosterEntry;
 import org.jivesoftware.smack.util.stringencoder.Base64;
 import org.jxmpp.jid.impl.JidCreate;
+import org.jxmpp.stringprep.XmppStringprepException;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -126,7 +131,7 @@ import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_VOICE_MSG;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ConversationActivity extends AppCompatActivity implements FuncLayout.OnFuncKeyBoardListener {
+public class ConversationActivity extends AppCompatActivity implements FuncLayout.OnFuncKeyBoardListener,XhsEmoticonsKeyBoard.OnResultOTR {
 
     private static final int CODE_TAKE_PHOTO = 1;
     private static final int FILE_SELECT_CODE = 2;
@@ -247,6 +252,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 return false;
             }
         });
+        mEkbEmoticonsKeyboard.addOnResultOTR(this);
     }
 
 
@@ -450,6 +456,12 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //初始化OTR
+        try {
+            mEkbEmoticonsKeyboard.changeOTR( OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(mUser).toString()));
+        } catch (XmppStringprepException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -480,7 +492,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             byte[] bytes = UtilTool.readStream(fileName);//把语音文件转换成二进制
             String base64 = Base64.encodeToString(bytes);//二进制转成Base64
             voiceInfo.setElementText(base64);//设置进model
-            message.setBody("[audio]:" + duration + getString(R.string.second));//body设置进消息
+            message.setBody(OtrChatListenerManager.getInstance().sentMessagesChange("[audio]:" + duration + getString(R.string.second),
+                    OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER, String.valueOf(JidCreate.entityBareFrom(mUser)))));
             message.addExtension(voiceInfo);//扩展message,把语音添加进标签
             chat.sendMessage(message);//发送消息
 
@@ -605,6 +618,14 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 info.setImageType(1);
                 mChatAdapter.notifyDataSetChanged();
             }
+        } else if (msg.equals(getString(R.string.otr_isopen))){
+            try {
+                mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(mUser).toString()));
+            } catch (XmppStringprepException e) {
+                e.printStackTrace();
+            }
+        }else if(msg.equals(getString(R.string.delete_friend))){
+            finish();
         }
     }
 
@@ -1016,7 +1037,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                                     String base64 = Base64.encodeToString(bytes);
                                     voiceInfo.setElementText(base64);
                                     message.addExtension(voiceInfo);
-                                    message.setBody("[" + postfix2 + "]:" + key2);
+                                    message.setBody(OtrChatListenerManager.getInstance().sentMessagesChange("[" + postfix2 + "]:" + key2,
+                                            OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER, String.valueOf(JidCreate.entityBareFrom(mUser)))));
                                     chat.sendMessage(message);
                                     mMgr.updateMessageHint(info.getId(), 1);
                                     info.setSendStatus(1);
@@ -1074,7 +1096,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private void initAdapter() {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mChatAdapter = new ChatAdapter(this, mMessageList, mUserImage, mUser, mMgr, mediaPlayer);
+        mChatAdapter = new ChatAdapter(this, mMessageList, mUserImage, mUser, mMgr, mediaPlayer,mName);
         mRecyclerView.setAdapter(mChatAdapter);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -1176,7 +1198,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                     mMgr.deleteUser(mUser);
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.delete_friend)));
                     deleteCacheDialog.dismiss();
-                    finish();
                 } catch (Exception e) {
                     e.printStackTrace();
                     UtilTool.Log("fsdafa", e.getMessage());
@@ -1191,7 +1212,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         try {
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
             Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
-            chat.sendMessage(message);
+            chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(message,
+                    OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER, String.valueOf(JidCreate.entityBareFrom(mUser)))));
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(mUser);
             messageInfo.setMessage(message);
@@ -1263,7 +1285,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             case R.id.rl_outer:
                 break;
             case R.id.iv_else:
-                showDialog();
+//                showDialog();
+                goDetails();
                 break;
             case R.id.ll_details:
                 isClick = !isClick;
@@ -1285,6 +1308,13 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             case R.id.btn_confirm_pay:
                 break;
         }
+    }
+
+    private void goDetails() {
+        Intent intent=new Intent(this,ConversationDetailsActivity.class);
+        intent.putExtra("user",mUser);
+        intent.putExtra("name",mName);
+        startActivity(intent);
     }
 
     private void hideOrderDetails() {
@@ -1335,5 +1365,15 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     @Override
     public void OnFuncClose() {
+    }
+
+    @Override
+    public void resultOTR() {
+        try {
+            OtrChatListenerManager.getInstance().changeState(JidCreate.entityBareFrom(mUser).toString(),this);
+            mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(mUser).toString()));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

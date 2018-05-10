@@ -98,6 +98,8 @@ configurations.all {
     }
 }
 
+
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':library')
@@ -170,4 +172,9 @@ dependencies {
     compile 'com.github.huzhenjie:RichTextEditor:1.0.4'
     //    implementation 'com.google.firebase:firebase-messaging:11.6.2'
     //    implementation 'com.pusher:push-notifications-android:0.9.9'
+    compile project(path: ':otr4jandroid')
+    implementation 'info.guardianproject.iocipher:IOCipher:0.4'
+    implementation 'info.guardianproject.netcipher:netcipher:2.0.0-alpha1'
+    implementation 'info.guardianproject.netcipher:netcipher-httpclient:2.0.0-alpha1'
+    implementation 'info.guardianproject.panic:panic:0.5'
 }

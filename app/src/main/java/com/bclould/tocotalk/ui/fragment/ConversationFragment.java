@@ -40,6 +40,8 @@ import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
+import com.bclould.tocotalk.crypto.otr.OtrChatManager;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.AuthStatusInfo;
 import com.bclould.tocotalk.model.ConversationInfo;
@@ -80,6 +82,7 @@ import org.jivesoftware.smack.packet.Stanza;
 import org.jivesoftware.smackx.offline.OfflineMessageManager;
 import org.jivesoftware.smackx.ping.PingFailedListener;
 import org.jivesoftware.smackx.ping.PingManager;
+import org.jxmpp.jid.impl.JidCreate;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -366,6 +369,8 @@ public class ConversationFragment extends Fragment {
             initData();
         } else if (msg.equals(getString(R.string.login_error))) {
             mRlUnunited.setVisibility(View.VISIBLE);
+        }else if(msg.equals(getString(R.string.message_top_change))){
+            initData();
         }
 
     }
@@ -533,6 +538,15 @@ public class ConversationFragment extends Fragment {
                     from = from.substring(0, from.indexOf("/"));
                 if (from.contains("@"))
                     friend = from.substring(0, from.indexOf("@"));
+
+                if(OtrChatListenerManager.getInstance().isOtrEstablishMessage(chatMsg,
+                        OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER, from),getContext())){
+                    return;
+                }
+                if(OtrChatListenerManager.getInstance().isExist(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER, from))){
+                    chatMsg=OtrChatListenerManager.getInstance().receivedMessagesChange(chatMsg,
+                            OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER, from));
+                }
                 String remark = null;
                 String coin = null;
                 String count = null;
@@ -781,7 +795,7 @@ public class ConversationFragment extends Fragment {
                     type = transferInformInfo.getType_number();
                     redpacket = "[" + getString(R.string.out_coin_inform) + "]";
                 }
-                //添加数据库
+                //添加数据库from
                 messageInfo.setUsername(from);
                 messageInfo.setMessage(chatMsg);
                 messageInfo.setTime(time);
@@ -847,9 +861,15 @@ public class ConversationFragment extends Fragment {
             public int compare(ConversationInfo conversationInfo, ConversationInfo conversationInfo2) {
                 String at = conversationInfo.getTime();
                 String bt = conversationInfo2.getTime();
+                String atop=conversationInfo.getIstop();
+                String btop=conversationInfo2.getIstop();
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 try {
-                    if (formatter.parse(bt).getTime() > formatter.parse(at).getTime()) {
+                    if("true".equals(btop)&&!"true".equals(atop)){
+                        return 1;
+                    }else if(!"true".equals(btop)&&"true".equals(atop)){
+                        return -1;
+                    }else if (formatter.parse(bt).getTime() > formatter.parse(at).getTime()) {
                         return 1;
                     } else if (formatter.parse(bt).getTime() < formatter.parse(at).getTime()) {
                         return -1;

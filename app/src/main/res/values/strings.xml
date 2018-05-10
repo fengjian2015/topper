@@ -702,6 +702,8 @@
     <string name="no_dynamic_publish">沒有動態發佈</string>
     <string name="zhong_jiang_money">中獎金額</string>
     <string name="guess_cancel">競猜已取消</string>
+    <string name="otr_isopen">OTR開關</string>
+    <string name="otr_error">無法讀取加密信息，請重新發起加密請求</string>
     <string name="et_sum_count">總投注次數</string>
     <string name="et_command">輸入競猜口令(4-8個數字)</string>
     <string name="toast_command_min">競猜口令不能低於四位</string>
@@ -751,5 +753,19 @@
     <string name="et_content">輸入內容</string>
     <string name="news_edit">新聞編輯</string>
     <string name="service">服務</string>
-
+    <string name="session_details">聊天詳情</string>
+    <string name="otr_encipherment">OTR加密</string>
+    <string name="my_otr_encipherment">我的\nOTR加密</string>
+    <string name="looking_for_chat">查找聊天內容</string>
+    <string name="top_chat">置頂聊天</string>
+    <string name="message_free">消息免打擾</string>
+    <string name="empty_talk">清空聊天記錄</string>
+    <string name="otr_authenticated">已驗證</string>
+    <string name="otr_unauthorized">未驗證</string>
+    <string name="detailed_information">詳細信息</string>
+    <string name="personal_dynamic">個人動態</string>
+    <string name="make_sure_clear_transcript">確認要清空聊天記錄</string>
+    <string name="empty_success">清空成功</string>
+    <string name="remark_opposite">備註對方</string>
+    <string name="message_top_change">消息置頂改變</string>
 </resources>

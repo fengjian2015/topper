@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/light"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/light"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -47,18 +48,25 @@
         android:layout_height="@dimen/y80"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/x20"
-        android:text="备注Ta"
-        android:textSize="@dimen/x28"/>
-
-    <EditText
-        android:id="@+id/et_remark"
+        android:text="@string/remark_opposite"
+        android:textSize="@dimen/x28"/> 
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:textCursorDrawable="@null"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white"
-        android:hint="输入备注"
-        android:maxLength="10"
-        android:paddingLeft="@dimen/x20"
-        android:textSize="@dimen/x28"/>
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/x15"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30">
+        <EditText
+            android:id="@+id/et_remark"
+            android:layout_width="match_parent"
+            android:textCursorDrawable="@null"
+            android:layout_height="@dimen/y100"
+            android:background="@null"
+            android:text="@string/et_memo"
+            android:maxLength="10"
+            android:paddingLeft="@dimen/x20"
+            android:textSize="@dimen/x28"/>
+
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

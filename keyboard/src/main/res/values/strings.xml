@@ -15,4 +15,6 @@
     <string name="tip_record_cancel">鬆開手指，取消錄音</string>
     <string name="tip_record_cancel_top">手指上滑，取消錄音</string>
     <string name="tip_record_short">錄音時間過短</string>
+    <string name="intput_otr_ch">輸入OTR加密信息...</string>
+    <string name="intput_otr_no">輸入未加密信息...</string>
 </resources>
