@@ -120,8 +120,6 @@ public class GuessDetailsActivity extends BaseActivity {
     EditText mEtArray4;
     @Bind(R.id.btn_random)
     Button mBtnRandom;
-    @Bind(R.id.tv_single_insert_count2)
-    TextView mTvSingleInsertCount2;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.btn_bet)
@@ -353,7 +351,6 @@ public class GuessDetailsActivity extends BaseActivity {
                 mTvCoin.setText(data.getCoin_name());
                 mTvCoin2.setText(data.getCoin_name());
                 mTvSingleInsertCount.setText(data.getSingle_coin() + "/" + data.getCoin_name());
-                mTvSingleInsertCount2.setText(data.getSingle_coin() + "/" + data.getCoin_name());
                 mTvSingleInsertCount3.setText(data.getSingle_coin() + "/" + data.getCoin_name());
                 mTvPresentInvestCount.setText(data.getCurrent_people_number() + "/" + data.getLimit_people_number());
                 mTvPresentInvestCount2.setText(data.getCurrent_people_number() + "");

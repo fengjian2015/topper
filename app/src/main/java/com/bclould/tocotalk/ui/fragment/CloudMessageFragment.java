@@ -189,6 +189,9 @@ public class CloudMessageFragment extends Fragment {
                         //登录成功发送通知
                         UtilTool.Log("fsdafa", "登录成功");
                         mHandler.sendEmptyMessage(1);
+                    }else if(!connection.isConnected()){
+                        XmppConnection.getInstance().getConnection().connect();
+                        mHandler.sendEmptyMessage(0);
                     }
                 } catch (Exception e) {
                     mHandler.sendEmptyMessage(0);

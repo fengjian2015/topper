@@ -86,6 +86,7 @@ import org.jivesoftware.smack.chat.Chat;
 import org.jivesoftware.smack.chat.ChatManager;
 import org.jivesoftware.smack.roster.Roster;
 import org.jivesoftware.smack.roster.RosterEntry;
+import org.jivesoftware.smack.util.StringUtils;
 import org.jivesoftware.smack.util.stringencoder.Base64;
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.stringprep.XmppStringprepException;
@@ -119,6 +120,7 @@ import sj.keyboard.widget.RecordIndicator;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
 
+import static com.bclould.tocotalk.Presenter.LoginPresenter.MYUSERNAME;
 import static com.bclould.tocotalk.R.style.BottomDialog;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_FILE_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_IMG_MSG;
@@ -493,7 +495,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             String base64 = Base64.encodeToString(bytes);//二进制转成Base64
             voiceInfo.setElementText(base64);//设置进model
             message.setBody(OtrChatListenerManager.getInstance().sentMessagesChange("[audio]:" + duration + getString(R.string.second),
-                    OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER, String.valueOf(JidCreate.entityBareFrom(mUser)))));
+                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
             message.addExtension(voiceInfo);//扩展message,把语音添加进标签
             chat.sendMessage(message);//发送消息
 
@@ -1038,7 +1040,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                                     voiceInfo.setElementText(base64);
                                     message.addExtension(voiceInfo);
                                     message.setBody(OtrChatListenerManager.getInstance().sentMessagesChange("[" + postfix2 + "]:" + key2,
-                                            OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER, String.valueOf(JidCreate.entityBareFrom(mUser)))));
+                                            OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
                                     chat.sendMessage(message);
                                     mMgr.updateMessageHint(info.getId(), 1);
                                     info.setSendStatus(1);
@@ -1071,6 +1073,9 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     //设置title
     private void initIntent() {
+        if(StringUtils.isEmpty(UtilTool.getJid())){
+            MySharedPreferences.getInstance().setString(MYUSERNAME, UtilTool.getUser() + "@" + Constants.DOMAINNAME2);
+        }
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         if (bundle == null) {
@@ -1213,7 +1218,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
             Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
             chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(message,
-                    OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER, String.valueOf(JidCreate.entityBareFrom(mUser)))));
+                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(mUser);
             messageInfo.setMessage(message);

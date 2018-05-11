@@ -64,6 +64,8 @@ public class OrderFormFragment extends Fragment {
     ImageView mIvSearch;
     @Bind(R.id.cb_search)
     CardView mCbSearch;
+    @Bind(R.id.tv_hint)
+    TextView mTvHint;
     private String mCoinName = "";
     private String mFiltrate = "";
     private List<OrderListInfo.DataBean> mDataList = new ArrayList<>();
@@ -80,6 +82,7 @@ public class OrderFormFragment extends Fragment {
         }
         mBuySellPresenter = new BuySellPresenter(getContext());
         ButterKnife.bind(this, view);
+        mTvHint.setText(getString(R.string.no_order));
         mCbSearch.setVisibility(View.VISIBLE);
         mFiltrate = "2";
         mMgr = new DBManager(getContext());

@@ -4,8 +4,10 @@ package com.bclould.tocotalk.crypto.otr;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import net.java.otr4j.OtrException;
 import net.java.otr4j.session.SessionID;
@@ -49,11 +51,11 @@ public class OtrChatListenerManager {
         try {
             if("true".equals(getOTRState(mUser))){
                 addOTRState(mUser,"false");
-                endMessage(sessionID(Constants.MYUSER,mUser));
+                endMessage(sessionID(UtilTool.getJid(),mUser));
             }else{
-                createOtrChatManager(sessionID(Constants.MYUSER,mUser),context);
-                startMessage(sessionID(Constants.MYUSER,mUser),context);
-               startSession(sessionID(Constants.MYUSER,mUser));
+                createOtrChatManager(sessionID(UtilTool.getJid(),mUser),context);
+                startMessage(sessionID(UtilTool.getJid(),mUser),context);
+               startSession(sessionID(UtilTool.getJid(),mUser));
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -73,8 +75,10 @@ public class OtrChatListenerManager {
     }
 
     public SessionID sessionID(String localUserId, String remoteUserId){
-        if(localUserId.isEmpty()||remoteUserId.isEmpty())return null;
-        return new SessionID(localUserId,remoteUserId,protocolName);
+        if(localUserId.isEmpty())localUserId="null";
+        if(remoteUserId.isEmpty())remoteUserId="null";
+        SessionID sessionID=new SessionID(localUserId,remoteUserId,protocolName);
+        return sessionID;
     }
 
     public void addOtrChatManager(SessionID sessionID, OtrChatManager otrChatManager){
@@ -166,7 +170,26 @@ public class OtrChatListenerManager {
         }
     }
 
+    public boolean isOtrMessage(String chatMsg, SessionID sessionID,Context context){
+        try {
+            if(!chatMsg.contains("?OTR"))return false;
+            if(!isExist(sessionID)){
+                createOtrChatManager(sessionID,context);
+            }
+            return hashMap.get(sessionID.toString()).isOtrMessage(chatMsg,sessionID.getRemoteUserId());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
     public boolean isExist(SessionID sessionID){
-        return hashMap.get(sessionID.toString())!=null;
+        try {
+            return hashMap.get(sessionID.toString())!=null;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 }

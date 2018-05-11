@@ -99,13 +99,13 @@ public class ConversationDetailsActivity extends BaseActivity {
     }
 
     private void changeOTRState(){
-        if(OtrChatListenerManager.getInstance().isVerified(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,mUser),this)){
+        if(OtrChatListenerManager.getInstance().isVerified(OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(),mUser),this)){
             tvOtrState.setText(getString(R.string.otr_authenticated));
         }else{
             tvOtrState.setText(getString(R.string.otr_unauthorized));
         }
-        tvOtr.setText(OtrChatListenerManager.getInstance().getRemotePublicKey(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,mUser),this));
-        tvMyOtr.setText(OtrChatListenerManager.getInstance().getLocalPublicKey(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER,mUser),this));
+        tvOtr.setText(OtrChatListenerManager.getInstance().getRemotePublicKey(OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(),mUser),this));
+        tvMyOtr.setText(OtrChatListenerManager.getInstance().getLocalPublicKey(OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(),mUser),this));
         if("true".equals(OtrChatListenerManager.getInstance().getOTRState(mUser))){
             onOffOtr.setSelected(true);
         }else{
