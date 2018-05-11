@@ -3,15 +3,17 @@ package com.bclould.tocotalk.crypto.otr;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
-import com.bclould.tocotalk.utils.MySharedPreferences;
+import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
-
 import net.java.otr4j.OtrEngineImpl;
 import net.java.otr4j.OtrEngineListener;
 import net.java.otr4j.OtrException;
@@ -22,12 +24,10 @@ import net.java.otr4j.session.OtrSm;
 import net.java.otr4j.session.Session;
 import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
-
 import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.chat.Chat;
 import org.jivesoftware.smack.chat.ChatManager;
 import org.jxmpp.jid.impl.JidCreate;
-
 import java.io.IOException;
 import java.security.KeyPair;
 import java.security.PublicKey;
@@ -47,8 +47,10 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
     private OtrKeyManagerDefaultImpl otrKeyManagerDefault;
 
     public SessionID sessionID(String localUserId, String remoteUserId){
-        if(localUserId.isEmpty()||remoteUserId.isEmpty())return null;
-        return new SessionID(localUserId,remoteUserId,protocolName);
+        if(localUserId.isEmpty())localUserId="null";
+        if(remoteUserId.isEmpty())remoteUserId="null";
+        SessionID sessionID=new SessionID(localUserId,remoteUserId,protocolName);
+        return sessionID;
     }
 
     public void startMessage(SessionID sessionID,Context context){
@@ -68,8 +70,14 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public String startSession(SessionID sessionID){
         try {
+
+            Message message=new Message();
+            message.obj=sessionID.getRemoteUserId();
+            message.what=1;
+            handler.sendMessageDelayed(message,10000);
             localEngineImpl.endSession(sessionID);
             localEngineImpl.startSession(sessionID);
+            Toast.makeText(context,context.getString(R.string.start_otr),Toast.LENGTH_SHORT).show();
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
             Chat chat = manager.createChat(JidCreate.entityBareFrom(sessionID.getRemoteUserId()), null);
             chat.sendMessage(Constants.OTR_REQUEST);
@@ -79,6 +87,22 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
         }
         return "";
     }
+
+    Handler handler=new Handler(){
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 1:
+                    String from= (String) msg.obj;
+                    SessionStatus sessionStatus =localEngineImpl.getSessionStatus(sessionID(UtilTool.getJid(),from));
+                    if(sessionStatus!= SessionStatus.ENCRYPTED){
+                        Toast.makeText(context,context.getString(R.string.start_otr_timeout),Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+            }
+        }
+    };
 
     /**
      * 兩人請求加密流程
@@ -96,7 +120,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public String receivedMessagesChange(String msg, SessionID sessionID){
         try {
-            SessionStatus sStatus = localEngineImpl.getSessionStatus(sessionID(Constants.MYUSER,sessionID.getRemoteUserId()));
+            SessionStatus sStatus = localEngineImpl.getSessionStatus(sessionID(UtilTool.getJid(),sessionID.getRemoteUserId()));
             if(sStatus==SessionStatus.ENCRYPTED) {
                 otrKeyManagerDefault.verify(sessionID);
 
@@ -141,15 +165,37 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
     public void endMessage(SessionID sessionID,boolean isSend){
         try {
             OtrChatListenerManager.getInstance().addOTRState(sessionID.getRemoteUserId(),"false");
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.otr_isopen)));
             localEngineImpl.endSession(sessionID);
             if(isSend) {
                 ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
                 Chat chat = manager.createChat(JidCreate.entityBareFrom(sessionID.getRemoteUserId()), null);
-                chat.sendMessage(establish(sessionID(Constants.MYUSER,sessionID.getRemoteUserId()),OPEN_OTR));
+                chat.sendMessage(establish(sessionID(UtilTool.getJid(),sessionID.getRemoteUserId()),OPEN_OTR));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 用於判斷消息會話
+     * @return
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public boolean isOtrMessage(String chatMsg, String from){
+        try {
+            if(chatMsg.contains(OPEN_OTR)){
+                SessionStatus sessionStatus =localEngineImpl.getSessionStatus(sessionID(UtilTool.getJid(),from));
+               if(sessionStatus== SessionStatus.ENCRYPTED){
+                    return false;
+                }
+                return true;
+            }
+            return false;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
     /**
@@ -162,13 +208,13 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
     public boolean isOtrEstablishMessage(String chatMsg, String from){
         try {
             if(chatMsg.contains(OPEN_OTR)){
-                SessionStatus sessionStatus =localEngineImpl.getSessionStatus(sessionID(Constants.MYUSER,from));
+                SessionStatus sessionStatus =localEngineImpl.getSessionStatus(sessionID(UtilTool.getJid(),from));
                 if(sessionStatus==SessionStatus.ENCRYPTED&&Constants.OTR_REQUEST.equals(chatMsg)){
-                    endMessage(sessionID(Constants.MYUSER,from),false);
+                    endMessage(sessionID(UtilTool.getJid(),from),false);
                 }else if(sessionStatus== SessionStatus.ENCRYPTED){
                     return false;
                 }
-                chatMsg =establish(sessionID(Constants.MYUSER,from),chatMsg);
+                chatMsg =establish(sessionID(UtilTool.getJid(),from),chatMsg);
                 ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
                 Chat chat = manager.createChat(JidCreate.entityBareFrom(from), null);
                 chat.sendMessage(chatMsg);
@@ -181,6 +227,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
         }
     }
 
+
     private Hashtable<String, OtrSm> mOtrSms=new Hashtable<>();
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -191,6 +238,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
 
         if (sStatus == SessionStatus.ENCRYPTED) {
             OtrChatListenerManager.getInstance().addOTRState(sessionID.getRemoteUserId(),"true");
+            handler.removeMessages(1);
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.otr_isopen)));
 
             PublicKey remoteKey = localEngineImpl.getRemotePublicKey(sessionID);
@@ -214,6 +262,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
         } else if (sStatus == SessionStatus.FINISHED) {
             OtrChatListenerManager.getInstance().addOTRState(sessionID.getRemoteUserId(),"false");
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.otr_isopen)));
+            Toast.makeText(context,sessionID.getRemoteUserId().split("@")[0]+context.getString(R.string.close_otr),Toast.LENGTH_SHORT).show();
             // Do nothing.  The user must take affirmative action to
             // restart or end the session, so that they don't send
             // plaintext by mistake.

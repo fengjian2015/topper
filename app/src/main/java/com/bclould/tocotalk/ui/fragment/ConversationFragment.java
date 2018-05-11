@@ -201,10 +201,8 @@ public class ConversationFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
-                if (XmppConnection.getInstance().getConnection() != null) {
-                    if (!XmppConnection.getInstance().getConnection().isAuthenticated()) {
-                        loginIM();
-                    }
+                if (!XmppConnection.getInstance().getConnection().isAuthenticated()) {
+                    loginIM();
                 }
             }
         });
@@ -315,13 +313,16 @@ public class ConversationFragment extends Fragment {
                         android.os.Message message = new android.os.Message();
                         message.what = 1;
                         mHandler.sendMessage(message);
+                    }else if(!connection.isConnected()){
+                        XmppConnection.getInstance().getConnection().connect();
                     }
                 } catch (Exception e) {
                     //发送登录失败通知
+                    mHandler.removeMessages(3);
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.login_error)));
                     android.os.Message message = new android.os.Message();
-                    mHandler.sendMessage(message);
                     message.what = 0;
+                    mHandler.sendMessage(message);
                     UtilTool.Log("日志", e.getMessage());
                     e.printStackTrace();
                 }
@@ -355,9 +356,9 @@ public class ConversationFragment extends Fragment {
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.login_succeed))) {
-            initBroadcastListener();
             getOfflineMessage();
-//            initListener();
+            initListener();
+            initBroadcastListener();
             initData();
         } else if (msg.equals(getString(R.string.oneself_send_msg))) {
             initData();
@@ -382,17 +383,24 @@ public class ConversationFragment extends Fragment {
             public void processStanza(Stanza packet) throws SmackException.NotConnectedException, InterruptedException {
                 Message message = (Message) packet;
                 if (message.getBody() != null) {
-                    android.os.Message msg = new android.os.Message();
-                    msg.obj = message;
-                    handler.sendMessage(msg);
                     SharedPreferences sp = getContext().getSharedPreferences(SETTING, 0);
-                    if (sp.contains(INFORM)) {
+                    //获取Jid和用户名
+                    String from = message.getFrom().toString();
+                    if (from.equals(Constants.DOMAINNAME)) {
+                        from = Constants.ADMINISTRATOR_NAME;
+                    }else{
+                        return;
+                    }
+                   if (sp.contains(INFORM)) {
                         if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
                             UtilTool.playHint(getContext());
                         }
                     } else {
                         UtilTool.playHint(getContext());
                     }
+                    android.os.Message msg = new android.os.Message();
+                    msg.obj = message;
+                    handler.sendMessage(msg);
                 }
             }
         }, new StanzaFilter() {
@@ -472,20 +480,31 @@ public class ConversationFragment extends Fragment {
         final ChatMessageListener messageListener = new ChatMessageListener() {
             @Override
             public void processMessage(Chat chat, Message message) {
+                SharedPreferences sp = getContext().getSharedPreferences(SETTING, 0);
+                //获取Jid和用户名
+                String from = message.getFrom().toString();
+                if (from.equals(Constants.DOMAINNAME)) {
+                    from = Constants.ADMINISTRATOR_NAME;
+                }
+                if (from.contains("/"))
+                    from = from.substring(0, from.indexOf("/"));
+                String chatmesssage=message.getBody();
+                //鈴聲必須放在處理消息類前面
+                if(OtrChatListenerManager.getInstance().isOtrMessage(chatmesssage,OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(),from),getContext())){
+                }else if (sp.contains(INFORM)) {
+                    if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
+                        UtilTool.playHint(getContext());
+                    }
+                } else {
+                    UtilTool.playHint(getContext());
+                }
+
                 //当消息返回为空的时候，表示用户正在聊天窗口编辑信息并未发出消
                 if (!TextUtils.isEmpty(message.getBody())) {
                     //message为用户所收到的消息
                     android.os.Message msg = new android.os.Message();
                     msg.obj = message;
                     handler.sendMessage(msg);
-                    SharedPreferences sp = getContext().getSharedPreferences(SETTING, 0);
-                    if (sp.contains(INFORM)) {
-                        if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
-                            UtilTool.playHint(getContext());
-                        }
-                    } else {
-                        UtilTool.playHint(getContext());
-                    }
                 }
             }
         };
@@ -540,12 +559,12 @@ public class ConversationFragment extends Fragment {
                     friend = from.substring(0, from.indexOf("@"));
 
                 if(OtrChatListenerManager.getInstance().isOtrEstablishMessage(chatMsg,
-                        OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER, from),getContext())){
+                        OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from),getContext())){
                     return;
                 }
-                if(OtrChatListenerManager.getInstance().isExist(OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER, from))){
+                if(OtrChatListenerManager.getInstance().isExist(OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from))){
                     chatMsg=OtrChatListenerManager.getInstance().receivedMessagesChange(chatMsg,
-                            OtrChatListenerManager.getInstance().sessionID(Constants.MYUSER, from));
+                            OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from));
                 }
                 String remark = null;
                 String coin = null;

@@ -768,4 +768,7 @@
     <string name="empty_success">清空成功</string>
     <string name="remark_opposite">備註對方</string>
     <string name="message_top_change">消息置頂改變</string>
+    <string name="start_otr">準備開啟OTR加密</string>
+    <string name="close_otr">關閉OTR加密</string>
+    <string name="start_otr_timeout">開啟OTR加密超時</string>
 </resources>
