@@ -23,6 +23,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by GA on 2018/1/27.
@@ -90,5 +91,10 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @OnClick(R.id.bark)
+    public void onViewClicked() {
+        finish();
     }
 }

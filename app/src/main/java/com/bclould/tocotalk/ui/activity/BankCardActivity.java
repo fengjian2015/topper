@@ -113,7 +113,7 @@ public class BankCardActivity extends BaseActivity {
         String msg = event.getMsg();
         if (getString(R.string.bank_binding_unbinding).equals(msg)) {
             initData();
-        }else if (getString(R.string.set_the_default_bank_card).equals(msg)) {
+        } else if (getString(R.string.set_the_default_bank_card).equals(msg)) {
             initData();
         }
     }
@@ -143,14 +143,14 @@ public class BankCardActivity extends BaseActivity {
                 if (mRecyclerView.getChildCount() != 0) {
                     for (int i = 0; i < mRecyclerView.getChildCount(); i++) {
                         View childAt = mRecyclerView.getChildAt(i);
-                        TextView delete = (TextView) childAt.findViewById(R.id.tv_delete);
+                        ImageView delete = (ImageView) childAt.findViewById(R.id.iv_delete);
                         if (isDelete) {
                             delete.setVisibility(View.VISIBLE);
                         } else {
                             delete.setVisibility(View.GONE);
                         }
                     }
-                }else {
+                } else {
                     Toast.makeText(this, getString(R.string.no_binding_bank), Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -248,7 +248,7 @@ public class BankCardActivity extends BaseActivity {
     }
 
     public void showHintDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this,R.style.dialog);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setCanceledOnTouchOutside(false);
         TextView retry = (TextView) deleteCacheDialog.findViewById(R.id.tv_retry);

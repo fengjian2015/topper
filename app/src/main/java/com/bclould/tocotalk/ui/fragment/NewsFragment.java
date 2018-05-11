@@ -22,7 +22,6 @@ import com.bclould.tocotalk.model.NewsListInfo;
 import com.bclould.tocotalk.ui.activity.NewsDetailsActivity;
 import com.bclould.tocotalk.ui.adapter.NewsRVAdapter;
 import com.bclould.tocotalk.utils.SpaceItemDecoration2;
-import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -70,14 +69,6 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_news, container, false);
         ButterKnife.bind(this, view);
-        if (UtilTool.getUser().equals("liaolinan2") || UtilTool.getUser().equals("conn") || UtilTool.getUser().equals("raymond") || UtilTool.getUser().equals("154323555") || UtilTool.getUser().equals("dev2018") || UtilTool.getUser().equals("xihongwei")) {
-            mTvKaifa.setVisibility(View.GONE);
-            mLlNews.setVisibility(View.VISIBLE);
-        } else {
-            mTvKaifa.setVisibility(View.VISIBLE);
-            mLlNews.setVisibility(View.GONE);
-        }
-//        initBanner();
         return view;
     }
 
@@ -125,11 +116,6 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     }
 
     private void initBanner(List<String> top) {
-        List<String> imgList = new ArrayList<>();
-        imgList.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg");
-        imgList.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg");
-        imgList.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg");
-        imgList.add("http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg");
         mBanner.setImages(top)
                 .setImageLoader(new ImageLoader() {
                     @Override
@@ -161,5 +147,7 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     public void OnBannerClick(int position) {
         Intent intent = new Intent(getContext(), NewsDetailsActivity.class);
         intent.putExtra("id", mTopList.get(position).getId());
+        startActivity(intent
+        );
     }
 }

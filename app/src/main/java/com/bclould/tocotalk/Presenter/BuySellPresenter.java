@@ -97,11 +97,11 @@ public class BuySellPresenter {
         }
     }
 
-    public void getOrderList(String coinName, final String filtrate, final CallBack3 callBack) {
+    public void getOrderList(String coinName, final String filtrate, String user, final CallBack3 callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .getOrderList(UtilTool.getToken(), coinName, filtrate)
+                    .getOrderList(UtilTool.getToken(), coinName, filtrate, user)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<OrderListInfo>() {

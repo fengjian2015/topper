@@ -1,17 +1,24 @@
 package com.bclould.tocotalk.ui.fragment;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bclould.tocotalk.Presenter.BuySellPresenter;
 import com.bclould.tocotalk.R;
@@ -34,6 +41,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 /**
@@ -50,11 +58,18 @@ public class OrderFormFragment extends Fragment {
     ImageView mIv;
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
+    @Bind(R.id.et_search)
+    EditText mEtSearch;
+    @Bind(R.id.iv_search)
+    ImageView mIvSearch;
+    @Bind(R.id.cb_search)
+    CardView mCbSearch;
     private String mCoinName = "";
     private String mFiltrate = "";
     private List<OrderListInfo.DataBean> mDataList = new ArrayList<>();
     private OrderRVAdapter mOrderRVAdapter;
     private DBManager mMgr;
+    private BuySellPresenter mBuySellPresenter;
 
     @Nullable
     @Override
@@ -63,13 +78,15 @@ public class OrderFormFragment extends Fragment {
         if (MyApp.getInstance().mOtcCoinList.size() != 0) {
             mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();
         }
+        mBuySellPresenter = new BuySellPresenter(getContext());
         ButterKnife.bind(this, view);
+        mCbSearch.setVisibility(View.VISIBLE);
         mFiltrate = "2";
         mMgr = new DBManager(getContext());
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         initRecyclerView();
-        initData(mCoinName, mFiltrate);
+        initData(mCoinName, mFiltrate, "");
         initListener();
         return view;
     }
@@ -83,9 +100,9 @@ public class OrderFormFragment extends Fragment {
             mFiltrate = event.getFiltrate();
         }
         if (msg.equals(getString(R.string.coin_switchover))) {
-            initData(mCoinName, mFiltrate);
+            initData(mCoinName, mFiltrate, "");
         } else if (msg.equals(getString(R.string.confirm_fk))) {
-            initData(mCoinName, mFiltrate);
+            initData(mCoinName, mFiltrate, "");
            /* for (OrderListInfo.DataBean info : mNewsList) {
                 if (info.getId() == Integer.parseInt(event.getId())) {
                     info.setStatus_name("等待放币");
@@ -110,13 +127,13 @@ public class OrderFormFragment extends Fragment {
                 }
             }
         } else if (msg.equals(getString(R.string.create_order))) {
-            initData(mCoinName, mFiltrate);
+            initData(mCoinName, mFiltrate, "");
         } else if (msg.equals(getString(R.string.create_order))) {
-            initData(mCoinName, mFiltrate);
+            initData(mCoinName, mFiltrate, "");
         } else if (msg.equals(getString(R.string.deal_order_filtrate))) {
-            initData(mCoinName, mFiltrate);
+            initData(mCoinName, mFiltrate, "");
         } else if (msg.equals(getString(R.string.order_update))) {
-            initData(mCoinName, mFiltrate);
+            initData(mCoinName, mFiltrate, "");
         }
     }
 
@@ -125,7 +142,22 @@ public class OrderFormFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
-                initData(mCoinName, mFiltrate);
+                initData(mCoinName, mFiltrate, "");
+            }
+        });
+        mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {//修改回车键功能
+                    // 隐藏键盘
+                    ((InputMethodManager) mEtSearch.getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                                    InputMethodManager.HIDE_NOT_ALWAYS);
+                    String user = mEtSearch.getText().toString().trim();
+                    initData(mCoinName, mFiltrate, user);
+                    return true;
+                }
+                return false;
             }
         });
     }
@@ -136,16 +168,17 @@ public class OrderFormFragment extends Fragment {
         mRecyclerView.setAdapter(mOrderRVAdapter);
     }
 
-    private void initData(String coinName, String filtrate) {
-        BuySellPresenter buySellPresenter = new BuySellPresenter(getContext());
-        buySellPresenter.getOrderList(coinName, filtrate, new BuySellPresenter.CallBack3() {
+    private void initData(String coinName, String filtrate, String user) {
+        mEtSearch.setText("");
+        mDataList.clear();
+        mOrderRVAdapter.notifyDataSetChanged();
+        mBuySellPresenter.getOrderList(coinName, filtrate, user, new BuySellPresenter.CallBack3() {
             @Override
             public void send(List<OrderListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
                     if (data.size() != 0) {
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
-                        mDataList.clear();
                         mDataList.addAll(data);
                         mOrderRVAdapter.notifyDataSetChanged();
                     } else {
@@ -167,5 +200,9 @@ public class OrderFormFragment extends Fragment {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
         ButterKnife.unbind(this);
+    }
+
+    @OnClick(R.id.iv_search)
+    public void onViewClicked() {
     }
 }

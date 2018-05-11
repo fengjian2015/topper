@@ -109,7 +109,7 @@
                     android:layout_width="@dimen/x25"
                     android:layout_height="@dimen/y25"
                     android:layout_marginLeft="@dimen/x30"
-                    android:src="@mipmap/icon_news_discuss"/>
+                    android:drawableLeft="@drawable/pinglun_selector"/>
 
                 <TextView
                     android:id="@+id/pinglun_count"

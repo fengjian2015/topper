@@ -47,7 +47,24 @@ public class GonggaoListInfo {
         private String content;
         private String created_at;
         private String index_pic;
-        private int is_important;
+        private int is_top;
+        private int is_new;
+
+        public int getIs_top() {
+            return is_top;
+        }
+
+        public void setIs_top(int is_top) {
+            this.is_top = is_top;
+        }
+
+        public int getIs_new() {
+            return is_new;
+        }
+
+        public void setIs_new(int is_new) {
+            this.is_new = is_new;
+        }
 
         public int getId() {
             return id;
@@ -89,12 +106,5 @@ public class GonggaoListInfo {
             this.index_pic = index_pic;
         }
 
-        public int getIs_important() {
-            return is_important;
-        }
-
-        public void setIs_important(int is_important) {
-            this.is_important = is_important;
-        }
     }
 }

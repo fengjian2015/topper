@@ -36,6 +36,7 @@
         android:id="@+id/tv_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/x26"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y20"
         android:text="@string/start_guess_service_hint"/>

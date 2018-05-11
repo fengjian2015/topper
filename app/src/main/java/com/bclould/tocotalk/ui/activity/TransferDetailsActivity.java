@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import java.text.DecimalFormat;
 
@@ -58,15 +59,15 @@ public class TransferDetailsActivity extends BaseActivity {
         String coin = intent.getStringExtra("coin");
         String time = intent.getStringExtra("time");
         int type = intent.getIntExtra("type", 0);
-        if(type == 0){
+        if (type == 0) {
             mTvHint.setText(getString(R.string.received_money));
-        }else {
+        } else {
             mTvHint.setText(getString(R.string.out_money));
         }
-        DecimalFormat df = new DecimalFormat("#.00");
+        DecimalFormat df = new DecimalFormat("0.000000");
         String countd = df.format(Double.parseDouble(count));
         mTvCoin.setText(coin);
-        mTvCount.setText(countd);
+        mTvCount.setText(UtilTool.removeZero(countd));
         mTvTime.setText(getString(R.string.transfer_time) + "：" + time);
     }
 

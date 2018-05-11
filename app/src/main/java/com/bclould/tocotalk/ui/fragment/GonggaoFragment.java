@@ -14,11 +14,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bclould.tocotalk.Presenter.NewsNoticePresenter;
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.model.GonggaoListInfo;
 import com.bclould.tocotalk.ui.adapter.GonggaoManagerRVAdapter;
 import com.bclould.tocotalk.utils.SpaceItemDecoration;
-import com.bclould.tocotalk.utils.UtilTool;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -40,6 +46,11 @@ public class GonggaoFragment extends Fragment {
     RecyclerView mRecyclerView;
     @Bind(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    private NewsNoticePresenter mNewsNoticePresenter;
+    private GonggaoManagerRVAdapter mGonggaoManagerRVAdapter;
+    private int mPage = 1;
+    private int mStatus = 1;
+    private int mPageSize = 1000;
 
     public static GonggaoFragment getInstance() {
         if (instance == null) {
@@ -53,21 +64,54 @@ public class GonggaoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_gonggao, container, false);
         ButterKnife.bind(this, view);
-        if (UtilTool.getUser().equals("liaolinan2") || UtilTool.getUser().equals("conn") || UtilTool.getUser().equals("raymond") || UtilTool.getUser().equals("154323555") || UtilTool.getUser().equals("dev2018") || UtilTool.getUser().equals("xihongwei")) {
-            mTvKaifa.setVisibility(View.GONE);
-            mRecyclerView.setVisibility(View.VISIBLE);
-        } else {
-            mTvKaifa.setVisibility(View.VISIBLE);
-            mRecyclerView.setVisibility(View.GONE);
-        }
-        initRecyclerView();
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mNewsNoticePresenter = new NewsNoticePresenter(getContext());
+        initListener();
+        initRecyclerView();
+        initData();
+    }
+
+    private void initListener() {
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshLayout) {
+                refreshLayout.finishRefresh(2000);
+                initData();
+            }
+        });
+    }
+
+    List<GonggaoListInfo.DataBean> mDataList = new ArrayList<>();
+
+    private void initData() {
+        mNewsNoticePresenter.getGonggaoList(mPage, mPageSize, mStatus, new NewsNoticePresenter.CallBack2() {
+            @Override
+            public void send(List<GonggaoListInfo.DataBean> data) {
+                if (mRecyclerView != null) {
+                    if (data.size() != 0) {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mDataList.clear();
+                        mDataList.addAll(data);
+                        mGonggaoManagerRVAdapter.notifyDataSetChanged();
+                    } else {
+                        mLlNoData.setVisibility(View.VISIBLE);
+                        mRecyclerView.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
     }
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        GonggaoManagerRVAdapter gonggaoManagerRVAdapter = new GonggaoManagerRVAdapter(getContext());
-        mRecyclerView.setAdapter(gonggaoManagerRVAdapter);
+        mGonggaoManagerRVAdapter = new GonggaoManagerRVAdapter(getContext(), mDataList);
+        mRecyclerView.setAdapter(mGonggaoManagerRVAdapter);
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(40));
     }
 

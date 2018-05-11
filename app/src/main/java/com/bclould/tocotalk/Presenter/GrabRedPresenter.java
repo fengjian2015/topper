@@ -61,7 +61,7 @@ public class GrabRedPresenter {
 
                         @Override
                         public void onNext(GrabRedInfo baseInfo) {
-                            if (baseInfo.getStatus() != 2)
+                            if (baseInfo.getStatus() != 4)
                                 callBack.send(baseInfo);
                             if (baseInfo.getStatus() == 4)
                                 Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();

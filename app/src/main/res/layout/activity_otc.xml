@@ -97,7 +97,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/buy"
-                android:textColor="@drawable/text_otc_selector"
+                android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
 
             <TextView
@@ -108,7 +108,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_marginRight="@dimen/x20"
-                android:background="@color/black"/>
+                android:background="@color/blue2"/>
 
         </RelativeLayout>
 
@@ -122,7 +122,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/sell"
-                android:textColor="@drawable/text_otc_selector"
+                android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
 
             <TextView
@@ -133,7 +133,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_marginRight="@dimen/x20"
-                android:background="@color/black"/>
+                android:background="@color/blue2"/>
 
         </RelativeLayout>
 
@@ -147,7 +147,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/order"
-                android:textColor="@drawable/text_otc_selector"
+                android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
 
             <TextView
@@ -158,7 +158,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_marginRight="@dimen/x20"
-                android:background="@color/black"/>
+                android:background="@color/blue2"/>
 
         </RelativeLayout>
 

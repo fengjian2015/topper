@@ -28,7 +28,8 @@
         android:gravity="center"
         android:text="@string/news_manager"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/x28"/>
+        android:textSize="@dimen/x28"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/pop_etc"
@@ -39,7 +40,8 @@
         android:gravity="center"
         android:text="@string/publish_news"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/x28"/>
+        android:textSize="@dimen/x28"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/pop_ltc"
@@ -61,6 +63,7 @@
         android:gravity="center"
         android:text="@string/my_dynamic"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/x28"/>
+        android:textSize="@dimen/x28"
+        android:visibility="gone"/>
 
 </LinearLayout>

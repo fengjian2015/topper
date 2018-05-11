@@ -108,13 +108,9 @@ public class MyPushAdActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
-                    mRlMyBuy.setSelected(true);
-                    mRlMySell.setSelected(false);
                     mTvXx.setVisibility(View.VISIBLE);
                     mTvXx2.setVisibility(View.GONE);
                 } else {
-                    mRlMyBuy.setSelected(false);
-                    mRlMySell.setSelected(true);
                     mTvXx.setVisibility(View.GONE);
                     mTvXx2.setVisibility(View.VISIBLE);
                 }

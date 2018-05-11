@@ -39,7 +39,7 @@
         android:layout_marginTop="@dimen/y20"
         android:focusable="false"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/y90"
         android:iconifiedByDefault="false"
         android:queryHint="@string/et_search_content"/>
 
