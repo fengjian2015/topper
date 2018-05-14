@@ -130,7 +130,6 @@ public class PersonageGuessFragment extends Fragment {
     List<GuessListInfo.DataBean> mDataList = new ArrayList<>();
 
     private void initData(String user) {
-        mEtSearch.setText("");
         mDataList.clear();
         mGuessListRVAdapter.notifyDataSetChanged();
         mBlockchainGuessPresenter.getGuessList(mPage, mPageSize, 1, user, new BlockchainGuessPresenter.CallBack() {

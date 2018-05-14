@@ -3,8 +3,6 @@ package com.bclould.tocotalk.ui.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +30,7 @@ import com.jaeger.ninegridimageview.ItemImageClickListener;
 import com.jaeger.ninegridimageview.NineGridImageView;
 import com.jaeger.ninegridimageview.NineGridImageViewAdapter;
 import com.previewlibrary.GPreviewBuilder;
+import com.previewlibrary.ZoomMediaLoader;
 import com.previewlibrary.enitity.ThumbViewInfo;
 
 import java.util.ArrayList;
@@ -55,6 +54,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
     private final List<DynamicListInfo.DataBean> mDataList;
     private final DBManager mMgr;
     private final DynamicPresenter mDynamicPresenter;
+
 
     public DynamicRVAdapter(Context context, List<DynamicListInfo.DataBean> dataList, DBManager mgr, DynamicPresenter dynamicPresenter) {
         mContext = context;
@@ -226,21 +226,6 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 }
             });
         }
-    }
-
-    private Bitmap getImage(String user_name) {
-        String jid = user_name + "@" + Constants.DOMAINNAME;
-        Bitmap bitmap = null;
-        if (mMgr.findUser(jid)) {
-            if (!mMgr.queryUser(jid).getPath().isEmpty()) {
-                bitmap = BitmapFactory.decodeFile(mMgr.queryUser(jid).getPath());
-            } else {
-                bitmap = UtilTool.setDefaultimage(mContext);
-            }
-        } else {
-            bitmap = UtilTool.setDefaultimage(mContext);
-        }
-        return bitmap;
     }
 
     class VideoHolder extends RecyclerView.ViewHolder {

@@ -776,4 +776,9 @@
     <string name="close_otr">關閉OTR加密</string>
     <string name="start_otr_timeout">開啟OTR加密超時</string>
     <string name="no_order">沒有訂單</string>
+    <string name="all_order">全部訂單</string>
+    <string name="sum_buy">總買入</string>
+    <string name="anomaly_order">異常訂單</string>
+    <string name="sum_deal_count">交易次數</string>
+    <string name="shouqi">收起</string>
 </resources>

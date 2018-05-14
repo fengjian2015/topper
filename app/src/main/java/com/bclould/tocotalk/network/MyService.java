@@ -30,6 +30,7 @@ import com.bclould.tocotalk.model.NewsListInfo;
 import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.model.OrderInfo2;
 import com.bclould.tocotalk.model.OrderListInfo;
+import com.bclould.tocotalk.model.OrderStatisticsInfo;
 import com.bclould.tocotalk.model.OutCoinSiteInfo;
 import com.bclould.tocotalk.model.QuestionInfo;
 import com.bclould.tocotalk.model.ReceiptInfo;
@@ -383,7 +384,9 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("coin_name") String coin_name,
             @Field("status") String status,
-            @Field("user_name") String user_name
+            @Field("user_name") String user_name,
+            @Field("page") int page,
+            @Field("page_size") int page_size
     );
 
     //订单详情
@@ -961,4 +964,21 @@ public interface MyService {
             @Field("name") String name,
             @Field("remark") String remark
     );
+
+    //修改備註
+    @POST("trans/total")
+    Observable<OrderStatisticsInfo> getTotal(
+            @Header("Authorization") String token
+    );
+
+    //瀏覽記錄列表
+    @POST("trans/myOrderLists")
+    @FormUrlEncoded
+    Observable<OrderListInfo> getMyOrderList(
+            @Header("Authorization") String token,
+            @Field("type") int type,
+            @Field("page") int page,
+            @Field("page_size") int page_size
+    );
+
 }

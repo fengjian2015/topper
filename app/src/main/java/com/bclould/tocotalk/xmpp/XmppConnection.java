@@ -176,7 +176,6 @@ public class XmppConnection {
             mHandler.sendEmptyMessage(0);
             UtilTool.Log("fsdafa", "连接失败 " + xe.getMessage());
             xe.printStackTrace();
-            connection = null;
         }
         return false;
     }

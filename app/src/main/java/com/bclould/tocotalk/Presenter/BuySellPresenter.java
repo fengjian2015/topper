@@ -14,6 +14,7 @@ import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.model.MyAdListInfo;
 import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.model.OrderListInfo;
+import com.bclould.tocotalk.model.OrderStatisticsInfo;
 import com.bclould.tocotalk.model.TransRecordInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.activity.BankCardActivity;
@@ -84,7 +85,7 @@ public class BuySellPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -97,11 +98,11 @@ public class BuySellPresenter {
         }
     }
 
-    public void getOrderList(String coinName, final String filtrate, String user, final CallBack3 callBack) {
+    public void getOrderList(int page, int pageSize, String coinName, final String filtrate, String user, final CallBack3 callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .getOrderList(UtilTool.getToken(), coinName, filtrate, user)
+                    .getOrderList(UtilTool.getToken(), coinName, filtrate, user, page, pageSize)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<OrderListInfo>() {
@@ -120,7 +121,43 @@ public class BuySellPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void getMyOrderList(int type, int page, int pageSize, final CallBack3 callBack) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .getMyOrderList(UtilTool.getToken(), type, page, pageSize)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<OrderListInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(OrderListInfo baseInfo) {
+                            hideDialog();
+                            if (baseInfo.getStatus() == 1)
+                                callBack.send(baseInfo.getData());
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            hideDialog();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -209,7 +246,7 @@ public class BuySellPresenter {
 
                         @Override
                         public void onError(Throwable e) {
-                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -279,7 +316,7 @@ public class BuySellPresenter {
 
                         @Override
                         public void onError(Throwable e) {
-                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -315,7 +352,7 @@ public class BuySellPresenter {
 
                         @Override
                         public void onError(Throwable e) {
-                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -352,7 +389,42 @@ public class BuySellPresenter {
 
                         @Override
                         public void onError(Throwable e) {
-                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void getTotal(final CallBack6 callBack6) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .getTotal(UtilTool.getToken())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<OrderStatisticsInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(OrderStatisticsInfo orderStatisticsInfo) {
+                            if (orderStatisticsInfo.getStatus() == 1) {
+                                callBack6.send(orderStatisticsInfo.getData());
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -391,5 +463,11 @@ public class BuySellPresenter {
     public interface CallBack5 {
 
         void send(List<MyAdListInfo.DataBean> data);
+    }
+
+    //定义接口
+    public interface CallBack6 {
+
+        void send(OrderStatisticsInfo.DataBean data);
     }
 }

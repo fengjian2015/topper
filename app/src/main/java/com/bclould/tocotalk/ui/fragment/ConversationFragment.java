@@ -201,8 +201,10 @@ public class ConversationFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
-                if (!XmppConnection.getInstance().getConnection().isAuthenticated()) {
-                    loginIM();
+                if (XmppConnection.getInstance().getConnection() != null) {
+                    if (!XmppConnection.getInstance().getConnection().isAuthenticated()) {
+                        loginIM();
+                    }
                 }
             }
         });
@@ -313,7 +315,7 @@ public class ConversationFragment extends Fragment {
                         android.os.Message message = new android.os.Message();
                         message.what = 1;
                         mHandler.sendMessage(message);
-                    }else if(!connection.isConnected()){
+                    } else if (!connection.isConnected()) {
                         XmppConnection.getInstance().getConnection().connect();
                     }
                 } catch (Exception e) {
@@ -370,7 +372,7 @@ public class ConversationFragment extends Fragment {
             initData();
         } else if (msg.equals(getString(R.string.login_error))) {
             mRlUnunited.setVisibility(View.VISIBLE);
-        }else if(msg.equals(getString(R.string.message_top_change))){
+        } else if (msg.equals(getString(R.string.message_top_change))) {
             initData();
         }
 
@@ -388,10 +390,10 @@ public class ConversationFragment extends Fragment {
                     String from = message.getFrom().toString();
                     if (from.equals(Constants.DOMAINNAME)) {
                         from = Constants.ADMINISTRATOR_NAME;
-                    }else{
+                    } else {
                         return;
                     }
-                   if (sp.contains(INFORM)) {
+                    if (sp.contains(INFORM)) {
                         if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
                             UtilTool.playHint(getContext());
                         }
@@ -488,10 +490,10 @@ public class ConversationFragment extends Fragment {
                 }
                 if (from.contains("/"))
                     from = from.substring(0, from.indexOf("/"));
-                String chatmesssage=message.getBody();
+                String chatmesssage = message.getBody();
                 //鈴聲必須放在處理消息類前面
-                if(OtrChatListenerManager.getInstance().isOtrMessage(chatmesssage,OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(),from),getContext())){
-                }else if (sp.contains(INFORM)) {
+                if (OtrChatListenerManager.getInstance().isOtrMessage(chatmesssage, OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from), getContext())) {
+                } else if (sp.contains(INFORM)) {
                     if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
                         UtilTool.playHint(getContext());
                     }
@@ -558,12 +560,12 @@ public class ConversationFragment extends Fragment {
                 if (from.contains("@"))
                     friend = from.substring(0, from.indexOf("@"));
 
-                if(OtrChatListenerManager.getInstance().isOtrEstablishMessage(chatMsg,
-                        OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from),getContext())){
+                if (OtrChatListenerManager.getInstance().isOtrEstablishMessage(chatMsg,
+                        OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from), getContext())) {
                     return;
                 }
-                if(OtrChatListenerManager.getInstance().isExist(OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from))){
-                    chatMsg=OtrChatListenerManager.getInstance().receivedMessagesChange(chatMsg,
+                if (OtrChatListenerManager.getInstance().isExist(OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from))) {
+                    chatMsg = OtrChatListenerManager.getInstance().receivedMessagesChange(chatMsg,
                             OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from));
                 }
                 String remark = null;
@@ -880,15 +882,15 @@ public class ConversationFragment extends Fragment {
             public int compare(ConversationInfo conversationInfo, ConversationInfo conversationInfo2) {
                 String at = conversationInfo.getTime();
                 String bt = conversationInfo2.getTime();
-                String atop=conversationInfo.getIstop();
-                String btop=conversationInfo2.getIstop();
+                String atop = conversationInfo.getIstop();
+                String btop = conversationInfo2.getIstop();
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 try {
-                    if("true".equals(btop)&&!"true".equals(atop)){
+                    if ("true".equals(btop) && !"true".equals(atop)) {
                         return 1;
-                    }else if(!"true".equals(btop)&&"true".equals(atop)){
+                    } else if (!"true".equals(btop) && "true".equals(atop)) {
                         return -1;
-                    }else if (formatter.parse(bt).getTime() > formatter.parse(at).getTime()) {
+                    } else if (formatter.parse(bt).getTime() > formatter.parse(at).getTime()) {
                         return 1;
                     } else if (formatter.parse(bt).getTime() < formatter.parse(at).getTime()) {
                         return -1;

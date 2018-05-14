@@ -63,8 +63,11 @@ import org.jivesoftware.smack.roster.RosterListener;
 import org.jxmpp.jid.Jid;
 import org.jxmpp.jid.impl.JidCreate;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -561,6 +564,13 @@ public class FriendListFragment extends Fragment {
         userInfos.remove(userInfo);
         if (userInfo2 != null)
             userInfos.remove(userInfo2);
+        Collections.sort(userInfos, new Comparator<UserInfo>() {
+            @Override
+            public int compare(UserInfo userInfo, UserInfo userInfo2) {
+                Comparator<Object> com = Collator.getInstance(java.util.Locale.CHINA);
+                return com.compare(userInfo.getUser(), userInfo2.getUser());
+            }
+        });
         mUsers.addAll(userInfos);
         UtilTool.Log("好友", mUsers.size() + "");
     }
