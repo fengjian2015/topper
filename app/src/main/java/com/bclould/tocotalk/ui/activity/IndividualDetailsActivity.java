@@ -18,6 +18,7 @@ import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.IndividualInfo;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.bumptech.glide.Glide;
@@ -68,6 +69,7 @@ public class IndividualDetailsActivity extends BaseActivity {
     private String mName;
     private IndividualInfo.DataBean individualInfo;
     private int REMARK=100;
+    private int type=0;//1表示查看好友，2表示添加好友
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,15 +84,22 @@ public class IndividualDetailsActivity extends BaseActivity {
 
     private void initIntent() {
         Intent intent = getIntent();
+        type = intent.getIntExtra("type",1);
         mUser = intent.getStringExtra("user");
         mName = intent.getStringExtra("name");
     }
 
     private void init() {
+        if(type==2){
+            imageQr.setVisibility(View.INVISIBLE);
+            rlRemark.setVisibility(View.GONE);
+            btnBrak.setText(getString(R.string.add_friend));
+        }
         IndividualDetailsPresenter presenter = new IndividualDetailsPresenter(this);
         presenter.getIndividual(mName, new IndividualDetailsPresenter.CallBack() {
             @Override
             public void send(IndividualInfo.DataBean data) {
+                if(data==null)return;
                 individualInfo = data;
                 tvName.setText(individualInfo.getName());
                 tvRemark.setText(individualInfo.getRemark());
@@ -110,7 +119,11 @@ public class IndividualDetailsActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_brak:
-                showDeleteDialog();
+                if(type==1){
+                    showDeleteDialog();
+                }else{
+                    addFriend();
+                }
                 break;
             case R.id.rl_qr:
                 goQR();
@@ -130,9 +143,30 @@ public class IndividualDetailsActivity extends BaseActivity {
     }
 
     private void goQR() {
+        if(type==2)return;
         Intent intent = new Intent(this, QRCodeActivity.class);
         intent.putExtra("user", mUser);
         startActivity(intent);
+    }
+
+    private void addFriend(){
+        try {
+            String name = "";
+            if (!mName.contains(Constants.DOMAINNAME)) {
+                name = mName + "@" + Constants.DOMAINNAME;
+            }
+
+            if (!mMgr.findUser(name)) {
+                Roster.getInstanceFor(XmppConnection.getInstance().getConnection()).createEntry(JidCreate.entityBareFrom(name), null, new String[]{"Friends"});
+                Toast.makeText(this, getString(R.string.send_request_succeed), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, getString(R.string.have_friend), Toast.LENGTH_SHORT).show();
+            }
+        }catch (Exception e){
+            Toast.makeText(this, getString(R.string.send_request_error), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+
     }
 
     private void showDeleteDialog() {
@@ -174,6 +208,8 @@ public class IndividualDetailsActivity extends BaseActivity {
         if(requestCode==REMARK&&data!=null){
             String remark=data.getStringExtra("remark");
             tvRemark.setText(remark);
+            mMgr.updateRemark(remark,mUser);
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.change_friend_remark)));
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

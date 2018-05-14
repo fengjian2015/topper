@@ -116,28 +116,21 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
         } else {
             if (result != null && !result.isEmpty()) {
                 if (result.contains(Constants.BUSINESSCARD)) {
-                    try {
-                        String base64 = result.substring(Constants.BUSINESSCARD.length(), result.length());
-                        String jsonresult = Base64.decodeToString(base64);
-                        UtilTool.Log("日志", jsonresult);
+                    String base64 = result.substring(Constants.BUSINESSCARD.length(), result.length());
+                    String jsonresult = Base64.decodeToString(base64);
+                    UtilTool.Log("日志", jsonresult);
 
-                        Gson gson = new Gson();
-                        QrCardInfo qrCardInfo = gson.fromJson(jsonresult, QrCardInfo.class);
-                        String name = qrCardInfo.getName();
-                        if (!qrCardInfo.getName().contains(Constants.DOMAINNAME)) {
-                            name = name + "@" + Constants.DOMAINNAME;
-                        }
-                        if (!mMgr.findUser(name)) {
-                            Roster.getInstanceFor(XmppConnection.getInstance().getConnection()).createEntry(JidCreate.entityBareFrom(name), null, new String[]{"Friends"});
-                            Toast.makeText(this, getString(R.string.send_request_succeed), Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(this, getString(R.string.have_friend), Toast.LENGTH_SHORT).show();
-                        }
-                        finish();
-                    } catch (Exception e) {
-                        Toast.makeText(this, getString(R.string.send_request_error), Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
+                    Gson gson = new Gson();
+                    QrCardInfo qrCardInfo = gson.fromJson(jsonresult, QrCardInfo.class);
+                    String name = qrCardInfo.getName();
+                    if (qrCardInfo.getName().contains(Constants.DOMAINNAME)) {
+                        name = name.split("@")[0];
                     }
+                    Intent intent=new Intent(ScanQRCodeActivity.this,IndividualDetailsActivity.class);
+                    intent.putExtra("type",2);
+                    intent.putExtra("name",name);
+                    startActivity(intent);
+                    finish();
                 } else if (result.contains(Constants.MONEYIN)) {
                     try {
                         String base64 = result.substring(Constants.MONEYIN.length(), result.length());

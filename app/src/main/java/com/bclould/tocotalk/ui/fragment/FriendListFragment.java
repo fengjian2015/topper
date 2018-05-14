@@ -20,6 +20,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,11 +29,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bclould.tocotalk.Presenter.CloudMessagePresenter;
 import com.bclould.tocotalk.Presenter.PersonalDetailsPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.AuatarListInfo;
+import com.bclould.tocotalk.model.RemarkListInfo;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.activity.NewFriendActivity;
 import com.bclould.tocotalk.ui.activity.SearchActivity;
@@ -60,8 +64,14 @@ import org.jivesoftware.smack.roster.Roster;
 import org.jivesoftware.smack.roster.RosterEntry;
 import org.jivesoftware.smack.roster.RosterGroup;
 import org.jivesoftware.smack.roster.RosterListener;
+import org.jivesoftware.smack.util.StringUtils;
+import org.jivesoftware.smackx.vcardtemp.VCardManager;
+import org.jivesoftware.smackx.vcardtemp.packet.VCard;
+import org.json.JSONArray;
+import org.jxmpp.jid.EntityBareJid;
 import org.jxmpp.jid.Jid;
 import org.jxmpp.jid.impl.JidCreate;
+import org.jxmpp.jid.impl.LocalAndDomainpartJid;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -71,6 +81,7 @@ import java.util.TreeMap;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import c.t.m.g.v;
 
 import static com.bclould.tocotalk.ui.activity.SystemSetActivity.INFORM;
 import static com.bclould.tocotalk.utils.MySharedPreferences.SETTING;
@@ -193,6 +204,8 @@ public class FriendListFragment extends Fragment {
         } else if (msg.equals(getString(R.string.delete_friend))) {
             queryUser();
             mFriendListVPAdapter.notifyDataSetChanged();
+        }else if(msg.equals(getString(R.string.change_friend_remark))){
+            updateData();
         }
     }
 
@@ -494,11 +507,10 @@ public class FriendListFragment extends Fragment {
                 UtilTool.Log("分組", rosterGroups.size() + "");
                 for (RosterGroup group : rosterGroups) {
                     List<RosterEntry> entries = group.getEntries();
-                    UtilTool.Log("好友2", entries.size() + "");
                     for (final RosterEntry rosterEntry : entries) {
                         if (!mMgr.findUser(rosterEntry.getUser())) {
                             String user = rosterEntry.getUser().substring(0, rosterEntry.getUser().indexOf("@"));
-                            UtilTool.Log("好友2", user);
+                            UtilTool.Log("好友2", user+"   "+rosterEntry.getName());
                             mPersonalDetailsPresenter.getFriendImageList(user, new PersonalDetailsPresenter.CallBack2() {
                                 @Override
                                 public void send(final AuatarListInfo.DataBean dataBean) {
@@ -539,6 +551,16 @@ public class FriendListFragment extends Fragment {
                         }
                     }
                 }
+                String user=mMgr.queryAllUserName().toString().replaceAll(" ", "");
+                if(StringUtils.isEmpty(user))return;
+                mPersonalDetailsPresenter.getFriendRemark(user.substring(1,user.length()-1), new PersonalDetailsPresenter.CallBack3() {
+                    @Override
+                    public void send(List<RemarkListInfo.DataBean> listdata) {
+                        if(listdata==null)return;
+                        mMgr.updateRemark(listdata);
+                        updateData();
+                    }
+                });
             }
 
         } catch (Exception e) {

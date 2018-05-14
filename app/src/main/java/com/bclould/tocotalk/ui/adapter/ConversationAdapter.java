@@ -20,6 +20,7 @@ import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.ui.activity.ConversationActivity;
 import com.bclould.tocotalk.ui.fragment.ConversationFragment;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -112,7 +113,12 @@ public class ConversationAdapter extends RecyclerView.Adapter {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             mDatas = baos.toByteArray();
-            mTab1ItemName.setText(conversationInfo.getFriend());
+            String remark=mMgr.queryRemark(conversationInfo.getUser());
+            if(!StringUtils.isEmpty(remark)){
+                mTab1ItemName.setText(remark);
+            }else {
+                mTab1ItemName.setText(conversationInfo.getFriend());
+            }
             mTab1ItemText.setText(conversationInfo.getMessage());
             mTime.setText(conversationInfo.getTime());
             if (conversationInfo.getNumber() != 0) {

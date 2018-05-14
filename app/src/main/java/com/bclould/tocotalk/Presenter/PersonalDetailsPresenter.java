@@ -1,5 +1,6 @@
 package com.bclould.tocotalk.Presenter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -8,9 +9,13 @@ import android.widget.Toast;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.AuatarListInfo;
 import com.bclould.tocotalk.model.BaseInfo;
+import com.bclould.tocotalk.model.RemarkListInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
+import com.bclould.tocotalk.utils.ToastShow;
 import com.bclould.tocotalk.utils.UtilTool;
+
+import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -125,6 +130,42 @@ public class PersonalDetailsPresenter {
         }
     }
 
+    public void getFriendRemark(String name,final CallBack3 callBack3){
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .getRemarkList(UtilTool.getToken(), name)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<RemarkListInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(RemarkListInfo remarkListInfo) {
+                            if (remarkListInfo.getStatus() == 1) {
+                                callBack3.send(remarkListInfo.getData());
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            hideDialog();
+                            ToastShow.showToast2((Activity) mContext, e.getMessage());
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     //定义接口
     public interface CallBack {
         void send();
@@ -133,5 +174,9 @@ public class PersonalDetailsPresenter {
     //定义接口
     public interface CallBack2 {
         void send(AuatarListInfo.DataBean data);
+    }
+
+    public interface CallBack3{
+        void send(List<RemarkListInfo.DataBean> listdata);
     }
 }

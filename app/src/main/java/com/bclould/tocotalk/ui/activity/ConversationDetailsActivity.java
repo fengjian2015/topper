@@ -84,9 +84,18 @@ public class ConversationDetailsActivity extends BaseActivity {
     private void init() {
         Bitmap mUserImage = UtilTool.getImage(mMgr, mUser, this);
         imageHead.setImageBitmap(mUserImage);
-        tvName.setText(mName);
+        setName();
         changeTop();
         changeOTRState();
+    }
+
+    private void setName(){
+        String remark=mMgr.queryRemark(mUser);
+        if(!com.bclould.tocotalk.utils.StringUtils.isEmpty(remark)){
+            tvName.setText(remark);
+        }else {
+            tvName.setText(mName);
+        }
     }
 
     private void changeTop() {
@@ -184,6 +193,7 @@ public class ConversationDetailsActivity extends BaseActivity {
         Intent intent=new Intent(this,IndividualDetailsActivity.class);
         intent.putExtra("user",mUser);
         intent.putExtra("name",mName);
+        intent.putExtra("type",1);
         startActivity(intent);
     }
 
@@ -204,6 +214,8 @@ public class ConversationDetailsActivity extends BaseActivity {
             changeOTRState();
         }else if(msg.equals(getString(R.string.delete_friend))){
             finish();
+        }else if(msg.equals(getString(R.string.change_friend_remark))){
+            setName();
         }
     }
 

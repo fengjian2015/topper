@@ -34,6 +34,7 @@ import com.bclould.tocotalk.model.OutCoinSiteInfo;
 import com.bclould.tocotalk.model.QuestionInfo;
 import com.bclould.tocotalk.model.ReceiptInfo;
 import com.bclould.tocotalk.model.RedRecordInfo;
+import com.bclould.tocotalk.model.RemarkListInfo;
 import com.bclould.tocotalk.model.ReviewListInfo;
 import com.bclould.tocotalk.model.StateInfo;
 import com.bclould.tocotalk.model.TransRecordInfo;
@@ -959,5 +960,13 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("name") String name,
             @Field("remark") String remark
+    );
+
+    //獲取好友備註名
+    @FormUrlEncoded
+    @POST("user/getUserRemark")
+    Observable<RemarkListInfo> getRemarkList(
+            @Header("Authorization") String token,
+            @Field("name") String name
     );
 }

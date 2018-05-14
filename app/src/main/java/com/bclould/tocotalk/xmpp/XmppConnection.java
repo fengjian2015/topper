@@ -1,5 +1,6 @@
 package com.bclould.tocotalk.xmpp;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,6 +15,8 @@ import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.UserInfo;
+import com.bclould.tocotalk.service.IMCoreService;
+import com.bclould.tocotalk.service.IMService;
 import com.bclould.tocotalk.ui.activity.MainActivity;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -49,6 +52,7 @@ import org.jivesoftware.smackx.search.ReportedData;
 import org.jivesoftware.smackx.search.UserSearchManager;
 import org.jivesoftware.smackx.vcardtemp.VCardManager;
 import org.jivesoftware.smackx.vcardtemp.packet.VCard;
+import org.jivesoftware.smackx.vcardtemp.provider.VCardProvider;
 import org.jivesoftware.smackx.xdata.Form;
 import org.jivesoftware.smackx.xdata.FormField;
 import org.jxmpp.jid.EntityBareJid;
@@ -110,11 +114,52 @@ public class XmppConnection {
      */
     public AbstractXMPPConnection getConnection() {
         if (connection == null||!connection.isConnected()) {
-            // 开线程打开连接，避免在主线程里面执行HTTP请求
-            // Caused by: android.os.NetworkOnMainThreadException
-            openConnection();
+            synchronized (XmppConnection.this) {
+                // 开线程打开连接，避免在主线程里面执行HTTP请求
+                // Caused by: android.os.NetworkOnMainThreadException
+//            openConnection();
+                new Thread(){
+                    @Override
+                    public void run() {
+                        openConnection();
+                    }
+                }.start();
+            }
         }
         return connection;
+    }
+
+    public static void loginService(Context context) {
+        Intent intent = new Intent();
+        intent.setAction(IMCoreService.ACTION_LOGIN);
+        context.sendBroadcast(intent);
+//		IMCoreService.startService = true;
+//		MyLogger.xuxLog().i("将静态startService变为了login-"+IMCoreService.startService);
+    }
+
+    //退出登錄用
+    public static void logoutService(Context context) {
+        if(XmppListener.xmppListener!=null)
+        XmppListener.get(context).remove();
+        Intent intent = new Intent();
+        intent.setAction(IMCoreService.ACTION_LOGOUT);
+        context.sendBroadcast(intent);
+//		IMCoreService.startService = false;
+        context.stopService(new Intent(context, IMService.class));
+        LoginThread.isStartExReconnect = false;
+        stopAllIMCoreService(context);
+//		MyLogger.xuxLog().i("将静态startService变为了logout-"+IMCoreService.startService);
+    }
+
+    /***
+     *
+     * 通过广播去关闭service
+     *
+     */
+    public static void stopAllIMCoreService(Context context){
+        Intent intent = new Intent();
+        intent.setAction(IMCoreService.ACTION_LOGOUT);
+        context.sendBroadcast(intent);
     }
 
     /**
@@ -127,7 +172,7 @@ public class XmppConnection {
     /**
      * 打开连接
      */
-    public boolean openConnection() {
+    public AbstractXMPPConnection openConnection() {
 
         try {
             if (null == connection || !connection.isAuthenticated() || !connection.isConnected()) {
@@ -169,16 +214,15 @@ public class XmppConnection {
                 connection.connect();// 连接到服务器
                 ProviderManager.addIQProvider("muc", "MZH", new MUCPacketExtensionProvider());
                 UtilTool.Log("fsdafa", "连接成功");
-                return true;
             }
+            return connection;
         } catch (Exception xe) {
             EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.login_error)));
             mHandler.sendEmptyMessage(0);
             UtilTool.Log("fsdafa", "连接失败 " + xe.getMessage());
             xe.printStackTrace();
-            connection = null;
         }
-        return false;
+        return connection;
     }
 
     android.os.Handler mHandler = new android.os.Handler() {
@@ -202,7 +246,6 @@ public class XmppConnection {
             connection.removeConnectionListener(connectionListener);
             if (connection.isConnected())
                 connection.disconnect();
-            connection = null;
         }
         Log.i("XmppConnection", "关闭连接");
     }
@@ -217,33 +260,12 @@ public class XmppConnection {
         return connection != null && connection.isConnected() && connection.isAuthenticated();
     }
 
-    /**
-     * 登录
-     *
-     * @param account  登录帐号
-     * @param password 登录密码
-     * @return true登录成功
-     */
-    public boolean login(String account, String password) {
-        try {
-            if (getConnection() == null)
-                return false;
 
-            getConnection().login(account, password);
-
-            // 更改在线状态
-            setPresence(0);
-
-            // 添加连接监听
-            connectionListener = new XMConnectionListener(mContext);
-            getConnection().removeConnectionListener(connectionListener);
-            getConnection().addConnectionListener(connectionListener);
-            return true;
-        } catch (XMPPException | IOException | SmackException | InterruptedException xe) {
-            xe.printStackTrace();
-            UtilTool.Log("XmppConnection", xe.getMessage());
+    public XMConnectionListener getXMConnectionListener(){
+        if(connectionListener==null){
+            connectionListener=new XMConnectionListener(mContext);
         }
-        return false;
+        return connectionListener;
     }
 
     /**
@@ -1078,5 +1100,42 @@ public class XmppConnection {
     public void setContext(Context context) {
         mContext = context;
     }
+
+    /**
+     * 判断某个服务是否正在运行的方法
+     *
+     * @param mContext
+     * @param serviceName
+     *            是包名+服务的类名（例如：net.loonggg.testbackstage.TestService）
+     * @return true代表正在运行，false代表服务没有正在运行
+     */
+    public static boolean isServiceWork(Context mContext, String serviceName) {
+        boolean isWork = false;
+        if(mContext==null)return isWork;
+        try {
+            ActivityManager myAM = (ActivityManager) mContext
+                    .getSystemService(Context.ACTIVITY_SERVICE);
+            List<ActivityManager.RunningServiceInfo> myList = myAM.getRunningServices(100);
+            if (myList == null) {
+                return false;
+            }
+            if (myList.size() <= 0) {
+                return false;
+            }
+            for (int i = 0; i < myList.size(); i++) {
+                if(myList.get(i).service==null)continue;
+                String mName = myList.get(i).service.getClassName().toString();
+                if (mName!=null&&mName.equals(serviceName)) {
+                    UtilTool.Log("fengjian","service--test:" + mName);
+                    isWork = true;
+                    break;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return isWork;
+    }
+
 }
 

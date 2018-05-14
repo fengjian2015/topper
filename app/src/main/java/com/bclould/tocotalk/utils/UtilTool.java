@@ -17,6 +17,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.telephony.TelephonyManager;
 import android.util.Base64;
@@ -690,4 +691,31 @@ public class UtilTool {
         }
         return str;
     }
+    /**
+     * 创建根缓存目录
+     *
+     * @return
+     */
+    public static String createRootPath(Context context) {
+        String cacheRootPath;
+        if (isSdCardAvailable()) {
+            // /sdcard/Android/data/<application package>/cache
+            cacheRootPath = context.getExternalCacheDir().getPath();
+        } else {
+            // /data/data/<application package>/cache
+            cacheRootPath = context.getCacheDir().getPath();
+        }
+        return cacheRootPath;
+    }
+
+    /**
+     * sd卡是否可用
+     *
+     * @return
+     */
+    public static boolean isSdCardAvailable() {
+        return Environment.getExternalStorageState().equals(
+                android.os.Environment.MEDIA_MOUNTED);
+    }
+
 }

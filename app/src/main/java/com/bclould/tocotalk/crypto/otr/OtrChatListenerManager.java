@@ -5,7 +5,9 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
 
@@ -49,17 +51,29 @@ public class OtrChatListenerManager {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void changeState(String mUser,Context context){
         try {
+            if (getIsAboutOpen(sessionID(UtilTool.getJid(),mUser))){
+                Toast.makeText(context,context.getString(R.string.is_open),Toast.LENGTH_SHORT).show();
+                return;
+            }
             if("true".equals(getOTRState(mUser))){
-                addOTRState(mUser,"false");
                 endMessage(sessionID(UtilTool.getJid(),mUser));
             }else{
                 createOtrChatManager(sessionID(UtilTool.getJid(),mUser),context);
                 startMessage(sessionID(UtilTool.getJid(),mUser),context);
-               startSession(sessionID(UtilTool.getJid(),mUser));
+                startSession(sessionID(UtilTool.getJid(),mUser));
             }
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public boolean getIsAboutOpen(SessionID sessionID){
+        try {
+            return hashMap.get(sessionID.toString()).getIsAboutOpen();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public void createOtrChatManager(SessionID sessionID, Context context){

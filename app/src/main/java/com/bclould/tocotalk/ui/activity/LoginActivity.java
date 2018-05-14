@@ -24,6 +24,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.utils.AnimatorTool;
 import com.bclould.tocotalk.utils.MySharedPreferences;
+import com.bclould.tocotalk.xmpp.XmppConnection;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -74,6 +75,8 @@ public class LoginActivity extends AppCompatActivity {
 
 //        showCaptcha();
         MyApp.getInstance().addActivity(this);
+
+        XmppConnection.getInstance().logoutService(this);
 
     }
 

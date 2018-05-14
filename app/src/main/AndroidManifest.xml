@@ -694,6 +694,20 @@
         <activity android:name=".ui.activity.IndividualDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+
+        <service
+            android:name=".service.IMService"
+            android:enabled="true" />
+        <service
+            android:name=".service.IMCoreService"
+            android:process=":msgPush" />
+        <receiver
+            android:name=".xmpp.StartIMServiceReceiver"
+            android:enabled="true">
+            <intent-filter android:priority="1000">
+                <action android:name="com.bclould.tocotalk.action.ACTION_START_IMSERVICE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -62,44 +62,12 @@ public class XMConnectionListener implements ConnectionListener {
         // 判断账号已被登录
         boolean error = e.getMessage().equals("stream:error (conflict)");
         if (!error) {
+//            XmppConnection.logoutService(mContext);
             // 关闭连接
             XmppConnection.getInstance().closeConnection();
-            // 重连服务器
-            if (tExit == null) {
-                tExit = new Timer();
-                tExit.schedule(new TimeTask(), loginTime);
-            }
         } else {
+            // TODO: 2018/5/14 這裡需要做的是踢出登錄
             // 退出登录
-        }
-    }
-
-    public class TimeTask extends TimerTask {
-        @Override
-        public void run() {
-
-            if (UtilTool.getUser() != null && UtilTool.getpw() != null) {
-                Log.i("XMConnectionListener", "尝试登录");
-                // 连接服务器
-                try {
-                    if (!XmppConnection.getInstance().isAuthenticated()) {// 用户未登录
-                        if (XmppConnection.getInstance().login(UtilTool.getUser(), UtilTool.getpw())) {
-                            Log.i("XMConnectionListener", "登录成功");
-                            EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.login_succeed)));
-                            Intent intent = new Intent();
-                            intent.setAction("XMPPConnectionListener");
-                            intent.putExtra("type", true);
-                            mContext.sendBroadcast(intent);
-                        } else {
-                            Log.i("XMConnectionListener", "登录失败 重新尝试");
-                            tExit.schedule(new TimeTask(), loginTime);
-                        }
-                    }
-                } catch (Exception e) {
-                    Log.i("XMConnectionListener", "尝试登录,出现异常!");
-                    Log.i("XMConnectionListener", e.getMessage());
-                }
-            }
         }
     }
 
