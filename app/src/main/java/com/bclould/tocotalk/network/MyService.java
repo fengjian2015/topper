@@ -383,7 +383,8 @@ public interface MyService {
     Observable<OrderListInfo> getOrderList(
             @Header("Authorization") String token,
             @Field("coin_name") String coin_name,
-            @Field("status") String status
+            @Field("status") String status,
+            @Field("user_name") String user_name
     );
 
     //订单详情

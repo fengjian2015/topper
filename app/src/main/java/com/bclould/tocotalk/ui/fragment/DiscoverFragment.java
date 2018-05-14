@@ -23,10 +23,8 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.ui.activity.GonggaoManagerActivity;
 import com.bclould.tocotalk.ui.activity.NewsEditActivity;
 import com.bclould.tocotalk.ui.activity.NewsManagerActivity;
-import com.bclould.tocotalk.ui.activity.PawnActivity;
 import com.bclould.tocotalk.ui.activity.PublicshDynamicActivity;
 import com.bclould.tocotalk.ui.adapter.CloudMessageVPAdapter;
-import com.bclould.tocotalk.utils.UtilTool;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -189,7 +187,7 @@ public class DiscoverFragment extends Fragment {
 
         mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_news, null);
 
-        mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 4, true);
+        mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 6, true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
         // 设置背景颜色变暗
         WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
@@ -224,27 +222,15 @@ public class DiscoverFragment extends Fragment {
 
                     switch (index) {
                         case 0:
-                            if (UtilTool.getUser().equals("liaolinan2") || UtilTool.getUser().equals("conn") || UtilTool.getUser().equals("raymond") || UtilTool.getUser().equals("154323555") || UtilTool.getUser().equals("dev2018") || UtilTool.getUser().equals("xihongwei")) {
-                                startActivity(new Intent(getActivity(), GonggaoManagerActivity.class));
-                            } else {
-                                startActivity(new Intent(getActivity(), PawnActivity.class));
-                            }
+                            startActivity(new Intent(getActivity(), GonggaoManagerActivity.class));
                             mPopupWindow.dismiss();
                             break;
                         case 1:
-                            if (UtilTool.getUser().equals("liaolinan2") || UtilTool.getUser().equals("conn") || UtilTool.getUser().equals("raymond") || UtilTool.getUser().equals("154323555") || UtilTool.getUser().equals("dev2018") || UtilTool.getUser().equals("xihongwei")) {
-                                startActivity(new Intent(getActivity(), NewsManagerActivity.class));
-                            } else {
-                                startActivity(new Intent(getActivity(), PawnActivity.class));
-                            }
+                            startActivity(new Intent(getActivity(), NewsManagerActivity.class));
                             mPopupWindow.dismiss();
                             break;
                         case 2:
-                            if (UtilTool.getUser().equals("liaolinan2") || UtilTool.getUser().equals("conn") || UtilTool.getUser().equals("raymond") || UtilTool.getUser().equals("154323555") || UtilTool.getUser().equals("dev2018") || UtilTool.getUser().equals("xihongwei")) {
-                                startActivity(new Intent(getActivity(), NewsEditActivity.class));
-                            } else {
-                                startActivity(new Intent(getActivity(), PawnActivity.class));
-                            }
+                            startActivity(new Intent(getActivity(), NewsEditActivity.class));
                             mPopupWindow.dismiss();
                             break;
                         case 3:

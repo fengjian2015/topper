@@ -4,13 +4,12 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.widget.Toast;
+
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.IndividualInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.UtilTool;
-
-import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -48,7 +47,7 @@ public class IndividualDetailsPresenter {
     }
 
     //獲取個人信息
-    public void getIndividual(String name,final CallBack callBack) {
+    public void getIndividual(String name, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(context)) {
             showDialog();
             RetrofitUtil.getInstance(context)
@@ -71,6 +70,7 @@ public class IndividualDetailsPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
+                            UtilTool.Log("信息", e.getMessage());
                             Toast.makeText(context, context.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -85,12 +85,12 @@ public class IndividualDetailsPresenter {
     }
 
     //修改備註
-    public void getChangeRemark(String name,String remark,final CallBack callBack) {
+    public void getChangeRemark(String name, String remark, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(context)) {
             showDialog();
             RetrofitUtil.getInstance(context)
                     .getServer()
-                    .getChangeRemark(UtilTool.getToken(),name,remark)
+                    .getChangeRemark(UtilTool.getToken(), name, remark)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<IndividualInfo>() {

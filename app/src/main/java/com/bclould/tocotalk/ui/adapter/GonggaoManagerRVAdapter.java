@@ -10,7 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.model.GonggaoListInfo;
 import com.bclould.tocotalk.ui.activity.GonggaoDetailActivity;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,9 +25,11 @@ import butterknife.ButterKnife;
 public class GonggaoManagerRVAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;
+    private final List<GonggaoListInfo.DataBean> mDataList;
 
-    public GonggaoManagerRVAdapter(Context context) {
+    public GonggaoManagerRVAdapter(Context context, List<GonggaoListInfo.DataBean> dataList) {
         mContext = context;
+        mDataList = dataList;
     }
 
     @Override
@@ -36,12 +41,16 @@ public class GonggaoManagerRVAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        ViewHolder viewHolder = (ViewHolder) holder;
+        viewHolder.setData(mDataList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        if (mDataList.size() != 0) {
+            return mDataList.size();
+        }
+        return 0;
     }
 
 
@@ -58,6 +67,7 @@ public class GonggaoManagerRVAdapter extends RecyclerView.Adapter {
         TextView mXx;
         @Bind(R.id.tv_content)
         TextView mTvContent;
+        private int mId;
 
         ViewHolder(View view) {
             super(view);
@@ -65,9 +75,23 @@ public class GonggaoManagerRVAdapter extends RecyclerView.Adapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mContext.startActivity(new Intent(mContext, GonggaoDetailActivity.class));
+                    Intent intent = new Intent(mContext, GonggaoDetailActivity.class);
+                    intent.putExtra("id", mId);
+                    mContext.startActivity(intent);
                 }
             });
+        }
+
+        public void setData(GonggaoListInfo.DataBean dataBean) {
+            mId = dataBean.getId();
+            mTvTitle.setText(dataBean.getTitle());
+            mTvTime.setText(dataBean.getCreated_at());
+            mTvContent.setText(dataBean.getContent());
+            if (dataBean.getIs_new() == 1) {
+                mTvNew.setVisibility(View.VISIBLE);
+            } else {
+                mTvNew.setVisibility(View.GONE);
+            }
         }
     }
 }

@@ -252,7 +252,6 @@ public class OtcActivity extends BaseActivity {
     private void setSelector(int index) {
         for (int i = 0; i < mLlMenu.getChildCount(); i++) {
             if (i == index) {
-                mLlMenu.getChildAt(i).setSelected(true);
                 switch (index) {
                     case 0:
                         mTvXx.setVisibility(View.VISIBLE);
@@ -270,8 +269,6 @@ public class OtcActivity extends BaseActivity {
                         mTvXx3.setVisibility(View.VISIBLE);
                         break;
                 }
-            } else {
-                mLlMenu.getChildAt(i).setSelected(false);
             }
         }
     }

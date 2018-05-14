@@ -671,25 +671,29 @@ public class UtilTool {
     }
 
     public static String removeZero(String sum) {
-        char[] chars = sum.toCharArray();
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < chars.length; i++) {
-            list.add(chars[i] + "");
-        }
-        for (int i = list.size() - 1; i >= 0; i--) {
-            if (list.get(i).equals("0")) {
-                list.remove(i);
-            } else if (list.get(i).equals(".")) {
-                list.remove(i);
-            } else {
-                break;
+        if (sum.contains(".")) {
+            char[] chars = sum.toCharArray();
+            List<String> list = new ArrayList<>();
+            for (int i = 0; i < chars.length; i++) {
+                list.add(chars[i] + "");
             }
+            for (int i = list.size() - 1; i >= 0; i--) {
+                if (list.get(i).equals("0")) {
+                    list.remove(i);
+                } else if (list.get(i).equals(".")) {
+                    list.remove(i);
+                } else {
+                    break;
+                }
+            }
+            String str = "";
+            for (String s : list) {
+                str += s;
+            }
+            return str;
+        } else {
+            return sum;
         }
-        String str = "";
-        for (String s : list) {
-            str += s;
-        }
-        return str;
     }
     /**
      * 创建根缓存目录

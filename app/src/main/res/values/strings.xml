@@ -283,7 +283,7 @@
     <string name="agree_with_the_protocol">同意服務協議</string>
     <string name="scan_qr_code_hint">將二維碼放入框內，即可自動掃描</string>
     <string name="search_friend">搜索好友</string>
-    <string name="et_search_content">輸入搜索內容</string>
+    <string name="et_search_content">輸入用戶名</string>
     <string name="create_red_packet">創建紅包</string>
     <string name="money">金額</string>
     <string name="et_money">輸入金額</string>
@@ -741,7 +741,7 @@
     <string name="drafts">草稿箱</string>
     <string name="no_news">暫無新聞....</string>
     <string name="copy2"><![CDATA[複製>>]]></string>
-    <string name="gonggao_manager">公告管理</string>
+    <string name="gonggao_manager">公告歷史</string>
     <string name="bet_hint">輸入/隨機 數組，每次最多投5注</string>
     <string name="bet_hint2">最多一次只能投5注</string>
     <string name="top">置頂</string>
@@ -768,9 +768,14 @@
     <string name="empty_success">清空成功</string>
     <string name="remark_opposite">備註對方</string>
     <string name="message_top_change">消息置頂改變</string>
+    <string name="no_gonggao">暫無公告....</string>
+    <string name="et_order_who">輸入用戶名</string>
+    <string name="sum_sell">總賣出</string>
+    <string name="zhankai">展開</string>
     <string name="start_otr">準備開啟OTR加密</string>
     <string name="close_otr">關閉OTR加密</string>
     <string name="start_otr_timeout">開啟OTR加密超時</string>
     <string name="is_open">正在開啟OTR，請稍等</string>
     <string name="change_friend_remark">修改好友備註</string>
+    <string name="no_order">沒有訂單</string>
 </resources>

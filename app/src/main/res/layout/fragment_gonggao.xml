@@ -15,6 +15,7 @@
 
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_kaifa"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

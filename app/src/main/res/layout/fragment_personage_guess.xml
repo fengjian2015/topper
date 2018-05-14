@@ -17,13 +17,14 @@
 
         <android.support.v7.widget.CardView
             android:id="@+id/cb_search"
-            android:layout_width="@dimen/x500"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/y90"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/x40"
+            android:layout_marginRight="@dimen/x40"
             android:layout_marginTop="@dimen/y30"
             android:visibility="gone"
-            app:cardBackgroundColor="#CCCFD2"
             app:cardCornerRadius="@dimen/x40">
 
             <LinearLayout
@@ -49,9 +50,9 @@
                 <ImageView
                     android:id="@+id/iv_search"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/x20"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/x40"
                     android:layout_weight="1"
                     android:src="@mipmap/icon_seek"/>
 

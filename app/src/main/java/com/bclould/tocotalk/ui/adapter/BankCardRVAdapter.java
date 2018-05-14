@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +36,6 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
     private final BankCardActivity mActivity;
     private final List<CardListInfo.DataBean> mCardList;
     private final BankCardPresenter mBankCardPresenter;
-
     //构造方法
     public BankCardRVAdapter(BankCardActivity activity, List<CardListInfo.DataBean> cardList, BankCardPresenter bankCardPresenter) {
         mActivity = activity;
@@ -76,8 +76,8 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
         TextView mCardType;
         @Bind(R.id.bank_card_number)
         TextView mBankCardNumber;
-        @Bind(R.id.tv_delete)
-        TextView mTvDelete;
+        @Bind(R.id.iv_delete)
+        ImageView mIvDelete;
         @Bind(R.id.rl_card)
         RelativeLayout mRlCard;
         private CardListInfo.DataBean mData;
@@ -107,7 +107,7 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
             } else {
                 mRlCard.setBackground(mActivity.getDrawable(R.mipmap.img_bg_bankcard));
             }
-            mTvDelete.setOnClickListener(new View.OnClickListener() {
+            mIvDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     showDialog(data, 0);
