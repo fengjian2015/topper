@@ -1,5 +1,7 @@
 package com.bclould.tocotalk.ui.fragment;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
@@ -28,6 +30,7 @@ import android.widget.Toast;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.QrRedInfo;
+import com.bclould.tocotalk.service.IMCoreService;
 import com.bclould.tocotalk.ui.activity.AddFriendActivity;
 import com.bclould.tocotalk.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tocotalk.ui.activity.PublicshDynamicActivity;
@@ -37,9 +40,13 @@ import com.bclould.tocotalk.ui.adapter.CloudMessageVPAdapter;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.ToastShow;
 import com.bclould.tocotalk.utils.UtilTool;
+import com.bclould.tocotalk.xmpp.ConnectStateChangeListenerManager;
+import com.bclould.tocotalk.xmpp.IConnectStateChangeListener;
 import com.bclould.tocotalk.xmpp.XMConnectionListener;
 import com.bclould.tocotalk.xmpp.XmppConnection;
+import com.bclould.tocotalk.xmpp.XmppListener;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -63,7 +70,7 @@ import static android.app.Activity.RESULT_OK;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class CloudMessageFragment extends Fragment {
+public class CloudMessageFragment extends Fragment implements IConnectStateChangeListener{
 
 
     public static CloudMessageFragment instance = null;
@@ -98,6 +105,7 @@ public class CloudMessageFragment extends Fragment {
     private Timer tExit;
     private AnimationDrawable mAnim;
     private boolean isLogin = false;
+    private int imState = -1;//用記錄斷狀態，避免狀態重複修改
 
     public static CloudMessageFragment getInstance() {
 
@@ -128,7 +136,19 @@ public class CloudMessageFragment extends Fragment {
 
     //初始化界面
     private void initInterface() {
-        loginIM();
+        initRelogin();
+    }
+    private void initRelogin() {
+        ConnectStateChangeListenerManager.get().registerStateChangeListener(this);
+        if (ConnectStateChangeListenerManager.get().getCurrentState() != ConnectStateChangeListenerManager.CONNECTED) {
+            ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
+        }
+        Intent intent = new Intent(getContext(), IMCoreService.class);
+        if (XmppConnection.isServiceWork(getContext(),"com.bclould.tocotalk.service.IMCoreService")) {
+            XmppConnection.stopAllIMCoreService(getContext());
+            getContext().stopService(intent);
+        }
+        getContext().startService(intent);
     }
 
 
@@ -159,49 +179,6 @@ public class CloudMessageFragment extends Fragment {
 
     }
 
-    //登录即时通讯
-    private void loginIM() {
-        mLlLogin.setVisibility(View.VISIBLE);
-        mAnim = (AnimationDrawable) mIvAnim.getBackground();
-        mAnim.start();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    //连接openfile
-                    AbstractXMPPConnection connection = XmppConnection.getInstance().getConnection();
-                    //判断是否连接
-                    if (connection != null && connection.isConnected()) {
-                        String myUser = UtilTool.getJid();
-                        String user = myUser.substring(0, myUser.indexOf("@"));
-                        connection.login(user, UtilTool.getpw());
-                        connection.addConnectionListener(new XMConnectionListener(getContext()));
-                        /*if (connection.isAuthenticated()) {//登录成功
-                            PingManager.setDefaultPingInterval(10);
-                            PingManager myPingManager = PingManager.getInstanceFor(connection);
-                            myPingManager.registerPingFailedListener(new PingFailedListener() {
-                                @Override
-                                public void pingFailed() {
-                                    Toast.makeText(MainActivity.this, "发送心跳包失败", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }*/
-                        //登录成功发送通知
-                        UtilTool.Log("fsdafa", "登录成功");
-                        mHandler.sendEmptyMessage(1);
-                    }else if(!connection.isConnected()){
-                        XmppConnection.getInstance().getConnection().connect();
-                        mHandler.sendEmptyMessage(0);
-                    }
-                } catch (Exception e) {
-                    mHandler.sendEmptyMessage(0);
-                    UtilTool.Log("日志", e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
     //显示登录中Dialog
     public void showDialog() {
         if (mProgressDialog == null) {
@@ -229,6 +206,7 @@ public class CloudMessageFragment extends Fragment {
         }
     }
 
+    @SuppressLint("HandlerLeak")
     Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -240,6 +218,7 @@ public class CloudMessageFragment extends Fragment {
                         mLlFriend.setClickable(true);
                         mCloudCircleAdd.setClickable(true);
                     }
+                    XmppListener.xmppListener=null;
                     getPhoneSize();
                     setSelector(0);
                     mCloudCircleVp.setCurrentItem(0);
@@ -247,10 +226,10 @@ public class CloudMessageFragment extends Fragment {
                     initViewPager();
                     //发送登录失败通知
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.login_error)));
+                    if(mAnim!=null)
                     mAnim.stop();
                     mLlLogin.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                    mHandler.sendEmptyMessageDelayed(3,5000);
+                    ToastShow.showToast2((Activity) getContext(),getString(R.string.toast_network_error));
                     break;
                 case 1:
                     if (mLlChat != null && mLlFriend != null && mCloudCircleAdd != null) {
@@ -258,17 +237,18 @@ public class CloudMessageFragment extends Fragment {
                         mLlFriend.setClickable(true);
                         mCloudCircleAdd.setClickable(true);
                     }
+                    XmppListener.get(getContext());
                     getPhoneSize();
                     initTopMenu();
                     initViewPager();
                     setSelector(0);
                     mCloudCircleVp.setCurrentItem(0);
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
+                    if(mAnim!=null)
                     mAnim.stop();
                     mLlLogin.setVisibility(View.GONE);
                     isLogin = true;
                     MyApp.getInstance().isLogin = true;
-                    pingService();
                     break;
                 case 2:
                     if (mLlChat != null && mLlFriend != null && mCloudCircleAdd != null) {
@@ -286,68 +266,40 @@ public class CloudMessageFragment extends Fragment {
                     intent.setAction("XMPPConnectionListener");
                     intent.putExtra("type", false);
                     getContext().sendBroadcast(intent);
-                    mAnim.stop();
+                    if(mAnim!=null)
+                        mAnim.stop();
                     mLlLogin.setVisibility(View.GONE);
                     Toast.makeText(getContext(), getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                     break;
                 case 3:
-                    loginIM();
+                    XmppListener.xmppListener=null;
                     break;
             }
         }
     };
 
-    private class TimeTask extends TimerTask {
-        @Override
-        public void run() {
-
-            if (UtilTool.getUser() != null && UtilTool.getpw() != null) {
-                Log.i("XMConnectionListener", "尝试登录");
-                // 连接服务器
-                try {
-                    if (!XmppConnection.getInstance().isAuthenticated()) {// 用户未登录
-                        if (XmppConnection.getInstance().login(UtilTool.getUser(), UtilTool.getpw())) {
-                            Log.i("XMConnectionListener", "登录成功");
-                            EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
-                            Intent intent = new Intent();
-                            intent.setAction("XMPPConnectionListener");
-                            intent.putExtra("type", true);
-                            getContext().sendBroadcast(intent);
-                        } else {
-                            Log.i("XMConnectionListener", "重新登录");
-                            tExit.schedule(new TimeTask(), 1000);
-                        }
-                    }
-                } catch (Exception e) {
-                    Log.i("XMConnectionListener", "尝试登录,出现异常!");
-                    Log.i("XMConnectionListener", e.getMessage());
-                }
-            }
+    @Override
+    public void onStateChange(int serviceState) {
+        if (serviceState == -1||mCloudCircleVp==null) return;
+        if(imState==serviceState){
+            return;
+        }else{
+            imState=serviceState;
         }
-    }
-
-    private void pingService() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                PingManager pingManager = PingManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-                pingManager.setPingInterval(60);
-                try {
-                    pingManager.pingMyServer();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                pingManager.registerPingFailedListener(new PingFailedListener() {
-                    @Override
-                    public void pingFailed() {
-                        if (tExit == null) {
-                            tExit = new Timer();
-                            tExit.schedule(new TimeTask(), 1000);
-                        }
-                    }
-                });
-            }
-        }).start();
+        if (serviceState == ConnectStateChangeListenerManager.CONNECTED) {// 已连接
+            mHandler.sendEmptyMessage(1);
+        } else if (serviceState == ConnectStateChangeListenerManager.CONNECTING) {// 连接中
+            mLlLogin.setVisibility(View.VISIBLE);
+            if(mAnim!=null)
+                mAnim.stop();
+            mAnim = (AnimationDrawable) mIvAnim.getBackground();
+            mAnim.start();
+            mHandler.sendEmptyMessage(3);
+        } else if (serviceState == ConnectStateChangeListenerManager.DISCONNECT) {// 未连接
+            mHandler.sendEmptyMessage(0);
+        } else if(serviceState == ConnectStateChangeListenerManager.RECEIVING){//收取中
+            mHandler.sendEmptyMessage(1);
+        }
     }
 
     //初始化顶部菜单栏

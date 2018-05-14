@@ -8,6 +8,15 @@ public class UserInfo {
     private String user;
     private String path;
     private int status;
+    private String remark;
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public int getStatus() {
         return status;

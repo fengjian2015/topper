@@ -108,6 +108,7 @@ public class MainActivity extends BaseActivity {
         mMgr = new DBManager(this);
         initInterface();
         MyApp.getInstance().addActivity(this);
+        XmppConnection.loginService(this);
     }
 
     @Override
@@ -235,58 +236,58 @@ public class MainActivity extends BaseActivity {
 
     private Timer tExit;
 
-    private void pingService() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                PingManager pingManager = PingManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-                pingManager.setPingInterval(60);
-                try {
-                    pingManager.pingMyServer();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                pingManager.registerPingFailedListener(new PingFailedListener() {
-                    @Override
-                    public void pingFailed() {
-                        if (tExit == null) {
-                            tExit = new Timer();
-                            tExit.schedule(new TimeTask(), 1000);
-                        }
-                    }
-                });
-            }
-        }).start();
-    }
-
-    private class TimeTask extends TimerTask {
-        @Override
-        public void run() {
-
-            if (UtilTool.getUser() != null && UtilTool.getpw() != null) {
-                Log.i("XMConnectionListener", "尝试登录");
-                // 连接服务器
-                try {
-                    if (!XmppConnection.getInstance().isAuthenticated()) {// 用户未登录
-                        if (XmppConnection.getInstance().login(UtilTool.getUser(), UtilTool.getpw())) {
-                            Log.i("XMConnectionListener", "登录成功");
-                            EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
-                            Intent intent = new Intent();
-                            intent.setAction("XMPPConnectionListener");
-                            intent.putExtra("type", true);
-                            sendBroadcast(intent);
-                        } else {
-                            Log.i("XMConnectionListener", "重新登录");
-                            tExit.schedule(new TimeTask(), 1000);
-                        }
-                    }
-                } catch (Exception e) {
-                    Log.i("XMConnectionListener", "尝试登录,出现异常!");
-                    Log.i("XMConnectionListener", e.getMessage());
-                }
-            }
-        }
-    }
+//    private void pingService() {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                PingManager pingManager = PingManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+//                pingManager.setPingInterval(60);
+//                try {
+//                    pingManager.pingMyServer();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                pingManager.registerPingFailedListener(new PingFailedListener() {
+//                    @Override
+//                    public void pingFailed() {
+//                        if (tExit == null) {
+//                            tExit = new Timer();
+//                            tExit.schedule(new TimeTask(), 1000);
+//                        }
+//                    }
+//                });
+//            }
+//        }).start();
+//    }
+//
+//    private class TimeTask extends TimerTask {
+//        @Override
+//        public void run() {
+//
+//            if (UtilTool.getUser() != null && UtilTool.getpw() != null) {
+//                Log.i("XMConnectionListener", "尝试登录");
+//                // 连接服务器
+//                try {
+//                    if (!XmppConnection.getInstance().isAuthenticated()) {// 用户未登录
+//                        if (XmppConnection.getInstance().login(UtilTool.getUser(), UtilTool.getpw())) {
+//                            Log.i("XMConnectionListener", "登录成功");
+//                            EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
+//                            Intent intent = new Intent();
+//                            intent.setAction("XMPPConnectionListener");
+//                            intent.putExtra("type", true);
+//                            sendBroadcast(intent);
+//                        } else {
+//                            Log.i("XMConnectionListener", "重新登录");
+//                            tExit.schedule(new TimeTask(), 1000);
+//                        }
+//                    }
+//                } catch (Exception e) {
+//                    Log.i("XMConnectionListener", "尝试登录,出现异常!");
+//                    Log.i("XMConnectionListener", e.getMessage());
+//                }
+//            }
+//        }
+//    }
 
     private void getStateList() {
         mCoinPresenter.getState();
@@ -441,24 +442,24 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-
-    Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 0:
-                    hideDialog();
-                    Toast.makeText(MainActivity.this, getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                    break;
-                case 1:
-                    hideDialog();
-                    MyApp.getInstance().isLogin = true;
-                    pingService();
-                    break;
-            }
-        }
-    };
+//
+//    Handler mHandler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//            switch (msg.what) {
+//                case 0:
+//                    hideDialog();
+//                    Toast.makeText(MainActivity.this, getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+//                    break;
+//                case 1:
+//                    hideDialog();
+//                    MyApp.getInstance().isLogin = true;
+//                    pingService();
+//                    break;
+//            }
+//        }
+//    };
 
     @Override
     protected void onDestroy() {

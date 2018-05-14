@@ -45,12 +45,17 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
     private OtrEngineImpl localEngineImpl;
     private Context context;
     private OtrKeyManagerDefaultImpl otrKeyManagerDefault;
+    private boolean isAboutOpen=false;
 
     public SessionID sessionID(String localUserId, String remoteUserId){
         if(localUserId.isEmpty())localUserId="null";
         if(remoteUserId.isEmpty())remoteUserId="null";
         SessionID sessionID=new SessionID(localUserId,remoteUserId,protocolName);
         return sessionID;
+    }
+
+    public boolean getIsAboutOpen(){
+        return isAboutOpen;
     }
 
     public void startMessage(SessionID sessionID,Context context){
@@ -75,6 +80,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
             message.obj=sessionID.getRemoteUserId();
             message.what=1;
             handler.sendMessageDelayed(message,10000);
+            isAboutOpen=true;
             localEngineImpl.endSession(sessionID);
             localEngineImpl.startSession(sessionID);
             Toast.makeText(context,context.getString(R.string.start_otr),Toast.LENGTH_SHORT).show();
@@ -99,6 +105,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
                     if(sessionStatus!= SessionStatus.ENCRYPTED){
                         Toast.makeText(context,context.getString(R.string.start_otr_timeout),Toast.LENGTH_SHORT).show();
                     }
+                    isAboutOpen=false;
                     break;
             }
         }
@@ -239,6 +246,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
         if (sStatus == SessionStatus.ENCRYPTED) {
             OtrChatListenerManager.getInstance().addOTRState(sessionID.getRemoteUserId(),"true");
             handler.removeMessages(1);
+            isAboutOpen=false;
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.otr_isopen)));
 
             PublicKey remoteKey = localEngineImpl.getRemotePublicKey(sessionID);

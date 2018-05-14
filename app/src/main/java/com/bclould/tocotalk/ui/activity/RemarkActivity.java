@@ -15,6 +15,7 @@ import com.bclould.tocotalk.Presenter.IndividualDetailsPresenter;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
+import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.IndividualInfo;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,6 +35,7 @@ public class RemarkActivity extends BaseActivity {
     EditText mEtRemark;
 
     private String mName;
+    private DBManager mMgr;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class RemarkActivity extends BaseActivity {
         setContentView(R.layout.activity_remark);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
+        mMgr = new DBManager(this);
         init();
     }
 

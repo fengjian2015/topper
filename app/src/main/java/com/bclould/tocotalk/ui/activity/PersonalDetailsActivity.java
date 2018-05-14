@@ -177,7 +177,7 @@ public class PersonalDetailsActivity extends BaseActivity {
                 break;
             case R.id.rl_qr_card:
                 Intent intent=new Intent(this,QRCodeActivity.class);
-                intent.putExtra("user", UtilTool.getJid());
+                intent.putExtra("user", UtilTool.getUser()+"@" + Constants.DOMAINNAME);
                 startActivity(intent);
                 break;
         }

@@ -775,6 +775,8 @@
     <string name="start_otr">準備開啟OTR加密</string>
     <string name="close_otr">關閉OTR加密</string>
     <string name="start_otr_timeout">開啟OTR加密超時</string>
+    <string name="is_open">正在開啟OTR，請稍等</string>
+    <string name="change_friend_remark">修改好友備註</string>
     <string name="no_order">沒有訂單</string>
     <string name="all_order">全部訂單</string>
     <string name="sum_buy">總買入</string>

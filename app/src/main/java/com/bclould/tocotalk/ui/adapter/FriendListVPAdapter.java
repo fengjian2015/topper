@@ -21,6 +21,7 @@ import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.activity.ConversationActivity;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -103,6 +104,7 @@ public class FriendListVPAdapter extends RecyclerView.Adapter {
         public void setData(UserInfo userInfo) {
             mUserInfo = userInfo;
             String user = userInfo.getUser();
+            String remark=userInfo.getRemark();
             Bitmap bitmap = null;
             if (!userInfo.getPath().isEmpty()) {
                 String path = userInfo.getPath();
@@ -123,7 +125,9 @@ public class FriendListVPAdapter extends RecyclerView.Adapter {
             }
             mFriendChildTouxiang.setImageBitmap(bitmap);
             UtilTool.Log("好友", user);
-            if (user.contains("@"))
+            if(!StringUtils.isEmpty(remark)){
+                mFriendChildName.setText(remark);
+            }else if (user.contains("@"))
                 mFriendChildName.setText(user.substring(0, user.indexOf("@")));
             /*if (userInfo.getStatus() == 1) {
                 mFriendChildType.setText("在线");

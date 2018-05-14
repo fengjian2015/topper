@@ -628,6 +628,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             }
         }else if(msg.equals(getString(R.string.delete_friend))){
             finish();
+        }else if(msg.equals(getString(R.string.change_friend_remark))){
+            setTitleName();
         }
     }
 
@@ -1094,7 +1096,16 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             mLlOrder.setVisibility(View.VISIBLE);
         else
             mLlOrder.setVisibility(View.GONE);*/
-        mTitleName.setText(mName);
+        setTitleName();
+    }
+
+    private void setTitleName(){
+        String remark=mMgr.queryRemark(mUser);
+        if(!com.bclould.tocotalk.utils.StringUtils.isEmpty(remark)){
+            mTitleName.setText(remark);
+        }else {
+            mTitleName.setText(mName);
+        }
     }
 
     //初始化适配器

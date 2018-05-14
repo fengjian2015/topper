@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.bclould.tocotalk.model.AddRequestInfo;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
+import com.bclould.tocotalk.model.RemarkListInfo;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.utils.UtilTool;
 
@@ -340,6 +341,7 @@ public class DBManager {
         values.put("my_user", UtilTool.getJid());
         values.put("user", user);
         values.put("path", path);
+        values.put("remark","");
         values.put("status", 0);
         db.insert("UserImage", null, values);
     }
@@ -368,6 +370,7 @@ public class DBManager {
                 userInfo.setUser(c.getString(c.getColumnIndex("user")));
                 userInfo.setPath(c.getString(c.getColumnIndex("path")));
                 userInfo.setStatus(c.getInt(c.getColumnIndex("status")));
+                userInfo.setRemark(c.getString(c.getColumnIndex("remark")));
                 userInfos.add(userInfo);
             }
             c.close();
@@ -375,6 +378,51 @@ public class DBManager {
             e.printStackTrace();
         }
         return userInfos;
+    }
+
+    public List<String> queryAllUserName(){
+        List<String> userInfos = new ArrayList<>();
+        try {
+            db = helper.getWritableDatabase();
+            String sql = "select user from UserImage where my_user=?";
+            Cursor c = db.rawQuery(sql, new String[]{UtilTool.getJid()});
+            while (c.moveToNext()) {
+                String user=c.getString(c.getColumnIndex("user"));
+                userInfos.add(user);
+            }
+            c.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return userInfos;
+    }
+
+    public String queryRemark(String user){
+        db = helper.getWritableDatabase();
+        String remark="";
+        String sql = "select remark from UserImage where user=? and my_user=?";
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid()});
+        while (c.moveToNext()) {
+             remark= c.getString(c.getColumnIndex("remark"));
+        }
+        c.close();
+        return remark;
+    }
+
+    public void updateRemark(List<RemarkListInfo.DataBean> listdata) {
+        db = helper.getWritableDatabase();
+        for(RemarkListInfo.DataBean dataBean:listdata){
+            ContentValues cv = new ContentValues();
+            cv.put("remark", dataBean.getRemark());
+            db.update("UserImage", cv, "user=? and my_user=?", new String[]{dataBean.getName(), UtilTool.getJid()});
+        }
+    }
+
+    public void updateRemark(String remark,String user) {
+        db = helper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("remark", remark);
+        db.update("UserImage", cv, "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
     }
 
     public boolean findUser(String user) {
