@@ -210,11 +210,13 @@ public class MyPushAdActivity extends BaseActivity {
                 isOnOff = !isOnOff;
                 if (isOnOff) {
                     mLlSum.setVisibility(View.VISIBLE);
+                    mIvJiantou3.setImageResource(R.mipmap.icon_more_up);
+                    mTvOnOff.setText(getString(R.string.shouqi));
                 } else {
                     mLlSum.setVisibility(View.GONE);
+                    mIvJiantou3.setImageResource(R.mipmap.icon_more_down);
+                    mTvOnOff.setText(getString(R.string.zhankai));
                 }
-                mIvJiantou3.setImageResource(R.mipmap.icon_more_up);
-                mTvOnOff.setText(getString(R.string.shouqi));
                 break;
             case R.id.tv_filtrate:
                 showFiltrateDialog();

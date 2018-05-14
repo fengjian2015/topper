@@ -781,4 +781,5 @@
     <string name="anomaly_order">異常訂單</string>
     <string name="sum_deal_count">交易次數</string>
     <string name="shouqi">收起</string>
+    <string name="ad_count">廣告數量</string>
 </resources>
