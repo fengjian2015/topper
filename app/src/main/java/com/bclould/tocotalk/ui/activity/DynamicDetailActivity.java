@@ -187,6 +187,7 @@ public class DynamicDetailActivity extends BaseActivity {
                 public void onItemImageClick(Context context, ImageView imageView, int index, List<String> list) {
                     computeBoundsBackward(mImageList);//组成数据
                     GPreviewBuilder.from((Activity) context)
+                            .setSingleFling(true)
                             .setData(mThumbViewInfoList)
                             .setCurrentIndex(index)
                             .setType(GPreviewBuilder.IndicatorType.Dot)

@@ -31,28 +31,41 @@ import butterknife.ButterKnife;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class OrderRVAdapter extends RecyclerView.Adapter {
-
     private final Context mContext;
     private final DBManager mMgr;
+    private final int mType;
     private List<OrderListInfo.DataBean> mDataBeanList;
 
-    public OrderRVAdapter(Context context, List<OrderListInfo.DataBean> dataBeanList, DBManager mgr) {
+    public OrderRVAdapter(Context context, List<OrderListInfo.DataBean> dataBeanList, DBManager mgr, int type) {
         mContext = context;
         mDataBeanList = dataBeanList;
         mMgr = mgr;
+        mType = type;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_order, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        View view = null;
+        RecyclerView.ViewHolder viewHolder = null;
+        if (mType == 2) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_order, parent, false);
+            viewHolder = new ViewHolder(view);
+        } else {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_order2, parent, false);
+            viewHolder = new ViewHolder2(view);
+        }
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.setData(mDataBeanList.get(position));
+        if (mType == 2) {
+            ViewHolder viewHolder = (ViewHolder) holder;
+            viewHolder.setData(mDataBeanList.get(position));
+        } else {
+            ViewHolder2 viewHolder2 = (ViewHolder2) holder;
+            viewHolder2.setData(mDataBeanList.get(position));
+        }
     }
 
     @Override
@@ -61,7 +74,6 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             return mDataBeanList.size();
         return 0;
     }
-
 
     class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_touxiang)
@@ -94,6 +106,81 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             } else {
                 mTvType.setTextColor(mContext.getResources().getColor(R.color.black));
             }
+            if (dataBean.getType() == 1) {
+                try {
+                    String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
+                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mTvName.setText(dataBean.getUser_name());
+                mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape));
+                mTvCoinType.setTextColor(mContext.getResources().getColor(R.color.blue2));
+            } else {
+                try {
+                    String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
+                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mTvName.setText(dataBean.getUser_name());
+                mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape2));
+                mTvCoinType.setTextColor(mContext.getResources().getColor(R.color.green2));
+            }
+
+            mRlItme.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (dataBean.getStatus() == 0) {
+                        Intent intent = new Intent(mContext, OrderCloseActivity.class);
+                        intent.putExtra("status", dataBean.getStatus());
+                        intent.putExtra("id", dataBean.getId() + "");
+                        mContext.startActivity(intent);
+                    } else if (dataBean.getStatus() == 3) {
+                        Intent intent = new Intent(mContext, OrderCloseActivity.class);
+                        intent.putExtra("status", dataBean.getStatus());
+                        intent.putExtra("id", dataBean.getId() + "");
+                        mContext.startActivity(intent);
+                    } else if (dataBean.getStatus() == 4) {
+                        Intent intent = new Intent(mContext, OrderCloseActivity.class);
+                        intent.putExtra("status", dataBean.getStatus());
+                        intent.putExtra("id", dataBean.getId() + "");
+                        mContext.startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(mContext, OrderDetailsActivity.class);
+                        intent.putExtra("type", mContext.getString(R.string.order));
+                        intent.putExtra("id", dataBean.getId() + "");
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
+
+        }
+    }
+
+    class ViewHolder2 extends RecyclerView.ViewHolder {
+        @Bind(R.id.iv_touxiang)
+        ImageView mIvTouxiang;
+        @Bind(R.id.tv_name)
+        TextView mTvName;
+        @Bind(R.id.tv_coin_type)
+        TextView mTvCoinType;
+        @Bind(R.id.tv_money)
+        TextView mTvMoney;
+        @Bind(R.id.tv_time)
+        TextView mTvTime;
+        @Bind(R.id.rl_itme)
+        RelativeLayout mRlItme;
+
+        ViewHolder2(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final OrderListInfo.DataBean dataBean) {
+
+            mTvMoney.setText(mContext.getString(R.string.deal_count) + " " + dataBean.getNumber() + " " + dataBean.getCoin_name());
+            mTvTime.setText(dataBean.getCreated_at());
             mTvCoinType.setText(dataBean.getCoin_name() + dataBean.getType_name());
             if (dataBean.getType() == 1) {
                 try {

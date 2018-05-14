@@ -12,8 +12,8 @@ import com.bclould.tocotalk.model.CoinInfo;
 import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.model.StateInfo;
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.GlideImgLoader;
 import com.bclould.tocotalk.utils.MySharedPreferences;
-import com.bclould.tocotalk.utils.TestImageLoader;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.previewlibrary.ZoomMediaLoader;
@@ -55,7 +55,7 @@ public class MyApp extends Application {
 
         new CrashHandler(this);
         //初始化
-        ZoomMediaLoader.getInstance().init(new TestImageLoader());
+        ZoomMediaLoader.getInstance().init(GlideImgLoader.getInstance());
 
         //初始化xmpp
         XmppConnection.getInstance().setDB(new DBManager(this));

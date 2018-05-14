@@ -51,7 +51,6 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 
-
             <com.jaeger.ninegridimageview.NineGridImageView
                 android:id="@+id/ngl_images"
                 android:layout_width="wrap_content"

@@ -103,9 +103,9 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
             mCardType.setText(split[split.length - 1]);
             mBankCardNumber.setText(data.getCard_number());
             if (data.getIs_default() == 1) {
-                mRlCard.setBackground(mActivity.getDrawable(R.mipmap.img_bg_bankcard2));
+                mRlCard.setBackground(mActivity.getDrawable(R.drawable.bg_bank_card_shape2));
             } else {
-                mRlCard.setBackground(mActivity.getDrawable(R.mipmap.img_bg_bankcard));
+                mRlCard.setBackground(mActivity.getDrawable(R.drawable.bg_bank_card_shape));
             }
             mIvDelete.setOnClickListener(new View.OnClickListener() {
                 @Override

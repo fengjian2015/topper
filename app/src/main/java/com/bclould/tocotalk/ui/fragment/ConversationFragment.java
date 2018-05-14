@@ -88,6 +88,7 @@ import org.jivesoftware.smackx.offline.OfflineMessageManager;
 import org.jivesoftware.smackx.ping.PingFailedListener;
 import org.jivesoftware.smackx.ping.PingManager;
 import org.jxmpp.jid.impl.JidCreate;
+import org.xutils.common.util.LogUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -194,8 +195,9 @@ public class ConversationFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
-                if (XmppConnection.getInstance().getConnection()==null||!XmppConnection.getInstance().getConnection().isAuthenticated()) {
+                if (XmppConnection.getInstance().getConnection() == null || !XmppConnection.getInstance().getConnection().isAuthenticated()) {
                     loginIM();
+
                 }
             }
         });
@@ -286,10 +288,7 @@ public class ConversationFragment extends Fragment {
                     AbstractXMPPConnection connection = XmppConnection.getInstance().getConnection();
                     //判断是否连接
                     if (connection != null && connection.isConnected()) {
-                        String myUser = UtilTool.getJid();
-                        String user = myUser.substring(0, myUser.indexOf("@"));
-                        connection.login(user, UtilTool.getpw());
-                        connection.addConnectionListener(new XMConnectionListener(getContext()));
+                        IMLogin.loginAction(getContext(),connection);
                         /*if (connection.isAuthenticated()) {//登录成功
                             PingManager.setDefaultPingInterval(10);
                             PingManager myPingManager = PingManager.getInstanceFor(connection);
@@ -306,7 +305,7 @@ public class ConversationFragment extends Fragment {
                         android.os.Message message = new android.os.Message();
                         message.what = 1;
                         mHandler.sendMessage(message);
-                    }else if(!connection.isConnected()){
+                    } else if (!connection.isConnected()) {
                         XmppConnection.getInstance().getConnection().connect();
                     }
                 } catch (Exception e) {
@@ -359,7 +358,7 @@ public class ConversationFragment extends Fragment {
             initData();
         } else if (msg.equals(getString(R.string.login_error))) {
             mRlUnunited.setVisibility(View.VISIBLE);
-        }else if(msg.equals(getString(R.string.message_top_change))){
+        } else if (msg.equals(getString(R.string.message_top_change))) {
             initData();
         }else if(msg.equals(getString(R.string.change_friend_remark))){
             initData();
@@ -439,15 +438,15 @@ public class ConversationFragment extends Fragment {
             public int compare(ConversationInfo conversationInfo, ConversationInfo conversationInfo2) {
                 String at = conversationInfo.getTime();
                 String bt = conversationInfo2.getTime();
-                String atop=conversationInfo.getIstop();
-                String btop=conversationInfo2.getIstop();
+                String atop = conversationInfo.getIstop();
+                String btop = conversationInfo2.getIstop();
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 try {
-                    if("true".equals(btop)&&!"true".equals(atop)){
+                    if ("true".equals(btop) && !"true".equals(atop)) {
                         return 1;
-                    }else if(!"true".equals(btop)&&"true".equals(atop)){
+                    } else if (!"true".equals(btop) && "true".equals(atop)) {
                         return -1;
-                    }else if (formatter.parse(bt).getTime() > formatter.parse(at).getTime()) {
+                    } else if (formatter.parse(bt).getTime() > formatter.parse(at).getTime()) {
                         return 1;
                     } else if (formatter.parse(bt).getTime() < formatter.parse(at).getTime()) {
                         return -1;

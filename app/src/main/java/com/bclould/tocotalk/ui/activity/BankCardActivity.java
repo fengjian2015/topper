@@ -35,6 +35,7 @@ import com.bclould.tocotalk.ui.adapter.BankCardRVAdapter;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.SpaceItemDecoration;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import org.greenrobot.eventbus.EventBus;
@@ -123,6 +124,7 @@ public class BankCardActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mBankCardRVAdapter = new BankCardRVAdapter(this, mCardList, mBankCardPresenter);
         mRecyclerView.setAdapter(mBankCardRVAdapter);
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(40));
         mRecyclerView.setNestedScrollingEnabled(false);
     }
 

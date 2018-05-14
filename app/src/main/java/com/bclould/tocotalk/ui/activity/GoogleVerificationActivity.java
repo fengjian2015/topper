@@ -137,6 +137,7 @@ public class GoogleVerificationActivity extends BaseActivity {
             public void send() {
                 mLlBinding.setVisibility(View.VISIBLE);
                 mLlUnbinding.setVisibility(View.GONE);
+                mLlBindingStatus.setVisibility(View.GONE);
                 getGoogleKey();
             }
         });
@@ -169,8 +170,12 @@ public class GoogleVerificationActivity extends BaseActivity {
         UtilTool.Log("谷歌", googleInfo.getIs_google_verify() + "");
         if (googleInfo.getIs_google_verify() == 1) {
             mLlBindingStatus.setVisibility(View.VISIBLE);
+            mLlUnbinding.setVisibility(View.GONE);
+            mLlBinding.setVisibility(View.GONE);
         } else {
             mLlBinding.setVisibility(View.VISIBLE);
+            mLlUnbinding.setVisibility(View.GONE);
+            mLlBindingStatus.setVisibility(View.GONE);
             mSecretKey.setText(googleInfo.getKey());
             Glide.with(this).load(googleInfo.getImg()).into(mIvQrCode);
         }
@@ -206,6 +211,7 @@ public class GoogleVerificationActivity extends BaseActivity {
                 break;
             case R.id.tv_unbinding:
                 mLlBindingStatus.setVisibility(View.GONE);
+                mLlBinding.setVisibility(View.GONE);
                 mLlUnbinding.setVisibility(View.VISIBLE);
                 break;
             case R.id.btn_unbinding:

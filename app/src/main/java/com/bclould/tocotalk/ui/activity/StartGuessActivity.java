@@ -44,7 +44,6 @@ import com.maning.pswedittextlibrary.MNPasswordEditText;
 import org.greenrobot.eventbus.EventBus;
 
 import java.lang.reflect.Method;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -308,9 +307,6 @@ public class StartGuessActivity extends BaseActivity {
 
     private void initDialog() {
         String coins = mTvCoin.getText().toString();
-        DecimalFormat df = new DecimalFormat("0.000000");
-        String sum = df.format(Double.parseDouble(mEtBetCount.getText().toString()) * Double.parseDouble(mEtSingleInsertCount.getText().toString()));
-        String str = UtilTool.removeZero(sum);
         TextView coin = (TextView) mRedDialog.findViewById(R.id.tv_coin);
         TextView countCoin = (TextView) mRedDialog.findViewById(R.id.tv_count_coin);
         mEtPassword = (MNPasswordEditText) mRedDialog.findViewById(R.id.et_password);
@@ -341,8 +337,8 @@ public class StartGuessActivity extends BaseActivity {
             }
         });
         valueList = virtualKeyboardView.getValueList();
-        countCoin.setText(str + coins);
-        coin.setText(getString(R.string.push_guess) + coins + getString(R.string.msg));
+//        countCoin.setText(str + coins);
+        countCoin.setText(getString(R.string.push_guess) + coins + getString(R.string.msg));
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

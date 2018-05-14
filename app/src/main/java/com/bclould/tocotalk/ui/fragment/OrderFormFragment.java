@@ -68,6 +68,8 @@ public class OrderFormFragment extends Fragment {
     TextView mTvHint;
     private String mCoinName = "";
     private String mFiltrate = "";
+    private int mPage = 1;
+    private int mPageSize = 1000;
     private List<OrderListInfo.DataBean> mDataList = new ArrayList<>();
     private OrderRVAdapter mOrderRVAdapter;
     private DBManager mMgr;
@@ -167,15 +169,14 @@ public class OrderFormFragment extends Fragment {
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mOrderRVAdapter = new OrderRVAdapter(getActivity(), mDataList, mMgr);
+        mOrderRVAdapter = new OrderRVAdapter(getActivity(), mDataList, mMgr, 2);
         mRecyclerView.setAdapter(mOrderRVAdapter);
     }
 
     private void initData(String coinName, String filtrate, String user) {
-        mEtSearch.setText("");
         mDataList.clear();
         mOrderRVAdapter.notifyDataSetChanged();
-        mBuySellPresenter.getOrderList(coinName, filtrate, user, new BuySellPresenter.CallBack3() {
+        mBuySellPresenter.getOrderList(mPage, mPageSize, coinName, filtrate, user, new BuySellPresenter.CallBack3() {
             @Override
             public void send(List<OrderListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
@@ -206,6 +207,11 @@ public class OrderFormFragment extends Fragment {
     }
 
     @OnClick(R.id.iv_search)
-    public void onViewClicked() {
+    public void onViewClicked() {// 隐藏键盘
+        ((InputMethodManager) mEtSearch.getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
+                .hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+        String user = mEtSearch.getText().toString().trim();
+        initData(mCoinName, mFiltrate, user);
     }
 }

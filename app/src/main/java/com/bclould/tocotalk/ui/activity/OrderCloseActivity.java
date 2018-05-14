@@ -109,12 +109,14 @@ public class OrderCloseActivity extends BaseActivity {
                 if (data.getType() == 1) {
                     if (data.getStatus() == 0) {
                         mTvOrderType.setText(getString(R.string.order_cancel));
+                        mLlFinish.setVisibility(View.VISIBLE);
                     } else if (data.getStatus() == 3) {
                         mTvOrderType.setText(getString(R.string.order_finish));
                         mLlFinish.setVisibility(View.VISIBLE);
                     } else if (data.getStatus() == 4) {
                         mTvOrderType.setText(getString(R.string.order_exception));
                         mLlExceptionBuy.setVisibility(View.VISIBLE);
+                        mLlFinish.setVisibility(View.VISIBLE);
                         mTvOrderType.setTextColor(getResources().getColor(R.color.color_orange));
                     }
                     mTvTitle.setText(getString(R.string.buy) + data.getCoin_name());
@@ -122,12 +124,14 @@ public class OrderCloseActivity extends BaseActivity {
                 } else {
                     if (data.getStatus() == 0) {
                         mTvOrderType.setText(getString(R.string.order_cancel));
+                        mLlFinish.setVisibility(View.VISIBLE);
                     } else if (data.getStatus() == 3) {
                         mTvOrderType.setText(getString(R.string.order_finish));
                         mLlFinish.setVisibility(View.VISIBLE);
                     } else if (data.getStatus() == 4) {
                         mTvOrderType.setText(getString(R.string.order_exception));
                         mLlExceptionSell.setVisibility(View.VISIBLE);
+                        mLlFinish.setVisibility(View.VISIBLE);
                         mTvOrderType.setTextColor(getResources().getColor(R.color.color_orange));
                     }
                     mTvTitle.setText(getString(R.string.work_off) + data.getCoin_name());

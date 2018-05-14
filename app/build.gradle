@@ -30,8 +30,8 @@ android {
         applicationId "com.bclould.tocotalk"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 24
-        versionName "0.24"
+        versionCode 25
+        versionName "0.25"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
@@ -125,8 +125,10 @@ dependencies {
     //图片选择
     compile 'com.contrarywind:Android-PickerView:4.1.0'
     //九宫格
-    compile 'com.jaeger.ninegridimageview:library:1.1.0'
-    compile 'com.ycjiang:imgepreviewlibrary:1.1.1'
+    compile 'com.jaeger.ninegridimageview:library:1.1.1'
+    //圖片預覽
+    compile 'com.ycjiang:ImagePreview:2.1.2'
+    //圖片選擇
     compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.1.3'
     //rxJava 和 retrofit2.0 和okhttp
     compile 'io.reactivex.rxjava2:rxjava:2.0.8'

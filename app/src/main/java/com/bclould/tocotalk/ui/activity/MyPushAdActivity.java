@@ -16,11 +16,14 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bclould.tocotalk.Presenter.BuySellPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
+import com.bclould.tocotalk.model.OrderStatisticsInfo;
 import com.bclould.tocotalk.ui.adapter.CloudCircleVPAdapter;
 import com.bclould.tocotalk.ui.adapter.PayManageGVAdapter;
 import com.bclould.tocotalk.ui.fragment.MyPushBuyFragment;
@@ -47,11 +50,40 @@ import static com.bclould.tocotalk.R.style.BottomDialog;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class MyPushAdActivity extends BaseActivity {
 
-
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.tv_filtrate)
     TextView mTvFiltrate;
+    @Bind(R.id.iv)
+    ImageView mIv;
+    @Bind(R.id.tv_sum_sell)
+    TextView mTvSumSell;
+    @Bind(R.id.iv_jiantou)
+    ImageView mIvJiantou;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.tv_sum_buy)
+    TextView mTvSumBuy;
+    @Bind(R.id.iv_jiantou2)
+    ImageView mIvJiantou2;
+    @Bind(R.id.iv3)
+    ImageView mIv3;
+    @Bind(R.id.ll_on_off)
+    LinearLayout mLlOnOff;
+    @Bind(R.id.tv_order_sum)
+    TextView mTvOrderSum;
+    @Bind(R.id.tv_anomaly_order_sum)
+    TextView mTvAnomalyOrderSum;
+    @Bind(R.id.tv_sum_deal_count)
+    TextView mTvSumDealCount;
+    @Bind(R.id.tv_finish_sum)
+    TextView mTvFinishSum;
+    @Bind(R.id.tv_cancel_sum)
+    TextView mTvCancelSum;
+    @Bind(R.id.tv_underway_sum)
+    TextView mTvUnderwaySum;
+    @Bind(R.id.ll_sum)
+    LinearLayout mLlSum;
     @Bind(R.id.tv_xx)
     TextView mTvXx;
     @Bind(R.id.rl_my_buy)
@@ -62,6 +94,14 @@ public class MyPushAdActivity extends BaseActivity {
     RelativeLayout mRlMySell;
     @Bind(R.id.view_pager)
     ViewPager mViewPager;
+    @Bind(R.id.rl_sum_sell)
+    RelativeLayout mRlSumSell;
+    @Bind(R.id.rl_sum_buy)
+    RelativeLayout mRlSumBuy;
+    @Bind(R.id.tv_on_off)
+    TextView mTvOnOff;
+    @Bind(R.id.iv_jiantou3)
+    ImageView mIvJiantou3;
     private String mCoinName;
     private Map<String, Integer> mMap = new HashMap<>();
     private Dialog mBottomDialog;
@@ -79,6 +119,24 @@ public class MyPushAdActivity extends BaseActivity {
         initIntent();
         initFragments();
         initViewPage();
+        initData();
+    }
+
+    private void initData() {
+        BuySellPresenter buySellPresenter = new BuySellPresenter(this);
+        buySellPresenter.getTotal(new BuySellPresenter.CallBack6() {
+            @Override
+            public void send(OrderStatisticsInfo.DataBean data) {
+                mTvSumBuy.setText(data.getBuy_sum());
+                mTvSumSell.setText(data.getSale_sum());
+                mTvSumDealCount.setText(data.getTotal_trans() + "");
+                mTvAnomalyOrderSum.setText(data.getAbnormal() + "");
+                mTvCancelSum.setText(data.getCancel() + "");
+                mTvFinishSum.setText(data.getComplete() + "");
+                mTvOrderSum.setText(data.getAll() + "");
+                mTvUnderwaySum.setText(data.getProcessing() + "");
+            }
+        });
     }
 
     private void initIntent() {
@@ -91,6 +149,12 @@ public class MyPushAdActivity extends BaseActivity {
     private void initFragments() {
         mFragmentList.add(new MyPushBuyFragment(mCoinName));
         mFragmentList.add(new MyPushSellFragment(mCoinName));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
     }
 
     private void initViewPage() {
@@ -124,12 +188,33 @@ public class MyPushAdActivity extends BaseActivity {
     }
 
     private List<String> mFiltrateList = new ArrayList<>();
+    boolean isOnOff = false;
 
-    @OnClick({R.id.bark, R.id.tv_filtrate, R.id.rl_my_buy, R.id.rl_my_sell})
+    @OnClick({R.id.bark, R.id.tv_filtrate, R.id.rl_my_buy, R.id.rl_my_sell, R.id.ll_on_off, R.id.rl_sum_buy, R.id.rl_sum_sell})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.rl_sum_buy:
+                Intent intent = new Intent(this, SumBuySellActivity.class);
+                intent.putExtra("type", 1);
+                startActivity(intent);
+                break;
+            case R.id.rl_sum_sell:
+                Intent intent2 = new Intent(this, SumBuySellActivity.class);
+                intent2.putExtra("type", 2);
+                startActivity(intent2);
+                break;
+            case R.id.ll_on_off:
+                isOnOff = !isOnOff;
+                if (isOnOff) {
+                    mLlSum.setVisibility(View.VISIBLE);
+                } else {
+                    mLlSum.setVisibility(View.GONE);
+                }
+                mIvJiantou3.setImageResource(R.mipmap.icon_more_up);
+                mTvOnOff.setText(getString(R.string.shouqi));
                 break;
             case R.id.tv_filtrate:
                 showFiltrateDialog();

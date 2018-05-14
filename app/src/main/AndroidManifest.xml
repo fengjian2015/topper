@@ -668,6 +668,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
+        <!--公告詳情頁-->
+        <activity
+            android:name="com.bclould.tocotalk.ui.activity.SumBuySellActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
 
         <!-- 監聽系統語言切換 -->
         <receiver
