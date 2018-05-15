@@ -68,8 +68,8 @@ public class IndividualDetailsActivity extends BaseActivity {
     private String mUser;
     private String mName;
     private IndividualInfo.DataBean individualInfo;
-    private int REMARK=100;
-    private int type=0;//1表示查看好友，2表示添加好友
+    private int REMARK = 100;
+    private int type = 0;//1表示查看好友，2表示添加好友
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,13 +84,13 @@ public class IndividualDetailsActivity extends BaseActivity {
 
     private void initIntent() {
         Intent intent = getIntent();
-        type = intent.getIntExtra("type",1);
+        type = intent.getIntExtra("type", 1);
         mUser = intent.getStringExtra("user");
         mName = intent.getStringExtra("name");
     }
 
     private void init() {
-        if(type==2){
+        if (type == 2) {
             imageQr.setVisibility(View.INVISIBLE);
             rlRemark.setVisibility(View.GONE);
             btnBrak.setText(getString(R.string.add_friend));
@@ -99,7 +99,7 @@ public class IndividualDetailsActivity extends BaseActivity {
         presenter.getIndividual(mName, new IndividualDetailsPresenter.CallBack() {
             @Override
             public void send(IndividualInfo.DataBean data) {
-                if(data==null)return;
+                if (data == null) return;
                 individualInfo = data;
                 tvName.setText(individualInfo.getName());
                 tvRemark.setText(individualInfo.getRemark());
@@ -109,19 +109,22 @@ public class IndividualDetailsActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.rl_dynamic, R.id.bark, R.id.btn_brak, R.id.rl_qr,R.id.rl_remark})
+    @OnClick({R.id.rl_dynamic, R.id.bark, R.id.btn_brak, R.id.rl_qr, R.id.rl_remark})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_dynamic:
                 // TODO: 2018/5/9 跳轉到個人動態
+                Intent intent = new Intent(this, PersonageDynamicActivity.class);
+                intent.putExtra("name", mName);
+                startActivity(intent);
                 break;
             case R.id.bark:
                 finish();
                 break;
             case R.id.btn_brak:
-                if(type==1){
+                if (type == 1) {
                     showDeleteDialog();
-                }else{
+                } else {
                     addFriend();
                 }
                 break;
@@ -135,21 +138,24 @@ public class IndividualDetailsActivity extends BaseActivity {
     }
 
     private void goChangeRemark() {
-        if (individualInfo == null) {init();return;}
-        Intent intent=new Intent(this,RemarkActivity.class);
-        intent.putExtra("name",mName);
-        intent.putExtra("remark",individualInfo.getRemark());
-        startActivityForResult(intent,REMARK);
+        if (individualInfo == null) {
+            init();
+            return;
+        }
+        Intent intent = new Intent(this, RemarkActivity.class);
+        intent.putExtra("name", mName);
+        intent.putExtra("remark", individualInfo.getRemark());
+        startActivityForResult(intent, REMARK);
     }
 
     private void goQR() {
-        if(type==2)return;
+        if (type == 2) return;
         Intent intent = new Intent(this, QRCodeActivity.class);
         intent.putExtra("user", mUser);
         startActivity(intent);
     }
 
-    private void addFriend(){
+    private void addFriend() {
         try {
             String name = "";
             if (!mName.contains(Constants.DOMAINNAME)) {
@@ -162,7 +168,7 @@ public class IndividualDetailsActivity extends BaseActivity {
             } else {
                 Toast.makeText(this, getString(R.string.have_friend), Toast.LENGTH_SHORT).show();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(this, getString(R.string.send_request_error), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
@@ -170,8 +176,11 @@ public class IndividualDetailsActivity extends BaseActivity {
     }
 
     private void showDeleteDialog() {
-        if (individualInfo == null) {init();return;}
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this,R.style.dialog);
+        if (individualInfo == null) {
+            init();
+            return;
+        }
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.confirm_delete) + " " + mName + " " + getString(R.string.what));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
@@ -205,10 +214,10 @@ public class IndividualDetailsActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==REMARK&&data!=null){
-            String remark=data.getStringExtra("remark");
+        if (requestCode == REMARK && data != null) {
+            String remark = data.getStringExtra("remark");
             tvRemark.setText(remark);
-            mMgr.updateRemark(remark,mUser);
+            mMgr.updateRemark(remark, mUser);
             EventBus.getDefault().post(new MessageEvent(getString(R.string.change_friend_remark)));
         }
         super.onActivityResult(requestCode, resultCode, data);

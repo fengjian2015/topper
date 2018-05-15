@@ -784,4 +784,5 @@
     <string name="sum_deal_count">交易次數</string>
     <string name="shouqi">收起</string>
     <string name="ad_count">廣告數量</string>
+    <string name="ta_no_dynamic">Ta還沒有發佈任何動態</string>
 </resources>

@@ -1,7 +1,7 @@
 package com.bclould.tocotalk.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,7 +34,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.jaeger.ninegridimageview.ItemImageClickListener;
 import com.jaeger.ninegridimageview.NineGridImageView;
 import com.jaeger.ninegridimageview.NineGridImageViewAdapter;
-import com.previewlibrary.GPreviewBuilder;
 import com.previewlibrary.enitity.ThumbViewInfo;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -185,13 +184,18 @@ public class DynamicDetailActivity extends BaseActivity {
             mNglImages.setItemImageClickListener(new ItemImageClickListener<String>() {
                 @Override
                 public void onItemImageClick(Context context, ImageView imageView, int index, List<String> list) {
-                    computeBoundsBackward(mImageList);//组成数据
+
+                    Intent intent = new Intent(DynamicDetailActivity.this, PreviewImgActivity.class);
+                    intent.putExtra("index", index);
+                    intent.putStringArrayListExtra("imgList", mCompressImgList);
+                    context.startActivity(intent);
+                    /*computeBoundsBackward(mImageList);//组成数据
                     GPreviewBuilder.from((Activity) context)
                             .setSingleFling(true)
                             .setData(mThumbViewInfoList)
                             .setCurrentIndex(index)
                             .setType(GPreviewBuilder.IndicatorType.Dot)
-                            .start();//启动
+                            .start();//启动*/
                 }
             });
 

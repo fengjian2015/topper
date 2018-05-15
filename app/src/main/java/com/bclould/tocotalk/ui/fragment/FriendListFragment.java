@@ -18,19 +18,17 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.bclould.tocotalk.Presenter.CloudMessagePresenter;
 import com.bclould.tocotalk.Presenter.PersonalDetailsPresenter;
 import com.bclould.tocotalk.R;
@@ -40,7 +38,7 @@ import com.bclould.tocotalk.model.RemarkListInfo;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.activity.NewFriendActivity;
 import com.bclould.tocotalk.ui.activity.SearchActivity;
-import com.bclould.tocotalk.ui.adapter.FriendListVPAdapter;
+import com.bclould.tocotalk.ui.adapter.FriendListRVAdapter;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
@@ -65,26 +63,17 @@ import org.jivesoftware.smack.roster.RosterEntry;
 import org.jivesoftware.smack.roster.RosterGroup;
 import org.jivesoftware.smack.roster.RosterListener;
 import org.jivesoftware.smack.util.StringUtils;
-import org.jivesoftware.smackx.vcardtemp.VCardManager;
-import org.jivesoftware.smackx.vcardtemp.packet.VCard;
-import org.json.JSONArray;
-import org.jxmpp.jid.EntityBareJid;
 import org.jxmpp.jid.Jid;
 import org.jxmpp.jid.impl.JidCreate;
-import org.jxmpp.jid.impl.LocalAndDomainpartJid;
 
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.TreeMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import c.t.m.g.v;
 
 import static com.bclould.tocotalk.ui.activity.SystemSetActivity.INFORM;
 import static com.bclould.tocotalk.utils.MySharedPreferences.SETTING;
@@ -107,10 +96,13 @@ public class FriendListFragment extends Fragment {
     TextView mNumber;
     @Bind(R.id.news_friend)
     RelativeLayout mNewsFriend;
-    @Bind(R.id.recycler_view)
-    RecyclerView mRecyclerView;
+    @Bind(R.id.listView)
+    ListView mListView;
     @Bind(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.scrollView)
+    ScrollView mScrollView;
+
     private TreeMap<String, Boolean> mFromMap = new TreeMap<>();
     private List<UserInfo> mUsers = new ArrayList<>();
     Handler myHandler = new Handler() {
@@ -118,8 +110,9 @@ public class FriendListFragment extends Fragment {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                    queryUser();
-                    mFriendListVPAdapter.notifyDataSetChanged();
+                    updateData();
+                    /*queryUser();
+                    mFriendListRVAdapter.notifyDataSetChanged();*/
                     break;
                 case 1:
                     String from = (String) msg.obj;
@@ -142,7 +135,7 @@ public class FriendListFragment extends Fragment {
         }
     };
     private MyReceiver receiver;
-    private FriendListVPAdapter mFriendListVPAdapter;
+    private FriendListRVAdapter mFriendListRVAdapter;
     private DBManager mMgr;
     private int mId;
     private int mNewFriend;
@@ -171,17 +164,54 @@ public class FriendListFragment extends Fragment {
         }
         mMgr = new DBManager(getContext());
         mPersonalDetailsPresenter = new PersonalDetailsPresenter(getContext());
-        queryUser();
-        initRecylerView();
         setListener();
+        initRecylerView();
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
+//        updateData();
         if (receiver == null) {
             receiver = new MyReceiver();
             IntentFilter intentFilter = new IntentFilter("com.example.eric_jqm_chat.SearchActivity");
             getActivity().registerReceiver(receiver, intentFilter);
         }
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mScrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                mScrollView.scrollTo(0, 0);
+            }
+        });
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            mScrollView.post(new Runnable() {
+                @Override
+                public void run() {
+                    mScrollView.scrollTo(0, 0);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            mScrollView.post(new Runnable() {
+                @Override
+                public void run() {
+                    mScrollView.scrollTo(0, 0);
+                }
+            });
+        }
     }
 
     @Override
@@ -196,18 +226,11 @@ public class FriendListFragment extends Fragment {
         if (msg.equals(getString(R.string.login_succeed))) {
             addFriendListener();
             initData();
-//            getImage();
-//            rosterListener();
         } else if (msg.equals(getString(R.string.new_friend))) {
             initData();
-//            updateData();
-        } else if (msg.equals(getString(R.string.new_friend))) {
-            initData();
-//            updateData();
         } else if (msg.equals(getString(R.string.delete_friend))) {
-            queryUser();
-            mFriendListVPAdapter.notifyDataSetChanged();
-        }else if(msg.equals(getString(R.string.change_friend_remark))){
+            updateData();
+        } else if (msg.equals(getString(R.string.change_friend_remark))) {
             updateData();
         }
     }
@@ -215,8 +238,20 @@ public class FriendListFragment extends Fragment {
     private void updateData() {
         mUsers.clear();
         List<UserInfo> userInfos = mMgr.queryAllUser();
+        UserInfo userInfo = null;
+        UserInfo userInfo2 = null;
+        for (UserInfo info : userInfos) {
+            if (info.getUser().equals(UtilTool.getJid())) {
+                userInfo = info;
+            } else if (info.getUser().isEmpty()) {
+                userInfo2 = info;
+            }
+        }
+        userInfos.remove(userInfo);
+        if (userInfo2 != null)
+            userInfos.remove(userInfo2);
         mUsers.addAll(userInfos);
-        mFriendListVPAdapter.notifyDataSetChanged();
+        mFriendListRVAdapter.notifyDataSetChanged();
     }
 
     /*private void getImage() {
@@ -356,8 +391,7 @@ public class FriendListFragment extends Fragment {
                                 Roster roster = Roster.getInstanceFor(XmppConnection.getInstance().getConnection());
                                 RosterEntry entry = roster.getEntry(JidCreate.entityBareFrom(alertName));
                                 roster.removeEntry(entry);
-                                queryUser();
-                                mFriendListVPAdapter.notifyDataSetChanged();
+                                updateData();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -450,8 +484,7 @@ public class FriendListFragment extends Fragment {
                         roster.removeEntry(entry);
                         UtilTool.Log("fsdafa", "删除成功！");
                         mMgr.deleteUser(from);
-                        queryUser();
-                        mFriendListVPAdapter.notifyDataSetChanged();
+                        updateData();
                     } catch (Exception e) {
                         e.printStackTrace();
                         UtilTool.Log("fsdafa", e.getMessage());
@@ -513,7 +546,7 @@ public class FriendListFragment extends Fragment {
                     for (final RosterEntry rosterEntry : entries) {
                         if (!mMgr.findUser(rosterEntry.getUser())) {
                             String user = rosterEntry.getUser().substring(0, rosterEntry.getUser().indexOf("@"));
-                            UtilTool.Log("好友2", user+"   "+rosterEntry.getName());
+                            UtilTool.Log("好友2", user + "   " + rosterEntry.getName());
                             mPersonalDetailsPresenter.getFriendImageList(user, new PersonalDetailsPresenter.CallBack2() {
                                 @Override
                                 public void send(final AuatarListInfo.DataBean dataBean) {
@@ -554,12 +587,12 @@ public class FriendListFragment extends Fragment {
                         }
                     }
                 }
-                String user=mMgr.queryAllUserName().toString().replaceAll(" ", "");
-                if(StringUtils.isEmpty(user))return;
-                mPersonalDetailsPresenter.getFriendRemark(user.substring(1,user.length()-1), new PersonalDetailsPresenter.CallBack3() {
+                String user = mMgr.queryAllUserName().toString().replaceAll(" ", "");
+                if (StringUtils.isEmpty(user)) return;
+                mPersonalDetailsPresenter.getFriendRemark(user.substring(1, user.length() - 1), new PersonalDetailsPresenter.CallBack3() {
                     @Override
                     public void send(List<RemarkListInfo.DataBean> listdata) {
-                        if(listdata==null)return;
+                        if (listdata == null) return;
                         mMgr.updateRemark(listdata);
                         updateData();
                     }
@@ -571,7 +604,7 @@ public class FriendListFragment extends Fragment {
         }
     }
 
-    private void queryUser() {
+   /* private void queryUser() {
         mUsers.clear();
         List<UserInfo> userInfos = mMgr.queryAllUser();
         UserInfo userInfo = null;
@@ -586,21 +619,24 @@ public class FriendListFragment extends Fragment {
         userInfos.remove(userInfo);
         if (userInfo2 != null)
             userInfos.remove(userInfo2);
-        Collections.sort(userInfos, new Comparator<UserInfo>() {
-            @Override
-            public int compare(UserInfo userInfo, UserInfo userInfo2) {
-                Comparator<Object> com = Collator.getInstance(java.util.Locale.CHINA);
-                return com.compare(userInfo.getUser(), userInfo2.getUser());
-            }
-        });
         mUsers.addAll(userInfos);
-        UtilTool.Log("好友", mUsers.size() + "");
-    }
+    }*/
 
     private void initRecylerView() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mFriendListVPAdapter = new FriendListVPAdapter(getContext(), mUsers, mMgr);
-        mRecyclerView.setAdapter(mFriendListVPAdapter);
+        mFriendListRVAdapter = new FriendListRVAdapter(getContext(), mUsers, mMgr);
+        mListView.setAdapter(mFriendListRVAdapter);
+        mListView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    mScrollView.requestDisallowInterceptTouchEvent(false);
+                } else {
+                    mScrollView.requestDisallowInterceptTouchEvent(true);
+                }
+                return false;
+            }
+        });
     }
 
     @Override

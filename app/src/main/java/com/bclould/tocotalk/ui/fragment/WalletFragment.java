@@ -94,12 +94,6 @@ public class WalletFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        initData();
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();

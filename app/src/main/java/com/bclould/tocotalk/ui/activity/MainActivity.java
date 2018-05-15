@@ -11,12 +11,10 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -43,16 +41,11 @@ import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.Constants;
-import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
-
-import org.greenrobot.eventbus.EventBus;
-import org.jivesoftware.smackx.ping.PingFailedListener;
-import org.jivesoftware.smackx.ping.PingManager;
 
 import java.util.List;
 import java.util.Map;
@@ -536,7 +529,6 @@ public class MainActivity extends BaseActivity {
                     changeFragment(index);
 
                     setSelector(index);
-
                 }
             });
 

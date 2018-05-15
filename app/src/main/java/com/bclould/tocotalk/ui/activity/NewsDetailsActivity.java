@@ -46,7 +46,12 @@ public class NewsDetailsActivity extends BaseActivity {
     }
 
     private void initWebView() {
+
+        mWebView.setVerticalScrollbarOverlay(true);
+        //设置WebView支持JavaScript
+        mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.loadUrl(Constants.BASE_URL + Constants.NEWS_WEB_URL + mId + "/" + UtilTool.getUserId());
+
     }
 
     private void initIntent() {

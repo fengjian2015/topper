@@ -1,14 +1,28 @@
 package com.bclould.tocotalk.model;
 
+import android.support.annotation.NonNull;
+
+import com.bclould.tocotalk.utils.Cn2Spell;
+
 /**
  * Created by GA on 2017/12/26.
  */
 
-public class UserInfo {
+public class UserInfo implements Comparable<UserInfo> {
     private String user;
     private String path;
     private int status;
     private String remark;
+    private String pinyin;
+    private String firstLetter;
+
+    public String getPinyin() {
+        return pinyin;
+    }
+
+    public String getFirstLetter() {
+        return firstLetter;
+    }
 
     public String getRemark() {
         return remark;
@@ -32,6 +46,11 @@ public class UserInfo {
 
     public void setUser(String user) {
         this.user = user;
+        pinyin = Cn2Spell.getPinYin(user); // 根据姓名获取拼音
+        firstLetter = pinyin.substring(0, 1).toUpperCase(); // 获取拼音首字母并转成大写
+        if (!firstLetter.matches("[A-Z]")) { // 如果不在A-Z中则默认为“#”
+            firstLetter = "#";
+        }
     }
 
     public String getPath() {
@@ -42,4 +61,14 @@ public class UserInfo {
         this.path = path;
     }
 
+    @Override
+    public int compareTo(@NonNull UserInfo userInfo) {
+        if (firstLetter.equals("#") && !userInfo.getFirstLetter().equals("#")) {
+            return 1;
+        } else if (!firstLetter.equals("#") && userInfo.getFirstLetter().equals("#")) {
+            return -1;
+        } else {
+            return pinyin.compareToIgnoreCase(userInfo.getPinyin());
+        }
+    }
 }

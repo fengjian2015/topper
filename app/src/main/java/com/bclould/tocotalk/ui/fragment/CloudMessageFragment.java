@@ -15,7 +15,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Base64;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +43,6 @@ import com.bclould.tocotalk.utils.ToastShow;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tocotalk.xmpp.IConnectStateChangeListener;
-import com.bclould.tocotalk.xmpp.XMConnectionListener;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.bclould.tocotalk.xmpp.XmppListener;
 import com.google.gson.Gson;
@@ -52,12 +50,8 @@ import com.google.gson.Gson;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.jivesoftware.smack.AbstractXMPPConnection;
-import org.jivesoftware.smackx.ping.PingFailedListener;
-import org.jivesoftware.smackx.ping.PingManager;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -70,7 +64,7 @@ import static android.app.Activity.RESULT_OK;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class CloudMessageFragment extends Fragment implements IConnectStateChangeListener{
+public class CloudMessageFragment extends Fragment implements IConnectStateChangeListener {
 
 
     public static CloudMessageFragment instance = null;
@@ -138,13 +132,14 @@ public class CloudMessageFragment extends Fragment implements IConnectStateChang
     private void initInterface() {
         initRelogin();
     }
+
     private void initRelogin() {
         ConnectStateChangeListenerManager.get().registerStateChangeListener(this);
         if (ConnectStateChangeListenerManager.get().getCurrentState() != ConnectStateChangeListenerManager.CONNECTED) {
             ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
         }
         Intent intent = new Intent(getContext(), IMCoreService.class);
-        if (XmppConnection.isServiceWork(getContext(),"com.bclould.tocotalk.service.IMCoreService")) {
+        if (XmppConnection.isServiceWork(getContext(), "com.bclould.tocotalk.service.IMCoreService")) {
             XmppConnection.stopAllIMCoreService(getContext());
             getContext().stopService(intent);
         }
@@ -218,7 +213,7 @@ public class CloudMessageFragment extends Fragment implements IConnectStateChang
                         mLlFriend.setClickable(true);
                         mCloudCircleAdd.setClickable(true);
                     }
-                    XmppListener.xmppListener=null;
+                    XmppListener.xmppListener = null;
                     getPhoneSize();
                     setSelector(0);
                     mCloudCircleVp.setCurrentItem(0);
@@ -226,10 +221,10 @@ public class CloudMessageFragment extends Fragment implements IConnectStateChang
                     initViewPager();
                     //发送登录失败通知
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.login_error)));
-                    if(mAnim!=null)
-                    mAnim.stop();
+                    if (mAnim != null)
+                        mAnim.stop();
                     mLlLogin.setVisibility(View.GONE);
-                    ToastShow.showToast2((Activity) getContext(),getString(R.string.toast_network_error));
+                    ToastShow.showToast2((Activity) getContext(), getString(R.string.toast_network_error));
                     break;
                 case 1:
                     if (mLlChat != null && mLlFriend != null && mCloudCircleAdd != null) {
@@ -244,8 +239,8 @@ public class CloudMessageFragment extends Fragment implements IConnectStateChang
                     setSelector(0);
                     mCloudCircleVp.setCurrentItem(0);
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
-                    if(mAnim!=null)
-                    mAnim.stop();
+                    if (mAnim != null)
+                        mAnim.stop();
                     mLlLogin.setVisibility(View.GONE);
                     isLogin = true;
                     MyApp.getInstance().isLogin = true;
@@ -266,13 +261,13 @@ public class CloudMessageFragment extends Fragment implements IConnectStateChang
                     intent.setAction("XMPPConnectionListener");
                     intent.putExtra("type", false);
                     getContext().sendBroadcast(intent);
-                    if(mAnim!=null)
+                    if (mAnim != null)
                         mAnim.stop();
                     mLlLogin.setVisibility(View.GONE);
                     Toast.makeText(getContext(), getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                     break;
                 case 3:
-                    XmppListener.xmppListener=null;
+                    XmppListener.xmppListener = null;
                     break;
             }
         }
@@ -280,24 +275,24 @@ public class CloudMessageFragment extends Fragment implements IConnectStateChang
 
     @Override
     public void onStateChange(int serviceState) {
-        if (serviceState == -1||mCloudCircleVp==null) return;
-        if(imState==serviceState){
+        if (serviceState == -1 || mCloudCircleVp == null) return;
+        if (imState == serviceState) {
             return;
-        }else{
-            imState=serviceState;
+        } else {
+            imState = serviceState;
         }
         if (serviceState == ConnectStateChangeListenerManager.CONNECTED) {// 已连接
             mHandler.sendEmptyMessage(1);
         } else if (serviceState == ConnectStateChangeListenerManager.CONNECTING) {// 连接中
             mLlLogin.setVisibility(View.VISIBLE);
-            if(mAnim!=null)
+            if (mAnim != null)
                 mAnim.stop();
             mAnim = (AnimationDrawable) mIvAnim.getBackground();
             mAnim.start();
             mHandler.sendEmptyMessage(3);
         } else if (serviceState == ConnectStateChangeListenerManager.DISCONNECT) {// 未连接
             mHandler.sendEmptyMessage(0);
-        } else if(serviceState == ConnectStateChangeListenerManager.RECEIVING){//收取中
+        } else if (serviceState == ConnectStateChangeListenerManager.RECEIVING) {//收取中
             mHandler.sendEmptyMessage(1);
         }
     }

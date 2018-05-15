@@ -526,6 +526,16 @@ public interface MyService {
             @Field("friends") String friends
     );
 
+    //個人動態列表
+    @POST("dynamic/myDynamicList")
+    @FormUrlEncoded
+    Observable<DynamicListInfo> taDynamicList(
+            @Header("Authorization") String token,
+            @Field("page") int page,
+            @Field("page_size") int page_size,
+            @Field("user_name") String user_name
+    );
+
     //发表评论
     @POST("review/publish")
     @FormUrlEncoded

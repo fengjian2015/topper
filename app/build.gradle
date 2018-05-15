@@ -30,8 +30,8 @@ android {
         applicationId "com.bclould.tocotalk"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 25
-        versionName "0.25"
+        versionCode 26
+        versionName "0.26"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
@@ -180,4 +180,6 @@ dependencies {
     implementation 'info.guardianproject.netcipher:netcipher-httpclient:2.0.0-alpha1'
     implementation 'info.guardianproject.panic:panic:0.5'
     implementation files('libs/fastjson-1.1.32.jar')
+    //漢字轉拼音
+    compile 'com.belerweb:pinyin4j:2.5.0'
 }
