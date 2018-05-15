@@ -128,19 +128,12 @@ public class XmppListener {
             public void processStanza(Stanza packet) throws SmackException.NotConnectedException, InterruptedException {
                 Message message = (Message) packet;
                 if (message.getBody() != null) {
-                    SharedPreferences sp = context.getSharedPreferences(SETTING, 0);
                     //获取Jid和用户名
                     String from = message.getFrom().toString();
                     if (!from.equals(Constants.DOMAINNAME)) {
                         return;
                     }
-                    if (sp.contains(INFORM)) {
-                        if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
-                            UtilTool.playHint(context);
-                        }
-                    } else {
-                        UtilTool.playHint(context);
-                    }
+                    bellJudgment(false,null);
                     UtilTool.Log("fengjian---","廣播消息");
                     android.os.Message msg = new android.os.Message();
                     msg.obj = message;
@@ -160,14 +153,7 @@ public class XmppListener {
         try {
             List<Message> list = offlineManager.getMessages();
             if (list.size() != 0) {
-                SharedPreferences sp = context.getSharedPreferences(SETTING, 0);
-                if (sp.contains(INFORM)) {
-                    if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
-                        UtilTool.playHint(context);
-                    }
-                } else {
-                    UtilTool.playHint(context);
-                }
+                bellJudgment(false,null);
                 for (int i = 0; i < list.size(); i++) {
                     if (list.get(i) != null && list.get(i).getBody() != null && !list.get(i).getBody().equals("")) {
                         android.os.Message msg = new android.os.Message();
@@ -196,24 +182,7 @@ public class XmppListener {
         final ChatMessageListener messageListener = new ChatMessageListener() {
             @Override
             public void processMessage(Chat chat, Message message) {
-                SharedPreferences sp = context.getSharedPreferences(SETTING, 0);
-                //获取Jid和用户名
-                String from = message.getFrom().toString();
-                if (from.equals(Constants.DOMAINNAME)) {
-                    from = Constants.ADMINISTRATOR_NAME;
-                }
-                if (from.contains("/"))
-                    from = from.substring(0, from.indexOf("/"));
-                String chatmesssage=message.getBody();
-                //鈴聲必須放在處理消息類前面
-                if(OtrChatListenerManager.getInstance().isOtrMessage(chatmesssage,OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(),from),context)){
-                }else if (sp.contains(INFORM)) {
-                    if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
-                        UtilTool.playHint(context);
-                    }
-                } else {
-                    UtilTool.playHint(context);
-                }
+                bellJudgment(true,message);
                 UtilTool.Log("fengjian---","收到聊天消息");
                 //当消息返回为空的时候，表示用户正在聊天窗口编辑信息并未发出消
                 if (!TextUtils.isEmpty(message.getBody())) {
@@ -233,6 +202,41 @@ public class XmppListener {
             }
         };
         manager.addChatListener(chatManagerListener);
+    }
+
+    private void bellJudgment(boolean isjudgeOTR,Message message){
+        if(isjudgeOTR){
+            //获取Jid和用户名
+            String from = message.getFrom().toString();
+            if (from.equals(Constants.DOMAINNAME)) {
+                from = Constants.ADMINISTRATOR_NAME;
+            }
+            if (from.contains("/"))
+                from = from.substring(0, from.indexOf("/"));
+            String chatmesssage=message.getBody();
+            //鈴聲必須放在處理消息類前面
+            SharedPreferences sp = context.getSharedPreferences(SETTING, 0);
+            boolean free= MySharedPreferences.getInstance().getBoolean(SETTING+from+UtilTool.getJid());
+            if((isjudgeOTR&&OtrChatListenerManager.getInstance().isOtrMessage(chatmesssage,OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(),from),context))||
+                    free){
+
+            }else if (sp.contains(INFORM)) {
+                if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
+                    UtilTool.playHint(context);
+                }
+            } else {
+                UtilTool.playHint(context);
+            }
+        }else{
+            SharedPreferences sp = context.getSharedPreferences(SETTING, 0);
+            if (sp.contains(INFORM)) {
+                if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
+                    UtilTool.playHint(context);
+                }
+            } else {
+                UtilTool.playHint(context);
+            }
+        }
     }
 
     public class FragmentOneHandler extends Handler {
@@ -532,6 +536,7 @@ public class XmppListener {
                 messageInfo.setRemark(remark);
                 messageInfo.setStatus(status);
                 messageInfo.setRedId(redId);
+                messageInfo.setSend(from);
                 mgr.addMessage(messageInfo);
                 int number = mgr.queryNumber(from);
                 if (mgr.findConversation(from)) {

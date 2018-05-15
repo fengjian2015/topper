@@ -22,6 +22,15 @@ public class MessageInfo {
     private int sendStatus;
     private int msgType;
     private int imageType;
+    private String send;//2018-05-15增加字段，用於判斷是誰發送消息
+
+    public String getSend() {
+        return send;
+    }
+
+    public void setSend(String send) {
+        this.send = send;
+    }
 
     public int getImageType() {
         return imageType;

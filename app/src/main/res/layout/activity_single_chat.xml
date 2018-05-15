@@ -462,13 +462,13 @@
 
                 </android.support.v7.widget.RecyclerView>
 
-                <!--<com.bclould.tocotalk.ui.widget.LoadMoreListView
-                    android:id="@+id/lv_message"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/light"
-                    android:divider="@null">
-                </com.bclould.tocotalk.ui.widget.LoadMoreListView>-->
+                <!--<com.bclould.tocotalk.ui.widget.LoadMoreListView-->
+                    <!--android:id="@+id/lv_message"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@color/light"-->
+                    <!--android:divider="@null">-->
+                <!--</com.bclould.tocotalk.ui.widget.LoadMoreListView>-->
 
             </com.scwang.smartrefresh.layout.SmartRefreshLayout>
         </LinearLayout>

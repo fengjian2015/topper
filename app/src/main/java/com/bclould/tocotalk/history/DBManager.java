@@ -54,6 +54,7 @@ public class DBManager {
         values.put("sendStatus", messageInfo.getSendStatus());
         values.put("msgType", messageInfo.getMsgType());
         values.put("imageType", messageInfo.getImageType());
+        values.put("send", messageInfo.getSend());
         int id = (int) db.insert("MessageRecord", null, values);
         UtilTool.Log("日志", "添加成功" + messageInfo.toString());
         return id;
@@ -67,6 +68,106 @@ public class DBManager {
         long count = cursor.getLong(0);
         cursor.close();
         return count;
+    }
+
+
+    //查詢紅包和轉賬記錄
+    public List<MessageInfo> queryTypeMessage(String user,int fromtype,int sentype,int sendred,int fromred,int limit){
+        db = helper.getReadableDatabase();
+        ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
+        String sql = "select * from MessageRecord where user=? and my_user=? and (msgType=? or msgType=? or msgType=? or msgType=?) ORDER BY id desc limit ?";
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), fromtype+"",sentype+"",sendred+"",fromred+"",limit*10+""});
+        if (c != null) {
+            while (c.moveToNext()) {
+                MessageInfo messageInfo = new MessageInfo();
+                messageInfo.setUsername(c.getString(c.getColumnIndex("user")));
+                messageInfo.setMessage(c.getString(c.getColumnIndex("message")));
+                messageInfo.setTime(c.getString(c.getColumnIndex("time")));
+                messageInfo.setType(c.getInt(c.getColumnIndex("type")));
+                messageInfo.setCount(c.getString(c.getColumnIndex("count")));
+                messageInfo.setCoin(c.getString(c.getColumnIndex("coin")));
+                messageInfo.setRemark(c.getString(c.getColumnIndex("remark")));
+                messageInfo.setStatus(c.getInt(c.getColumnIndex("state")));
+                messageInfo.setId(c.getInt(c.getColumnIndex("id")));
+                messageInfo.setRedId(c.getInt(c.getColumnIndex("redId")));
+                messageInfo.setVoiceStatus(c.getInt(c.getColumnIndex("voiceStatus")));
+                messageInfo.setVoice(c.getString(c.getColumnIndex("voice")));
+                messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
+                messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
+                messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
+                messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
+                messageInfo.setSend(c.getString(c.getColumnIndex("send")));
+                messageInfos.add(messageInfo);
+            }
+            c.close();
+        }
+        return messageInfos;
+    }
+
+    //模糊查找文本消息
+    public List<MessageInfo> queryTextMessage(String user,String content,int limit){
+        db = helper.getReadableDatabase();
+        ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
+        String sql = "select * from MessageRecord where user=? and my_user=? and message like ? ORDER BY id desc limit ?";
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(),"%"+content+"%" ,limit*10+""});
+        if (c != null) {
+            while (c.moveToNext()) {
+                MessageInfo messageInfo = new MessageInfo();
+                messageInfo.setUsername(c.getString(c.getColumnIndex("user")));
+                messageInfo.setMessage(c.getString(c.getColumnIndex("message")));
+                messageInfo.setTime(c.getString(c.getColumnIndex("time")));
+                messageInfo.setType(c.getInt(c.getColumnIndex("type")));
+                messageInfo.setCount(c.getString(c.getColumnIndex("count")));
+                messageInfo.setCoin(c.getString(c.getColumnIndex("coin")));
+                messageInfo.setRemark(c.getString(c.getColumnIndex("remark")));
+                messageInfo.setStatus(c.getInt(c.getColumnIndex("state")));
+                messageInfo.setId(c.getInt(c.getColumnIndex("id")));
+                messageInfo.setRedId(c.getInt(c.getColumnIndex("redId")));
+                messageInfo.setVoiceStatus(c.getInt(c.getColumnIndex("voiceStatus")));
+                messageInfo.setVoice(c.getString(c.getColumnIndex("voice")));
+                messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
+                messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
+                messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
+                messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
+                messageInfo.setSend(c.getString(c.getColumnIndex("send")));
+                messageInfos.add(messageInfo);
+            }
+            c.close();
+        }
+        return messageInfos;
+    }
+
+    //通過消息類型查找聊天記錄
+    public List<MessageInfo> queryTypeMessage(String user,int fromtype,int sentype,int limit){
+        db = helper.getReadableDatabase();
+        ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
+        String sql = "select * from MessageRecord where user=? and my_user=? and (msgType=? or msgType=?) ORDER BY id desc limit ?";
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), fromtype+"",sentype+"",limit*10+""});
+        if (c != null) {
+            while (c.moveToNext()) {
+                MessageInfo messageInfo = new MessageInfo();
+                messageInfo.setUsername(c.getString(c.getColumnIndex("user")));
+                messageInfo.setMessage(c.getString(c.getColumnIndex("message")));
+                messageInfo.setTime(c.getString(c.getColumnIndex("time")));
+                messageInfo.setType(c.getInt(c.getColumnIndex("type")));
+                messageInfo.setCount(c.getString(c.getColumnIndex("count")));
+                messageInfo.setCoin(c.getString(c.getColumnIndex("coin")));
+                messageInfo.setRemark(c.getString(c.getColumnIndex("remark")));
+                messageInfo.setStatus(c.getInt(c.getColumnIndex("state")));
+                messageInfo.setId(c.getInt(c.getColumnIndex("id")));
+                messageInfo.setRedId(c.getInt(c.getColumnIndex("redId")));
+                messageInfo.setVoiceStatus(c.getInt(c.getColumnIndex("voiceStatus")));
+                messageInfo.setVoice(c.getString(c.getColumnIndex("voice")));
+                messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
+                messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
+                messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
+                messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
+                messageInfo.setSend(c.getString(c.getColumnIndex("send")));
+                messageInfos.add(messageInfo);
+            }
+            c.close();
+        }
+        return messageInfos;
     }
 
     public List<MessageInfo> queryMessage(String user) {
@@ -94,6 +195,7 @@ public class DBManager {
                 messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
                 messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
                 messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
+                messageInfo.setSend(c.getString(c.getColumnIndex("send")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -155,6 +257,7 @@ public class DBManager {
                 messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
                 messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
                 messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
+                messageInfo.setSend(c.getString(c.getColumnIndex("send")));
                 messageInfos.add(messageInfo);
             }
 
@@ -242,6 +345,9 @@ public class DBManager {
 
 
     public void addConversation(ConversationInfo conversationInfo) {
+        if(findConversation(conversationInfo.getUser())){
+            return;
+        }
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("number", conversationInfo.getNumber());
@@ -426,12 +532,19 @@ public class DBManager {
     }
 
     public boolean findUser(String user) {
-        db = helper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from UserImage where user=? and my_user=?",
-                new String[]{user, UtilTool.getJid()});
-        boolean result = cursor.moveToNext();
-        cursor.close();
-        return result;
+        Cursor cursor = null;
+        try {
+            db = helper.getReadableDatabase();
+            cursor = db.rawQuery("select * from UserImage where user=? and my_user=?", new String[]{user, UtilTool.getJid()});
+            boolean result = cursor.moveToNext();
+            return result;
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+           if(cursor!=null)
+               cursor.close();
+        }
+        return false;
     }
 
     public void deleteUser(String user) {

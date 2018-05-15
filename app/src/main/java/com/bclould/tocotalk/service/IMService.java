@@ -62,28 +62,22 @@ public class IMService extends Service{
             this.stopService(new Intent(this, IMService.class));
             return;
         }
+        XmppConnection.getInstance().getConnection();
+        IMLogin.login(this);
+
         if ((XmppConnection.getInstance().getConnection() != null && XmppConnection.getInstance().getConnection()
-                .isConnected()&&!XmppConnection.getInstance().getConnection()
+                .isConnected()&&XmppConnection.getInstance().getConnection()
                 .isAuthenticated())) {
-            UtilTool.Log("----------","首次登錄"+XmppConnection.getInstance().getConnection().isConnected()+"   "+
-                    XmppConnection.getInstance().getConnection().isAuthenticated());
-            IMLogin.login(this);
-        } else if(XmppConnection.getInstance().getConnection() == null){
-            ConnectStateChangeListenerManager.get().notifyListener(
-                    ConnectStateChangeListenerManager.CONNECTING);
-            handler.removeMessages(EXLOGIN);
-            exReconnect(1000);
-        }else{
             ConnectStateChangeListenerManager.get().notifyListener(
                     ConnectStateChangeListenerManager.CONNECTED);
             handler.removeMessages(EXLOGIN);
             exReconnect(1000);
+
         }
     }
 
     public void exReconnect(long delayMillis) {
         if (handler == null) {
-            UtilTool.Log("fengjian","EXLOGIN--handler null");
             instanceHandler();
         }
         handler.sendEmptyMessageDelayed(EXLOGIN, delayMillis);

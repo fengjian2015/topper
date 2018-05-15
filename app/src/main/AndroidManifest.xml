@@ -108,6 +108,7 @@
         <activity
             android:name=".ui.activity.ConversationActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -632,48 +633,47 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
-        <!--新聞詳情頁-->
+        <!-- 新聞詳情頁 -->
         <activity
-            android:name="com.bclould.tocotalk.ui.activity.NewsDetailsActivity"
+            android:name=".ui.activity.NewsDetailsActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
-        <!--Hash查詢頁-->
+        <!-- Hash查詢頁 -->
         <activity
-            android:name="com.bclould.tocotalk.ui.activity.GuessHashActivity"
+            android:name=".ui.activity.GuessHashActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
-        <!--新聞管理頁-->
+        <!-- 新聞管理頁 -->
         <activity
-            android:name="com.bclould.tocotalk.ui.activity.NewsManagerActivity"
+            android:name=".ui.activity.NewsManagerActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
-        <!--新聞編輯頁-->
+        <!-- 新聞編輯頁 -->
         <activity
-            android:name="com.bclould.tocotalk.ui.activity.NewsEditActivity"
+            android:name=".ui.activity.NewsEditActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
-        <!--公告管理頁-->
+        <!-- 公告管理頁 -->
         <activity
-            android:name="com.bclould.tocotalk.ui.activity.GonggaoManagerActivity"
+            android:name=".ui.activity.GonggaoManagerActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
-        <!--公告詳情頁-->
+        <!-- 公告詳情頁 -->
         <activity
-            android:name="com.bclould.tocotalk.ui.activity.GonggaoDetailActivity"
+            android:name=".ui.activity.GonggaoDetailActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
-        <!--公告詳情頁-->
+        <!-- 公告詳情頁 -->
         <activity
-            android:name="com.bclould.tocotalk.ui.activity.SumBuySellActivity"
+            android:name=".ui.activity.SumBuySellActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
-
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 監聽系統語言切換 -->
         <receiver
@@ -695,11 +695,12 @@
         <activity
             android:name=".ui.activity.ConversationDetailsActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
-        <!--個人詳情-->
-        <activity android:name=".ui.activity.IndividualDetailsActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <!-- 個人詳情 -->
+        <activity
+            android:name=".ui.activity.IndividualDetailsActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <service
             android:name=".service.IMService"
@@ -707,6 +708,7 @@
         <service
             android:name=".service.IMCoreService"
             android:process=":msgPush" />
+
         <receiver
             android:name=".xmpp.StartIMServiceReceiver"
             android:enabled="true">
@@ -714,6 +716,11 @@
                 <action android:name="com.bclould.tocotalk.action.ACTION_START_IMSERVICE" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".ui.activity.ConversationRecordFindActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
     </application>
 
 </manifest>
