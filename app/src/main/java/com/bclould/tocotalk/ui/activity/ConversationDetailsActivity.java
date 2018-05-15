@@ -17,8 +17,11 @@ import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.MySharedPreferences;
+import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -26,9 +29,14 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.jxmpp.jid.impl.JidCreate;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.bclould.tocotalk.utils.MySharedPreferences.SETTING;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class ConversationDetailsActivity extends BaseActivity {
@@ -84,6 +92,7 @@ public class ConversationDetailsActivity extends BaseActivity {
         imageHead.setImageBitmap(mUserImage);
         setName();
         changeTop();
+        changeFree();
         changeOTRState();
     }
 
@@ -103,6 +112,11 @@ public class ConversationDetailsActivity extends BaseActivity {
         }else {
             onOffTop.setSelected(false);
         }
+    }
+
+    private void changeFree(){
+        boolean free= MySharedPreferences.getInstance().getBoolean(SETTING+mUser+UtilTool.getJid());
+        onOffMessageFree.setSelected(free);
     }
 
     private void changeOTRState(){
@@ -133,13 +147,12 @@ public class ConversationDetailsActivity extends BaseActivity {
                 resultOTR();
                 break;
             case R.id.rl_looking_chat:
-                // TODO: 2018/5/9 查找聊天內容
+//                goRecord();
                 break;
             case R.id.on_off_message_free:
-                // TODO: 2018/5/9 消息免打擾
+                messageFree();
                 break;
             case R.id.on_off_top:
-                // TODO: 2018/5/9 置頂
                 messageTop();
                 break;
             case R.id.rl_empty_talk:
@@ -148,8 +161,39 @@ public class ConversationDetailsActivity extends BaseActivity {
         }
     }
 
+    private void goRecord() {
+        Intent intent=new Intent(this,ConversationRecordFindActivity.class);
+        intent.putExtra("user",mUser);
+        intent.putExtra("name",mName);
+        startActivity(intent);
+    }
+
+    private void messageFree(){
+        boolean free= MySharedPreferences.getInstance().getBoolean(SETTING+mUser+UtilTool.getJid());
+        if(free){
+            onOffMessageFree.setSelected(false);
+            MySharedPreferences.getInstance().setBoolean(SETTING+mUser+UtilTool.getJid(),false);
+        }else{
+            onOffMessageFree.setSelected(true);
+            MySharedPreferences.getInstance().setBoolean(SETTING+mUser+UtilTool.getJid(),true);
+        }
+    }
+
     private void messageTop() {
-        if("true".equals(mMgr.findConversationIstop(mUser))){
+        String istop=mMgr.findConversationIstop(mUser);
+        if(StringUtils.isEmpty(istop)){
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            ConversationInfo info = new ConversationInfo();
+            info.setTime(time);
+            info.setFriend(mName);
+            info.setUser(mUser);
+            info.setMessage("");
+            mMgr.addConversation(info);
+            onOffTop.setSelected(true);
+            mMgr.updateConversationIstop(mUser,"true");
+        }else if("true".equals(istop)){
             onOffTop.setSelected(false);
             mMgr.updateConversationIstop(mUser,"false");
         }else{

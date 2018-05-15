@@ -783,6 +783,11 @@
     <string name="anomaly_order">異常訂單</string>
     <string name="sum_deal_count">交易次數</string>
     <string name="shouqi">收起</string>
+    <string name="chat_content">聊天內容</string>
+    <string name="date">日期</string>
+    <string name="a_transfer">發起轉賬</string>
+    <string name="send_a_red_envelope">發了一個紅包</string>
+    <string name="red_envelopes_collected">紅包已被領取</string>
     <string name="ad_count">廣告數量</string>
     <string name="ta_no_dynamic">Ta還沒有發佈任何動態</string>
 </resources>

@@ -73,6 +73,7 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.sj.emoji.DefEmoticons;
 import com.sj.emoji.EmojiBean;
@@ -516,6 +517,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             messageInfo.setMsgType(TO_VOICE_MSG);
             messageInfo.setVoiceTime(duration + "");
             messageInfo.setVoiceStatus(1);
+            messageInfo.setSend(UtilTool.getJid());
             mMgr.addMessage(messageInfo);
             mMessageList.add(messageInfo);
             //刷新数据
@@ -911,6 +913,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             } else {
                 messageInfo.setMsgType(TO_FILE_MSG);
             }
+            messageInfo.setSend(UtilTool.getJid());
             mId = mMgr.addMessage(messageInfo);
             messageInfo.setId(mId);
             mMessageList.add(messageInfo);
@@ -956,6 +959,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             } else {
                 messageInfo.setMsgType(TO_FILE_MSG);
             }
+            messageInfo.setSend(UtilTool.getJid());
             mMgr.addMessage(messageInfo);
             mMessageList.add(messageInfo);
             mChatAdapter.notifyDataSetChanged();
@@ -1136,6 +1140,12 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
             }
         });
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                refreshLayout.finishLoadMore(1000);
+            }
+        });
     }
 
     //显示更多dialog
@@ -1243,6 +1253,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             messageInfo.setTime(time);
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_TEXT_MSG);
+            messageInfo.setSend(UtilTool.getJid());
             mMgr.addMessage(messageInfo);
             mMessageList.add(messageInfo);
             mChatAdapter.notifyDataSetChanged();
@@ -1271,6 +1282,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_TEXT_MSG);
             messageInfo.setSendStatus(1);
+            messageInfo.setSend(UtilTool.getJid());
             mMgr.addMessage(messageInfo);
             mMessageList.add(messageInfo);
             mChatAdapter.notifyDataSetChanged();

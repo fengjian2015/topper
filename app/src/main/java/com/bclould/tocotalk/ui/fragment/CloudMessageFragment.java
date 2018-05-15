@@ -294,6 +294,8 @@ public class CloudMessageFragment extends Fragment implements IConnectStateChang
             mHandler.sendEmptyMessage(0);
         } else if (serviceState == ConnectStateChangeListenerManager.RECEIVING) {//收取中
             mHandler.sendEmptyMessage(1);
+        } else if(serviceState == ConnectStateChangeListenerManager.RECEIVING){//收取中
+//            mHandler.sendEmptyMessage(1);
         }
     }
 

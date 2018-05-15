@@ -872,6 +872,7 @@ public class XmppConnection {
             messageInfo.setCoin(coin);
             messageInfo.setRemark(remark);
             messageInfo.setStatus(0);
+            messageInfo.setSend(from);
             mMgr.addMessage(messageInfo);
             if (mMgr.findConversation(from)) {
                 mMgr.updateConversation(from, 0, chatMsg, time);
@@ -1126,7 +1127,6 @@ public class XmppConnection {
                 if(myList.get(i).service==null)continue;
                 String mName = myList.get(i).service.getClassName().toString();
                 if (mName!=null&&mName.equals(serviceName)) {
-                    UtilTool.Log("fengjian","service--test:" + mName);
                     isWork = true;
                     break;
                 }

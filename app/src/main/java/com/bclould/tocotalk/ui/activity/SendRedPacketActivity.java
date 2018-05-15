@@ -376,6 +376,7 @@ public class SendRedPacketActivity extends AppCompatActivity {
             messageInfo.setCount(mCount + "");
             messageInfo.setStatus(0);
             messageInfo.setRedId(id);
+            messageInfo.setSend(UtilTool.getJid());
             mMgr.addMessage(messageInfo);
             String hint = "[" + getString(R.string.red_package) + "]";
             if (mMgr.findConversation(mUser)) {
