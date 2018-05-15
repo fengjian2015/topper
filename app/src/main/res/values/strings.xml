@@ -788,4 +788,5 @@
     <string name="a_transfer">發起轉賬</string>
     <string name="send_a_red_envelope">發了一個紅包</string>
     <string name="red_envelopes_collected">紅包已被領取</string>
+    <string name="ad_count">廣告數量</string>
 </resources>
