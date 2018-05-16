@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -38,6 +38,46 @@
     <WebView
         android:id="@+id/web_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></WebView>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/rl_edit"
+        android:layout_below="@+id/xx"></WebView>
 
-</LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_edit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            style="@style/HCutOffRule"/>
+
+        <EditText
+            android:id="@+id/comment_et"
+            android:layout_width="@dimen/x600"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:hint="@string/et_comment"
+            android:paddingBottom="@dimen/x30"
+            android:paddingLeft="@dimen/x36"
+            android:paddingRight="@dimen/x36"
+            android:paddingTop="@dimen/x30"
+            android:textColor="@color/black"
+            android:textCursorDrawable="@null"
+            android:textSize="@dimen/x26"/>
+
+        <TextView
+            android:id="@+id/send"
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/x80"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x34"
+            android:gravity="center"
+            android:text="@string/send"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

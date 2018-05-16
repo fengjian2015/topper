@@ -790,4 +790,13 @@
     <string name="red_envelopes_collected">紅包已被領取</string>
     <string name="ad_count">廣告數量</string>
     <string name="ta_no_dynamic">Ta還沒有發佈任何動態</string>
+    <string name="pick_name">上傳</string>
+    <string name="pic_out_of_size">圖片大小超過限制！</string>
+    <string name="not_empty">不能為空！</string>
+    <string name="handles">操作</string>
+    <string name="char_unit">字</string>
+    <string name="add_link">添加鏈接</string>
+    <string name="input_link_name">輸入連接名</string>
+    <string name="input_url">輸入鏈接</string>
+    <string name="publish">發表</string>
 </resources>

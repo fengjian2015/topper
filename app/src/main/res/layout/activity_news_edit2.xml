@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".ui.activity.NewsEditActivity">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/news_edit"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+        <TextView
+            android:id="@+id/publish"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:padding="@dimen/x20"
+            android:text="@string/push"
+            android:textColor="@color/blue2"
+            android:textSize="@dimen/x28"/>
+
+    </RelativeLayout>
+
+    <com.lu.richtexteditorlib.SimpleRichEditor
+        android:id="@+id/rich_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/lu_bottom_menu"
+        android:layout_below="@+id/rl_title" />
+
+    <com.lu.lubottommenu.LuBottomMenu
+        android:id="@+id/lu_bottom_menu"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_alignParentBottom="true">
+    </com.lu.lubottommenu.LuBottomMenu>
+
+</RelativeLayout>

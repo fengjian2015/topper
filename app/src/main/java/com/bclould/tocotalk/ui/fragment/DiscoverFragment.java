@@ -20,11 +20,13 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.richtext.richtexteditor.MainActivity;
 import com.bclould.tocotalk.ui.activity.GonggaoManagerActivity;
-import com.bclould.tocotalk.ui.activity.NewsEditActivity;
 import com.bclould.tocotalk.ui.activity.NewsManagerActivity;
+import com.bclould.tocotalk.ui.activity.PersonageDynamicActivity;
 import com.bclould.tocotalk.ui.activity.PublicshDynamicActivity;
 import com.bclould.tocotalk.ui.adapter.CloudMessageVPAdapter;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -187,7 +189,7 @@ public class DiscoverFragment extends Fragment {
 
         mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_news, null);
 
-        mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 6, true);
+        mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 5, true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
         // 设置背景颜色变暗
         WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
@@ -230,11 +232,17 @@ public class DiscoverFragment extends Fragment {
                             mPopupWindow.dismiss();
                             break;
                         case 2:
-                            startActivity(new Intent(getActivity(), NewsEditActivity.class));
+                            startActivity(new Intent(getActivity(), MainActivity.class));
                             mPopupWindow.dismiss();
                             break;
                         case 3:
                             startActivity(new Intent(getActivity(), PublicshDynamicActivity.class));
+                            mPopupWindow.dismiss();
+                            break;
+                        case 4:
+                            Intent intent = new Intent(getActivity(), PersonageDynamicActivity.class);
+                            intent.putExtra("name", UtilTool.getUser());
+                            startActivity(intent);
                             mPopupWindow.dismiss();
                             break;
                     }

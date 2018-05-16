@@ -30,8 +30,8 @@ android {
         applicationId "com.bclould.tocotalk"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 26
-        versionName "0.26"
+        versionCode 28
+        versionName "0.28"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
@@ -183,4 +183,11 @@ dependencies {
     implementation files('libs/fastjson-1.1.32.jar')
     //漢字轉拼音
     compile 'com.belerweb:pinyin4j:2.5.0'
+    //富文本編輯器
+    compile project(path: ':lubottommenu')
+    compile project(path: ':richtexteditorlib')
+    compile 'com.github.martin90s:ImagePicker:v1.3.2'
+    compile 'com.facebook.fresco:fresco:1.5.0'
+    compile 'com.facebook.fresco:imagepipeline-okhttp3:1.5.0'
+    compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
 }

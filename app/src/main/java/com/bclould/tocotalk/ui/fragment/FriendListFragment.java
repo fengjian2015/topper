@@ -183,7 +183,9 @@ public class FriendListFragment extends Fragment {
         mScrollView.post(new Runnable() {
             @Override
             public void run() {
-                mScrollView.scrollTo(0, 0);
+                if (mScrollView != null) {
+                    mScrollView.scrollTo(0, 0);
+                }
             }
         });
     }
@@ -195,7 +197,9 @@ public class FriendListFragment extends Fragment {
             mScrollView.post(new Runnable() {
                 @Override
                 public void run() {
-                    mScrollView.scrollTo(0, 0);
+                    if (mScrollView != null) {
+                        mScrollView.scrollTo(0, 0);
+                    }
                 }
             });
         }
@@ -208,7 +212,9 @@ public class FriendListFragment extends Fragment {
             mScrollView.post(new Runnable() {
                 @Override
                 public void run() {
-                    mScrollView.scrollTo(0, 0);
+                    if (mScrollView != null) {
+                        mScrollView.scrollTo(0, 0);
+                    }
                 }
             });
         }

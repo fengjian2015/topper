@@ -196,6 +196,9 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         public void setData(final DynamicListInfo.DataBean dataBean) {
             mDataBean = dataBean;
             String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
+            if (dataBean.getUser_name().equals(UtilTool.getUser())) {
+                jid = UtilTool.getJid();
+            }
             mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
             mTime.setText(dataBean.getCreated_at());
             mName.setText(dataBean.getUser_name());
@@ -358,6 +361,9 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             mImgList = (ArrayList<String>) dataBean.getKey_urls();
             mNglImages.setImagesData(mCompressImgList);
             String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
+            if (dataBean.getUser_name().equals(UtilTool.getUser())) {
+                jid = UtilTool.getJid();
+            }
             mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
             mTvTime.setText(dataBean.getCreated_at());
             mTvName.setText(dataBean.getUser_name());

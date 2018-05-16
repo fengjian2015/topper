@@ -45,13 +45,23 @@
                     app:indicator_height="@dimen/x15"
                     app:indicator_margin="@dimen/x15"
                     app:indicator_width="@dimen/x15"
-                    app:is_auto_play="true"/>
+                    app:is_auto_play="true"
+                    app:title_background="@color/gray"
+                    app:title_height="@dimen/y80"
+                    app:title_textcolor="@color/white"
+                    app:title_textsize="@dimen/x28"/>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                </android.support.v7.widget.RecyclerView>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    </android.support.v7.widget.RecyclerView>
+
+                </RelativeLayout>
 
             </LinearLayout>
 

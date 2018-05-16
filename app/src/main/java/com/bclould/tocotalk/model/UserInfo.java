@@ -30,6 +30,11 @@ public class UserInfo implements Comparable<UserInfo> {
 
     public void setRemark(String remark) {
         this.remark = remark;
+        pinyin = Cn2Spell.getPinYin(remark); // 根据姓名获取拼音
+        firstLetter = pinyin.substring(0, 1).toUpperCase(); // 获取拼音首字母并转成大写
+        if (!firstLetter.matches("[A-Z]")) { // 如果不在A-Z中则默认为“#”
+            firstLetter = "#";
+        }
     }
 
     public int getStatus() {
@@ -46,11 +51,6 @@ public class UserInfo implements Comparable<UserInfo> {
 
     public void setUser(String user) {
         this.user = user;
-        pinyin = Cn2Spell.getPinYin(user); // 根据姓名获取拼音
-        firstLetter = pinyin.substring(0, 1).toUpperCase(); // 获取拼音首字母并转成大写
-        if (!firstLetter.matches("[A-Z]")) { // 如果不在A-Z中则默认为“#”
-            firstLetter = "#";
-        }
     }
 
     public String getPath() {

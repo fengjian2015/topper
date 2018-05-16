@@ -64,6 +64,6 @@
         android:text="@string/my_dynamic"
         android:textColor="@android:color/black"
         android:textSize="@dimen/x28"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
 </LinearLayout>
