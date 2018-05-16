@@ -48,9 +48,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -695,6 +695,7 @@ public class UtilTool {
             return sum;
         }
     }
+
     /**
      * 创建根缓存目录
      *
@@ -720,6 +721,13 @@ public class UtilTool {
     public static boolean isSdCardAvailable() {
         return Environment.getExternalStorageState().equals(
                 android.os.Environment.MEDIA_MOUNTED);
+    }
+
+    public static String doubleMultiply(double a, double b) {
+        BigDecimal a1 = new BigDecimal(Double.toString(a));
+        BigDecimal b1 = new BigDecimal(Double.toString(b));
+        BigDecimal result = a1.multiply(b1);// 相乘结果
+        return removeZero(result.toString());
     }
 
 }

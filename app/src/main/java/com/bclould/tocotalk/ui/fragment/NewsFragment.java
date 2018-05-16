@@ -27,6 +27,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
@@ -103,20 +104,24 @@ public class NewsFragment extends Fragment implements OnBannerListener {
                     mTopList.clear();
                     mTopList.addAll(top);
                     List<String> imgList = new ArrayList<>();
+                    List<String> titleList = new ArrayList<>();
                     for (NewsListInfo.TopBean info : top) {
                         imgList.add(info.getIndex_pic());
+                        titleList.add(info.getTitle());
                     }
                     mNewsList.addAll(lists);
                     mNewsRVAdapter.notifyDataSetChanged();
-                    initBanner(imgList);
+                    initBanner(imgList, titleList);
                 }
             }
         });
 
     }
 
-    private void initBanner(List<String> top) {
-        mBanner.setImages(top)
+    private void initBanner(List<String> top, List<String> titleList) {
+        mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
+                .setImages(top)
+                .setBannerTitles(titleList)
                 .setImageLoader(new ImageLoader() {
                     @Override
                     public void displayImage(Context context, Object path, ImageView imageView) {

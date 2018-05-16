@@ -708,7 +708,7 @@ public class GuessDetailsActivity extends BaseActivity {
             }
         });
         valueList = virtualKeyboardView.getValueList();
-        countCoin.setText((Float.parseFloat(mSingle_coin) * Float.parseFloat(count + "")) + mTvCoin.getText().toString());
+        countCoin.setText(UtilTool.doubleMultiply(count, Double.parseDouble(mSingle_coin))+ mTvCoin.getText().toString());
         coin.setText(getString(R.string.bet) + mTvCoin.getText().toString() + getString(R.string.guess));
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -799,12 +799,12 @@ public class GuessDetailsActivity extends BaseActivity {
                 break;
             case R.id.btn_confirm:
                 if (!mEtBetCount.getText().toString().isEmpty()) {
-                    if(Integer.parseInt(mEtBetCount.getText().toString()) <= 5){
+                    if (Integer.parseInt(mEtBetCount.getText().toString()) <= 5) {
                         setBetCount();
-                    }else {
+                    } else {
                         Toast.makeText(this, getString(R.string.bet_hint2), Toast.LENGTH_SHORT).show();
                     }
-                }else {
+                } else {
                     Toast.makeText(this, getString(R.string.toast_guess_count_null), Toast.LENGTH_SHORT).show();
                 }
                 break;

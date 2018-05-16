@@ -89,6 +89,7 @@ public class MyFragment extends Fragment {
         return view;
     }
 
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();

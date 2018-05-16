@@ -1,6 +1,5 @@
 package com.bclould.tocotalk.ui.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -22,6 +21,7 @@ import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.DynamicListInfo;
 import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.ui.activity.DynamicDetailActivity;
+import com.bclould.tocotalk.ui.activity.PreviewImgActivity;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
@@ -29,8 +29,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.jaeger.ninegridimageview.ItemImageClickListener;
 import com.jaeger.ninegridimageview.NineGridImageView;
 import com.jaeger.ninegridimageview.NineGridImageViewAdapter;
-import com.previewlibrary.GPreviewBuilder;
-import com.previewlibrary.ZoomMediaLoader;
 import com.previewlibrary.enitity.ThumbViewInfo;
 
 import java.util.ArrayList;
@@ -198,6 +196,9 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         public void setData(final DynamicListInfo.DataBean dataBean) {
             mDataBean = dataBean;
             String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
+            if (dataBean.getUser_name().equals(UtilTool.getUser())) {
+                jid = UtilTool.getJid();
+            }
             mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
             mTime.setText(dataBean.getCreated_at());
             mName.setText(dataBean.getUser_name());
@@ -321,13 +322,17 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             mNglImages.setItemImageClickListener(new ItemImageClickListener<String>() {
                 @Override
                 public void onItemImageClick(Context context, ImageView imageView, int index, List<String> list) {
+                    Intent intent = new Intent(mContext, PreviewImgActivity.class);
+                    intent.putExtra("index", index);
+                    intent.putStringArrayListExtra("imgList", mCompressImgList);
+                    context.startActivity(intent);
 
-                    computeBoundsBackward(mImgList);//组成数据
+                    /*computeBoundsBackward(list);//组成数据
                     GPreviewBuilder.from((Activity) context)
                             .setData(mThumbViewInfoList)
                             .setCurrentIndex(index)
                             .setType(GPreviewBuilder.IndicatorType.Dot)
-                            .start();//启动
+                            .start();//启动*/
 
                 }
             });
@@ -356,6 +361,9 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             mImgList = (ArrayList<String>) dataBean.getKey_urls();
             mNglImages.setImagesData(mCompressImgList);
             String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
+            if (dataBean.getUser_name().equals(UtilTool.getUser())) {
+                jid = UtilTool.getJid();
+            }
             mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
             mTvTime.setText(dataBean.getCreated_at());
             mTvName.setText(dataBean.getUser_name());

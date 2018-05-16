@@ -130,6 +130,46 @@ public class DynamicPresenter {
         }
     }
 
+    public void taDynamicList(int page, int pageSize, String user, final CallBack2 callBack2) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .taDynamicList(UtilTool.getToken(), page, pageSize, user)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<DynamicListInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                        }
+
+                        @Override
+                        public void onNext(DynamicListInfo dynamicListInfo) {
+                            hideDialog();
+                            if (dynamicListInfo.getStatus() == 1) {
+                                callBack2.send(dynamicListInfo.getData());
+                            } else {
+                                Toast.makeText(mContext, mContext.getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            hideDialog();
+                            UtilTool.Log("動態", e.getMessage());
+                            Toast.makeText(mContext, mContext.getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public void reviewList(String id, final CallBack3 callBack3) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();

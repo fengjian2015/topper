@@ -2,6 +2,7 @@ package com.bclould.tocotalk.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -35,16 +36,17 @@ public class GlideImgLoader implements IZoomMediaLoader {
         RequestOptions requestOptions = new RequestOptions()
                 .error(R.mipmap.ic_empty_photo)
                 .centerCrop()
+                .placeholder(R.mipmap.ic_empty_photo)
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
 
         Glide.with(context)
-                .asBitmap()
                 .load(path)
                 .apply(requestOptions)
-                .into(new SimpleTarget<Bitmap>() {
+                .into(new SimpleTarget<Drawable>() {
                     @Override
-                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                        simpleTarget.onResourceReady(resource);
+                    public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                        BitmapDrawable bd = (BitmapDrawable) resource;
+                        simpleTarget.onResourceReady(bd.getBitmap());
                     }
 
                     @Override
@@ -58,18 +60,17 @@ public class GlideImgLoader implements IZoomMediaLoader {
                         super.onLoadFailed(errorDrawable);
                         simpleTarget.onLoadFailed(errorDrawable);
                     }
-
                 });
     }
 
     @Override
     public void onStop(@NonNull Fragment context) {
         Glide.with(context).onStop();
-
     }
 
     @Override
     public void clearMemory(@NonNull Context c) {
         Glide.get(c).clearMemory();
     }
+
 }
