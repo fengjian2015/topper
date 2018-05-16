@@ -70,6 +70,7 @@
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_select"
         android:layout_width="match_parent"
@@ -87,20 +88,18 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/y20"
         android:visibility="gone">
-
         <com.scwang.smartrefresh.header.WaterDropHeader
             android:layout_width="match_parent"
             android:background="@color/light"
             android:layout_height="wrap_content"/>
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingTop="@dimen/y30"
+            android:background="@drawable/bg_pay_record_shape"
             >
-
         </android.support.v7.widget.RecyclerView>
-
         <!--<com.bclould.tocotalk.ui.widget.LoadMoreListView-->
         <!--android:id="@+id/lv_message"-->
         <!--android:layout_width="match_parent"-->
@@ -108,6 +107,32 @@
         <!--android:background="@color/light"-->
         <!--android:divider="@null">-->
         <!--</com.bclould.tocotalk.ui.widget.LoadMoreListView>-->
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh_layout_video"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/y20"
+        android:visibility="gone">
+        <com.scwang.smartrefresh.header.WaterDropHeader
+            android:layout_width="match_parent"
+            android:background="@color/light"
+            android:layout_height="wrap_content"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_video"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/y30"
+            android:background="@drawable/bg_pay_record_shape"
+            >
+        </android.support.v7.widget.RecyclerView>
+        <!--<com.bclould.tocotalk.ui.widget.LoadMoreListView-->
+        <!--android:id="@+id/lv_message"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/light"-->
+        <!--android:divider="@null">-->
+        <!--</com.bclould.tocotalk.ui.widget.LoadMoreListView>-->
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

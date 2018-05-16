@@ -14,9 +14,11 @@ import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.RemarkListInfo;
 import com.bclould.tocotalk.model.UserInfo;
+import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -142,7 +144,7 @@ public class DBManager {
         db = helper.getReadableDatabase();
         ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
         String sql = "select * from MessageRecord where user=? and my_user=? and (msgType=? or msgType=?) ORDER BY id desc limit ?";
-        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), fromtype+"",sentype+"",limit*10+""});
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), fromtype+"",sentype+"",limit*20+""});
         if (c != null) {
             while (c.moveToNext()) {
                 MessageInfo messageInfo = new MessageInfo();
@@ -203,6 +205,93 @@ public class DBManager {
         return messageInfos;
     }
 
+    /**
+     * 用於刷新
+     * @param user
+     * @param id
+     * @return
+     */
+    public List<MessageInfo> queryRefreshMessage(String user,int id) {
+        db = helper.getReadableDatabase();
+        ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
+        String sql = "select * from MessageRecord where user=? and my_user=? and id < ? ORDER BY id desc limit ?";
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), id+"", 10 + ""});
+        if (c != null) {
+            while (c.moveToNext()) {
+                MessageInfo messageInfo = new MessageInfo();
+                messageInfo.setUsername(c.getString(c.getColumnIndex("user")));
+                messageInfo.setMessage(c.getString(c.getColumnIndex("message")));
+                messageInfo.setTime(c.getString(c.getColumnIndex("time")));
+                messageInfo.setType(c.getInt(c.getColumnIndex("type")));
+                messageInfo.setCount(c.getString(c.getColumnIndex("count")));
+                messageInfo.setCoin(c.getString(c.getColumnIndex("coin")));
+                messageInfo.setRemark(c.getString(c.getColumnIndex("remark")));
+                messageInfo.setStatus(c.getInt(c.getColumnIndex("state")));
+                messageInfo.setId(c.getInt(c.getColumnIndex("id")));
+                messageInfo.setRedId(c.getInt(c.getColumnIndex("redId")));
+                messageInfo.setVoiceStatus(c.getInt(c.getColumnIndex("voiceStatus")));
+                messageInfo.setVoice(c.getString(c.getColumnIndex("voice")));
+                messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
+                messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
+                messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
+                messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
+                messageInfo.setSend(c.getString(c.getColumnIndex("send")));
+                messageInfos.add(messageInfo);
+            }
+            c.close();
+        }
+        if(messageInfos.size()==0){
+            Toast.makeText(mContext, "没有更多记录了", Toast.LENGTH_SHORT).show();
+        }
+        Collections.reverse(messageInfos);
+        return messageInfos;
+    }
+
+    /**
+     * 用於加載
+     * @param user
+     * @param id
+     * @return
+     */
+    public List<MessageInfo> queryLoadMessage(String user,int id,boolean isFist) {
+        db = helper.getReadableDatabase();
+        ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
+        String sql;
+        if(isFist){
+            sql = "select * from MessageRecord where user=? and my_user=? and id >= ? limit ?";
+        }else{
+            sql = "select * from MessageRecord where user=? and my_user=? and id > ? limit ?";
+        }
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), id+"", 10 + ""});
+        if (c != null) {
+            while (c.moveToNext()) {
+                MessageInfo messageInfo = new MessageInfo();
+                messageInfo.setUsername(c.getString(c.getColumnIndex("user")));
+                messageInfo.setMessage(c.getString(c.getColumnIndex("message")));
+                messageInfo.setTime(c.getString(c.getColumnIndex("time")));
+                messageInfo.setType(c.getInt(c.getColumnIndex("type")));
+                messageInfo.setCount(c.getString(c.getColumnIndex("count")));
+                messageInfo.setCoin(c.getString(c.getColumnIndex("coin")));
+                messageInfo.setRemark(c.getString(c.getColumnIndex("remark")));
+                messageInfo.setStatus(c.getInt(c.getColumnIndex("state")));
+                messageInfo.setId(c.getInt(c.getColumnIndex("id")));
+                messageInfo.setRedId(c.getInt(c.getColumnIndex("redId")));
+                messageInfo.setVoiceStatus(c.getInt(c.getColumnIndex("voiceStatus")));
+                messageInfo.setVoice(c.getString(c.getColumnIndex("voice")));
+                messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
+                messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
+                messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
+                messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
+                messageInfo.setSend(c.getString(c.getColumnIndex("send")));
+                messageInfos.add(messageInfo);
+            }
+            c.close();
+        }
+        if(messageInfos.size()==0){
+            Toast.makeText(mContext, "没有更多记录了", Toast.LENGTH_SHORT).show();
+        }
+        return messageInfos;
+    }
 
     public List<MessageInfo> pagingQueryMessage(String user) {
         long count = queryMessageCount(user);

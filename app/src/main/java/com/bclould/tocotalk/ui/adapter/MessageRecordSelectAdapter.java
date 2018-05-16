@@ -1,6 +1,8 @@
 package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ import static com.bclould.tocotalk.ui.activity.ConversationRecordFindActivity.VI
  * Created by GIjia on 2018/5/15.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class MessageRecordSelectAdapter extends RecyclerView.Adapter {
     private Context context;
     private List<Integer> selectList;
@@ -36,6 +39,7 @@ public class MessageRecordSelectAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new BodyViewHolder(LayoutInflater.from(context).inflate(R.layout.record_select_item, null));
     }
+
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {

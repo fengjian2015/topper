@@ -93,6 +93,7 @@ import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.stringprep.XmppStringprepException;
 
 import java.io.File;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -258,6 +259,24 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         mEkbEmoticonsKeyboard.addOnResultOTR(this);
     }
 
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        MessageInfo messageInfo= (MessageInfo) intent.getSerializableExtra("MessageInfo");
+        if(messageInfo==null){
+            return;
+        }
+        //通過傳遞過來的消息，查找
+        Bundle bundle=new Bundle();
+        bundle.putBoolean("isFist",true);
+        bundle.putSerializable("MessageInfo", (Serializable) messageInfo);
+        mMessageList.clear();
+        Message message=new Message();
+        message.obj=bundle;
+        message.what=4;
+        handler.sendMessage(message);
+    }
 
     //初始化表情盘
     private void initEmoticonsKeyboard() {
@@ -635,6 +654,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         }
     }
 
+
     //打开系统视频录制
     private void openCameraShooting() {
         Uri uri = null;
@@ -738,7 +758,10 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         }
         //缩略图储存路径
         final File newFile = new File(Constants.PUBLICDIR + key);
-        UtilTool.comp(bitmap, newFile);//压缩图片
+        String postfixs = file.getName().substring(file.getName().lastIndexOf("."));
+        if(!".gif".equals(postfixs)&&!".GIF".equals(postfixs)){
+            UtilTool.comp(bitmap, newFile);//压缩图片
+        }
 
         //上传视频到aws
         if (postfix.equals("Video")) {
@@ -1010,7 +1033,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             switch (msg.what) {
                 case 0:
                     //下拉查询历史消息
-                    List<MessageInfo> messageInfos = mMgr.pagingQueryMessage(mUser);
+                    List<MessageInfo> messageInfos = mMgr.queryRefreshMessage(mUser,mMessageList.get(0).getId());
                     List<MessageInfo> MessageList2 = new ArrayList<MessageInfo>();
                     MessageList2.addAll(messageInfos);
                     MessageList2.addAll(mMessageList);
@@ -1064,10 +1087,27 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 case 3:
                     mChatAdapter.notifyDataSetChanged();
                     break;
+                case 4:
+                    //上啦加載
+                    Bundle bundle3 = (Bundle) msg.obj;
+                    boolean isFist=bundle3.getBoolean("isFist");
+                    List<MessageInfo> messageInfos1 = null;
+                    if(isFist){
+                        MessageInfo messageInfo= (MessageInfo) bundle3.getSerializable("MessageInfo");
+                        messageInfos1 = mMgr.queryLoadMessage(mUser,messageInfo.getId(),isFist);
+                    }else{
+                        messageInfos1 = mMgr.queryLoadMessage(mUser,mMessageList.get(mMessageList.size()-1).getId(),isFist);
+                    }
+                    List<MessageInfo> MessageList3 = new ArrayList<MessageInfo>();
+                    MessageList3.addAll(mMessageList);
+                    MessageList3.addAll(messageInfos1);
+                    mMessageList.clear();
+                    mMessageList.addAll(MessageList3);
+                    mChatAdapter.notifyDataSetChanged();
+                    break;
             }
         }
     };
-
     //初始化数据
     private void initData() {
         List<MessageInfo> messageInfos = mMgr.queryMessage(mUser);
@@ -1140,6 +1180,12 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 refreshLayout.finishLoadMore(1000);
+                Bundle bundle=new Bundle();
+                bundle.putBoolean("isFist",false);
+                Message message=new Message();
+                message.obj=bundle;
+                message.what=4;
+                handler.sendMessage(message);
             }
         });
     }

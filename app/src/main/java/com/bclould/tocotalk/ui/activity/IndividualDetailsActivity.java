@@ -20,6 +20,7 @@ import com.bclould.tocotalk.model.IndividualInfo;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -94,6 +95,9 @@ public class IndividualDetailsActivity extends BaseActivity {
             imageQr.setVisibility(View.INVISIBLE);
             rlRemark.setVisibility(View.GONE);
             btnBrak.setText(getString(R.string.add_friend));
+            if(UtilTool.getUser().equals(mName)){
+                btnBrak.setVisibility(View.GONE);
+            }
         }
         IndividualDetailsPresenter presenter = new IndividualDetailsPresenter(this);
         presenter.getIndividual(mName, new IndividualDetailsPresenter.CallBack() {

@@ -149,7 +149,7 @@ public class ConversationDetailsActivity extends BaseActivity {
                 resultOTR();
                 break;
             case R.id.rl_looking_chat:
-//                goRecord();
+                goRecord();
                 break;
             case R.id.on_off_message_free:
                 messageFree();

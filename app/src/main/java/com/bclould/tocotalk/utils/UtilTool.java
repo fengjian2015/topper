@@ -601,7 +601,7 @@ public class UtilTool {
 
     public static String getPostfix(String fileName) {
         String postfix = fileName.substring(fileName.lastIndexOf("."));
-        if (postfix.equals(".png") || postfix.equals(".jpg") || postfix.equals(".jpeg") || postfix.equals(".JPEG") || postfix.equals(".PNG") || postfix.equals(".JPG")) {
+        if (postfix.equals(".png") || postfix.equals(".jpg") || postfix.equals(".jpeg")|| postfix.equals(".gif")|| postfix.equals(".JPEG") || postfix.equals(".PNG") || postfix.equals(".JPG")||postfix.equals(".GIF")) {
             return "Image";
         } else if (postfix.equals(".mp4") || postfix.equals(".mov") || postfix.equals(".MP4") || postfix.equals(".MOV")) {
             return "Video";

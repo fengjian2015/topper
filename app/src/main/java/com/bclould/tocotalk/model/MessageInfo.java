@@ -1,10 +1,12 @@
 package com.bclould.tocotalk.model;
 
+import java.io.Serializable;
+
 /**
  * Created by GA on 2017/12/14.
  */
 
-public class MessageInfo {
+public class MessageInfo implements Serializable {
 
     private String message;
     private String count;

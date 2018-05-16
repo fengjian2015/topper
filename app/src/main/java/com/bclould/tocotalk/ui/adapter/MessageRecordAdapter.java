@@ -1,6 +1,8 @@
 package com.bclould.tocotalk.ui.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -9,14 +11,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.MessageInfo;
+import com.bclould.tocotalk.ui.activity.ConversationActivity;
+import com.bclould.tocotalk.ui.activity.ConversationRecordFindActivity;
 import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
 
+import java.io.Serializable;
 import java.util.List;
 
 import butterknife.Bind;
@@ -25,6 +31,7 @@ import butterknife.ButterKnife;
 import static com.bclould.tocotalk.ui.activity.ConversationRecordFindActivity.DATE_MSG;
 import static com.bclould.tocotalk.ui.activity.ConversationRecordFindActivity.IMAGE_MSG;
 import static com.bclould.tocotalk.ui.activity.ConversationRecordFindActivity.TEXT_MSG;
+import static com.bclould.tocotalk.ui.activity.ConversationRecordFindActivity.TEXT_SELECT;
 import static com.bclould.tocotalk.ui.activity.ConversationRecordFindActivity.TRADE_MSG;
 import static com.bclould.tocotalk.ui.activity.ConversationRecordFindActivity.VIDEO_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_RED_MSG;
@@ -71,6 +78,8 @@ public class MessageRecordAdapter extends RecyclerView.Adapter {
             return new RedViewHolder(LayoutInflater.from(context).inflate(R.layout.message_record_red_item, null));
         } else if (type == TEXT_MSG) {
             return new TextViewHolder(LayoutInflater.from(context).inflate(R.layout.message_record_text_item, null));
+        }else if(type == TEXT_SELECT){
+            return new TextInputViewHolder(LayoutInflater.from(context).inflate(R.layout.message_record_text_item2, null));
         }
         return new TextViewHolder(LayoutInflater.from(context).inflate(R.layout.message_record_text_item, null));
     }
@@ -88,10 +97,22 @@ public class MessageRecordAdapter extends RecyclerView.Adapter {
             setReadData(holder, position);
         } else if (itemViewType == TEXT_MSG) {
             setTextData(holder,position);
+        }else if(itemViewType == TEXT_SELECT){
+            setTextInputData(holder,position);
         }
     }
 
-    private void setTextData(RecyclerView.ViewHolder holder, int position) {
+    private void setTextInputData(RecyclerView.ViewHolder holder, int position){
+        ((TextInputViewHolder) holder).tvContent.setText(messageInfoList.get(position).getMessage());
+        ((TextInputViewHolder)holder).rlSerach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ConversationRecordFindActivity)context).searchType(TEXT_MSG);
+            }
+        });
+    }
+
+    private void setTextData(RecyclerView.ViewHolder holder, final int position) {
         String send=messageInfoList.get(position).getSend();
         if(StringUtils.isEmpty(send)){
             send="";
@@ -106,23 +127,37 @@ public class MessageRecordAdapter extends RecyclerView.Adapter {
         ((TextViewHolder) holder).tvTime.setText(messageInfoList.get(position).getTime());
         Bitmap bitmap=UtilTool.getImage(mMdb, send, context);
         ((TextViewHolder) holder).ivHead.setImageBitmap(bitmap);
+        ((TextViewHolder) holder).rlCache.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(context, ConversationActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                intent.putExtra("MessageInfo", (Serializable) messageInfoList.get(position));
+                context.startActivity(intent);
+                ((Activity)context).finish();
+            }
+        });
     }
 
-    private void setReadData(RecyclerView.ViewHolder holder, int position) {
+    private void setReadData(RecyclerView.ViewHolder holder, final int position) {
         int msgtype = messageInfoList.get(position).getMsgType();
         String send=messageInfoList.get(position).getSend();
+        String from=messageInfoList.get(position).getUsername();
         if(StringUtils.isEmpty(send)){
             send="";
         }
+        if (StringUtils.isEmpty(from)){
+            from="";
+        }
         Bitmap bitmap=UtilTool.getImage(mMdb, send, context);
         String mToName = send.split("@")[0];
-        String fromName= messageInfoList.get(position).getUsername().split("@")[0];
+        String fromName=from.split("@")[0] ;
 
         String toRemark=mMdb.queryRemark(send);
         if(!StringUtils.isEmpty(toRemark)){
             mToName=toRemark;
         }
-        String fromRemark=mMdb.queryRemark(messageInfoList.get(position).getUsername());
+        String fromRemark=mMdb.queryRemark(from);
         if(!StringUtils.isEmpty(fromRemark)){
             fromName=fromRemark;
         }
@@ -163,6 +198,16 @@ public class MessageRecordAdapter extends RecyclerView.Adapter {
         ((RedViewHolder) holder).ivHead.setImageBitmap(bitmap);
         ((RedViewHolder) holder).tvTime.setText(messageInfoList.get(position).getTime());
         ((RedViewHolder) holder).tvBi.setText(messageInfoList.get(position).getCount() + messageInfoList.get(position).getCoin());
+        ((RedViewHolder) holder).rlCache.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(context, ConversationActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                intent.putExtra("MessageInfo", (Serializable) messageInfoList.get(position));
+                context.startActivity(intent);
+                ((Activity)context).finish();
+            }
+        });
 
     }
 
@@ -175,6 +220,8 @@ public class MessageRecordAdapter extends RecyclerView.Adapter {
      * 交易
      */
     public class RedViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.rl_cache)
+        RelativeLayout rlCache;
         @Bind(R.id.iv_head)
         ImageView ivHead;
         @Bind(R.id.tv_name)
@@ -198,6 +245,8 @@ public class MessageRecordAdapter extends RecyclerView.Adapter {
      * 文本
      */
     public class TextViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.rl_cache)
+        RelativeLayout rlCache;
         @Bind(R.id.iv_head)
         ImageView ivHead;
         @Bind(R.id.tv_name)
@@ -207,6 +256,20 @@ public class MessageRecordAdapter extends RecyclerView.Adapter {
         @Bind(R.id.tv_time)
         TextView tvTime;
         public TextViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+
+    /**
+     * 文本輸入
+     */
+    public class TextInputViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.rl_serach)
+        RelativeLayout rlSerach;
+        @Bind(R.id.tv_content)
+        TextView tvContent;
+        public TextInputViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }

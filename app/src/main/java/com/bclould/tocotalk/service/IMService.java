@@ -62,9 +62,6 @@ public class IMService extends Service{
             this.stopService(new Intent(this, IMService.class));
             return;
         }
-        XmppConnection.getInstance().getConnection();
-        IMLogin.login(this);
-
         if ((XmppConnection.getInstance().getConnection() != null && XmppConnection.getInstance().getConnection()
                 .isConnected()&&XmppConnection.getInstance().getConnection()
                 .isAuthenticated())) {
@@ -72,7 +69,9 @@ public class IMService extends Service{
                     ConnectStateChangeListenerManager.CONNECTED);
             handler.removeMessages(EXLOGIN);
             exReconnect(1000);
-
+        }else {
+            XmppConnection.getInstance().getConnection();
+            IMLogin.login(this);
         }
     }
 

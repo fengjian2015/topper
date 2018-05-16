@@ -123,12 +123,13 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                     Gson gson = new Gson();
                     QrCardInfo qrCardInfo = gson.fromJson(jsonresult, QrCardInfo.class);
                     String name = qrCardInfo.getName();
-                    if (qrCardInfo.getName().contains(Constants.DOMAINNAME)) {
-                        name = name.split("@")[0];
+                    if (!qrCardInfo.getName().contains(Constants.DOMAINNAME)) {
+                        name=name+"@"+Constants.DOMAINNAME;
                     }
                     Intent intent=new Intent(ScanQRCodeActivity.this,IndividualDetailsActivity.class);
                     intent.putExtra("type",2);
-                    intent.putExtra("name",name);
+                    intent.putExtra("name", name.split("@")[0]);
+                    intent.putExtra("user",name);
                     startActivity(intent);
                     finish();
                 } else if (result.contains(Constants.MONEYIN)) {

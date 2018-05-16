@@ -45,6 +45,8 @@ import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.chat.Chat;
@@ -54,6 +56,7 @@ import org.jivesoftware.smack.util.stringencoder.Base64;
 import org.jxmpp.jid.impl.JidCreate;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -722,8 +725,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
         public void setData(final MessageInfo messageInfo) {
             mIvTouxiang.setImageBitmap(mToBitmap);
             goIndividualDetails(mIvTouxiang, UtilTool.getJid(), mToName);
+//            Glide.with(mContext).load(new File(messageInfo.getVoice())).into(mIvImg);
             Bitmap bitmap = BitmapFactory.decodeFile(messageInfo.getVoice());
             mIvImg.setImageBitmap(bitmap);
+
             if (messageInfo.getSendStatus() == 1) {
                 mIvWarning.setVisibility(View.GONE);
                 mIvLoad.setVisibility(View.GONE);
@@ -778,6 +783,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         public void setData(final MessageInfo messageInfo) {
             mIvTouxiang.setImageBitmap(mFromBitmap);
             goIndividualDetails(mIvTouxiang, mUser, mName);
+//            Glide.with(mContext).load(new File(messageInfo.getVoice())).into(mIvImg);
             Bitmap bitmap = BitmapFactory.decodeFile(messageInfo.getVoice());
             mIvImg.setImageBitmap(bitmap);
             mIvImg.setOnClickListener(new View.OnClickListener() {
