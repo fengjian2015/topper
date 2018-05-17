@@ -1,5 +1,6 @@
 package com.bclould.tocotalk.ui.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -107,6 +108,11 @@ public class ConversationAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(ConversationInfo conversationInfo) {
+            if("true".equals(conversationInfo.getIstop())){
+                mRlItem.setBackgroundColor(mContext.getResources().getColor(R.color.gray2));
+            }else{
+                mRlItem.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+            }
             mConversationInfo = conversationInfo;
             Bitmap bitmap = UtilTool.getImage(mMgr, conversationInfo.getUser(), mContext);
             mTab1ItemImg.setImageBitmap(bitmap);

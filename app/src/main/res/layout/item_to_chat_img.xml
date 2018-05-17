@@ -15,8 +15,8 @@
 
     <ImageView
         android:id="@+id/iv_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/y500"
+        android:layout_width="@dimen/x340"
         android:layout_marginRight="@dimen/x20"
         android:layout_toLeftOf="@+id/iv_touxiang"
         android:adjustViewBounds="true"

@@ -3,6 +3,7 @@ package com.bclould.tocotalk.ui.fragment;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -15,10 +16,18 @@ import com.bclould.tocotalk.ui.widget.ZoomImageView;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.io.File;
 
 /**
  * Created by GA on 2018/3/7.
@@ -58,9 +67,14 @@ public class ImageViewFragment extends Fragment {
                     UtilTool.Log("图片", mBigImgUrl);
                     loadBar.setVisibility(View.VISIBLE);
                     loadBar.bringToFront();
-                    Glide.with(ImageViewFragment.this).load(mBigImgUrl).into(new SimpleTarget<Drawable>() {
+                    Glide.with(ImageViewFragment.this).load(mBigImgUrl).listener(new RequestListener<Drawable>() {
                         @Override
-                        public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                             if (resource != null) {
                                 imageGiv.setImageDrawable(resource);
                                 mArtworkMaster.setVisibility(View.GONE);
@@ -70,8 +84,9 @@ public class ImageViewFragment extends Fragment {
                                 messageEvent.setId(mId + "");
                                 EventBus.getDefault().post(messageEvent);
                             }
+                            return false;
                         }
-                    });
+                    }).into(imageGiv);
                 }
             });
         }
@@ -86,18 +101,39 @@ public class ImageViewFragment extends Fragment {
 
     public void loadImage(String url) {
         if (url.startsWith("https://")) {
-            Glide.with(ImageViewFragment.this).load(url).into(new SimpleTarget<Drawable>() {
+            Glide.with(ImageViewFragment.this).load(url).apply(requestOptions).listener(new RequestListener<Drawable>() {
                 @Override
-                public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-                    if (resource != null) {
-                        imageGiv.setImageDrawable(resource);
-                    }
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    return false;
                 }
-            });
+
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    imageGiv.setImageDrawable(resource);
+                    return false;
+                }
+            }).into(imageGiv);
         } else {
-            imageGiv.setImageDrawable(Drawable.createFromPath(url));
+            Glide.with(ImageViewFragment.this).load(new File(url)).apply(requestOptions).listener(new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    imageGiv.setImageDrawable(resource);
+                    return false;
+                }
+            }).into(imageGiv);
+//            imageGiv.setImageDrawable(Drawable.createFromPath(url));
         }
     }
+
+    RequestOptions requestOptions=new RequestOptions()
+            .placeholder(R.mipmap.image_placeholder)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .centerCrop();
 
     public String getImageUrl() {
         return imageUrl;
