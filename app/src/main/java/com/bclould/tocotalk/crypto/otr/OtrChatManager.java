@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
@@ -46,6 +47,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
     private Context context;
     private OtrKeyManagerDefaultImpl otrKeyManagerDefault;
     private boolean isAboutOpen=false;
+    private Handler handler;
 
     public SessionID sessionID(String localUserId, String remoteUserId){
         if(localUserId.isEmpty())localUserId="null";
@@ -75,11 +77,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public String startSession(SessionID sessionID){
         try {
-
-            Message message=new Message();
-            message.obj=sessionID.getRemoteUserId();
-            message.what=1;
-            handler.sendMessageDelayed(message,10000);
+            getHandler(sessionID.getRemoteUserId(),1000);
             isAboutOpen=true;
             localEngineImpl.endSession(sessionID);
             localEngineImpl.startSession(sessionID);
@@ -94,22 +92,23 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
         return "";
     }
 
-    Handler handler=new Handler(){
-        @RequiresApi(api = Build.VERSION_CODES.N)
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case 1:
-                    String from= (String) msg.obj;
-                    SessionStatus sessionStatus =localEngineImpl.getSessionStatus(sessionID(UtilTool.getJid(),from));
-                    if(sessionStatus!= SessionStatus.ENCRYPTED){
-                        Toast.makeText(context,context.getString(R.string.start_otr_timeout),Toast.LENGTH_SHORT).show();
-                    }
-                    isAboutOpen=false;
-                    break;
-            }
+
+    private void getHandler(final String from,long time){
+        if(handler==null){
+            handler=new Handler();
         }
-    };
+        handler.postDelayed(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void run() {
+                SessionStatus sessionStatus =localEngineImpl.getSessionStatus(sessionID(UtilTool.getJid(),from));
+                if(sessionStatus!= SessionStatus.ENCRYPTED){
+                    Toast.makeText(context,context.getString(R.string.start_otr_timeout),Toast.LENGTH_SHORT).show();
+                }
+                isAboutOpen=false;
+            }
+        },time);
+    }
 
     /**
      * 兩人請求加密流程
@@ -245,7 +244,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
 
         if (sStatus == SessionStatus.ENCRYPTED) {
             OtrChatListenerManager.getInstance().addOTRState(sessionID.getRemoteUserId(),"true");
-            handler.removeMessages(1);
+            getHandler(sessionID.getRemoteUserId(),0);
             isAboutOpen=false;
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.otr_isopen)));
 

@@ -1,6 +1,7 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -66,6 +67,7 @@ import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.RecordUtil;
 import com.bclould.tocotalk.utils.UtilTool;
+import com.bclould.tocotalk.xmpp.MessageManage;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -228,6 +230,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private ChatAdapter mChatAdapter;
     private LinearLayoutManager mLayoutManager;
     private int mId;
+    private MessageManage messageManage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -261,6 +264,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             }
         });
         mEkbEmoticonsKeyboard.addOnResultOTR(this);
+
+        messageManage=new MessageManage(mMgr,mUser,this,mName);
     }
 
 
@@ -488,6 +493,13 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         } catch (XmppStringprepException e) {
             e.printStackTrace();
         }
+    }
+
+    private void sendMessage(String message){
+       MessageInfo messageInfo= messageManage.sendMessage(message);
+       mMessageList.add(messageInfo);
+       mChatAdapter.notifyDataSetChanged();
+       scrollToBottom();
     }
 
 
@@ -765,6 +777,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         String postfixs = file.getName().substring(file.getName().lastIndexOf("."));
         if(!".gif".equals(postfixs)&&!".GIF".equals(postfixs)){
             UtilTool.comp(bitmap, newFile);//压缩图片
+        }else{
+            UtilTool.copyFile(file.getAbsolutePath(),newFile.getAbsolutePath());
         }
 
         //上传视频到aws
@@ -1037,6 +1051,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             switch (msg.what) {
                 case 0:
                     //下拉查询历史消息
+                    if(mMessageList.size()==0)return;
                     List<MessageInfo> messageInfos = mMgr.queryRefreshMessage(mUser,mMessageList.get(0).getId());
                     List<MessageInfo> MessageList2 = new ArrayList<MessageInfo>();
                     MessageList2.addAll(messageInfos);
@@ -1093,6 +1108,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                     break;
                 case 4:
                     //上啦加載
+                    if(mMessageList.size()==0)return;
                     Bundle bundle3 = (Bundle) msg.obj;
                     boolean isFist=bundle3.getBoolean("isFist");
                     List<MessageInfo> messageInfos1 = null;
@@ -1138,6 +1154,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             mName = bundle.getString("name");
             mUser = bundle.getString("user");
             mUserImage = UtilTool.getImage(mMgr, mUser, this);
+            clearNotification();
         }
        /* mType = intent.getStringExtra("type");
         if (mType != null)
@@ -1145,6 +1162,11 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         else
             mLlOrder.setVisibility(View.GONE);*/
         setTitleName();
+    }
+
+    private void clearNotification(){
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
     }
 
     private void setTitleName(){
@@ -1283,69 +1305,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     }
 
 
-    //发送文本消息
-    private void sendMessage(String message) {
-        try {
-            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
-            chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(message,
-                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
-            MessageInfo messageInfo = new MessageInfo();
-            messageInfo.setUsername(mUser);
-            messageInfo.setMessage(message);
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date curDate = new Date(System.currentTimeMillis());
-            String time = formatter.format(curDate);
-            messageInfo.setTime(time);
-            messageInfo.setType(0);
-            messageInfo.setMsgType(TO_TEXT_MSG);
-            messageInfo.setSend(UtilTool.getJid());
-            mMgr.addMessage(messageInfo);
-            mMessageList.add(messageInfo);
-            mChatAdapter.notifyDataSetChanged();
-            scrollToBottom();
-            if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, message, time);
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                info.setMessage(message);
-                mMgr.addConversation(info);
-            }
-            EventBus.getDefault().post(new MessageEvent(getString(R.string.oneself_send_msg)));
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, getString(R.string.send_error), Toast.LENGTH_SHORT).show();
-            MessageInfo messageInfo = new MessageInfo();
-            messageInfo.setUsername(mUser);
-            messageInfo.setMessage(message);
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date curDate = new Date(System.currentTimeMillis());
-            String time = formatter.format(curDate);
-            messageInfo.setTime(time);
-            messageInfo.setType(0);
-            messageInfo.setMsgType(TO_TEXT_MSG);
-            messageInfo.setSendStatus(1);
-            messageInfo.setSend(UtilTool.getJid());
-            mMgr.addMessage(messageInfo);
-            mMessageList.add(messageInfo);
-            mChatAdapter.notifyDataSetChanged();
-            scrollToBottom();
-            if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, message, time);
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                info.setMessage(message);
-                mMgr.addConversation(info);
-            }
-            EventBus.getDefault().post(new MessageEvent(getString(R.string.oneself_send_msg)));
-        }
-    }
+
 
     boolean isClick = false;
 
