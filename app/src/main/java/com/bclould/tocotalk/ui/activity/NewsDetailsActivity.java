@@ -1,6 +1,6 @@
 package com.bclould.tocotalk.ui.activity;
 
-import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,9 +8,15 @@ import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +55,12 @@ public class NewsDetailsActivity extends BaseActivity {
     TextView mSend;
     @Bind(R.id.rl_edit)
     RelativeLayout mRlEdit;
+    @Bind(R.id.progressBar)
+    ProgressBar mProgressBar;
+    @Bind(R.id.rl_web_view)
+    RelativeLayout mRlWebView;
+    @Bind(R.id.ll_load_error)
+    LinearLayout mLlLoadError;
     private int mId;
 
     @Override
@@ -58,14 +70,51 @@ public class NewsDetailsActivity extends BaseActivity {
         ButterKnife.bind(this);
         initIntent();
         initWebView();
+        initView();
     }
 
-    @SuppressLint("JavascriptInterface")
+    private void initView() {
+        mLlLoadError.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mWebView.loadUrl(Constants.BASE_URL + Constants.NEWS_WEB_URL + mId + "/" + UtilTool.getUserId());
+            }
+        });
+    }
+
     private void initWebView() {
         //设置WebView支持JavaScript
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.addJavascriptInterface(this, "callback");
         mWebView.loadUrl(Constants.BASE_URL + Constants.NEWS_WEB_URL + mId + "/" + UtilTool.getUserId());
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                mProgressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                super.onReceivedError(view, request, error);
+                mLlLoadError.setVisibility(View.VISIBLE);
+                mRlWebView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                mLlLoadError.setVisibility(View.GONE);
+                mRlWebView.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.VISIBLE);
+            }
+        });
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            public void onProgressChanged(WebView view, int progress) {
+                mProgressBar.setMax(100);
+                mProgressBar.setProgress(progress);
+            }
+        });
     }
 
     @JavascriptInterface
@@ -84,6 +133,7 @@ public class NewsDetailsActivity extends BaseActivity {
     private void initIntent() {
         mId = getIntent().getIntExtra("id", 0);
     }
+
 
     @OnClick({R.id.bark, R.id.send})
     public void onViewClicked(View view) {
@@ -107,7 +157,6 @@ public class NewsDetailsActivity extends BaseActivity {
                 json.put("news_id", mId);
                 json.put("id", UtilTool.getUserId());
                 json.put("content", content);
-                mWebView.loadUrl("javascript:review('" + json.toString() + "')");
                 UtilTool.Log("新聞", json.toString());
                 mWebView.evaluateJavascript("javascript:review('" + json.toString() + "')", new ValueCallback<String>() {
                     @Override

@@ -183,6 +183,7 @@ public class BankCardActivity extends BaseActivity {
 
     private void initDialog() {
         TextView coin = (TextView) mRedDialog.findViewById(R.id.tv_coin);
+        coin.setVisibility(View.GONE);
         TextView countCoin = (TextView) mRedDialog.findViewById(R.id.tv_count_coin);
         mEtPassword = (MNPasswordEditText) mRedDialog.findViewById(R.id.et_password);
         // 设置不调用系统键盘

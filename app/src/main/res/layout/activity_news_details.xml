@@ -35,49 +35,98 @@
         style="@style/HCutOffRule"
         android:layout_below="@+id/title"/>
 
-    <WebView
-        android:id="@+id/web_view"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/rl_edit"
-        android:layout_below="@+id/xx"></WebView>
-
+        android:layout_height="@dimen/y10"
+        android:layout_below="@+id/xx"
+        android:progressDrawable="@drawable/bg_progress_bar"
+        android:visibility="gone"/>
 
     <RelativeLayout
-        android:id="@+id/rl_edit"
+        android:id="@+id/rl_web_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
-        android:layout_alignParentBottom="true">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/progressBar"
+        android:visibility="gone">
 
-        <TextView
-            style="@style/HCutOffRule"/>
-
-        <EditText
-            android:id="@+id/comment_et"
-            android:layout_width="@dimen/x600"
+        <WebView
+            android:id="@+id/web_view"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/transparent"
-            android:hint="@string/et_comment"
-            android:paddingBottom="@dimen/x30"
-            android:paddingLeft="@dimen/x36"
-            android:paddingRight="@dimen/x36"
-            android:paddingTop="@dimen/x30"
-            android:textColor="@color/black"
-            android:textCursorDrawable="@null"
-            android:textSize="@dimen/x26"/>
+            android:layout_above="@+id/rl_edit"></WebView>
+
+
+        <RelativeLayout
+            android:id="@+id/rl_edit"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:layout_alignParentBottom="true">
+
+            <TextView
+                style="@style/HCutOffRule"/>
+
+            <EditText
+                android:id="@+id/comment_et"
+                android:layout_width="@dimen/x600"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:hint="@string/et_comment"
+                android:paddingBottom="@dimen/x30"
+                android:paddingLeft="@dimen/x36"
+                android:paddingRight="@dimen/x36"
+                android:paddingTop="@dimen/x30"
+                android:textColor="@color/black"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/x26"/>
+
+            <TextView
+                android:id="@+id/send"
+                android:layout_width="@dimen/x80"
+                android:layout_height="@dimen/x80"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x34"
+                android:gravity="center"
+                android:text="@string/send"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x32"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_load_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/progressBar"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
-            android:id="@+id/send"
-            android:layout_width="@dimen/x80"
-            android:layout_height="@dimen/x80"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/x34"
-            android:gravity="center"
-            android:text="@string/send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="。。。。。"
+            android:textSize="@dimen/x45"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20"
+            android:text="@string/network_break"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
-    </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20"
+            android:text="@string/network_break_click_update"
+            android:textSize="@dimen/x24"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

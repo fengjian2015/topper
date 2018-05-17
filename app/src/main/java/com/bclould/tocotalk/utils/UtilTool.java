@@ -729,5 +729,4 @@ public class UtilTool {
         BigDecimal result = a1.multiply(b1);// 相乘结果
         return removeZero(result.toString());
     }
-
 }

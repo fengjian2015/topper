@@ -46,6 +46,7 @@ import com.amazonaws.Request;
 import com.amazonaws.Response;
 import com.amazonaws.auth.BasicSessionCredentials;
 import com.amazonaws.handlers.RequestHandler2;
+import com.amazonaws.http.HttpResponse;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -135,7 +136,7 @@ import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_VOICE_MSG;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ConversationActivity extends AppCompatActivity implements FuncLayout.OnFuncKeyBoardListener,XhsEmoticonsKeyBoard.OnResultOTR {
+public class ConversationActivity extends AppCompatActivity implements FuncLayout.OnFuncKeyBoardListener, XhsEmoticonsKeyBoard.OnResultOTR {
 
     private static final int CODE_TAKE_PHOTO = 1;
     private static final int FILE_SELECT_CODE = 2;
@@ -267,18 +268,18 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        MessageInfo messageInfo= (MessageInfo) intent.getSerializableExtra("MessageInfo");
-        if(messageInfo==null){
+        MessageInfo messageInfo = (MessageInfo) intent.getSerializableExtra("MessageInfo");
+        if (messageInfo == null) {
             return;
         }
         //通過傳遞過來的消息，查找
-        Bundle bundle=new Bundle();
-        bundle.putBoolean("isFist",true);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isFist", true);
         bundle.putSerializable("MessageInfo", (Serializable) messageInfo);
         mMessageList.clear();
-        Message message=new Message();
-        message.obj=bundle;
-        message.what=4;
+        Message message = new Message();
+        message.obj = bundle;
+        message.what = 4;
         handler.sendMessage(message);
     }
 
@@ -484,7 +485,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         }
         //初始化OTR
         try {
-            mEkbEmoticonsKeyboard.changeOTR( OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(mUser).toString()));
+            mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(mUser).toString()));
         } catch (XmppStringprepException e) {
             e.printStackTrace();
         }
@@ -645,15 +646,15 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 info.setImageType(1);
                 mChatAdapter.notifyDataSetChanged();
             }
-        } else if (msg.equals(getString(R.string.otr_isopen))){
+        } else if (msg.equals(getString(R.string.otr_isopen))) {
             try {
                 mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(mUser).toString()));
             } catch (XmppStringprepException e) {
                 e.printStackTrace();
             }
-        }else if(msg.equals(getString(R.string.delete_friend))){
+        } else if (msg.equals(getString(R.string.delete_friend))) {
             finish();
-        }else if(msg.equals(getString(R.string.change_friend_remark))){
+        } else if (msg.equals(getString(R.string.change_friend_remark))) {
             setTitleName();
         }
     }
@@ -763,7 +764,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         //缩略图储存路径
         final File newFile = new File(Constants.PUBLICDIR + key);
         String postfixs = file.getName().substring(file.getName().lastIndexOf("."));
-        if(!".gif".equals(postfixs)&&!".GIF".equals(postfixs)){
+        if (!".gif".equals(postfixs) && !".GIF".equals(postfixs)) {
             UtilTool.comp(bitmap, newFile);//压缩图片
         }
 
@@ -1037,7 +1038,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             switch (msg.what) {
                 case 0:
                     //下拉查询历史消息
-                    List<MessageInfo> messageInfos = mMgr.queryRefreshMessage(mUser,mMessageList.get(0).getId());
+                    List<MessageInfo> messageInfos = mMgr.queryRefreshMessage(mUser, mMessageList.get(0).getId());
                     List<MessageInfo> MessageList2 = new ArrayList<MessageInfo>();
                     MessageList2.addAll(messageInfos);
                     MessageList2.addAll(mMessageList);
@@ -1094,13 +1095,13 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 case 4:
                     //上啦加載
                     Bundle bundle3 = (Bundle) msg.obj;
-                    boolean isFist=bundle3.getBoolean("isFist");
+                    boolean isFist = bundle3.getBoolean("isFist");
                     List<MessageInfo> messageInfos1 = null;
-                    if(isFist){
-                        MessageInfo messageInfo= (MessageInfo) bundle3.getSerializable("MessageInfo");
-                        messageInfos1 = mMgr.queryLoadMessage(mUser,messageInfo.getId(),isFist);
-                    }else{
-                        messageInfos1 = mMgr.queryLoadMessage(mUser,mMessageList.get(mMessageList.size()-1).getId(),isFist);
+                    if (isFist) {
+                        MessageInfo messageInfo = (MessageInfo) bundle3.getSerializable("MessageInfo");
+                        messageInfos1 = mMgr.queryLoadMessage(mUser, messageInfo.getId(), isFist);
+                    } else {
+                        messageInfos1 = mMgr.queryLoadMessage(mUser, mMessageList.get(mMessageList.size() - 1).getId(), isFist);
                     }
                     List<MessageInfo> MessageList3 = new ArrayList<MessageInfo>();
                     MessageList3.addAll(mMessageList);
@@ -1112,6 +1113,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             }
         }
     };
+
     //初始化数据
     private void initData() {
         List<MessageInfo> messageInfos = mMgr.queryMessage(mUser);
@@ -1123,7 +1125,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     //设置title
     private void initIntent() {
-        if(StringUtils.isEmpty(UtilTool.getJid())){
+        if (StringUtils.isEmpty(UtilTool.getJid())) {
             MySharedPreferences.getInstance().setString(MYUSERNAME, UtilTool.getUser() + "@" + Constants.DOMAINNAME2);
         }
         Intent intent = getIntent();
@@ -1147,11 +1149,11 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         setTitleName();
     }
 
-    private void setTitleName(){
-        String remark=mMgr.queryRemark(mUser);
-        if(!com.bclould.tocotalk.utils.StringUtils.isEmpty(remark)){
+    private void setTitleName() {
+        String remark = mMgr.queryRemark(mUser);
+        if (!com.bclould.tocotalk.utils.StringUtils.isEmpty(remark)) {
             mTitleName.setText(remark);
-        }else {
+        } else {
             mTitleName.setText(mName);
         }
     }
@@ -1160,7 +1162,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private void initAdapter() {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mChatAdapter = new ChatAdapter(this, mMessageList, mUserImage, mUser, mMgr, mediaPlayer,mName);
+        mChatAdapter = new ChatAdapter(this, mMessageList, mUserImage, mUser, mMgr, mediaPlayer, mName);
         mRecyclerView.setAdapter(mChatAdapter);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -1184,11 +1186,11 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 refreshLayout.finishLoadMore(1000);
-                Bundle bundle=new Bundle();
-                bundle.putBoolean("isFist",false);
-                Message message=new Message();
-                message.obj=bundle;
-                message.what=4;
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("isFist", false);
+                Message message = new Message();
+                message.obj = bundle;
+                message.what = 4;
                 handler.sendMessage(message);
             }
         });
@@ -1389,9 +1391,9 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     }
 
     private void goDetails() {
-        Intent intent=new Intent(this,ConversationDetailsActivity.class);
-        intent.putExtra("user",mUser);
-        intent.putExtra("name",mName);
+        Intent intent = new Intent(this, ConversationDetailsActivity.class);
+        intent.putExtra("user", mUser);
+        intent.putExtra("name", mName);
         startActivity(intent);
     }
 
@@ -1448,9 +1450,9 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     @Override
     public void resultOTR() {
         try {
-            OtrChatListenerManager.getInstance().changeState(JidCreate.entityBareFrom(mUser).toString(),this);
+            OtrChatListenerManager.getInstance().changeState(JidCreate.entityBareFrom(mUser).toString(), this);
             mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(mUser).toString()));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

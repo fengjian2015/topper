@@ -94,5 +94,9 @@
         <item name="android:windowExitAnimation">@anim/popup_left</item>
     </style>
 
+    <style name="Toolbar.TitleText" parent="TextAppearance.AppCompat.SearchResult.Subtitle">
+        <item name="android:textSize">@dimen/x32</item>
+    </style>
+
 </resources>
 

@@ -2,12 +2,9 @@ package com.lu.richtexteditorlib.base;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Gravity;
 import android.webkit.JavascriptInterface;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
@@ -21,8 +18,6 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import static android.os.Build.VERSION.SDK;
 
 @SuppressWarnings({"unused"})
 public abstract class RichEditor extends WebView {
@@ -274,7 +269,7 @@ public abstract class RichEditor extends WebView {
     }
 
     public void setHtml(String html){
-        //exec("javascript:RE.set");
+        exec("javascript:RE.set");
     }
 
     public void setItalic() {

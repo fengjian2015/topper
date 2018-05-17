@@ -3,15 +3,18 @@ package com.bclould.tocotalk.richtext.richtexteditor;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.richtext.base.depence.retrofit.uploader.RxUploader;
 import com.bclould.tocotalk.richtext.base.depence.retrofit.uploader.api.Uploader;
 import com.bclould.tocotalk.richtext.base.depence.retrofit.uploader.beans.UploadProgress;
@@ -20,6 +23,9 @@ import com.bclould.tocotalk.richtext.base.depence.tools.Utils;
 import com.bclould.tocotalk.richtext.richtexteditor.bean.Response;
 import com.bclould.tocotalk.richtext.richtexteditor.dialogs.LinkDialog;
 import com.bclould.tocotalk.richtext.richtexteditor.dialogs.PictureHandleDialog;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.utils.MySharedPreferences;
+import com.bclould.tocotalk.utils.UtilTool;
 import com.google.gson.GsonBuilder;
 import com.imnjh.imagepicker.SImagePicker;
 import com.imnjh.imagepicker.activity.PhotoPickerActivity;
@@ -41,7 +47,8 @@ import java.util.HashMap;
 import okhttp3.ResponseBody;
 
 
-public class MainActivity extends AppCompatActivity implements SimpleRichEditor.OnEditorClickListener, View.OnClickListener {
+@RequiresApi(api = Build.VERSION_CODES.N)
+public class MainActivity extends BaseActivity implements SimpleRichEditor.OnEditorClickListener, View.OnClickListener {
 
     private static final int REQUEST_CODE_IMAGE = 101;
     private static final String UPLOAD_URL = "http://www.lhbzimo.cn:3000/";
@@ -57,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements SimpleRichEditor.
      * 发 表
      */
     private Button mButton;
+    private static final String RICHTEXT_HTML = "richtext_html";
 
     @SuppressLint({"UseSparseArrays"})
     @Override
@@ -70,11 +78,21 @@ public class MainActivity extends AppCompatActivity implements SimpleRichEditor.
 //            mRichTextView.restoreState(savedInstanceState);
 //        }
 //        else {
-            mInsertedImages = new HashMap<>();
-            mFailedImages = new HashMap<>();
-            initView();
-            mRichTextView.load();
+        mInsertedImages = new HashMap<>();
+        mFailedImages = new HashMap<>();
+        initView();
+        mRichTextView.load();
+        initHtml();
 //        }
+    }
+
+    private void initHtml() {
+        SharedPreferences sp = MySharedPreferences.getInstance().getSp();
+        if (sp.contains(RICHTEXT_HTML)) {
+            String html = MySharedPreferences.getInstance().getString(RICHTEXT_HTML);
+            mRichTextView.setHtml(html);
+            UtilTool.Log("html", html);
+        }
     }
 
     @Override
@@ -177,8 +195,7 @@ public class MainActivity extends AppCompatActivity implements SimpleRichEditor.
                     mButton.setTextColor(theme.getAccentColor());
                     mToolbar.setTitleTextColor(theme.getNormalColor());
                     mToolbar.setNavigationIcon(R.drawable.left_arrow_white);
-                }
-                else {
+                } else {
                     BaseTheme theme = new LightTheme();
                     mRichTextView.setTheme(theme);
                     mToolbar.setBackgroundColor(theme.getBackGroundColors()[0]);
@@ -195,10 +212,38 @@ public class MainActivity extends AppCompatActivity implements SimpleRichEditor.
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                showSaveDialog();
             }
         });
         initImagePicker();
+    }
+
+    private void showSaveDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(getString(R.string.whether_save_draft));
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        cancel.setText(getString(R.string.no_save));
+        cancel.setTextColor(getResources().getColor(R.color.red));
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        confirm.setText(R.string.save);
+        confirm.setTextColor(getResources().getColor(R.color.black));
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                finish();
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MySharedPreferences.getInstance().setString(RICHTEXT_HTML, mRichTextView.getHtml());
+                UtilTool.Log("html", mRichTextView.getHtml());
+                deleteCacheDialog.dismiss();
+                finish();
+            }
+        });
     }
 
     private void initImagePicker() {
@@ -302,10 +347,31 @@ public class MainActivity extends AppCompatActivity implements SimpleRichEditor.
         switch (v.getId()) {
             case R.id.button:
                 //发表按钮
-                //do something
-                //such as gethtml
-                Utils.MakeLongToast(mRichTextView.getHtml());
+                showServiceChargeDialog();
                 break;
         }
+    }
+
+    private void showServiceChargeDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(getString(R.string.publish_news_hint));
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                finish();
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                Utils.MakeLongToast(mRichTextView.getHtml());
+                finish();
+            }
+        });
     }
 }

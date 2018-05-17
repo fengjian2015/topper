@@ -24,6 +24,7 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class UserSafetyActivity extends BaseActivity {
 
+
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.iv_login_password)
@@ -55,12 +56,9 @@ public class UserSafetyActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
     }
 
-    @OnClick({R.id.rl_fingerprint_lock, R.id.bark, R.id.rl_login_password, R.id.rl_pay_password, R.id.rl_google, R.id.rl_login_set, R.id.rl_login_record})
+    @OnClick({R.id.bark, R.id.rl_login_password, R.id.rl_pay_password, R.id.rl_google, R.id.rl_login_set, R.id.rl_login_record})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.rl_fingerprint_lock:
-                startActivity(new Intent(this, PawnActivity.class));
-                break;
             case R.id.bark:
                 finish();
                 break;
@@ -68,7 +66,7 @@ public class UserSafetyActivity extends BaseActivity {
                 startActivity(new Intent(this, LoginPasswordActivity.class));
                 break;
             case R.id.rl_pay_password:
-                startActivity(new Intent(this, PayPasswordActivity.class));
+                startActivity(new Intent(this, PayPwSelectorActivity.class));
                 break;
             case R.id.rl_google:
                 startActivity(new Intent(this, GoogleVerificationActivity.class));

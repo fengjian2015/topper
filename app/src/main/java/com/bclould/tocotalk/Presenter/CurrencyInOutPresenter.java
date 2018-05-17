@@ -16,6 +16,7 @@ import com.bclould.tocotalk.ui.activity.BankCardBindingActivity;
 import com.bclould.tocotalk.ui.activity.GoogleVerificationActivity;
 import com.bclould.tocotalk.ui.activity.OutCoinActivity;
 import com.bclould.tocotalk.ui.activity.PayPasswordActivity;
+import com.bclould.tocotalk.ui.activity.PayPwSelectorActivity;
 import com.bclould.tocotalk.ui.activity.RealNameC1Activity;
 import com.bclould.tocotalk.ui.activity.TransferAccountsActivity;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
@@ -166,7 +167,7 @@ public class CurrencyInOutPresenter {
                             } else if (baseInfo.getType() == 6) {
                                 TransferAccountsActivity activity = (TransferAccountsActivity) mContext;
                                 activity.showHintDialog();
-                            }  else if (baseInfo.getMessage().equals(mContext.getString(R.string.real_name_authentication_hint))) {
+                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.real_name_authentication_hint))) {
                                 showHintDialog();
                             }
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
@@ -269,11 +270,21 @@ public class CurrencyInOutPresenter {
                             if (baseInfo.getType() == 4) {
                                 showSetPwDialog();
                             } else if (baseInfo.getType() == 6) {
-                                BankCardActivity activity = (BankCardActivity) mContext;
-                                activity.showHintDialog();
+                                if (mContext instanceof BankCardActivity) {
+                                    BankCardActivity activity = (BankCardActivity) mContext;
+                                    activity.showHintDialog();
+                                } else {
+                                    PayPwSelectorActivity activity = (PayPwSelectorActivity) mContext;
+                                    activity.showHintDialog();
+                                }
                             } else if (baseInfo.getStatus() == 1) {
-                                BankCardActivity activity = (BankCardActivity) mContext;
-                                mContext.startActivity(new Intent(activity, BankCardBindingActivity.class));
+                                if (mContext instanceof BankCardActivity) {
+                                    BankCardActivity activity = (BankCardActivity) mContext;
+                                    mContext.startActivity(new Intent(activity, BankCardBindingActivity.class));
+                                } else {
+                                    PayPwSelectorActivity activity = (PayPwSelectorActivity) mContext;
+                                    activity.setData();
+                                }
                             } else {
                                 Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             }
