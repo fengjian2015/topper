@@ -823,4 +823,8 @@
     <string name="share_failure">分享失敗</string>
     <string name="start_service">啟動服務</string>
     <string name="gongao_details">公告詳情</string>
+    <string name="transmit">轉發</string>
+    <string name="forward_success">轉發成功</string>
+    <string name="forward_failure">轉發失敗</string>
+    <string name="send_in_progress">發送中</string>
 </resources>

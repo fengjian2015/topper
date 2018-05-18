@@ -1,5 +1,8 @@
 package com.bclould.tocotalk.ui.adapter;
 
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -40,11 +43,15 @@ import com.bclould.tocotalk.ui.activity.OrderDetailsActivity;
 import com.bclould.tocotalk.ui.activity.PayDetailsActivity;
 import com.bclould.tocotalk.ui.activity.RealNameC1Activity;
 import com.bclould.tocotalk.ui.activity.RedPacketActivity;
+import com.bclould.tocotalk.ui.activity.SelectFriendActivity;
 import com.bclould.tocotalk.ui.activity.TransferDetailsActivity;
 import com.bclould.tocotalk.ui.activity.VideoActivity;
+import com.bclould.tocotalk.ui.widget.ChatCopyDialog;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.ToastShow;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.bumptech.glide.Glide;
@@ -313,6 +320,38 @@ public class ChatAdapter extends RecyclerView.Adapter {
         return 0;
     }
 
+    private void showCopyDialog(final int msgtype, final MessageInfo messageInfo, boolean isCopy) {
+        final ChatCopyDialog chatCopyDialog = new ChatCopyDialog(R.layout.dialog_chat_copy, mContext, R.style.dialog);
+        chatCopyDialog.show();
+        chatCopyDialog.isCopy(isCopy);
+        Button copy = (Button) chatCopyDialog.findViewById(R.id.btn_copy);
+        Button transmit = (Button) chatCopyDialog.findViewById(R.id.btn_transmit);
+        copy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //获取剪贴板管理器：
+                ClipboardManager cm = (ClipboardManager)mContext. getSystemService(Context.CLIPBOARD_SERVICE);
+                // 创建普通字符型ClipData
+                ClipData mClipData = ClipData.newPlainText("Label", messageInfo.getMessage());
+                    // 将ClipData内容放到系统剪贴板里。
+                cm.setPrimaryClip(mClipData);
+                ToastShow.showToast2((Activity) mContext,mContext.getString(R.string.copy_succeed));
+                chatCopyDialog.dismiss();
+            }
+        });
+        transmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =new Intent(mContext, SelectFriendActivity.class);
+                intent.putExtra("type",1);
+                intent.putExtra("msgType",msgtype);
+                intent.putExtra("messageInfo",messageInfo);
+                mContext.startActivity(intent);
+                chatCopyDialog.dismiss();
+            }
+        });
+    }
+
     @Override
     public int getItemViewType(int position) {
         return mMessageList.get(position).getMsgType();
@@ -346,6 +385,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     anewSendText(mUser, messageInfo.getMessage(), mIvWarning, messageInfo.getId(), messageInfo);
                 }
             });
+            mTvMessamge.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,true);
+                    return false;
+                }
+            });
         }
     }
 
@@ -376,10 +422,17 @@ public class ChatAdapter extends RecyclerView.Adapter {
             ButterKnife.bind(this, view);
         }
 
-        public void setData(MessageInfo messageInfo) {
+        public void setData(final MessageInfo messageInfo) {
             mIvTouxiang.setImageBitmap(mFromBitmap);
             goIndividualDetails(mIvTouxiang, mUser, mName);
             mTvMessamge.setText(messageInfo.getMessage());
+            mTvMessamge.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,true);
+                    return false;
+                }
+            });
         }
     }
 
@@ -785,6 +838,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
                 }
             });
+            mIvImg.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false);
+                    return false;
+                }
+            });
         }
     }
 
@@ -836,6 +896,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
                 }
             });
+            mIvImg.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false);
+                    return false;
+                }
+            });
         }
     }
 
@@ -882,6 +949,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
                 }
             });
+            mRlVideo.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false);
+                    return false;
+                }
+            });
         }
     }
 
@@ -910,6 +984,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     Intent intent = new Intent(mContext, VideoActivity.class);
                     intent.putExtra("url", messageInfo.getMessage());
                     mContext.startActivity(intent);
+                }
+            });
+            mRlVideo.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false);
+                    return false;
                 }
             });
         }

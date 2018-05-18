@@ -67,7 +67,7 @@ public class FriendListRVAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup viewGroup) {
+    public View getView(final int position, View view, ViewGroup viewGroup) {
         Collections.sort(mUsers);
         final ViewHolder viewHolder;
         UserInfo userInfo = mUsers.get(position);
@@ -118,7 +118,7 @@ public class FriendListRVAdapter extends BaseAdapter {
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, ConversationActivity.class);
                 Bundle bundle = new Bundle();
-                String user = viewHolder.mFriendChildName.getText() + "@" + Constants.DOMAINNAME;
+                String user =mUsers.get(position).getUser();
                 bundle.putString("name", viewHolder.mFriendChildName.getText().toString());
                 bundle.putString("user", user);
                 if (mDatas != null)
