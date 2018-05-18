@@ -132,8 +132,7 @@ public class ImageViewFragment extends Fragment {
 
     RequestOptions requestOptions=new RequestOptions()
             .placeholder(R.mipmap.image_placeholder)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .centerCrop();
+            .diskCacheStrategy(DiskCacheStrategy.ALL);
 
     public String getImageUrl() {
         return imageUrl;

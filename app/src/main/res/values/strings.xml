@@ -821,4 +821,8 @@
     <string name="share_complete">分享完成</string>
     <string name="confirm_send_to">確認發送給</string>
     <string name="share_failure">分享失敗</string>
+    <string name="transmit">轉發</string>
+    <string name="forward_success">轉發成功</string>
+    <string name="forward_failure">轉發失敗</string>
+    <string name="send_in_progress">發送中</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.bclould.tocotalk.ui.fragment;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -70,6 +71,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -140,6 +143,7 @@ public class FriendListFragment extends Fragment {
     private int mId;
     private int mNewFriend;
     private PersonalDetailsPresenter mPersonalDetailsPresenter;
+    private ExecutorService executorService= Executors.newFixedThreadPool(1);
 
     public static FriendListFragment getInstance() {
 
@@ -241,23 +245,44 @@ public class FriendListFragment extends Fragment {
         }
     }
 
-    private void updateData() {
-        mUsers.clear();
-        List<UserInfo> userInfos = mMgr.queryAllUser();
-        UserInfo userInfo = null;
-        UserInfo userInfo2 = null;
-        for (UserInfo info : userInfos) {
-            if (info.getUser().equals(UtilTool.getJid())) {
-                userInfo = info;
-            } else if (info.getUser().isEmpty()) {
-                userInfo2 = info;
+    /***
+     * 异步刷新刷新某一条数据
+     */
+    private void refreshDataWithRoomIdInBackground(){
+        Runnable doInBackgroundrefreshDataWithRoomId=new Runnable() {
+            @Override
+            public void run() {
+                mUsers.clear();
+                List<UserInfo> userInfos = mMgr.queryAllUser();
+                UserInfo userInfo = null;
+                UserInfo userInfo2 = null;
+                for (UserInfo info : userInfos) {
+                    if (info.getUser().equals(UtilTool.getJid())) {
+                        userInfo = info;
+                    } else if (info.getUser().isEmpty()) {
+                        userInfo2 = info;
+                    }
+                }
+                userInfos.remove(userInfo);
+                if (userInfo2 != null)
+                    userInfos.remove(userInfo2);
+                mUsers.addAll(userInfos);
+                ((Activity) getContext()).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mFriendListRVAdapter.notifyDataSetChanged();
+                    }
+            });
+
             }
+        };
+        executorService.execute(doInBackgroundrefreshDataWithRoomId);
+    }
+
+    private void updateData() {
+        synchronized (mUsers){
+            refreshDataWithRoomIdInBackground();
         }
-        userInfos.remove(userInfo);
-        if (userInfo2 != null)
-            userInfos.remove(userInfo2);
-        mUsers.addAll(userInfos);
-        mFriendListRVAdapter.notifyDataSetChanged();
     }
 
     /*private void getImage() {

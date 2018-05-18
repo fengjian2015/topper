@@ -68,7 +68,7 @@ public class SelectFriendAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup viewGroup) {
+    public View getView(final int position, View view, ViewGroup viewGroup) {
         Collections.sort(mUsers);
         final ViewHolder viewHolder;
         UserInfo userInfo = mUsers.get(position);
@@ -118,7 +118,7 @@ public class SelectFriendAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 onItemListener.onItemClick(viewHolder.mFriendChildName.getText().toString()
-                        ,viewHolder.mFriendChildName.getText() + "@" + Constants.DOMAINNAME);
+                        ,mUsers.get(position).getUser());
             }
         });
         return view;
