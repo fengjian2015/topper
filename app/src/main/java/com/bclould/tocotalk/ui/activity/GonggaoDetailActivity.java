@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.webkit.WebView;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,6 +26,7 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class GonggaoDetailActivity extends BaseActivity {
+
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.title_name)
@@ -31,14 +35,26 @@ public class GonggaoDetailActivity extends BaseActivity {
     RelativeLayout mTitle;
     @Bind(R.id.xx)
     TextView mXx;
+    @Bind(R.id.progressBar)
+    ProgressBar mProgressBar;
     @Bind(R.id.web_view)
     WebView mWebView;
+    @Bind(R.id.comment_et)
+    EditText mCommentEt;
+    @Bind(R.id.send)
+    TextView mSend;
+    @Bind(R.id.rl_edit)
+    RelativeLayout mRlEdit;
+    @Bind(R.id.rl_web_view)
+    RelativeLayout mRlWebView;
+    @Bind(R.id.ll_load_error)
+    LinearLayout mLlLoadError;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gong_gao_detail);
+        setContentView(R.layout.activity_news_details);
         ButterKnife.bind(this);
         initIntent();
     }

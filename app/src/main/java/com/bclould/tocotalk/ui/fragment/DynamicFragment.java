@@ -107,8 +107,9 @@ public class DynamicFragment extends Fragment {
             mDynamicRVAdapter.notifyDataSetChanged();
         } else if (msg.equals(getString(R.string.publish_dynamic))) {
             initData(mPage, mPageSize);
-        }
+        } else if (msg.equals(getString(R.string.start_service))) {
 
+        }
     }
 
     List<DynamicListInfo.DataBean> mDataList = new ArrayList<>();

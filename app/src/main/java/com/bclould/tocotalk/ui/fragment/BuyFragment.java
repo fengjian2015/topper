@@ -20,8 +20,10 @@ import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.ui.adapter.BuySellRVAdapter;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
+import com.bclould.tocotalk.utils.UtilTool;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
@@ -57,6 +59,11 @@ public class BuyFragment extends Fragment {
     private List<DealListInfo.DataBean> mDataList = new ArrayList<>();
     private BuySellRVAdapter mBuySellRVAdapter;
     private BuySellPresenter mBuySellPresenter;
+    private int PULL_UP = 0;
+    private int PULL_DOWN = 1;
+    private int mPage = 1;
+    private int mPageSize = 10;
+    private int end = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,7 +77,7 @@ public class BuyFragment extends Fragment {
         initRecyclerView();
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
-        initData(mCoinName, mState);
+        initData(mCoinName, mState, PULL_DOWN);
         bindBankStatus();
         initListener();
         return mView;
@@ -89,13 +96,13 @@ public class BuyFragment extends Fragment {
             mState = event.getState();
         }
         if (msg.equals(getString(R.string.coin_switchover))) {
-            initData(mCoinName, mState);
+            initData(mCoinName, mState, PULL_DOWN);
         } else if (msg.equals(getString(R.string.publish_deal))) {
-            initData(mCoinName, mState);
+            initData(mCoinName, mState, PULL_DOWN);
         } else if (msg.equals(getString(R.string.state_switchover))) {
-            initData(mCoinName, mState);
+            initData(mCoinName, mState, PULL_DOWN);
         } else if (msg.equals(getString(R.string.sold_out_sell))) {
-            initData(mCoinName, mState);
+            initData(mCoinName, mState, PULL_DOWN);
         }
     }
 
@@ -112,7 +119,14 @@ public class BuyFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
-                initData(mCoinName, mState);
+                initData(mCoinName, mState, PULL_DOWN);
+            }
+        });
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                refreshLayout.finishLoadMore(1000);
+                initData(mCoinName, mState, PULL_UP);
             }
         });
     }
@@ -124,17 +138,38 @@ public class BuyFragment extends Fragment {
     }
 
 
-    private void initData(String coinName, String state) {
-        mBuySellPresenter.getDealList(1, coinName, state, new BuySellPresenter.CallBack() {
+    private void initData(String coinName, String state, final int type) {
+        if (type == PULL_DOWN) {
+            mPage = 1;
+            end = 0;
+        }
+        mBuySellPresenter.getDealList(mPage, mPageSize, 1, coinName, state, new BuySellPresenter.CallBack() {
             @Override
             public void send(List<DealListInfo.DataBean> dataBean, String coin) {
                 if (mRecyclerView != null) {
-                    if (dataBean.size() != 0) {
+                    if (mDataList.size() != 0 || dataBean.size() != 0) {
+                        if (type == PULL_UP) {
+                            if (dataBean.size() == mPageSize) {
+                                mPage++;
+                                mDataList.addAll(dataBean);
+                                mBuySellRVAdapter.notifyDataSetChanged();
+                            } else {
+                                if (end == 0) {
+                                    end++;
+                                    mDataList.addAll(dataBean);
+                                    mBuySellRVAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        } else {
+                            if (mPage == 1) {
+                                mPage++;
+                            }
+                            mDataList.clear();
+                            mDataList.addAll(dataBean);
+                            mBuySellRVAdapter.notifyDataSetChanged();
+                        }
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
-                        mDataList.clear();
-                        mDataList.addAll(dataBean);
-                        mBuySellRVAdapter.notifyDataSetChanged();
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);

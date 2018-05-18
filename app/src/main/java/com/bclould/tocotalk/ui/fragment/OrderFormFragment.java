@@ -28,8 +28,10 @@ import com.bclould.tocotalk.model.OrderListInfo;
 import com.bclould.tocotalk.model.TransRecordInfo;
 import com.bclould.tocotalk.ui.adapter.OrderRVAdapter;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.UtilTool;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
@@ -69,11 +71,14 @@ public class OrderFormFragment extends Fragment {
     private String mCoinName = "";
     private String mFiltrate = "";
     private int mPage = 1;
-    private int mPageSize = 1000;
+    private int mPageSize = 10;
     private List<OrderListInfo.DataBean> mDataList = new ArrayList<>();
     private OrderRVAdapter mOrderRVAdapter;
     private DBManager mMgr;
     private BuySellPresenter mBuySellPresenter;
+    private int PULL_UP = 0;
+    private int PULL_DOWN = 1;
+    private int end = 0;
 
     @Nullable
     @Override
@@ -91,7 +96,7 @@ public class OrderFormFragment extends Fragment {
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         initRecyclerView();
-        initData(mCoinName, mFiltrate, "");
+        initData(mCoinName, mFiltrate, "", PULL_DOWN);
         initListener();
         return view;
     }
@@ -105,9 +110,9 @@ public class OrderFormFragment extends Fragment {
             mFiltrate = event.getFiltrate();
         }
         if (msg.equals(getString(R.string.coin_switchover))) {
-            initData(mCoinName, mFiltrate, "");
+            initData(mCoinName, mFiltrate, "", PULL_DOWN);
         } else if (msg.equals(getString(R.string.confirm_fk))) {
-            initData(mCoinName, mFiltrate, "");
+            initData(mCoinName, mFiltrate, "", PULL_DOWN);
            /* for (OrderListInfo.DataBean info : mNewsList) {
                 if (info.getId() == Integer.parseInt(event.getId())) {
                     info.setStatus_name("等待放币");
@@ -132,13 +137,13 @@ public class OrderFormFragment extends Fragment {
                 }
             }
         } else if (msg.equals(getString(R.string.create_order))) {
-            initData(mCoinName, mFiltrate, "");
+            initData(mCoinName, mFiltrate, "", PULL_DOWN);
         } else if (msg.equals(getString(R.string.create_order))) {
-            initData(mCoinName, mFiltrate, "");
+            initData(mCoinName, mFiltrate, "", PULL_DOWN);
         } else if (msg.equals(getString(R.string.deal_order_filtrate))) {
-            initData(mCoinName, mFiltrate, "");
+            initData(mCoinName, mFiltrate, "", PULL_DOWN);
         } else if (msg.equals(getString(R.string.order_update))) {
-            initData(mCoinName, mFiltrate, "");
+            initData(mCoinName, mFiltrate, "", PULL_DOWN);
         }
     }
 
@@ -147,9 +152,18 @@ public class OrderFormFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
-                initData(mCoinName, mFiltrate, "");
+                initData(mCoinName, mFiltrate, "", PULL_DOWN);
             }
         });
+
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                refreshLayout.finishLoadMore(1000);
+                initData(mCoinName, mFiltrate, "", PULL_UP);
+            }
+        });
+
         mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
@@ -159,7 +173,7 @@ public class OrderFormFragment extends Fragment {
                             .hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
                                     InputMethodManager.HIDE_NOT_ALWAYS);
                     String user = mEtSearch.getText().toString().trim();
-                    initData(mCoinName, mFiltrate, user);
+                    initData(mCoinName, mFiltrate, user, PULL_DOWN);
                     return true;
                 }
                 return false;
@@ -173,18 +187,39 @@ public class OrderFormFragment extends Fragment {
         mRecyclerView.setAdapter(mOrderRVAdapter);
     }
 
-    private void initData(String coinName, String filtrate, String user) {
-        mDataList.clear();
-        mOrderRVAdapter.notifyDataSetChanged();
+    private void initData(String coinName, String filtrate, String user, final int type) {
+        if (type == PULL_DOWN) {
+            mPage = 1;
+            end = 0;
+        }
+        UtilTool.Log("分頁", mPage + "");
         mBuySellPresenter.getOrderList(mPage, mPageSize, coinName, filtrate, user, new BuySellPresenter.CallBack3() {
             @Override
             public void send(List<OrderListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
-                    if (data.size() != 0) {
+                    if (mDataList.size() != 0 || data.size() != 0) {
+                        if (type == PULL_UP) {
+                            if (data.size() == mPageSize) {
+                                mPage++;
+                                mDataList.addAll(data);
+                                mOrderRVAdapter.notifyDataSetChanged();
+                            } else {
+                                if (end == 0) {
+                                    end++;
+                                    mDataList.addAll(data);
+                                    mOrderRVAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        } else {
+                            if (mPage == 1) {
+                                mPage++;
+                            }
+                            mDataList.clear();
+                            mDataList.addAll(data);
+                            mOrderRVAdapter.notifyDataSetChanged();
+                        }
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
-                        mDataList.addAll(data);
-                        mOrderRVAdapter.notifyDataSetChanged();
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);
@@ -212,6 +247,6 @@ public class OrderFormFragment extends Fragment {
                 .hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
         String user = mEtSearch.getText().toString().trim();
-        initData(mCoinName, mFiltrate, user);
+        initData(mCoinName, mFiltrate, user, PULL_DOWN);
     }
 }

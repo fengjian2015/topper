@@ -137,7 +137,7 @@ import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_VOICE_MSG;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ConversationActivity extends AppCompatActivity implements FuncLayout.OnFuncKeyBoardListener,XhsEmoticonsKeyBoard.OnResultOTR {
+public class ConversationActivity extends AppCompatActivity implements FuncLayout.OnFuncKeyBoardListener, XhsEmoticonsKeyBoard.OnResultOTR {
 
     private static final int CODE_TAKE_PHOTO = 1;
     private static final int FILE_SELECT_CODE = 2;
@@ -265,25 +265,25 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         });
         mEkbEmoticonsKeyboard.addOnResultOTR(this);
 
-        messageManage=new MessageManage(mMgr,mUser,this,mName);
+        messageManage = new MessageManage(mMgr, mUser, this, mName);
     }
 
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        MessageInfo messageInfo= (MessageInfo) intent.getSerializableExtra("MessageInfo");
-        if(messageInfo==null){
+        MessageInfo messageInfo = (MessageInfo) intent.getSerializableExtra("MessageInfo");
+        if (messageInfo == null) {
             return;
         }
         //通過傳遞過來的消息，查找
-        Bundle bundle=new Bundle();
-        bundle.putBoolean("isFist",true);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isFist", true);
         bundle.putSerializable("MessageInfo", (Serializable) messageInfo);
         mMessageList.clear();
-        Message message=new Message();
-        message.obj=bundle;
-        message.what=4;
+        Message message = new Message();
+        message.obj = bundle;
+        message.what = 4;
         handler.sendMessage(message);
     }
 
@@ -489,14 +489,14 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         }
         //初始化OTR
         try {
-            mEkbEmoticonsKeyboard.changeOTR( OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(mUser).toString()));
+            mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(mUser).toString()));
         } catch (XmppStringprepException e) {
             e.printStackTrace();
         }
     }
 
-    private void sendMessage(String message){
-        MessageInfo messageInfo= messageManage.sendMessage(message);
+    private void sendMessage(String message) {
+        MessageInfo messageInfo = messageManage.sendMessage(message);
         mMessageList.add(messageInfo);
         mChatAdapter.notifyDataSetChanged();
         scrollToBottom();
@@ -657,15 +657,15 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 info.setImageType(1);
                 mChatAdapter.notifyDataSetChanged();
             }
-        } else if (msg.equals(getString(R.string.otr_isopen))){
+        } else if (msg.equals(getString(R.string.otr_isopen))) {
             try {
                 mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(mUser).toString()));
             } catch (XmppStringprepException e) {
                 e.printStackTrace();
             }
-        }else if(msg.equals(getString(R.string.delete_friend))){
+        } else if (msg.equals(getString(R.string.delete_friend))) {
             finish();
-        }else if(msg.equals(getString(R.string.change_friend_remark))){
+        } else if (msg.equals(getString(R.string.change_friend_remark))) {
             setTitleName();
         }
     }
@@ -712,7 +712,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 //.sizeMultiplier(0.5f)// glide 加载图片大小 0~1之间 如设置 .glideOverride()无效
                 .glideOverride(200, 200)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
                 .hideBottomControls(true)// 是否显示uCrop工具栏，默认不显示
-                .isGif(false)// 是否显示gif图片
+                .isGif(true)// 是否显示gif图片
                 .freeStyleCropEnabled(true)// 裁剪框是否可拖拽
                 .circleDimmedLayer(false)// 是否圆形裁剪
                 .showCropFrame(true)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false
@@ -775,10 +775,10 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         //缩略图储存路径
         final File newFile = new File(Constants.PUBLICDIR + key);
         String postfixs = file.getName().substring(file.getName().lastIndexOf("."));
-        if(!".gif".equals(postfixs)&&!".GIF".equals(postfixs)){
+        if (!".gif".equals(postfixs) && !".GIF".equals(postfixs)) {
             UtilTool.comp(bitmap, newFile);//压缩图片
-        }else{
-            UtilTool.copyFile(file.getAbsolutePath(),newFile.getAbsolutePath());
+        } else {
+            UtilTool.copyFile(file.getAbsolutePath(), newFile.getAbsolutePath());
         }
 
         //上传视频到aws
@@ -1051,8 +1051,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             switch (msg.what) {
                 case 0:
                     //下拉查询历史消息
-                    if(mMessageList.size()==0)return;
-                    List<MessageInfo> messageInfos = mMgr.queryRefreshMessage(mUser,mMessageList.get(0).getId());
+                    if (mMessageList.size() == 0) return;
+                    List<MessageInfo> messageInfos = mMgr.queryRefreshMessage(mUser, mMessageList.get(0).getId());
                     List<MessageInfo> MessageList2 = new ArrayList<MessageInfo>();
                     MessageList2.addAll(messageInfos);
                     MessageList2.addAll(mMessageList);
@@ -1108,15 +1108,15 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                     break;
                 case 4:
                     //上啦加載
-                    if(mMessageList.size()==0)return;
+                    if (mMessageList.size() == 0) return;
                     Bundle bundle3 = (Bundle) msg.obj;
-                    boolean isFist=bundle3.getBoolean("isFist");
+                    boolean isFist = bundle3.getBoolean("isFist");
                     List<MessageInfo> messageInfos1 = null;
-                    if(isFist){
-                        MessageInfo messageInfo= (MessageInfo) bundle3.getSerializable("MessageInfo");
-                        messageInfos1 = mMgr.queryLoadMessage(mUser,messageInfo.getId(),isFist);
-                    }else{
-                        messageInfos1 = mMgr.queryLoadMessage(mUser,mMessageList.get(mMessageList.size()-1).getId(),isFist);
+                    if (isFist) {
+                        MessageInfo messageInfo = (MessageInfo) bundle3.getSerializable("MessageInfo");
+                        messageInfos1 = mMgr.queryLoadMessage(mUser, messageInfo.getId(), isFist);
+                    } else {
+                        messageInfos1 = mMgr.queryLoadMessage(mUser, mMessageList.get(mMessageList.size() - 1).getId(), isFist);
                     }
                     List<MessageInfo> MessageList3 = new ArrayList<MessageInfo>();
                     MessageList3.addAll(mMessageList);
@@ -1128,6 +1128,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             }
         }
     };
+
     //初始化数据
     private void initData() {
         List<MessageInfo> messageInfos = mMgr.queryMessage(mUser);
@@ -1139,7 +1140,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     //设置title
     private void initIntent() {
-        if(StringUtils.isEmpty(UtilTool.getJid())){
+        if (StringUtils.isEmpty(UtilTool.getJid())) {
             MySharedPreferences.getInstance().setString(MYUSERNAME, UtilTool.getUser() + "@" + Constants.DOMAINNAME2);
         }
         Intent intent = getIntent();
@@ -1164,16 +1165,16 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         setTitleName();
     }
 
-    private void clearNotification(){
+    private void clearNotification() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
     }
 
-    private void setTitleName(){
-        String remark=mMgr.queryRemark(mUser);
-        if(!com.bclould.tocotalk.utils.StringUtils.isEmpty(remark)){
+    private void setTitleName() {
+        String remark = mMgr.queryRemark(mUser);
+        if (!com.bclould.tocotalk.utils.StringUtils.isEmpty(remark)) {
             mTitleName.setText(remark);
-        }else {
+        } else {
             mTitleName.setText(mName);
         }
     }
@@ -1182,7 +1183,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private void initAdapter() {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mChatAdapter = new ChatAdapter(this, mMessageList, mUserImage, mUser, mMgr, mediaPlayer,mName);
+        mChatAdapter = new ChatAdapter(this, mMessageList, mUserImage, mUser, mMgr, mediaPlayer, mName);
         mRecyclerView.setAdapter(mChatAdapter);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -1206,11 +1207,11 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 refreshLayout.finishLoadMore(1000);
-                Bundle bundle=new Bundle();
-                bundle.putBoolean("isFist",false);
-                Message message=new Message();
-                message.obj=bundle;
-                message.what=4;
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("isFist", false);
+                Message message = new Message();
+                message.obj = bundle;
+                message.what = 4;
                 handler.sendMessage(message);
             }
         });
@@ -1305,8 +1306,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     }
 
 
-
-
     boolean isClick = false;
 
     @OnClick({R.id.rl_outer, R.id.bark, R.id.iv_else, R.id.ll_details, R.id.btn_look_order, R.id.btn_cancel_order2, R.id.btn_confirm_send_coin, R.id.btn_cancel_order, R.id.btn_confirm_pay})
@@ -1349,9 +1348,9 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     }
 
     private void goDetails() {
-        Intent intent=new Intent(this,ConversationDetailsActivity.class);
-        intent.putExtra("user",mUser);
-        intent.putExtra("name",mName);
+        Intent intent = new Intent(this, ConversationDetailsActivity.class);
+        intent.putExtra("user", mUser);
+        intent.putExtra("name", mName);
         startActivity(intent);
     }
 
@@ -1408,9 +1407,9 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     @Override
     public void resultOTR() {
         try {
-            OtrChatListenerManager.getInstance().changeState(JidCreate.entityBareFrom(mUser).toString(),this);
+            OtrChatListenerManager.getInstance().changeState(JidCreate.entityBareFrom(mUser).toString(), this);
             mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(mUser).toString()));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -20,13 +20,18 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
-import com.bclould.tocotalk.richtext.richtexteditor.MainActivity;
 import com.bclould.tocotalk.ui.activity.GonggaoManagerActivity;
+import com.bclould.tocotalk.ui.activity.NewsEditActivity;
 import com.bclould.tocotalk.ui.activity.NewsManagerActivity;
 import com.bclould.tocotalk.ui.activity.PersonageDynamicActivity;
 import com.bclould.tocotalk.ui.activity.PublicshDynamicActivity;
 import com.bclould.tocotalk.ui.adapter.CloudMessageVPAdapter;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -70,9 +75,19 @@ public class DiscoverFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_discover, container, false);
         ButterKnife.bind(this, view);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         getPhoneSize();
         initInterface();
         return view;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(getString(R.string.start_service))) {
+
+        }
     }
 
     //初始化界面
@@ -173,6 +188,7 @@ public class DiscoverFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 
     //获取屏幕高度
@@ -232,7 +248,7 @@ public class DiscoverFragment extends Fragment {
                             mPopupWindow.dismiss();
                             break;
                         case 2:
-                            startActivity(new Intent(getActivity(), MainActivity.class));
+                            startActivity(new Intent(getActivity(), NewsEditActivity.class));
                             mPopupWindow.dismiss();
                             break;
                         case 3:

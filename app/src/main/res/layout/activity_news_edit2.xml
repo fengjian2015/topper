@@ -40,20 +40,73 @@
 
     </RelativeLayout>
 
-    <com.lu.richtexteditorlib.SimpleRichEditor
-        android:id="@+id/rich_text_view"
+    <TextView
+        android:id="@+id/xx"
+        style="@style/HCutOffRule"
+        android:layout_below="@+id/rl_title"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y10"
+        android:layout_below="@+id/xx"
+        android:progressDrawable="@drawable/bg_progress_bar"
+        android:visibility="gone"/>
+
+    <WebView
+        android:id="@+id/web_view"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/lu_bottom_menu"
-        android:layout_below="@+id/rl_title" />
+        android:layout_below="@+id/progressBar"/>
 
-    <com.lu.lubottommenu.LuBottomMenu
-        android:id="@+id/lu_bottom_menu"
+
+    <LinearLayout
+        android:id="@+id/ll_load_error"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_alignParentBottom="true">
-    </com.lu.lubottommenu.LuBottomMenu>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/progressBar"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/wifi"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20"
+            android:text="@string/network_break"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20"
+            android:text="@string/network_break_click_update"
+            android:textSize="@dimen/x24"/>
+
+    </LinearLayout>
+
+    <!-- <com.lu.richtexteditorlib.SimpleRichEditor
+         android:id="@+id/rich_text_view"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:layout_alignParentLeft="true"
+         android:layout_alignParentStart="true"
+         android:layout_above="@+id/lu_bottom_menu"
+         android:layout_below="@+id/rl_title" />
+
+     <com.lu.lubottommenu.LuBottomMenu
+         android:id="@+id/lu_bottom_menu"
+         android:layout_width="match_parent"
+         android:layout_height="54dp"
+         android:layout_alignParentBottom="true">
+     </com.lu.lubottommenu.LuBottomMenu>-->
 
 </RelativeLayout>

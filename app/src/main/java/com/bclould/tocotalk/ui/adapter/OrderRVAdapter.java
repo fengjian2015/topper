@@ -97,32 +97,26 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final OrderListInfo.DataBean dataBean) {
-
             mTvMoney.setText(mContext.getString(R.string.deal_money) + dataBean.getTrans_amount());
             mTvTime.setText(dataBean.getCreated_at());
             mTvType.setText(dataBean.getStatus_name());
+            mTvCoinType.setText(dataBean.getType_name() + dataBean.getCoin_name());
             if (dataBean.getStatus() == 4) {
                 mTvType.setTextColor(mContext.getResources().getColor(R.color.color_orange));
             } else {
                 mTvType.setTextColor(mContext.getResources().getColor(R.color.black));
             }
+            try {
+                String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
+                mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (dataBean.getType() == 1) {
-                try {
-                    String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
-                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 mTvName.setText(dataBean.getUser_name());
                 mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape));
                 mTvCoinType.setTextColor(mContext.getResources().getColor(R.color.blue2));
             } else {
-                try {
-                    String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
-                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 mTvName.setText(dataBean.getUser_name());
                 mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape2));
                 mTvCoinType.setTextColor(mContext.getResources().getColor(R.color.green2));

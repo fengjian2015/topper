@@ -319,7 +319,9 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("type") int type,
             @Field("coin_name") String coin_name,
-            @Field("country") String country
+            @Field("country") String country,
+            @Field("page") int page,
+            @Field("page_size") int page_size
     );
 
     //买币
@@ -983,6 +985,7 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("name") String name
     );
+
     //修改備註
     @POST("trans/total")
     Observable<OrderStatisticsInfo> getTotal(

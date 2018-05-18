@@ -2,15 +2,12 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Rect;
-import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
@@ -35,6 +32,7 @@ import com.bclould.tocotalk.Presenter.DynamicPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.service.ImageUpService;
 import com.bclould.tocotalk.ui.adapter.PublicshDynamicGVAdapter;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.Constants;
@@ -284,7 +282,15 @@ public class PublicshDynamicActivity extends BaseActivity {
     List<String> mPathList = new ArrayList<>();
 
     private void checkFile() {
-        showDialog();
+        String text = mTextEt.getText().toString();
+        Intent intent = new Intent(this, ImageUpService.class);
+        intent.putParcelableArrayListExtra("imageList", (ArrayList<? extends Parcelable>) selectList);
+        intent.putExtra("text", text);
+        intent.putExtra("type", mType);
+        startService(intent);
+        finish();
+
+      /*  showDialog();
         if (selectList.size() != 0) {
             if (mType) {
                 File file = new File(selectList.get(0).getPath());
@@ -323,7 +329,7 @@ public class PublicshDynamicActivity extends BaseActivity {
             }
         } else {
             publicshDynamic("0", mKeyList, mkeyCompressList);
-        }
+        }*/
     }
 
 

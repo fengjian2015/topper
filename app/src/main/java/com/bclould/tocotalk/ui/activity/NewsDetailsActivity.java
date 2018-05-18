@@ -11,6 +11,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
@@ -62,6 +63,9 @@ public class NewsDetailsActivity extends BaseActivity {
     @Bind(R.id.ll_load_error)
     LinearLayout mLlLoadError;
     private int mId;
+    private boolean mLoadError = false;
+    private int mType;
+    private String mUrl;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,13 +89,33 @@ public class NewsDetailsActivity extends BaseActivity {
     private void initWebView() {
         //设置WebView支持JavaScript
         mWebView.getSettings().setJavaScriptEnabled(true);
+        if (UtilTool.isNetworkAvailable(NewsDetailsActivity.this)) {
+            mWebView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+        } else {
+            mWebView.getSettings().setCacheMode(
+                    WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        }
         mWebView.addJavascriptInterface(this, "callback");
-        mWebView.loadUrl(Constants.BASE_URL + Constants.NEWS_WEB_URL + mId + "/" + UtilTool.getUserId());
+        // 把图片加载放在最后来加载渲染
+        mWebView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+        // 支持多窗口
+        mWebView.getSettings().setSupportMultipleWindows(true);
+        // 开启 DOM storage API 功能
+        mWebView.getSettings().setDomStorageEnabled(true);
+        // 开启 Application Caches 功能
+        mWebView.getSettings().setAppCacheEnabled(true);
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 mProgressBar.setVisibility(View.GONE);
+                if (mProgressBar.getProgress() != 100) {
+                    mLlLoadError.setVisibility(View.VISIBLE);
+                    mRlWebView.setVisibility(View.GONE);
+                } else {
+                    mLlLoadError.setVisibility(View.GONE);
+                    mRlWebView.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -99,13 +123,12 @@ public class NewsDetailsActivity extends BaseActivity {
                 super.onReceivedError(view, request, error);
                 mLlLoadError.setVisibility(View.VISIBLE);
                 mRlWebView.setVisibility(View.GONE);
+                mLoadError = true;
             }
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                mLlLoadError.setVisibility(View.GONE);
-                mRlWebView.setVisibility(View.VISIBLE);
                 mProgressBar.setVisibility(View.VISIBLE);
             }
         });
@@ -115,6 +138,7 @@ public class NewsDetailsActivity extends BaseActivity {
                 mProgressBar.setProgress(progress);
             }
         });
+        mWebView.loadUrl(mUrl);
     }
 
     @JavascriptInterface
@@ -132,6 +156,15 @@ public class NewsDetailsActivity extends BaseActivity {
 
     private void initIntent() {
         mId = getIntent().getIntExtra("id", 0);
+        mType = getIntent().getIntExtra("type", 0);
+        if (mType == 1) {
+            mTitleName.setText(getString(R.string.gongao_details));
+            mRlEdit.setVisibility(View.GONE);
+            mUrl = Constants.BASE_URL + Constants.GONGGAO_WEB_URL + mId;
+        } else {
+            mTitleName.setText(getString(R.string.news_details));
+            mUrl = Constants.BASE_URL + Constants.NEWS_WEB_URL + mId + "/" + UtilTool.getUserId();
+        }
     }
 
 
@@ -168,5 +201,12 @@ public class NewsDetailsActivity extends BaseActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mWebView.removeAllViews();
+        mWebView.destroy();
     }
 }

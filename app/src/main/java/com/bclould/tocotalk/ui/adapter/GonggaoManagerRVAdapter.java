@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.GonggaoListInfo;
-import com.bclould.tocotalk.ui.activity.GonggaoDetailActivity;
+import com.bclould.tocotalk.ui.activity.NewsDetailsActivity;
 
 import java.util.List;
 
@@ -75,8 +75,9 @@ public class GonggaoManagerRVAdapter extends RecyclerView.Adapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, GonggaoDetailActivity.class);
+                    Intent intent = new Intent(mContext, NewsDetailsActivity.class);
                     intent.putExtra("id", mId);
+                    intent.putExtra("type", 1);
                     mContext.startActivity(intent);
                 }
             });

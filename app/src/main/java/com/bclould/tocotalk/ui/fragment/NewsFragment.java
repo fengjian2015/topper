@@ -22,9 +22,11 @@ import com.bclould.tocotalk.model.NewsListInfo;
 import com.bclould.tocotalk.ui.activity.NewsDetailsActivity;
 import com.bclould.tocotalk.ui.adapter.NewsRVAdapter;
 import com.bclould.tocotalk.utils.SpaceItemDecoration2;
+import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -56,7 +58,11 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     SmartRefreshLayout mRefreshLayout;
     private NewsRVAdapter mNewsRVAdapter;
     private int mPage = 1;
-    private int mPageSize = 1000;
+    private int mPageSize = 10;
+    private int PULL_UP = 0;
+    private int PULL_DOWN = 1;
+    private NewsNoticePresenter mNewsNoticePresenter;
+    private int end = 0;
 
     public static NewsFragment getInstance() {
         if (instance == null) {
@@ -76,9 +82,10 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mNewsNoticePresenter = new NewsNoticePresenter(getContext());
         initListener();
         initRecylerView();
-        initData();
+        initData(PULL_DOWN);
     }
 
     private void initListener() {
@@ -86,7 +93,15 @@ public class NewsFragment extends Fragment implements OnBannerListener {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
                 refreshLayout.finishRefresh(2000);
-                initData();
+                initData(PULL_DOWN);
+            }
+        });
+
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                refreshLayout.finishLoadMore(1000);
+                initData(PULL_UP);
             }
         });
     }
@@ -94,24 +109,47 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     List<NewsListInfo.ListsBean> mNewsList = new ArrayList<>();
     List<NewsListInfo.TopBean> mTopList = new ArrayList<>();
 
-    private void initData() {
-        NewsNoticePresenter newsNoticePresenter = new NewsNoticePresenter(getContext());
-        newsNoticePresenter.getNewsList(mPage, mPageSize, new NewsNoticePresenter.CallBack() {
+    private void initData(final int type) {
+        if (type == PULL_DOWN) {
+            mPage = 1;
+            end = 0;
+        }
+        UtilTool.Log("分頁", mPage + "");
+        mNewsNoticePresenter.getNewsList(mPage, mPageSize, new NewsNoticePresenter.CallBack() {
             @Override
             public void send(List<NewsListInfo.ListsBean> lists, List<NewsListInfo.TopBean> top) {
                 if (lists != null) {
-                    mNewsList.clear();
-                    mTopList.clear();
-                    mTopList.addAll(top);
-                    List<String> imgList = new ArrayList<>();
-                    List<String> titleList = new ArrayList<>();
-                    for (NewsListInfo.TopBean info : top) {
-                        imgList.add(info.getIndex_pic());
-                        titleList.add(info.getTitle());
+                    if (lists.size() != 0 || mNewsList.size() != 0 || top.size() != 0 || mTopList.size() != 0) {
+                        if (type == PULL_UP) {
+                            if (lists.size() == mPageSize) {
+                                mPage++;
+                                mNewsList.addAll(lists);
+                                mNewsRVAdapter.notifyDataSetChanged();
+                            } else {
+                                if (end == 0) {
+                                    end++;
+                                    mNewsList.addAll(lists);
+                                    mNewsRVAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        } else {
+                            if (mPage == 1) {
+                                mPage++;
+                            }
+                            mNewsList.clear();
+                            mTopList.clear();
+                            mNewsList.addAll(lists);
+                            mTopList.addAll(top);
+                            mNewsRVAdapter.notifyDataSetChanged();
+                            List<String> imgList = new ArrayList<>();
+                            List<String> titleList = new ArrayList<>();
+                            for (NewsListInfo.TopBean info : top) {
+                                imgList.add(info.getIndex_pic());
+                                titleList.add(info.getTitle());
+                            }
+                            initBanner(imgList, titleList);
+                        }
                     }
-                    mNewsList.addAll(lists);
-                    mNewsRVAdapter.notifyDataSetChanged();
-                    initBanner(imgList, titleList);
                 }
             }
         });
@@ -152,7 +190,6 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     public void OnBannerClick(int position) {
         Intent intent = new Intent(getContext(), NewsDetailsActivity.class);
         intent.putExtra("id", mTopList.get(position).getId());
-        startActivity(intent
-        );
+        startActivity(intent);
     }
 }

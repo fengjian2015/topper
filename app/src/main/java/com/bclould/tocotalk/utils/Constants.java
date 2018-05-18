@@ -62,4 +62,5 @@ public class Constants {
     public static String NEWS_WEB_URL = "news/info/";
     public static String GONGGAO_WEB_URL = "bulletin/info/";
     public static String OTR_REQUEST = "?OTRv2?";
+    public static String NEWS_EDIT_WEB_URL = "news/publish";
 }

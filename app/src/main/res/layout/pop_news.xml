@@ -29,7 +29,7 @@
         android:text="@string/news_manager"
         android:textColor="@android:color/black"
         android:textSize="@dimen/x28"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
     <TextView
         android:id="@+id/pop_etc"
@@ -41,7 +41,7 @@
         android:text="@string/publish_news"
         android:textColor="@android:color/black"
         android:textSize="@dimen/x28"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
     <TextView
         android:id="@+id/pop_ltc"

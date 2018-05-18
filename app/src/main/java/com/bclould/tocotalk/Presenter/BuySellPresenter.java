@@ -61,11 +61,11 @@ public class BuySellPresenter {
         }
     }
 
-    public void getDealList(int type, String coinName, final String state, final CallBack callBack) {
+    public void getDealList(int page, int pageSize, int type, String coinName, final String state, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .getDealList(UtilTool.getToken(), type, coinName, state)
+                    .getDealList(UtilTool.getToken(), type, coinName, state, page, pageSize)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<DealListInfo>() {
