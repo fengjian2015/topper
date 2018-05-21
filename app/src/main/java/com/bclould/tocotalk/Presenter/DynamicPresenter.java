@@ -88,7 +88,7 @@ public class DynamicPresenter {
         }
     }
 
-    public void dynamicList(String page, String pageSize, String userList, final CallBack2 callBack2) {
+    public void dynamicList(int page, int pageSize, String userList, final CallBack2 callBack2) {
         userList = userList.replace("@" + Constants.DOMAINNAME, "");
         userList = userList.replace("@" + Constants.DOMAINNAME2, "");
         UtilTool.Log("动态", userList);

@@ -23,11 +23,14 @@ import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.UserInfo;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
@@ -217,6 +220,7 @@ public class UtilTool {
 
     /**
      * 复制单个文件
+     *
      * @param oldPath String 原文件路径 如：c:/fqf.txt
      * @param newPath String 复制后路径 如：f:/fqf.txt
      * @return boolean
@@ -231,15 +235,14 @@ public class UtilTool {
                 FileOutputStream fs = new FileOutputStream(newPath);
                 byte[] buffer = new byte[1444];
                 int length;
-                while ( (byteread = inStream.read(buffer)) != -1) {
+                while ((byteread = inStream.read(buffer)) != -1) {
                     bytesum += byteread; //字节数 文件大小
                     System.out.println(bytesum);
                     fs.write(buffer, 0, byteread);
                 }
                 inStream.close();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("复制单个文件操作出错");
             e.printStackTrace();
 
@@ -385,7 +388,7 @@ public class UtilTool {
             if (!file.exists()) {
                 file.mkdirs();
             }
-            String path = context.getFilesDir().getAbsolutePath() + "/images/" + user + ".jpg";
+            String path = context.getFilesDir().getAbsolutePath() + "/images/" + createtFileName() + ".jpg";
             File image = new File(path);
             if (image.exists() && image.length() != bitmap.getByteCount()) {
                 image.delete();
@@ -396,8 +399,8 @@ public class UtilTool {
             fos.close();
             if (!mgr.findUser(user))
                 mgr.addUser(user, path);
-            UtilTool.Log("日志", "保存成功");
-
+            else
+                mgr.updatePath(user, path);
             return path;
         } catch (Exception e) {
             try {
@@ -419,6 +422,8 @@ public class UtilTool {
                 fos.close();
                 if (!mgr.findUser(user))
                     mgr.addUser(user, path);
+                else
+                    mgr.updatePath(user, path);
                 UtilTool.Log("日志", "保存成功");
             } catch (IOException e1) {
                 e1.printStackTrace();
@@ -598,12 +603,17 @@ public class UtilTool {
     }
 
 
-    public static Bitmap getImage(DBManager mgr, String myUser, Context context) {
+    public static Bitmap getImage(DBManager mgr, String myUser, Context context, ImageView imageView) {
         Bitmap bitmap = null;
         if (mgr.findUser(myUser)) {
             UserInfo info = mgr.queryUser(myUser);
             if (!info.getPath().isEmpty()) {
-                bitmap = BitmapFactory.decodeFile(info.getPath());
+                UtilTool.Log("頭像", info.getPath());
+                if (info.getPath().startsWith("https://")) {
+                    Glide.with(context).load(info.getPath()).into(imageView);
+                } else {
+                    bitmap = BitmapFactory.decodeFile(info.getPath());
+                }
             } else {
                 bitmap = setDefaultimage(context);
             }
@@ -634,7 +644,7 @@ public class UtilTool {
 
     public static String getPostfix(String fileName) {
         String postfix = fileName.substring(fileName.lastIndexOf("."));
-        if (postfix.equals(".png") || postfix.equals(".jpg") || postfix.equals(".jpeg")|| postfix.equals(".gif")|| postfix.equals(".JPEG") || postfix.equals(".PNG") || postfix.equals(".JPG")||postfix.equals(".GIF")) {
+        if (postfix.equals(".png") || postfix.equals(".jpg") || postfix.equals(".jpeg") || postfix.equals(".gif") || postfix.equals(".JPEG") || postfix.equals(".PNG") || postfix.equals(".JPG") || postfix.equals(".GIF")) {
             return "Image";
         } else if (postfix.equals(".mp4") || postfix.equals(".mov") || postfix.equals(".MP4") || postfix.equals(".MOV")) {
             return "Video";
@@ -761,5 +771,25 @@ public class UtilTool {
         BigDecimal b1 = new BigDecimal(Double.toString(b));
         BigDecimal result = a1.multiply(b1);// 相乘结果
         return removeZero(result.toString());
+    }
+
+    //文件轉二進制
+    public static byte[] getFileToByte(File file) {
+        byte[] by = new byte[(int) file.length()];
+        try {
+            InputStream is = new FileInputStream(file);
+            ByteArrayOutputStream bytestream = new ByteArrayOutputStream();
+            byte[] bb = new byte[2048];
+            int ch;
+            ch = is.read(bb);
+            while (ch != -1) {
+                bytestream.write(bb, 0, ch);
+                ch = is.read(bb);
+            }
+            by = bytestream.toByteArray();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return by;
     }
 }

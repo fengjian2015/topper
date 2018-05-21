@@ -118,7 +118,8 @@ public class ChatTransferActivity extends BaseActivity {
         mName = mUser.substring(0, mUser.indexOf("@"));
         mTvName.setText(mName);
         String jid = mName + "@" + Constants.DOMAINNAME;
-        mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, ChatTransferActivity.this));
+//        mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, ChatTransferActivity.this));
+    UtilTool.getImage(mMgr, jid, ChatTransferActivity.this, mIvTouxiang);
     }
 
     @OnClick({R.id.bark, R.id.tv_transfer_record, R.id.rl_selector_coin, R.id.btn_confirm})

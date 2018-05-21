@@ -173,7 +173,7 @@ public class PersonalDetailsPresenter {
 
     //定义接口
     public interface CallBack2 {
-        void send(AuatarListInfo.DataBean data);
+        void send(List<AuatarListInfo.DataBean> data);
     }
 
     public interface CallBack3{

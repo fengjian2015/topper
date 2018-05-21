@@ -22,7 +22,6 @@ import com.bclould.tocotalk.model.DynamicListInfo;
 import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.ui.activity.DynamicDetailActivity;
 import com.bclould.tocotalk.ui.activity.PreviewImgActivity;
-import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -195,11 +194,17 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
 
         public void setData(final DynamicListInfo.DataBean dataBean) {
             mDataBean = dataBean;
-            String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
+            /*String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
             if (dataBean.getUser_name().equals(UtilTool.getUser())) {
                 jid = UtilTool.getJid();
             }
-            mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
+            UtilTool.getImage(mMgr, jid, mContext, mTouxiang);*/
+            if(!dataBean.getAvatar().isEmpty()){
+                Glide.with(mContext).load(dataBean.getAvatar()).into(mTouxiang);
+            }else {
+                mTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));
+            }
+//            mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
             mTime.setText(dataBean.getCreated_at());
             mName.setText(dataBean.getUser_name());
             mTextContent.setText(dataBean.getContent());
@@ -360,11 +365,17 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             mCompressImgList = (ArrayList<String>) dataBean.getKey_compress_urls();
             mImgList = (ArrayList<String>) dataBean.getKey_urls();
             mNglImages.setImagesData(mCompressImgList);
-            String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
+            /*String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
             if (dataBean.getUser_name().equals(UtilTool.getUser())) {
                 jid = UtilTool.getJid();
             }
-            mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
+            UtilTool.getImage(mMgr, jid, mContext, mIvTouxiang);*/
+            if(!dataBean.getAvatar().isEmpty()){
+                Glide.with(mContext).load(dataBean.getAvatar()).into(mIvTouxiang);
+            }else {
+                mIvTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));
+            }
+//            mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
             mTvTime.setText(dataBean.getCreated_at());
             mTvName.setText(dataBean.getUser_name());
             mTvContent.setText(dataBean.getContent());

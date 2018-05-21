@@ -70,8 +70,6 @@ public class OrderFormFragment extends Fragment {
     TextView mTvHint;
     private String mCoinName = "";
     private String mFiltrate = "";
-    private int mPage = 1;
-    private int mPageSize = 10;
     private List<OrderListInfo.DataBean> mDataList = new ArrayList<>();
     private OrderRVAdapter mOrderRVAdapter;
     private DBManager mMgr;
@@ -79,6 +77,8 @@ public class OrderFormFragment extends Fragment {
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
     private int end = 0;
+    private int mPage = 1;
+    private int mPageSize = 10;
 
     @Nullable
     @Override

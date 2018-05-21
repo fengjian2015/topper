@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,7 +38,6 @@ import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.network.DownLoadApk;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
-import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
@@ -73,7 +71,6 @@ public class MainActivity extends BaseActivity {
 
     public static MainActivity instance = null;
     private FragmentManager mSupportFragmentManager;
-    private LoadingProgressDialog mProgressDialog;
     private CoinPresenter mCoinPresenter;
     private DBManager mMgr;
 
@@ -173,46 +170,15 @@ public class MainActivity extends BaseActivity {
     private void getMyImage() {
         if (!mMgr.findUser(UtilTool.getJid())) {
             PersonalDetailsPresenter personalDetailsPresenter = new PersonalDetailsPresenter(this);
-            personalDetailsPresenter.getFriendImageList(UtilTool.getUser(), new PersonalDetailsPresenter.CallBack2() {
+            personalDetailsPresenter.getFriendImageList(UtilTool.getJid(), new PersonalDetailsPresenter.CallBack2() {
                 @Override
-                public void send(final AuatarListInfo.DataBean dataBean) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (dataBean != null && !dataBean.getAvatar().isEmpty()) {
-                                try {
-                                    UtilTool.Log("頭像", dataBean.getAvatar());
-                                    Drawable drawable = Glide.with(MainActivity.this)
-                                            .load(dataBean.getAvatar())
-                                            .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                                            .get();
-                                    BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-                                    Bitmap bitmap = bitmapDrawable.getBitmap();
-                                    UtilTool.saveImages(bitmap, UtilTool.getJid(), MainActivity.this, mMgr);
-                                } catch (Exception e) {
-                                }
-                            } else {
-                                mMgr.addUser(UtilTool.getJid(), "");
-                            }
-                        }
-                    }).start();
+                public void send(List<AuatarListInfo.DataBean> data) {
+                    if (data != null && data.size() != 0) {
+                        mMgr.addUserList(data);
+                    }
                 }
             });
         }
-        /*try {
-            if (!mMgr.findUser(Constants.MYUSER)) {
-                byte[] myImage = UtilTool.getUserImage(XmppConnection.getInstance().getConnection(), Constants.MYUSER);
-                if (myImage != null) {
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(myImage, 0, myImage.length);
-                    UtilTool.saveImages(bitmap, Constants.MYUSER, MainActivity.this, mMgr);
-                } else {
-                    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.img_nfriend_headshot1);
-                    UtilTool.saveImages(bitmap, Constants.MYUSER, MainActivity.this, mMgr);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
     }
 
     private void initAWS() {
@@ -226,8 +192,6 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
-
-    private Timer tExit;
 
 //    private void pingService() {
 //        new Thread(new Runnable() {
@@ -327,7 +291,6 @@ public class MainActivity extends BaseActivity {
 
                         @Override
                         public void onError(Throwable e) {
-                            hideDialog();
                             UtilTool.Log("日志", e.getMessage());
                             Toast.makeText(MainActivity.this, getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
@@ -416,49 +379,9 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
-    //显示登录中Dialog
-    public void showDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = LoadingProgressDialog.createDialog(this);
-            mProgressDialog.setCanceledOnTouchOutside(false);
-            mProgressDialog.setCancelable(false);
-            mProgressDialog.setMessage(getString(R.string.login_underway));
-        }
-        mProgressDialog.show();
-    }
-
-    //隐藏登录中dialog
-    public void hideDialog() {
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-        }
-    }
-
-//
-//    Handler mHandler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            super.handleMessage(msg);
-//            switch (msg.what) {
-//                case 0:
-//                    hideDialog();
-//                    Toast.makeText(MainActivity.this, getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-//                    break;
-//                case 1:
-//                    hideDialog();
-//                    MyApp.getInstance().isLogin = true;
-//                    pingService();
-//                    break;
-//            }
-//        }
-//    };
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //隐藏dialog
-        hideDialog();
         //页面销毁删除掉储存的fragment
         Map<Integer, Fragment> map = FragmentFactory.mMainMap;
         FragmentFactory.getInstanes().setNull();
@@ -468,51 +391,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    /*//登录即时通讯
-    private void loginIM() {
-        showDialog();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    //连接openfile
-                    AbstractXMPPConnection connection = XmppConnection.getInstance().getConnection();
-                    //判断是否连接
-                    if (connection != null && connection.isConnected()) {
-                        String myUser = UtilTool.getJid();
-                        String user = myUser.substring(0, myUser.indexOf("@"));
-                        connection.login(user, UtilTool.getpw());
-                        connection.addConnectionListener(new XMConnectionListener(MainActivity.this));
-                        *//*if (connection.isAuthenticated()) {//登录成功
-                            PingManager.setDefaultPingInterval(10);
-                            PingManager myPingManager = PingManager.getInstanceFor(connection);
-                            myPingManager.registerPingFailedListener(new PingFailedListener() {
-                                @Override
-                                public void pingFailed() {
-                                    Toast.makeText(MainActivity.this, "发送心跳包失败", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }*//*
-                        //登录成功发送通知
-                        EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
-                        UtilTool.Log("fsdafa", "登录成功");
-                        Message message = new Message();
-                        message.what = 1;
-                        mHandler.sendMessage(message);
-                    }
-                } catch (Exception e) {
-                    //发送登录失败通知
-                    EventBus.getDefault().post(new MessageEvent(getString(R.string.login_error)));
-                    Message message = new Message();
-                    mHandler.sendMessage(message);
-                    message.what = 0;
-                    UtilTool.Log("日志", e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-*/
     //初始化底部菜单栏
     private void initBottomMenu() {
 

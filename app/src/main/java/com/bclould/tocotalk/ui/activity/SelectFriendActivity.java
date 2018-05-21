@@ -1,23 +1,17 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.app.Activity;
-import android.content.ContentUris;
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
-import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
-import android.support.v4.content.FileProvider;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
@@ -25,32 +19,16 @@ import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.UserInfo;
-import com.bclould.tocotalk.ui.adapter.FriendListRVAdapter;
 import com.bclould.tocotalk.ui.adapter.SelectFriendAdapter;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.ui.widget.MyListView;
-import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.ToastShow;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.MessageManage;
 import com.bclould.tocotalk.xmpp.Room;
-import com.bclould.tocotalk.xmpp.XmppConnection;
-import com.litesuits.common.utils.NumberUtil;
 
-import org.greenrobot.eventbus.EventBus;
-import org.jivesoftware.smack.roster.Roster;
-import org.jivesoftware.smack.roster.RosterEntry;
-import org.jxmpp.jid.impl.JidCreate;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.OutputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
@@ -138,20 +116,20 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
 //                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
 //                return getDataColumn(context, contentUri, null, null);
 //            } else if (isMediaDocument(imageUri)) {
-                String docId = DocumentsContract.getDocumentId(imageUri);
-                String[] split = docId.split(":");
-                String type = split[0];
-                Uri contentUri = null;
-                if ("image".equals(type)) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                }
-                String selection = MediaStore.Images.Media._ID + "=?";
-                String[] selectionArgs = new String[] { split[1] };
-                return getDataColumn(context, contentUri, selection, selectionArgs);
+            String docId = DocumentsContract.getDocumentId(imageUri);
+            String[] split = docId.split(":");
+            String type = split[0];
+            Uri contentUri = null;
+            if ("image".equals(type)) {
+                contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+            } else if ("video".equals(type)) {
+                contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+            } else if ("audio".equals(type)) {
+                contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+            }
+            String selection = MediaStore.Images.Media._ID + "=?";
+            String[] selectionArgs = new String[] { split[1] };
+            return getDataColumn(context, contentUri, selection, selectionArgs);
 //            }
         }else if ("content".equalsIgnoreCase(imageUri.getScheme())) {
             // Return the remote address
@@ -244,7 +222,7 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
         if(type==0){
             if(TEXT_PLAIN.equals(shareType)){
                 String shareText= shareIntent.getStringExtra(Intent.EXTRA_TEXT);
-                messageManage.sendMessage(shareText);
+                messageInfo=messageManage.sendMessage(shareText);
                 if(messageInfo!=null){
                     ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.share_complete));
                     SelectFriendActivity.this.finish();
@@ -255,7 +233,7 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
         }else if(type==1){
             if(msgType==TO_TEXT_MSG||msgType==FROM_TEXT_MSG){
                 String message=messageInfo.getMessage();
-                messageManage.sendMessage(message);
+                messageInfo=messageManage.sendMessage(message);
                 if(messageInfo!=null){
                     ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.forward_success));
                     SelectFriendActivity.this.finish();

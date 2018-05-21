@@ -1,8 +1,6 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -64,7 +62,7 @@ public class RedPacketActivity extends AppCompatActivity {
     private String mCount;
     private String mRemark;
     private String mUser;
-    private Bitmap mBitmap;
+//    private Bitmap mBitmap;
     private DBManager mMgr;
 
     @Override
@@ -88,7 +86,7 @@ public class RedPacketActivity extends AppCompatActivity {
         }
         if (from) {
             Bundle bundle = intent.getExtras();
-            byte[] bytes = bundle.getByteArray("image");
+//            byte[] bytes = bundle.getByteArray("image");
             mUser = bundle.getString("user");
             GrabRedInfo grabRedInfo = (GrabRedInfo) bundle.getSerializable("grabRedInfo");
             int who = intent.getIntExtra("who", 0);
@@ -107,13 +105,14 @@ public class RedPacketActivity extends AppCompatActivity {
                 mTvHint.setText(getString(R.string.red_packet_hint));
             }
             initRecylerView(mLogBeanList);
-            mBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//            mBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             mTvCoin.setText(mCoin);
             mTvCount.setText(mCount);
             mTvCount.setSpacing(2);
             mTvRemark.setText(mRemark);
             mTvName.setText(mUser.substring(0, mUser.indexOf("@")));
-            mIvTouxiang.setImageBitmap(mBitmap);
+//            mIvTouxiang.setImageBitmap(mBitmap);
+            UtilTool.getImage(mMgr, mUser, this, mIvTouxiang);
         } else {
             String id = intent.getStringExtra("id");
             RedRecordPresenter redRecordPresenter = new RedRecordPresenter(this);
@@ -128,7 +127,8 @@ public class RedPacketActivity extends AppCompatActivity {
                     mTvRemark.setText(data.getIntro());
                     mTvName.setText(data.getSend_rp_user_name());
                     String jid = data.getSend_rp_user_name() + "@" + Constants.DOMAINNAME;
-                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, RedPacketActivity.this));
+                    UtilTool.getImage(mMgr, jid, RedPacketActivity.this, mIvTouxiang);
+                    //                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, RedPacketActivity.this));
                 }
             });
         }

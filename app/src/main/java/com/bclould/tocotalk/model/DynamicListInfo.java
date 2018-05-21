@@ -57,6 +57,16 @@ public class DynamicListInfo {
         private String key;
         private String key_compress;
         private String position;
+        private String avatar;
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
+
         private int review_count;
         private int like_count;
         private String created_at;

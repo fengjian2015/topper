@@ -10,10 +10,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.model.AddRequestInfo;
+import com.bclould.tocotalk.model.AuatarListInfo;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.RemarkListInfo;
 import com.bclould.tocotalk.model.UserInfo;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
 
@@ -74,11 +76,11 @@ public class DBManager {
 
 
     //查詢紅包和轉賬記錄
-    public List<MessageInfo> queryTypeMessage(String user,int fromtype,int sentype,int sendred,int fromred,int limit){
+    public List<MessageInfo> queryTypeMessage(String user, int fromtype, int sentype, int sendred, int fromred, int limit) {
         db = helper.getReadableDatabase();
         ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
         String sql = "select * from MessageRecord where user=? and my_user=? and (msgType=? or msgType=? or msgType=? or msgType=?) ORDER BY id desc limit ?";
-        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), fromtype+"",sentype+"",sendred+"",fromred+"",limit*10+""});
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), fromtype + "", sentype + "", sendred + "", fromred + "", limit * 10 + ""});
         if (c != null) {
             while (c.moveToNext()) {
                 MessageInfo messageInfo = new MessageInfo();
@@ -107,11 +109,11 @@ public class DBManager {
     }
 
     //模糊查找文本消息
-    public List<MessageInfo> queryTextMessage(String user,String content,int limit){
+    public List<MessageInfo> queryTextMessage(String user, String content, int limit) {
         db = helper.getReadableDatabase();
         ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
         String sql = "select * from MessageRecord where user=? and my_user=? and message like ? ORDER BY id desc limit ?";
-        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(),"%"+content+"%" ,limit*10+""});
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), "%" + content + "%", limit * 10 + ""});
         if (c != null) {
             while (c.moveToNext()) {
                 MessageInfo messageInfo = new MessageInfo();
@@ -140,11 +142,11 @@ public class DBManager {
     }
 
     //通過消息類型查找聊天記錄
-    public List<MessageInfo> queryTypeMessage(String user,int fromtype,int sentype,int limit){
+    public List<MessageInfo> queryTypeMessage(String user, int fromtype, int sentype, int limit) {
         db = helper.getReadableDatabase();
         ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
         String sql = "select * from MessageRecord where user=? and my_user=? and (msgType=? or msgType=?) ORDER BY id desc limit ?";
-        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), fromtype+"",sentype+"",limit*20+""});
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), fromtype + "", sentype + "", limit * 20 + ""});
         if (c != null) {
             while (c.moveToNext()) {
                 MessageInfo messageInfo = new MessageInfo();
@@ -207,15 +209,16 @@ public class DBManager {
 
     /**
      * 用於刷新
+     *
      * @param user
      * @param id
      * @return
      */
-    public List<MessageInfo> queryRefreshMessage(String user,int id) {
+    public List<MessageInfo> queryRefreshMessage(String user, int id) {
         db = helper.getReadableDatabase();
         ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
         String sql = "select * from MessageRecord where user=? and my_user=? and id < ? ORDER BY id desc limit ?";
-        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), id+"", 10 + ""});
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), id + "", 10 + ""});
         if (c != null) {
             while (c.moveToNext()) {
                 MessageInfo messageInfo = new MessageInfo();
@@ -240,7 +243,7 @@ public class DBManager {
             }
             c.close();
         }
-        if(messageInfos.size()==0){
+        if (messageInfos.size() == 0) {
             Toast.makeText(mContext, "没有更多记录了", Toast.LENGTH_SHORT).show();
         }
         Collections.reverse(messageInfos);
@@ -249,20 +252,21 @@ public class DBManager {
 
     /**
      * 用於加載
+     *
      * @param user
      * @param id
      * @return
      */
-    public List<MessageInfo> queryLoadMessage(String user,int id,boolean isFist) {
+    public List<MessageInfo> queryLoadMessage(String user, int id, boolean isFist) {
         db = helper.getReadableDatabase();
         ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
         String sql;
-        if(isFist){
+        if (isFist) {
             sql = "select * from MessageRecord where user=? and my_user=? and id >= ? limit ?";
-        }else{
+        } else {
             sql = "select * from MessageRecord where user=? and my_user=? and id > ? limit ?";
         }
-        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), id+"", 10 + ""});
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), id + "", 10 + ""});
         if (c != null) {
             while (c.moveToNext()) {
                 MessageInfo messageInfo = new MessageInfo();
@@ -287,7 +291,7 @@ public class DBManager {
             }
             c.close();
         }
-        if(messageInfos.size()==0){
+        if (messageInfos.size() == 0) {
             Toast.makeText(mContext, "没有更多记录了", Toast.LENGTH_SHORT).show();
         }
         return messageInfos;
@@ -401,7 +405,7 @@ public class DBManager {
         Cursor c = db.rawQuery(sql, new String[]{UtilTool.getJid(), user});
         AddRequestInfo addRequestInfo = new AddRequestInfo();
         while (c.moveToNext()) {
-           addRequestInfo.setUser(c.getString(c.getColumnIndex("user")));
+            addRequestInfo.setUser(c.getString(c.getColumnIndex("user")));
             addRequestInfo.setId(c.getInt(c.getColumnIndex("id")));
             addRequestInfo.setType(c.getInt(c.getColumnIndex("type")));
         }
@@ -434,7 +438,7 @@ public class DBManager {
 
 
     public void addConversation(ConversationInfo conversationInfo) {
-        if(findConversation(conversationInfo.getUser())){
+        if (findConversation(conversationInfo.getUser())) {
             return;
         }
         db = helper.getWritableDatabase();
@@ -445,7 +449,7 @@ public class DBManager {
         values.put("user", conversationInfo.getUser());
         values.put("time", conversationInfo.getTime());
         values.put("friend", conversationInfo.getFriend());
-        values.put("istop",conversationInfo.getIstop());
+        values.put("istop", conversationInfo.getIstop());
         db.insert("ConversationRecord", null, values);
     }
 
@@ -467,7 +471,7 @@ public class DBManager {
         db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
     }
 
-    public void updateConversationIstop(String user,String istop){
+    public void updateConversationIstop(String user, String istop) {
         db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("istop", istop);
@@ -480,7 +484,7 @@ public class DBManager {
         Cursor cursor = db.rawQuery("select istop from ConversationRecord where user=? and my_user=?",
                 new String[]{user, UtilTool.getJid()});
         while (cursor.moveToNext()) {
-            istop= cursor.getString(cursor.getColumnIndex("istop"));
+            istop = cursor.getString(cursor.getColumnIndex("istop"));
         }
         cursor.close();
         return istop;
@@ -530,15 +534,41 @@ public class DBManager {
     }
 
     public void addUser(String user, String path) {
-        UtilTool.Log("添加", user);
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("my_user", UtilTool.getJid());
         values.put("user", user);
         values.put("path", path);
-        values.put("remark","");
+        values.put("remark", "");
         values.put("status", 0);
         db.insert("UserImage", null, values);
+    }
+
+    public void addUserList(List<AuatarListInfo.DataBean> data) {
+        db = helper.getWritableDatabase();
+        for (AuatarListInfo.DataBean info : data) {
+            UtilTool.Log("好友", info.getName());
+            if (!findUser(info.getName())) {
+                ContentValues values = new ContentValues();
+                values.put("my_user", UtilTool.getJid());
+                values.put("user", info.getName());
+                values.put("path", info.getAvatar());
+                values.put("remark", info.getRemark() + "");
+                values.put("status", 0);
+                db.insert("UserImage", null, values);
+            } else {
+                ContentValues values = new ContentValues();
+                if (!queryUser(info.getName()).getPath().equals(info.getAvatar())) {
+                    values.put("path", info.getAvatar());
+                    db.update("UserImage", values, "user=? and my_user=?", new String[]{info.getName(), UtilTool.getJid()});
+                }
+                if (!queryUser(info.getName()).getRemark().equals(info.getRemark() + "")) {
+                    values.put("remark", info.getRemark());
+                    db.update("UserImage", values, "user=? and my_user=?", new String[]{info.getName(), UtilTool.getJid()});
+
+                }
+            }
+        }
     }
 
     public UserInfo queryUser(String user) {
@@ -549,6 +579,7 @@ public class DBManager {
         while (c.moveToNext()) {
             userInfo.setUser(c.getString(c.getColumnIndex("user")));
             userInfo.setPath(c.getString(c.getColumnIndex("path")));
+            userInfo.setRemark(c.getString(c.getColumnIndex("remark")));
         }
         c.close();
         return userInfo;
@@ -575,14 +606,14 @@ public class DBManager {
         return userInfos;
     }
 
-    public List<String> queryAllUserName(){
+    public List<String> queryAllUserName() {
         List<String> userInfos = new ArrayList<>();
         try {
             db = helper.getWritableDatabase();
             String sql = "select user from UserImage where my_user=?";
             Cursor c = db.rawQuery(sql, new String[]{UtilTool.getJid()});
             while (c.moveToNext()) {
-                String user=c.getString(c.getColumnIndex("user"));
+                String user = c.getString(c.getColumnIndex("user"));
                 userInfos.add(user);
             }
             c.close();
@@ -592,13 +623,13 @@ public class DBManager {
         return userInfos;
     }
 
-    public String queryRemark(String user){
+    public String queryRemark(String user) {
         db = helper.getWritableDatabase();
-        String remark="";
+        String remark = "";
         String sql = "select remark from UserImage where user=? and my_user=?";
         Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid()});
         while (c.moveToNext()) {
-             remark= c.getString(c.getColumnIndex("remark"));
+            remark = c.getString(c.getColumnIndex("remark"));
         }
         c.close();
         return remark;
@@ -606,14 +637,14 @@ public class DBManager {
 
     public void updateRemark(List<RemarkListInfo.DataBean> listdata) {
         db = helper.getWritableDatabase();
-        for(RemarkListInfo.DataBean dataBean:listdata){
+        for (RemarkListInfo.DataBean dataBean : listdata) {
             ContentValues cv = new ContentValues();
             cv.put("remark", dataBean.getRemark());
             db.update("UserImage", cv, "user=? and my_user=?", new String[]{dataBean.getName(), UtilTool.getJid()});
         }
     }
 
-    public void updateRemark(String remark,String user) {
+    public void updateRemark(String remark, String user) {
         db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("remark", remark);
@@ -627,11 +658,11 @@ public class DBManager {
             cursor = db.rawQuery("select * from UserImage where user=? and my_user=?", new String[]{user, UtilTool.getJid()});
             boolean result = cursor.moveToNext();
             return result;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-           if(cursor!=null)
-               cursor.close();
+        } finally {
+            if (cursor != null)
+                cursor.close();
         }
         return false;
     }
@@ -647,6 +678,13 @@ public class DBManager {
         db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("status", status);
+        db.update("UserImage", cv, "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
+    }
+
+    public void updatePath(String user, String path) {
+        db = helper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("path", path);
         db.update("UserImage", cv, "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
     }
 

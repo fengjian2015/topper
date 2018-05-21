@@ -1,3 +1,4 @@
+/*
 package com.bclould.tocotalk.ui.fragment;
 
 import android.annotation.SuppressLint;
@@ -59,9 +60,11 @@ import butterknife.OnClick;
 
 import static android.app.Activity.RESULT_OK;
 
+*/
 /**
  * Created by GA on 2017/9/19.
- */
+ *//*
+
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CloudMessageFragment extends Fragment implements IConnectStateChangeListener {
@@ -74,8 +77,6 @@ public class CloudMessageFragment extends Fragment implements IConnectStateChang
     TextView mXx;
     @Bind(R.id.yunxin_xx)
     TextView mYunxinXx;
-    @Bind(R.id.haoyou_xx)
-    TextView mHaoyouXx;
     @Bind(R.id.cloud_circle_menu)
     LinearLayout mCloudCircleMenu;
     @Bind(R.id.cloud_circle_add)
@@ -88,8 +89,6 @@ public class CloudMessageFragment extends Fragment implements IConnectStateChang
     ImageView mIvAnim;
     @Bind(R.id.ll_chat)
     LinearLayout mLlChat;
-    @Bind(R.id.ll_friend)
-    LinearLayout mLlFriend;
     private DisplayMetrics mDm;
     private int mHeightPixels;
     private ViewGroup mView;
@@ -474,3 +473,4 @@ public class CloudMessageFragment extends Fragment implements IConnectStateChang
         }
     }
 }
+*/

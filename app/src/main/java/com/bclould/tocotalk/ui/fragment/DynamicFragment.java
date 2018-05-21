@@ -22,6 +22,7 @@ import com.bclould.tocotalk.ui.adapter.DynamicRVAdapter;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
@@ -50,10 +51,13 @@ public class DynamicFragment extends Fragment {
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
     private DynamicPresenter mDynamicPresenter;
-    private String mPage = "1";
-    private String mPageSize = "100";
     private DynamicRVAdapter mDynamicRVAdapter;
     private DBManager mMgr;
+    private int PULL_UP = 0;
+    private int PULL_DOWN = 1;
+    private int end = 0;
+    private int mPage = 1;
+    private int mPageSize = 10;
 
     public static DynamicFragment getInstance() {
 
@@ -76,7 +80,7 @@ public class DynamicFragment extends Fragment {
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         initRecyclerView();
-        initData(mPage, mPageSize);
+        initData(PULL_DOWN);
         return view;
     }
 
@@ -106,7 +110,7 @@ public class DynamicFragment extends Fragment {
             }
             mDynamicRVAdapter.notifyDataSetChanged();
         } else if (msg.equals(getString(R.string.publish_dynamic))) {
-            initData(mPage, mPageSize);
+            initData(PULL_DOWN);
         } else if (msg.equals(getString(R.string.start_service))) {
 
         }
@@ -114,7 +118,7 @@ public class DynamicFragment extends Fragment {
 
     List<DynamicListInfo.DataBean> mDataList = new ArrayList<>();
 
-    private void initData(String page, String pageSize) {
+    private void initData(final int type) {
         String userList = "";
         List<UserInfo> userInfos = mMgr.queryAllUser();
         for (int i = 0; i < userInfos.size(); i++) {
@@ -124,16 +128,37 @@ public class DynamicFragment extends Fragment {
                 userList += "," + userInfos.get(i).getUser();
             }
         }
-        mDynamicPresenter.dynamicList(page, pageSize, userList, new DynamicPresenter.CallBack2() {
+        if (type == PULL_DOWN) {
+            mPage = 1;
+            end = 0;
+        }
+        mDynamicPresenter.dynamicList(mPage, mPageSize, userList, new DynamicPresenter.CallBack2() {
             @Override
             public void send(List<DynamicListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
-                    if (data.size() != 0) {
+                    if (mDataList.size() != 0 || data.size() != 0) {
+                        if (type == PULL_UP) {
+                            if (data.size() == mPageSize) {
+                                mPage++;
+                                mDataList.addAll(data);
+                                mDynamicRVAdapter.notifyDataSetChanged();
+                            } else {
+                                if (end == 0) {
+                                    end++;
+                                    mDataList.addAll(data);
+                                    mDynamicRVAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        } else {
+                            if (mPage == 1) {
+                                mPage++;
+                            }
+                            mDataList.clear();
+                            mDataList.addAll(data);
+                            mDynamicRVAdapter.notifyDataSetChanged();
+                        }
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
-                        mDataList.clear();
-                        mDataList.addAll(data);
-                        mDynamicRVAdapter.notifyDataSetChanged();
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);
@@ -164,7 +189,14 @@ public class DynamicFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
-                initData(mPage, mPageSize);
+                initData(PULL_DOWN);
+            }
+        });
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                refreshLayout.finishLoadMore(1000);
+                initData(PULL_UP);
             }
         });
     }

@@ -69,7 +69,8 @@ public class PayReceiptResultActivity extends BaseActivity {
         mTvCoinCount.setText(number + coinName);
         mTvName.setText(name);
         String jid = name + "@" + Constants.DOMAINNAME;
-        mTvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, PayReceiptResultActivity.this));
+        UtilTool.getImage(mMgr, jid, PayReceiptResultActivity.this, mTvTouxiang);
+//        mTvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, PayReceiptResultActivity.this));
     }
 
     @OnClick(R.id.btn_finish)

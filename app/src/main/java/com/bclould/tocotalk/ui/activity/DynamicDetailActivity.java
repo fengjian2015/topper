@@ -28,7 +28,6 @@ import com.bclould.tocotalk.model.ReviewListInfo;
 import com.bclould.tocotalk.ui.adapter.DynamicDetailRVAdapter;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
-import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.jaeger.ninegridimageview.ItemImageClickListener;
@@ -176,7 +175,8 @@ public class DynamicDetailActivity extends BaseActivity {
         mTime.setText(mTimes);
         mDynamicText.setText(mContent);
         String jid = mUserName + "@" + Constants.DOMAINNAME;
-        mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, DynamicDetailActivity.this));
+
+        //        mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, DynamicDetailActivity.this));
         if (mCompressImgList != null && mCompressImgList.size() != 0) {//判断是否有数据，没有显示另一个状态
             mNglImages.setAdapter(mAdapter);
             mNglImages.setImagesData(mCompressImgList);

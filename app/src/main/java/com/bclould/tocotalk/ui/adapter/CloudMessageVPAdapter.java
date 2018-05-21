@@ -6,10 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.bclould.tocotalk.ui.fragment.CloudMessageFragment;
-import com.bclould.tocotalk.ui.fragment.ConversationFragment;
 import com.bclould.tocotalk.ui.fragment.DynamicFragment;
-import com.bclould.tocotalk.ui.fragment.FriendListFragment;
 import com.bclould.tocotalk.ui.fragment.GonggaoFragment;
 import com.bclould.tocotalk.ui.fragment.NewsFragment;
 
@@ -27,16 +24,9 @@ public class CloudMessageVPAdapter extends FragmentPagerAdapter {
 
     public CloudMessageVPAdapter(FragmentManager fm, Fragment fragment) {
         super(fm);
-
-        if(fragment instanceof CloudMessageFragment) {
-            mFragmentList.add(ConversationFragment.getInstance());
-            mFragmentList.add(FriendListFragment.getInstance());
-        }else {
-            mFragmentList.add(GonggaoFragment.getInstance());
-            mFragmentList.add(NewsFragment.getInstance());
-            mFragmentList.add(DynamicFragment.getInstance());
-        }
-
+        mFragmentList.add(GonggaoFragment.getInstance());
+        mFragmentList.add(NewsFragment.getInstance());
+        mFragmentList.add(DynamicFragment.getInstance());
     }
 
     @Override

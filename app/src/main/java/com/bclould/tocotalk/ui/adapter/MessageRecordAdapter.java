@@ -125,8 +125,10 @@ public class MessageRecordAdapter extends RecyclerView.Adapter {
         }
         ((TextViewHolder) holder).tvContent.setText(messageInfoList.get(position).getMessage());
         ((TextViewHolder) holder).tvTime.setText(messageInfoList.get(position).getTime());
-        Bitmap bitmap=UtilTool.getImage(mMdb, send, context);
-        ((TextViewHolder) holder).ivHead.setImageBitmap(bitmap);
+
+        UtilTool.getImage(mMdb, send, context, ((TextViewHolder)holder).ivHead);
+        /*Bitmap bitmap=UtilTool.getImage(mMdb, send, context);
+        ((TextViewHolder) holder).ivHead.setImageBitmap(bitmap);*/
         ((TextViewHolder) holder).rlCache.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,7 +151,6 @@ public class MessageRecordAdapter extends RecyclerView.Adapter {
         if (StringUtils.isEmpty(from)){
             from="";
         }
-        Bitmap bitmap=UtilTool.getImage(mMdb, send, context);
         String mToName = send.split("@")[0];
         String fromName=from.split("@")[0] ;
 
@@ -195,7 +196,10 @@ public class MessageRecordAdapter extends RecyclerView.Adapter {
                 ((RedViewHolder) holder).tvState.setText(context.getString(R.string.look_red_packet));
             }
         }
-        ((RedViewHolder) holder).ivHead.setImageBitmap(bitmap);
+
+        /*Bitmap bitmap=UtilTool.getImage(mMdb, send, context);
+        ((RedViewHolder) holder).ivHead.setImageBitmap(bitmap);*/
+        UtilTool.getImage(mMdb, send, context, ((RedViewHolder) holder).ivHead);
         ((RedViewHolder) holder).tvTime.setText(messageInfoList.get(position).getTime());
         ((RedViewHolder) holder).tvBi.setText(messageInfoList.get(position).getCount() + messageInfoList.get(position).getCoin());
         ((RedViewHolder) holder).rlCache.setOnClickListener(new View.OnClickListener() {

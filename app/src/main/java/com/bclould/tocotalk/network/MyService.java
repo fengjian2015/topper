@@ -523,8 +523,8 @@ public interface MyService {
     @FormUrlEncoded
     Observable<DynamicListInfo> dynamicList(
             @Header("Authorization") String token,
-            @Field("page") String page,
-            @Field("page_size") String page_size,
+            @Field("page") int page,
+            @Field("page_size") int page_size,
             @Field("friends") String friends
     );
 

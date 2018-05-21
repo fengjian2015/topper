@@ -7,10 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,13 +15,13 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -35,7 +31,6 @@ import com.bclould.tocotalk.Presenter.PersonalDetailsPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.AuatarListInfo;
-import com.bclould.tocotalk.model.RemarkListInfo;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.activity.NewFriendActivity;
 import com.bclould.tocotalk.ui.activity.SearchActivity;
@@ -44,8 +39,6 @@ import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -62,13 +55,11 @@ import org.jivesoftware.smack.packet.Stanza;
 import org.jivesoftware.smack.roster.Roster;
 import org.jivesoftware.smack.roster.RosterEntry;
 import org.jivesoftware.smack.roster.RosterGroup;
-import org.jivesoftware.smack.roster.RosterListener;
-import org.jivesoftware.smack.util.StringUtils;
-import org.jxmpp.jid.Jid;
 import org.jxmpp.jid.impl.JidCreate;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
@@ -91,6 +82,10 @@ public class FriendListFragment extends Fragment {
     private static final String NEWFRIEND = "new_friend";
     public static FriendListFragment instance = null;
     String response, acceptAdd, alertName, alertSubName;
+    @Bind(R.id.iv_more)
+    ImageView mIvMore;
+    @Bind(R.id.rl_title)
+    RelativeLayout mRlTitle;
     @Bind(R.id.ll_search)
     LinearLayout mLlSearch;
     @Bind(R.id.iv)
@@ -99,12 +94,13 @@ public class FriendListFragment extends Fragment {
     TextView mNumber;
     @Bind(R.id.news_friend)
     RelativeLayout mNewsFriend;
-    @Bind(R.id.listView)
-    ListView mListView;
-    @Bind(R.id.refresh_layout)
-    SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.recycler_view)
+    RecyclerView mRecyclerView;
     @Bind(R.id.scrollView)
     ScrollView mScrollView;
+    @Bind(R.id.refresh_layout)
+    SmartRefreshLayout mRefreshLayout;
+
 
     private TreeMap<String, Boolean> mFromMap = new TreeMap<>();
     private List<UserInfo> mUsers = new ArrayList<>();
@@ -114,8 +110,6 @@ public class FriendListFragment extends Fragment {
             switch (msg.what) {
                 case 0:
                     updateData();
-                    /*queryUser();
-                    mFriendListRVAdapter.notifyDataSetChanged();*/
                     break;
                 case 1:
                     String from = (String) msg.obj;
@@ -143,7 +137,7 @@ public class FriendListFragment extends Fragment {
     private int mId;
     private int mNewFriend;
     private PersonalDetailsPresenter mPersonalDetailsPresenter;
-    private ExecutorService executorService= Executors.newFixedThreadPool(1);
+    private ExecutorService executorService = Executors.newFixedThreadPool(1);
 
     public static FriendListFragment getInstance() {
 
@@ -172,56 +166,12 @@ public class FriendListFragment extends Fragment {
         initRecylerView();
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
-//        updateData();
         if (receiver == null) {
             receiver = new MyReceiver();
             IntentFilter intentFilter = new IntentFilter("com.example.eric_jqm_chat.SearchActivity");
             getActivity().registerReceiver(receiver, intentFilter);
         }
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mScrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                if (mScrollView != null) {
-                    mScrollView.scrollTo(0, 0);
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (hidden) {
-            mScrollView.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (mScrollView != null) {
-                        mScrollView.scrollTo(0, 0);
-                    }
-                }
-            });
-        }
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            mScrollView.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (mScrollView != null) {
-                        mScrollView.scrollTo(0, 0);
-                    }
-                }
-            });
-        }
     }
 
     @Override
@@ -248,8 +198,8 @@ public class FriendListFragment extends Fragment {
     /***
      * 异步刷新刷新某一条数据
      */
-    private void refreshDataWithRoomIdInBackground(){
-        Runnable doInBackgroundrefreshDataWithRoomId=new Runnable() {
+    private void refreshDataWithRoomIdInBackground() {
+        Runnable doInBackgroundrefreshDataWithRoomId = new Runnable() {
             @Override
             public void run() {
                 mUsers.clear();
@@ -267,12 +217,13 @@ public class FriendListFragment extends Fragment {
                 if (userInfo2 != null)
                     userInfos.remove(userInfo2);
                 mUsers.addAll(userInfos);
+                Collections.sort(mUsers);
                 ((Activity) getContext()).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         mFriendListRVAdapter.notifyDataSetChanged();
                     }
-            });
+                });
 
             }
         };
@@ -280,87 +231,26 @@ public class FriendListFragment extends Fragment {
     }
 
     private void updateData() {
-        synchronized (mUsers){
+        mUsers.clear();
+        List<UserInfo> userInfos = mMgr.queryAllUser();
+        UserInfo userInfo = null;
+        UserInfo userInfo2 = null;
+        for (UserInfo info : userInfos) {
+            if (info.getUser().equals(UtilTool.getJid())) {
+                userInfo = info;
+            } else if (info.getUser().isEmpty()) {
+                userInfo2 = info;
+            }
+        }
+        userInfos.remove(userInfo);
+        if (userInfo2 != null)
+            userInfos.remove(userInfo2);
+        mUsers.addAll(userInfos);
+        Collections.sort(mUsers);
+        mFriendListRVAdapter.notifyDataSetChanged();
+        /*synchronized (mUsers) {
             refreshDataWithRoomIdInBackground();
-        }
-    }
-
-    /*private void getImage() {
-        mPersonalDetailsPresenter.getFriendImageList(UtilTool.getUser(), new PersonalDetailsPresenter.CallBack2() {
-            @Override
-            public void send(final AuatarListInfo.DataBean dataBean) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (dataBean != null && !dataBean.getAvatar().isEmpty()) {
-                            try {
-                                UtilTool.Log("頭像", dataBean.getAvatar());
-                                Drawable drawable = Glide.with(getContext())
-                                        .load(dataBean.getAvatar())
-                                        .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                                        .get();
-                                BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-                                Bitmap bitmap = bitmapDrawable.getBitmap();
-                                UtilTool.saveImages(bitmap, UtilTool.getUser(), getContext(), mMgr);
-                            } catch (Exception e) {
-                            }
-                        } else {
-                            mMgr.addUser(UtilTool.getUser(), "");
-                        }
-                        Message message = new Message();
-                        myHandler.sendMessage(message);
-                    }
-                }).start();
-            }
-        });
-        try {
-            if (!mMgr.findUser(Constants.MYUSER)) {
-                byte[] myImage = UtilTool.getUserImage(XmppConnection.getInstance().getConnection(), Constants.MYUSER);
-                if (myImage != null) {
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(myImage, 0, myImage.length);
-                    UtilTool.saveImages(bitmap, Constants.MYUSER, getContext(), mMgr);
-                } else {
-                    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.img_nfriend_headshot1);
-                    UtilTool.saveImages(bitmap, Constants.MYUSER, getContext(), mMgr);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
-    private void rosterListener() {
-        Roster roster = Roster.getInstanceFor(XmppConnection.getInstance().getConnection());
-        roster.addRosterListener(new RosterListener() {
-            @Override
-            public void entriesAdded(Collection<Jid> addresses) {
-            }
-
-            @Override
-            public void entriesUpdated(Collection<Jid> addresses) {
-            }
-
-            @Override
-            public void entriesDeleted(Collection<Jid> addresses) {
-            }
-
-            @Override
-            public void presenceChanged(Presence presence) {
-                String from = presence.getFrom().toString();
-                String user = null;
-                if (from.contains("/")) {
-                    user = from.substring(0, from.indexOf("/"));
-                } else {
-                    user = from;
-                }
-                byte[] bytes = UtilTool.getUserImage(XmppConnection.getInstance().getConnection(), user);
-                Bitmap bitmap = null;
-                if (bytes != null)
-                    bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                String path = UtilTool.saveImages(bitmap, user, getContext(), mMgr);
-            }
-        });
-
+        }*/
     }
 
     //广播接收器
@@ -524,33 +414,6 @@ public class FriendListFragment extends Fragment {
                     intent.putExtra("response", response);
                     intent.setAction("com.example.eric_jqm_chat.SearchActivity");
                     getContext().sendBroadcast(intent);
-                } else if (presence.getType().equals(
-                        Presence.Type.unsubscribed)) {
-                   /* try {
-                        Roster roster = Roster.getInstanceFor(XmppConnection.getInstance().getConnection());
-                        RosterEntry entry = roster.getEntry(JidCreate.entityBareFrom(from));
-                        roster.removeEntry(entry);
-                        UtilTool.Log("fsdafa", "删除成功！");
-                        initData();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        UtilTool.Log("fsdafa", e.getMessage());
-                    }*/
-                } else if (presence.getType().equals(
-                        Presence.Type.unavailable)) {
-                    String user = from.substring(0, from.indexOf("@"));
-                    UtilTool.Log("fsdafa", user + "离线");
-                    mMgr.updateUser(from, 0);
-                    Message message = new Message();
-                    message.what = 0;
-                    myHandler.sendMessage(message);
-                } else {
-                    String user = from.substring(0, from.indexOf("@"));
-                    UtilTool.Log("fsdafa", user + "上线");
-                    mMgr.updateUser(from, 1);
-                    Message message = new Message();
-                    message.what = 0;
-                    myHandler.sendMessage(message);
                 }
             }
         }
@@ -574,49 +437,52 @@ public class FriendListFragment extends Fragment {
                 UtilTool.Log("分組", rosterGroups.size() + "");
                 for (RosterGroup group : rosterGroups) {
                     List<RosterEntry> entries = group.getEntries();
+                    String userList = "";
                     for (final RosterEntry rosterEntry : entries) {
-                        if (!mMgr.findUser(rosterEntry.getUser())) {
-                            String user = rosterEntry.getUser().substring(0, rosterEntry.getUser().indexOf("@"));
-                            UtilTool.Log("好友2", user + "   " + rosterEntry.getName());
-                            mPersonalDetailsPresenter.getFriendImageList(user, new PersonalDetailsPresenter.CallBack2() {
-                                @Override
-                                public void send(final AuatarListInfo.DataBean dataBean) {
-                                    new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            if (dataBean != null && !dataBean.getAvatar().isEmpty()) {
-                                                try {
-                                                    UtilTool.Log("頭像", dataBean.getAvatar());
-                                                    Drawable drawable = Glide.with(getContext())
-                                                            .load(dataBean.getAvatar())
-                                                            .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                                                            .get();
-                                                    BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-                                                    Bitmap bitmap = bitmapDrawable.getBitmap();
-                                                    UtilTool.saveImages(bitmap, rosterEntry.getUser(), getContext(), mMgr);
-                                                } catch (Exception e) {
-                                                }
-                                            } else {
-                                                mMgr.addUser(rosterEntry.getUser(), "");
-                                            }
-                                            Message message = new Message();
-                                            myHandler.sendMessage(message);
-                                        }
-                                    }).start();
-                                }
-                            });
-                                   /* byte[] bytes = UtilTool.getUserImage(XmppConnection.getInstance().getConnection(), rosterEntry.getUser());
-                                    Bitmap bitmap = null;
-                                    if (bytes != null) {
-                                        bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                        UtilTool.Log("日志", "请求的头像");
-                                    } else {
-                                        bitmap = UtilTool.setDefaultimage(getContext());
-                                        UtilTool.Log("日志", "默认的头像");
-                                    }*/
-
+                        if (userList.isEmpty()) {
+                            userList = rosterEntry.getUser();
+                        } else {
+                            userList += "," + rosterEntry.getUser();
                         }
                     }
+                    mPersonalDetailsPresenter.getFriendImageList(userList, new PersonalDetailsPresenter.CallBack2() {
+                        @Override
+                        public void send(final List<AuatarListInfo.DataBean> data) {
+                            if (data != null && data.size() != 0) {
+                                mMgr.addUserList(data);
+                                myHandler.sendEmptyMessage(0);
+                            }
+                        }
+                    });
+
+                    /*mPersonalDetailsPresenter.getFriendImageList(userList, new PersonalDetailsPresenter.CallBack2() {
+                        @Override
+                        public void send(final AuatarListInfo.DataBean dataBean) {
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (dataBean != null && !dataBean.getAvatar().isEmpty()) {
+                                        try {
+                                            UtilTool.Log("頭像", dataBean.getAvatar());
+                                            Drawable drawable = Glide.with(getContext())
+                                                    .load(dataBean.getAvatar())
+                                                    .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                                                    .get();
+                                            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+                                            Bitmap bitmap = bitmapDrawable.getBitmap();
+                                            UtilTool.saveImages(bitmap, dataBean.getName(), getContext(), mMgr);
+                                        } catch (Exception e) {
+                                        }
+                                    } else {
+                                        mMgr.addUser(rosterEntry.getUser(), "");
+                                    }
+                                    Message message = new Message();
+                                    myHandler.sendMessage(message);
+                                }
+                            }).start();
+                        }
+                    });
+
                 }
                 String user = mMgr.queryAllUserName().toString().replaceAll(" ", "");
                 if (StringUtils.isEmpty(user)) return;
@@ -627,47 +493,21 @@ public class FriendListFragment extends Fragment {
                         mMgr.updateRemark(listdata);
                         updateData();
                     }
-                });
+                });*/
+                }
             }
 
         } catch (Exception e) {
             UtilTool.Log("日志", e.getMessage());
         }
+
     }
 
-   /* private void queryUser() {
-        mUsers.clear();
-        List<UserInfo> userInfos = mMgr.queryAllUser();
-        UserInfo userInfo = null;
-        UserInfo userInfo2 = null;
-        for (UserInfo info : userInfos) {
-            if (info.getUser().equals(UtilTool.getJid())) {
-                userInfo = info;
-            } else if (info.getUser().isEmpty()) {
-                userInfo2 = info;
-            }
-        }
-        userInfos.remove(userInfo);
-        if (userInfo2 != null)
-            userInfos.remove(userInfo2);
-        mUsers.addAll(userInfos);
-    }*/
-
     private void initRecylerView() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mFriendListRVAdapter = new FriendListRVAdapter(getContext(), mUsers, mMgr);
-        mListView.setAdapter(mFriendListRVAdapter);
-        mListView.setOnTouchListener(new View.OnTouchListener() {
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    mScrollView.requestDisallowInterceptTouchEvent(false);
-                } else {
-                    mScrollView.requestDisallowInterceptTouchEvent(true);
-                }
-                return false;
-            }
-        });
+        mRecyclerView.setAdapter(mFriendListRVAdapter);
+        mRecyclerView.setNestedScrollingEnabled(false);
     }
 
     @Override

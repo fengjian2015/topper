@@ -1,5 +1,8 @@
 package com.bclould.tocotalk.Presenter;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
 import com.bclould.tocotalk.xmpp.XmppConnection;
 
 import org.jivesoftware.smack.roster.Roster;
@@ -11,6 +14,7 @@ import java.util.Collection;
  * Created by GA on 2017/12/8.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class CloudMessagePresenter {
 
     public Collection<RosterGroup> getContact() {

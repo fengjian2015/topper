@@ -108,7 +108,9 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             }
             try {
                 String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
-                mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
+
+                UtilTool.getImage(mMgr, jid, mContext, mIvTouxiang);
+                //                mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -179,7 +181,9 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             if (dataBean.getType() == 1) {
                 try {
                     String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
-                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
+
+                    UtilTool.getImage(mMgr, jid, mContext, mIvTouxiang);
+                    //                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -189,7 +193,9 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             } else {
                 try {
                     String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
-                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
+
+                    UtilTool.getImage(mMgr, jid, mContext, mIvTouxiang);
+                    //                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -120,7 +120,8 @@ public class DynamicDetailRVAdapter extends RecyclerView.Adapter {
                 mLlZan.setSelected(false);
             }
             String user = listBean.getUser_name() + "@" + Constants.DOMAINNAME;
-            mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, user, mContext));
+//            mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, user, mContext));
+            UtilTool.getImage(mMgr, user, mContext, mTouxiang);
         }
     }
 }

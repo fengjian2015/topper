@@ -20,15 +20,12 @@ import com.bclould.tocotalk.model.QrCardInfo;
 import com.bclould.tocotalk.model.QrPaymentInfo;
 import com.bclould.tocotalk.model.QrReceiptInfo;
 import com.bclould.tocotalk.model.ReceiptInfo;
-import com.bclould.tocotalk.ui.fragment.CloudMessageFragment;
+import com.bclould.tocotalk.ui.fragment.ConversationFragment;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.google.gson.Gson;
 
-import org.jivesoftware.smack.roster.Roster;
 import org.jivesoftware.smack.util.stringencoder.Base64;
-import org.jxmpp.jid.impl.JidCreate;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -196,7 +193,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                         e.printStackTrace();
                     }
                 } else {
-                    Intent intent = new Intent(ScanQRCodeActivity.this, CloudMessageFragment.class);
+                    Intent intent = new Intent(ScanQRCodeActivity.this, ConversationFragment.class);
                     intent.putExtra("result", result);
                     setResult(RESULT_OK, intent);
                     finish();

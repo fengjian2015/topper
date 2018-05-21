@@ -764,7 +764,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         } else {
             mName = bundle.getString("name");
             mUser = bundle.getString("user");
-            mUserImage = UtilTool.getImage(mMgr, mUser, this);
+//            mUserImage = UtilTool.getImage(mMgr, mUser, this);
             clearNotification();
         }
        /* mType = intent.getStringExtra("type");

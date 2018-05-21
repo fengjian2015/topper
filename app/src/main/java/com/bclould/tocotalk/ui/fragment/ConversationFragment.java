@@ -1,164 +1,114 @@
 package com.bclould.tocotalk.ui.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Base64;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import com.amazonaws.auth.BasicSessionCredentials;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
-import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.bclould.tocotalk.R;
-import com.bclould.tocotalk.base.MyApp;
-import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
-import com.bclould.tocotalk.crypto.otr.OtrChatManager;
 import com.bclould.tocotalk.history.DBManager;
-import com.bclould.tocotalk.model.AuthStatusInfo;
 import com.bclould.tocotalk.model.ConversationInfo;
-import com.bclould.tocotalk.model.MessageInfo;
-import com.bclould.tocotalk.model.OtcOrderStatusInfo;
-import com.bclould.tocotalk.model.QrcodeReceiptPayInfo;
-import com.bclould.tocotalk.model.RedExpiredInfo;
-import com.bclould.tocotalk.ui.activity.OrderCloseActivity;
-import com.bclould.tocotalk.ui.activity.OrderDetailsActivity;
-import com.bclould.tocotalk.ui.activity.PayDetailsActivity;
+import com.bclould.tocotalk.model.QrRedInfo;
+import com.bclould.tocotalk.service.IMCoreService;
+import com.bclould.tocotalk.ui.activity.AddFriendActivity;
+import com.bclould.tocotalk.ui.activity.GrabQRCodeRedActivity;
+import com.bclould.tocotalk.ui.activity.PublicshDynamicActivity;
+import com.bclould.tocotalk.ui.activity.ScanQRCodeActivity;
+import com.bclould.tocotalk.ui.activity.SendQRCodeRedActivity;
 import com.bclould.tocotalk.ui.adapter.ConversationAdapter;
-import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
-import com.bclould.tocotalk.utils.MySharedPreferences;
+import com.bclould.tocotalk.utils.ToastShow;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bclould.tocotalk.xmpp.IMLogin;
-import com.bclould.tocotalk.xmpp.XMConnectionListener;
+import com.bclould.tocotalk.xmpp.ConnectStateChangeListenerManager;
+import com.bclould.tocotalk.xmpp.IConnectStateChangeListener;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.bclould.tocotalk.xmpp.XmppListener;
 import com.google.gson.Gson;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.jivesoftware.smack.AbstractXMPPConnection;
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.StanzaListener;
-import org.jivesoftware.smack.chat.Chat;
-import org.jivesoftware.smack.chat.ChatManager;
-import org.jivesoftware.smack.chat.ChatManagerListener;
-import org.jivesoftware.smack.chat.ChatMessageListener;
-import org.jivesoftware.smack.filter.AndFilter;
-import org.jivesoftware.smack.filter.PacketFilter;
-import org.jivesoftware.smack.filter.PacketTypeFilter;
-import org.jivesoftware.smack.filter.StanzaFilter;
-import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.packet.Presence;
-import org.jivesoftware.smack.packet.Stanza;
-import org.jivesoftware.smackx.offline.OfflineMessageManager;
-import org.jivesoftware.smackx.ping.PingFailedListener;
-import org.jivesoftware.smackx.ping.PingManager;
-import org.jxmpp.jid.impl.JidCreate;
-import org.xutils.common.util.LogUtil;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.content.Context.NOTIFICATION_SERVICE;
-import static com.bclould.tocotalk.Presenter.LoginPresenter.CURRENCY;
-import static com.bclould.tocotalk.Presenter.LoginPresenter.STATE;
-import static com.bclould.tocotalk.ui.activity.ConversationActivity.ACCESSKEYID;
-import static com.bclould.tocotalk.ui.activity.ConversationActivity.SECRETACCESSKEY;
-import static com.bclould.tocotalk.ui.activity.ConversationActivity.SESSIONTOKEN;
-import static com.bclould.tocotalk.ui.activity.SystemSetActivity.INFORM;
-import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_AUTH_STATUS_MSG;
-import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_IN_OUT_COIN_MSG;
-import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_OTC_ORDER_MSG;
-import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_RECEIPT_PAY_MSG;
-import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_RED_PACKET_EXPIRED_MSG;
-import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_TRANSFER_MSG;
-import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_IMG_MSG;
-import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_RED_MSG;
-import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_TEXT_MSG;
-import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_TRANSFER_MSG;
-import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_VIDEO_MSG;
-import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_VOICE_MSG;
-import static com.bclould.tocotalk.utils.Constants.ACCESS_KEY_ID;
-import static com.bclould.tocotalk.utils.Constants.SECRET_ACCESS_KEY;
-import static com.bclould.tocotalk.utils.Constants.SESSION_TOKEN;
-import static com.bclould.tocotalk.utils.MySharedPreferences.SETTING;
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by GA on 2017/12/12.
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ConversationFragment extends Fragment {
+public class ConversationFragment extends Fragment implements IConnectStateChangeListener {
 
+    @Bind(R.id.iv_more)
+    ImageView mIvMore;
+    @Bind(R.id.rl_title)
+    RelativeLayout mRlTitle;
+    @Bind(R.id.xx)
+    TextView mXx;
+    @Bind(R.id.iv_warning)
+    ImageView mIvWarning;
+    @Bind(R.id.rl_ununited)
+    RelativeLayout mRlUnunited;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.iv)
     ImageView mIv;
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
-    @Bind(R.id.rl_ununited)
-    RelativeLayout mRlUnunited;
-    @Bind(R.id.iv_warning)
-    ImageView mIvWarning;
-    @Bind(R.id.refresh_layout)
-    SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.iv_anim)
+    ImageView mIvAnim;
+    @Bind(R.id.ll_login)
+    LinearLayout mLlLogin;
     private List<Map<String, Object>> list = new ArrayList<>();
     private List<ConversationInfo> showlist = new ArrayList<>();
     private DBManager mgr;
     public static ConversationFragment instance = null;
     private ConversationAdapter mConversationAdapter;
     private MyReceiver receiver;
-    private LoadingProgressDialog mProgressDialog;
+    private AnimationDrawable mAnim;
+    private int imState = -1;
+    private DisplayMetrics mDm;
+    private int mHeightPixels;
+    private ViewGroup mView;
+    private PopupWindow mPopupWindow;
+    private int QRCODE = 1;
 
     public static ConversationFragment getInstance() {
 
@@ -179,153 +129,212 @@ public class ConversationFragment extends Fragment {
             getActivity().registerReceiver(receiver, intentFilter);
         }
         ButterKnife.bind(this, view);
-        pullToRefresh();
         mgr = new DBManager(getActivity());
-        initRecyclerView();
-        initData();
-//        initAWS();
         return view;
     }
 
-
-
-
-    private void pullToRefresh() {
-        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                refreshlayout.finishRefresh(2000);
-                if (XmppConnection.getInstance().getConnection() == null || !XmppConnection.getInstance().getConnection().isAuthenticated()) {
-                    loginIM();
-
-                }
-            }
-        });
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getPhoneSize();
+        initRelogin();
     }
 
+    @SuppressLint("HandlerLeak")
     Handler mHandler = new Handler() {
         @Override
-        public void handleMessage(android.os.Message msg) {
+        public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                    Toast.makeText(getContext(), getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                    XmppListener.xmppListener = null;
+                    initRecyclerView();
+                    initData();
+                    //发送登录失败通知
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.login_error)));
+                    if (mAnim != null)
+                        mAnim.stop();
+                    mLlLogin.setVisibility(View.GONE);
+                    ToastShow.showToast2((Activity) getContext(), getString(R.string.toast_network_error));
                     break;
                 case 1:
+                    XmppListener.get(getContext());
+                    initRecyclerView();
+                    initData();
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
+                    if (mAnim != null)
+                        mAnim.stop();
+                    mLlLogin.setVisibility(View.GONE);
+                    break;
+                /*case 2:
+                    initRecyclerView();
+                    initData();
+                    //发送登录失败通知
                     Intent intent = new Intent();
                     intent.setAction("XMPPConnectionListener");
-                    intent.putExtra("type", true);
+                    intent.putExtra("type", false);
                     getContext().sendBroadcast(intent);
-                    pingService();
+                    if (mAnim != null)
+                        mAnim.stop();
+                    mLlLogin.setVisibility(View.GONE);
+                    break;*/
+                case 3:
+                    XmppListener.xmppListener = null;
                     break;
             }
         }
     };
 
-    private Timer tExit;
-
-    private void pingService() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                PingManager pingManager = PingManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-                pingManager.setPingInterval(60);
-                try {
-                    pingManager.pingMyServer();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                pingManager.registerPingFailedListener(new PingFailedListener() {
-                    @Override
-                    public void pingFailed() {
-                        if (tExit == null) {
-                            tExit = new Timer();
-                            tExit.schedule(new TimeTask(), 1000);
-                        }
-                    }
-                });
-            }
-        }).start();
+    private void initRelogin() {
+        ConnectStateChangeListenerManager.get().registerStateChangeListener(this);
+        if (ConnectStateChangeListenerManager.get().getCurrentState() != ConnectStateChangeListenerManager.CONNECTED) {
+            ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
+        }
+        Intent intent = new Intent(getContext(), IMCoreService.class);
+        if (XmppConnection.isServiceWork(getContext(), "com.bclould.tocotalk.service.IMCoreService")) {
+            XmppConnection.stopAllIMCoreService(getContext());
+            getContext().stopService(intent);
+        }
+        getContext().startService(intent);
     }
 
-    private class TimeTask extends TimerTask {
-        @Override
-        public void run() {
 
-            if (UtilTool.getUser() != null && UtilTool.getpw() != null) {
-                Log.i("XMConnectionListener", "尝试登录");
-                // 连接服务器
-                try {
-                    if (!XmppConnection.getInstance().isAuthenticated()) {// 用户未登录
-                        if (IMLogin.loginAction(getContext(),XmppConnection.getInstance().getConnection())) {
-                            Log.i("XMConnectionListener", "登录成功");
-                            EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
-                            Intent intent = new Intent();
-                            intent.setAction("XMPPConnectionListener");
-                            intent.putExtra("type", true);
-                            getContext().sendBroadcast(intent);
-                        } else {
-                            Log.i("XMConnectionListener", "重新登录");
-                            tExit.schedule(new TimeTask(), 1000);
-                        }
-                    }
-                } catch (Exception e) {
-                    Log.i("XMConnectionListener", "尝试登录,出现异常!");
-                    Log.i("XMConnectionListener", e.getMessage());
-                }
+    @Override
+    public void onStateChange(int serviceState) {
+        if (serviceState == -1) return;
+        if (imState == serviceState) {
+            return;
+        } else {
+            imState = serviceState;
+        }
+        if (serviceState == ConnectStateChangeListenerManager.CONNECTED) {// 已连接
+            mHandler.sendEmptyMessage(1);
+        } else if (serviceState == ConnectStateChangeListenerManager.CONNECTING) {// 连接中
+            mLlLogin.setVisibility(View.VISIBLE);
+            if (mAnim != null)
+                mAnim.stop();
+            mAnim = (AnimationDrawable) mIvAnim.getBackground();
+            mAnim.start();
+            mHandler.sendEmptyMessage(3);
+        } else if (serviceState == ConnectStateChangeListenerManager.DISCONNECT) {// 未连接
+            mHandler.sendEmptyMessage(0);
+        } else if (serviceState == ConnectStateChangeListenerManager.RECEIVING) {//收取中
+            mHandler.sendEmptyMessage(1);
+        } else if (serviceState == ConnectStateChangeListenerManager.RECEIVING) {//收取中
+//            mHandler.sendEmptyMessage(1);
+        }
+    }
+
+    //获取屏幕高度
+    private void getPhoneSize() {
+
+        mDm = new DisplayMetrics();
+
+        if (getActivity() != null)
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(mDm);
+
+        mHeightPixels = mDm.heightPixels;
+    }
+
+    @OnClick({R.id.iv_more, R.id.rl_ununited})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_more:
+                initPopWindow();
+                break;
+            case R.id.rl_ununited:
+                startActivity(new Intent(Settings.ACTION_SETTINGS));
+                break;
+        }
+    }
+
+    //初始化pop
+    private void initPopWindow() {
+
+        int widthPixels = mDm.widthPixels;
+
+        mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_cloud_message, null);
+
+        mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 4, true);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        // 设置背景颜色变暗
+        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+        lp.alpha = 0.9f;
+        getActivity().getWindow().setAttributes(lp);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+                lp.alpha = 1f;
+                getActivity().getWindow().setAttributes(lp);
+            }
+        });
+        mPopupWindow.showAsDropDown(mXx, (widthPixels - widthPixels / 100 * 35 - 20), 0);
+
+        popChildClick();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            String result = data.getStringExtra("result");
+            if (!result.isEmpty() && result.contains(Constants.REDPACKAGE)) {
+                String base64 = result.substring(Constants.REDPACKAGE.length(), result.length());
+                byte[] bytes = Base64.decode(base64, Base64.DEFAULT);
+                String jsonresult = new String(bytes);
+                Gson gson = new Gson();
+                QrRedInfo qrRedInfo = gson.fromJson(jsonresult, QrRedInfo.class);
+                UtilTool.Log("日志", qrRedInfo.getRedID());
+                Intent intent = new Intent(getActivity(), GrabQRCodeRedActivity.class);
+                intent.putExtra("id", qrRedInfo.getRedID());
+                intent.putExtra("type", true);
+                startActivity(intent);
             }
         }
     }
 
-    //登录即时通讯
-    private void loginIM() {
-//        showDialog();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    //连接openfile
-                    AbstractXMPPConnection connection = XmppConnection.getInstance().getConnection();
-                    //判断是否连接
-                    if (connection != null && connection.isConnected()) {
-                        IMLogin.loginAction(getContext(),connection);
-                        /*if (connection.isAuthenticated()) {//登录成功
-                            PingManager.setDefaultPingInterval(10);
-                            PingManager myPingManager = PingManager.getInstanceFor(connection);
-                            myPingManager.registerPingFailedListener(new PingFailedListener() {
-                                @Override
-                                public void pingFailed() {
-                                    Toast.makeText(MainActivity.this, "发送心跳包失败", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }*/
-                        //登录成功发送通知
-                        EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
-                        UtilTool.Log("fsdafa", "登录成功");
-                        android.os.Message message = new android.os.Message();
-                        message.what = 1;
-                        mHandler.sendMessage(message);
-                    } else if (!connection.isConnected()) {
-                        XmppConnection.getInstance().getConnection().connect();
+    //给pop子控件设置点击事件
+    private void popChildClick() {
+
+        int childCount = mView.getChildCount();
+
+        for (int i = 0; i < childCount; i++) {
+
+            final View childAt = mView.getChildAt(i);
+
+            childAt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    int index = mView.indexOfChild(childAt);
+
+                    switch (index) {
+                        case 0:
+                            Intent intent = new Intent(getActivity(), ScanQRCodeActivity.class);
+                            intent.putExtra("code", QRCODE);
+                            startActivityForResult(intent, 0);
+                            mPopupWindow.dismiss();
+                            break;
+                        case 1:
+                            startActivity(new Intent(getActivity(), SendQRCodeRedActivity.class));
+                            mPopupWindow.dismiss();
+                            break;
+                        case 2:
+                            startActivity(new Intent(getActivity(), AddFriendActivity.class));
+                            mPopupWindow.dismiss();
+                            break;
+                        case 3:
+                            startActivity(new Intent(getActivity(), PublicshDynamicActivity.class));
+                            mPopupWindow.dismiss();
+                            break;
                     }
-                } catch (Exception e) {
-                    //发送登录失败通知
-                    mHandler.removeMessages(3);
-                    EventBus.getDefault().post(new MessageEvent(getString(R.string.login_error)));
-                    android.os.Message message = new android.os.Message();
-                    message.what = 0;
-                    mHandler.sendMessage(message);
-                    UtilTool.Log("日志", e.getMessage());
-                    e.printStackTrace();
+
                 }
-            }
-        }).start();
-    }
-
-
-    @OnClick(R.id.rl_ununited)
-    public void onViewClicked() {
-        startActivity(new Intent(Settings.ACTION_SETTINGS));
+            });
+        }
     }
 
     //广播接收器
@@ -343,6 +352,7 @@ public class ConversationFragment extends Fragment {
             }
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
@@ -360,7 +370,7 @@ public class ConversationFragment extends Fragment {
             mRlUnunited.setVisibility(View.VISIBLE);
         } else if (msg.equals(getString(R.string.message_top_change))) {
             initData();
-        }else if(msg.equals(getString(R.string.change_friend_remark))){
+        } else if (msg.equals(getString(R.string.change_friend_remark))) {
             initData();
         }
 
@@ -403,32 +413,6 @@ public class ConversationFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-    }
-
-    private void downloadFile(final String key, final String fileName, final String path) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
-                            ACCESS_KEY_ID,
-                            SECRET_ACCESS_KEY,
-                            SESSION_TOKEN);
-
-                    AmazonS3Client s3Client = new AmazonS3Client(
-                            sessionCredentials);
-                    Regions regions = Regions.fromName("ap-northeast-2");
-                    Region region = Region.getRegion(regions);
-                    s3Client.setRegion(region);
-                    GetObjectRequest gor = new GetObjectRequest(Constants.BUCKET_NAME, key);
-                    File file = new File(Environment.getExternalStorageDirectory().getPath(), fileName);
-                    ObjectMetadata object = s3Client.getObject(gor, file);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
     }
 
     private void sort() {

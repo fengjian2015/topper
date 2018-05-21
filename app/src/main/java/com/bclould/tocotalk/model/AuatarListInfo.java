@@ -1,20 +1,23 @@
 package com.bclould.tocotalk.model;
 
+import java.util.List;
+
 /**
  * Created by GA on 2018/4/19.
  */
 
 public class AuatarListInfo {
 
+
     /**
      * status : 1
      * message : success
-     * data : {"name":"liaolinan2","avatar":"https://bclould.s3.ap-northeast-2.amazonaws.com/TOCO41Avatar.png"}
+     * data : [{"name":"2017aaa","avatar":"","remark":"2017aaa"},{"name":"liaolinan2","avatar":"https://bclould.s3.ap-northeast-2.amazonaws.com/TOCO41Avatar.png","remark":"廖矮子"}]
      */
 
     private int status;
     private String message;
-    private DataBean data;
+    private List<DataBean> data;
 
     public int getStatus() {
         return status;
@@ -32,22 +35,24 @@ public class AuatarListInfo {
         this.message = message;
     }
 
-    public DataBean getData() {
+    public List<DataBean> getData() {
         return data;
     }
 
-    public void setData(DataBean data) {
+    public void setData(List<DataBean> data) {
         this.data = data;
     }
 
     public static class DataBean {
         /**
-         * name : liaolinan2
-         * avatar : https://bclould.s3.ap-northeast-2.amazonaws.com/TOCO41Avatar.png
+         * name : 2017aaa
+         * avatar :
+         * remark : 2017aaa
          */
 
         private String name;
         private String avatar;
+        private String remark;
 
         public String getName() {
             return name;
@@ -63,6 +68,14 @@ public class AuatarListInfo {
 
         public void setAvatar(String avatar) {
             this.avatar = avatar;
+        }
+
+        public String getRemark() {
+            return remark;
+        }
+
+        public void setRemark(String remark) {
+            this.remark = remark;
         }
     }
 }

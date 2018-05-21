@@ -5,8 +5,9 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 
-import com.bclould.tocotalk.ui.fragment.CloudMessageFragment;
+import com.bclould.tocotalk.ui.fragment.ConversationFragment;
 import com.bclould.tocotalk.ui.fragment.DiscoverFragment;
+import com.bclould.tocotalk.ui.fragment.FriendListFragment;
 import com.bclould.tocotalk.ui.fragment.MyFragment;
 import com.bclould.tocotalk.ui.fragment.WalletFragment;
 
@@ -54,19 +55,22 @@ public class FragmentFactory {
         Fragment fragment = null;
         switch (position) {
             case 0:// 云信页面
-                fragment = new CloudMessageFragment();
+                fragment = ConversationFragment.getInstance();
                 break;
             case 1:// 云币页面
+                fragment = FriendListFragment.getInstance();
+                break;
+            case 2:// 云币页面
                 fragment = DiscoverFragment.getInstance();
                 break;
-            case 2:// 云圈页面
+            case 3:// 云圈页面
                 fragment = WalletFragment.getInstance();
                 break;
-            case 3:// 我的页面
+            case 4:// 我的页面
                 fragment = new MyFragment();
                 break;
             default:
-                fragment = new CloudMessageFragment();
+                fragment = ConversationFragment.getInstance();
                 break;
         }
         mMainMap.put(position, fragment);

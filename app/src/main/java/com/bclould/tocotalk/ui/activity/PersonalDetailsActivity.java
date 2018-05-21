@@ -3,8 +3,10 @@ package com.bclould.tocotalk.ui.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.Base64;
@@ -30,6 +32,7 @@ import com.luck.picture.lib.entity.LocalMedia;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,9 +88,10 @@ public class PersonalDetailsActivity extends BaseActivity {
     private void initInterface() {
         String state = MySharedPreferences.getInstance().getString(STATE);
         mTvLocation.setText(state);
-        Bitmap bitmap = UtilTool.getImage(mMgr, UtilTool.getJid(), PersonalDetailsActivity.this);
+        /*Bitmap bitmap = UtilTool.getImage(mMgr, UtilTool.getJid(), PersonalDetailsActivity.this);
         if (bitmap != null)
-            mTouxiang.setImageBitmap(bitmap);
+            mTouxiang.setImageBitmap(bitmap);*/
+        UtilTool.getImage(mMgr, UtilTool.getJid(), PersonalDetailsActivity.this, mTouxiang);
         mTvUsername.setText(UtilTool.getUser());
     }
 
@@ -112,10 +116,15 @@ public class PersonalDetailsActivity extends BaseActivity {
     //上傳頭像
     private void upImage(Intent data) throws UnsupportedEncodingException {
         selectList = PictureSelector.obtainMultipleResult(data);
-        final Bitmap bitmap = BitmapFactory.decodeFile(selectList.get(0).getCompressPath());
+        File file = new File(selectList.get(0).getCutPath());
+        final String keyCut = UtilTool.getUserId() + UtilTool.createtFileName() + "cut" + UtilTool.getPostfix2(file.getName());
+        final File newFile = new File(Constants.PUBLICDIR + keyCut);
+        Bitmap cutImg = BitmapFactory.decodeFile(selectList.get(0).getCutPath());
+        UtilTool.comp(cutImg, newFile);
+        final Bitmap bitmap = BitmapFactory.decodeFile(newFile.getAbsolutePath());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] bytes = baos.toByteArray();
+        byte[] bytes = UtilTool.getFileToByte(newFile);
         String Base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
         UtilTool.Log("編碼", Base64Image);
         mPersonalDetailsPresenter.upImage(Base64Image, new PersonalDetailsPresenter.CallBack() {
@@ -123,7 +132,9 @@ public class PersonalDetailsActivity extends BaseActivity {
             public void send() {
                 UtilTool.saveImages(bitmap, UtilTool.getJid(), PersonalDetailsActivity.this, mMgr);
                 EventBus.getDefault().post(new MessageEvent(getString(R.string.xg_touxaing)));
-                mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, UtilTool.getJid(), PersonalDetailsActivity.this));
+                UtilTool.getImage(mMgr, UtilTool.getJid(), PersonalDetailsActivity.this, mTouxiang);
+
+                //                mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, UtilTool.getJid(), PersonalDetailsActivity.this));
             }
         });
         /*boolean type = XmppConnection.getInstance().changeImage(bytes);
@@ -176,8 +187,8 @@ public class PersonalDetailsActivity extends BaseActivity {
                         .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
                 break;
             case R.id.rl_qr_card:
-                Intent intent=new Intent(this,QRCodeActivity.class);
-                intent.putExtra("user", UtilTool.getUser()+"@" + Constants.DOMAINNAME);
+                Intent intent = new Intent(this, QRCodeActivity.class);
+                intent.putExtra("user", UtilTool.getUser() + "@" + Constants.DOMAINNAME);
                 startActivity(intent);
                 break;
         }

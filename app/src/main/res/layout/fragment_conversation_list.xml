@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.scwang.smartrefresh.layout.SmartRefreshLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/refresh_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <com.scwang.smartrefresh.header.WaterDropHeader
+    <RelativeLayout
+        android:id="@+id/rl_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/talk"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+        <ImageView
+            android:id="@+id/iv_more"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/x25"
+            android:src="@mipmap/ico_nav_add"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/xx"
+        style="@style/HCutOffRule"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -63,7 +87,7 @@
             android:layout_below="@+id/rl_ununited"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv"
@@ -81,6 +105,31 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_login"
+            android:layout_width="@dimen/x400"
+            android:layout_height="@dimen/x400"
+            android:layout_centerInParent="true"
+            android:background="@color/gray"
+            android:gravity="center"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_anim"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/anim_progress"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/connect_xmpp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x28"/>
+
+        </LinearLayout>
+
     </RelativeLayout>
 
-</com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</LinearLayout>

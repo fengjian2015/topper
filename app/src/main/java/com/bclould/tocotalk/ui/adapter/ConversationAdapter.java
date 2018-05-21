@@ -1,9 +1,7 @@
 package com.bclould.tocotalk.ui.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -15,26 +13,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.ui.activity.ConversationActivity;
-import com.bclould.tocotalk.ui.activity.IndividualDetailsActivity;
 import com.bclould.tocotalk.ui.fragment.ConversationFragment;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bclould.tocotalk.xmpp.XmppConnection;
 
 import org.greenrobot.eventbus.EventBus;
-import org.jivesoftware.smack.roster.Roster;
-import org.jivesoftware.smack.roster.RosterEntry;
-import org.jxmpp.jid.impl.JidCreate;
 
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import butterknife.Bind;
@@ -104,8 +95,6 @@ public class ConversationAdapter extends RecyclerView.Adapter {
                     Bundle bundle = new Bundle();
                     bundle.putString("name", mConversationInfo.getFriend());
                     bundle.putString("user", mConversationInfo.getUser());
-                    if (mDatas != null)
-                        bundle.putByteArray("image", mDatas);
                     intent.putExtras(bundle);
                     mContext.startActivity(intent);
                     mNumber.setVisibility(View.GONE);
@@ -123,21 +112,19 @@ public class ConversationAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(ConversationInfo conversationInfo) {
-            if("true".equals(conversationInfo.getIstop())){
+            if ("true".equals(conversationInfo.getIstop())) {
                 mRlItem.setBackgroundColor(mContext.getResources().getColor(R.color.gray2));
-            }else{
+            } else {
                 mRlItem.setBackgroundColor(mContext.getResources().getColor(R.color.white));
             }
             mConversationInfo = conversationInfo;
-            Bitmap bitmap = UtilTool.getImage(mMgr, conversationInfo.getUser(), mContext);
-            mTab1ItemImg.setImageBitmap(bitmap);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            mDatas = baos.toByteArray();
-            String remark=mMgr.queryRemark(conversationInfo.getUser());
-            if(!StringUtils.isEmpty(remark)){
+            UtilTool.getImage(mMgr, conversationInfo.getUser(), mContext, mTab1ItemImg);
+           /* Bitmap bitmap = UtilTool.getImage(mMgr, conversationInfo.getUser(), mContext);
+            mTab1ItemImg.setImageBitmap(bitmap);*/
+            String remark = mMgr.queryRemark(conversationInfo.getUser());
+            if (!StringUtils.isEmpty(remark)) {
                 mTab1ItemName.setText(remark);
-            }else {
+            } else {
                 mTab1ItemName.setText(conversationInfo.getFriend());
             }
             mTab1ItemText.setText(conversationInfo.getMessage());
@@ -148,6 +135,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
             }
         }
     }
+
     private void showDeleteDialog(final String user) {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();

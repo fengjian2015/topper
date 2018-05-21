@@ -17,7 +17,6 @@ import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.service.IMCoreService;
 import com.bclould.tocotalk.service.IMService;
-import com.bclould.tocotalk.ui.activity.MainActivity;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
@@ -52,7 +51,6 @@ import org.jivesoftware.smackx.search.ReportedData;
 import org.jivesoftware.smackx.search.UserSearchManager;
 import org.jivesoftware.smackx.vcardtemp.VCardManager;
 import org.jivesoftware.smackx.vcardtemp.packet.VCard;
-import org.jivesoftware.smackx.vcardtemp.provider.VCardProvider;
 import org.jivesoftware.smackx.xdata.Form;
 import org.jivesoftware.smackx.xdata.FormField;
 import org.jxmpp.jid.EntityBareJid;
@@ -233,7 +231,6 @@ public class XmppConnection {
             intent.setAction("XMPPConnectionListener");
             intent.putExtra("type", false);
             mContext.sendBroadcast(intent);
-            MainActivity.getInstance().hideDialog();
         }
     };
 

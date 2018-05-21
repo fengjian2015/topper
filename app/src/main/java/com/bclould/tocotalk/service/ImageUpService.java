@@ -63,7 +63,6 @@ public class ImageUpService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         UtilTool.Log("發佈動態", "啟動服務");
-        EventBus.getDefault().post(new MessageEvent(getString(R.string.start_service)));
         mDynamicPresenter = new DynamicPresenter(this);
         selectList = intent.getParcelableArrayListExtra("imageList");
         mText = intent.getStringExtra("text");

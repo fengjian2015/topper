@@ -1,174 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.scwang.smartrefresh.layout.SmartRefreshLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:orientation="vertical">
 
-    <com.scwang.smartrefresh.header.WaterDropHeader
+    <RelativeLayout
+        android:id="@+id/rl_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"/>
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
 
-    <ScrollView
-        android:id="@+id/scrollView"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/friend"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+        <ImageView
+            android:id="@+id/iv_more"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/x25"
+            android:src="@mipmap/ico_nav_add"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:background="@color/white">
 
-        <LinearLayout
+        <com.scwang.smartrefresh.header.WaterDropHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"/>
+
+        <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y80"
-                android:layout_marginBottom="@dimen/y20"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_marginRight="@dimen/x20"
-                android:layout_marginTop="@dimen/y20">
-
-                <LinearLayout
-                    android:id="@+id/ll_search"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/light"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/icon_friend_seek"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/x20"
-                        android:text="@string/search_friend"
-                        android:textColor="@color/gray"
-                        android:textSize="@dimen/x28"/>
-
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/y20"
-                    android:background="@color/light"/>
-
-                <RelativeLayout
-                    android:id="@+id/news_friend"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/y100"
-                    android:layout_marginLeft="@dimen/x20"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/iv"
-                        android:layout_width="@dimen/x60"
-                        android:layout_height="@dimen/x60"
-                        android:layout_centerVertical="true"
-                        android:src="@mipmap/icon_friend_newfriend"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x20"
-                        android:layout_toRightOf="@+id/iv"
-                        android:text="@string/new_friend"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x32"/>
-
-                    <TextView
-                        android:id="@+id/number"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/x35"
-                        android:layout_alignBottom="@+id/tab1_item_text"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/x20"
-                        android:background="@drawable/bg_add_card_shape"
-                        android:gravity="center"
-                        android:paddingLeft="@dimen/x15"
-                        android:paddingRight="@dimen/x15"
-                        android:text="99+"
-                        android:textColor="#FFF"
-                        android:textSize="@dimen/x26"
-                        android:visibility="gone"/>
-
-                </RelativeLayout>
-
-                <TextView
-                    style="@style/HCutOffRule"/>
-
-                <!-- <LinearLayout
-                     android:id="@+id/my_group"
-                     android:layout_width="match_parent"
-                     android:layout_height="@dimen/y100"
-                     android:layout_marginLeft="@dimen/x20"
-                     android:gravity="center_vertical"
-                     android:orientation="horizontal">
-
-                     <ImageView
-                         android:layout_width="@dimen/x60"
-                         android:layout_height="@dimen/x60"
-                         android:src="@mipmap/icon_friend_groups"/>
-
-                     <TextView
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:layout_marginLeft="@dimen/x20"
-                         android:text="@string/my_group"
-                         android:textColor="@color/black"
-                         android:textSize="@dimen/x32"/>
-
-                 </LinearLayout>-->
-
-                <TextView
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/y80"
-                    android:background="@color/light"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="@dimen/x20"
-                    android:text="@string/my_friend"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x28"/>
+                    android:layout_marginBottom="@dimen/y20"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_marginRight="@dimen/x20"
+                    android:layout_marginTop="@dimen/y20">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <com.bclould.tocotalk.ui.widget.MyListView
-                        android:id="@+id/listView"
+                    <LinearLayout
+                        android:id="@+id/ll_search"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="match_parent"
+                        android:background="@color/light"
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
-                    <!-- <com.bclould.tocotalk.ui.widget.SideBar
-                         android:id="@+id/side_bar"
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/icon_friend_seek"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/x20"
+                            android:text="@string/search_friend"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/x28"/>
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/y20"
+                        android:background="@color/light"/>
+
+                    <RelativeLayout
+                        android:id="@+id/news_friend"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/y100"
+                        android:layout_marginLeft="@dimen/x20"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/iv"
+                            android:layout_width="@dimen/x60"
+                            android:layout_height="@dimen/x60"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/icon_friend_newfriend"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/x20"
+                            android:layout_toRightOf="@+id/iv"
+                            android:text="@string/new_friend"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/x32"/>
+
+                        <TextView
+                            android:id="@+id/number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/x35"
+                            android:layout_alignBottom="@+id/tab1_item_text"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/x20"
+                            android:background="@drawable/bg_add_card_shape"
+                            android:gravity="center"
+                            android:paddingLeft="@dimen/x15"
+                            android:paddingRight="@dimen/x15"
+                            android:text="99+"
+                            android:textColor="#FFF"
+                            android:textSize="@dimen/x26"
+                            android:visibility="gone"/>
+
+                    </RelativeLayout>
+
+                    <TextView
+                        style="@style/HCutOffRule"/>
+
+                    <!-- <LinearLayout
+                         android:id="@+id/my_group"
                          android:layout_width="match_parent"
-                         android:layout_height="match_parent"
-                         android:layout_alignParentRight="true"
-                         android:paddingRight="@dimen/x20"
-                         android:textColor="@color/colorAccent"
-                         android:textSize="@dimen/x30"/>-->
+                         android:layout_height="@dimen/y100"
+                         android:layout_marginLeft="@dimen/x20"
+                         android:gravity="center_vertical"
+                         android:orientation="horizontal">
 
-                </RelativeLayout>
+                         <ImageView
+                             android:layout_width="@dimen/x60"
+                             android:layout_height="@dimen/x60"
+                             android:src="@mipmap/icon_friend_groups"/>
+
+                         <TextView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_marginLeft="@dimen/x20"
+                             android:text="@string/my_group"
+                             android:textColor="@color/black"
+                             android:textSize="@dimen/x32"/>
+
+                     </LinearLayout>-->
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/y80"
+                        android:background="@color/light"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/x20"
+                        android:text="@string/my_friend"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/x28"/>
+
+                    <RelativeLayout
+                        android:descendantFocusability="blocksDescendants"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+
+                         <!--<com.bclould.tocotalk.ui.widget.SideBar
+                             android:id="@+id/side_bar"
+                             android:layout_width="match_parent"
+                             android:layout_height="match_parent"
+                             android:layout_alignParentRight="true"
+                             android:paddingRight="@dimen/x20"
+                             android:textColor="@color/colorAccent"
+                             android:textSize="@dimen/x30"/>-->
+
+                    </RelativeLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+        </ScrollView>
 
-    </ScrollView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-
-</com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</LinearLayout>

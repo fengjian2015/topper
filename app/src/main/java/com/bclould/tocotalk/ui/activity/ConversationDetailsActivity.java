@@ -1,7 +1,6 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -88,8 +87,10 @@ public class ConversationDetailsActivity extends BaseActivity {
     }
 
     private void init() {
-        Bitmap mUserImage = UtilTool.getImage(mMgr, mUser, this);
-        imageHead.setImageBitmap(mUserImage);
+
+        UtilTool.getImage(mMgr, mUser, this, imageHead);
+        /*Bitmap mUserImage = UtilTool.getImage(mMgr, mUser, this);
+        imageHead.setImageBitmap(mUserImage);*/
         setName();
         changeTop();
         changeFree();

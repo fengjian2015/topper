@@ -102,9 +102,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/time"
+                        android:layout_marginBottom="@dimen/y20"
                         android:layout_marginLeft="@dimen/x25"
                         android:layout_marginTop="@dimen/y20"
-                        android:layout_marginBottom="@dimen/y20"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x28"/>
 
@@ -118,7 +118,8 @@
                         android:layout_marginRight="@dimen/x20"
                         android:layout_marginTop="@dimen/y20"
                         ngl:imgGap="@dimen/x10"
-                        ngl:showStyle="fill"/>
+                        ngl:showStyle="fill"
+                        ngl:singleImgSize="@dimen/x360"/>
 
                     <LinearLayout
                         android:id="@+id/ll_zan"
