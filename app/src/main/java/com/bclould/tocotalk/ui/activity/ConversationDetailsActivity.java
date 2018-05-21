@@ -87,7 +87,6 @@ public class ConversationDetailsActivity extends BaseActivity {
     }
 
     private void init() {
-
         UtilTool.getImage(mMgr, mUser, this, imageHead);
         /*Bitmap mUserImage = UtilTool.getImage(mMgr, mUser, this);
         imageHead.setImageBitmap(mUserImage);*/

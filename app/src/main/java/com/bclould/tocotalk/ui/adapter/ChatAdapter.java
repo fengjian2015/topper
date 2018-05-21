@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,10 @@ import com.bclould.tocotalk.ui.activity.TransferDetailsActivity;
 import com.bclould.tocotalk.ui.activity.VideoActivity;
 import com.bclould.tocotalk.ui.widget.ChatCopyDialog;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.CustomLinkMovementMethod;
+import com.bclould.tocotalk.utils.HyperLinkUtil;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.ToastShow;
 import com.bclould.tocotalk.utils.UtilTool;
@@ -317,12 +322,14 @@ public class ChatAdapter extends RecyclerView.Adapter {
         return 0;
     }
 
-    private void showCopyDialog(final int msgtype, final MessageInfo messageInfo, boolean isCopy) {
+    private void showCopyDialog(final int msgtype, final MessageInfo messageInfo, boolean isCopy,boolean isTransmit) {
         final ChatCopyDialog chatCopyDialog = new ChatCopyDialog(R.layout.dialog_chat_copy, mContext, R.style.dialog);
         chatCopyDialog.show();
         chatCopyDialog.isCopy(isCopy);
+        chatCopyDialog.isShowTransmit(isTransmit);
         Button copy = (Button) chatCopyDialog.findViewById(R.id.btn_copy);
         Button transmit = (Button) chatCopyDialog.findViewById(R.id.btn_transmit);
+        Button delete = (Button) chatCopyDialog.findViewById(R.id.btn_delete);
         copy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -344,6 +351,16 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 intent.putExtra("msgType",msgtype);
                 intent.putExtra("messageInfo",messageInfo);
                 mContext.startActivity(intent);
+                chatCopyDialog.dismiss();
+            }
+        });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMgr.deleteSingleMessage(mUser,messageInfo.getId()+"");
+                mMessageList.remove(messageInfo);
+                notifyDataSetChanged();
+                EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
                 chatCopyDialog.dismiss();
             }
         });
@@ -371,7 +388,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
 //            mIvTouxiang.setImageBitmap(mToBitmap);
             UtilTool.getImage(mMgr, UtilTool.getJid(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getJid(), mToName);
-            mTvMessamge.setText(messageInfo.getMessage());
+            mTvMessamge.setText(HyperLinkUtil.getHyperClickableSpan(mContext,new SpannableStringBuilder(messageInfo.getMessage()),false));
+            mTvMessamge.setMovementMethod(new CustomLinkMovementMethod());
             if (messageInfo.getSendStatus() == 1) {
                 mIvWarning.setVisibility(View.VISIBLE);
             } else {
@@ -386,7 +404,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mTvMessamge.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(),messageInfo,true);
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,true,true);
                     return false;
                 }
             });
@@ -424,11 +442,12 @@ public class ChatAdapter extends RecyclerView.Adapter {
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
             UtilTool.getImage(mMgr, mUser, mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, mUser, mName);
-            mTvMessamge.setText(messageInfo.getMessage());
+            mTvMessamge.setText(HyperLinkUtil.getHyperClickableSpan(mContext,new SpannableStringBuilder(messageInfo.getMessage()),true));
+            mTvMessamge.setMovementMethod(new CustomLinkMovementMethod());
             mTvMessamge.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(),messageInfo,true);
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,true,true);
                     return false;
                 }
             });
@@ -476,6 +495,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
                             skip(info, UtilTool.getJid(), 0);
                         }
                     });
+                }
+            });
+            mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false,false);
+                    return false;
                 }
             });
             if (messageInfo.getStatus() == 1) {
@@ -559,6 +585,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     }
                 });
             }
+            mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false,false);
+                    return false;
+                }
+            });
         }
     }
 
@@ -654,6 +687,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     playVoice(mMediaPlayer, messageInfo.getVoice(), anim);
+                }
+            });
+            mRlVoice.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false,false);
+                    return false;
                 }
             });
         }
@@ -771,6 +811,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     messageInfo.setVoiceStatus(1);
                 }
             });
+            mRlVoice.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false,false);
+                    return false;
+                }
+            });
         }
     }
 
@@ -849,7 +896,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mIvImg.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false);
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false,true);
                     return false;
                 }
             });
@@ -908,7 +955,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mIvImg.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false);
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false,true);
                     return false;
                 }
             });
@@ -966,6 +1013,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
 //                    return false;
 //                }
 //            });
+            mRlVideo.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false,false);
+                    return false;
+                }
+            });
         }
     }
 
@@ -1004,6 +1058,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
 //                    return false;
 //                }
 //            });
+            mRlVideo.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false,false);
+                    return false;
+                }
+            });
         }
     }
 
@@ -1046,6 +1107,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     intent.putExtra("time", messageInfo.getTime());
                     intent.putExtra("type", 1);
                     mContext.startActivity(intent);
+                }
+            });
+            mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false,false);
+                    return false;
                 }
             });
         }
@@ -1093,6 +1161,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     intent.putExtra("time", messageInfo.getTime());
                     intent.putExtra("type", 0);
                     mContext.startActivity(intent);
+                }
+            });
+            mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false,false);
+                    return false;
                 }
             });
         }

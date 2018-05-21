@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -61,6 +62,8 @@ import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -612,13 +615,13 @@ public class UtilTool {
                 if (info.getPath().startsWith("https://")) {
                     Glide.with(context).load(info.getPath()).into(imageView);
                 } else {
-                    bitmap = BitmapFactory.decodeFile(info.getPath());
+                    imageView.setImageBitmap(BitmapFactory.decodeFile(info.getPath()));
                 }
             } else {
-                bitmap = setDefaultimage(context);
+                imageView.setImageBitmap(setDefaultimage(context));
             }
         } else {
-            bitmap = setDefaultimage(context);
+            imageView.setImageBitmap(setDefaultimage(context));
         }
         return bitmap;
     }
@@ -791,5 +794,37 @@ public class UtilTool {
             ex.printStackTrace();
         }
         return by;
+    }
+
+    // 判断是否为网址
+    public static  boolean checkLinkedExe(String resultString) {
+        if(TextUtils.isEmpty(resultString)){
+            return false;
+        }
+        resultString = resultString.toLowerCase();
+        String pattern = "^(http://|https://|ftp://|mms://|rtsp://){1}.*";
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(resultString);
+        return m.matches();
+    }
+
+    public static Pattern searchUrl(){
+//		String pattern1 = "((www|WWW)\\.){1}([a-zA-Z0-9\\u4e00-\\u9fa5\\.\\-\\~\\@\\#\\%\\^\\&\\+\\?\\:\\_\\/\\=\\<\\>]+)"; //有www.开头的
+//		String pattern2 = "((((ht|f|Ht|F)tp(s?))|rtsp|Rtsp)\\://)(www\\.)?([a-zA-Z0-9\\u4e00-\\u9fa5\\.\\-\\~\\@\\#\\%\\^\\&\\+\\?\\:\\_\\/\\=\\<\\>]+)"; //有http等协议号开头
+//		String pattern3 = "([a-zA-Z0-9\\u4e00-\\u9fa5]+)([a-zA-Z0-9\\u4e00-\\u9fa5\\.]+)(\\.(com|edu|gov|mil|net|org|biz|info|name|museum|us|ca|uk|cn))(\\:((6553[0-5])|655[0-2]{2}\\d|65[0-4]\\d{2}|6[0-4]\\d{3}|[1-5]\\d{4}|([1-9]\\d{3}|[1-9]\\d{2}|[1-9]\\d|[0-9])))?(/([(a-zA-Z0-9)(\\u4e00-\\u9fa5)(\\.-~@#%^&+?:_/=<>)]*)*)"; //有.com等后缀的，并有参数
+//		String pattern4 = "([a-zA-Z0-9\\u4e00-\\u9fa5]+)([a-zA-Z0-9\\u4e00-\\u9fa5\\.]+)((\\.(com|edu|gov|mil|net|org|biz|info|name|museum|us|ca|uk|cn)))(\\:((6553[0-5])|655[0-2]{2}\\d|65[0-4]\\d{2}|6[0-4]\\d{3}|[1-5]\\d{4}|([1-9]\\d{3}|[1-9]\\d{2}|[1-9]\\d|[0-9])))?"; //有.com等后缀结尾的，无参数
+//		String pattern5 = "((((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[1-9])\\.)((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){2}((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])))(\\:((6553[0-5])|655[0-2]{2}\\d|65[0-4]\\d{2}|6[0-4]\\d{3}|[1-5]\\d{4}|([1-9]\\d{3}|[1-9]\\d{2}|[1-9]\\d|[0-9])))?(/[a-zA-Z0-9\\u4e00-\\u9fa5\\.-~@#%^&+?:_/=<>]+)?)"; //ip地址的
+
+
+        String port = "(\\:((6553[0-5])|655[0-2]{2}\\d|65[0-4]\\d{2}|6[0-4]\\d{3}|[1-5]\\d{4}|([1-9]\\d{3}|[1-9]\\d{2}|[1-9]\\d|[0-9])))?";
+        String domainName = "(\\.(com|edu|gov|mil|net|org|biz|info|name|museum|us|ca|uk|cn|co|int|biz|CC|TV|pro|coop|aero|hk|tw))";
+        String pattern1 = "((www|WWW)\\.){1}([a-zA-Z0-9\\u4e00-\\u9fa5\\$\\-\\_\\.\\+\\!\\*\\'\\(\\)\\,\\;\\?\\&\\=]+)"; //有www.开头的
+        String pattern2 = "((((ht|f|Ht|F)tp(s?))|rtsp|Rtsp)\\://)(www\\.)?(.+)"; //有http等协议号开头
+        String pattern3 = pattern1+"([a-zA-Z0-9\\u4e00-\\u9fa5]+)([a-zA-Z0-9\\u4e00-\\u9fa5\\.]+)"+domainName+port+"(/(.*)*)"; //有.com等后缀的，并有参数
+        String pattern4 = pattern1+"([a-zA-Z0-9\\u4e00-\\u9fa5]+)([a-zA-Z0-9\\u4e00-\\u9fa5\\.]+)"+domainName+port; //有.com等后缀结尾的，无参数
+        String pattern5 = "((((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[1-9])\\.)((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){2}((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])))"+port+"(\\/(.+))?)"; //ip地址的
+        String pattern = pattern1+"|"+pattern2+"|"+pattern3+"|"+pattern4+"|"+pattern5;
+        Pattern p = Pattern.compile(pattern);
+        return  p;
     }
 }

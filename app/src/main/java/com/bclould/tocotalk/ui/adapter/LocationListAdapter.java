@@ -12,12 +12,19 @@ import com.tencent.lbssearch.object.result.Geo2AddressResultObject;
  * Created by Mr.Jude on 2015/7/18.
  */
 public class LocationListAdapter extends RecyclerArrayAdapter<Geo2AddressResultObject.ReverseAddressResult.Poi> {
+    private LocationListViewHolder locationListViewHolder;
     public LocationListAdapter(Context context) {
         super(context);
     }
 
+    public void setPosition(int position){
+        locationListViewHolder.setPosition(position);
+        notifyDataSetChanged();
+    }
+
     @Override
     public BaseViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
-        return new LocationListViewHolder(parent);
+        locationListViewHolder=new LocationListViewHolder(parent);
+        return locationListViewHolder;
     }
 }

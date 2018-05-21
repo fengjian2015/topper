@@ -26,8 +26,8 @@ import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.model.ReviewListInfo;
 import com.bclould.tocotalk.ui.adapter.DynamicDetailRVAdapter;
-import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.jaeger.ninegridimageview.ItemImageClickListener;
@@ -147,6 +147,11 @@ public class DynamicDetailActivity extends BaseActivity {
         mDynamicPresenter.reviewList(mId, new DynamicPresenter.CallBack3() {
             @Override
             public void send(ReviewListInfo.DataBean data) {
+                if (!data.getInfo().getAvatar().isEmpty()) {
+                    Glide.with(DynamicDetailActivity.this).load(data.getInfo().getAvatar()).into(mTouxiang);
+                } else {
+                    mTouxiang.setImageBitmap(UtilTool.setDefaultimage(DynamicDetailActivity.this));
+                }
                 mInfo = data.getInfo();
                 if (data.getInfo().getIs_like() == 1) {
                     mLlZan.setSelected(true);
@@ -174,7 +179,7 @@ public class DynamicDetailActivity extends BaseActivity {
         mName.setText(mUserName);
         mTime.setText(mTimes);
         mDynamicText.setText(mContent);
-        String jid = mUserName + "@" + Constants.DOMAINNAME;
+//        String jid = mUserName + "@" + Constants.DOMAINNAME;
 
         //        mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, DynamicDetailActivity.this));
         if (mCompressImgList != null && mCompressImgList.size() != 0) {//判断是否有数据，没有显示另一个状态

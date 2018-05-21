@@ -80,6 +80,16 @@ public class ReviewListInfo {
             private String content;
             private String key;
             private String created_at;
+            private String avatar;
+
+            public String getAvatar() {
+                return avatar;
+            }
+
+            public void setAvatar(String avatar) {
+                this.avatar = avatar;
+            }
+
             private int like_count;
             private int is_like;
 

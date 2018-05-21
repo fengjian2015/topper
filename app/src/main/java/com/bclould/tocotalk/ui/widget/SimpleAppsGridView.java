@@ -44,6 +44,7 @@ public class SimpleAppsGridView extends RelativeLayout {
 //        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_file, "文件"));
         mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_transfer, mContext.getString(R.string.transfer)));
         mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_red_envelope, mContext.getString(R.string.red_package)));
+//        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_transfer,mContext.getString(R.string.location)));
 //        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_position, mContext.getString(R.string.location)));
         AppsAdapter adapter = new AppsAdapter(getContext(), mAppBeanList, mUser);
         gv_apps.setAdapter(adapter);
