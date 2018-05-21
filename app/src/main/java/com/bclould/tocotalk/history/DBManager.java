@@ -361,6 +361,11 @@ public class DBManager {
         db.delete("MessageRecord", "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
     }
 
+    public void deleteSingleMessage(String mUser,String id){
+        db = helper.getWritableDatabase();
+        db.delete("MessageRecord", "user=? and my_user=? and id=?", new String[]{mUser, UtilTool.getJid(),id});
+    }
+
     public void updateMessageState(String id, int state) {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();

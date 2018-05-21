@@ -244,7 +244,7 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
         if(type==0){
             if(TEXT_PLAIN.equals(shareType)){
                 String shareText= shareIntent.getStringExtra(Intent.EXTRA_TEXT);
-                messageManage.sendMessage(shareText);
+                messageInfo=messageManage.sendMessage(shareText);
                 if(messageInfo!=null){
                     ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.share_complete));
                     SelectFriendActivity.this.finish();
@@ -255,7 +255,7 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
         }else if(type==1){
             if(msgType==TO_TEXT_MSG||msgType==FROM_TEXT_MSG){
                 String message=messageInfo.getMessage();
-                messageManage.sendMessage(message);
+                messageInfo=messageManage.sendMessage(message);
                 if(messageInfo!=null){
                     ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.forward_success));
                     SelectFriendActivity.this.finish();

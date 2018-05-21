@@ -30,8 +30,8 @@ android {
         applicationId "com.bclould.tocotalk"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 29
-        versionName "0.29"
+        versionCode 30
+        versionName "0.30"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
@@ -102,36 +102,50 @@ configurations.all {
 
 
 
+
+
+
 dependencies {
+    implementation 'com.android.support:design:25.4.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':library')
     compile project(':keyboard')
+
     //腾讯地图
     implementation files('libs/TencentLocationSdk_v6.2.5.3_r15b3b3cc_20171103_115903.jar')
-    implementation files('libs/TencentMapSDK_Raster_v_1.2.8.1.c02ec64.jar')
     implementation files('libs/TencentMapSearch_v1.1.7.1.3e04ee1.jar')
     compile 'com.android.support:appcompat-v7:25.+'
+
     //卡片
     compile 'com.android.support:cardview-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
     //列表
     compile 'com.android.support:recyclerview-v7:25.3.1'
     testCompile 'junit:junit:4.12'
+
     //黄油刀
     compile 'com.jakewharton:butterknife:7.0.0'
+
     //轮播图
     compile 'com.youth.banner:banner:1.4.10'
+
     //下拉刷新
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1'
     compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.5.1'
+
     //图片选择
     compile 'com.contrarywind:Android-PickerView:4.1.0'
+
     //九宫格
     compile 'com.jaeger.ninegridimageview:library:1.1.1'
+
     //圖片預覽
     compile 'com.ycjiang:ImagePreview:2.1.2'
+
     //圖片選擇
     compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.1.3'
+
     //rxJava 和 retrofit2.0 和okhttp
     compile 'io.reactivex.rxjava2:rxjava:2.0.8'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
@@ -140,18 +154,22 @@ dependencies {
     compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0-RC3'
     compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+
     //二维码
     compile 'com.google.zxing:core:3.2.1'
     compile 'cn.bingoogolapple:bga-qrcodecore:1.1.7@aar'
     compile 'cn.bingoogolapple:bga-zxing:1.1.7@aar'
+
     //EventBus
     compile 'org.greenrobot:eventbus:3.1.1'
+
     //smack
     compile 'org.igniterealtime.smack:smack-android-extensions:4.2.0'
     compile 'org.igniterealtime.smack:smack-android:4.2.0'
     compile 'org.igniterealtime.smack:smack-tcp:4.2.0'
     compile 'org.igniterealtime.smack:smack-im:4.2.0'
     compile 'org.igniterealtime.smack:smack-resolver-minidns:4.2.0'
+
     //
     compile 'com.jude:easyrecyclerview:4.0.2'
     compile 'jp.wasabeef:recyclerview-animators:2.2.3'
@@ -162,19 +180,26 @@ dependencies {
     compile 'com.github.maning0303:MNPasswordEditText:V1.0.1'
     androidTestCompile 'org.testng:testng:6.9.6'
     compile 'com.wang.avi:library:2.1.3'
+
     //aws
     compile 'com.amazonaws:aws-android-sdk-core:2.6.0'
     compile 'com.amazonaws:aws-android-sdk-s3:2.6.0'
     compile 'com.amazonaws:aws-android-sdk-cognito:2.6.0'
+
     //視頻緩存策略
     compile 'com.danikula:videocache:2.7.0'
+
     //魯班壓縮
     compile 'top.zibin:Luban:1.1.3'
+
     //輪播圖
     compile 'com.youth.banner:banner:1.4.10'
+
     //富文本編輯
     compile 'com.github.huzhenjie:RichTextEditor:1.0.4'
+
     //    implementation 'com.google.firebase:firebase-messaging:11.6.2'
+
     //    implementation 'com.pusher:push-notifications-android:0.9.9'
     compile project(path: ':otr4jandroid')
     implementation 'info.guardianproject.iocipher:IOCipher:0.4'
@@ -182,8 +207,10 @@ dependencies {
     implementation 'info.guardianproject.netcipher:netcipher-httpclient:2.0.0-alpha1'
     implementation 'info.guardianproject.panic:panic:0.5'
     implementation files('libs/fastjson-1.1.32.jar')
+
     //漢字轉拼音
     compile 'com.belerweb:pinyin4j:2.5.0'
+
     //富文本編輯器
     compile project(path: ':lubottommenu')
     compile project(path: ':richtexteditorlib')
@@ -191,4 +218,5 @@ dependencies {
     compile 'com.facebook.fresco:fresco:1.5.0'
     compile 'com.facebook.fresco:imagepipeline-okhttp3:1.5.0'
     compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
+    implementation files('libs/TencentMapSDK_Raster_v_1.2.8.1.c02ec64.jar')
 }

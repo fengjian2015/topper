@@ -6,8 +6,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.utils.UtilTool;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 import com.tencent.lbssearch.object.result.Geo2AddressResultObject;
+
+import org.xutils.common.util.LogUtil;
 
 
 /**
@@ -18,6 +21,7 @@ public class LocationListViewHolder extends BaseViewHolder<Geo2AddressResultObje
     private TextView mLocationAddr;
     private CheckBox mLocationCheckbox;
     private RelativeLayout mRlSelectLocation;
+    private int position;
 
 
     public LocationListViewHolder(ViewGroup parent) {
@@ -28,9 +32,21 @@ public class LocationListViewHolder extends BaseViewHolder<Geo2AddressResultObje
         mRlSelectLocation = $(R.id.rl_select_location);
     }
 
+    public void setPosition(int position){
+        this.position=position;
+
+        UtilTool.Log("fengjian---","傳入內部的位置："+position);
+    }
+
     @Override
     public void setData(final Geo2AddressResultObject.ReverseAddressResult.Poi tencentPoi) {
         mLocationName.setText("" + tencentPoi.title);
         mLocationAddr.setText("" + tencentPoi.address);
+        UtilTool.Log("fengjian---","對比位置："+getPosition()+"    " +getOldPosition()+"    "+position);
+        if(getPosition()==position){
+            mLocationCheckbox.setChecked(true);
+        }else{
+            mLocationCheckbox.setChecked(false);
+        }
     }
 }

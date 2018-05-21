@@ -2,6 +2,7 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
@@ -93,10 +94,27 @@ public class LocationActivity extends AppCompatActivity implements
         x.Ext.init(this.getApplication());
         x.Ext.setDebug(true);
         x.view().inject(this);
+        startLocation();
         context = this;
         initMap();
         initView();
         iniRecycerView();
+
+    }
+
+
+    private void startLocation() {
+        LogUtil.e("开始定位" + mLocationManager);
+        TencentLocationListener listener=this;
+        TencentLocationRequest request =TencentLocationRequest.create();
+        request.setInterval(10000);
+        request.setRequestLevel(TencentLocationRequest.REQUEST_LEVEL_NAME);
+        request.setAllowGPS(true);
+        request.setAllowDirection(true);
+        TencentLocationManager locationManager = TencentLocationManager.getInstance(this);
+        int error = locationManager.requestLocationUpdates(request, listener);
+        LogUtil.e("定位error:" + error);
+
     }
 
 
@@ -116,22 +134,12 @@ public class LocationActivity extends AppCompatActivity implements
                     public void onMapScreenShot(Bitmap arg0) {
                         // TODO Auto-generated method stub
 
-                        Toast toast = Toast.makeText(context, getString(R.string.screen_shot_succeed), Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER, 0, 0);
-                        ImageView imageView = new ImageView(context);
-                        imageView.setImageBitmap(arg0);
-                        LinearLayout toastImage = (LinearLayout) toast.getView();
-                        toastImage.addView(imageView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT));
-                        toast.show();
                     }
                 });
             }
         });
 
     }
-
-
     private void initMap() {
         // 初始化屏幕中心
         centerIcon = new CenterIcon(this, mapView);
@@ -161,7 +169,8 @@ public class LocationActivity extends AppCompatActivity implements
         mAdapter.setOnItemClickListener(new RecyclerArrayAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(context, mAdapter.getItem(position).title, Toast.LENGTH_SHORT).show();
+                UtilTool.Log("fengjian----","點擊的位置："+position);
+                mAdapter.setPosition(position);
             }
         });
     }
@@ -211,17 +220,6 @@ public class LocationActivity extends AppCompatActivity implements
         LogUtil.e("---onStatusUpdate---" + i + "---" + s + "---" + s1);
     }
 
-    private void startLocation() {
-        LogUtil.e("开始定位" + mLocationManager);
-        TencentLocationRequest request = TencentLocationRequest.create();
-        request.setInterval(10000);
-        request.setRequestLevel(TencentLocationRequest.REQUEST_LEVEL_NAME);
-        request.setAllowGPS(true);
-        request.setAllowDirection(true);
-        int error = mLocationManager.requestLocationUpdates(request, this);
-        LogUtil.e("定位错误" + error);
-
-    }
 
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
@@ -285,7 +283,7 @@ public class LocationActivity extends AppCompatActivity implements
                     if (re.pois != null) {
                         mAdapter.addAll(re.pois);
                         for (Geo2AddressResultObject.ReverseAddressResult.Poi poi : re.pois) {
-                            LogUtil.e("移动屏幕后检索当前位置信息--" + poi.title + "----" + poi.address);
+                            LogUtil.e("移动屏幕后检索当前位置信息--" + poi.title + "----" + poi.address+"  ---"+poi.location);
                         }
                     }
 
@@ -309,18 +307,6 @@ public class LocationActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        checkPermission(context, new AcpListener() {
-            @Override
-            public void onGranted() {
-                startLocation();
-            }
-
-            @Override
-            public void onDenied(List<String> permissions) {
-
-            }
-        }, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE);
-
     }
 
     @Override
@@ -337,17 +323,6 @@ public class LocationActivity extends AppCompatActivity implements
         super.onStop();
     }
 
-
-    /**
-     * 权限检测
-     *
-     * @param context
-     * @param listener
-     * @param permissions
-     */
-    public void checkPermission(Context context, AcpListener listener, String... permissions) {
-        Acp.getInstance(context).request(new AcpOptions.Builder().setPermissions(permissions).build(), listener);
-    }
 
     public int dp2px(Context context, float value) {
         final float scale = context.getResources().getDisplayMetrics().densityDpi;

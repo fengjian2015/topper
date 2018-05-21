@@ -37,4 +37,13 @@ public class ChatCopyDialog extends Dialog {
             tv_line.setVisibility(View.VISIBLE);
         }
     }
+
+    public void  isShowTransmit(boolean isShowTransmit){
+        Button transmit = (Button) findViewById(R.id.btn_transmit);
+        TextView tv_line1=(TextView)findViewById(R.id.tv_line1);
+        if(isShowTransmit){
+            transmit.setVisibility(View.VISIBLE);
+            tv_line1.setVisibility(View.VISIBLE);
+        }
+    }
 }
