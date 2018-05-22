@@ -99,10 +99,10 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
                     Intent intent = new Intent(mContext, ConversationActivity.class);
                     Bundle bundle = new Bundle();
                     String user = mFriendChildName.getText() + "@" + Constants.DOMAINNAME;
-                    bundle.putString("name", mFriendChildName.getText().toString());
+                    bundle.putString("name", mUser.substring(0, mUser.indexOf("@")));
                     bundle.putString("user", mUser);
                     intent.putExtras(bundle);
-                    mMgr.updateNumber(user, 0);
+                    mMgr.updateNumber(mUser, 0);
                     EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
                     mContext.startActivity(intent);
                 }

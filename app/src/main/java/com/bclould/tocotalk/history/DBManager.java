@@ -59,6 +59,10 @@ public class DBManager {
         values.put("msgType", messageInfo.getMsgType());
         values.put("imageType", messageInfo.getImageType());
         values.put("send", messageInfo.getSend());
+        values.put("lat",messageInfo.getLat());
+        values.put("lng",messageInfo.getLng());
+        values.put("address",messageInfo.getAddress());
+        values.put("title",messageInfo.getTitle());
         int id = (int) db.insert("MessageRecord", null, values);
         UtilTool.Log("日志", "添加成功" + messageInfo.toString());
         return id;
@@ -101,6 +105,10 @@ public class DBManager {
                 messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
                 messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
                 messageInfo.setSend(c.getString(c.getColumnIndex("send")));
+                messageInfo.setLng(c.getFloat(c.getColumnIndex("lng")));
+                messageInfo.setLat(c.getFloat(c.getColumnIndex("lat")));
+                messageInfo.setAddress(c.getString(c.getColumnIndex("address")));
+                messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -134,6 +142,10 @@ public class DBManager {
                 messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
                 messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
                 messageInfo.setSend(c.getString(c.getColumnIndex("send")));
+                messageInfo.setLng(c.getFloat(c.getColumnIndex("lng")));
+                messageInfo.setLat(c.getFloat(c.getColumnIndex("lat")));
+                messageInfo.setAddress(c.getString(c.getColumnIndex("address")));
+                messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -167,6 +179,10 @@ public class DBManager {
                 messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
                 messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
                 messageInfo.setSend(c.getString(c.getColumnIndex("send")));
+                 messageInfo.setLng(c.getFloat(c.getColumnIndex("lng")));
+                messageInfo.setLat(c.getFloat(c.getColumnIndex("lat")));
+                messageInfo.setAddress(c.getString(c.getColumnIndex("address")));
+                messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -200,6 +216,10 @@ public class DBManager {
                 messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
                 messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
                 messageInfo.setSend(c.getString(c.getColumnIndex("send")));
+                messageInfo.setLng(c.getFloat(c.getColumnIndex("lng")));
+                messageInfo.setLat(c.getFloat(c.getColumnIndex("lat")));
+                messageInfo.setAddress(c.getString(c.getColumnIndex("address")));
+                messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -239,6 +259,10 @@ public class DBManager {
                 messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
                 messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
                 messageInfo.setSend(c.getString(c.getColumnIndex("send")));
+                messageInfo.setLng(c.getFloat(c.getColumnIndex("lng")));
+                messageInfo.setLat(c.getFloat(c.getColumnIndex("lat")));
+                messageInfo.setAddress(c.getString(c.getColumnIndex("address")));
+                messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -258,9 +282,14 @@ public class DBManager {
      * @return
      */
     public List<MessageInfo> queryLoadMessage(String user, int id, boolean isFist) {
-        db = helper.getReadableDatabase();
+
         ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
+        if(id<=0){
+            Toast.makeText(mContext, "没有更多记录了", Toast.LENGTH_SHORT).show();
+            return messageInfos;
+        }
         String sql;
+        db = helper.getReadableDatabase();
         if (isFist) {
             sql = "select * from MessageRecord where user=? and my_user=? and id >= ? limit ?";
         } else {
@@ -287,6 +316,10 @@ public class DBManager {
                 messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
                 messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
                 messageInfo.setSend(c.getString(c.getColumnIndex("send")));
+                messageInfo.setLng(c.getFloat(c.getColumnIndex("lng")));
+                messageInfo.setLat(c.getFloat(c.getColumnIndex("lat")));
+                messageInfo.setAddress(c.getString(c.getColumnIndex("address")));
+                messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
                 messageInfos.add(messageInfo);
             }
             c.close();

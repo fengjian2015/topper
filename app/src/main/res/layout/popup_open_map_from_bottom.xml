@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/click_to_dismiss"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <RelativeLayout
+        android:id="@+id/head_rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:alpha="0.5"
+        android:layout_above="@+id/popup_anima" />
+    <LinearLayout
+        android:id="@+id/popup_anima"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_baidu"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"
+            android:gravity="center"
+            android:background="@color/white"
+            android:text="@string/baidu_map"/>
+        <TextView
+            android:id="@+id/tv_gaode"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/x2"
+            android:background="@color/white"
+            android:text="@string/gaode_map"/>
+        <!--<TextView-->
+            <!--android:id="@+id/tv_tencent"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/y100"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:textSize="@dimen/x32"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_marginTop="@dimen/x2"-->
+            <!--android:background="@color/white"-->
+            <!--android:text="@string/tencent_map"/>-->
+    </LinearLayout>
+
+</RelativeLayout>

@@ -171,6 +171,7 @@ public class FriendListFragment extends Fragment {
             IntentFilter intentFilter = new IntentFilter("com.example.eric_jqm_chat.SearchActivity");
             getActivity().registerReceiver(receiver, intentFilter);
         }
+        updateData();
         return view;
     }
 

@@ -20,6 +20,7 @@ import com.bclould.tocotalk.richtext.base.depence.tools.Utils;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.GlideImgLoader;
 import com.bclould.tocotalk.utils.MySharedPreferences;
+import com.bclould.tocotalk.xmpp.RoomManage;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.facebook.cache.disk.DiskCacheConfig;
@@ -87,6 +88,8 @@ public class MyApp extends Application {
         XmppConnection.getInstance().setDB(new DBManager(this));
 
         XmppConnection.getInstance().setContext(this);
+
+        RoomManage.getInstance().setContext(this);
 
         new Constants(this);
 

@@ -92,7 +92,9 @@ public class AppsAdapter extends BaseAdapter {
                     } else if (name.equals(mContext.getString(R.string.video))) {
                         EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.open_vidicon)));
                     } else if (name.equals(mContext.getString(R.string.location))) {
-                        mContext.startActivity(new Intent(mContext, LocationActivity.class));
+                        Intent intent = new Intent(mContext, LocationActivity.class);
+                        intent.putExtra("user", mUser);
+                        mContext.startActivity(intent);
                     }else if (name.equals(mContext.getString(R.string.transfer))) {
                         Intent intent = new Intent(mContext, ChatTransferActivity.class);
                         intent.putExtra("user", mUser);

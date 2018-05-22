@@ -827,4 +827,11 @@
     <string name="forward_success">轉發成功</string>
     <string name="forward_failure">轉發失敗</string>
     <string name="send_in_progress">發送中</string>
+    <string name="please_update_version">請升級新版本后查看</string>
+    <string name="baidu_map">百度地圖</string>
+    <string name="gaode_map">高德地圖</string>
+    <string name="tencent_map">騰訊地圖</string>
+    <string name="no_gode_map">沒有安裝高德地圖，請先下載</string>
+    <string name="no_baidu_map">沒有安裝百度地圖，請先下載</string>
+    <string name="no_location_obtained">未定位，請稍後再試</string>
 </resources>

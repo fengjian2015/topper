@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light"
+    tools:context="com.bclould.tocotalk.ui.activity.ChatLookLocationActivity">
+    <RelativeLayout
+        android:id="@+id/rl_tou"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/location"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_line"
+        style="@style/HCutOffRule"
+        android:layout_below="@+id/rl_tou"/>
+
+    <com.tencent.tencentmap.mapsdk.map.MapView
+        android:id="@+id/mapview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tv_line"
+        android:layout_above="@+id/rl_content">
+
+    </com.tencent.tencentmap.mapsdk.map.MapView>
+
+    <ImageView
+        android:id="@+id/iv_location"
+        android:layout_width="@dimen/x80"
+        android:layout_height="@dimen/y80"
+        android:src="@mipmap/location_me"
+        android:layout_above="@+id/rl_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/y40"
+        android:layout_marginRight="@dimen/x20"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y160"
+        android:background="@color/white"
+        android:layout_alignParentBottom="true"
+        android:paddingRight="@dimen/x20"
+        android:paddingLeft="@dimen/x20">
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y80"
+            android:gravity="bottom"
+            android:layout_marginBottom="@dimen/x5"
+            android:textSize="@dimen/x32"
+            android:textColor="@color/black"
+            android:layout_marginRight="@dimen/x100"
+            />
+
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y80"
+            android:gravity="top"
+            android:layout_marginTop="@dimen/x5"
+            android:layout_alignParentBottom="true"
+            android:textSize="@dimen/x24"
+            android:textColor="@color/gray3"
+            android:layout_marginRight="@dimen/x100"
+            />
+        <ImageView
+            android:id="@+id/iv_open_map"
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/y80"
+            android:src="@mipmap/outside_map"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+</RelativeLayout>

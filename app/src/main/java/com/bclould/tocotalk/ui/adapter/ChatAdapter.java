@@ -36,6 +36,7 @@ import com.bclould.tocotalk.model.GrabRedInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.SerMap;
 import com.bclould.tocotalk.model.VoiceInfo;
+import com.bclould.tocotalk.ui.activity.ChatLookLocationActivity;
 import com.bclould.tocotalk.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tocotalk.ui.activity.ImageViewActivity;
 import com.bclould.tocotalk.ui.activity.IndividualDetailsActivity;
@@ -105,6 +106,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public static final int TO_FILE_MSG = 11;//发送文件消息类型
     public static final int FROM_TRANSFER_MSG = 12;//接受红包消息类型
     public static final int TO_TRANSFER_MSG = 13;//发送红包消息类型
+    public static final int FROM_LOCATION_MSG=20;//接受定位
+    public static final int TO_LOCATION_MSG=21;//發送定位
     public static final int ADMINISTRATOR_OTC_ORDER_MSG = 14;//管理員otc訂單消息
     public static final int ADMINISTRATOR_RED_PACKET_EXPIRED_MSG = 15;//管理員紅包過期消息
     public static final int ADMINISTRATOR_AUTH_STATUS_MSG = 16;//管理員實名認證消息
@@ -173,6 +176,12 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } else if (viewType == FROM_VIDEO_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_video, parent, false);
             holder = new FromVideoHolder(view);
+        }else if(viewType == FROM_LOCATION_MSG){
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_location, parent, false);
+            holder = new FromLocationHolder(view);
+        }else if(viewType == TO_LOCATION_MSG){
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_to_chat_location, parent, false);
+            holder = new ToLocationHolder(view);
         } /*else if (viewType == TO_FILE_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_to_chat_file, parent, false);
             holder = new FromVideoHolder(view);
@@ -203,6 +212,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } else if (viewType == ADMINISTRATOR_IN_OUT_COIN_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_inout_coin, parent, false);
             holder = new InoutCoinInformHolder(view);
+        }else {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_chat_text, parent, false);
+            holder = new TextChatHolder(view);
         }
         return holder;
     }
@@ -279,6 +291,14 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 FromVideoHolder fromVideoHolder = (FromVideoHolder) holder;
                 fromVideoHolder.setData(mMessageList.get(position));
                 break;
+            case TO_LOCATION_MSG:
+                ToLocationHolder toLocationHolder= (ToLocationHolder) holder;
+                toLocationHolder.setData(mMessageList.get(position));
+                break;
+            case FROM_LOCATION_MSG:
+                FromLocationHolder fromLocationHolder= (FromLocationHolder) holder;
+                fromLocationHolder.setData(mMessageList.get(position));
+                break;
             case TO_TRANSFER_MSG:
                 ToTransferHolder toTransferHolder = (ToTransferHolder) holder;
                 toTransferHolder.setData(mMessageList.get(position));
@@ -310,6 +330,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
             case ADMINISTRATOR_IN_OUT_COIN_MSG:
                 InoutCoinInformHolder inoutCoinInformHolder = (InoutCoinInformHolder) holder;
                 inoutCoinInformHolder.setData(mMessageList.get(position));
+                break;
+            default:
+                TextChatHolder textChatHolder= (TextChatHolder) holder;
+                textChatHolder.setData(mMessageList.get(position));
                 break;
         }
     }
@@ -1067,6 +1091,108 @@ public class ChatAdapter extends RecyclerView.Adapter {
             });
         }
     }
+    class ToLocationHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.iv_touxiang)
+        ImageView mIvTouxiang;
+        @Bind(R.id.tv_title)
+        TextView tvTitle;
+        @Bind(R.id.tv_address)
+        TextView tvAddress;
+        @Bind(R.id.iv_location)
+        ImageView ivLocation;
+        @Bind(R.id.rl_location)
+        RelativeLayout rlLocation;
+        @Bind(R.id.iv_warning)
+        ImageView mIvWarning;
+        @Bind(R.id.iv_load)
+        ImageView mIvLoad;
+
+        ToLocationHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final MessageInfo messageInfo) {
+            UtilTool.getImage(mMgr, mUser, mContext, mIvTouxiang);
+            goIndividualDetails(mIvTouxiang, mUser, mName);
+            if (messageInfo.getSendStatus() == 0) {
+                mIvLoad.setVisibility(View.VISIBLE);
+                mIvWarning.setVisibility(View.GONE);
+            } else if (messageInfo.getSendStatus() == 2) {
+                mIvWarning.setVisibility(View.VISIBLE);
+                mIvLoad.setVisibility(View.GONE);
+            } else {
+                mIvWarning.setVisibility(View.GONE);
+                mIvLoad.setVisibility(View.GONE);
+            }
+            tvTitle.setText(messageInfo.getTitle());
+            tvAddress.setText(messageInfo.getAddress());
+            ivLocation.setImageBitmap(BitmapFactory.decodeFile(messageInfo.getVoice()));
+            rlLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent(mContext, ChatLookLocationActivity.class);
+                    intent.putExtra("lng",messageInfo.getLng());
+                    intent.putExtra("lat",messageInfo.getLat());
+                    intent.putExtra("title",messageInfo.getTitle());
+                    intent.putExtra("address",messageInfo.getAddress());
+                    mContext.startActivity(intent);
+                }
+            });
+//
+            rlLocation.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false,false);
+                    return false;
+                }
+            });
+        }
+    }
+
+    class FromLocationHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.iv_touxiang)
+        ImageView mIvTouxiang;
+        @Bind(R.id.tv_title)
+        TextView tvTitle;
+        @Bind(R.id.tv_address)
+        TextView tvAddress;
+        @Bind(R.id.iv_location)
+        ImageView ivLocation;
+        @Bind(R.id.rl_location)
+        RelativeLayout rlLocation;
+
+        FromLocationHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final MessageInfo messageInfo) {
+            UtilTool.getImage(mMgr, mUser, mContext, mIvTouxiang);
+            goIndividualDetails(mIvTouxiang, mUser, mName);
+            tvTitle.setText(messageInfo.getTitle());
+            tvAddress.setText(messageInfo.getAddress());
+            ivLocation.setImageBitmap(BitmapFactory.decodeFile(messageInfo.getVoice()));
+            rlLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent(mContext, ChatLookLocationActivity.class);
+                    intent.putExtra("lng",messageInfo.getLng());
+                    intent.putExtra("lat",messageInfo.getLat());
+                    intent.putExtra("title",messageInfo.getTitle());
+                    intent.putExtra("address",messageInfo.getAddress());
+                    mContext.startActivity(intent);
+                }
+            });
+            rlLocation.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false,false);
+                    return false;
+                }
+            });
+        }
+    }
 
     class ToTransferHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_touxiang)
@@ -1474,5 +1600,16 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 mContext.startActivity(intent);
             }
         });
+    }
+
+    class TextChatHolder extends RecyclerView.ViewHolder {
+
+        public TextChatHolder(View itemView) {
+            super(itemView);
+        }
+
+        public void setData(MessageInfo messageInfo) {
+
+        }
     }
 }

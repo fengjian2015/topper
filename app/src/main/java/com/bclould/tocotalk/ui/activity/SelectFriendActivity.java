@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,6 +31,7 @@ import com.bclould.tocotalk.xmpp.MessageManage;
 import com.bclould.tocotalk.xmpp.Room;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -47,8 +50,8 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
 
     @Bind(R.id.bark)
     ImageView bark;
-    @Bind(R.id.listView)
-    MyListView mListView;
+    @Bind(R.id.recycler_view)
+    RecyclerView mRecyclerView;
 
     public static final String TEXT_PLAIN="text/plain";
     public static final String IMAGE_TYPE="image";
@@ -159,13 +162,15 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
     }
 
     private void initRecylerView() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         selectFriendAdapter = new SelectFriendAdapter(this, mUsers, mMgr);
-        mListView.setAdapter(selectFriendAdapter);
+        mRecyclerView.setAdapter(selectFriendAdapter);
         selectFriendAdapter.addOnItemListener(this);
         updateData();
     }
 
     private void updateData() {
+        mUsers.clear();
         List<UserInfo> userInfos = mMgr.queryAllUser();
         UserInfo userInfo = null;
         UserInfo userInfo2 = null;
@@ -180,6 +185,7 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
         if (userInfo2 != null)
             userInfos.remove(userInfo2);
         mUsers.addAll(userInfos);
+        Collections.sort(mUsers);
         selectFriendAdapter.notifyDataSetChanged();
     }
 

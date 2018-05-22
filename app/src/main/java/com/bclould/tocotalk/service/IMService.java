@@ -70,6 +70,8 @@ public class IMService extends Service{
             handler.removeMessages(EXLOGIN);
             exReconnect(1000);
         }else {
+            ConnectStateChangeListenerManager.get().notifyListener(
+                    ConnectStateChangeListenerManager.CONNECTING);
             XmppConnection.getInstance().getConnection();
             IMLogin.login(this);
         }

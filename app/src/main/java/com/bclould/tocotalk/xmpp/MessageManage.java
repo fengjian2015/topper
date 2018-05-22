@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.amazonaws.Request;
 import com.amazonaws.Response;
 import com.amazonaws.auth.BasicSessionCredentials;
@@ -36,6 +37,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.chat.Chat;
 import org.jivesoftware.smack.chat.ChatManager;
 import org.jivesoftware.smack.util.stringencoder.Base64;
+import org.json.JSONObject;
 import org.jxmpp.jid.impl.JidCreate;
 
 import java.io.File;
@@ -47,6 +49,7 @@ import top.zibin.luban.OnCompressListener;
 
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_FILE_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_IMG_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_LOCATION_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_TEXT_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_VIDEO_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_VOICE_MSG;
@@ -354,6 +357,100 @@ public class MessageManage {
         }
     }
 
+    public void sendLocationMessage(Bitmap bitmap, String title, String address, float lat, float lng){
+        final String postfix = "LOCATION";//获取文件后缀
+        final String key = UtilTool.getUserId() + UtilTool.createtFileName() + ".AN.jpg";//命名aws文件名
+        //缩略图储存路径
+        final File newFile = new File(Constants.PUBLICDIR + key);
+        UtilTool.comp(bitmap, newFile);//压缩图片
+        try {
+            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
+            org.jivesoftware.smack.packet.Message message = new org.jivesoftware.smack.packet.Message();
+            VoiceInfo voiceInfo = new VoiceInfo();
+            byte[] bytes = UtilTool.readStream(newFile.getAbsolutePath());
+            String base64 = Base64.encodeToString(bytes);
+            voiceInfo.setElementText(base64);
+            message.addExtension(voiceInfo);
+            MessageInfo messageInfo=new MessageInfo();
+            messageInfo.setTitle(title);
+            messageInfo.setAddress(address);
+            messageInfo.setLat(lat);
+            messageInfo.setLng(lng);
+            message.setBody(OtrChatListenerManager.getInstance().sentMessagesChange("[" + postfix + "]:" + JSON.toJSONString(messageInfo),
+                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
+            chat.sendMessage(message);
+
+            //把消息添加进数据库
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+
+            messageInfo.setVoice(newFile.getAbsolutePath());
+            messageInfo.setType(0);
+            messageInfo.setUsername(mUser);
+            messageInfo.setTime(time);
+            messageInfo.setMessage(title);
+            messageInfo.setMsgType(TO_LOCATION_MSG);
+            messageInfo.setSend(UtilTool.getJid());
+            mId= mMgr.addMessage(messageInfo);
+            if(room!=null){
+                room.refreshAddData(messageInfo);
+            }
+            //给聊天列表更新消息
+            if (mMgr.findConversation(mUser)) {
+                mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.location) + "]", time);
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                info.setFriend(mName);
+                info.setUser(mUser);
+                info.setMessage("[" + context.getString(R.string.location) + "]");
+                mMgr.addConversation(info);
+            }
+            //发送消息通知
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            if(room!=null){
+                mMgr.updateMessageHint(mId, 1);
+                room.sendFileResults(newFile.getAbsolutePath(),true);
+            }
+            return;
+        } catch (Exception e) {
+            Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            MessageInfo messageInfo = new MessageInfo();
+            messageInfo.setVoice(newFile.getAbsolutePath());
+            messageInfo.setMessage(title);
+            messageInfo.setType(0);
+            messageInfo.setUsername(mUser);
+            messageInfo.setTime(time);
+            messageInfo.setMsgType(TO_LOCATION_MSG);
+            messageInfo.setSendStatus(2);
+            mId=mMgr.addMessage(messageInfo);
+            if(room!=null){
+                room.refreshAddData(messageInfo);
+            }
+            if (mMgr.findConversation(mUser)) {
+                mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.location) + "]", time);
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                info.setFriend(mName);
+                info.setUser(mUser);
+                info.setMessage("[" + context.getString(R.string.location) + "]");
+                mMgr.addConversation(info);
+            }
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+
+            if(room!=null){
+                mMgr.updateMessageHint(mId, 2);
+                room.sendFileResults(newFile.getAbsolutePath(),false);
+            }
+        }
+    }
+
     //发送文件消息
     public void sendFileMessage(String path, String postfix, String key, String newFile) {
         try {
@@ -447,9 +544,10 @@ public class MessageManage {
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
         }
     }
+
+
     //发送录音
     public void sendVoice(int duration, String fileName) {
-
         try {
             //实例化聊天管理类
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());

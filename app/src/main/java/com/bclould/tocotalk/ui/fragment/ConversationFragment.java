@@ -165,6 +165,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                     if (mAnim != null)
                         mAnim.stop();
                     mLlLogin.setVisibility(View.GONE);
+                    mRlUnunited.setVisibility(View.GONE);
                     break;
                 /*case 2:
                     initRecyclerView();
@@ -179,6 +180,11 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                     mLlLogin.setVisibility(View.GONE);
                     break;*/
                 case 3:
+                    mLlLogin.setVisibility(View.VISIBLE);
+                    if (mAnim != null)
+                        mAnim.stop();
+                    mAnim = (AnimationDrawable) mIvAnim.getBackground();
+                    mAnim.start();
                     XmppListener.xmppListener = null;
                     break;
             }
@@ -187,9 +193,9 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
     private void initRelogin() {
         ConnectStateChangeListenerManager.get().registerStateChangeListener(this);
-        if (ConnectStateChangeListenerManager.get().getCurrentState() != ConnectStateChangeListenerManager.CONNECTED) {
-            ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
-        }
+        ConnectStateChangeListenerManager.get().setCurrentState( ConnectStateChangeListenerManager.DISCONNECT);
+        imState=-1;
+        ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
         Intent intent = new Intent(getContext(), IMCoreService.class);
         if (XmppConnection.isServiceWork(getContext(), "com.bclould.tocotalk.service.IMCoreService")) {
             XmppConnection.stopAllIMCoreService(getContext());
@@ -201,7 +207,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
     @Override
     public void onStateChange(int serviceState) {
-        if (serviceState == -1) return;
+        if (serviceState == -1||mLlLogin==null) return;
         if (imState == serviceState) {
             return;
         } else {
@@ -210,11 +216,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         if (serviceState == ConnectStateChangeListenerManager.CONNECTED) {// 已连接
             mHandler.sendEmptyMessage(1);
         } else if (serviceState == ConnectStateChangeListenerManager.CONNECTING) {// 连接中
-            mLlLogin.setVisibility(View.VISIBLE);
-            if (mAnim != null)
-                mAnim.stop();
-            mAnim = (AnimationDrawable) mIvAnim.getBackground();
-            mAnim.start();
             mHandler.sendEmptyMessage(3);
         } else if (serviceState == ConnectStateChangeListenerManager.DISCONNECT) {// 未连接
             mHandler.sendEmptyMessage(0);
@@ -224,6 +225,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 //            mHandler.sendEmptyMessage(1);
         }
     }
+
 
     //获取屏幕高度
     private void getPhoneSize() {
@@ -380,6 +382,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        ConnectStateChangeListenerManager.get().unregisterStateChangeListener(this);
     }
 
     private void initData() {

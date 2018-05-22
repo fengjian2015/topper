@@ -21,7 +21,6 @@ public class LocationListViewHolder extends BaseViewHolder<Geo2AddressResultObje
     private TextView mLocationAddr;
     private CheckBox mLocationCheckbox;
     private RelativeLayout mRlSelectLocation;
-    private int position;
 
 
     public LocationListViewHolder(ViewGroup parent) {
@@ -33,20 +32,19 @@ public class LocationListViewHolder extends BaseViewHolder<Geo2AddressResultObje
     }
 
     public void setPosition(int position){
-        this.position=position;
-
         UtilTool.Log("fengjian---","傳入內部的位置："+position);
+        mLocationCheckbox.setChecked(true);
     }
 
     @Override
     public void setData(final Geo2AddressResultObject.ReverseAddressResult.Poi tencentPoi) {
         mLocationName.setText("" + tencentPoi.title);
         mLocationAddr.setText("" + tencentPoi.address);
-        UtilTool.Log("fengjian---","對比位置："+getPosition()+"    " +getOldPosition()+"    "+position);
-        if(getPosition()==position){
+        if("true".equals(tencentPoi.id)){
             mLocationCheckbox.setChecked(true);
         }else{
             mLocationCheckbox.setChecked(false);
         }
+        UtilTool.Log("fengjian----",tencentPoi.category+"\n"+tencentPoi.id);
     }
 }
