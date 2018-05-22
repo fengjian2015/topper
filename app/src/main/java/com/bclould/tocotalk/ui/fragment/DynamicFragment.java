@@ -90,12 +90,18 @@ public class DynamicFragment extends Fragment {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.publish_comment))) {
             String id = event.getId();
-            for (DynamicListInfo.DataBean info : mDataList) {
-                if ((info.getId() + "").equals(id)) {
-                    info.setReview_count(Integer.parseInt(event.getReviewCount()));
+            for (int i = 0; i < mDataList.size(); i++) {
+                if ((mDataList.get(i).getId() + "").equals(id)) {
+                    mDataList.get(i).setReview_count(Integer.parseInt(event.getReviewCount()));
+                    DynamicListInfo.DataBean.ReviewListBean reviewListBean = new DynamicListInfo.DataBean.ReviewListBean();
+                    reviewListBean.setContent(event.getFiltrate());
+                    reviewListBean.setUser_name(event.getCoinName());
+                    mDataList.get(i).getReviewList().add(0, reviewListBean);
+                    mDynamicRVAdapter.mDynamicReviewRVAdapter.notifyItemInserted(0);
+                    mDynamicRVAdapter.mDynamicReviewRVAdapter.notifyItemRangeChanged(0, mDataList.get(i).getReviewList().size() - 0);
+                    return;
                 }
             }
-            mDynamicRVAdapter.notifyDataSetChanged();
         } else if (msg.equals(getString(R.string.zan))) {
             String id = event.getId();
             for (DynamicListInfo.DataBean info : mDataList) {

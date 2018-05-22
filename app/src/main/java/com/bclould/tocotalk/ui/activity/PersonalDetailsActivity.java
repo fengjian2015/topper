@@ -126,7 +126,7 @@ public class PersonalDetailsActivity extends BaseActivity {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] bytes = UtilTool.getFileToByte(newFile);
         String Base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
-        UtilTool.Log("編碼", Base64Image);
+        UtilTool.Log("編碼", Base64Image.length() + "");
         mPersonalDetailsPresenter.upImage(Base64Image, new PersonalDetailsPresenter.CallBack() {
             @Override
             public void send() {

@@ -5,6 +5,7 @@
                 android:background="@color/white">
 
     <LinearLayout
+        android:id="@+id/ll_dynamic_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -50,34 +51,6 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 
-            <!--<LinearLayout
-                android:id="@+id/ll_song"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y100"
-                android:layout_marginRight="@dimen/x30"
-                android:layout_marginTop="@dimen/y20"
-                android:background="#F7F7F7">
-
-                <ImageView
-                    android:id="@+id/play"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/x10"
-                    android:src="@mipmap/icon_news_play"/>
-
-                <TextView
-                    android:id="@+id/song_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/x20"
-                    android:text="春夏秋冬  —  张国荣"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x28"/>
-
-            </LinearLayout>-->
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y80"
@@ -114,6 +87,37 @@
             </LinearLayout>
 
         </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_review"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_dynamic_content"
+        android:layout_marginBottom="@dimen/y30"
+        android:layout_marginLeft="@dimen/x100"
+        android:layout_marginRight="@dimen/x20"
+        android:background="#F7F7F7"
+        android:orientation="vertical"
+        android:padding="@dimen/y20"
+        android:visibility="gone">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/tv_look"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/y15"
+            android:text="@string/view_more"
+            android:textStyle="bold"
+            android:textColor="@color/blue2"
+            android:textSize="@dimen/x28"/>
 
     </LinearLayout>
 

@@ -55,6 +55,7 @@ public class SumBuySellActivity extends BaseActivity {
     private int mPage = 1;
     private int mPageSize = 1000;
     private int mType = 0;
+    private String mCoinName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +72,7 @@ public class SumBuySellActivity extends BaseActivity {
 
     private void initIntent() {
         mType = getIntent().getIntExtra("type", 0);
+        mCoinName = getIntent().getStringExtra("coin_name");
         if (mType == 1) {
             mTvTitle.setText(getString(R.string.sum_buy));
         } else {
@@ -91,7 +93,7 @@ public class SumBuySellActivity extends BaseActivity {
     List<OrderListInfo.DataBean> mDataList = new ArrayList<>();
 
     private void initData() {
-        mBuySellPresenter.getMyOrderList(mType, mPage, mPageSize, new BuySellPresenter.CallBack3() {
+        mBuySellPresenter.getMyOrderList(mCoinName, mType, mPage, mPageSize, new BuySellPresenter.CallBack3() {
             @Override
             public void send(List<OrderListInfo.DataBean> data) {
                 if (mRecyclerView != null) {

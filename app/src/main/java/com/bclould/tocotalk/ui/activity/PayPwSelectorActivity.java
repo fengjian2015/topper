@@ -379,9 +379,10 @@ public class PayPwSelectorActivity extends BaseActivity {
     };
 
     private void setGesturePw() {
-        isGesture = !isGesture;
+        startActivity(new Intent(this, SetGesturePWActivity.class));
+        /*isGesture = !isGesture;
         MySharedPreferences.getInstance().setBoolean(GESTURE_PW, isGesture);
-        mOnOffGesture.setSelected(isGesture);
+        mOnOffGesture.setSelected(isGesture);*/
     }
 
     public void setData() {

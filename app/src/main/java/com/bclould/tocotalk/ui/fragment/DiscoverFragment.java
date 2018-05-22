@@ -205,7 +205,7 @@ public class DiscoverFragment extends Fragment {
 
         mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_news, null);
 
-        mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 5, true);
+        mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 3, true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
         // 设置背景颜色变暗
         WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();

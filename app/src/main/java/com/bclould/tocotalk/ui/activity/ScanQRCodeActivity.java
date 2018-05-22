@@ -21,6 +21,7 @@ import com.bclould.tocotalk.model.QrPaymentInfo;
 import com.bclould.tocotalk.model.QrReceiptInfo;
 import com.bclould.tocotalk.model.ReceiptInfo;
 import com.bclould.tocotalk.ui.fragment.ConversationFragment;
+import com.bclould.tocotalk.ui.fragment.FriendListFragment;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.google.gson.Gson;
@@ -110,7 +111,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
             setResult(RESULT_OK, intent);
             UtilTool.Log("日志", result);
             finish();
-        } else {
+        } else if (mCode == 1) {
             if (result != null && !result.isEmpty()) {
                 if (result.contains(Constants.BUSINESSCARD)) {
                     String base64 = result.substring(Constants.BUSINESSCARD.length(), result.length());
@@ -121,12 +122,12 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                     QrCardInfo qrCardInfo = gson.fromJson(jsonresult, QrCardInfo.class);
                     String name = qrCardInfo.getName();
                     if (!qrCardInfo.getName().contains(Constants.DOMAINNAME)) {
-                        name=name+"@"+Constants.DOMAINNAME;
+                        name = name + "@" + Constants.DOMAINNAME;
                     }
-                    Intent intent=new Intent(ScanQRCodeActivity.this,IndividualDetailsActivity.class);
-                    intent.putExtra("type",2);
+                    Intent intent = new Intent(ScanQRCodeActivity.this, IndividualDetailsActivity.class);
+                    intent.putExtra("type", 2);
                     intent.putExtra("name", name.split("@")[0]);
-                    intent.putExtra("user",name);
+                    intent.putExtra("user", name);
                     startActivity(intent);
                     finish();
                 } else if (result.contains(Constants.MONEYIN)) {
@@ -198,6 +199,11 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                     setResult(RESULT_OK, intent);
                     finish();
                 }
+            } else if (mCode == 2) {
+                Intent intent = new Intent(ScanQRCodeActivity.this, FriendListFragment.class);
+                intent.putExtra("result", result);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         }
         //再次延时1.5秒后启动

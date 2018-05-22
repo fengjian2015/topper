@@ -796,6 +796,10 @@
         <activity android:name=".ui.activity.HTMLActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <activity android:name=".ui.activity.SetGesturePWActivity"
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="stateHidden|adjustPan"/>
     </application>
 
 </manifest>

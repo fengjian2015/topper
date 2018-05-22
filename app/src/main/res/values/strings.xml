@@ -827,4 +827,5 @@
     <string name="forward_success">轉發成功</string>
     <string name="forward_failure">轉發失敗</string>
     <string name="send_in_progress">發送中</string>
+    <string name="view_more">查看全部</string>
 </resources>

@@ -134,11 +134,11 @@ public class BuySellPresenter {
         }
     }
 
-    public void getMyOrderList(int type, int page, int pageSize, final CallBack3 callBack) {
+    public void getMyOrderList(String coinName, int type, int page, int pageSize, final CallBack3 callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .getMyOrderList(UtilTool.getToken(), type, page, pageSize)
+                    .getMyOrderList(UtilTool.getToken(), type, page, pageSize, coinName)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<OrderListInfo>() {
@@ -402,11 +402,11 @@ public class BuySellPresenter {
         }
     }
 
-    public void getTotal(final CallBack6 callBack6) {
+    public void getTotal(String coinName, final CallBack6 callBack6) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .getTotal(UtilTool.getToken())
+                    .getTotal(UtilTool.getToken(), coinName)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<OrderStatisticsInfo>() {

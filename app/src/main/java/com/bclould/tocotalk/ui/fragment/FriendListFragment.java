@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,11 +18,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -31,14 +36,22 @@ import com.bclould.tocotalk.Presenter.PersonalDetailsPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.AuatarListInfo;
+import com.bclould.tocotalk.model.QrRedInfo;
 import com.bclould.tocotalk.model.UserInfo;
+import com.bclould.tocotalk.ui.activity.AddFriendActivity;
+import com.bclould.tocotalk.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tocotalk.ui.activity.NewFriendActivity;
+import com.bclould.tocotalk.ui.activity.PublicshDynamicActivity;
+import com.bclould.tocotalk.ui.activity.ScanQRCodeActivity;
 import com.bclould.tocotalk.ui.activity.SearchActivity;
+import com.bclould.tocotalk.ui.activity.SendQRCodeRedActivity;
 import com.bclould.tocotalk.ui.adapter.FriendListRVAdapter;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
+import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -69,6 +82,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.app.Activity.RESULT_OK;
 import static com.bclould.tocotalk.ui.activity.SystemSetActivity.INFORM;
 import static com.bclould.tocotalk.utils.MySharedPreferences.SETTING;
 
@@ -100,6 +114,13 @@ public class FriendListFragment extends Fragment {
     ScrollView mScrollView;
     @Bind(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.xx)
+    TextView mXx;
+    private int QRCODE = 1;
+    private DisplayMetrics mDm;
+    private int mHeightPixels;
+    private ViewGroup mView;
+    private PopupWindow mPopupWindow;
 
 
     private TreeMap<String, Boolean> mFromMap = new TreeMap<>();
@@ -171,7 +192,20 @@ public class FriendListFragment extends Fragment {
             IntentFilter intentFilter = new IntentFilter("com.example.eric_jqm_chat.SearchActivity");
             getActivity().registerReceiver(receiver, intentFilter);
         }
+        updateData();
+        getPhoneSize();
         return view;
+    }
+
+    //获取屏幕高度
+    private void getPhoneSize() {
+
+        mDm = new DisplayMetrics();
+
+        if (getActivity() != null)
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(mDm);
+
+        mHeightPixels = mDm.heightPixels;
     }
 
     @Override
@@ -298,7 +332,6 @@ public class FriendListFragment extends Fragment {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-
                         }
                     });
                     builder.setNegativeButton(getString(R.string.reject), new DialogInterface.OnClickListener() {
@@ -517,13 +550,14 @@ public class FriendListFragment extends Fragment {
     }
 
 
-    @OnClick({R.id.ll_search, R.id.news_friend})
+    @OnClick({R.id.iv_more, R.id.ll_search, R.id.news_friend})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.iv_more:
+                initPopWindow();
+                break;
             case R.id.ll_search:
-
                 startActivity(new Intent(getActivity(), SearchActivity.class));
-
                 break;
             case R.id.news_friend:
                 startActivity(new Intent(getActivity(), NewFriendActivity.class));
@@ -538,6 +572,95 @@ public class FriendListFragment extends Fragment {
                 XmppConnection.getInstance().joinMultiUserChat(Constants.MYUSER, "群聊六", mMgr);
 
                 break;*/
+        }
+    }
+
+    //初始化pop
+    private void initPopWindow() {
+
+        int widthPixels = mDm.widthPixels;
+
+        mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_cloud_message, null);
+
+        mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 4, true);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        // 设置背景颜色变暗
+        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+        lp.alpha = 0.9f;
+        getActivity().getWindow().setAttributes(lp);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+                lp.alpha = 1f;
+                getActivity().getWindow().setAttributes(lp);
+            }
+        });
+        mPopupWindow.showAsDropDown(mXx, (widthPixels - widthPixels / 100 * 35 - 20), 0);
+
+        popChildClick();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            String result = data.getStringExtra("result");
+            if (!result.isEmpty() && result.contains(Constants.REDPACKAGE)) {
+                String base64 = result.substring(Constants.REDPACKAGE.length(), result.length());
+                byte[] bytes = Base64.decode(base64, Base64.DEFAULT);
+                String jsonresult = new String(bytes);
+                Gson gson = new Gson();
+                QrRedInfo qrRedInfo = gson.fromJson(jsonresult, QrRedInfo.class);
+                UtilTool.Log("日志", qrRedInfo.getRedID());
+                Intent intent = new Intent(getActivity(), GrabQRCodeRedActivity.class);
+                intent.putExtra("id", qrRedInfo.getRedID());
+                intent.putExtra("type", true);
+                startActivity(intent);
+            }
+        }
+    }
+
+    //给pop子控件设置点击事件
+    private void popChildClick() {
+
+        int childCount = mView.getChildCount();
+
+        for (int i = 0; i < childCount; i++) {
+
+            final View childAt = mView.getChildAt(i);
+
+            childAt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    int index = mView.indexOfChild(childAt);
+
+                    switch (index) {
+                        case 0:
+                            Intent intent = new Intent(getActivity(), ScanQRCodeActivity.class);
+                            intent.putExtra("code", QRCODE);
+                            startActivityForResult(intent, 0);
+                            mPopupWindow.dismiss();
+                            break;
+                        case 1:
+                            startActivity(new Intent(getActivity(), SendQRCodeRedActivity.class));
+                            mPopupWindow.dismiss();
+                            break;
+                        case 2:
+                            startActivity(new Intent(getActivity(), AddFriendActivity.class));
+                            mPopupWindow.dismiss();
+                            break;
+                        case 3:
+                            startActivity(new Intent(getActivity(), PublicshDynamicActivity.class));
+                            mPopupWindow.dismiss();
+                            break;
+                    }
+
+                }
+            });
         }
     }
 }

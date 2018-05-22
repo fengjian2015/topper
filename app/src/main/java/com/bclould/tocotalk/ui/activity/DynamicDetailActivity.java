@@ -244,7 +244,7 @@ public class DynamicDetailActivity extends BaseActivity {
     }
 
     private void sendComment() {
-        String comment = mCommentEt.getText().toString();
+        final String comment = mCommentEt.getText().toString();
         mDynamicPresenter.sendComment(mId, comment, new DynamicPresenter.CallBack5() {
             @Override
             public void send(List<ReviewListInfo.DataBean.ListBean> data) {
@@ -256,6 +256,8 @@ public class DynamicDetailActivity extends BaseActivity {
                 MessageEvent messageEvent = new MessageEvent(getString(R.string.publish_comment));
                 messageEvent.setReviewCount(mDataList.size() + "");
                 messageEvent.setId(mId);
+                messageEvent.setCoinName(UtilTool.getUser());
+                messageEvent.setFiltrate(comment);
                 EventBus.getDefault().post(messageEvent);
             }
         });

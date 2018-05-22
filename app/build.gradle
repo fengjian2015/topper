@@ -30,8 +30,8 @@ android {
         applicationId "com.bclould.tocotalk"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 30
-        versionName "0.3"
+        versionCode 31
+        versionName "0.31"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {

@@ -1,10 +1,13 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.util.Base64;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
@@ -27,13 +30,23 @@ import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.compress.Luban;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.entity.LocalMedia;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.luck.picture.lib.config.PictureMimeType.ofImage;
 
 /**
  * Created by GA on 2018/5/8.
@@ -220,104 +233,83 @@ public class NewsEditActivity extends BaseActivity {
         });
     }
 
-    /*private static final int REQUEST_CODE_GET_CONTENT = 666;
-    private static final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 444;
-    private RichEditText richEditText;
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news_edit2);
-        richEditText = (RichEditText) findViewById(R.id.rich_text);
+
+    private List<LocalMedia> selectList = new ArrayList<>();
+
+    @JavascriptInterface
+    public void selectorImage() {
+        PictureSelector.create(this)
+                .openGallery(ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()
+//                        .theme(R.style.picture_white_style)
+                .maxSelectNum(1)// 最大图片选择数量 int
+                .imageSpanCount(3)// 每行显示个数 int
+                .selectionMode(PictureConfig.SINGLE)// 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
+                .previewImage(true)// 是否可预览图片 true or false
+                .previewVideo(true)// 是否可预览视频 true or false
+                .enablePreviewAudio(true) // 是否可播放音频 true or false
+                .compressGrade(Luban.THIRD_GEAR)// luban压缩档次，默认3档 Luban.THIRD_GEAR、Luban.FIRST_GEAR、Luban.CUSTOM_GEAR
+                .isCamera(true)// 是否显示拍照按钮 true or false
+                .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
+                .sizeMultiplier(0.5f)// glide 加载图片大小 0~1之间 如设置 .glideOverride()无效
+                .setOutputCameraPath("/CustomPath")// 自定义拍照保存路径,可不填
+                .enableCrop(false)// 是否裁剪 true or false
+                .compress(true)// 是否压缩 true or false
+                .compressMode(PictureConfig.SYSTEM_COMPRESS_MODE)//系统自带 or 鲁班压缩 PictureConfig.SYSTEM_COMPRESS_MODE or LUBAN_COMPRESS_MODE
+                .glideOverride(160, 160)// int glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
+                .withAspectRatio(1, 1)// int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
+                .hideBottomControls(true)// 是否显示uCrop工具栏，默认不显示 true or false
+                .isGif(false)// 是否显示gif图片 true or false
+                .freeStyleCropEnabled(true)// 裁剪框是否可拖拽 true or false
+                .circleDimmedLayer(false)// 是否圆形裁剪 true or false
+                .showCropFrame(true)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
+                .showCropGrid(true)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
+                .openClickSound(true)// 是否开启点击声音 true or false
+                .selectionMedia(selectList)// 是否传入已选图片 List<LocalMedia> list
+                .rotateEnabled(true) // 裁剪是否可旋转图片 true or false
+                .scaleEnabled(true)// 裁剪是否可放大缩小图片 true or false
+                .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
     }
 
+    //拿到选择的图片
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PictureConfig.CHOOSE_REQUEST:
+                    // 图片选择结果回调
+                    try {
+                        selectList = PictureSelector.obtainMultipleResult(data);
+                        insertImg(selectList.get(0).getCompressPath());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+            }
+        }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.undo:
-                richEditText.undo();
-                break;
-            case R.id.redo:
-                richEditText.redo();
-                break;
-            case R.id.export:
-                Log.e("xxx", richEditText.toHtml());
-                break;
-            default:
-                break;
+    private void insertImg(String compressPath) {
+        File file = new File(compressPath);
+        final String keyCut = UtilTool.getUserId() + UtilTool.createtFileName() + "compress" + UtilTool.getPostfix2(file.getName());
+        final File newFile = new File(Constants.PUBLICDIR + keyCut);
+        Bitmap cutImg = BitmapFactory.decodeFile(compressPath);
+        UtilTool.comp(cutImg, newFile);
+        byte[] bytes = UtilTool.getFileToByte(newFile);
+        String base64Str = Base64.encodeToString(bytes, Base64.DEFAULT);
+        try {
+            JSONObject json = new JSONObject();
+            json.put("img", "data:image/png;base64," + base64Str);
+            mWebView.loadUrl("javascript:insertImg('" + json + "')");
+            /*mWebView.evaluateJavascript("javascript:insertImg(" + json + ")", new ValueCallback<String>() {
+                @Override
+                public void onReceiveValue(String value) {
+
+                }
+            });*/
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-        return true;
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
-        if (data == null || data.getData() == null || requestCode == WRITE_EXTERNAL_STORAGE_REQUEST_CODE)
-            return;
-
-        final Uri uri = data.getData();
-        final int width = richEditText.getMeasuredWidth() - richEditText.getPaddingLeft() - richEditText.getPaddingRight();
-        richEditText.image(uri, width);
-    }
-
-    *//**
-     * 加粗
-     *//*
-    public void setBold(View v) {
-        richEditText.bold(!richEditText.contains(RichEditText.FORMAT_BOLD));
-    }
-
-    *//**
-     * 斜体
-     *//*
-    public void setItalic(View v) {
-        richEditText.italic(!richEditText.contains(RichEditText.FORMAT_ITALIC));
-    }
-
-    *//**
-     * 下划线
-     *//*
-    public void setUnderline(View v) {
-        richEditText.underline(!richEditText.contains(RichEditText.FORMAT_UNDERLINED));
-    }
-
-    *//**
-     * 删除线
-     *//*
-    public void setStrikethrough(View v) {
-        richEditText.strikethrough(!richEditText.contains(RichEditText.FORMAT_STRIKETHROUGH));
-    }
-
-    *//**
-     * 序号
-     *//*
-    public void setBullet(View v) {
-        richEditText.bullet(!richEditText.contains(RichEditText.FORMAT_BULLET));
-    }
-
-    *//**
-     * 引用块
-     *//*
-    public void setQuote(View v) {
-        richEditText.quote(!richEditText.contains(RichEditText.FORMAT_QUOTE));
-    }
-
-    public void insertImg(View v) {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    WRITE_EXTERNAL_STORAGE_REQUEST_CODE);
-        }
-
-        Intent getImage = new Intent(Intent.ACTION_GET_CONTENT);
-        getImage.addCategory(Intent.CATEGORY_OPENABLE);
-        getImage.setType("image*//*");
-        startActivityForResult(getImage, REQUEST_CODE_GET_CONTENT);
-    }
-*/
 }

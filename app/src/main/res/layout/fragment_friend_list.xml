@@ -30,6 +30,7 @@
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/xx"
         style="@style/HCutOffRule"/>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout

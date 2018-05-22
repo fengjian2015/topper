@@ -987,9 +987,11 @@ public interface MyService {
     );
 
     //修改備註
+    @FormUrlEncoded
     @POST("trans/total")
     Observable<OrderStatisticsInfo> getTotal(
-            @Header("Authorization") String token
+            @Header("Authorization") String token,
+            @Field("coin_name") String coin_name
     );
 
     //瀏覽記錄列表
@@ -999,7 +1001,8 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("type") int type,
             @Field("page") int page,
-            @Field("page_size") int page_size
+            @Field("page_size") int page_size,
+            @Field("coin_name") String coin_name
     );
 
 }

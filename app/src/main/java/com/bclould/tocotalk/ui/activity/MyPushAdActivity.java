@@ -124,7 +124,7 @@ public class MyPushAdActivity extends BaseActivity {
 
     private void initData() {
         BuySellPresenter buySellPresenter = new BuySellPresenter(this);
-        buySellPresenter.getTotal(new BuySellPresenter.CallBack6() {
+        buySellPresenter.getTotal(mCoinName, new BuySellPresenter.CallBack6() {
             @Override
             public void send(OrderStatisticsInfo.DataBean data) {
                 mTvSumBuy.setText(data.getBuy_sum());
@@ -199,11 +199,13 @@ public class MyPushAdActivity extends BaseActivity {
             case R.id.rl_sum_buy:
                 Intent intent = new Intent(this, SumBuySellActivity.class);
                 intent.putExtra("type", 1);
+                intent.putExtra("coin_name", mCoinName);
                 startActivity(intent);
                 break;
             case R.id.rl_sum_sell:
                 Intent intent2 = new Intent(this, SumBuySellActivity.class);
                 intent2.putExtra("type", 2);
+                intent2.putExtra("coin_name", mCoinName);
                 startActivity(intent2);
                 break;
             case R.id.ll_on_off:
