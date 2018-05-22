@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,7 @@ import butterknife.ButterKnife;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class SelectFriendAdapter extends BaseAdapter {
+public class SelectFriendAdapter extends RecyclerView.Adapter{
 
     private final Context mContext;
     private final List<UserInfo> mUsers;
@@ -53,75 +54,23 @@ public class SelectFriendAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
-        return mUsers.size();
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_friend_child, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public Object getItem(int i) {
-        return mUsers.get(i);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        ViewHolder viewHolder = (ViewHolder) holder;
+        viewHolder.setData(mUsers.get(position), position);
     }
 
     @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(final int position, View view, ViewGroup viewGroup) {
-        Collections.sort(mUsers);
-        final ViewHolder viewHolder;
-        UserInfo userInfo = mUsers.get(position);
-        if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_friend_child, null);
-            viewHolder = new ViewHolder(view);
-            view.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) view.getTag();
+    public int getItemCount() {
+        if (mUsers.size() != 0) {
+            return mUsers.size();
         }
-        //根据position获取首字母作为目录catalog
-        String catalog = mUsers.get(position).getFirstLetter();
-
-        //如果当前位置等于该分类首字母的Char的位置 ，则认为是第一次出现
-        if (position == getPositionForSection(catalog)) {
-            viewHolder.mCatalog.setVisibility(View.VISIBLE);
-            viewHolder.mCatalog.setText(userInfo.getFirstLetter().toUpperCase());
-        } else {
-            viewHolder.mCatalog.setVisibility(View.GONE);
-        }
-        Bitmap bitmap = null;
-        if (!userInfo.getPath().isEmpty()) {
-            String path = userInfo.getPath();
-            bitmap = BitmapFactory.decodeFile(path);
-        } else {
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) mContext.getDrawable(R.mipmap.img_nfriend_headshot1);
-            bitmap = bitmapDrawable.getBitmap();
-        }
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            if (baos != null && bitmap != null)
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            mDatas = baos.toByteArray();
-            baos.close();
-        } catch (Exception e) {
-            UtilTool.Log("日志", e.getMessage());
-            e.printStackTrace();
-        }
-        viewHolder.mFriendChildTouxiang.setImageBitmap(bitmap);
-        UtilTool.Log("好友", userInfo.getUser());
-        if (!StringUtils.isEmpty(userInfo.getRemark())) {
-            viewHolder.mFriendChildName.setText(userInfo.getRemark());
-        } else if (userInfo.getUser().contains("@")) {
-            viewHolder.mFriendChildName.setText(userInfo.getUser().substring(0, userInfo.getUser().indexOf("@")));
-        }
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onItemListener.onItemClick(viewHolder.mFriendChildName.getText().toString()
-                        ,mUsers.get(position).getUser());
-            }
-        });
-        return view;
+        return 0;
     }
 
     public void addOnItemListener(OnItemListener onItemListener){
@@ -136,7 +85,7 @@ public class SelectFriendAdapter extends BaseAdapter {
      * 获取catalog首次出现位置
      */
     public int getPositionForSection(String catalog) {
-        for (int i = 0; i < getCount(); i++) {
+        for (int i = 0; i < getItemCount(); i++) {
             String sortStr = mUsers.get(i).getFirstLetter();
             if (catalog.equalsIgnoreCase(sortStr)) {
                 return i;
@@ -145,7 +94,7 @@ public class SelectFriendAdapter extends BaseAdapter {
         return -1;
     }
 
-    class ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.catalog)
         TextView mCatalog;
         @Bind(R.id.friend_child_touxiang)
@@ -153,8 +102,43 @@ public class SelectFriendAdapter extends BaseAdapter {
         @Bind(R.id.friend_child_name)
         TextView mFriendChildName;
 
+        UserInfo mUserInfo;
+        private String mUser;
         ViewHolder(View view) {
+            super(view);
             ButterKnife.bind(this, view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onItemListener.onItemClick(mUser.substring(0, mUser.indexOf("@"))
+                            ,mUser);
+                }
+            });
+        }
+
+        public void setData(UserInfo userInfo, final int position) {
+            mUserInfo = userInfo;
+            mUser = userInfo.getUser();
+            String remark = userInfo.getRemark();
+            //根据position获取首字母作为目录catalog
+            String catalog = userInfo.getFirstLetter();
+
+            //如果当前位置等于该分类首字母的Char的位置 ，则认为是第一次出现
+            if (position == getPositionForSection(catalog)) {
+                mCatalog.setVisibility(View.VISIBLE);
+                mCatalog.setText(userInfo.getFirstLetter().toUpperCase());
+            } else {
+                mCatalog.setVisibility(View.GONE);
+            }
+            UtilTool.getImage(mMgr, userInfo.getUser(), mContext, mFriendChildTouxiang);
+
+            UtilTool.Log("好友", userInfo.getUser());
+            if (!StringUtils.isEmpty(userInfo.getRemark())) {
+                mFriendChildName.setText(remark);
+            } else if (userInfo.getUser().contains("@")) {
+                mFriendChildName.setText(userInfo.getUser().substring(0, userInfo.getUser().indexOf("@")));
+            }
+
         }
     }
 }

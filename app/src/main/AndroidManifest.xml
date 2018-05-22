@@ -793,7 +793,12 @@
             android:name=".service.ImageUpService"
             android:enabled="true" />
 
-        <activity android:name=".ui.activity.HTMLActivity"
+        <activity
+            android:name=".ui.activity.HTMLActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+
+        <activity android:name=".ui.activity.ChatLookLocationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 

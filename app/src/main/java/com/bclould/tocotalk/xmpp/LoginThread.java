@@ -5,6 +5,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tocotalk.service.IMService;
+import com.bclould.tocotalk.utils.CheckClassIsWork;
 import com.bclould.tocotalk.utils.UtilTool;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -19,6 +20,9 @@ public class LoginThread extends Thread {
 	@Override
 	public void run() {
 		while (true) {
+			if (CheckClassIsWork.isTopActivity(context, "LoginActivity")) {
+				break;
+			}
 			if (IMLogin.loginServer(context)) {
 				UtilTool.Log("fengjian","login------登陆成功");
 				ConnectStateChangeListenerManager.get().notifyListener(

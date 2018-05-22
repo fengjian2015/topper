@@ -18,21 +18,16 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.ui.adapter.LocationListAdapter;
 import com.bclould.tocotalk.ui.widget.AppTitle;
 import com.bclould.tocotalk.ui.widget.CenterIcon;
 import com.bclould.tocotalk.utils.UtilTool;
+import com.bclould.tocotalk.xmpp.RoomManage;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.jude.easyrecyclerview.decoration.DividerDecoration;
-import com.mylhyl.acp.Acp;
-import com.mylhyl.acp.AcpListener;
-import com.mylhyl.acp.AcpOptions;
 import com.tencent.lbssearch.TencentSearch;
 import com.tencent.lbssearch.httpresponse.BaseObject;
 import com.tencent.lbssearch.httpresponse.HttpResponseListener;
@@ -63,6 +58,7 @@ import jp.wasabeef.recyclerview.animators.ScaleInBottomAnimator;
 /**
  * Created by wushange on 2016/07/13.
  */
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class LocationActivity extends AppCompatActivity implements
         TencentLocationListener, TencentMap.OnMapCameraChangeListener {
     @ViewInject(R.id.apptitle)
@@ -83,8 +79,8 @@ public class LocationActivity extends AppCompatActivity implements
     private boolean isActiveMove = false;//是不是主动拖动屏幕
     TencentSearch tencentSearch = new TencentSearch(this);
     private CenterIcon centerIcon = null;
-
-
+    private int oldClick=0;//記錄上次點擊點
+    private String mUser;
     private Context context;
 
     @Override
@@ -96,7 +92,7 @@ public class LocationActivity extends AppCompatActivity implements
         x.view().inject(this);
         startLocation();
         context = this;
-        initMap();
+
         initView();
         iniRecycerView();
 
@@ -119,7 +115,7 @@ public class LocationActivity extends AppCompatActivity implements
 
 
     public void initView() {
-
+        mUser=getIntent().getStringExtra("user");
         appTitle.setCenterTitle(getString(R.string.location)).setLeftButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,11 +125,16 @@ public class LocationActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 mapView.getMap().getScreenShot(new TencentMap.OnScreenShotListener() {
-
                     @Override
                     public void onMapScreenShot(Bitmap arg0) {
                         // TODO Auto-generated method stub
-
+                        if (mAdapter.getCount()==0)return;
+                        RoomManage.getInstance().getMessageManage(mUser).sendLocationMessage(arg0
+                                ,mAdapter.getItem(oldClick).title
+                                ,mAdapter.getItem(oldClick).address
+                                ,mAdapter.getItem(oldClick).location.lat
+                                ,mAdapter.getItem(oldClick).location.lng);
+                        finish();
                     }
                 });
             }
@@ -170,7 +171,10 @@ public class LocationActivity extends AppCompatActivity implements
             @Override
             public void onItemClick(int position) {
                 UtilTool.Log("fengjian----","點擊的位置："+position);
-                mAdapter.setPosition(position);
+                mAdapter.getItem(oldClick).id="";
+                oldClick=position;
+                mAdapter.getItem(position).id="true";
+                mAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -193,6 +197,17 @@ public class LocationActivity extends AppCompatActivity implements
                 latLngLocation = new LatLng(tencentLocation.getLatitude(), tencentLocation.getLongitude());
             }
             mLocation = tencentLocation;
+            if (isFirstEnter) {
+                initMap();
+//                tencentMap.animateTo(latLngLocation);
+                tencentMap.setCenter(latLngLocation);
+                isActiveMove = false;
+                Location location = new Location((float) tencentLocation.getLatitude(), (float) tencentLocation.getLongitude());
+                searchPoi(location);
+                isFirstEnter = false;
+            } else {
+
+            }
             // 更新 location Marker
             if (mLocationMarker == null) {
                 mLocationMarker =
@@ -202,16 +217,6 @@ public class LocationActivity extends AppCompatActivity implements
             } else {
                 mLocationMarker.setPosition(latLngLocation);
             }
-            if (isFirstEnter) {
-                tencentMap.animateTo(latLngLocation);
-                isActiveMove = false;
-                Location location = new Location((float) tencentLocation.getLatitude(), (float) tencentLocation.getLongitude());
-                searchPoi(location);
-                isFirstEnter = false;
-            } else {
-
-            }
-
         }
     }
 
@@ -281,7 +286,12 @@ public class LocationActivity extends AppCompatActivity implements
                     Geo2AddressResultObject.ReverseAddressResult re = oj.result;
 
                     if (re.pois != null) {
+                        oldClick=0;
+                        if(re.pois.size()>0) {
+                            re.pois.get(oldClick).id = "true";
+                        }
                         mAdapter.addAll(re.pois);
+
                         for (Geo2AddressResultObject.ReverseAddressResult.Poi poi : re.pois) {
                             LogUtil.e("移动屏幕后检索当前位置信息--" + poi.title + "----" + poi.address+"  ---"+poi.location);
                         }

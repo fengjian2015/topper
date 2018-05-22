@@ -59,6 +59,7 @@ import com.bclould.tocotalk.utils.RecordUtil;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.MessageManage;
 import com.bclould.tocotalk.xmpp.Room;
+import com.bclould.tocotalk.xmpp.RoomManage;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
@@ -241,7 +242,10 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             }
         });
         mEkbEmoticonsKeyboard.addOnResultOTR(this);
-        messageManage=new MessageManage(mMgr,mUser,this,mName);
+        messageManage=RoomManage.getInstance().getMessageManage(mUser);
+        if(messageManage==null){
+            messageManage=RoomManage.getInstance().addMessageManage(mUser,mName);
+        }
         messageManage.addRoom(this);
     }
 

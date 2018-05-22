@@ -18,6 +18,8 @@ import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Base64;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.amazonaws.auth.BasicSessionCredentials;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
@@ -81,6 +83,7 @@ import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_RECEIPT_
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_RED_PACKET_EXPIRED_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_TRANSFER_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_IMG_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_LOCATION_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_RED_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_TEXT_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_TRANSFER_MSG;
@@ -334,6 +337,16 @@ public class XmppListener {
                                     path = context.getFilesDir().getAbsolutePath() + File.separator
                                             + "RecordRemDir";
                                     goChat(from,context.getString(R.string.voice));
+                                }else if(chatMsg.contains("[LOCATION]")){
+                                    MessageInfo messageInfo1=new MessageInfo();
+                                    messageInfo1= JSONObject.parseObject(chatMsg.substring(chatMsg.indexOf(":")+1,chatMsg.length()),MessageInfo.class);
+                                    chatMsg=messageInfo1.getTitle();
+                                    messageInfo=messageInfo1;
+                                    redpacket = "[" + context.getString(R.string.location) + "]";
+                                    msgType = FROM_LOCATION_MSG;
+                                    fileName = UtilTool.createtFileName() + ".jpg";
+                                    path = context.getFilesDir().getAbsolutePath() + File.separator + "images";
+                                    goChat(from,context.getString(R.string.location));
                                 } else if (chatMsg.contains("[Image]")) {
                                     String key = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
 

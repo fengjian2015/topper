@@ -25,6 +25,70 @@ public class MessageInfo implements Serializable {
     private int msgType;
     private int imageType;
     private String send;//2018-05-15增加字段，用於判斷是誰發送消息
+    //2018年5月22日增加定位相關信息
+    private float lat;
+    private float lng;
+    private String address;
+    private String title;
+
+    @Override
+    public String toString() {
+        return "MessageInfo{" +
+                "message='" + message + '\'' +
+                ", count='" + count + '\'' +
+                ", coin='" + coin + '\'' +
+                ", username='" + username + '\'' +
+                ", time='" + time + '\'' +
+                ", remark='" + remark + '\'' +
+                ", type=" + type +
+                ", status=" + status +
+                ", id=" + id +
+                ", redId=" + redId +
+                ", voice='" + voice + '\'' +
+                ", voiceStatus=" + voiceStatus +
+                ", voiceTime='" + voiceTime + '\'' +
+                ", sendStatus=" + sendStatus +
+                ", msgType=" + msgType +
+                ", imageType=" + imageType +
+                ", send='" + send + '\'' +
+                ", lat=" + lat +
+                ", lng=" + lng +
+                ", address='" + address + '\'' +
+                ", title='" + title + '\'' +
+                '}';
+    }
+
+    public float getLat() {
+        return lat;
+    }
+
+    public void setLat(float lat) {
+        this.lat = lat;
+    }
+
+    public float getLng() {
+        return lng;
+    }
+
+    public void setLng(float lng) {
+        this.lng = lng;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getSend() {
         return send;
@@ -162,23 +226,4 @@ public class MessageInfo implements Serializable {
         this.redId = redId;
     }
 
-    @Override
-    public String toString() {
-        return "MessageInfo{" +
-                "message='" + message + '\'' +
-                ", count='" + count + '\'' +
-                ", coin='" + coin + '\'' +
-                ", username='" + username + '\'' +
-                ", time='" + time + '\'' +
-                ", remark='" + remark + '\'' +
-                ", type=" + type +
-                ", state=" + status +
-                ", id=" + id +
-                ", redId=" + redId +
-                ", voice='" + voice + '\'' +
-                ", voiceStatus=" + voiceStatus +
-                ", voiceTime='" + voiceTime + '\'' +
-                ", sendStatus=" + sendStatus +
-                '}';
-    }
 }

@@ -1,5 +1,7 @@
 package com.bclould.tocotalk.xmpp;
 
+import com.bclould.tocotalk.utils.UtilTool;
+
 import org.jivesoftware.smack.util.StringUtils;
 
 import java.util.ArrayList;
@@ -109,6 +111,10 @@ public class ConnectStateChangeListenerManager {
 
 	public int getCurrentState() {
 		return currentState;
+	}
+
+	public void setCurrentState(int currentState){
+		this.currentState=currentState;
 	}
 
 	public void clear() {

@@ -16,6 +16,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.activity.ConversationActivity;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
@@ -99,6 +100,8 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
                     Bundle bundle = new Bundle();
                     String name = mUser.substring(0, mUser.indexOf("@"));
                     bundle.putString("name", name);
+                    String user = mFriendChildName.getText() + "@" + Constants.DOMAINNAME;
+                    bundle.putString("name", mUser.substring(0, mUser.indexOf("@")));
                     bundle.putString("user", mUser);
                     intent.putExtras(bundle);
                     mMgr.updateNumber(mUser, 0);

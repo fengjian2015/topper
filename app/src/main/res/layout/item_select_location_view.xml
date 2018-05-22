@@ -8,7 +8,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/x20">
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x30">
 
         <TextView
             android:id="@+id/location_name"
@@ -25,7 +26,6 @@
             android:layout_below="@+id/location_name"
             android:text="北京天安门"
             android:textColor="@android:color/darker_gray"
-            android:layout_marginRight="@dimen/x30"
             android:textSize="@dimen/x28"/>
 
     </RelativeLayout>
@@ -34,7 +34,7 @@
         android:id="@+id/location_checkbox"
         style="@style/CustomCheckboxTheme"
         android:layout_width="wrap_content"
-        android:checked="false"
+        android:clickable="false"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
