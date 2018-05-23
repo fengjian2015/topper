@@ -24,8 +24,8 @@ public class Constants {
     }
 
     public static final int OPENFIRE_PORT = 2018;
-        public static final String BASE_URL = "https://www.bclould.com:8112/api/";//测试
-//    public static final String BASE_URL = "https://api.cnblocklink.com/api/";
+    public static final String BASE_URL = "https://www.bclould.com:8112/api/";//测试
+    //    public static final String BASE_URL = "https://api.cnblocklink.com/api/";
 //        public static String DOMAINNAME = "xmpp.bclould.com";//测试
     public static String DOMAINNAME = "xmpp.coingbank.com";
     public static String DOMAINNAME2 = MySharedPreferences.getInstance().getString(XMPP_SERVER);
@@ -63,4 +63,10 @@ public class Constants {
     public static String GONGGAO_WEB_URL = "bulletin/info/";
     public static String OTR_REQUEST = "?OTRv2?";
     public static String NEWS_EDIT_WEB_URL = "news/publish";
+    public static int NEW_BROWSE_TYPE = 2;
+    public static int NEW_MY_TYPE = 0;
+    public static int GONGGAO_TYPE = 1;
+    public static int NEWS_MAIN_TYPE = 4;
+    public static int NEW_DRAFTS_TYPE = 3;
+    public static String NEWS_DRAFTS_URL = "news/edit/";
 }

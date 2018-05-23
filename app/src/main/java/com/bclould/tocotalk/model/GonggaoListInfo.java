@@ -49,6 +49,15 @@ public class GonggaoListInfo {
         private String index_pic;
         private int is_top;
         private int is_new;
+        private int status;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
 
         public int getIs_top() {
             return is_top;

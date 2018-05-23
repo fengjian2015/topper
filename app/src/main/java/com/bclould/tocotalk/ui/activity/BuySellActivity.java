@@ -34,6 +34,8 @@ import com.bclould.tocotalk.model.OrderInfo;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.UtilTool;
+import com.bumptech.glide.Glide;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import org.greenrobot.eventbus.EventBus;
@@ -309,6 +311,11 @@ public class BuySellActivity extends BaseActivity {
         Bundle bundle = getIntent().getExtras();
         mType = bundle.getBoolean("type", false);
         mData = (DealListInfo.DataBean) bundle.getSerializable("data");
+        if (mData.getAvatar().isEmpty()) {
+            mIvTouxiang.setImageBitmap(UtilTool.setDefaultimage(this));
+        } else {
+            Glide.with(this).load(mData.getAvatar()).into(mIvTouxiang);
+        }
         mPrice = Double.parseDouble(mData.getPrice());
         mId = mData.getId();
         mTvName.setText(mData.getUsername());

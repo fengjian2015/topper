@@ -97,8 +97,12 @@ public class DynamicFragment extends Fragment {
                     reviewListBean.setContent(event.getFiltrate());
                     reviewListBean.setUser_name(event.getCoinName());
                     mDataList.get(i).getReviewList().add(0, reviewListBean);
-                    mDynamicRVAdapter.mDynamicReviewRVAdapter.notifyItemInserted(0);
-                    mDynamicRVAdapter.mDynamicReviewRVAdapter.notifyItemRangeChanged(0, mDataList.get(i).getReviewList().size() - 0);
+                    if (mDataList.get(i).getReviewList().size() > 5) {
+                        mDataList.get(i).getReviewList().remove(mDataList.get(i).getReviewList().size() - 1);
+                    }
+                    mDynamicRVAdapter.notifyItemChanged(i);
+                    /*mDynamicRVAdapter.mDynamicReviewRVAdapter.notifyItemInserted(0);
+                    mDynamicRVAdapter.mDynamicReviewRVAdapter.notifyItemRangeChanged(0, mDataList.get(i).getReviewList().size() - 0);*/
                     return;
                 }
             }

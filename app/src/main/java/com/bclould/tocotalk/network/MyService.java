@@ -922,7 +922,8 @@ public interface MyService {
     Observable<GonggaoListInfo> myNewsList(
             @Header("Authorization") String token,
             @Field("page") int page,
-            @Field("page_size") int page_size
+            @Field("page_size") int page_size,
+            @Field("status") int status
     );
 
     //草稿箱列表
@@ -1003,6 +1004,12 @@ public interface MyService {
             @Field("page") int page,
             @Field("page_size") int page_size,
             @Field("coin_name") String coin_name
+    );
+
+    //清除新聞瀏覽記錄
+    @POST("news/deleteHistory")
+    Observable<BaseInfo> deleteDrowsingHistory(
+            @Header("Authorization") String token
     );
 
 }

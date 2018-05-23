@@ -51,8 +51,8 @@ import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
+import com.gjiazhe.wavesidebar.WaveSideBar;
 import com.google.gson.Gson;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
@@ -100,6 +100,8 @@ public class FriendListFragment extends Fragment {
     ImageView mIvMore;
     @Bind(R.id.rl_title)
     RelativeLayout mRlTitle;
+    @Bind(R.id.xx)
+    TextView mXx;
     @Bind(R.id.ll_search)
     LinearLayout mLlSearch;
     @Bind(R.id.iv)
@@ -110,12 +112,9 @@ public class FriendListFragment extends Fragment {
     RelativeLayout mNewsFriend;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @Bind(R.id.scrollView)
-    ScrollView mScrollView;
-    @Bind(R.id.refresh_layout)
-    SmartRefreshLayout mRefreshLayout;
-    @Bind(R.id.xx)
-    TextView mXx;
+    @Bind(R.id.side_bar)
+    WaveSideBar mSideBar;
+
     private int QRCODE = 1;
     private DisplayMetrics mDm;
     private int mHeightPixels;
@@ -453,11 +452,23 @@ public class FriendListFragment extends Fragment {
     };
 
     private void setListener() {
-        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+        /*mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
                 initData();
+            }
+        });*/
+        mSideBar.bringToFront();
+        mSideBar.setOnSelectIndexItemListener(new WaveSideBar.OnSelectIndexItemListener() {
+            @Override
+            public void onSelectIndexItem(String index) {
+                for (int i = 0; i < mUsers.size(); i++) {
+                    if (mUsers.get(i).getFirstLetter().equals(index)) {
+                        ((LinearLayoutManager) mRecyclerView.getLayoutManager()).scrollToPositionWithOffset(i, 0);
+                        return;
+                    }
+                }
             }
         });
     }

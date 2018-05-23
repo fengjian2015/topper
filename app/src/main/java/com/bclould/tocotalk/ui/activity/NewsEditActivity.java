@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.luck.picture.lib.PictureSelector;
@@ -55,7 +56,6 @@ import static com.luck.picture.lib.config.PictureMimeType.ofImage;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class NewsEditActivity extends BaseActivity {
 
-
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.publish)
@@ -70,14 +70,45 @@ public class NewsEditActivity extends BaseActivity {
     WebView mWebView;
     @Bind(R.id.ll_load_error)
     LinearLayout mLlLoadError;
+    private int mId;
+    private int mType;
+    private String mUrl;
+    private LoadingProgressDialog mProgressDialog;
+
+    private void showDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = LoadingProgressDialog.createDialog(this);
+            mProgressDialog.setMessage(getString(R.string.uploading));
+        }
+        mProgressDialog.show();
+    }
+
+    private void hideDialog() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_edit2);
         ButterKnife.bind(this);
+        initIntent();
         initWebView();
         initView();
+    }
+
+    private void initIntent() {
+        Intent intent = getIntent();
+        mId = intent.getIntExtra("id", 0);
+        mType = intent.getIntExtra("type", 0);
+        if (mType == Constants.NEW_DRAFTS_TYPE) {
+            mUrl = Constants.BASE_URL + Constants.NEWS_DRAFTS_URL + mId + "/" + UtilTool.getUserId();
+        } else {
+            mUrl = Constants.BASE_URL + Constants.NEWS_EDIT_WEB_URL;
+        }
     }
 
     @OnClick({R.id.bark, R.id.publish})
@@ -87,7 +118,9 @@ public class NewsEditActivity extends BaseActivity {
                 showSaveDialog();
                 break;
             case R.id.publish:
-                showServiceChargeDialog();
+//                showServiceChargeDialog();
+                showDialog();
+                publish(2);
                 break;
         }
     }
@@ -96,7 +129,7 @@ public class NewsEditActivity extends BaseActivity {
         mLlLoadError.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mWebView.loadUrl(Constants.BASE_URL + Constants.NEWS_EDIT_WEB_URL);
+                mWebView.loadUrl(mUrl);
             }
         });
     }
@@ -170,7 +203,7 @@ public class NewsEditActivity extends BaseActivity {
                 mProgressBar.setProgress(progress);
             }
         });
-        mWebView.loadUrl(Constants.BASE_URL + Constants.NEWS_EDIT_WEB_URL);
+        mWebView.loadUrl(mUrl);
     }
 
     private void showSaveDialog() {
@@ -193,6 +226,7 @@ public class NewsEditActivity extends BaseActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                showDialog();
                 publish(1);
                 deleteCacheDialog.dismiss();
             }
@@ -214,7 +248,6 @@ public class NewsEditActivity extends BaseActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                publish(2);
                 deleteCacheDialog.dismiss();
             }
         });
@@ -226,6 +259,7 @@ public class NewsEditActivity extends BaseActivity {
             @Override
             public void run() {
                 if (status == 1) {
+                    hideDialog();
                     finish();
                 }
                 Toast.makeText(NewsEditActivity.this, message, Toast.LENGTH_SHORT).show();
@@ -300,16 +334,20 @@ public class NewsEditActivity extends BaseActivity {
         try {
             JSONObject json = new JSONObject();
             json.put("img", "data:image/png;base64," + base64Str);
-            mWebView.loadUrl("javascript:insertImg('" + json + "')");
-            /*mWebView.evaluateJavascript("javascript:insertImg(" + json + ")", new ValueCallback<String>() {
+            mWebView.evaluateJavascript("javascript:insertImg('" + json.toString() + "')", new ValueCallback<String>() {
                 @Override
                 public void onReceiveValue(String value) {
 
                 }
-            });*/
+            });
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
 
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        showSaveDialog();
     }
 }

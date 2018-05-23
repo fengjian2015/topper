@@ -164,7 +164,10 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
                     if (mAnim != null)
                         mAnim.stop();
-                    mLlLogin.setVisibility(View.GONE);
+                    if (mLlLogin != null) {
+                        mLlLogin.setVisibility(View.VISIBLE);
+                    }
+                    if (mRlUnunited != null)
                     mRlUnunited.setVisibility(View.GONE);
                     break;
                 /*case 2:
@@ -180,7 +183,9 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                     mLlLogin.setVisibility(View.GONE);
                     break;*/
                 case 3:
-                    mLlLogin.setVisibility(View.VISIBLE);
+                    if (mLlLogin != null) {
+                        mLlLogin.setVisibility(View.VISIBLE);
+                    }
                     if (mAnim != null)
                         mAnim.stop();
                     mAnim = (AnimationDrawable) mIvAnim.getBackground();
@@ -193,8 +198,8 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
     private void initRelogin() {
         ConnectStateChangeListenerManager.get().registerStateChangeListener(this);
-        ConnectStateChangeListenerManager.get().setCurrentState( ConnectStateChangeListenerManager.DISCONNECT);
-        imState=-1;
+        ConnectStateChangeListenerManager.get().setCurrentState(ConnectStateChangeListenerManager.DISCONNECT);
+        imState = -1;
         ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
         Intent intent = new Intent(getContext(), IMCoreService.class);
         if (XmppConnection.isServiceWork(getContext(), "com.bclould.tocotalk.service.IMCoreService")) {
@@ -207,7 +212,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
     @Override
     public void onStateChange(int serviceState) {
-        if (serviceState == -1||mLlLogin==null) return;
+        if (serviceState == -1 || mLlLogin == null) return;
         if (imState == serviceState) {
             return;
         } else {

@@ -16,10 +16,16 @@ import com.bclould.tocotalk.Presenter.NewsNoticePresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.GonggaoListInfo;
 import com.bclould.tocotalk.ui.adapter.NewsManagerRVAdapter;
+import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.SpaceItemDecoration;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,13 +51,29 @@ public class MyNewsFragment extends android.support.v4.app.Fragment {
     private int mPage = 1;
     private int mPageSize = 1000;
     private NewsManagerRVAdapter mNewsManagerRVAdapter;
+    private String mFiltrate = "6";
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_news_manager, container, false);
         ButterKnife.bind(this, view);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         return view;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(getString(R.string.news_filtrate))) {
+            if (event.getFiltrate() != null) {
+                mFiltrate = event.getFiltrate();
+                initData();
+            }
+        } else if (msg.equals(getString(R.string.delete_news_my))) {
+            initData();
+        }
     }
 
     @Override
@@ -76,7 +98,7 @@ public class MyNewsFragment extends android.support.v4.app.Fragment {
     List<GonggaoListInfo.DataBean> mDataList = new ArrayList<>();
 
     private void initData() {
-        mNewsNoticePresenter.getMyNewsList(mPage, mPageSize, new NewsNoticePresenter.CallBack2() {
+        mNewsNoticePresenter.getMyNewsList(mFiltrate, mPage, mPageSize, new NewsNoticePresenter.CallBack2() {
             @Override
             public void send(List<GonggaoListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
@@ -97,7 +119,7 @@ public class MyNewsFragment extends android.support.v4.app.Fragment {
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mNewsManagerRVAdapter = new NewsManagerRVAdapter(getContext(), mDataList);
+        mNewsManagerRVAdapter = new NewsManagerRVAdapter(getContext(), mDataList, mNewsNoticePresenter, Constants.NEW_MY_TYPE);
         mRecyclerView.setAdapter(mNewsManagerRVAdapter);
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(40));
     }
@@ -106,5 +128,6 @@ public class MyNewsFragment extends android.support.v4.app.Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 }

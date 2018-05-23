@@ -835,4 +835,15 @@
     <string name="no_gode_map">沒有安裝高德地圖，請先下載</string>
     <string name="no_baidu_map">沒有安裝百度地圖，請先下載</string>
     <string name="no_location_obtained">未定位，請稍後再試</string>
+    <string name="pass">通過</string>
+    <string name="no_pass">未通過</string>
+    <string name="delete_news_hint">是否刪除該新聞？</string>
+    <string name="empty">清空</string>
+    <string name="empty_news_browsing_history_hint">是否清空所有瀏覽記錄？</string>
+    <string name="news_filtrate">新聞篩選</string>
+    <string name="empty_news_browsing_history">清空新聞瀏覽記錄</string>
+    <string name="delete_news_drafts">刪除新聞草稿</string>
+    <string name="delete_news_my">刪除我的新聞</string>
+    <string name="empty_news_browsing_history_callback">清空新聞瀏覽記錄回調</string>
+    <string name="news_browse_record_null_hint">沒有瀏覽記錄</string>
 </resources>

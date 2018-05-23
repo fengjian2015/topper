@@ -19,6 +19,8 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.ui.activity.BuySellActivity;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.utils.UtilTool;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -94,8 +96,8 @@ public class BuySellRVAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final DealListInfo.DataBean dataBean) {
-            if(mType){
-                if(dataBean.getSelf_trans() == 1){
+            if (mType) {
+                if (dataBean.getSelf_trans() == 1) {
                     mTvPayWay.setBackground(mContext.getDrawable(R.drawable.bg_payway_shape2));
                     mBtnSellBuy.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape3));
                     mBtnSellBuy.setTextColor(mContext.getResources().getColor(R.color.red));
@@ -106,7 +108,7 @@ public class BuySellRVAdapter extends RecyclerView.Adapter {
                             showDialog(dataBean);
                         }
                     });
-                }else {
+                } else {
                     mBtnSellBuy.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape2));
                     mBtnSellBuy.setTextColor(mContext.getResources().getColor(R.color.sell));
                     mBtnSellBuy.setText(mContext.getString(R.string.work_off));
@@ -123,8 +125,8 @@ public class BuySellRVAdapter extends RecyclerView.Adapter {
                         }
                     });
                 }
-            }else {
-                if(dataBean.getSelf_trans() == 1){
+            } else {
+                if (dataBean.getSelf_trans() == 1) {
                     mBtnSellBuy.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape3));
                     mBtnSellBuy.setTextColor(mContext.getResources().getColor(R.color.red));
                     mBtnSellBuy.setText(mContext.getString(R.string.sold_out));
@@ -134,7 +136,7 @@ public class BuySellRVAdapter extends RecyclerView.Adapter {
                             showDialog(dataBean);
                         }
                     });
-                }else {
+                } else {
                     mBtnSellBuy.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape));
                     mBtnSellBuy.setTextColor(mContext.getResources().getColor(R.color.blue2));
                     mBtnSellBuy.setText(mContext.getString(R.string.buy));
@@ -151,6 +153,11 @@ public class BuySellRVAdapter extends RecyclerView.Adapter {
                         }
                     });
                 }
+            }
+            if (dataBean.getAvatar().isEmpty()) {
+                mIvTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));
+            } else {
+                Glide.with(mContext).load(dataBean.getAvatar()).into(mIvTouxiang);
             }
             mTvPayWay.setText(dataBean.getPay_type());
             mTvPrice.setText(dataBean.getPrice() + " " + dataBean.getCurrency());

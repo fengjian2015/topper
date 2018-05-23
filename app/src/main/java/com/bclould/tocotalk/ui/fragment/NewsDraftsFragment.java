@@ -17,10 +17,16 @@ import com.bclould.tocotalk.Presenter.NewsNoticePresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.GonggaoListInfo;
 import com.bclould.tocotalk.ui.adapter.NewsManagerRVAdapter;
+import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.SpaceItemDecoration;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +58,17 @@ public class NewsDraftsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_news_manager, container, false);
         ButterKnife.bind(this, view);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         return view;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(getString(R.string.delete_news_drafts))) {
+            initData();
+        }
     }
 
     @Override
@@ -98,7 +114,7 @@ public class NewsDraftsFragment extends Fragment {
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mNewsManagerRVAdapter = new NewsManagerRVAdapter(getContext(), mDataList);
+        mNewsManagerRVAdapter = new NewsManagerRVAdapter(getContext(), mDataList, mNewsNoticePresenter, Constants.NEW_DRAFTS_TYPE);
         mRecyclerView.setAdapter(mNewsManagerRVAdapter);
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(40));
     }
@@ -107,5 +123,6 @@ public class NewsDraftsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 }

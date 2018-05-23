@@ -2,6 +2,8 @@ package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.GonggaoListInfo;
 import com.bclould.tocotalk.ui.activity.NewsDetailsActivity;
+import com.bclould.tocotalk.utils.Constants;
 
 import java.util.List;
 
@@ -73,11 +76,12 @@ public class GonggaoManagerRVAdapter extends RecyclerView.Adapter {
             super(view);
             ButterKnife.bind(this, view);
             view.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, NewsDetailsActivity.class);
                     intent.putExtra("id", mId);
-                    intent.putExtra("type", 1);
+                    intent.putExtra("type", Constants.GONGGAO_TYPE);
                     mContext.startActivity(intent);
                 }
             });

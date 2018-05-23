@@ -17,6 +17,8 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.MyAdListInfo;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.UtilTool;
+import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -128,6 +130,11 @@ public class MyPushAdRVAdapter extends RecyclerView.Adapter {
                     mBtnSellBuy.setTextColor(mContext.getResources().getColor(R.color.gray));
                     mBtnSellBuy.setText(mContext.getString(R.string.yi_sold_out));
                 }
+            }
+            if (dataBean.getAvatar().isEmpty()) {
+                mIvTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));
+            } else {
+                Glide.with(mContext).load(dataBean.getAvatar()).into(mIvTouxiang);
             }
             mTvPayWay.setText(dataBean.getPay_type());
             mTvPrice.setText(dataBean.getPrice() + " " + dataBean.getCurrency());

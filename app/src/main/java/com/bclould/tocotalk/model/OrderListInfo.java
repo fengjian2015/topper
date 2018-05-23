@@ -85,6 +85,15 @@ public class OrderListInfo {
         private String created_at;
         private String type_name;
         private String status_name;
+        private String avatar;
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
 
         public int getId() {
             return id;

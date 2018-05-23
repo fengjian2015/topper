@@ -1,5 +1,6 @@
 package com.bclould.tocotalk.ui.widget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -121,7 +122,7 @@ public class HoverImageView extends android.support.v7.widget.AppCompatImageView
             Rect bitmapBounds = maiDrawable.getBounds();
             rect.set(bitmapBounds);
 
-            int saveCount = canvas.saveLayer(rect, null,
+            @SuppressLint("WrongConstant") int saveCount = canvas.saveLayer(rect, null,
                     Canvas.MATRIX_SAVE_FLAG |
                             Canvas.CLIP_SAVE_FLAG |
                             Canvas.HAS_ALPHA_LAYER_SAVE_FLAG |

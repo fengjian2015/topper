@@ -2,16 +2,22 @@ package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bclould.tocotalk.Presenter.NewsNoticePresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.GonggaoListInfo;
 import com.bclould.tocotalk.ui.activity.NewsDetailsActivity;
+import com.bclould.tocotalk.ui.activity.NewsEditActivity;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -23,14 +29,19 @@ import butterknife.ButterKnife;
  * Created by GA on 2018/5/8.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class NewsManagerRVAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;
     private final List<GonggaoListInfo.DataBean> mDataList;
+    private final NewsNoticePresenter mNewsNoticePresenter;
+    private final int mType;
 
-    public NewsManagerRVAdapter(Context context, List<GonggaoListInfo.DataBean> dataList) {
+    public NewsManagerRVAdapter(Context context, List<GonggaoListInfo.DataBean> dataList, NewsNoticePresenter newsNoticePresenter, int type) {
         mContext = context;
         mDataList = dataList;
+        mNewsNoticePresenter = newsNoticePresenter;
+        mType = type;
     }
 
     @Override
@@ -87,17 +98,33 @@ public class NewsManagerRVAdapter extends RecyclerView.Adapter {
         TextView mTvNewsTitle;
         @Bind(R.id.tv_time)
         TextView mTvTime;
+        @Bind(R.id.tv_status)
+        TextView mTvStatus;
         private int mId;
 
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            ButterKnife.bind(this, view);
+            if (mType == 0 || mType == 3) {
+                view.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        showDialog(mId);
+                        return true;
+                    }
+                });
+            }
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, NewsDetailsActivity.class);
+                    Intent intent = null;
+                    if (mType == 3) {
+                        intent = new Intent(mContext, NewsEditActivity.class);
+                    } else {
+                        intent = new Intent(mContext, NewsDetailsActivity.class);
+                    }
                     intent.putExtra("id", mId);
+                    intent.putExtra("type", mType);
                     mContext.startActivity(intent);
                 }
             });
@@ -107,7 +134,37 @@ public class NewsManagerRVAdapter extends RecyclerView.Adapter {
             mId = dataBean.getId();
             mTvNewsTitle.setText(dataBean.getTitle());
             mTvTime.setText(dataBean.getCreated_at());
+            if (dataBean.getStatus() == 1) {
+                mTvStatus.setText(mContext.getString(R.string.check_pending));
+            } else if (dataBean.getStatus() == 2) {
+                mTvStatus.setText(mContext.getString(R.string.pass));
+                mTvStatus.setTextColor(mContext.getResources().getColor(R.color.blue2));
+            } else if (dataBean.getStatus() == 5) {
+                mTvStatus.setText(mContext.getString(R.string.no_pass));
+                mTvStatus.setTextColor(mContext.getResources().getColor(R.color.red));
+            }
         }
+    }
+
+    private void showDialog(final int id) {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(mContext.getString(R.string.delete_news_hint));
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                mNewsNoticePresenter.deleteNews(id, mType);
+            }
+        });
     }
 
     class ViewHolder2 extends RecyclerView.ViewHolder {
@@ -122,11 +179,26 @@ public class NewsManagerRVAdapter extends RecyclerView.Adapter {
         ViewHolder2(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            if (mType == 0 || mType == 3) {
+                view.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        showDialog(mId);
+                        return true;
+                    }
+                });
+            }
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, NewsDetailsActivity.class);
+                    Intent intent = null;
+                    if (mType == 3) {
+                        intent = new Intent(mContext, NewsEditActivity.class);
+                    } else {
+                        intent = new Intent(mContext, NewsDetailsActivity.class);
+                    }
                     intent.putExtra("id", mId);
+                    intent.putExtra("type", mType);
                     mContext.startActivity(intent);
                 }
             });
