@@ -1,13 +1,23 @@
 package com.bclould.tocotalk.xmpp;
 
 
+import android.graphics.Bitmap;
 import com.bclould.tocotalk.model.MessageInfo;
+import com.bclould.tocotalk.model.UserInfo;
+
+import org.jivesoftware.smackx.muc.MultiUserChat;
+
+import java.util.List;
 
 public interface Room {
-    //發送成功刷新數據
-    void refreshAddData(MessageInfo messageInfo);
-
-    void sendError(int id);
-
-    void sendFileResults(String newFile2,boolean isSuccess);
+    void addMessageManageListener(MessageManageListener messageManageListener);
+    void sendVoice(int duration, String fileName);
+    MessageInfo sendMessage(String message);
+    void Upload(final String path);
+    void sendTransfer(String mRemark,String mCoin,String mCount);
+    void sendRed(String mRemark,String mCoin,double mCount,int id);
+    void sendLocationMessage(Bitmap bitmap, String title, String address, float lat, float lng);
+    boolean anewSendText(String user, String message, int id);
+    boolean anewSendVoice(MessageInfo messageInfo);
+    MultiUserChat createRoom(String roomName, String password, List<UserInfo> users);
 }

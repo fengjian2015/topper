@@ -19,6 +19,7 @@ import com.bclould.tocotalk.service.IMCoreService;
 import com.bclould.tocotalk.service.IMService;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -738,7 +739,7 @@ public class XmppConnection {
         List<EntityBareJid> hostrooms;
         List<String> roominfos = new ArrayList<>();
         try {
-            List<EntityBareJid> joinedRooms = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection()).getJoinedRooms(JidCreate.entityBareFrom(Constants.MYUSER));
+            List<EntityBareJid> joinedRooms = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection()).getJoinedRooms(JidCreate.entityBareFrom(UtilTool.getJid()));
             for (EntityBareJid entry : joinedRooms) {
                 roominfos.add(entry.toString());
                 Log.i("room", "名字：" + entry.toString());
@@ -751,81 +752,6 @@ public class XmppConnection {
         return roominfos;
     }
 
-    /**
-     * 创建房间
-     *
-     * @param roomName 房间名称
-     */
-    public MultiUserChat createRoom(String roomName, String password, List<UserInfo> users) {
-        if (getConnection() == null)
-            return null;
-
-        MultiUserChat muc = null;
-        try {
-            // 创建一个MultiUserChat
-            muc = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection()).getMultiUserChat(
-                    JidCreate.entityBareFrom(roomName + "@conference." + XmppConnection.getInstance().getConnection().getServiceName()));
-            // 创建聊天室
-            muc.create(Resourcepart.from(roomName));
-            // 获得聊天室的配置表单
-            Form form = muc.getConfigurationForm();
-            // 根据原始表单创建一个要提交的新表单。
-            Form submitForm = form.createAnswerForm();
-            // 向要提交的表单添加默认答复
-            for (FormField formField : form.getFields()) {
-                if (FormField.Type.hidden == formField.getType()
-                        && formField.getVariable() != null) {
-                    // 设置默认值作为答复
-                    submitForm.setDefaultAnswer(formField.getVariable());
-                }
-            }
-            // 设置聊天室的新拥有者
-            List<String> owners = new ArrayList<>();
-            owners.add(Constants.MYUSER);
-
-            //这里的用户实体我要说一下，因为这是我这个项目的实体，实际上这里只需要知道用户的jid获者名称就可以了
-            if (users != null && !users.isEmpty()) {
-                for (int i = 0; i < users.size(); i++) {  //添加群成员,用户jid格式和之前一样 用户名@openfire服务器名称
-                    EntityBareJid userJid = JidCreate.entityBareFrom(users.get(i).getUser());
-                    muc.invite(userJid, "进来撩妹啊！");
-                }
-            }
-            submitForm.setAnswer("muc#roomconfig_roomowners", owners);
-            // 设置聊天室是持久聊天室，即将要被保存下来
-            submitForm.setAnswer("muc#roomconfig_persistentroom", true);
-            // 房间仅对成员开放
-            submitForm.setAnswer("muc#roomconfig_membersonly", false);
-            // 允许占有者邀请其他人
-            submitForm.setAnswer("muc#roomconfig_allowinvites", true);
-            // if (!password.equals("")) {
-            // // 进入是否需要密码
-//			 submitForm.setAnswer("muc#roomconfig_passwordprotectedroom",false);
-            // // 设置进入密码
-            // submitForm.setAnswer("muc#roomconfig_roomsecret", password);
-            // }
-            // 能够发现占有者真实 JID 的角色
-            // submitForm.setAnswer("muc#roomconfig_whois", "anyone");
-            // 设置描述
-            submitForm.setAnswer("muc#roomconfig_roomdesc", "mulchat");
-            // 登录房间对话
-            submitForm.setAnswer("muc#roomconfig_enablelogging", true);
-            // 仅允许注册的昵称登录
-            submitForm.setAnswer("x-muc#roomconfig_reservednick", false);
-            // 允许使用者修改昵称
-            submitForm.setAnswer("x-muc#roomconfig_canchangenick", true);
-            // 允许用户注册房间
-            submitForm.setAnswer("x-muc#roomconfig_registration", true);
-            // 发送已完成的表单（有默认值）到服务器来配置聊天室
-            muc.sendConfigurationForm(submitForm);
-
-            muc.addMessageListener(mMessageListener);
-
-        } catch (XMPPException | XmppStringprepException | SmackException | InterruptedException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return muc;
-    }
 
     MessageListener mMessageListener = new MessageListener() {
         @Override
@@ -870,6 +796,11 @@ public class XmppConnection {
             messageInfo.setRemark(remark);
             messageInfo.setStatus(0);
             messageInfo.setSend(from);
+            if(message.getType()==Message.Type.chat){
+                conversationInfo.setChatType(RoomManage.ROOM_TYPE_SINGLE);
+            }else{
+                conversationInfo.setChatType(RoomManage.ROOM_TYPE_MULTI);
+            }
             mMgr.addMessage(messageInfo);
             if (mMgr.findConversation(from)) {
                 mMgr.updateConversation(from, 0, chatMsg, time);
@@ -906,6 +837,8 @@ public class XmppConnection {
             return null;
         }
     }
+
+
 
     /**
      * 发送群组聊天消息

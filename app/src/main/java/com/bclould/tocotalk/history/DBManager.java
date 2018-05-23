@@ -488,6 +488,7 @@ public class DBManager {
         values.put("time", conversationInfo.getTime());
         values.put("friend", conversationInfo.getFriend());
         values.put("istop", conversationInfo.getIstop());
+        values.put("chatType",conversationInfo.getChatType());
         db.insert("ConversationRecord", null, values);
     }
 
@@ -528,6 +529,18 @@ public class DBManager {
         return istop;
     }
 
+    public String findConversationName(String user) {
+        db = helper.getReadableDatabase();
+        String friend = null;
+        Cursor cursor = db.rawQuery("select friend from ConversationRecord where user=? and my_user=?",
+                new String[]{user, UtilTool.getJid()});
+        while (cursor.moveToNext()) {
+            friend = cursor.getString(cursor.getColumnIndex("friend"));
+        }
+        cursor.close();
+        return friend;
+    }
+
     public List<ConversationInfo> queryConversation() {
         db = helper.getWritableDatabase();
         List<ConversationInfo> conversationList = new ArrayList<>();
@@ -541,6 +554,7 @@ public class DBManager {
             conversationInfo.setUser(c.getString(c.getColumnIndex("user")));
             conversationInfo.setFriend(c.getString(c.getColumnIndex("friend")));
             conversationInfo.setIstop(c.getString(c.getColumnIndex("istop")));
+            conversationInfo.setChatType(c.getString(c.getColumnIndex("chatType")));
             conversationList.add(conversationInfo);
         }
         c.close();

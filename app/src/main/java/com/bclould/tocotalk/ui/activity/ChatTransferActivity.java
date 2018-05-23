@@ -44,6 +44,7 @@ import com.bclould.tocotalk.utils.AnimatorTool;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
+import com.bclould.tocotalk.xmpp.RoomManage;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
@@ -370,41 +371,7 @@ public class ChatTransferActivity extends BaseActivity {
     }
 
     public void sendMessage() {
-        String message = Constants.TRANSFER + Constants.CHUANCODE + mRemark + Constants.CHUANCODE + mCoin + Constants.CHUANCODE + mCount;
-        try {
-            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
-            chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(message,
-                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
-            MessageInfo messageInfo = new MessageInfo();
-            messageInfo.setUsername(mUser);
-            messageInfo.setMessage(message);
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date curDate = new Date(System.currentTimeMillis());
-            String time = formatter.format(curDate);
-            messageInfo.setTime(time);
-            messageInfo.setRemark(mRemark);
-            messageInfo.setCoin(mCoin);
-            messageInfo.setMsgType(TO_TRANSFER_MSG);
-            messageInfo.setCount(mCount);
-            messageInfo.setStatus(0);
-            messageInfo.setSend(UtilTool.getJid());
-            mMgr.addMessage(messageInfo);
-            String hint = "[" + getString(R.string.transfer) + "]";
-            if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, hint, time);
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mUser.substring(0, mUser.indexOf("@")));
-                info.setUser(mUser);
-                info.setMessage(hint);
-                mMgr.addConversation(info);
-            }
-            EventBus.getDefault().post(new MessageEvent(getString(R.string.transfer)));
-            finish();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        RoomManage.getInstance().getRoom(mUser).sendTransfer(mRemark,mCoin,mCount);
+        finish();
     }
 }

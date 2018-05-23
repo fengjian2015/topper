@@ -90,26 +90,50 @@ public class LocationActivity extends AppCompatActivity implements
         x.Ext.init(this.getApplication());
         x.Ext.setDebug(true);
         x.view().inject(this);
-        startLocation();
-        context = this;
 
+        context = this;
+        checkSelf();
         initView();
         iniRecycerView();
 
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        startLocation();
+    }
 
+    private void checkSelf(){
+        if (Build.VERSION.SDK_INT >= 23) {
+            String[] permissions = {
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            };
+
+            if (checkSelfPermission(permissions[0]) != PackageManager.PERMISSION_GRANTED)
+            {
+                requestPermissions(permissions, 0);
+            }else{
+                startLocation();
+            }
+        }else{
+            startLocation();
+        }
+    }
 
     private void startLocation() {
         LogUtil.e("开始定位" + mLocationManager);
         TencentLocationListener listener=this;
         TencentLocationRequest request =TencentLocationRequest.create();
         request.setInterval(10000);
+
         request.setRequestLevel(TencentLocationRequest.REQUEST_LEVEL_NAME);
-        request.setAllowGPS(true);
+//        request.setAllowGPS(true);
         request.setAllowDirection(true);
         TencentLocationManager locationManager = TencentLocationManager.getInstance(this);
         int error = locationManager.requestLocationUpdates(request, listener);
-        LogUtil.e("定位error:" + error);
+        LogUtil.e("定位error:" + error+"   GPS:"+ request.isAllowGPS());
 
     }
 
@@ -129,7 +153,7 @@ public class LocationActivity extends AppCompatActivity implements
                     public void onMapScreenShot(Bitmap arg0) {
                         // TODO Auto-generated method stub
                         if (mAdapter.getCount()==0)return;
-                        RoomManage.getInstance().getMessageManage(mUser).sendLocationMessage(arg0
+                        RoomManage.getInstance().getRoom(mUser).sendLocationMessage(arg0
                                 ,mAdapter.getItem(oldClick).title
                                 ,mAdapter.getItem(oldClick).address
                                 ,mAdapter.getItem(oldClick).location.lat
@@ -139,7 +163,6 @@ public class LocationActivity extends AppCompatActivity implements
                 });
             }
         });
-
     }
     private void initMap() {
         // 初始化屏幕中心
@@ -171,6 +194,7 @@ public class LocationActivity extends AppCompatActivity implements
             @Override
             public void onItemClick(int position) {
                 UtilTool.Log("fengjian----","點擊的位置："+position);
+                if(position==-1)return;
                 mAdapter.getItem(oldClick).id="";
                 oldClick=position;
                 mAdapter.getItem(position).id="true";
@@ -233,6 +257,7 @@ public class LocationActivity extends AppCompatActivity implements
     }
 
     private void stopLocation() {
+        if(mLocationManager==null)return;
         mLocationManager.removeUpdates(this);
     }
 

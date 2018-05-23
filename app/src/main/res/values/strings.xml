@@ -835,4 +835,6 @@
     <string name="no_gode_map">沒有安裝高德地圖，請先下載</string>
     <string name="no_baidu_map">沒有安裝百度地圖，請先下載</string>
     <string name="no_location_obtained">未定位，請稍後再試</string>
+    <string name="stick">置顶</string>
+    <string name="cancel_the_top">取消置顶</string>
 </resources>

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.activity.CreateGroupRoomActivity;
+import com.bclould.tocotalk.utils.StringUtils;
 
 import java.util.List;
 
@@ -67,7 +68,11 @@ public class CreateGroupRVAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final UserInfo userInfo) {
-            mTvName.setText(userInfo.getUser());
+            if(StringUtils.isEmpty(userInfo.getRemark())){
+                mTvName.setText(userInfo.getRemark());
+            }else{
+                mTvName.setText(userInfo.getUser());
+            }
             mIvTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfo.getPath()));
             mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override

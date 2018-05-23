@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -26,6 +28,7 @@ import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
+import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.model.VoiceInfo;
 import com.bclould.tocotalk.service.IMService;
 import com.bclould.tocotalk.ui.activity.ConversationActivity;
@@ -37,12 +40,14 @@ import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.chat.Chat;
 import org.jivesoftware.smack.chat.ChatManager;
 import org.jivesoftware.smack.util.stringencoder.Base64;
+import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.json.JSONObject;
 import org.jxmpp.jid.impl.JidCreate;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
@@ -50,7 +55,9 @@ import top.zibin.luban.OnCompressListener;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_FILE_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_IMG_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_LOCATION_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_RED_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_TEXT_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_TRANSFER_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_VIDEO_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_VOICE_MSG;
 
@@ -59,23 +66,24 @@ import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_VOICE_MSG;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class MessageManage {
+public class SingleManage implements Room{
     private DBManager mMgr;
     private String mUser;
     private Context context;
     private String mName;
     private int mId;
-    private Room room;
+    private MessageManageListener messageManageListener;
 
-    public MessageManage(DBManager mMgr,String mUser,Context context,String mName){
+    public SingleManage(DBManager mMgr, String mUser, Context context, String mName){
         this.mMgr=mMgr;
         this.mUser=mUser;
         this.context= context;
         this.mName=mName;
     }
 
-    public void addRoom(Room room){
-        this.room=room;
+    @Override
+    public void addMessageManageListener(MessageManageListener messageManageListener){
+        this.messageManageListener=messageManageListener;
     }
 
 
@@ -105,11 +113,12 @@ public class MessageManage {
                 info.setFriend(mName);
                 info.setUser(mUser);
                 info.setMessage(message);
+                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
                 mMgr.addConversation(info);
             }
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
-            if(room!=null){
-                room.refreshAddData(messageInfo);
+            if(messageManageListener!=null){
+                messageManageListener.refreshAddData(messageInfo);
             }
             return messageInfo;
         } catch (Exception e) {
@@ -136,11 +145,12 @@ public class MessageManage {
                 info.setFriend(mName);
                 info.setUser(mUser);
                 info.setMessage(message);
+                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
                 mMgr.addConversation(info);
             }
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
-            if(room!=null){
-                room.refreshAddData(messageInfo);
+            if(messageManageListener!=null){
+                messageManageListener.refreshAddData(messageInfo);
             }
             return messageInfo;
         }
@@ -176,15 +186,15 @@ public class MessageManage {
                         message.setBody(OtrChatListenerManager.getInstance().sentMessagesChange("[" + postfix2 + "]:" + key2,
                                 OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
                         chat.sendMessage(message);
-                        if(room!=null){
+                        if(messageManageListener!=null){
                             mMgr.updateMessageHint(mId, 1);
-                            room.sendFileResults(newFile2,true);
+                            messageManageListener.sendFileResults(newFile2,true);
                         }
                         return;
                     } catch (Exception e) {
-                        if(room!=null){
+                        if(messageManageListener!=null){
                             mMgr.updateMessageHint(mId, 2);
-                            room.sendFileResults(newFile2,false);
+                            messageManageListener.sendFileResults(newFile2,false);
                         }
                     }
                     break;
@@ -272,8 +282,8 @@ public class MessageManage {
                     } catch (Exception e) {
                         e.printStackTrace();
                         mMgr.updateMessageHint(mId, 2);
-                        if(room!=null){
-                            room.sendError(mId);
+                        if(messageManageListener!=null){
+                            messageManageListener.sendError(mId);
                         }
                     }
                 }
@@ -342,8 +352,8 @@ public class MessageManage {
                                         s3Client.putObject(por);
                                     } catch (Exception e) {
                                         mMgr.updateMessageHint(mId, 2);
-                                        if(room!=null){
-                                            room.sendError(mId);
+                                        if(messageManageListener!=null){
+                                            messageManageListener.sendError(mId);
                                         }
                                         e.printStackTrace();
                                     }
@@ -394,8 +404,8 @@ public class MessageManage {
             messageInfo.setMsgType(TO_LOCATION_MSG);
             messageInfo.setSend(UtilTool.getJid());
             mId= mMgr.addMessage(messageInfo);
-            if(room!=null){
-                room.refreshAddData(messageInfo);
+            if(messageManageListener!=null){
+                messageManageListener.refreshAddData(messageInfo);
             }
             //给聊天列表更新消息
             if (mMgr.findConversation(mUser)) {
@@ -406,13 +416,14 @@ public class MessageManage {
                 info.setFriend(mName);
                 info.setUser(mUser);
                 info.setMessage("[" + context.getString(R.string.location) + "]");
+                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
                 mMgr.addConversation(info);
             }
             //发送消息通知
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
-            if(room!=null){
+            if(messageManageListener!=null){
                 mMgr.updateMessageHint(mId, 1);
-                room.sendFileResults(newFile.getAbsolutePath(),true);
+                messageManageListener.sendFileResults(newFile.getAbsolutePath(),true);
             }
             return;
         } catch (Exception e) {
@@ -429,8 +440,8 @@ public class MessageManage {
             messageInfo.setMsgType(TO_LOCATION_MSG);
             messageInfo.setSendStatus(2);
             mId=mMgr.addMessage(messageInfo);
-            if(room!=null){
-                room.refreshAddData(messageInfo);
+            if(messageManageListener!=null){
+                messageManageListener.refreshAddData(messageInfo);
             }
             if (mMgr.findConversation(mUser)) {
                 mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.location) + "]", time);
@@ -440,15 +451,60 @@ public class MessageManage {
                 info.setFriend(mName);
                 info.setUser(mUser);
                 info.setMessage("[" + context.getString(R.string.location) + "]");
+                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
                 mMgr.addConversation(info);
             }
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
 
-            if(room!=null){
+            if(messageManageListener!=null){
                 mMgr.updateMessageHint(mId, 2);
-                room.sendFileResults(newFile.getAbsolutePath(),false);
+                messageManageListener.sendFileResults(newFile.getAbsolutePath(),false);
             }
         }
+    }
+
+    @Override
+    public boolean anewSendText(String user, String message, int id) {
+        try {
+            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+            Chat chat = manager.createChat(JidCreate.entityBareFrom(user), null);
+            chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(message,
+                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
+            mMgr.updateMessageHint(id, 0);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean anewSendVoice(MessageInfo messageInfo) {
+        try {
+            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
+            org.jivesoftware.smack.packet.Message message = new org.jivesoftware.smack.packet.Message();
+            byte[] bytes = UtilTool.readStream(messageInfo.getVoice());
+            String base64 = Base64.encodeToString(bytes);
+            VoiceInfo voiceInfo = new VoiceInfo();
+            voiceInfo.setElementText(base64);
+            int duration = UtilTool.getFileDuration(messageInfo.getVoice(), context);
+            message.setBody(OtrChatListenerManager.getInstance().sentMessagesChange("[audio]:" + duration + context.getString(R.string.second),
+                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
+            message.addExtension(voiceInfo);
+            chat.sendMessage(message);
+            mMgr.updateMessageHint(messageInfo.getId(), 0);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public MultiUserChat createRoom(String roomName, String password, List<UserInfo> users) {
+        return null;
     }
 
     //发送文件消息
@@ -473,8 +529,8 @@ public class MessageManage {
             messageInfo.setSend(UtilTool.getJid());
             mId = mMgr.addMessage(messageInfo);
             messageInfo.setId(mId);
-            if(room!=null){
-                room.refreshAddData(messageInfo);
+            if(messageManageListener!=null){
+                messageManageListener.refreshAddData(messageInfo);
             }
             if (mMgr.findConversation(mUser)) {
                 if (postfix.equals("Image"))
@@ -494,6 +550,7 @@ public class MessageManage {
                     info.setMessage("[" + context.getString(R.string.video) + "]");
                 else
                     info.setMessage("[" + context.getString(R.string.file) + "]");
+                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
                 mMgr.addConversation(info);
             }
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
@@ -518,8 +575,8 @@ public class MessageManage {
             }
             messageInfo.setSend(UtilTool.getJid());
             mMgr.addMessage(messageInfo);
-            if(room!=null){
-                room.refreshAddData(messageInfo);
+            if(messageManageListener!=null){
+                messageManageListener.refreshAddData(messageInfo);
             }
             if (mMgr.findConversation(mUser)) {
                 if (postfix.equals("Image"))
@@ -539,6 +596,7 @@ public class MessageManage {
                     info.setMessage("[" + context.getString(R.string.video) + "]");
                 else
                     info.setMessage("[" + context.getString(R.string.file) + "]");
+                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
                 mMgr.addConversation(info);
             }
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
@@ -577,8 +635,8 @@ public class MessageManage {
             messageInfo.setVoiceStatus(1);
             messageInfo.setSend(UtilTool.getJid());
             mMgr.addMessage(messageInfo);
-            if(room!=null){
-                room.refreshAddData(messageInfo);
+            if(messageManageListener!=null){
+                messageManageListener.refreshAddData(messageInfo);
             }
             //给聊天列表更新消息
             if (mMgr.findConversation(mUser)) {
@@ -589,6 +647,7 @@ public class MessageManage {
                 info.setFriend(mName);
                 info.setUser(mUser);
                 info.setMessage("[" + context.getString(R.string.voice) + "]");
+                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
                 mMgr.addConversation(info);
             }
             //发送消息通知
@@ -611,8 +670,8 @@ public class MessageManage {
             messageInfo.setVoiceStatus(1);
             messageInfo.setSendStatus(1);
             mMgr.addMessage(messageInfo);
-            if(room!=null){
-                room.refreshAddData(messageInfo);
+            if(messageManageListener!=null){
+                messageManageListener.refreshAddData(messageInfo);
             }
             if (mMgr.findConversation(mUser)) {
                 mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.voice) + "]", time);
@@ -622,10 +681,93 @@ public class MessageManage {
                 info.setFriend(mName);
                 info.setUser(mUser);
                 info.setMessage("[" + context.getString(R.string.voice) + "]");
+                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
                 mMgr.addConversation(info);
             }
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
         }
 
+    }
+
+    public void sendTransfer(String mRemark,String mCoin,String mCount){
+        String message = Constants.TRANSFER + Constants.CHUANCODE + mRemark + Constants.CHUANCODE + mCoin + Constants.CHUANCODE + mCount;
+        try {
+            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
+            chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(message,
+                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
+            MessageInfo messageInfo = new MessageInfo();
+            messageInfo.setUsername(mUser);
+            messageInfo.setMessage(message);
+            android.icu.text.SimpleDateFormat formatter = new android.icu.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setRemark(mRemark);
+            messageInfo.setCoin(mCoin);
+            messageInfo.setMsgType(TO_TRANSFER_MSG);
+            messageInfo.setCount(mCount);
+            messageInfo.setStatus(0);
+            messageInfo.setSend(UtilTool.getJid());
+            mMgr.addMessage(messageInfo);
+            String hint = "[" + context.getString(R.string.transfer) + "]";
+            if (mMgr.findConversation(mUser)) {
+                mMgr.updateConversation(mUser, 0, hint, time);
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                info.setFriend(mUser.substring(0, mUser.indexOf("@")));
+                info.setUser(mUser);
+                info.setMessage(hint);
+                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
+                mMgr.addConversation(info);
+            }
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.transfer)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void sendRed(String mRemark,String mCoin,double mCount,int id) {
+        String message = Constants.REDBAG + Constants.CHUANCODE + mRemark + Constants.CHUANCODE + mCoin + Constants.CHUANCODE + mCount + Constants.CHUANCODE + id;
+        try {
+            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
+            chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(message,
+                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
+            MessageInfo messageInfo = new MessageInfo();
+            messageInfo.setUsername(mUser);
+            messageInfo.setMessage(message);
+            android.icu.text.SimpleDateFormat formatter = new android.icu.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setRemark(mRemark);
+            messageInfo.setCoin(mCoin);
+            messageInfo.setMsgType(TO_RED_MSG);
+            messageInfo.setCount(mCount + "");
+            messageInfo.setStatus(0);
+            messageInfo.setRedId(id);
+            messageInfo.setSend(UtilTool.getJid());
+            mMgr.addMessage(messageInfo);
+            String hint = "[" + context.getString(R.string.red_package) + "]";
+            if (mMgr.findConversation(mUser)) {
+                mMgr.updateConversation(mUser, 0, hint, time);
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                info.setFriend(mUser.substring(0, mUser.indexOf("@")));
+                info.setUser(mUser);
+                info.setMessage(hint);
+                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
+                mMgr.addConversation(info);
+            }
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.send_red_packet_le)));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -140,7 +140,39 @@
                             android:visibility="gone"/>
 
                     </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_group_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/y10"
+                        android:background="@color/light"
+                        android:visibility="gone"/>
+                    <RelativeLayout
+                        android:id="@+id/my_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/y100"
+                        android:layout_marginLeft="@dimen/x20"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        >
 
+                        <ImageView
+                            android:id="@+id/iv1"
+                            android:layout_width="@dimen/x60"
+                            android:layout_height="@dimen/x60"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/icon_friend_groups"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/x20"
+                            android:layout_toRightOf="@+id/iv1"
+                            android:text="@string/my_group"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/x32"/>
+
+                    </RelativeLayout>
                     <TextView
                         style="@style/HCutOffRule"/>
 

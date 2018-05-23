@@ -24,11 +24,12 @@ import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.adapter.SelectFriendAdapter;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
-import com.bclould.tocotalk.ui.widget.MyListView;
 import com.bclould.tocotalk.utils.ToastShow;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bclould.tocotalk.xmpp.MessageManage;
+import com.bclould.tocotalk.xmpp.MessageManageListener;
+import com.bclould.tocotalk.xmpp.SingleManage;
 import com.bclould.tocotalk.xmpp.Room;
+import com.bclould.tocotalk.xmpp.RoomManage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,7 +47,7 @@ import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_TEXT_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_VIDEO_MSG;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class SelectFriendActivity extends BaseActivity implements SelectFriendAdapter.OnItemListener,Room{
+public class SelectFriendActivity extends BaseActivity implements SelectFriendAdapter.OnItemListener,MessageManageListener{
 
     @Bind(R.id.bark)
     ImageView bark;
@@ -221,14 +222,14 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
     }
 
 
-    private MessageManage messageManage;
+    private Room singleManage;
     private void sendMessage(String user, String name){
-        messageManage= new MessageManage(new DBManager(SelectFriendActivity.this),user,SelectFriendActivity.this,name);
-        messageManage.addRoom(this);
+        singleManage =RoomManage.getInstance().addSingleMessageManage(user,name);
+        singleManage.addMessageManageListener(this);
         if(type==0){
             if(TEXT_PLAIN.equals(shareType)){
                 String shareText= shareIntent.getStringExtra(Intent.EXTRA_TEXT);
-                messageInfo=messageManage.sendMessage(shareText);
+                messageInfo= singleManage.sendMessage(shareText);
                 if(messageInfo!=null){
                     ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.share_complete));
                     SelectFriendActivity.this.finish();
@@ -239,7 +240,7 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
         }else if(type==1){
             if(msgType==TO_TEXT_MSG||msgType==FROM_TEXT_MSG){
                 String message=messageInfo.getMessage();
-                messageInfo=messageManage.sendMessage(message);
+                messageInfo= singleManage.sendMessage(message);
                 if(messageInfo!=null){
                     ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.forward_success));
                     SelectFriendActivity.this.finish();
@@ -248,10 +249,10 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
                 }
             }else if(msgType==FROM_IMG_MSG||msgType==TO_IMG_MSG){
                 showDialog();
-                messageManage.Upload(messageInfo.getVoice());
+                singleManage.Upload(messageInfo.getVoice());
             }else if(msgType==FROM_VIDEO_MSG||msgType==TO_VIDEO_MSG){
                 showDialog();
-                messageManage.Upload(messageInfo.getMessage());
+                singleManage.Upload(messageInfo.getMessage());
 
             }
         }

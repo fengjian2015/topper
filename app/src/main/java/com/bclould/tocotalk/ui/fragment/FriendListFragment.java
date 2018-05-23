@@ -40,6 +40,7 @@ import com.bclould.tocotalk.model.QrRedInfo;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.activity.AddFriendActivity;
 import com.bclould.tocotalk.ui.activity.GrabQRCodeRedActivity;
+import com.bclould.tocotalk.ui.activity.GroupListActivity;
 import com.bclould.tocotalk.ui.activity.NewFriendActivity;
 import com.bclould.tocotalk.ui.activity.PublicshDynamicActivity;
 import com.bclould.tocotalk.ui.activity.ScanQRCodeActivity;
@@ -550,7 +551,7 @@ public class FriendListFragment extends Fragment {
     }
 
 
-    @OnClick({R.id.iv_more, R.id.ll_search, R.id.news_friend})
+    @OnClick({R.id.iv_more, R.id.ll_search, R.id.news_friend,R.id.my_group})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_more:
@@ -565,13 +566,10 @@ public class FriendListFragment extends Fragment {
                 mNumber.setVisibility(View.GONE);
                 mNewFriend = 0;
                 break;
-            /*case R.id.my_group:
-
+            case R.id.my_group:
                 startActivity(new Intent(getActivity(), GroupListActivity.class));
-
-                XmppConnection.getInstance().joinMultiUserChat(Constants.MYUSER, "群聊六", mMgr);
-
-                break;*/
+                XmppConnection.getInstance().joinMultiUserChat(UtilTool.getJid(), "群聊六", mMgr);
+                break;
         }
     }
 
