@@ -1,5 +1,7 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -74,8 +76,33 @@ public class ChatLookLocationActivity extends AppCompatActivity implements
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
         initIntent();
-        startLocation();
+        checkSelf();
         initMap();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        startLocation();
+    }
+
+    private void checkSelf(){
+        if (Build.VERSION.SDK_INT >= 23) {
+            String[] permissions = {
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            };
+
+            if (checkSelfPermission(permissions[0]) != PackageManager.PERMISSION_GRANTED)
+            {
+                requestPermissions(permissions, 0);
+            }else{
+                startLocation();
+            }
+        }else{
+            startLocation();
+        }
     }
 
     private void initIntent() {
@@ -211,6 +238,7 @@ public class ChatLookLocationActivity extends AppCompatActivity implements
     }
 
     private void stopLocation() {
+        if(mLocationManager==null)return;
         mLocationManager.removeUpdates(this);
     }
 

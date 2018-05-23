@@ -48,17 +48,25 @@ import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.AbstractXMPPConnection;
+import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
 import org.jivesoftware.smack.chat.Chat;
 import org.jivesoftware.smack.chat.ChatManager;
 import org.jivesoftware.smack.chat.ChatManagerListener;
 import org.jivesoftware.smack.chat.ChatMessageListener;
+import org.jivesoftware.smack.filter.AndFilter;
+import org.jivesoftware.smack.filter.PacketFilter;
+import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.filter.StanzaFilter;
 import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Stanza;
+import org.jivesoftware.smackx.muc.MultiUserChatManager;
 import org.jivesoftware.smackx.offline.OfflineMessageManager;
+import org.xutils.common.util.LogUtil;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -129,7 +137,10 @@ public class XmppListener {
         getOfflineMessage();
         initBroadcastListener();
         initListener();
+//        initPacketListener();
+//        initPresenceListener();
     }
+
 
     public void initBroadcastListener(){
         AbstractXMPPConnection connection = XmppConnection.getInstance().getConnection();
@@ -167,8 +178,10 @@ public class XmppListener {
     }
 
     public void getOfflineMessage() {
-        OfflineMessageManager offlineManager = new OfflineMessageManager(XmppConnection.getInstance().getConnection());
         try {
+//            Presence presence1 = new Presence(Presence.Type.unavailable);
+//            XmppConnection.getInstance().getConnection().sendStanza(presence1);
+            OfflineMessageManager offlineManager = new OfflineMessageManager(XmppConnection.getInstance().getConnection());
             List<Message> list = offlineManager.getMessages();
             if (list.size() != 0) {
                 SharedPreferences sp = context.getSharedPreferences(SETTING, 0);
@@ -190,13 +203,59 @@ public class XmppListener {
                 //删除离线消息
                 offlineManager.deleteMessages();
             }
-            UtilTool.Log("fengjian---","收到離線消息");
+            UtilTool.Log("fengjian---","收到離線消息"+list.size());
             //将状态设置成在线
             Presence presence = new Presence(Presence.Type.available);
             XmppConnection.getInstance().getConnection().sendStanza(presence);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void initPresenceListener(){
+        StanzaFilter filter = new AndFilter(new PacketTypeFilter(Presence.class));
+        PacketListener listener = new PacketListener(){
+            @Override
+            public void processStanza(Stanza packet) throws SmackException.NotConnectedException, InterruptedException {
+//                Message message = (Message) packet;
+//                String body = message.getBody();
+//                UtilTool.Log("fengjian群日志","接受群的消息"+message.getType().name()+"    \n"+message.getType().toString()+"\n"+message.toXML());
+            }
+        };
+        XmppConnection.getInstance().getConnection().addPacketListener(listener, filter);
+    }
+
+    private void initPacketListener() {
+        StanzaFilter filter = new AndFilter(new PacketTypeFilter(Message.class));
+        PacketListener listener = new PacketListener(){
+            @Override
+            public void processStanza(Stanza packet) throws SmackException.NotConnectedException, InterruptedException {
+                Message message = (Message) packet;
+                String body = message.getBody();
+                if(message.getType()== Message.Type.normal){
+                    UtilTool.Log("fengjian群日志","暂时表示收到邀请群聊");
+                    createConversation(message);
+                    EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+                    return;
+                }
+                UtilTool.Log("fengjian群日志","接受聊天消息"+message.getType().name()+"    \n"+message.getType().toString()+"\n"+body);
+            }
+        };
+        XmppConnection.getInstance().getConnection().addPacketListener(listener, filter);
+    }
+
+    private void createConversation(Message message){
+        ConversationInfo info=new ConversationInfo();
+        info.setChatType(RoomManage.ROOM_TYPE_MULTI);
+        info.setIstop("false");
+        info.setFriend(message.getFrom().toString().split("@")[0]);
+        info.setUser(message.getFrom().toString());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date curDate = new Date(System.currentTimeMillis());
+        String time = formatter.format(curDate);
+        info.setTime(time);
+        info.setMessage("加入群聊");
+        mgr.addConversation(info);
     }
 
     /**
@@ -597,6 +656,11 @@ public class XmppListener {
                             info.setUser(from);
                             info.setNumber(1);
                             info.setMessage(redpacket);
+                            if(message.getType()==Message.Type.chat){
+                                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
+                            }else{
+                                info.setChatType(RoomManage.ROOM_TYPE_MULTI);
+                            }
                             mgr.addConversation(info);
                         }
                         EventBus.getDefault().post(new MessageEvent(context.getString(R.string.msg_database_update)));

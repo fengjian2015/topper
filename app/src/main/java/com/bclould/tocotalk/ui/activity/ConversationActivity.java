@@ -10,11 +10,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
@@ -26,7 +24,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Spannable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -57,7 +54,8 @@ import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.RecordUtil;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bclould.tocotalk.xmpp.MessageManage;
+import com.bclould.tocotalk.xmpp.MessageManageListener;
+import com.bclould.tocotalk.xmpp.SingleManage;
 import com.bclould.tocotalk.xmpp.Room;
 import com.bclould.tocotalk.xmpp.RoomManage;
 import com.bclould.tocotalk.xmpp.XmppConnection;
@@ -116,7 +114,7 @@ import static com.bclould.tocotalk.R.style.BottomDialog;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ConversationActivity extends AppCompatActivity implements FuncLayout.OnFuncKeyBoardListener,XhsEmoticonsKeyBoard.OnResultOTR ,Room {
+public class ConversationActivity extends AppCompatActivity implements FuncLayout.OnFuncKeyBoardListener,XhsEmoticonsKeyBoard.OnResultOTR ,MessageManageListener {
 
     private static final int CODE_TAKE_PHOTO = 1;
     private static final int FILE_SELECT_CODE = 2;
@@ -208,7 +206,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private String mImagePath;
     private ChatAdapter mChatAdapter;
     private LinearLayoutManager mLayoutManager;
-    private MessageManage messageManage;
+    private Room roomManage;
+    private String roomType;//房间类型
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -242,11 +241,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             }
         });
         mEkbEmoticonsKeyboard.addOnResultOTR(this);
-        messageManage=RoomManage.getInstance().getMessageManage(mUser);
-        if(messageManage==null){
-            messageManage=RoomManage.getInstance().addMessageManage(mUser,mName);
-        }
-        messageManage.addRoom(this);
     }
 
 
@@ -477,7 +471,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     }
 
     private void sendMessage(String message){
-        messageManage.sendMessage(message);
+        roomManage.sendMessage(message);
     }
 
 
@@ -494,7 +488,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         recordUtil.finish();
         int duration = recordUtil.getVoiceDuration();
         String fileName = recordUtil.getFileName();
-        messageManage.sendVoice(duration,fileName);
+        roomManage.sendVoice(duration,fileName);
     }
 
     //录音取消处理
@@ -663,19 +657,19 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             if (requestCode == CODE_TAKE_PHOTO) {
                 int degree = UtilTool.readPictureDegree(mImagePath);
                 UtilTool.toturn(mImagePath, BitmapFactory.decodeFile(mImagePath), degree);
-                messageManage.Upload(mImagePath);
+                roomManage.Upload(mImagePath);
             } else if (requestCode == FILE_SELECT_CODE) {
 
             } else if (requestCode == PictureConfig.CHOOSE_REQUEST) {
                 selectList = PictureSelector.obtainMultipleResult(data);
                 if (selectList.size() != 0) {
                     for (int i = 0; i < selectList.size(); i++) {
-                        messageManage.Upload(selectList.get(i).getPath());
+                        roomManage.Upload(selectList.get(i).getPath());
                     }
                     selectList.clear();
                 }
             } else if (requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE) {
-                messageManage.Upload(mImagePath);
+                roomManage.Upload(mImagePath);
             }
         }
     }
@@ -771,11 +765,20 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 //            mUserImage = UtilTool.getImage(mMgr, mUser, this);
             clearNotification();
         }
-       /* mType = intent.getStringExtra("type");
-        if (mType != null)
-            mLlOrder.setVisibility(View.VISIBLE);
-        else
-            mLlOrder.setVisibility(View.GONE);*/
+        roomType =bundle.getString("chatType");
+        if (RoomManage.getInstance().getRoom(mUser) == null) {
+           if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
+               roomManage =RoomManage.getInstance().addMultiMessageManage(mUser,mName);
+            }else{
+//               if (RoomManage.ROOM_TYPE_SINGLE.equals(roomType)) {
+               UtilTool.Log("fengjian","添加单聊---"+mUser);
+               roomManage =RoomManage.getInstance().addSingleMessageManage(mUser,mName);
+           }
+        }else{
+            UtilTool.Log("fengjian","房间存在---"+mUser);
+            roomManage=RoomManage.getInstance().getRoom(mUser);
+        }
+        roomManage.addMessageManageListener(this);
         setTitleName();
     }
 
@@ -1069,4 +1072,5 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             }
         });
     }
+
 }

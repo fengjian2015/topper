@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     public DBHelper(Context context) {
         //CursorFactory设置为null,使用默认值
@@ -21,7 +21,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table ConversationRecord(id integer primary key autoincrement, my_user varchar, number integer, message varchar, time varchar, user varchar, friend varchar, istop varchar)");
+        db.execSQL("create table ConversationRecord(id integer primary key autoincrement, my_user varchar, number integer, message varchar, time varchar, user varchar, friend varchar, istop varchar,chatType varchar)");
         db.execSQL("create table MessageRecord(id integer primary key autoincrement, my_user varchar, user varchar, message varchar, time varchar, type integer, coin varchar, count varchar, remark varchar" +
                 ", state integer, redId integer, voice varchar, voiceStatus integer, voiceTime varchar, sendStatus integer, msgType integer" +
                 ", imageType integer,send varchar,lat float,lng float,address varchar,title varchar)");
@@ -35,12 +35,14 @@ public class DBHelper extends SQLiteOpenHelper {
         if ((newVersion - oldVersion) >= 2) {
             onCreate(db);
         }else{
+            //20180523增加房间类型，用于新增群聊判断
+            db.execSQL("ALTER TABLE ConversationRecord ADD chatType TEXT");
 //            db.execSQL("ALTER TABLE MessageRecord ADD send TEXT");//2018-5-15增加是誰發送的消息
             //2018-5-22增加定位字段
-            db.execSQL("ALTER TABLE MessageRecord ADD lat REAL");
-            db.execSQL("ALTER TABLE MessageRecord ADD lng REAL");
-            db.execSQL("ALTER TABLE MessageRecord ADD address TEXT");
-            db.execSQL("ALTER TABLE MessageRecord ADD title TEXT");
+//            db.execSQL("ALTER TABLE MessageRecord ADD lat REAL");
+//            db.execSQL("ALTER TABLE MessageRecord ADD lng REAL");
+//            db.execSQL("ALTER TABLE MessageRecord ADD address TEXT");
+//            db.execSQL("ALTER TABLE MessageRecord ADD title TEXT");
         }
 //        db.execSQL("ALTER TABLE ConversationRecord ADD istop TEXT");
 //        db.execSQL("ALTER TABLE UserImage ADD remark TEXT");

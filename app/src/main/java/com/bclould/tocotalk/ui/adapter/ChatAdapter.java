@@ -27,15 +27,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bclould.tocotalk.Presenter.GrabRedPresenter;
 import com.bclould.tocotalk.R;
-import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.GrabRedInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.SerMap;
-import com.bclould.tocotalk.model.VoiceInfo;
 import com.bclould.tocotalk.ui.activity.ChatLookLocationActivity;
 import com.bclould.tocotalk.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tocotalk.ui.activity.ImageViewActivity;
@@ -50,14 +47,12 @@ import com.bclould.tocotalk.ui.activity.TransferDetailsActivity;
 import com.bclould.tocotalk.ui.activity.VideoActivity;
 import com.bclould.tocotalk.ui.widget.ChatCopyDialog;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
-import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
-import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.CustomLinkMovementMethod;
 import com.bclould.tocotalk.utils.HyperLinkUtil;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.ToastShow;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bclould.tocotalk.xmpp.XmppConnection;
+import com.bclould.tocotalk.xmpp.RoomManage;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -65,13 +60,8 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-
 import org.greenrobot.eventbus.EventBus;
-import org.jivesoftware.smack.chat.Chat;
-import org.jivesoftware.smack.chat.ChatManager;
-import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.util.stringencoder.Base64;
-import org.jxmpp.jid.impl.JidCreate;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -117,7 +107,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private final Context mContext;
     private final List<MessageInfo> mMessageList;
 //    private final Bitmap mFromBitmap;
-    private final String mUser;
+
     private final DBManager mMgr;
     private final GrabRedPresenter mGrabRedPresenter;
 //    private final Bitmap mToBitmap;
@@ -126,7 +116,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private CurrencyDialog mCurrencyDialog;
     private String mFileName;
     private AnimationDrawable mAnim;
+    private final String mUser;
     private String mName;
+
     private String mToName;
 
     public ChatAdapter(Context context, List<MessageInfo> messageList, Bitmap fromBitmap, String user, DBManager mgr, MediaPlayer mediaPlayer, String name) {
@@ -436,16 +428,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
     }
 
     private void anewSendText(String user, String message, ImageView ivWarning, int id, MessageInfo messageInfo) {
-        try {
-            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            Chat chat = manager.createChat(JidCreate.entityBareFrom(user), null);
-            chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(message,
-                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
+        if(RoomManage.getInstance().getRoom(user).anewSendText(user,message,id)){
             ivWarning.setVisibility(View.GONE);
             messageInfo.setSendStatus(0);
-            mMgr.updateMessageHint(id, 0);
-        } catch (Exception e) {
-            e.printStackTrace();
+        }else{
             ivWarning.setVisibility(View.VISIBLE);
             Toast.makeText(mContext, mContext.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
         }
@@ -724,25 +710,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
     }
 
     private void anewSendVoice(MessageInfo messageInfo, ImageView ivWarning) {
-        try {
-            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
-            Message message = new Message();
-            byte[] bytes = UtilTool.readStream(messageInfo.getVoice());
-            String base64 = Base64.encodeToString(bytes);
-            VoiceInfo voiceInfo = new VoiceInfo();
-            voiceInfo.setElementText(base64);
-            int duration = UtilTool.getFileDuration(messageInfo.getVoice(), mContext);
-            message.setBody(OtrChatListenerManager.getInstance().sentMessagesChange("[audio]:" + duration + mContext.getString(R.string.second),
-                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
-            message.addExtension(voiceInfo);
-            chat.sendMessage(message);
+        if(RoomManage.getInstance().getRoom(mUser).anewSendVoice(messageInfo)){
             ivWarning.setVisibility(View.GONE);
             messageInfo.setSendStatus(0);
-            mMgr.updateMessageHint(messageInfo.getId(), 0);
             EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.oneself_send_msg)));
-        } catch (Exception e) {
-            e.printStackTrace();
+        }else{
             ivWarning.setVisibility(View.VISIBLE);
             Toast.makeText(mContext, mContext.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
         }

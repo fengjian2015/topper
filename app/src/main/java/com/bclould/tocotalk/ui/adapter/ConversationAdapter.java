@@ -1,5 +1,8 @@
 package com.bclould.tocotalk.ui.adapter;
 
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -18,10 +21,14 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.ui.activity.ConversationActivity;
+import com.bclould.tocotalk.ui.activity.SelectFriendActivity;
 import com.bclould.tocotalk.ui.fragment.ConversationFragment;
+import com.bclould.tocotalk.ui.widget.CenterEntryDialog;
+import com.bclould.tocotalk.ui.widget.ChatCopyDialog;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.StringUtils;
+import com.bclould.tocotalk.utils.ToastShow;
 import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -95,6 +102,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
                     Bundle bundle = new Bundle();
                     bundle.putString("name", mConversationInfo.getFriend());
                     bundle.putString("user", mConversationInfo.getUser());
+                    bundle.putString("chatType", mConversationInfo.getChatType());
                     intent.putExtras(bundle);
                     mContext.startActivity(intent);
                     mNumber.setVisibility(View.GONE);
@@ -105,7 +113,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
             mRlItem.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showDeleteDialog(mConversationInfo.getUser());
+                    showDialog(mConversationInfo);
                     return false;
                 }
             });
@@ -158,6 +166,34 @@ public class ConversationAdapter extends RecyclerView.Adapter {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        });
+    }
+
+    private void showDialog(final ConversationInfo conversationInfo){
+        final String istop=conversationInfo.getIstop();
+        final CenterEntryDialog centerEntryDialog = new CenterEntryDialog(mContext, R.style.dialog);
+        centerEntryDialog.show();
+        centerEntryDialog.isTop(istop,mContext);
+        Button btn_delete = (Button) centerEntryDialog.findViewById(R.id.btn_delete);
+        Button btn_stick = (Button) centerEntryDialog.findViewById(R.id.btn_stick);
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDeleteDialog(conversationInfo.getUser());
+                centerEntryDialog.dismiss();
+            }
+        });
+        btn_stick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if("true".equals(istop)){
+                    mMgr.updateConversationIstop(conversationInfo.getUser(),"false");
+                }else{
+                    mMgr.updateConversationIstop(conversationInfo.getUser(),"true");
+                }
+                EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.message_top_change)));
+                centerEntryDialog.dismiss();
             }
         });
     }

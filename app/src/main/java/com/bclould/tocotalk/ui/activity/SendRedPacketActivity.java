@@ -42,6 +42,7 @@ import com.bclould.tocotalk.utils.AnimatorTool;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
+import com.bclould.tocotalk.xmpp.RoomManage;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
@@ -356,43 +357,7 @@ public class SendRedPacketActivity extends AppCompatActivity {
     };
 
     public void setData(int id) {
-        String message = Constants.REDBAG + Constants.CHUANCODE + mRemark + Constants.CHUANCODE + mCoin + Constants.CHUANCODE + mCount + Constants.CHUANCODE + id;
-        try {
-            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
-            chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(message,
-                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
-            MessageInfo messageInfo = new MessageInfo();
-            messageInfo.setUsername(mUser);
-            messageInfo.setMessage(message);
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date curDate = new Date(System.currentTimeMillis());
-            String time = formatter.format(curDate);
-            messageInfo.setTime(time);
-            messageInfo.setType(0);
-            messageInfo.setRemark(mRemark);
-            messageInfo.setCoin(mCoin);
-            messageInfo.setMsgType(TO_RED_MSG);
-            messageInfo.setCount(mCount + "");
-            messageInfo.setStatus(0);
-            messageInfo.setRedId(id);
-            messageInfo.setSend(UtilTool.getJid());
-            mMgr.addMessage(messageInfo);
-            String hint = "[" + getString(R.string.red_package) + "]";
-            if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, hint, time);
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mUser.substring(0, mUser.indexOf("@")));
-                info.setUser(mUser);
-                info.setMessage(hint);
-                mMgr.addConversation(info);
-            }
-            EventBus.getDefault().post(new MessageEvent(getString(R.string.send_red_packet_le)));
-            finish();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        RoomManage.getInstance().addMultiMessageManage(mUser,mMgr.findConversationName(mUser)).sendRed(mRemark,mCoin,mCount,id);
+        finish();
     }
 }

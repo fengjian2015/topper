@@ -37,6 +37,7 @@ import com.bclould.tocotalk.model.QrRedInfo;
 import com.bclould.tocotalk.service.IMCoreService;
 import com.bclould.tocotalk.ui.activity.AddFriendActivity;
 import com.bclould.tocotalk.ui.activity.GrabQRCodeRedActivity;
+import com.bclould.tocotalk.ui.activity.GroupListActivity;
 import com.bclould.tocotalk.ui.activity.PublicshDynamicActivity;
 import com.bclould.tocotalk.ui.activity.ScanQRCodeActivity;
 import com.bclould.tocotalk.ui.activity.SendQRCodeRedActivity;

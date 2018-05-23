@@ -11,6 +11,15 @@ public class ConversationInfo {
     private String user;
     private String friend;
     private String istop;
+    private String chatType;
+
+    public String getChatType() {
+        return chatType;
+    }
+
+    public void setChatType(String chatType) {
+        this.chatType = chatType;
+    }
 
     public String getIstop() {
         return istop;
@@ -69,6 +78,7 @@ public class ConversationInfo {
                 ", user='" + user + '\'' +
                 ", friend='" + friend + '\'' +
                 ", istop='" + istop + '\'' +
+                ", chatType='" + chatType + '\'' +
                 '}';
     }
 }

@@ -22,10 +22,12 @@ import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
+import com.bclould.tocotalk.xmpp.RoomManage;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jivesoftware.smack.packet.Message;
 import org.jxmpp.jid.impl.JidCreate;
 
 import java.text.SimpleDateFormat;
@@ -190,6 +192,7 @@ public class ConversationDetailsActivity extends BaseActivity {
             info.setFriend(mName);
             info.setUser(mUser);
             info.setMessage("");
+            info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
             mMgr.addConversation(info);
             onOffTop.setSelected(true);
             mMgr.updateConversationIstop(mUser,"true");
