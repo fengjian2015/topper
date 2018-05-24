@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.history.DBRoomManage;
+import com.bclould.tocotalk.history.DBRoomMember;
 import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
 
@@ -22,6 +24,8 @@ public class RoomManage {
     public static RoomManage roomManage;
     public Context context;
     private DBManager mMgr;
+    private DBRoomMember dbRoomMember;
+    private DBRoomManage dbRoomManage;
     public HashMap<String,Room> roomHashMap=new HashMap<>();
     public static RoomManage getInstance(){
         if(roomManage==null){
@@ -33,6 +37,8 @@ public class RoomManage {
     public void setContext(Context context){
         this.context=context;
         mMgr=new DBManager(context);
+        dbRoomMember=new DBRoomMember(context);
+        dbRoomManage=new DBRoomManage(context);
     }
 
 
@@ -53,7 +59,7 @@ public class RoomManage {
             if(getRoom(getRoomId(roomId))!=null){
                 return getRoom(getRoomId(roomId));
             }
-            MultiManage multiManage =new MultiManage(mMgr,roomId,context,roomName);
+            MultiManage multiManage =new MultiManage(mMgr,dbRoomMember,dbRoomManage,roomId,context,roomName);
             roomHashMap.put(getRoomId(roomId), multiManage);
             return multiManage;
         }

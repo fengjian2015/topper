@@ -19,5 +19,7 @@ public interface Room {
     void sendLocationMessage(Bitmap bitmap, String title, String address, float lat, float lng);
     boolean anewSendText(String user, String message, int id);
     boolean anewSendVoice(MessageInfo messageInfo);
-    MultiUserChat createRoom(String roomName, String password, List<UserInfo> users);
+    MultiUserChat createRoom(String roomName, String nickName, List<UserInfo> users);
+    MultiUserChat joinMultiUserChat(String user, String roomJid);
+    void changeName(String name);
 }

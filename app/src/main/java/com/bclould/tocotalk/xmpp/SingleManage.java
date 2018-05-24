@@ -507,6 +507,16 @@ public class SingleManage implements Room{
         return null;
     }
 
+    @Override
+    public MultiUserChat joinMultiUserChat(String user, String roomJid) {
+        return null;
+    }
+
+    @Override
+    public void changeName(String name) {
+
+    }
+
     //发送文件消息
     public void sendFileMessage(String path, String postfix, String key, String newFile) {
         try {
