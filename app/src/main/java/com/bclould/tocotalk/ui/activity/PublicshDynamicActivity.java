@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
@@ -279,14 +278,19 @@ public class PublicshDynamicActivity extends BaseActivity {
         }
     }
 
-    List<String> mPathList = new ArrayList<>();
+    ArrayList<String> mPathList = new ArrayList<>();
 
     private void checkFile() {
         String text = mTextEt.getText().toString();
         Intent intent = new Intent(this, ImageUpService.class);
-        intent.putParcelableArrayListExtra("imageList", (ArrayList<? extends Parcelable>) selectList);
-        intent.putExtra("text", text);
-        intent.putExtra("type", mType);
+        Bundle bundle = new Bundle();
+        for (LocalMedia localMedia : selectList){
+            mPathList.add(localMedia.getCompressPath());
+        }
+        bundle.putStringArrayList("imageList", mPathList);
+        bundle.putString("text", text);
+        bundle.putBoolean("type", mType);
+        intent.putExtras(bundle);
         startService(intent);
         finish();
 

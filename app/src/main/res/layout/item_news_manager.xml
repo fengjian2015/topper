@@ -12,8 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/iv_jiantou"
-        android:text="放是否連"
+        android:layout_toLeftOf="@+id/tv_status"
+        android:layout_marginRight="@dimen/x20"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="@dimen/x32"/>
 
@@ -26,5 +28,13 @@
         android:text="2018-10-05 18:20:30"
         android:textSize="@dimen/x24"/>
 
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/x26"
+        android:textColor="@color/gray3"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

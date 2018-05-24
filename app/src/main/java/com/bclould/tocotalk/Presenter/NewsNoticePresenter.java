@@ -10,7 +10,11 @@ import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.GonggaoListInfo;
 import com.bclould.tocotalk.model.NewsListInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
+import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -67,11 +71,11 @@ public class NewsNoticePresenter {
         }
     }
 
-    public void getMyNewsList(int page, int pageSize, final CallBack2 callBack2) {
+    public void getMyNewsList(String filtrate, int page, int pageSize, final CallBack2 callBack2) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .myNewsList(UtilTool.getToken(), page, pageSize)
+                    .myNewsList(UtilTool.getToken(), page, pageSize, Integer.parseInt(filtrate))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<GonggaoListInfo>() {
@@ -174,7 +178,7 @@ public class NewsNoticePresenter {
         }
     }
 
-    public void deleteNews(int id) {
+    public void deleteNews(int id, final int type) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
                     .getServer()
@@ -190,12 +194,57 @@ public class NewsNoticePresenter {
                         @Override
                         public void onNext(BaseInfo baseInfo) {
                             if (baseInfo.getStatus() == 1) {
+                                if(type == Constants.NEW_DRAFTS_TYPE){
+                                    EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.delete_news_drafts)));
+                                }else if(type == Constants.NEW_MY_TYPE){
+                                    EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.delete_news_my)));
+                                }
                                 Toast.makeText(mContext, mContext.getString(R.string.delete_succeed), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
+                            UtilTool.Log("新聞", e.getMessage());
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void deleteDrowsingHistory() {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .deleteDrowsingHistory(UtilTool.getToken())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(BaseInfo baseInfo) {
+                            if (baseInfo.getStatus() == 1) {
+                                EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.empty_news_browsing_history)));
+                            }
+                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            UtilTool.Log("新聞", e.getMessage());
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 

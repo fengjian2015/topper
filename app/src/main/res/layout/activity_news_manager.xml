@@ -27,14 +27,27 @@
 
 
         <TextView
-            android:id="@+id/tv_push"
+            android:id="@+id/tv_filtrate"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:visibility="gone"
+            android:paddingRight="@dimen/x20"
+            android:text="@string/filtrate"
+            android:textColor="@color/blue2"
+            android:textSize="@dimen/x28"/>
+
+        <TextView
+            android:id="@+id/tv_empty"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:paddingRight="@dimen/x20"
-            android:text="@string/push"
-            android:textColor="@color/blue2"
+            android:text="@string/empty"
+            android:textColor="@color/red"
             android:textSize="@dimen/x28"/>
 
     </RelativeLayout>

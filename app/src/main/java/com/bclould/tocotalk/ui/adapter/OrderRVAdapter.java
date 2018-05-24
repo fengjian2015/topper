@@ -19,6 +19,7 @@ import com.bclould.tocotalk.ui.activity.OrderCloseActivity;
 import com.bclould.tocotalk.ui.activity.OrderDetailsActivity;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -106,13 +107,12 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             } else {
                 mTvType.setTextColor(mContext.getResources().getColor(R.color.black));
             }
-            try {
-                String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
-
-                UtilTool.getImage(mMgr, jid, mContext, mIvTouxiang);
-                //                mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
-            } catch (Exception e) {
-                e.printStackTrace();
+                /*String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
+                UtilTool.getImage(mMgr, jid, mContext, mIvTouxiang);*/
+            if (dataBean.getAvatar().isEmpty()) {
+                mIvTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));
+            } else {
+                Glide.with(mContext).load(dataBean.getAvatar()).into(mIvTouxiang);
             }
             if (dataBean.getType() == 1) {
                 mTvName.setText(dataBean.getUser_name());
@@ -179,13 +179,10 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             mTvTime.setText(dataBean.getCreated_at());
             mTvCoinType.setText(dataBean.getCoin_name() + dataBean.getType_name());
             if (dataBean.getType() == 1) {
-                try {
-                    String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
-
-                    UtilTool.getImage(mMgr, jid, mContext, mIvTouxiang);
-                    //                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (dataBean.getAvatar().isEmpty()) {
+                    mIvTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));
+                } else {
+                    Glide.with(mContext).load(dataBean.getAvatar()).into(mIvTouxiang);
                 }
                 mTvName.setText(dataBean.getUser_name());
                 mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape));

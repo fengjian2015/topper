@@ -384,6 +384,10 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         return mEmoticonsFuncView;
     }
 
+    public FuncLayout getFuncView() {
+        return mLyKvml;
+    }
+
     public EmoticonsIndicatorView getEmoticonsIndicatorView() {
         return mEmoticonsIndicatorView;
     }

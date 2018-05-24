@@ -85,6 +85,15 @@ public class DealListInfo implements Serializable {
         private int count_trans_number;
         private String username;
         private int self_trans;
+        private String avatar;
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
 
         public int getSelf_trans() {
             return self_trans;

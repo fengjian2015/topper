@@ -176,7 +176,6 @@ public class PayRecordActivity extends BaseActivity {
         //选项1
         options1Items.add(new ProvinceBean(0, "2018", "描述部分", "其他数据"));
         options1Items.add(new ProvinceBean(1, "2017", "描述部分", "其他数据"));
-        options1Items.add(new ProvinceBean(2, "2016", "描述部分", "其他数据"));
 
         //选项2
         ArrayList<String> options2Items_01 = new ArrayList<>();

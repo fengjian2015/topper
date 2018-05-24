@@ -92,6 +92,15 @@ public class MyAdListInfo {
         private String otc_in_free;
         private int count_trans_number;
         private String username;
+        private String avatar;
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
 
         public int getId() {
             return id;

@@ -21,6 +21,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.NewsListInfo;
 import com.bclould.tocotalk.ui.activity.NewsDetailsActivity;
 import com.bclould.tocotalk.ui.adapter.NewsRVAdapter;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.SpaceItemDecoration2;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
@@ -190,6 +191,7 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     public void OnBannerClick(int position) {
         Intent intent = new Intent(getContext(), NewsDetailsActivity.class);
         intent.putExtra("id", mTopList.get(position).getId());
+        intent.putExtra("type", Constants.NEWS_MAIN_TYPE);
         startActivity(intent);
     }
 }

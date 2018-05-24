@@ -157,11 +157,16 @@ public class NewsDetailsActivity extends BaseActivity {
     private void initIntent() {
         mId = getIntent().getIntExtra("id", 0);
         mType = getIntent().getIntExtra("type", 0);
-        if (mType == 1) {
+        UtilTool.Log("新聞id", mId + "");
+        UtilTool.Log("新聞type", mType + "");
+        if (mType == Constants.GONGGAO_TYPE) {
             mTitleName.setText(getString(R.string.gongao_details));
             mRlEdit.setVisibility(View.GONE);
             mUrl = Constants.BASE_URL + Constants.GONGGAO_WEB_URL + mId;
         } else {
+            if(mType == Constants.NEW_MY_TYPE || mType == Constants.NEW_DRAFTS_TYPE){
+                mRlEdit.setVisibility(View.GONE);
+            }
             mTitleName.setText(getString(R.string.news_details));
             mUrl = Constants.BASE_URL + Constants.NEWS_WEB_URL + mId + "/" + UtilTool.getUserId();
         }

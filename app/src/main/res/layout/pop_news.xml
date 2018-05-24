@@ -26,7 +26,7 @@
         android:layout_weight="1"
         android:drawableLeft="@mipmap/ico_find_new"
         android:gravity="center"
-        android:text="@string/news_manager"
+        android:text="@string/ad_manager"
         android:textColor="@android:color/black"
         android:textSize="@dimen/x28"
         android:visibility="visible"/>
@@ -38,7 +38,7 @@
         android:layout_weight="1"
         android:drawableLeft="@mipmap/ico_find_fb"
         android:gravity="center"
-        android:text="@string/publish_news"
+        android:text="@string/push_ad"
         android:textColor="@android:color/black"
         android:textSize="@dimen/x28"
         android:visibility="visible"/>

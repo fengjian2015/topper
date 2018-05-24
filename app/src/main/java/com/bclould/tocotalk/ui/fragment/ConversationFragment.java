@@ -37,7 +37,6 @@ import com.bclould.tocotalk.model.QrRedInfo;
 import com.bclould.tocotalk.service.IMCoreService;
 import com.bclould.tocotalk.ui.activity.AddFriendActivity;
 import com.bclould.tocotalk.ui.activity.GrabQRCodeRedActivity;
-import com.bclould.tocotalk.ui.activity.GroupListActivity;
 import com.bclould.tocotalk.ui.activity.PublicshDynamicActivity;
 import com.bclould.tocotalk.ui.activity.ScanQRCodeActivity;
 import com.bclould.tocotalk.ui.activity.SendQRCodeRedActivity;
@@ -165,8 +164,10 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
                     if (mAnim != null)
                         mAnim.stop();
-                    mLlLogin.setVisibility(View.GONE);
-                    mRlUnunited.setVisibility(View.GONE);
+                        mLlLogin.setVisibility(View.GONE);
+                    if (mRlUnunited != null) {
+                        mRlUnunited.setVisibility(View.GONE);
+                    }
                     break;
                 /*case 2:
                     initRecyclerView();
@@ -181,7 +182,9 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                     mLlLogin.setVisibility(View.GONE);
                     break;*/
                 case 3:
-                    mLlLogin.setVisibility(View.VISIBLE);
+                    if (mLlLogin != null) {
+                        mLlLogin.setVisibility(View.VISIBLE);
+                    }
                     if (mAnim != null)
                         mAnim.stop();
                     mAnim = (AnimationDrawable) mIvAnim.getBackground();
@@ -194,8 +197,8 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
     private void initRelogin() {
         ConnectStateChangeListenerManager.get().registerStateChangeListener(this);
-        ConnectStateChangeListenerManager.get().setCurrentState( ConnectStateChangeListenerManager.DISCONNECT);
-        imState=-1;
+        ConnectStateChangeListenerManager.get().setCurrentState(ConnectStateChangeListenerManager.DISCONNECT);
+        imState = -1;
         ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
         Intent intent = new Intent(getContext(), IMCoreService.class);
         if (XmppConnection.isServiceWork(getContext(), "com.bclould.tocotalk.service.IMCoreService")) {
@@ -208,7 +211,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
     @Override
     public void onStateChange(int serviceState) {
-        if (serviceState == -1||mLlLogin==null) return;
+        if (serviceState == -1 || mLlLogin == null) return;
         if (imState == serviceState) {
             return;
         } else {

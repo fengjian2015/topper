@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -28,7 +29,6 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.luck.picture.lib.entity.LocalMedia;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -42,8 +42,6 @@ import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class ImageUpService extends Service {
-
-    private List<LocalMedia> selectList;
     private String mText;
     private DynamicPresenter mDynamicPresenter;
     private List<String> mPathList = new ArrayList<>();
@@ -63,20 +61,37 @@ public class ImageUpService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         UtilTool.Log("發佈動態", "啟動服務");
+        mPathList.clear();
         mDynamicPresenter = new DynamicPresenter(this);
-        selectList = intent.getParcelableArrayListExtra("imageList");
-        mText = intent.getStringExtra("text");
-        mType = intent.getBooleanExtra("type", false);
-        checkFile();
+        Bundle bundle = null;
+        if (intent != null) {
+            bundle = intent.getExtras();
+        } else {
+            onDestroy();
+        }
+        if (bundle != null) {
+            if (bundle.containsKey("imageList")) {
+                mPathList = bundle.getStringArrayList("imageList");
+            }
+            if (bundle.containsKey("text")) {
+                mText = bundle.getString("text");
+            }
+            if (bundle.containsKey("type")) {
+                mType = bundle.getBoolean("type", false);
+            }
+            checkFile();
+        } else {
+            onDestroy();
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 
 
     private void checkFile() {
-        if (selectList.size() != 0) {
+        if (mPathList.size() != 0) {
             if (mType) {
-                File file = new File(selectList.get(0).getPath());
-                Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(selectList.get(0).getPath()
+                File file = new File(mPathList.get(0));
+                Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(mPathList.get(0)
                         , MediaStore.Video.Thumbnails.MINI_KIND);
                 //缩略图储存路径
                 final String key = UtilTool.getUserId() + UtilTool.createtFileName() + UtilTool.getPostfix2(file.getName());
@@ -90,19 +105,19 @@ public class ImageUpService extends Service {
                     @Override
                     public void run() {
                         try {
-                            for (int i = 0; i < selectList.size(); i++) {
-                                mPathList.add(selectList.get(i).getCompressPath());
-                                File file = new File(selectList.get(i).getCompressPath());
+                            for (int i = 0; i < mPathList.size(); i++) {
+                                File file = new File(mPathList.get(i));
                                 final String key = UtilTool.getUserId() + UtilTool.createtFileName() + UtilTool.getPostfix2(file.getName());
                                 final String keyCompress = UtilTool.getUserId() + UtilTool.createtFileName() + "compress" + UtilTool.getPostfix2(file.getName());
                                 //缩略图储存路径
                                 final File newFile = new File(Constants.PUBLICDIR + keyCompress);
-                                UtilTool.comp(BitmapFactory.decodeFile(selectList.get(i).getCompressPath()), newFile);//压缩图片
+                                UtilTool.comp(BitmapFactory.decodeFile(mPathList.get(i)), newFile);//压缩图片
                                 upImage(key, file, true);
                                 upImage(keyCompress, newFile, false);
                             }
                         } catch (Exception e) {
-                            Toast.makeText(ImageUpService.this, getString(R.string.up_error), Toast.LENGTH_SHORT).show();
+                            UtilTool.Log("錯誤", e.getMessage());
+                            handler.sendEmptyMessage(2);
                             e.printStackTrace();
                         }
                     }
@@ -134,9 +149,9 @@ public class ImageUpService extends Service {
                 Constants.SESSION_TOKEN);
         AmazonS3Client s3Client = new AmazonS3Client(
                 sessionCredentials);
-        Regions regions = Regions.fromName("ap-northeast-2");
+        /*Regions regions = Regions.fromName("ap-northeast-2");
         Region region = Region.getRegion(regions);
-        s3Client.setRegion(region);
+        s3Client.setRegion(region);*/
         s3Client.addRequestHandler(new RequestHandler2() {
             @Override
             public void beforeRequest(Request<?> request) {
@@ -205,6 +220,8 @@ public class ImageUpService extends Service {
                     PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
                     s3Client.putObject(por);
                 } catch (AmazonClientException e) {
+                    UtilTool.Log("錯誤", e.getMessage());
+                    handler.sendEmptyMessage(2);
                     e.printStackTrace();
                 }
             }
@@ -243,9 +260,13 @@ public class ImageUpService extends Service {
                         else
                             mkeyCompressList = key;
                     }
-                    if (count == selectList.size() * 2) {
+                    if (count == mPathList.size() * 2) {
                         publicshDynamic("1", mKeyList, mkeyCompressList);
                     }
+                    break;
+                case 2:
+                    Toast.makeText(ImageUpService.this, getString(R.string.up_error), Toast.LENGTH_SHORT).show();
+                    onDestroy();
                     break;
             }
         }
