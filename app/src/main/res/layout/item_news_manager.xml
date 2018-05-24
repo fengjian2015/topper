@@ -32,6 +32,7 @@
         android:id="@+id/tv_status"
         android:layout_width="wrap_content"
         android:textSize="@dimen/x26"
+        android:textColor="@color/gray3"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_height="wrap_content"/>

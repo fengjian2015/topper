@@ -37,7 +37,6 @@ import com.bclould.tocotalk.model.QrRedInfo;
 import com.bclould.tocotalk.service.IMCoreService;
 import com.bclould.tocotalk.ui.activity.AddFriendActivity;
 import com.bclould.tocotalk.ui.activity.GrabQRCodeRedActivity;
-import com.bclould.tocotalk.ui.activity.GroupListActivity;
 import com.bclould.tocotalk.ui.activity.PublicshDynamicActivity;
 import com.bclould.tocotalk.ui.activity.ScanQRCodeActivity;
 import com.bclould.tocotalk.ui.activity.SendQRCodeRedActivity;
@@ -165,11 +164,10 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
                     if (mAnim != null)
                         mAnim.stop();
-                    if (mLlLogin != null) {
-                        mLlLogin.setVisibility(View.VISIBLE);
+                        mLlLogin.setVisibility(View.GONE);
+                    if (mRlUnunited != null) {
+                        mRlUnunited.setVisibility(View.GONE);
                     }
-                    if (mRlUnunited != null)
-                    mRlUnunited.setVisibility(View.GONE);
                     break;
                 /*case 2:
                     initRecyclerView();

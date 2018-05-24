@@ -86,6 +86,8 @@ public class NewsBrowseRecordFragment extends android.support.v4.app.Fragment {
         deleteCacheDialog.setTitle(getString(R.string.empty_news_browsing_history_hint));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        confirm.setTextColor(getResources().getColor(R.color.red));
+        confirm.setText(getString(R.string.empty));
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -1,5 +1,6 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -151,6 +152,7 @@ public class NewsEditActivity extends BaseActivity {
 
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
         //设置WebView支持JavaScript
         mWebView.getSettings().setJavaScriptEnabled(true);
@@ -258,8 +260,8 @@ public class NewsEditActivity extends BaseActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                hideDialog();
                 if (status == 1) {
-                    hideDialog();
                     finish();
                 }
                 Toast.makeText(NewsEditActivity.this, message, Toast.LENGTH_SHORT).show();

@@ -1,7 +1,6 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +29,7 @@ import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.MyAssetsInfo;
 import com.bclould.tocotalk.ui.adapter.MyWalletRVAapter;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.SpaceItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -179,7 +179,7 @@ public class MyAssetsActivity extends BaseActivity {
         mPopupWindow = new PopupWindow(mPopupWindowView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
         mPopupWindow.setAnimationStyle(R.style.AnimationRightFade);
-        mPopupWindow.showAtLocation(view, Gravity.NO_GRAVITY, widthPixels - mPopupWindow.getWidth(), location[1]);
+        mPopupWindow.showAtLocation(view, Gravity.NO_GRAVITY, widthPixels - mPopupWindow.getWidth(), location[1] - 15);
         final ImageView back = (ImageView) mPopupWindowView.findViewById(R.id.iv_jiantou);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -252,23 +252,6 @@ public class MyAssetsActivity extends BaseActivity {
             case R.id.et_coin_name:
 
                 break;
-        }
-    }
-
-    class SpaceItemDecoration extends RecyclerView.ItemDecoration {
-        int mSpace;
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            super.getItemOffsets(outRect, view, parent, state);
-            outRect.bottom = mSpace;
-            if (parent.getChildAdapterPosition(view) == 0) {
-                outRect.top = mSpace;
-            }
-        }
-
-        public SpaceItemDecoration(int space) {
-            this.mSpace = space;
         }
     }
 }

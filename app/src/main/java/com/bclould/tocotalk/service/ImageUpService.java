@@ -61,18 +61,28 @@ public class ImageUpService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         UtilTool.Log("發佈動態", "啟動服務");
+        mPathList.clear();
         mDynamicPresenter = new DynamicPresenter(this);
-        Bundle bundle = intent.getExtras();
-        if (bundle.containsKey("imageList")) {
-            mPathList = bundle.getStringArrayList("imageList");
+        Bundle bundle = null;
+        if (intent != null) {
+            bundle = intent.getExtras();
+        } else {
+            onDestroy();
         }
-        if (bundle.containsKey("text")) {
-            mText = bundle.getString("text");
+        if (bundle != null) {
+            if (bundle.containsKey("imageList")) {
+                mPathList = bundle.getStringArrayList("imageList");
+            }
+            if (bundle.containsKey("text")) {
+                mText = bundle.getString("text");
+            }
+            if (bundle.containsKey("type")) {
+                mType = bundle.getBoolean("type", false);
+            }
+            checkFile();
+        } else {
+            onDestroy();
         }
-        if (bundle.containsKey("type")) {
-            mType = bundle.getBoolean("type", false);
-        }
-        checkFile();
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -106,7 +116,8 @@ public class ImageUpService extends Service {
                                 upImage(keyCompress, newFile, false);
                             }
                         } catch (Exception e) {
-                            Toast.makeText(ImageUpService.this, getString(R.string.up_error), Toast.LENGTH_SHORT).show();
+                            UtilTool.Log("錯誤", e.getMessage());
+                            handler.sendEmptyMessage(2);
                             e.printStackTrace();
                         }
                     }
@@ -138,9 +149,9 @@ public class ImageUpService extends Service {
                 Constants.SESSION_TOKEN);
         AmazonS3Client s3Client = new AmazonS3Client(
                 sessionCredentials);
-        Regions regions = Regions.fromName("ap-northeast-2");
+        /*Regions regions = Regions.fromName("ap-northeast-2");
         Region region = Region.getRegion(regions);
-        s3Client.setRegion(region);
+        s3Client.setRegion(region);*/
         s3Client.addRequestHandler(new RequestHandler2() {
             @Override
             public void beforeRequest(Request<?> request) {
@@ -209,6 +220,8 @@ public class ImageUpService extends Service {
                     PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
                     s3Client.putObject(por);
                 } catch (AmazonClientException e) {
+                    UtilTool.Log("錯誤", e.getMessage());
+                    handler.sendEmptyMessage(2);
                     e.printStackTrace();
                 }
             }
@@ -250,6 +263,10 @@ public class ImageUpService extends Service {
                     if (count == mPathList.size() * 2) {
                         publicshDynamic("1", mKeyList, mkeyCompressList);
                     }
+                    break;
+                case 2:
+                    Toast.makeText(ImageUpService.this, getString(R.string.up_error), Toast.LENGTH_SHORT).show();
+                    onDestroy();
                     break;
             }
         }

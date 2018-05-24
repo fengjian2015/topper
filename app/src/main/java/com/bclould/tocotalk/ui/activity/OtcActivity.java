@@ -1,5 +1,6 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
@@ -181,6 +182,7 @@ public class OtcActivity extends BaseActivity {
         }
     }
 
+    @SuppressLint("CommitTransaction")
     @Override
     protected void onDestroy() {
         super.onDestroy();

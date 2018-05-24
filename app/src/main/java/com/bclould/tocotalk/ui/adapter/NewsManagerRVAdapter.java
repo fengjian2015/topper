@@ -136,6 +136,7 @@ public class NewsManagerRVAdapter extends RecyclerView.Adapter {
             mTvTime.setText(dataBean.getCreated_at());
             if (dataBean.getStatus() == 1) {
                 mTvStatus.setText(mContext.getString(R.string.check_pending));
+                mTvStatus.setTextColor(mContext.getResources().getColor(R.color.gray3));
             } else if (dataBean.getStatus() == 2) {
                 mTvStatus.setText(mContext.getString(R.string.pass));
                 mTvStatus.setTextColor(mContext.getResources().getColor(R.color.blue2));
@@ -152,6 +153,8 @@ public class NewsManagerRVAdapter extends RecyclerView.Adapter {
         deleteCacheDialog.setTitle(mContext.getString(R.string.delete_news_hint));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        confirm.setTextColor(mContext.getResources().getColor(R.color.red));
+        confirm.setText(mContext.getString(R.string.delete));
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

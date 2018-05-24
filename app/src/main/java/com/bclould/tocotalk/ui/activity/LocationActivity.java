@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -19,6 +18,7 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
+
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.ui.adapter.LocationListAdapter;
 import com.bclould.tocotalk.ui.widget.AppTitle;
@@ -50,8 +50,6 @@ import com.tencent.tencentmap.mapsdk.map.UiSettings;
 import org.xutils.common.util.LogUtil;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
-
-import java.util.List;
 
 import jp.wasabeef.recyclerview.animators.ScaleInBottomAnimator;
 
@@ -85,6 +83,10 @@ public class LocationActivity extends AppCompatActivity implements
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.appThemeColor));
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_location_main_view);
         x.Ext.init(this.getApplication());
