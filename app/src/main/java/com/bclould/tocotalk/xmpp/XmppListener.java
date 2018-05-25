@@ -28,12 +28,15 @@ import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.history.DBRoomManage;
+import com.bclould.tocotalk.history.DBRoomMember;
 import com.bclould.tocotalk.model.AuthStatusInfo;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.OtcOrderStatusInfo;
 import com.bclould.tocotalk.model.QrcodeReceiptPayInfo;
 import com.bclould.tocotalk.model.RedExpiredInfo;
+import com.bclould.tocotalk.model.RoomManageInfo;
 import com.bclould.tocotalk.ui.activity.ConversationActivity;
 import com.bclould.tocotalk.ui.activity.OrderCloseActivity;
 import com.bclould.tocotalk.ui.activity.OrderDetailsActivity;
@@ -48,6 +51,7 @@ import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.AbstractXMPPConnection;
+import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
@@ -111,6 +115,8 @@ public class XmppListener {
     private PendingIntent mResultIntent;
     private NotificationCompat.Builder mBuilder;
     private DBManager mgr;
+    private DBRoomManage mdbRoomManage;
+    private DBRoomMember mdbRoomMember;
 
     private int IMSequence = 1000;
     ExecutorService executorService;//以後用於群聊功能
@@ -131,6 +137,8 @@ public class XmppListener {
         this.context = context;
         executorService = Executors.newFixedThreadPool(5);
         mgr = new DBManager(context);
+        mdbRoomManage=new DBRoomManage(context);
+        mdbRoomMember=new DBRoomMember(context);
         handler = new FragmentOneHandler();
         mNotificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(context);
@@ -138,7 +146,6 @@ public class XmppListener {
         initBroadcastListener();
         initListener();
 //        initPacketListener();
-//        initPresenceListener();
     }
 
 
@@ -212,6 +219,7 @@ public class XmppListener {
         }
     }
 
+<<<<<<< HEAD
     private void initPresenceListener() {
         StanzaFilter filter = new AndFilter(new PacketTypeFilter(Presence.class));
         PacketListener listener = new PacketListener() {
@@ -225,38 +233,91 @@ public class XmppListener {
         XmppConnection.getInstance().getConnection().addPacketListener(listener, filter);
     }
 
+=======
+>>>>>>> 7d97879ebab894cd4349d5b981747b5000c56ae8
     private void initPacketListener() {
         StanzaFilter filter = new AndFilter(new PacketTypeFilter(Message.class));
         PacketListener listener = new PacketListener() {
             @Override
             public void processStanza(Stanza packet) throws SmackException.NotConnectedException, InterruptedException {
                 Message message = (Message) packet;
+<<<<<<< HEAD
                 String body = message.getBody();
                 if (message.getType() == Message.Type.normal) {
                     UtilTool.Log("fengjian群日志", "暂时表示收到邀请群聊");
                     createConversation(message);
                     EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+=======
+                String from = message.getFrom().toString();
+                String isMe = null;
+                if (from.equals(Constants.DOMAINNAME)) {
+                    from = Constants.ADMINISTRATOR_NAME;
+                }
+                if (from.contains("/")) {
+                    isMe = from.substring(from.indexOf("/")+1, from.length());
+                    from = from.substring(0, from.indexOf("/"));
+                }
+                if(UtilTool.getUser().equals(isMe)){
+                    UtilTool.Log("fengjian---","是自己的消息去掉:"+message.getFrom());
                     return;
                 }
+                if(message.getType()== Message.Type.normal){
+                    UtilTool.Log("fengjian群日志","暂时表示收到邀请群聊"+message.getSubject()+"\n" +message.toXML());
+                    RoomManage.getInstance().addMultiMessageManage(from,from.split("@")[0])
+                            .joinMultiUserChat(UtilTool.getUser(),from);
+>>>>>>> 7d97879ebab894cd4349d5b981747b5000c56ae8
+                    return;
+                }else if(message.getType()==Message.Type.groupchat){
+                        if(message.getSubject()!=null){
+                            //表示是群主题修改
+                            createConversation(from,message.getSubject());
+                            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+                            UtilTool.Log("fengjian---","修改主题："+message.getSubject());
+                        }else{
+                            android.os.Message msg = new android.os.Message();
+                            msg.obj = message;
+                            msg.what=1;
+                            handler.sendMessage(msg);
+                            UtilTool.Log("fengjian群日志","接受聊天消息"+message.getType().name()+"    \n"+message.getType().toString()+"\n"+message.getBody());
+                        }
+                }
+<<<<<<< HEAD
                 UtilTool.Log("fengjian群日志", "接受聊天消息" + message.getType().name() + "    \n" + message.getType().toString() + "\n" + body);
+=======
+
+>>>>>>> 7d97879ebab894cd4349d5b981747b5000c56ae8
             }
         };
         XmppConnection.getInstance().getConnection().addPacketListener(listener, filter);
     }
 
+<<<<<<< HEAD
     private void createConversation(Message message) {
         ConversationInfo info = new ConversationInfo();
+=======
+    private void createConversation(String from, String subject){
+        ConversationInfo info=new ConversationInfo();
+>>>>>>> 7d97879ebab894cd4349d5b981747b5000c56ae8
         info.setChatType(RoomManage.ROOM_TYPE_MULTI);
         info.setIstop("false");
-        info.setFriend(message.getFrom().toString().split("@")[0]);
-        info.setUser(message.getFrom().toString());
+        info.setFriend(subject);
+        info.setUser(from);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date curDate = new Date(System.currentTimeMillis());
         String time = formatter.format(curDate);
         info.setTime(time);
         info.setMessage("加入群聊");
         mgr.addConversation(info);
+        mdbRoomManage.addRoom(createRoomInfo(from,subject));
     }
+
+    private RoomManageInfo createRoomInfo(String roomId,String roomName){
+        RoomManageInfo roomManageInfo=new RoomManageInfo();
+        roomManageInfo.setRoomId(roomId);
+        roomManageInfo.setRoomName(roomName);
+        return roomManageInfo;
+    }
+
 
     /**
      * 初始化聊天消息监听
@@ -267,7 +328,14 @@ public class XmppListener {
         final ChatMessageListener messageListener = new ChatMessageListener() {
             @Override
             public void processMessage(Chat chat, Message message) {
+<<<<<<< HEAD
                 UtilTool.Log("fengjian---", "收到聊天消息");
+=======
+                if(message.getType()== Message.Type.groupchat){
+                    return;
+                }
+                UtilTool.Log("fengjian---","收到聊天消息");
+>>>>>>> 7d97879ebab894cd4349d5b981747b5000c56ae8
                 android.os.Message msg = new android.os.Message();
                 msg.obj = message;
                 msg.what = 1;
@@ -347,6 +415,7 @@ public class XmppListener {
                     //获取接收的好友名及聊天消息
                     try {
                         Message message = (Message) msg.obj;
+                        Message.Type messageType=message.getType();
                         int msgType = FROM_TEXT_MSG;
 
                         //获取文本消息
@@ -358,13 +427,15 @@ public class XmppListener {
                         Date curDate = new Date(System.currentTimeMillis());
                         String time = formatter.format(curDate);
 
-                        //获取Jid和用户名
+                        //获取Jid和用户名和发送者
+                        String sendFrom ="";
                         String from = message.getFrom().toString();
                         if (from.equals(Constants.DOMAINNAME)) {
                             from = Constants.ADMINISTRATOR_NAME;
                         }
                         String friend = from;
                         if (from.contains("/"))
+                            sendFrom=from.substring(from.indexOf("/")+1, from.length())+"@"+Constants.DOMAINNAME;
                             from = from.substring(0, from.indexOf("/"));
                         if (from.contains("@"))
                             friend = from.substring(0, from.indexOf("@"));
@@ -397,17 +468,30 @@ public class XmppListener {
                                     fileName = UtilTool.createtFileName() + ".amr";
                                     path = context.getFilesDir().getAbsolutePath() + File.separator
                                             + "RecordRemDir";
+<<<<<<< HEAD
                                     goChat(from, context.getString(R.string.voice));
                                 } else if (chatMsg.contains("[LOCATION]")) {
                                     MessageInfo messageInfo1 = new MessageInfo();
                                     messageInfo1 = JSONObject.parseObject(chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length()), MessageInfo.class);
                                     chatMsg = messageInfo1.getTitle();
                                     messageInfo = messageInfo1;
+=======
+                                    goChat(from,context.getString(R.string.voice),messageType,sendFrom);
+                                }else if(chatMsg.contains("[LOCATION]")){
+                                    MessageInfo messageInfo1=new MessageInfo();
+                                    messageInfo1= JSONObject.parseObject(chatMsg.substring(chatMsg.indexOf(":")+1,chatMsg.length()),MessageInfo.class);
+                                    chatMsg=messageInfo1.getTitle();
+                                    messageInfo=messageInfo1;
+>>>>>>> 7d97879ebab894cd4349d5b981747b5000c56ae8
                                     redpacket = "[" + context.getString(R.string.location) + "]";
                                     msgType = FROM_LOCATION_MSG;
                                     fileName = UtilTool.createtFileName() + ".jpg";
                                     path = context.getFilesDir().getAbsolutePath() + File.separator + "images";
+<<<<<<< HEAD
                                     goChat(from, context.getString(R.string.location));
+=======
+                                    goChat(from,context.getString(R.string.location),messageType,sendFrom);
+>>>>>>> 7d97879ebab894cd4349d5b981747b5000c56ae8
                                 } else if (chatMsg.contains("[Image]")) {
                                     String key = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
 
@@ -434,7 +518,11 @@ public class XmppListener {
                                     fileName = UtilTool.createtFileName() + ".jpg";
                                     path = context.getFilesDir().getAbsolutePath() + File.separator
                                             + "images";
+<<<<<<< HEAD
                                     goChat(from, context.getString(R.string.image));
+=======
+                                    goChat(from,context.getString(R.string.image),messageType,sendFrom);
+>>>>>>> 7d97879ebab894cd4349d5b981747b5000c56ae8
                                 } else if (chatMsg.contains("[Video]")) {
                                     String key = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
 
@@ -461,7 +549,11 @@ public class XmppListener {
                                     fileName = UtilTool.createtFileName() + ".mp4";
                                     path = context.getFilesDir().getAbsolutePath() + File.separator
                                             + "images";
+<<<<<<< HEAD
                                     goChat(from, context.getString(R.string.video));
+=======
+                                    goChat(from,context.getString(R.string.video),messageType,sendFrom);
+>>>>>>> 7d97879ebab894cd4349d5b981747b5000c56ae8
                                 }
                                 File dir = new File(path);
                                 if (!dir.exists()) {
@@ -492,7 +584,11 @@ public class XmppListener {
                             msgType = FROM_RED_MSG;
                             redId = Integer.parseInt(split[4]);
                             redpacket = "[" + context.getString(R.string.red_package) + "]";
+<<<<<<< HEAD
                             goChat(from, remark);
+=======
+                            goChat(from,remark,messageType,sendFrom);
+>>>>>>> 7d97879ebab894cd4349d5b981747b5000c56ae8
                         } else if (chatMsg.contains(Constants.TRANSFER)) {
                             String s = chatMsg.replace(Constants.CHUANCODE, ",");
                             String[] split = s.split(",");
@@ -501,7 +597,11 @@ public class XmppListener {
                             count = split[3];
                             msgType = FROM_TRANSFER_MSG;
                             redpacket = "[" + context.getString(R.string.transfer) + "]";
+<<<<<<< HEAD
                             goChat(from, remark);
+=======
+                            goChat(from,remark,messageType,sendFrom);
+>>>>>>> 7d97879ebab894cd4349d5b981747b5000c56ae8
                         } else if (chatMsg.contains(Constants.OTC_ORDER)) {
                             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.order_update)));
                             msgType = ADMINISTRATOR_OTC_ORDER_MSG;
@@ -632,10 +732,20 @@ public class XmppListener {
                             coin = transferInformInfo.getCoin_name();
                             type = transferInformInfo.getType_number();
                             redpacket = "[" + context.getString(R.string.out_coin_inform) + "]";
+<<<<<<< HEAD
                         } else {
                             goChat(from, chatMsg);
+=======
+                        }else{
+                            goChat(from,chatMsg,messageType,sendFrom);
+>>>>>>> 7d97879ebab894cd4349d5b981747b5000c56ae8
                         }
                         //添加数据库from
+                        if(messageType==Message.Type.groupchat){
+                            messageInfo.setSend(sendFrom);
+                        }else{
+                            messageInfo.setSend(from);
+                        }
                         messageInfo.setUsername(from);
                         messageInfo.setMessage(chatMsg);
                         messageInfo.setTime(time);
@@ -646,7 +756,6 @@ public class XmppListener {
                         messageInfo.setRemark(remark);
                         messageInfo.setStatus(status);
                         messageInfo.setRedId(redId);
-                        messageInfo.setSend(from);
                         mgr.addMessage(messageInfo);
                         int number = mgr.queryNumber(from);
                         if (mgr.findConversation(from)) {
@@ -654,15 +763,24 @@ public class XmppListener {
                         } else {
                             ConversationInfo info = new ConversationInfo();
                             info.setTime(time);
-                            info.setFriend(friend);
+                            if(messageType==Message.Type.groupchat){
+                                info.setFriend(mdbRoomManage.findRoomName(from)+"");
+                                info.setChatType(RoomManage.ROOM_TYPE_MULTI);
+                            }else{
+                                info.setFriend(friend);
+                                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
+                            }
                             info.setUser(from);
                             info.setNumber(1);
                             info.setMessage(redpacket);
+<<<<<<< HEAD
                             if (message.getType() == Message.Type.chat) {
                                 info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
                             } else {
                                 info.setChatType(RoomManage.ROOM_TYPE_MULTI);
                             }
+=======
+>>>>>>> 7d97879ebab894cd4349d5b981747b5000c56ae8
                             mgr.addConversation(info);
                         }
                         EventBus.getDefault().post(new MessageEvent(context.getString(R.string.msg_database_update)));
@@ -675,8 +793,13 @@ public class XmppListener {
         }
     }
 
+<<<<<<< HEAD
     private void goChat(String from, String message) {
         if (!isApplicationBroughtToBackground(context)) {
+=======
+    private void goChat(String from, String message, Message.Type messageType, String sendFrom){
+        if(!isApplicationBroughtToBackground(context)){
+>>>>>>> 7d97879ebab894cd4349d5b981747b5000c56ae8
             return;
         }
         if (from.isEmpty()) {
@@ -686,18 +809,34 @@ public class XmppListener {
         Intent intent = new Intent();
         intent.setClass(context, ConversationActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("name", from.split("@")[0]);
+        if(messageType==Message.Type.groupchat){
+            bundle.putString("name", mdbRoomManage.findRoomName(from));
+        }else{
+            bundle.putString("name", from.split("@")[0]);
+        }
         bundle.putString("user", from);
         intent.putExtras(bundle);
         mResultIntent = PendingIntent.getActivity(context, 1, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setSmallIcon(R.mipmap.logo);
+<<<<<<< HEAD
 
         String remark = mgr.queryRemark(from);
         if (!StringUtils.isEmpty(remark)) {
             mBuilder.setContentTitle(remark);
         } else {
             mBuilder.setContentTitle(from.split("@")[0]);
+=======
+        if(messageType==Message.Type.groupchat){
+            mBuilder.setContentTitle(mdbRoomManage.findRoomName(from));
+        }else {
+            String remark = mgr.queryRemark(from);
+            if (!StringUtils.isEmpty(remark)) {
+                mBuilder.setContentTitle(remark);
+            } else {
+                mBuilder.setContentTitle(from.split("@")[0]);
+            }
+>>>>>>> 7d97879ebab894cd4349d5b981747b5000c56ae8
         }
         mBuilder.setContentText(message);
         mBuilder.setContentIntent(mResultIntent);

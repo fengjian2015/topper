@@ -475,7 +475,7 @@ public class DBManager {
     }
 
 
-    public void addConversation(ConversationInfo conversationInfo) {
+    public synchronized void addConversation(ConversationInfo conversationInfo) {
         if (findConversation(conversationInfo.getUser())) {
             return;
         }

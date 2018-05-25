@@ -579,7 +579,6 @@ public class FriendListFragment extends Fragment {
                 break;
             case R.id.my_group:
                 startActivity(new Intent(getActivity(), GroupListActivity.class));
-                XmppConnection.getInstance().joinMultiUserChat(UtilTool.getJid(), "群聊六", mMgr);
                 break;
         }
     }

@@ -357,7 +357,7 @@ public class SendRedPacketActivity extends AppCompatActivity {
     };
 
     public void setData(int id) {
-        RoomManage.getInstance().addMultiMessageManage(mUser,mMgr.findConversationName(mUser)).sendRed(mRemark,mCoin,mCount,id);
+        RoomManage.getInstance().addSingleMessageManage(mUser,mMgr.findConversationName(mUser)).sendRed(mRemark,mCoin,mCount,id);
         finish();
     }
 }

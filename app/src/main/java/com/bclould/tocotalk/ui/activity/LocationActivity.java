@@ -216,10 +216,10 @@ public class LocationActivity extends AppCompatActivity implements
             if (TencentLocation.GPS_PROVIDER.equals(provider)) {
                 // location 是GPS定位结果
                 latLngLocation = new LatLng(tencentLocation.getLatitude(), tencentLocation.getLongitude());
-                UtilTool.Log("位置", tencentLocation.getAddress());
+                UtilTool.Log("位置", tencentLocation.getAddress()+"");
             } else if (TencentLocation.NETWORK_PROVIDER.equals(provider)) {
                 // location 是网络定位结果
-                UtilTool.Log("位置", tencentLocation.getAddress());
+                UtilTool.Log("位置", tencentLocation.getAddress()+"");
                 latLngLocation = new LatLng(tencentLocation.getLatitude(), tencentLocation.getLongitude());
             }
             mLocation = tencentLocation;

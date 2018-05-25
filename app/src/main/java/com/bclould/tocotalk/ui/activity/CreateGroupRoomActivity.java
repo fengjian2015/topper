@@ -20,6 +20,7 @@ import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.adapter.CreateGroupRVAdapter;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.StringUtils;
+import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.RoomManage;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 
@@ -83,17 +84,18 @@ public class CreateGroupRoomActivity extends BaseActivity {
                 XmppConnection xmppConnection = XmppConnection.getInstance();
                 if (mUserInfoList != null)
                     try {
+                    String roomJid= UtilTool.getUser()+System.currentTimeMillis() + "@conference." + XmppConnection.getInstance().getConnection().getServiceName();
                     String roomName=mEtGroupName.getText().toString();
-                    String roomId=roomName+ "@conference." + XmppConnection.getInstance().getConnection().getServiceName();
+                    String nickName=UtilTool.getUser();
                         if(StringUtils.isEmpty(roomName)){
                             roomName="群聊";
                         }
-                        MultiUserChat multiUserChat=RoomManage.getInstance().addMultiMessageManage(roomId
-                                ,roomName).createRoom(roomName,null,mUserInfoList);
+                        MultiUserChat multiUserChat=RoomManage.getInstance().addMultiMessageManage(roomJid
+                                ,roomName).createRoom(roomName,nickName,mUserInfoList);
                         if(multiUserChat==null){
-                            RoomManage.getInstance().removeRoom(roomId);
+                            RoomManage.getInstance().removeRoom(roomJid);
                         }else {
-                            createConversation(roomId);
+                            createConversation(roomJid,roomName);
                             EventBus.getDefault().post(new MessageEvent(getString(R.string.oneself_send_msg)));
                         }
                         finish();
@@ -106,11 +108,11 @@ public class CreateGroupRoomActivity extends BaseActivity {
         }
     }
 
-    private void createConversation(String room){
+    private void createConversation(String room,String roomName){
         ConversationInfo info=new ConversationInfo();
         info.setChatType(RoomManage.ROOM_TYPE_MULTI);
         info.setIstop("false");
-        info.setFriend(room.split("@")[0]);
+        info.setFriend(roomName);
         info.setUser(room);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date curDate = new Date(System.currentTimeMillis());

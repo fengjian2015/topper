@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 8;
 
     public DBHelper(Context context) {
         //CursorFactory设置为null,使用默认值
@@ -27,6 +27,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 ", imageType integer,send varchar,lat float,lng float,address varchar,title varchar)");
         db.execSQL("create table AddRequest(id integer primary key autoincrement, my_user varchar, user varchar, type integer)");
         db.execSQL("create table UserImage(id integer primary key autoincrement, my_user varchar, user varchar, status integer, path varchar, remark varchar)");
+        db.execSQL("create table RoomManage(id integer primary key autoincrement, roomImage varchar, roomId varchar, roomName varchar, roomNumber integer,my_user varchar)");
+        db.execSQL("create table RoomMember(id integer primary key autoincrement, name varchar, jid varchar, image_url varchar, remark varchar,my_user varchar)");
     }
 
     //如果DATABASE_VERSION值被改为2,系统发现现有数据库版本不同,即会调用onUpgrade
@@ -35,8 +37,14 @@ public class DBHelper extends SQLiteOpenHelper {
         if ((newVersion - oldVersion) >= 2) {
             onCreate(db);
         }else{
+            //创建房间表和成员表
+            String roomManage = "create table if not exists RoomManage"  + "(roomImage text,roomId text,roomName text,roomNumber integer,my_user text)";
+            db.execSQL( roomManage );
+            String roomMember = "create table if not exists RoomMember"  + "(name text,jid text,image_url text,remark text,my_user text)";
+            db.execSQL( roomMember );
+
             //20180523增加房间类型，用于新增群聊判断
-            db.execSQL("ALTER TABLE ConversationRecord ADD chatType TEXT");
+//            db.execSQL("ALTER TABLE ConversationRecord ADD chatType TEXT");
 //            db.execSQL("ALTER TABLE MessageRecord ADD send TEXT");//2018-5-15增加是誰發送的消息
             //2018-5-22增加定位字段
 //            db.execSQL("ALTER TABLE MessageRecord ADD lat REAL");

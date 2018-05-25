@@ -742,103 +742,15 @@ public class XmppConnection {
             List<EntityBareJid> joinedRooms = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection()).getJoinedRooms(JidCreate.entityBareFrom(UtilTool.getJid()));
             for (EntityBareJid entry : joinedRooms) {
                 roominfos.add(entry.toString());
-                Log.i("room", "名字：" + entry.toString());
+                Log.i("fengjian", "名字：" + entry.toString());
             }
-            Log.i("room", "服务会议数量:" + roominfos.size());
+            Log.i("fengjian", "服务会议数量:" + roominfos.size());
         } catch (XMPPException | XmppStringprepException | InterruptedException | SmackException e) {
             UtilTool.Log("错误", e.getMessage());
             return null;
         }
         return roominfos;
     }
-
-
-    MessageListener mMessageListener = new MessageListener() {
-        @Override
-        public void processMessage(Message message) {
-            String chatMsg = message.getBody();
-            String remark = null;
-            String coin = null;
-            String count = null;
-            String redpacket = "";
-            if (chatMsg.contains(Constants.CHUANCODE)) {
-                String s = chatMsg.replace(Constants.CHUANCODE, ",");
-                String[] split = s.split(",");
-                remark = split[1];
-                coin = split[2];
-                count = split[3];
-                redpacket = "[" + coin + "红包]" + remark;
-            } else {
-                redpacket = chatMsg;
-            }
-            String from = message.getFrom().toString();
-            String jid = from.substring(0, from.indexOf("/"));
-            String friend = from.substring(from.indexOf("/") + 1, from.length());
-            UtilTool.Log("XmppConnection", jid + "和" + friend);
-            //获取当前时间
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date curDate = new Date(System.currentTimeMillis());
-            String time = formatter.format(curDate);
-
-            //添加数据库
-            MessageInfo messageInfo = new MessageInfo();
-            ConversationInfo conversationInfo = new ConversationInfo();
-            conversationInfo.setMessage(chatMsg);
-            conversationInfo.setUser(jid);
-            conversationInfo.setFriend(friend);
-            conversationInfo.setTime(time);
-            messageInfo.setUsername(jid);
-            messageInfo.setMessage(chatMsg);
-            messageInfo.setTime(time);
-            messageInfo.setType(1);
-            messageInfo.setCount(count);
-            messageInfo.setCoin(coin);
-            messageInfo.setRemark(remark);
-            messageInfo.setStatus(0);
-            messageInfo.setSend(from);
-            if(message.getType()==Message.Type.chat){
-                conversationInfo.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-            }else{
-                conversationInfo.setChatType(RoomManage.ROOM_TYPE_MULTI);
-            }
-            mMgr.addMessage(messageInfo);
-            if (mMgr.findConversation(from)) {
-                mMgr.updateConversation(from, 0, chatMsg, time);
-            } else {
-                mMgr.addConversation(conversationInfo);
-            }
-        }
-    };
-
-    /**
-     * 加入会议室
-     *
-     * @param user      昵称
-     * @param roomsName 会议室名
-     * @param mgr
-     */
-    public MultiUserChat joinMultiUserChat(String user, String roomsName, DBManager mgr) {
-        mMgr = mgr;
-        if (getConnection() == null)
-            return null;
-        try {
-            // 使用XMPPConnection创建一个MultiUserChat窗口
-            MultiUserChat muc = MultiUserChatManager.getInstanceFor(getConnection()).getMultiUserChat(
-                    JidCreate.entityBareFrom(roomsName + "@conference." + getConnection().getServiceName()));
-
-            // 用户加入聊天室
-            muc.join(Resourcepart.from(user));
-            muc.addMessageListener(mMessageListener);
-            Log.i("MultiUserChat", "会议室【" + roomsName + "】加入成功........");
-            return muc;
-        } catch (XMPPException | XmppStringprepException | InterruptedException | SmackException e) {
-            e.printStackTrace();
-            Log.i("MultiUserChat", "会议室【" + roomsName + "】加入失败........");
-            return null;
-        }
-    }
-
-
 
     /**
      * 发送群组聊天消息

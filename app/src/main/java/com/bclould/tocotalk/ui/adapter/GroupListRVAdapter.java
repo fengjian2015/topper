@@ -10,8 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.model.RoomManageInfo;
 import com.bclould.tocotalk.ui.activity.GroupChatActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -24,9 +26,9 @@ import butterknife.ButterKnife;
 public class GroupListRVAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;
-    private final List<String> mJoinChatRoom;
+    private final List<RoomManageInfo> mJoinChatRoom;
 
-    public GroupListRVAdapter(Context context, List<String> joinChatRoom) {
+    public GroupListRVAdapter(Context context, ArrayList<RoomManageInfo> joinChatRoom) {
         mContext = context;
         mJoinChatRoom = joinChatRoom;
     }
@@ -34,14 +36,13 @@ public class GroupListRVAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_group_list, parent, false);
-
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.setData(mJoinChatRoom.get(position));
+        viewHolder.setData(mJoinChatRoom.get(position).getRoomName());
     }
 
     @Override
