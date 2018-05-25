@@ -1012,4 +1012,26 @@ public interface MyService {
             @Header("Authorization") String token
     );
 
+    //發佈新聞費用
+    @POST("news/ad_cost")
+    Observable<BaseInfo> getAdCost(
+            @Header("Authorization") String token
+    );
+
+    //刪除動態
+    @FormUrlEncoded
+    @POST("dynamic/destroy")
+    Observable<BaseInfo> deleteDynamic(
+            @Header("Authorization") String token,
+            @Field("dynamic_id") String dynamic_id
+    );
+
+    //刪除動態
+    @FormUrlEncoded
+    @POST("search/friend")
+    Observable<BaseInfo> searchUser(
+            @Header("Authorization") String token,
+            @Field("username") String username
+    );
+
 }

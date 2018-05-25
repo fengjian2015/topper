@@ -671,7 +671,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                     break;
                 case 4:
                     //上啦加載
-                    if (mMessageList.size() == 0) return;
+//                    if (mMessageList.size() == 0) return;
                     Bundle bundle3 = (Bundle) msg.obj;
                     boolean isFist = bundle3.getBoolean("isFist");
                     List<MessageInfo> messageInfos1 = null;

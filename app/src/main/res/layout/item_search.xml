@@ -22,15 +22,4 @@
         android:textColor="@color/black"
         android:textSize="@dimen/x30"/>
 
-    <Button
-        android:id="@+id/btn_add"
-        android:layout_width="@dimen/x200"
-        android:layout_height="@dimen/y80"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="right"
-        android:layout_marginRight="@dimen/x20"
-        android:background="@drawable/bg_blue_border"
-        android:text="@string/add"/>
-
 </RelativeLayout>

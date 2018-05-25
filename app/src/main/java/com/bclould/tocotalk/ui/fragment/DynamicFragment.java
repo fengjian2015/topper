@@ -123,6 +123,16 @@ public class DynamicFragment extends Fragment {
             initData(PULL_DOWN);
         } else if (msg.equals(getString(R.string.start_service))) {
 
+        } else if (msg.equals(getString(R.string.delete_dynamic))) {
+            String id = event.getId();
+            for (int i = 0; i < mDataList.size(); i++) {
+                if (mDataList.get(i).getId() == Integer.parseInt(id)) {
+                    mDataList.remove(i);
+                    mDynamicRVAdapter.notifyItemRemoved(i);
+                    mDynamicRVAdapter.notifyItemRangeChanged(0, mDataList.size() - i);
+                    return;
+                }
+            }
         }
     }
 

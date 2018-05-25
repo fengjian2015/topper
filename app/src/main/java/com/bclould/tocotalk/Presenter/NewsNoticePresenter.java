@@ -293,6 +293,41 @@ public class NewsNoticePresenter {
         }
     }
 
+    public void getAdCost(final CallBack3 callBack3) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .getAdCost(UtilTool.getToken())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(BaseInfo baseInfo) {
+                            if (baseInfo.getStatus() == 1) {
+                                callBack3.send(baseInfo.getData());
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     //定义接口
     public interface CallBack {
         void send(List<NewsListInfo.ListsBean> lists, List<NewsListInfo.TopBean> top);
@@ -301,5 +336,10 @@ public class NewsNoticePresenter {
     //定义接口
     public interface CallBack2 {
         void send(List<GonggaoListInfo.DataBean> data);
+    }
+
+    //定义接口
+    public interface CallBack3 {
+        void send(BaseInfo.DataBean data);
     }
 }

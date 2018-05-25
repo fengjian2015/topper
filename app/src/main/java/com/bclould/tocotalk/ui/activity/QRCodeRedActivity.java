@@ -71,7 +71,7 @@ public class QRCodeRedActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.btn_save_qr:
-                if(UtilTool.saveBitmap(mRlRed)){
+                if(UtilTool.saveBitmap(mRlRed, this)){
                     Toast.makeText(this, getString(R.string.save_success), Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(this, getString(R.string.save_error), Toast.LENGTH_SHORT).show();

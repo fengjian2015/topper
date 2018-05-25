@@ -26,8 +26,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bclould.tocotalk.Presenter.NewsNoticePresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
+import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.Constants;
@@ -75,6 +77,8 @@ public class NewsEditActivity extends BaseActivity {
     private int mType;
     private String mUrl;
     private LoadingProgressDialog mProgressDialog;
+    private String mCoin_name;
+    private String mAd_cost;
 
     private void showDialog() {
         if (mProgressDialog == null) {
@@ -96,9 +100,22 @@ public class NewsEditActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_edit2);
         ButterKnife.bind(this);
+        initData();
         initIntent();
         initWebView();
         initView();
+    }
+
+    private void initData() {
+        NewsNoticePresenter newsNoticePresenter = new NewsNoticePresenter(this);
+        newsNoticePresenter.getAdCost(new NewsNoticePresenter.CallBack3() {
+            @Override
+            public void send(BaseInfo.DataBean data) {
+                mCoin_name = data.getCoin_name();
+                mAd_cost = data.getAd_cost();
+            }
+        });
+
     }
 
     private void initIntent() {
@@ -119,9 +136,7 @@ public class NewsEditActivity extends BaseActivity {
                 showSaveDialog();
                 break;
             case R.id.publish:
-//                showServiceChargeDialog();
-                showDialog();
-                publish(2);
+                showServiceChargeDialog();
                 break;
         }
     }
@@ -238,7 +253,7 @@ public class NewsEditActivity extends BaseActivity {
     private void showServiceChargeDialog() {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
-        deleteCacheDialog.setTitle(getString(R.string.publish_news_hint));
+        deleteCacheDialog.setTitle(getString(R.string.publish_news_hint) + mAd_cost + mCoin_name + getString(R.string.ggf));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -250,6 +265,8 @@ public class NewsEditActivity extends BaseActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                showDialog();
+                publish(2);
                 deleteCacheDialog.dismiss();
             }
         });

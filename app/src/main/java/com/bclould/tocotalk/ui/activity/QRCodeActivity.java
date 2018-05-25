@@ -69,12 +69,10 @@ public class QRCodeActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
-
                 finish();
-
                 break;
             case R.id.btn_save_qr:
-                if (UtilTool.saveBitmap(mRlQr)) {
+                if (UtilTool.saveBitmap(mRlQr, this)) {
                     Toast.makeText(this, getString(R.string.save_success), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, getString(R.string.save_error), Toast.LENGTH_SHORT).show();

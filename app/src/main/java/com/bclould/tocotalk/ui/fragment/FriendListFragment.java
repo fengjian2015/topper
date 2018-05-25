@@ -475,7 +475,7 @@ public class FriendListFragment extends Fragment {
     }
 
     private void initData() {
-        final CloudMessagePresenter cloudMessagePresenter = new CloudMessagePresenter();
+        final CloudMessagePresenter cloudMessagePresenter = new CloudMessagePresenter(getContext() );
         try {
             Collection<RosterGroup> rosterGroups = cloudMessagePresenter.getContact();
             if (rosterGroups != null) {

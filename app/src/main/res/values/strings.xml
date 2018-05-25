@@ -803,7 +803,7 @@
     <string name="whether_save_draft">是否保存草稿？</string>
     <string name="save">保存</string>
     <string name="no_save">不保存</string>
-    <string name="publish_news_hint">發佈新聞需扣除0.1TPC手續費</string>
+    <string name="publish_news_hint">發佈廣告需扣除</string>
     <string name="gesture_pw">手勢密碼</string>
     <string name="number_pw">數字密碼</string>
     <string name="nonsupport_fingerprint">該手機不支持指紋密碼</string>
@@ -850,4 +850,7 @@
     <string name="cancel_the_top">取消置顶</string>
     <string name="ad_manager">廣告管理</string>
     <string name="ad_edit">廣告編輯</string>
+    <string name="ggf">廣告費</string>
+    <string name="delete_dynamic">刪除動態</string>
+    <string name="delete_dynamic_hint">是否刪除該動態？</string>
 </resources>

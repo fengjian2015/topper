@@ -2,6 +2,7 @@ package com.bclould.tocotalk.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
@@ -31,7 +32,6 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
@@ -256,22 +256,25 @@ public class UtilTool {
     /**
      * 保存View为图片的方法
      */
-    public static boolean saveBitmap(View v) {
-        long time = System.currentTimeMillis();
-        String fileName = "image" + time + ".png";
+    public static boolean saveBitmap(View v, Context context) {
+        String fileName = "image" + createtFileName() + ".png";
         Bitmap bm = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
                 Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bm);
         v.draw(canvas);
-        File f = new File(Constants.PUBLICDIR, fileName);
-        if (f.exists()) {
-            f.delete();
+        File file = new File(Constants.PUBLICDIR, fileName);
+        if (file.exists()) {
+            file.delete();
         }
         try {
-            FileOutputStream out = new FileOutputStream(f);
+            FileOutputStream out = new FileOutputStream(file);
             bm.compress(Bitmap.CompressFormat.PNG, 90, out);
             out.flush();
             out.close();
+            Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            Uri uri = Uri.fromFile(file);
+            intent.setData(uri);
+            context.sendBroadcast(intent);
             return true;
         } catch (IOException e) {
             e.printStackTrace();

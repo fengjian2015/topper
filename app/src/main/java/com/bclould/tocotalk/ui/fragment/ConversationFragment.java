@@ -164,7 +164,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
                     if (mAnim != null)
                         mAnim.stop();
-                        mLlLogin.setVisibility(View.GONE);
+                    mLlLogin.setVisibility(View.GONE);
                     if (mRlUnunited != null) {
                         mRlUnunited.setVisibility(View.GONE);
                     }
@@ -187,8 +187,10 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                     }
                     if (mAnim != null)
                         mAnim.stop();
-                    mAnim = (AnimationDrawable) mIvAnim.getBackground();
-                    mAnim.start();
+                    if (mIvAnim != null) {
+                        mAnim = (AnimationDrawable) mIvAnim.getBackground();
+                        mAnim.start();
+                    }
                     XmppListener.xmppListener = null;
                     break;
             }

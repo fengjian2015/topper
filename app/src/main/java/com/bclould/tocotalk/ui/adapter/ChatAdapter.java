@@ -1085,7 +1085,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
-            UtilTool.getImage(mMgr, mUser, mContext, mIvTouxiang);
+            UtilTool.getImage(mMgr, UtilTool.getJid(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, mUser, mName);
             if (messageInfo.getSendStatus() == 0) {
                 mIvLoad.setVisibility(View.VISIBLE);
