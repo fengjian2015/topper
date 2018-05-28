@@ -1,5 +1,8 @@
 package com.bclould.tocotalk.ui.adapter;
 
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -9,16 +12,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.activity.ConversationActivity;
+import com.bclould.tocotalk.ui.activity.RemarkActivity;
+import com.bclould.tocotalk.ui.activity.SelectFriendActivity;
+import com.bclould.tocotalk.ui.widget.ChatCopyDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.StringUtils;
+import com.bclould.tocotalk.utils.ToastShow;
 import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -98,15 +107,19 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, ConversationActivity.class);
                     Bundle bundle = new Bundle();
-                    String name = mUser.substring(0, mUser.indexOf("@"));
-                    bundle.putString("name", name);
-                    String user = mFriendChildName.getText() + "@" + Constants.DOMAINNAME;
                     bundle.putString("name", mUser.substring(0, mUser.indexOf("@")));
                     bundle.putString("user", mUser);
                     intent.putExtras(bundle);
                     mMgr.updateNumber(mUser, 0);
                     EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
                     mContext.startActivity(intent);
+                }
+            });
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showRemarkDialog( mUser.substring(0, mUser.indexOf("@")),mFriendChildName.getText().toString(),mUser);
+                    return false;
                 }
             });
         }
@@ -133,5 +146,23 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
             } else if (mUser.contains("@"))
                 mFriendChildName.setText(mUser.substring(0, mUser.indexOf("@")));
         }
+    }
+
+    private void showRemarkDialog(final String name, final String remark, final String user) {
+        final ChatCopyDialog chatCopyDialog = new ChatCopyDialog(R.layout.dialog_chat_copy, mContext, R.style.dialog);
+        chatCopyDialog.show();
+        chatCopyDialog.isShowDelete(true,mContext.getString(R.string.updata_remark));
+        Button delete = (Button) chatCopyDialog.findViewById(R.id.btn_delete);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(mContext, RemarkActivity.class);
+                intent.putExtra("name",name);
+                intent.putExtra("remark",remark);
+                intent.putExtra("user",user);
+                mContext.startActivity(intent);
+                chatCopyDialog.dismiss();
+            }
+        });
     }
 }

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/x20">
+
+    <ImageView
+        android:id="@+id/iv_touxiang"
+        android:layout_width="@dimen/x80"
+        android:layout_height="@dimen/x80"
+        android:scaleType="fitXY"
+        android:src="@mipmap/img_nfriend_headshot1"/>
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x28"
+        android:layout_toRightOf="@+id/iv_touxiang"
+        android:layout_marginLeft="@dimen/x20"
+        android:paddingBottom="@dimen/y15"
+        android:visibility="gone"
+        />
+
+    <RelativeLayout
+        android:id="@+id/rl_card"
+        android:layout_width="@dimen/x400"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/iv_touxiang"
+        android:layout_below="@+id/tv_name"
+        android:background="@color/white"
+        >
+        <ImageView
+            android:id="@+id/iv_head"
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/y80"
+            android:scaleType="fitXY"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginTop="@dimen/y20"/>
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y80"
+            android:layout_toRightOf="@+id/iv_head"
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginTop="@dimen/y20"
+            android:layout_marginRight="@dimen/x20"
+            android:singleLine="true"
+            android:textSize="@dimen/x32"/>
+        <View
+            android:id="@+id/iv1"
+            style="@style/HCutOffRule"
+            android:layout_below="@+id/iv_head"
+            android:layout_marginTop="@dimen/y20"
+            ></View>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv1"
+            android:textColor="@color/gray3"
+            android:textSize="@dimen/x24"
+            android:layout_marginLeft="@dimen/x20"
+            android:paddingTop="@dimen/y10"
+            android:paddingBottom="@dimen/y10"
+            android:text="@string/person_business_card"/>
+    </RelativeLayout>
+
+</RelativeLayout>

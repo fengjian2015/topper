@@ -81,7 +81,6 @@ public class CreateGroupRoomActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_create:
-                XmppConnection xmppConnection = XmppConnection.getInstance();
                 if (mUserInfoList != null)
                     try {
                     String roomJid= UtilTool.getUser()+System.currentTimeMillis() + "@conference." + XmppConnection.getInstance().getConnection().getServiceName();
@@ -91,7 +90,7 @@ public class CreateGroupRoomActivity extends BaseActivity {
                             roomName="群聊";
                         }
                         MultiUserChat multiUserChat=RoomManage.getInstance().addMultiMessageManage(roomJid
-                                ,roomName).createRoom(roomName,nickName,mUserInfoList);
+                                ,roomName).createRoom(roomJid,roomName,nickName,mUserInfoList);
                         if(multiUserChat==null){
                             RoomManage.getInstance().removeRoom(roomJid);
                         }else {

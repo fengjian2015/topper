@@ -140,6 +140,8 @@ public class ConversationAdapter extends RecyclerView.Adapter {
             if (conversationInfo.getNumber() != 0) {
                 mNumber.setVisibility(View.VISIBLE);
                 mNumber.setText(conversationInfo.getNumber() + "");
+            }else{
+                mNumber.setVisibility(View.GONE);
             }
         }
     }

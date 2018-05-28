@@ -39,9 +39,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_CARD_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_IMG_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_TEXT_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_VIDEO_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_CARD_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_IMG_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_TEXT_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_VIDEO_MSG;
@@ -69,7 +71,7 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
     private MessageInfo messageInfo;
     private LoadingProgressDialog mProgressDialog;
 
-    private int type=0;//默認0 代表分享過來， 1表示轉發
+    private int type=0;//默認0 代表外部分享過來， 1表示轉發 2表示內部請求分享
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -200,10 +202,10 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
         }
     }
 
-    private void showDeleteDialog(final String name, final String user) {
+    private void showDeleteDialog(String remark,final String name, final String user) {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
-        deleteCacheDialog.setTitle(getString(R.string.confirm_send_to)+ name );
+        deleteCacheDialog.setTitle(getString(R.string.confirm_send_to)+ remark );
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -255,6 +257,15 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
                 singleManage.Upload(messageInfo.getMessage());
 
             }
+        }else if(type==2){
+            if(TO_CARD_MSG==msgType||msgType==FROM_CARD_MSG){
+               if(singleManage.sendCaed(messageInfo)){
+                    ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.send_succeed));
+                    SelectFriendActivity.this.finish();
+               }else{
+                   ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.send_error));
+                }
+            }
         }
     }
 
@@ -275,8 +286,8 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
     }
 
     @Override
-    public void onItemClick(String name, String user) {
-        showDeleteDialog(name,user);
+    public void onItemClick(String remark,String name, String user) {
+        showDeleteDialog(remark,name,user);
 
     }
 

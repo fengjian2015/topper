@@ -17,6 +17,10 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.IndividualInfo;
+import com.bclould.tocotalk.utils.MessageEvent;
+
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -36,6 +40,7 @@ public class RemarkActivity extends BaseActivity {
 
     private String mName;
     private DBManager mMgr;
+    private String mUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +54,7 @@ public class RemarkActivity extends BaseActivity {
 
     private void init() {
         mName=getIntent().getStringExtra("name");
+        mUser=getIntent().getStringExtra("user");
         String remark=getIntent().getStringExtra("remark");
         mEtRemark.setText(remark);
         mEtRemark.setSelection(mEtRemark.getText().length());
@@ -76,6 +82,8 @@ public class RemarkActivity extends BaseActivity {
             presenter.getChangeRemark(mName,remarkName, new IndividualDetailsPresenter.CallBack() {
                 @Override
                 public void send(IndividualInfo.DataBean data) {
+                    mMgr.updateRemark(data.getRemark(), mUser);
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.change_friend_remark)));
                     Intent intent = new Intent(RemarkActivity.this, IndividualDetailsActivity.class);
                     intent.putExtra("remark", data.getRemark());
                     setResult(RESULT_OK, intent);

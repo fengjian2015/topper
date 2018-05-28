@@ -850,4 +850,6 @@
     <string name="cancel_the_top">取消置顶</string>
     <string name="ad_manager">廣告管理</string>
     <string name="ad_edit">廣告編輯</string>
+    <string name="updata_remark">修改備註</string>
+    <string name="person_business_card">個人名片</string>
 </resources>

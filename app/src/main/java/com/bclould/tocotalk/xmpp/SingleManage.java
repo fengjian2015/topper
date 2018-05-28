@@ -41,7 +41,9 @@ import org.jivesoftware.smack.chat.Chat;
 import org.jivesoftware.smack.chat.ChatManager;
 import org.jivesoftware.smack.util.stringencoder.Base64;
 import org.jivesoftware.smackx.muc.MultiUserChat;
+import org.jivesoftware.smackx.muc.MultiUserChatManager;
 import org.json.JSONObject;
+import org.jxmpp.jid.EntityBareJid;
 import org.jxmpp.jid.impl.JidCreate;
 
 import java.io.File;
@@ -52,6 +54,7 @@ import java.util.List;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
 
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_CARD_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_FILE_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_IMG_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_LOCATION_MSG;
@@ -71,7 +74,6 @@ public class SingleManage implements Room{
     private String mUser;
     private Context context;
     private String mName;
-    private int mId;
     private MessageManageListener messageManageListener;
 
     public SingleManage(DBManager mMgr, String mUser, Context context, String mName){
@@ -156,52 +158,6 @@ public class SingleManage implements Room{
         }
     }
 
-    Handler handler=new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case 1:
-                    Bundle bundle = (Bundle) msg.obj;
-                    String key = bundle.getString("key");
-                    String path = bundle.getString("path");
-                    String postfix = bundle.getString("postfix");
-                    String newFile = bundle.getString("newFile");
-                    sendFileMessage(path, postfix, key, newFile);
-                    break;
-                case 2:
-                    //文件上传成功发送消息
-                    Bundle bundle2 = (Bundle) msg.obj;
-                    String key2 = bundle2.getString("key");
-                    String postfix2 = bundle2.getString("postfix");
-                    String newFile2 = bundle2.getString("newFile");
-                    try {
-                        ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-                        Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
-                        org.jivesoftware.smack.packet.Message message = new org.jivesoftware.smack.packet.Message();
-                        VoiceInfo voiceInfo = new VoiceInfo();
-                        byte[] bytes = UtilTool.readStream(newFile2);
-                        String base64 = Base64.encodeToString(bytes);
-                        voiceInfo.setElementText(base64);
-                        message.addExtension(voiceInfo);
-                        message.setBody(OtrChatListenerManager.getInstance().sentMessagesChange("[" + postfix2 + "]:" + key2,
-                                OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
-                        chat.sendMessage(message);
-                        if(messageManageListener!=null){
-                            mMgr.updateMessageHint(mId, 1);
-                            messageManageListener.sendFileResults(newFile2,true);
-                        }
-                        return;
-                    } catch (Exception e) {
-                        if(messageManageListener!=null){
-                            mMgr.updateMessageHint(mId, 2);
-                            messageManageListener.sendFileResults(newFile2,false);
-                        }
-                    }
-                    break;
-            }
-        }
-    };
-
     //上传文件到aws
     public void Upload(final String path) {
         final File file = new File(path);//获取文件
@@ -223,12 +179,13 @@ public class SingleManage implements Room{
         }else{
             UtilTool.copyFile(file.getAbsolutePath(),newFile.getAbsolutePath());
         }
-
         //上传视频到aws
         if (postfix.equals("Video")) {
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    final int[] mId = new int[1];
                     try {
                         //连接aws
                         BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
@@ -246,28 +203,13 @@ public class SingleManage implements Room{
                             //上传之前把消息储存数据库
                             public void beforeRequest(Request<?> request) {
                                 UtilTool.Log("aws", "之前");
-                                Message message = new Message();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("key", key);
-                                bundle.putString("newFile", newFile.getPath());
-                                bundle.putString("path", path);
-                                bundle.putString("postfix", postfix);
-                                message.obj = bundle;
-                                message.what = 1;
-                                handler.sendMessage(message);
+                               mId[0] = sendFileMessage(path,postfix,key,newFile.getPath());
                             }
 
                             //上传文件完成
                             @Override
                             public void afterResponse(Request<?> request, Response<?> response) {
-                                Message message = new Message();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("key", key);
-                                bundle.putString("newFile", newFile.getPath());
-                                bundle.putString("postfix", postfix);
-                                message.obj = bundle;
-                                message.what = 2;
-                                handler.sendMessage(message);
+                                sendFileAfterMessage(key,postfix,newFile.getPath(),mId[0]);
                             }
 
                             @Override
@@ -281,9 +223,9 @@ public class SingleManage implements Room{
                         s3Client.putObject(por);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        mMgr.updateMessageHint(mId, 2);
+                        mMgr.updateMessageHint(mId[0], 2);
                         if(messageManageListener!=null){
-                            messageManageListener.sendError(mId);
+                            messageManageListener.sendError(mId[0]);
                         }
                     }
                 }
@@ -305,6 +247,7 @@ public class SingleManage implements Room{
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    final int[] mId = new int[1];
                                     try {
                                         //连接aws
                                         BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
@@ -318,29 +261,16 @@ public class SingleManage implements Room{
                                         s3Client.setRegion(region);
                                         s3Client.addRequestHandler(new RequestHandler2() {
                                             @Override
+                                            //上传之前把消息储存数据库
                                             public void beforeRequest(Request<?> request) {
                                                 UtilTool.Log("aws", "之前");
-                                                Message message = new Message();
-                                                Bundle bundle = new Bundle();
-                                                bundle.putString("key", key);
-                                                bundle.putString("newFile", newFile.getPath());
-                                                bundle.putString("path", path);
-                                                bundle.putString("postfix", postfix);
-                                                message.obj = bundle;
-                                                message.what = 1;
-                                                handler.sendMessage(message);
+                                               mId[0] = sendFileMessage(path,postfix,key,newFile.getPath());
                                             }
 
+                                            //上传文件完成
                                             @Override
                                             public void afterResponse(Request<?> request, Response<?> response) {
-                                                Message message = new Message();
-                                                Bundle bundle = new Bundle();
-                                                bundle.putString("key", key);
-                                                bundle.putString("newFile", newFile.getPath());
-                                                bundle.putString("postfix", postfix);
-                                                message.obj = bundle;
-                                                message.what = 2;
-                                                handler.sendMessage(message);
+                                                sendFileAfterMessage(key,postfix,newFile.getPath(),mId[0]);
                                             }
 
                                             @Override
@@ -351,9 +281,9 @@ public class SingleManage implements Room{
                                         PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
                                         s3Client.putObject(por);
                                     } catch (Exception e) {
-                                        mMgr.updateMessageHint(mId, 2);
+                                        mMgr.updateMessageHint(mId[0], 2);
                                         if(messageManageListener!=null){
-                                            messageManageListener.sendError(mId);
+                                            messageManageListener.sendError(mId[0]);
                                         }
                                         e.printStackTrace();
                                     }
@@ -373,6 +303,7 @@ public class SingleManage implements Room{
         //缩略图储存路径
         final File newFile = new File(Constants.PUBLICDIR + key);
         UtilTool.comp(bitmap, newFile);//压缩图片
+        int mId;
         try {
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
             Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
@@ -464,10 +395,10 @@ public class SingleManage implements Room{
     }
 
     @Override
-    public boolean anewSendText(String user, String message, int id) {
+    public boolean anewSendText(String message, int id) {
         try {
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            Chat chat = manager.createChat(JidCreate.entityBareFrom(user), null);
+            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
             chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(message,
                     OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
             mMgr.updateMessageHint(id, 0);
@@ -503,7 +434,7 @@ public class SingleManage implements Room{
     }
 
     @Override
-    public MultiUserChat createRoom(String roomName, String password, List<UserInfo> users) {
+    public MultiUserChat createRoom(String roomJid,String roomName, String password, List<UserInfo> users) {
         return null;
     }
 
@@ -517,8 +448,101 @@ public class SingleManage implements Room{
 
     }
 
+    @Override
+    public boolean sendCaed(MessageInfo messageInfo) {
+        try {
+            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
+            chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(Constants.CARD+":"+JSON.toJSONString(messageInfo) ,
+                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
+            messageInfo.setUsername(mUser);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setMsgType(TO_CARD_MSG);
+            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setSendStatus(1);
+            mMgr.addMessage(messageInfo);
+            if (mMgr.findConversation(mUser)) {
+                mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.person_business_card) + "]", time);
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                info.setFriend(mName);
+                info.setUser(mUser);
+                info.setMessage("[" + context.getString(R.string.person_business_card) + "]");
+                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
+                mMgr.addConversation(info);
+            }
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            if(messageManageListener!=null){
+                messageManageListener.refreshAddData(messageInfo);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
+            messageInfo.setUsername(mUser);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(2);
+            messageInfo.setMsgType(TO_TEXT_MSG);
+            messageInfo.setSendStatus(2);
+            messageInfo.setSend(UtilTool.getJid());
+            mMgr.addMessage(messageInfo);
+
+            if (mMgr.findConversation(mUser)) {
+                mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.person_business_card) + "]", time);
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                info.setFriend(mName);
+                info.setUser(mUser);
+                info.setMessage("[" + context.getString(R.string.person_business_card) + "]");
+                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
+                mMgr.addConversation(info);
+            }
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            if(messageManageListener!=null){
+                messageManageListener.refreshAddData(messageInfo);
+            }
+            return false;
+        }
+    }
+
+    private void sendFileAfterMessage(String key,String postfix,String newFile,int mId){
+        try {
+            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
+            org.jivesoftware.smack.packet.Message message = new org.jivesoftware.smack.packet.Message();
+            VoiceInfo voiceInfo = new VoiceInfo();
+            byte[] bytes = UtilTool.readStream(newFile);
+            String base64 = Base64.encodeToString(bytes);
+            voiceInfo.setElementText(base64);
+            message.addExtension(voiceInfo);
+            message.setBody(OtrChatListenerManager.getInstance().sentMessagesChange("[" + postfix + "]:" + key,
+                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
+            chat.sendMessage(message);
+            if(messageManageListener!=null){
+                mMgr.updateMessageHint(mId, 1);
+                messageManageListener.sendFileResults(newFile,true);
+            }
+            return;
+        } catch (Exception e) {
+            if(messageManageListener!=null){
+                mMgr.updateMessageHint(mId, 2);
+                messageManageListener.sendFileResults(newFile,false);
+            }
+        }
+    }
+
     //发送文件消息
-    public void sendFileMessage(String path, String postfix, String key, String newFile) {
+    public int sendFileMessage(String path, String postfix, String key, String newFile) {
+        int mId;
         try {
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(mUser);
@@ -584,7 +608,7 @@ public class SingleManage implements Room{
                 messageInfo.setMsgType(TO_FILE_MSG);
             }
             messageInfo.setSend(UtilTool.getJid());
-            mMgr.addMessage(messageInfo);
+            mId=mMgr.addMessage(messageInfo);
             if(messageManageListener!=null){
                 messageManageListener.refreshAddData(messageInfo);
             }
@@ -611,6 +635,7 @@ public class SingleManage implements Room{
             }
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
         }
+        return mId;
     }
 
 

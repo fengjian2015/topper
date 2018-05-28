@@ -144,7 +144,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     @Bind(R.id.ekb_emoticons_keyboard)
     XhsEmoticonsKeyBoard mEkbEmoticonsKeyboard;
 
-    private String mUser;
+    private String roomId;//房間id
     private String mName;
     private List<MessageInfo> mMessageList = new ArrayList<>();
     private DBManager mMgr;
@@ -177,7 +177,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         MyApp.getInstance().addActivity(this);//打开添加activity
         initAdapter();//初始化适配器
         initData();//初始化数据
-        mMgr.updateNumber(mUser, 0);//更新未读消息条数
+        mMgr.updateNumber(roomId, 0);//更新未读消息条数
         EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));//发送更新未读消息通知
         //监听touch事件隐藏软键盘
         mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
@@ -220,7 +220,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     //初始化表情盘
     private void initEmoticonsKeyboard() {
         SimpleAppsGridView simpleAppsGridView = new SimpleAppsGridView(this);
-        simpleAppsGridView.setData(mUser);
+        simpleAppsGridView.setData(roomId);
         mEkbEmoticonsKeyboard.addFuncView(simpleAppsGridView);
         mEkbEmoticonsKeyboard.addOnFuncKeyBoardListener(this);
         mEkbEmoticonsKeyboard.getEtChat().setOnSizeChangedListener(new EmoticonsEditText.OnSizeChangedListener() {
@@ -419,7 +419,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         }
         //初始化OTR
         try {
-            mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(mUser).toString()));
+            mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(roomId).toString()));
         } catch (XmppStringprepException e) {
             e.printStackTrace();
         }
@@ -480,7 +480,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.msg_database_update))) {
             initData();
-            mMgr.updateNumber(mUser, 0);
+            mMgr.updateNumber(roomId, 0);
             EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));
         } else if (msg.equals(getString(R.string.send_red_packet_le))) {
             initData();
@@ -502,7 +502,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             }
         } else if (msg.equals(getString(R.string.otr_isopen))) {
             try {
-                mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(mUser).toString()));
+                mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(roomId).toString()));
             } catch (XmppStringprepException e) {
                 e.printStackTrace();
             }
@@ -657,7 +657,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 case 0:
                     //下拉查询历史消息
                     if (mMessageList.size() == 0) return;
-                    List<MessageInfo> messageInfos = mMgr.queryRefreshMessage(mUser, mMessageList.get(0).getId());
+                    List<MessageInfo> messageInfos = mMgr.queryRefreshMessage(roomId, mMessageList.get(0).getId());
                     List<MessageInfo> MessageList2 = new ArrayList<MessageInfo>();
                     MessageList2.addAll(messageInfos);
                     MessageList2.addAll(mMessageList);
@@ -671,15 +671,15 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                     break;
                 case 4:
                     //上啦加載
-                    if (mMessageList.size() == 0) return;
+//                    if (mMessageList.size() == 0) return;
                     Bundle bundle3 = (Bundle) msg.obj;
                     boolean isFist = bundle3.getBoolean("isFist");
                     List<MessageInfo> messageInfos1 = null;
                     if (isFist) {
                         MessageInfo messageInfo = (MessageInfo) bundle3.getSerializable("MessageInfo");
-                        messageInfos1 = mMgr.queryLoadMessage(mUser, messageInfo.getId(), isFist);
+                        messageInfos1 = mMgr.queryLoadMessage(roomId, messageInfo.getId(), isFist);
                     } else {
-                        messageInfos1 = mMgr.queryLoadMessage(mUser, mMessageList.get(mMessageList.size() - 1).getId(), isFist);
+                        messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(mMessageList.size() - 1).getId(), isFist);
                     }
                     List<MessageInfo> MessageList3 = new ArrayList<MessageInfo>();
                     MessageList3.addAll(mMessageList);
@@ -694,7 +694,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     //初始化数据
     private void initData() {
-        List<MessageInfo> messageInfos = mMgr.queryMessage(mUser);
+        List<MessageInfo> messageInfos = mMgr.queryMessage(roomId);
         mMessageList.clear();
         mMessageList.addAll(messageInfos);
         mChatAdapter.notifyDataSetChanged();
@@ -713,25 +713,25 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             BitmapDrawable bd = (BitmapDrawable) drawable;
             mUserImage = bd.getBitmap();
             mName = "tester_001";
-            mUser = Constants.MYUSER;
+            roomId = Constants.MYUSER;
         } else {
             mName = bundle.getString("name");
-            mUser = bundle.getString("user");
+            roomId = bundle.getString("user");
 //            mUserImage = UtilTool.getImage(mMgr, mUser, this);
             clearNotification();
         }
         roomType = bundle.getString("chatType");
-        if (RoomManage.getInstance().getRoom(mUser) == null) {
+        if (RoomManage.getInstance().getRoom(roomId) == null) {
             if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
-                roomManage = RoomManage.getInstance().addMultiMessageManage(mUser, mName);
+                roomManage = RoomManage.getInstance().addMultiMessageManage(roomId, mName);
             } else {
 //               if (RoomManage.ROOM_TYPE_SINGLE.equals(roomType)) {
-                UtilTool.Log("fengjian", "添加单聊---" + mUser);
-                roomManage = RoomManage.getInstance().addSingleMessageManage(mUser, mName);
+                UtilTool.Log("fengjian", "添加单聊---" + roomId);
+                roomManage = RoomManage.getInstance().addSingleMessageManage(roomId, mName);
             }
         } else {
-            UtilTool.Log("fengjian", "房间存在---" + mUser);
-            roomManage = RoomManage.getInstance().getRoom(mUser);
+            UtilTool.Log("fengjian", "房间存在---" + roomId);
+            roomManage = RoomManage.getInstance().getRoom(roomId);
         }
         roomManage.addMessageManageListener(this);
         setTitleName();
@@ -743,7 +743,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     }
 
     private void setTitleName() {
-        String remark = mMgr.queryRemark(mUser);
+        String remark = mMgr.queryRemark(roomId);
         if (!com.bclould.tocotalk.utils.StringUtils.isEmpty(remark)) {
             mTitleName.setText(remark);
         } else {
@@ -755,7 +755,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private void initAdapter() {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mChatAdapter = new ChatAdapter(this, mMessageList, mUserImage, mUser, mMgr, mediaPlayer, mName);
+        mChatAdapter = new ChatAdapter(this, mMessageList, mUserImage, roomId, mMgr, mediaPlayer,mName,roomType);
         mRecyclerView.setAdapter(mChatAdapter);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -861,12 +861,12 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             public void onClick(View view) {
                 try {
                     Roster roster = Roster.getInstanceFor(XmppConnection.getInstance().getConnection());
-                    RosterEntry entry = roster.getEntry(JidCreate.entityBareFrom(mUser));
+                    RosterEntry entry = roster.getEntry(JidCreate.entityBareFrom(roomId));
                     roster.removeEntry(entry);
                     Toast.makeText(ConversationActivity.this, getString(R.string.delete_succeed), Toast.LENGTH_SHORT).show();
-                    mMgr.deleteConversation(mUser);
-                    mMgr.deleteMessage(mUser);
-                    mMgr.deleteUser(mUser);
+                    mMgr.deleteConversation(roomId);
+                    mMgr.deleteMessage(roomId);
+                    mMgr.deleteUser(roomId);
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.delete_friend)));
                     deleteCacheDialog.dismiss();
                 } catch (Exception e) {
@@ -897,10 +897,16 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     }
 
     private void goDetails() {
-        Intent intent = new Intent(this, ConversationDetailsActivity.class);
-        intent.putExtra("user", mUser);
-        intent.putExtra("name", mName);
-        startActivity(intent);
+        // TODO: 2018/5/28 區分群聊和單聊
+        if(RoomManage.ROOM_TYPE_MULTI.equals(roomType)){
+
+        }else{
+            Intent intent = new Intent(this, ConversationDetailsActivity.class);
+            intent.putExtra("user", roomId);
+            intent.putExtra("name", roomId.split("@")[0]);
+            intent.putExtra("roomId",roomId);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -936,8 +942,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     @Override
     public void resultOTR() {
         try {
-            OtrChatListenerManager.getInstance().changeState(JidCreate.entityBareFrom(mUser).toString(), this);
-            mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(mUser).toString()));
+            OtrChatListenerManager.getInstance().changeState(JidCreate.entityBareFrom(roomId).toString(), this);
+            mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(roomId).toString()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -946,8 +952,13 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     @Override
     public void refreshAddData(MessageInfo messageInfo) {
         mMessageList.add(messageInfo);
-        mChatAdapter.notifyDataSetChanged();
-        scrollToBottom();
+        ConversationActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mChatAdapter.notifyDataSetChanged();
+                scrollToBottom();
+            }
+        });
     }
 
     @Override

@@ -138,6 +138,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         super.onActivityCreated(savedInstanceState);
         getPhoneSize();
         initRelogin();
+        initRecyclerView();
     }
 
     @SuppressLint("HandlerLeak")
@@ -402,7 +403,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
             showlist.removeAll(showlist);
             showlist.addAll(conversationInfos);
             sort();
-            initRecyclerView();
+            mConversationAdapter.notifyDataSetChanged();
         }
     }
 

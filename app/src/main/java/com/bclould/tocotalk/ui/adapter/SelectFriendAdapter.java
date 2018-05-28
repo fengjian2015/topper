@@ -78,7 +78,7 @@ public class SelectFriendAdapter extends RecyclerView.Adapter{
     }
 
     public interface OnItemListener{
-        void onItemClick(String name,String user);
+        void onItemClick(String remark,String name,String user);
     }
 
     /**
@@ -110,7 +110,7 @@ public class SelectFriendAdapter extends RecyclerView.Adapter{
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onItemListener.onItemClick(mUser.substring(0, mUser.indexOf("@"))
+                    onItemListener.onItemClick(mFriendChildName.getText().toString(),mUser.substring(0, mUser.indexOf("@"))
                             ,mUser);
                 }
             });

@@ -63,6 +63,8 @@ public class DBManager {
         values.put("lng",messageInfo.getLng());
         values.put("address",messageInfo.getAddress());
         values.put("title",messageInfo.getTitle());
+        values.put("cardUser",messageInfo.getCardUser());
+        values.put("headUrl",messageInfo.getHeadUrl());
         int id = (int) db.insert("MessageRecord", null, values);
         UtilTool.Log("日志", "添加成功" + messageInfo.toString());
         return id;
@@ -109,6 +111,8 @@ public class DBManager {
                 messageInfo.setLat(c.getFloat(c.getColumnIndex("lat")));
                 messageInfo.setAddress(c.getString(c.getColumnIndex("address")));
                 messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
+                messageInfo.setHeadUrl(c.getString(c.getColumnIndex("headUrl")));
+                messageInfo.setCardUser(c.getString(c.getColumnIndex("cardUser")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -146,6 +150,8 @@ public class DBManager {
                 messageInfo.setLat(c.getFloat(c.getColumnIndex("lat")));
                 messageInfo.setAddress(c.getString(c.getColumnIndex("address")));
                 messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
+                messageInfo.setHeadUrl(c.getString(c.getColumnIndex("headUrl")));
+                messageInfo.setCardUser(c.getString(c.getColumnIndex("cardUser")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -183,6 +189,8 @@ public class DBManager {
                 messageInfo.setLat(c.getFloat(c.getColumnIndex("lat")));
                 messageInfo.setAddress(c.getString(c.getColumnIndex("address")));
                 messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
+                messageInfo.setHeadUrl(c.getString(c.getColumnIndex("headUrl")));
+                messageInfo.setCardUser(c.getString(c.getColumnIndex("cardUser")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -220,6 +228,8 @@ public class DBManager {
                 messageInfo.setLat(c.getFloat(c.getColumnIndex("lat")));
                 messageInfo.setAddress(c.getString(c.getColumnIndex("address")));
                 messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
+                messageInfo.setHeadUrl(c.getString(c.getColumnIndex("headUrl")));
+                messageInfo.setCardUser(c.getString(c.getColumnIndex("cardUser")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -263,6 +273,8 @@ public class DBManager {
                 messageInfo.setLat(c.getFloat(c.getColumnIndex("lat")));
                 messageInfo.setAddress(c.getString(c.getColumnIndex("address")));
                 messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
+                messageInfo.setHeadUrl(c.getString(c.getColumnIndex("headUrl")));
+                messageInfo.setCardUser(c.getString(c.getColumnIndex("cardUser")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -320,6 +332,8 @@ public class DBManager {
                 messageInfo.setLat(c.getFloat(c.getColumnIndex("lat")));
                 messageInfo.setAddress(c.getString(c.getColumnIndex("address")));
                 messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
+                messageInfo.setHeadUrl(c.getString(c.getColumnIndex("headUrl")));
+                messageInfo.setCardUser(c.getString(c.getColumnIndex("cardUser")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -330,68 +344,68 @@ public class DBManager {
         return messageInfos;
     }
 
-    public List<MessageInfo> pagingQueryMessage(String user) {
-        long count = queryMessageCount(user);
-        db = helper.getReadableDatabase();
-        ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
-        String sql = "select * from MessageRecord where user=? and my_user=? limit ?,?";
-        Cursor c = null;
-        if (count > 10) {
-            if (mUser.equals(user)) {
-                Log.e("wgy", "再次查询" + mOffset);
-                if (count - mOffset * 10 < 0) {
-                    if (count - mOffset * 10 > -10) {
-                        c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), 0 + "", count - (mOffset - 1) * 10 + ""});
-                        mOffset++;
-                    } else {
-                        Toast.makeText(mContext, "没有更多记录了", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), count - mOffset * 10 + "", 10 + ""});
-                    mOffset++;
-                }
-            } else {
-                mOffset = 2;
-                if (count - mOffset * 10 < 0) {
-                    c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), 0 + "", count - (mOffset - 1) * 10 + ""});
-                    mOffset++;
-                } else {
-                    Log.e("wgy", "一开始查询" + mOffset);
-                    c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), count - 10 * mOffset + "", 10 + ""});
-                    mOffset++;
-                }
-            }
-        } else {
-            Toast.makeText(mContext, "没有更多记录了", Toast.LENGTH_SHORT).show();
-        }
-        if (c != null) {
-            while (c.moveToNext()) {
-                MessageInfo messageInfo = new MessageInfo();
-                messageInfo.setUsername(c.getString(c.getColumnIndex("user")));
-                messageInfo.setMessage(c.getString(c.getColumnIndex("message")));
-                messageInfo.setTime(c.getString(c.getColumnIndex("time")));
-                messageInfo.setType(c.getInt(c.getColumnIndex("type")));
-                messageInfo.setCount(c.getString(c.getColumnIndex("count")));
-                messageInfo.setCoin(c.getString(c.getColumnIndex("coin")));
-                messageInfo.setRemark(c.getString(c.getColumnIndex("remark")));
-                messageInfo.setStatus(c.getInt(c.getColumnIndex("state")));
-                messageInfo.setId(c.getInt(c.getColumnIndex("id")));
-                messageInfo.setRedId(c.getInt(c.getColumnIndex("redId")));
-                messageInfo.setVoiceStatus(c.getInt(c.getColumnIndex("voiceStatus")));
-                messageInfo.setVoice(c.getString(c.getColumnIndex("voice")));
-                messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
-                messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
-                messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
-                messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
-                messageInfo.setSend(c.getString(c.getColumnIndex("send")));
-                messageInfos.add(messageInfo);
-            }
-
-            c.close();
-        }
-        mUser = user;
-        return messageInfos;
-    }
+//    public List<MessageInfo> pagingQueryMessage(String user) {
+//        long count = queryMessageCount(user);
+//        db = helper.getReadableDatabase();
+//        ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
+//        String sql = "select * from MessageRecord where user=? and my_user=? limit ?,?";
+//        Cursor c = null;
+//        if (count > 10) {
+//            if (mUser.equals(user)) {
+//                Log.e("wgy", "再次查询" + mOffset);
+//                if (count - mOffset * 10 < 0) {
+//                    if (count - mOffset * 10 > -10) {
+//                        c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), 0 + "", count - (mOffset - 1) * 10 + ""});
+//                        mOffset++;
+//                    } else {
+//                        Toast.makeText(mContext, "没有更多记录了", Toast.LENGTH_SHORT).show();
+//                    }
+//                } else {
+//                    c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), count - mOffset * 10 + "", 10 + ""});
+//                    mOffset++;
+//                }
+//            } else {
+//                mOffset = 2;
+//                if (count - mOffset * 10 < 0) {
+//                    c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), 0 + "", count - (mOffset - 1) * 10 + ""});
+//                    mOffset++;
+//                } else {
+//                    Log.e("wgy", "一开始查询" + mOffset);
+//                    c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), count - 10 * mOffset + "", 10 + ""});
+//                    mOffset++;
+//                }
+//            }
+//        } else {
+//            Toast.makeText(mContext, "没有更多记录了", Toast.LENGTH_SHORT).show();
+//        }
+//        if (c != null) {
+//            while (c.moveToNext()) {
+//                MessageInfo messageInfo = new MessageInfo();
+//                messageInfo.setUsername(c.getString(c.getColumnIndex("user")));
+//                messageInfo.setMessage(c.getString(c.getColumnIndex("message")));
+//                messageInfo.setTime(c.getString(c.getColumnIndex("time")));
+//                messageInfo.setType(c.getInt(c.getColumnIndex("type")));
+//                messageInfo.setCount(c.getString(c.getColumnIndex("count")));
+//                messageInfo.setCoin(c.getString(c.getColumnIndex("coin")));
+//                messageInfo.setRemark(c.getString(c.getColumnIndex("remark")));
+//                messageInfo.setStatus(c.getInt(c.getColumnIndex("state")));
+//                messageInfo.setId(c.getInt(c.getColumnIndex("id")));
+//                messageInfo.setRedId(c.getInt(c.getColumnIndex("redId")));
+//                messageInfo.setVoiceStatus(c.getInt(c.getColumnIndex("voiceStatus")));
+//                messageInfo.setVoice(c.getString(c.getColumnIndex("voice")));
+//                messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
+//                messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
+//                messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
+//                messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
+//                messageInfo.setSend(c.getString(c.getColumnIndex("send")));
+//                messageInfos.add(messageInfo);
+//            }
+//
+//            c.close();
+//        }
+//        mUser = user;
+//        return messageInfos;
+//    }
 
     public void deleteMessage(String user) {
         db = helper.getWritableDatabase();

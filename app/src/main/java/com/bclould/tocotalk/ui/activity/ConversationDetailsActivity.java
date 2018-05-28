@@ -69,6 +69,7 @@ public class ConversationDetailsActivity extends BaseActivity {
     private DBManager mMgr;
     private String mName;
     private String mUser;
+    private String roomId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,7 @@ public class ConversationDetailsActivity extends BaseActivity {
         Intent intent = getIntent();
         mName = intent.getStringExtra("name");
         mUser = intent.getStringExtra("user");
+        roomId= intent.getStringExtra("roomId");
     }
 
     private void init() {
@@ -238,7 +240,7 @@ public class ConversationDetailsActivity extends BaseActivity {
         Intent intent=new Intent(this,IndividualDetailsActivity.class);
         intent.putExtra("user",mUser);
         intent.putExtra("name",mName);
-        intent.putExtra("type",1);
+        intent.putExtra("roomId",roomId);
         startActivity(intent);
     }
 

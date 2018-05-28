@@ -30,6 +30,9 @@ public class MessageInfo implements Serializable {
     private float lng;
     private String address;
     private String title;
+    //2018-05-28新增名片分享
+    private String headUrl;
+    private String cardUser;
 
     @Override
     public String toString() {
@@ -55,7 +58,25 @@ public class MessageInfo implements Serializable {
                 ", lng=" + lng +
                 ", address='" + address + '\'' +
                 ", title='" + title + '\'' +
+                ", headUrl='" + headUrl + '\'' +
+                ", cardUser='" + cardUser + '\'' +
                 '}';
+    }
+
+    public String getHeadUrl() {
+        return headUrl;
+    }
+
+    public void setHeadUrl(String headUrl) {
+        this.headUrl = headUrl;
+    }
+
+    public String getCardUser() {
+        return cardUser;
+    }
+
+    public void setCardUser(String cardUser) {
+        this.cardUser = cardUser;
     }
 
     public float getLat() {

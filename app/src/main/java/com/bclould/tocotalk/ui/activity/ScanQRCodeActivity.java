@@ -125,9 +125,9 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                         name = name + "@" + Constants.DOMAINNAME;
                     }
                     Intent intent = new Intent(ScanQRCodeActivity.this, IndividualDetailsActivity.class);
-                    intent.putExtra("type", 2);
                     intent.putExtra("name", name.split("@")[0]);
                     intent.putExtra("user", name);
+                    intent.putExtra("roomId",name);
                     startActivity(intent);
                     finish();
                 } else if (result.contains(Constants.MONEYIN)) {

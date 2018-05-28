@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
 
     public DBHelper(Context context) {
         //CursorFactory设置为null,使用默认值
@@ -24,7 +24,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("create table ConversationRecord(id integer primary key autoincrement, my_user varchar, number integer, message varchar, time varchar, user varchar, friend varchar, istop varchar,chatType varchar)");
         db.execSQL("create table MessageRecord(id integer primary key autoincrement, my_user varchar, user varchar, message varchar, time varchar, type integer, coin varchar, count varchar, remark varchar" +
                 ", state integer, redId integer, voice varchar, voiceStatus integer, voiceTime varchar, sendStatus integer, msgType integer" +
-                ", imageType integer,send varchar,lat float,lng float,address varchar,title varchar)");
+                ", imageType integer,send varchar,lat float,lng float,address varchar,title varchar,headUrl varchar,cardUser varchar)");
         db.execSQL("create table AddRequest(id integer primary key autoincrement, my_user varchar, user varchar, type integer)");
         db.execSQL("create table UserImage(id integer primary key autoincrement, my_user varchar, user varchar, status integer, path varchar, remark varchar)");
         db.execSQL("create table RoomManage(id integer primary key autoincrement, roomImage varchar, roomId varchar, roomName varchar, roomNumber integer,my_user varchar)");
@@ -34,14 +34,18 @@ public class DBHelper extends SQLiteOpenHelper {
     //如果DATABASE_VERSION值被改为2,系统发现现有数据库版本不同,即会调用onUpgrade
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if ((newVersion - oldVersion) >= 2) {
-            onCreate(db);
-        }else{
-            //创建房间表和成员表
-            String roomManage = "create table if not exists RoomManage"  + "(roomImage text,roomId text,roomName text,roomNumber integer,my_user text)";
-            db.execSQL( roomManage );
-            String roomMember = "create table if not exists RoomMember"  + "(name text,jid text,image_url text,remark text,my_user text)";
-            db.execSQL( roomMember );
+        switch (oldVersion){
+            case 8:
+                //2018-5-28增加發送名片
+                db.execSQL("ALTER TABLE MessageRecord ADD headUrl TEXT");
+                db.execSQL("ALTER TABLE MessageRecord ADD cardUser TEXT");
+                //创建房间表和成员表
+                String roomManage = "create table if not exists RoomManage"  + "(roomImage text,roomId text,roomName text,roomNumber integer,my_user text)";
+                db.execSQL( roomManage );
+                String roomMember = "create table if not exists RoomMember"  + "(name text,jid text,image_url text,remark text,my_user text)";
+                db.execSQL( roomMember );
+                break;
+        }
 
             //20180523增加房间类型，用于新增群聊判断
 //            db.execSQL("ALTER TABLE ConversationRecord ADD chatType TEXT");
@@ -51,7 +55,6 @@ public class DBHelper extends SQLiteOpenHelper {
 //            db.execSQL("ALTER TABLE MessageRecord ADD lng REAL");
 //            db.execSQL("ALTER TABLE MessageRecord ADD address TEXT");
 //            db.execSQL("ALTER TABLE MessageRecord ADD title TEXT");
-        }
 //        db.execSQL("ALTER TABLE ConversationRecord ADD istop TEXT");
 //        db.execSQL("ALTER TABLE UserImage ADD remark TEXT");
     }

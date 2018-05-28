@@ -31,6 +31,7 @@ public class Constants {
     public static String DOMAINNAME2 = MySharedPreferences.getInstance().getString(XMPP_SERVER);
 //    public static String DOMAINNAME2 = "xmpp.bclould.com";//测试
     public static String CHUANCODE = "爨^(&";
+    public static String CARD = "[card]";
     public static String REDBAG = "[redBag]";
     public static String TRANSFER = "[transfer]";
     public static String REDPACKAGE = "redPackage";

@@ -94,6 +94,7 @@ import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_OTC_ORDE
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_RECEIPT_PAY_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_RED_PACKET_EXPIRED_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_TRANSFER_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_CARD_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_IMG_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_LOCATION_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_RED_MSG;
@@ -494,6 +495,9 @@ public class XmppListener {
                                     path = context.getFilesDir().getAbsolutePath() + File.separator
                                             + "images";
                                     goChat(from,context.getString(R.string.video),messageType,sendFrom);
+                                }else{
+                                    //2018-05-28，新增類型兼容老版本
+                                    chatMsg=context.getString(R.string.please_update_version);
                                 }
                                 File dir = new File(path);
                                 if (!dir.exists()) {
@@ -515,7 +519,16 @@ public class XmppListener {
                                 if (msgType == FROM_VOICE_MSG)
                                     messageInfo.setVoiceTime(UtilTool.getFileDuration(file.getAbsolutePath(), context) + "");
                             }
-                        } else if (chatMsg.contains(Constants.REDBAG)) {
+                        } else if(chatMsg.contains(Constants.CARD)){
+                            String object = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
+                            MessageInfo messageInfo1=new MessageInfo();
+                            messageInfo1= JSONObject.parseObject(object,MessageInfo.class);
+                            chatMsg=messageInfo1.getMessage();
+                            messageInfo.setCardUser(messageInfo1.getCardUser());
+                            messageInfo.setHeadUrl(messageInfo1.getHeadUrl());
+                            redpacket = "[" + context.getString(R.string.person_business_card) + "]";
+                            msgType=FROM_CARD_MSG;
+                        }else if (chatMsg.contains(Constants.REDBAG)) {
                             String s = chatMsg.replace(Constants.CHUANCODE, ",");
                             String[] split = s.split(",");
                             remark = split[1];

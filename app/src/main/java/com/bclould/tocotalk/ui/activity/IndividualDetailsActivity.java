@@ -17,6 +17,7 @@ import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.IndividualInfo;
+import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -33,6 +34,8 @@ import org.jxmpp.jid.impl.JidCreate;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_CARD_MSG;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class IndividualDetailsActivity extends BaseActivity {
@@ -68,10 +71,12 @@ public class IndividualDetailsActivity extends BaseActivity {
     private DBManager mMgr;
     private String mUser;
     private String mName;
+    private String roomId;
     private IndividualInfo.DataBean individualInfo;
     private int REMARK = 100;
     private int type = 0;//1表示查看好友，2表示添加好友
 
+    private String avatar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,9 +90,14 @@ public class IndividualDetailsActivity extends BaseActivity {
 
     private void initIntent() {
         Intent intent = getIntent();
-        type = intent.getIntExtra("type", 1);
         mUser = intent.getStringExtra("user");
         mName = intent.getStringExtra("name");
+        roomId= intent.getStringExtra("roomId");
+        if(mMgr.findUser(mUser)){
+            type=1;
+        }else{
+            type=2;
+        }
     }
 
     private void init() {
@@ -108,16 +118,16 @@ public class IndividualDetailsActivity extends BaseActivity {
                 tvName.setText(individualInfo.getName());
                 tvRemark.setText(individualInfo.getRemark());
                 tvRegion.setText(individualInfo.getCountry());
+                avatar=individualInfo.getAvatar();
                 Glide.with(IndividualDetailsActivity.this).load(individualInfo.getAvatar()).apply(new RequestOptions().placeholder(R.mipmap.img_nfriend_headshot1)).into(ivHead);
             }
         });
     }
 
-    @OnClick({R.id.rl_dynamic, R.id.bark, R.id.btn_brak, R.id.rl_qr, R.id.rl_remark})
+    @OnClick({R.id.rl_dynamic, R.id.bark, R.id.btn_brak, R.id.rl_qr, R.id.rl_remark,R.id.iv_else})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_dynamic:
-                // TODO: 2018/5/9 跳轉到個人動態
                 Intent intent = new Intent(this, PersonageDynamicActivity.class);
                 intent.putExtra("name", mName);
                 startActivity(intent);
@@ -138,7 +148,22 @@ public class IndividualDetailsActivity extends BaseActivity {
             case R.id.rl_remark:
                 goChangeRemark();
                 break;
+            case R.id.iv_else:
+                sendCard();
+                break;
         }
+    }
+
+    private void sendCard() {
+        Intent intent = new Intent(this, SelectFriendActivity.class);
+        intent.putExtra("type", 2);
+        MessageInfo messageInfo=new MessageInfo();
+        messageInfo.setHeadUrl(avatar);
+        messageInfo.setMessage(mName);
+        messageInfo.setCardUser(mUser);
+        intent.putExtra("msgType",TO_CARD_MSG);
+        intent.putExtra("messageInfo", messageInfo);
+        this.startActivity(intent);
     }
 
     private void goChangeRemark() {
@@ -149,6 +174,7 @@ public class IndividualDetailsActivity extends BaseActivity {
         Intent intent = new Intent(this, RemarkActivity.class);
         intent.putExtra("name", mName);
         intent.putExtra("remark", individualInfo.getRemark());
+        intent.putExtra("user",mUser);
         startActivityForResult(intent, REMARK);
     }
 
@@ -203,8 +229,8 @@ public class IndividualDetailsActivity extends BaseActivity {
                     RosterEntry entry = roster.getEntry(JidCreate.entityBareFrom(mUser));
                     roster.removeEntry(entry);
                     Toast.makeText(IndividualDetailsActivity.this, getString(R.string.delete_succeed), Toast.LENGTH_SHORT).show();
-                    mMgr.deleteConversation(mUser);
-                    mMgr.deleteMessage(mUser);
+                    mMgr.deleteConversation(roomId);
+                    mMgr.deleteMessage(roomId);
                     mMgr.deleteUser(mUser);
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.delete_friend)));
                     deleteCacheDialog.dismiss();
@@ -221,7 +247,6 @@ public class IndividualDetailsActivity extends BaseActivity {
         if (requestCode == REMARK && data != null) {
             String remark = data.getStringExtra("remark");
             tvRemark.setText(remark);
-            mMgr.updateRemark(remark, mUser);
             EventBus.getDefault().post(new MessageEvent(getString(R.string.change_friend_remark)));
         }
         super.onActivityResult(requestCode, resultCode, data);
