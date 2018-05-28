@@ -10,6 +10,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,6 +27,7 @@ import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.model.ReviewListInfo;
 import com.bclould.tocotalk.ui.adapter.DynamicDetailRVAdapter;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
@@ -90,6 +92,8 @@ public class DynamicDetailActivity extends BaseActivity {
     TextView mTvLikeCount;
     @Bind(R.id.scrollView)
     ScrollView mScrollView;
+    @Bind(R.id.tv_delete)
+    TextView mTvDelete;
 
     private ArrayList<ThumbViewInfo> mThumbViewInfoList = new ArrayList<>();
     private NineGridImageViewAdapter<String> mAdapter = new NineGridImageViewAdapter<String>() {
@@ -117,6 +121,7 @@ public class DynamicDetailActivity extends BaseActivity {
     private String mId;
     private DynamicDetailRVAdapter mDynamicDetailRVAdapter;
     private ReviewListInfo.DataBean.InfoBean mInfo;
+    private int mIs_self;
 
 
     @Override
@@ -148,9 +153,13 @@ public class DynamicDetailActivity extends BaseActivity {
             @Override
             public void send(ReviewListInfo.DataBean data) {
                 if (!data.getInfo().getAvatar().isEmpty()) {
-                    Glide.with(DynamicDetailActivity.this).load(data.getInfo().getAvatar()).into(mTouxiang);
+                    try {
+                        UtilTool.setCircleImg(DynamicDetailActivity.this, data.getInfo().getAvatar(), mTouxiang);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
-                    mTouxiang.setImageBitmap(UtilTool.setDefaultimage(DynamicDetailActivity.this));
+                    UtilTool.setCircleImg(DynamicDetailActivity.this, R.mipmap.img_nfriend_headshot1, mTouxiang);
                 }
                 mInfo = data.getInfo();
                 if (data.getInfo().getIs_like() == 1) {
@@ -176,6 +185,12 @@ public class DynamicDetailActivity extends BaseActivity {
         mUserName = bundle.getString("name");
         mTimes = bundle.getString("time");
         mContent = bundle.getString("content");
+        mIs_self = bundle.getInt("is_self", 0);
+        if (mIs_self == 1) {
+            mTvDelete.setVisibility(View.VISIBLE);
+        } else {
+            mTvDelete.setVisibility(View.GONE);
+        }
         mName.setText(mUserName);
         mTime.setText(mTimes);
         mDynamicText.setText(mContent);
@@ -220,7 +235,7 @@ public class DynamicDetailActivity extends BaseActivity {
         mRecyclerView.setNestedScrollingEnabled(false);
     }
 
-    @OnClick({R.id.bark, R.id.touxiang, R.id.send, R.id.ll_zan})
+    @OnClick({R.id.bark, R.id.touxiang, R.id.send, R.id.ll_zan, R.id.tv_delete})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -240,7 +255,37 @@ public class DynamicDetailActivity extends BaseActivity {
             case R.id.ll_zan:
                 like();
                 break;
+            case R.id.tv_delete:
+                showDialog();
+                break;
         }
+    }
+
+    private void showDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(getString(R.string.delete_dynamic_hint));
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        confirm.setTextColor(getResources().getColor(R.color.red));
+        confirm.setText(getString(R.string.delete));
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                deleteDynamic();
+            }
+        });
+    }
+
+    private void deleteDynamic() {
+        mDynamicPresenter.deleteDynamic(mId);
     }
 
     private void sendComment() {

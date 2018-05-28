@@ -68,6 +68,34 @@ public class BaseInfo {
         private String title;
         private String desc;
         private String bet_coin;
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getAd_cost() {
+            return ad_cost;
+        }
+
+        public void setAd_cost(String ad_cost) {
+            this.ad_cost = ad_cost;
+        }
+
+        private String ad_cost;
+
+        public String getMark() {
+            return mark;
+        }
+
+        public void setMark(String mark) {
+            this.mark = mark;
+        }
+
         private int type;
         private String xmpp;
 

@@ -61,6 +61,15 @@ public class DynamicListInfo {
         private int like_count;
         private String created_at;
         private String avatar;
+        private int is_self;
+
+        public int getIs_self() {
+            return is_self;
+        }
+
+        public void setIs_self(int is_self) {
+            this.is_self = is_self;
+        }
 
         public String getAvatar() {
             return avatar;

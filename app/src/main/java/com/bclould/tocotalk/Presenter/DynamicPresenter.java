@@ -11,9 +11,13 @@ import com.bclould.tocotalk.model.DynamicListInfo;
 import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.model.ReviewListInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
+import com.bclould.tocotalk.ui.activity.DynamicDetailActivity;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -324,6 +328,48 @@ public class DynamicPresenter {
         }
     }
 
+    public void deleteDynamic(final String id) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .deleteDynamic(UtilTool.getToken(), id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(BaseInfo baseInfo) {
+                            if (baseInfo.getStatus() == 1) {
+                                if (mContext instanceof DynamicDetailActivity) {
+                                    DynamicDetailActivity activity = (DynamicDetailActivity) mContext;
+                                    activity.finish();
+                                }
+                                MessageEvent messageEvent = new MessageEvent(mContext.getString(R.string.delete_dynamic));
+                                messageEvent.setId(id);
+                                EventBus.getDefault().post(messageEvent);
+                            }
+                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     //定义接口
     public interface CallBack {
         void send();
@@ -347,6 +393,11 @@ public class DynamicPresenter {
     //定义接口
     public interface CallBack5 {
         void send(List<ReviewListInfo.DataBean.ListBean> data);
+    }
+
+    //定义接口
+    public interface CallBack6 {
+        void send();
     }
 
 }

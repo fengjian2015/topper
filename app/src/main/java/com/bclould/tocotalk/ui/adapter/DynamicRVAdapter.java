@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import com.bclould.tocotalk.model.DynamicListInfo;
 import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.ui.activity.DynamicDetailActivity;
 import com.bclould.tocotalk.ui.activity.PreviewImgActivity;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -147,7 +149,6 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     mContext.startActivity(new Intent(mContext, DynamicDetailActivity.class));
 
                 }
@@ -172,6 +173,8 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         TextView mTvPinglun;
         @Bind(R.id.tv_look)
         TextView mTvLook;
+        @Bind(R.id.iv_delete)
+        ImageView mIvDelete;
         @Bind(R.id.tv_zan)
         TextView mTvZan;
         @Bind(R.id.ll_dynamic_content)
@@ -195,6 +198,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                     bundle.putString("content", mDataBean.getContent());
                     bundle.putString("name", mDataBean.getUser_name());
                     bundle.putString("time", mDataBean.getCreated_at());
+                    bundle.putInt("is_self", mDataBean.getIs_self());
                     intent.putExtras(bundle);
                     mContext.startActivity(intent);
                 }
@@ -203,21 +207,27 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
 
         public void setData(final DynamicListInfo.DataBean dataBean) {
             mDataBean = dataBean;
-            /*String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
-            if (dataBean.getUser_name().equals(UtilTool.getUser())) {
-                jid = UtilTool.getJid();
-            }
-            UtilTool.getImage(mMgr, jid, mContext, mTouxiang);*/
-            if (!dataBean.getAvatar().isEmpty()) {
-                Glide.with(mContext).load(dataBean.getAvatar()).into(mTouxiang);
+            if (dataBean.getIs_self() == 1) {
+                mIvDelete.setVisibility(View.VISIBLE);
+                mIvDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showDialog(dataBean.getId() + "");
+                    }
+                });
             } else {
-                mTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));
+                mIvDelete.setVisibility(View.GONE);
+            }
+            if (!dataBean.getAvatar().isEmpty()) {
+                UtilTool.setCircleImg(mContext, dataBean.getAvatar(), mTouxiang);
+            } else {
+                UtilTool.setCircleImg(mContext, R.mipmap.img_nfriend_headshot1, mTouxiang);
             }
             if (dataBean.getReviewList().size() != 0) {
                 mLlReview.setVisibility(View.VISIBLE);
                 if (dataBean.getReviewList().size() > 5) {
                     mTvLook.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     mTvLook.setVisibility(View.GONE);
                 }
                 mRecyvlerView.setLayoutManager(new LinearLayoutManager(mContext));
@@ -233,6 +243,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                         bundle.putString("content", mDataBean.getContent());
                         bundle.putString("name", mDataBean.getUser_name());
                         bundle.putString("time", mDataBean.getCreated_at());
+                        bundle.putInt("is_self", mDataBean.getIs_self());
                         intent.putExtras(bundle);
                         mContext.startActivity(intent);
                     }
@@ -291,9 +302,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     mContext.startActivity(new Intent(mContext, DynamicDetailActivity.class));
-
                 }
             });
         }
@@ -326,6 +335,8 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         RecyclerView mRecyvlerView;
         @Bind(R.id.tv_look)
         TextView mTvLook;
+        @Bind(R.id.iv_delete)
+        ImageView mIvDelete;
         private ArrayList<ThumbViewInfo> mThumbViewInfoList = new ArrayList<>();
         private NineGridImageViewAdapter<String> mAdapter = new NineGridImageViewAdapter<String>() {
             @Override
@@ -362,6 +373,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                     bundle.putString("content", mDataBean.getContent());
                     bundle.putString("name", mDataBean.getUser_name());
                     bundle.putString("time", mDataBean.getCreated_at());
+                    bundle.putInt("is_self", mDataBean.getIs_self());
                     intent.putExtras(bundle);
                     mContext.startActivity(intent);
                 }
@@ -409,15 +421,26 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             mImgList = (ArrayList<String>) dataBean.getKey_urls();
             mNglImages.setImagesData(mCompressImgList);
             if (!dataBean.getAvatar().isEmpty()) {
-                Glide.with(mContext).load(dataBean.getAvatar()).into(mIvTouxiang);
+                UtilTool.setCircleImg(mContext, dataBean.getAvatar(), mIvTouxiang);
             } else {
-                mIvTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));
+                UtilTool.setCircleImg(mContext, R.mipmap.img_nfriend_headshot1, mIvTouxiang);
+            }
+            if (dataBean.getIs_self() == 1) {
+                mIvDelete.setVisibility(View.VISIBLE);
+                mIvDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showDialog(dataBean.getId() + "");
+                    }
+                });
+            } else {
+                mIvDelete.setVisibility(View.GONE);
             }
             if (dataBean.getReviewList().size() != 0) {
                 mLlReview.setVisibility(View.VISIBLE);
                 if (dataBean.getReview_count() > 5) {
                     mTvLook.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     mTvLook.setVisibility(View.GONE);
                 }
                 mRecyvlerView.setLayoutManager(new LinearLayoutManager(mContext));
@@ -435,11 +458,12 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                         bundle.putString("content", mDataBean.getContent());
                         bundle.putString("name", mDataBean.getUser_name());
                         bundle.putString("time", mDataBean.getCreated_at());
+                        bundle.putInt("is_self", mDataBean.getIs_self());
                         intent.putExtras(bundle);
                         mContext.startActivity(intent);
                     }
                 });
-            }else {
+            } else {
                 mLlReview.setVisibility(View.GONE);
             }
             mTvTime.setText(dataBean.getCreated_at());
@@ -473,4 +497,28 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             });
         }
     }
+
+    private void showDialog(final String id) {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(mContext.getString(R.string.delete_dynamic_hint));
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        confirm.setTextColor(mContext.getResources().getColor(R.color.red));
+        confirm.setText(mContext.getString(R.string.delete));
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                mDynamicPresenter.deleteDynamic(id);
+            }
+        });
+    }
+
 }

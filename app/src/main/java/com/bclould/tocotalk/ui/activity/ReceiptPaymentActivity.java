@@ -125,7 +125,9 @@ public class ReceiptPaymentActivity extends BaseActivity {
                 }
                 break;
             case R.id.rl_receipt_payment_record:
-                startActivity(new Intent(this, PayRecordActivity.class));
+                Intent intent = new Intent(this, PayRecordActivity.class);
+                intent.putExtra("type", 1);
+                startActivity(intent);
                 break;
         }
     }

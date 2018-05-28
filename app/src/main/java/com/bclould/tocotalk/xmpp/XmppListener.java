@@ -245,18 +245,18 @@ public class XmppListener {
                             .joinMultiUserChat(UtilTool.getUser(),from);
                     return;
                 }else if(message.getType()==Message.Type.groupchat){
-                        if(message.getSubject()!=null){
-                            //表示是群主题修改
-                            createConversation(from,message.getSubject());
-                            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
-                            UtilTool.Log("fengjian---","修改主题："+message.getSubject());
-                        }else{
-                            android.os.Message msg = new android.os.Message();
-                            msg.obj = message;
-                            msg.what=1;
-                            handler.sendMessage(msg);
-                            UtilTool.Log("fengjian群日志","接受聊天消息"+message.getType().name()+"    \n"+message.getType().toString()+"\n"+message.getBody());
-                        }
+                    if(message.getSubject()!=null){
+                        //表示是群主题修改
+                        createConversation(from,message.getSubject());
+                        EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+                        UtilTool.Log("fengjian---","修改主题："+message.getSubject());
+                    }else{
+                        android.os.Message msg = new android.os.Message();
+                        msg.obj = message;
+                        msg.what=1;
+                        handler.sendMessage(msg);
+                        UtilTool.Log("fengjian群日志","接受聊天消息"+message.getType().name()+"    \n"+message.getType().toString()+"\n"+message.getBody());
+                    }
                 }
 
             }
@@ -318,37 +318,37 @@ public class XmppListener {
     }
 
     private Message bellJudgment(Message message){
-            //获取Jid和用户名
-            String from = message.getFrom().toString();
-            if (from.equals(Constants.DOMAINNAME)) {
-                from = Constants.ADMINISTRATOR_NAME;
-            }
-            if (from.contains("/"))
-                from = from.substring(0, from.indexOf("/"));
-            String chatmesssage=message.getBody();
-            //鈴聲必須放在處理消息類前面
-            SharedPreferences sp = context.getSharedPreferences(SETTING, 0);
+        //获取Jid和用户名
+        String from = message.getFrom().toString();
+        if (from.equals(Constants.DOMAINNAME)) {
+            from = Constants.ADMINISTRATOR_NAME;
+        }
+        if (from.contains("/"))
+            from = from.substring(0, from.indexOf("/"));
+        String chatmesssage=message.getBody();
+        //鈴聲必須放在處理消息類前面
+        SharedPreferences sp = context.getSharedPreferences(SETTING, 0);
 
-            boolean free= MySharedPreferences.getInstance().getBoolean(SETTING+from+UtilTool.getJid());
-            if(OtrChatListenerManager.getInstance().isOtrEstablishMessage(chatmesssage,
-                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from),context)){
-                return null;
-            }
-            if(OtrChatListenerManager.getInstance().isExist(OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from))){
-                 chatmesssage=OtrChatListenerManager.getInstance().receivedMessagesChange(chatmesssage,
-                     OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from));
-              }
-            if(chatmesssage==null){return null;}
-            if(free){
+        boolean free= MySharedPreferences.getInstance().getBoolean(SETTING+from+UtilTool.getJid());
+        if(OtrChatListenerManager.getInstance().isOtrEstablishMessage(chatmesssage,
+                OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from),context)){
+            return null;
+        }
+        if(OtrChatListenerManager.getInstance().isExist(OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from))){
+            chatmesssage=OtrChatListenerManager.getInstance().receivedMessagesChange(chatmesssage,
+                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from));
+        }
+        if(chatmesssage==null){return null;}
+        if(free){
 
-            }else if (sp.contains(INFORM)) {
-                if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
-                    UtilTool.playHint(context);
-                }
-            } else {
+        }else if (sp.contains(INFORM)) {
+            if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
                 UtilTool.playHint(context);
             }
-            message.setBody(chatmesssage);
+        } else {
+            UtilTool.playHint(context);
+        }
+        message.setBody(chatmesssage);
         return message;
     }
 
@@ -398,7 +398,7 @@ public class XmppListener {
                         String friend = from;
                         if (from.contains("/"))
                             sendFrom=from.substring(from.indexOf("/")+1, from.length())+"@"+Constants.DOMAINNAME;
-                            from = from.substring(0, from.indexOf("/"));
+                        from = from.substring(0, from.indexOf("/"));
                         if (from.contains("@"))
                             friend = from.substring(0, from.indexOf("@"));
 

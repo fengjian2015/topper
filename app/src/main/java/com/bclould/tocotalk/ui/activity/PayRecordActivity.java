@@ -64,18 +64,24 @@ public class PayRecordActivity extends BaseActivity {
     private Dialog mBottomDialog;
     String mPage = "1";
     String mPageSize = "1000";
-    String mType = "";
+    String mTypes = "";
     String mDate = "";
     private Map<String, Integer> mMap = new HashMap<>();
     private ReceiptPaymentPresenter mReceiptPaymentPresenter;
     private List<String> mFiltrateList = new ArrayList<>();
+    private int mType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_record);
         ButterKnife.bind(this);
-        mType = "0";
+        mType = getIntent().getIntExtra("type", 0);
+        if (mType == 0) {
+            mTypes = "0";
+        } else {
+            mTypes = "3";
+        }
         mFiltrateList.add(getString(R.string.all));
         mFiltrateList.add(getString(R.string.red_package));
         mFiltrateList.add(getString(R.string.transfer));
@@ -94,14 +100,18 @@ public class PayRecordActivity extends BaseActivity {
     }
 
     private void initMap() {
-        mMap.put(getString(R.string.filtrate), 0);
+        if (mType == 0) {
+            mMap.put(getString(R.string.filtrate), 0);
+        } else {
+            mMap.put(getString(R.string.filtrate), 3);
+        }
     }
 
     List<TransferListInfo.DataBean> mDataBeanList = new ArrayList<>();
 
     private void initData() {
         mDataBeanList.clear();
-        mReceiptPaymentPresenter.transRecord(mPage, mPageSize, mType, mDate, new ReceiptPaymentPresenter.CallBack4() {
+        mReceiptPaymentPresenter.transRecord(mPage, mPageSize, mTypes, mDate, new ReceiptPaymentPresenter.CallBack4() {
             @Override
             public void send(List<TransferListInfo.DataBean> data) {
                 mDataBeanList.addAll(data);
@@ -250,17 +260,17 @@ public class PayRecordActivity extends BaseActivity {
             @Override
             public void send(int position, String typeName) {
                 if (typeName.equals(getString(R.string.all))) {
-                    mType = "0";
+                    mTypes = "0";
                 } else if (typeName.equals(getString(R.string.transfer))) {
-                    mType = "1";
+                    mTypes = "1";
                 } else if (typeName.equals(getString(R.string.red_package))) {
-                    mType = "2";
+                    mTypes = "2";
                 } else if (typeName.equals(getString(R.string.receipt_payment))) {
-                    mType = "3";
+                    mTypes = "3";
                 } else if (typeName.equals(getString(R.string.in_coin))) {
-                    mType = "4";
+                    mTypes = "4";
                 } else if (typeName.equals(getString(R.string.out_coin))) {
-                    mType = "5";
+                    mTypes = "5";
                 }
                 initData();
                 mMap.put(getString(R.string.filtrate), position);

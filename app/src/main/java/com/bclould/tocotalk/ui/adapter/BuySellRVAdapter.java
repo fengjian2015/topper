@@ -20,7 +20,6 @@ import com.bclould.tocotalk.model.DealListInfo;
 import com.bclould.tocotalk.ui.activity.BuySellActivity;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -155,9 +154,9 @@ public class BuySellRVAdapter extends RecyclerView.Adapter {
                 }
             }
             if (dataBean.getAvatar().isEmpty()) {
-                mIvTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));
+                UtilTool.setCircleImg(mContext, R.mipmap.img_nfriend_headshot1, mIvTouxiang);
             } else {
-                Glide.with(mContext).load(dataBean.getAvatar()).into(mIvTouxiang);
+                UtilTool.setCircleImg(mContext, dataBean.getAvatar(), mIvTouxiang);
             }
             mTvPayWay.setText(dataBean.getPay_type());
             mTvPrice.setText(dataBean.getPrice() + " " + dataBean.getCurrency());

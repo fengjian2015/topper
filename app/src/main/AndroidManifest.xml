@@ -807,6 +807,11 @@
         <activity android:name=".ui.activity.SetGesturePWActivity"
                   android:screenOrientation="portrait"
                   android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--更新日誌頁-->
+        <activity android:name=".ui.activity.UpdateLogActivity"
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="stateHidden|adjustPan"/>
     </application>
 
 </manifest>

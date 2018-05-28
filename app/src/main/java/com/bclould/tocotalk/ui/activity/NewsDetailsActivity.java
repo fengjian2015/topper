@@ -163,8 +163,12 @@ public class NewsDetailsActivity extends BaseActivity {
             mTitleName.setText(getString(R.string.gongao_details));
             mRlEdit.setVisibility(View.GONE);
             mUrl = Constants.BASE_URL + Constants.GONGGAO_WEB_URL + mId;
+        } else if (mType == Constants.UPDATE_LOG_TYPE) {
+            mRlEdit.setVisibility(View.GONE);
+            mTitleName.setText(getString(R.string.update_log_details));
+            mUrl = Constants.BASE_URL + Constants.UPDATE_LOG_URL + mId;
         } else {
-            if(mType == Constants.NEW_MY_TYPE || mType == Constants.NEW_DRAFTS_TYPE){
+            if (mType == Constants.NEW_MY_TYPE || mType == Constants.NEW_DRAFTS_TYPE) {
                 mRlEdit.setVisibility(View.GONE);
             }
             mTitleName.setText(getString(R.string.news_details));

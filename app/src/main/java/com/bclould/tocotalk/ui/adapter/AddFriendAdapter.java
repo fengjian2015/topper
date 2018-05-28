@@ -1,26 +1,25 @@
 package com.bclould.tocotalk.ui.adapter;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
-import com.bclould.tocotalk.ui.activity.AddFriendActivity;
+import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.model.BaseInfo;
+import com.bclould.tocotalk.ui.activity.IndividualDetailsActivity;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bclould.tocotalk.xmpp.XmppConnection;
-
-import org.jivesoftware.smack.roster.Roster;
-import org.jxmpp.jid.impl.JidCreate;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -32,79 +31,85 @@ import butterknife.ButterKnife;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class AddFriendAdapter extends BaseAdapter {
+public class AddFriendAdapter extends RecyclerView.Adapter {
 
-    private final List<String> mRowList;
-    private final AddFriendActivity mAddFriendActivity;
-    private ViewHolder mViewHolder;
+    private final Context mContext;
+    private final List<BaseInfo.DataBean> mDataList;
+    private final DBManager mMgr;
 
-    public AddFriendAdapter(AddFriendActivity addFriendActivity, List<String> rowList) {
-        mAddFriendActivity = addFriendActivity;
-        mRowList = rowList;
+    public AddFriendAdapter(Context context, List<BaseInfo.DataBean> dataList, DBManager mgr) {
+        mContext = context;
+        mDataList = dataList;
+        mMgr = mgr;
     }
 
     @Override
-    public int getCount() {
-        if (mRowList != null)
-            return mRowList.size();
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_search, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        ViewHolder viewHolder = (ViewHolder) holder;
+        viewHolder.setData(mDataList.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        if (mDataList.size() != 0) {
+            return mDataList.size();
+        }
         return 0;
     }
 
-    @Override
-    public Object getItem(int itemId) {
-        return mRowList.get(itemId);
-    }
-
-    @Override
-    public long getItemId(int itemId) {
-        return itemId;
-    }
-
-    @Override
-    public View getView(final int itemId, View view, ViewGroup viewGroup) {
-        if (view == null) {
-            view = LayoutInflater.from(mAddFriendActivity).inflate(R.layout.item_search, viewGroup, false);
-            mViewHolder = new ViewHolder(view);
-            view.setTag(mViewHolder);
-        } else {
-            mViewHolder = (ViewHolder) view.getTag();
-        }
-        String user = mRowList.get(itemId);
-        byte[] userImage = UtilTool.getUserImage(XmppConnection.getInstance().getConnection(), user + "@" + Constants.DOMAINNAME);
-        if (userImage != null) {
-            Bitmap bitmap = BitmapFactory.decodeByteArray(userImage, 0, userImage.length);
-            mViewHolder.mIvTouxiang.setImageBitmap(bitmap);
-        }else {
-            mViewHolder.mIvTouxiang.setImageResource(R.mipmap.img_nfriend_headshot1);
-        }
-        mViewHolder.mTvName.setText(user);
-        mViewHolder.mBtnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Roster.getInstanceFor(XmppConnection.getInstance().getConnection()).createEntry(JidCreate.entityBareFrom(mRowList.get(itemId) + "@" + Constants.DOMAINNAME), null, new String[]{"Friends"});
-                    mAddFriendActivity.finish();
-                    Toast.makeText(mAddFriendActivity, mAddFriendActivity.getString(R.string.send_request_succeed), Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    Toast.makeText(mAddFriendActivity, mAddFriendActivity.getString(R.string.send_request_error), Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
-            }
-        });
-        return view;
-    }
-
-
-    static class ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_touxiang)
         ImageView mIvTouxiang;
         @Bind(R.id.tv_name)
         TextView mTvName;
-        @Bind(R.id.btn_add)
-        Button mBtnAdd;
+        private String mName;
 
         ViewHolder(View view) {
+            super(view);
             ButterKnife.bind(this, view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String jid;
+                    int type;
+                    if (mName.equals(UtilTool.getUser())) {
+                        jid = mName + "@" + Constants.DOMAINNAME2;
+                    } else {
+                        jid = mName + "@" + Constants.DOMAINNAME;
+                    }
+                    if (mMgr.findUser(jid)) {
+                        if(jid.equals(UtilTool.getJid())){
+                            type = 2;
+                        }else {
+                            type = 1;
+                        }
+                    } else {
+                        type = 2;
+                    }
+                    Intent intent = new Intent(mContext, IndividualDetailsActivity.class);
+                    intent.putExtra("type", type);
+                    intent.putExtra("name", mName);
+                    intent.putExtra("user", jid);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+
+        public void setData(BaseInfo.DataBean dataBean) {
+            mName = dataBean.getName();
+            if (dataBean.getUrl().isEmpty()) {
+                Glide.with(mContext).load(UtilTool.setDefaultimage(mContext)).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(mIvTouxiang);
+//                mIvTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));
+            } else {
+                Glide.with(mContext).load(dataBean.getUrl()).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(mIvTouxiang);
+            }
+            mTvName.setText(dataBean.getName());
         }
     }
 }

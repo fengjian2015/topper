@@ -57,5 +57,6 @@ public class DBHelper extends SQLiteOpenHelper {
 //            db.execSQL("ALTER TABLE MessageRecord ADD title TEXT");
 //        db.execSQL("ALTER TABLE ConversationRecord ADD istop TEXT");
 //        db.execSQL("ALTER TABLE UserImage ADD remark TEXT");
+
     }
 }

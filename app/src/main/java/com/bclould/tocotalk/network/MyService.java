@@ -41,6 +41,7 @@ import com.bclould.tocotalk.model.StateInfo;
 import com.bclould.tocotalk.model.TransRecordInfo;
 import com.bclould.tocotalk.model.TransferInfo;
 import com.bclould.tocotalk.model.TransferListInfo;
+import com.bclould.tocotalk.model.UpdateLogInfo;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -1010,6 +1011,36 @@ public interface MyService {
     @POST("news/deleteHistory")
     Observable<BaseInfo> deleteDrowsingHistory(
             @Header("Authorization") String token
+    );
+
+    //發佈新聞費用
+    @POST("news/ad_cost")
+    Observable<BaseInfo> getAdCost(
+            @Header("Authorization") String token
+    );
+
+    //刪除動態
+    @FormUrlEncoded
+    @POST("dynamic/destroy")
+    Observable<BaseInfo> deleteDynamic(
+            @Header("Authorization") String token,
+            @Field("dynamic_id") String dynamic_id
+    );
+
+    //刪除動態
+    @FormUrlEncoded
+    @POST("search/friend")
+    Observable<BaseInfo> searchUser(
+            @Header("Authorization") String token,
+            @Field("username") String username
+    );
+
+    //刪除動態
+    @FormUrlEncoded
+    @POST("updateLog")
+    Observable<UpdateLogInfo> getUpdateLogList(
+            @Header("Authorization") String token,
+            @Field("type") int type
     );
 
 }

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.AddRequestInfo;
+import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,11 +37,13 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
     private final Context mContext;
     private final List<AddRequestInfo> mAddRequestInfos;
     private final DBManager mMgr;
+    private final List<String> mImageList;
 
-    public NewFriendRVAdapter(Context context, List<AddRequestInfo> addRequestInfos, DBManager mgr) {
+    public NewFriendRVAdapter(Context context, List<AddRequestInfo> addRequestInfos, DBManager mgr, List<String> imageList) {
         mContext = context;
         mAddRequestInfos = addRequestInfos;
         mMgr = mgr;
+        mImageList = imageList;
     }
 
     @Override
@@ -56,12 +59,13 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.setData(mAddRequestInfos.get(position));
+        if (mAddRequestInfos.size() != 0 && mImageList.size() != 0)
+            viewHolder.setData(mAddRequestInfos.get(position), mImageList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        if (mAddRequestInfos != null) {
+        if (mAddRequestInfos.size() != 0) {
             return mAddRequestInfos.size();
         }
         return 0;
@@ -101,8 +105,14 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
             });
         }
 
-        public void setData(AddRequestInfo addRequestInfo) {
+        public void setData(AddRequestInfo addRequestInfo, String url) {
+            mBtnConsent.setVisibility(View.VISIBLE);
             mAddRequestInfo = addRequestInfo;
+            if (url.isEmpty()) {
+                UtilTool.setCircleImg(mContext, R.mipmap.img_nfriend_headshot1, mIvTouxiang);
+            } else {
+                UtilTool.setCircleImg(mContext, url, mIvTouxiang);
+            }
             mName.setText(addRequestInfo.getUser().substring(0, addRequestInfo.getUser().indexOf("@")));
             if (addRequestInfo.getType() == 1) {
                 mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.white));

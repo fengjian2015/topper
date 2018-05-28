@@ -1,34 +1,28 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
-import android.widget.EditText;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bclould.tocotalk.Presenter.CloudMessagePresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.ui.adapter.AddFriendAdapter;
-import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
-import com.bclould.tocotalk.utils.Constants;
-import com.bclould.tocotalk.utils.UtilTool;
-import com.bclould.tocotalk.xmpp.XmppConnection;
-
-import org.jivesoftware.smackx.search.ReportedData;
-import org.jivesoftware.smackx.search.UserSearchManager;
-import org.jivesoftware.smackx.xdata.Form;
-import org.jxmpp.jid.impl.JidCreate;
+import com.bclould.tocotalk.ui.widget.ClearEditText;
+import com.bclould.tocotalk.utils.ToastShow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,159 +38,75 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class AddFriendActivity extends BaseActivity {
 
-    List<String> mRowList = new ArrayList<>();
-    @Bind(R.id.imageview)
-    ImageView mImageview;
+
+    @Bind(R.id.iv_search)
+    ImageView mIvSearch;
+    @Bind(R.id.et_search)
+    ClearEditText mEtSearch;
+    @Bind(R.id.cb_search)
+    CardView mCbSearch;
     @Bind(R.id.tv_cancel)
     TextView mTvCancel;
-    @Bind(R.id.tv_search)
-    TextView mTvSearch;
-    @Bind(R.id.et_search)
-    EditText mEtSearch;
-    @Bind(R.id.clear_away)
-    TextView mClearAway;
-    @Bind(R.id.ll_hot)
-    LinearLayout mLlHot;
-    @Bind(R.id.listView)
-    ListView mListView;
+    @Bind(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+    private CloudMessagePresenter mCloudMessagePresenter;
+    private List<BaseInfo.DataBean> mDataList = new ArrayList<>();
     private AddFriendAdapter mAddFriendAdapter;
-    private LoadingProgressDialog mProgressDialog;
+    private DBManager mMgr;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friend);
         ButterKnife.bind(this);
+        mCloudMessagePresenter = new CloudMessagePresenter(this);
+        mMgr = new DBManager(this);
         MyApp.getInstance().addActivity(this);
-        listenerEditText();
-        initListView();
+        initListener();
+        initRecyclerView();
     }
 
-    //初始化ListView
-    private void initListView() {
-        mAddFriendAdapter = new AddFriendAdapter(this, mRowList);
-        mListView.setAdapter(mAddFriendAdapter);
+    private void initRecyclerView() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mAddFriendAdapter = new AddFriendAdapter(this, mDataList, mMgr);
+        mRecyclerView.setAdapter(mAddFriendAdapter);
     }
 
-    private void showDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = LoadingProgressDialog.createDialog(this);
-            mProgressDialog.setCanceledOnTouchOutside(false);
-            mProgressDialog.setCancelable(false);
-            mProgressDialog.setMessage(getString(R.string.loading));
-        }
-
-        mProgressDialog.show();
-    }
-
-    private void hideDialog() {
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-        }
-    }
-
-    //监听输入框
-    private void listenerEditText() {
-
-        mEtSearch.addTextChangedListener(new TextWatcher() {
+    private void initListener() {
+        mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String content = mEtSearch.getText().toString();
-                if (!content.isEmpty()) {
-                    mTvCancel.setVisibility(View.GONE);
-                    mTvSearch.setVisibility(View.VISIBLE);
-                } else {
-                    mTvCancel.setVisibility(View.VISIBLE);
-                    mTvSearch.setVisibility(View.GONE);
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {//修改回车键功能
+                    // 隐藏键盘
+                    ((InputMethodManager) mEtSearch.getContext().getSystemService(Context.INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                                    InputMethodManager.HIDE_NOT_ALWAYS);
+                    String user = mEtSearch.getText().toString().trim();
+                    initData(user);
+                    return true;
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
+                return false;
             }
         });
     }
 
-    @OnClick({R.id.tv_cancel, R.id.tv_search})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.tv_cancel:
-                finish();
-                break;
-            case R.id.tv_search:
-                search();
-                break;
-        }
-    }
-
-
-    Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 0:
-                    hideDialog();
-                    Toast.makeText(AddFriendActivity.this, getString(R.string.search_error), Toast.LENGTH_SHORT).show();
-                    break;
-                case 1:
-                    hideDialog();
-                    List<ReportedData.Row> rowList = (List<ReportedData.Row>) msg.obj;
-                    String text = mEtSearch.getText().toString();
-                    mLlHot.setVisibility(View.GONE);
-                    mListView.setVisibility(View.VISIBLE);
-                    for (int i = 0; i < rowList.size(); i++) {
-                        if (rowList.get(i).getValues("Username").get(0).equals(text) && !rowList.get(i).getValues("Username").get(0).equals(UtilTool.getUser())) {
-                            mRowList.add(rowList.get(i).getValues("Username").get(0));
-                        }
-                    }
-                    if (mRowList.size() == 0) {
-                        Toast.makeText(AddFriendActivity.this, getString(R.string.no_user), Toast.LENGTH_SHORT).show();
-                    } else {
-                        mAddFriendAdapter.notifyDataSetChanged();
-                    }
-                    break;
-                case 2:
-                    Toast.makeText(AddFriendActivity.this, getString(R.string.no_user), Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    };
-
-    private void search() {
-        showDialog();
-        mRowList.clear();
-        final String text = mEtSearch.getText().toString();
-        new Thread(new Runnable() {
+    private void initData(String user) {
+        mDataList.clear();
+        mCloudMessagePresenter.searchUser(user, new CloudMessagePresenter.CallBack() {
             @Override
-            public void run() {
-                try {
-                    UserSearchManager search = new UserSearchManager(XmppConnection.getInstance().getConnection());
-                    Form searchForm = search.getSearchForm(JidCreate.domainBareFrom("search." + Constants.DOMAINNAME));
-                    Form answerForm = searchForm.createAnswerForm();
-                    answerForm.setAnswer("Username", true);
-                    answerForm.setAnswer("search", text.trim());
-                    ReportedData data = search.getSearchResults(answerForm, JidCreate.domainBareFrom("search." + Constants.DOMAINNAME));
-                    List<ReportedData.Row> rowList = data.getRows();
-                    if (rowList != null) {
-                        Message message = new Message();
-                        message.obj = rowList;
-                        message.what = 1;
-                        mHandler.sendMessage(message);
-                    } else {
-                        mHandler.sendEmptyMessage(2);
-                    }
-                } catch (Exception e) {
-                    mHandler.sendEmptyMessage(0);
-                    UtilTool.Log("fsdafa", e.getMessage());
+            public void send(BaseInfo.DataBean data) {
+                if (data.getName().isEmpty()) {
+                    ToastShow.showToast2(AddFriendActivity.this, getString(R.string.no_user));
+                } else {
+                    mDataList.add(data);
+                    mAddFriendAdapter.notifyItemRangeChanged(0, mDataList.size());
                 }
             }
-        }).start();
+        });
+    }
 
+    @OnClick(R.id.tv_cancel)
+    public void onViewClicked() {
+        finish();
     }
 }

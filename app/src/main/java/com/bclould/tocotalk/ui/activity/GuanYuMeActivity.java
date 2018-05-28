@@ -72,11 +72,14 @@ public class GuanYuMeActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
     }
 
-    @OnClick({R.id.bark, R.id.rl_new})
+    @OnClick({R.id.bark, R.id.rl_new, R.id.rl_update_log})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.rl_update_log:
+                startActivity(new Intent(this, UpdateLogActivity.class));
                 break;
             case R.id.rl_new:
                 String url = MySharedPreferences.getInstance().getString(Constants.NEW_APK_URL);

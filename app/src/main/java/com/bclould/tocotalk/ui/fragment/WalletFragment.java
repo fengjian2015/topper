@@ -152,7 +152,9 @@ public class WalletFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_more:
-                startActivity(new Intent(getActivity(), PayRecordActivity.class));
+                Intent intent = new Intent(getActivity(), PayRecordActivity.class);
+                intent.putExtra("type", 0);
+                startActivity(intent);
                 break;
             case R.id.ll_inout:
                 startActivity(new Intent(getActivity(), ReceiptPaymentActivity.class));

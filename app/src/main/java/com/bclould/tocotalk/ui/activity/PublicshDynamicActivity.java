@@ -296,7 +296,7 @@ public class PublicshDynamicActivity extends BaseActivity {
 
       /*  showDialog();
         if (selectList.size() != 0) {
-            if (mType) {
+            if (mTypes) {
                 File file = new File(selectList.get(0).getPath());
                 Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(selectList.get(0).getPath()
                         , MediaStore.Video.Thumbnails.MINI_KIND);

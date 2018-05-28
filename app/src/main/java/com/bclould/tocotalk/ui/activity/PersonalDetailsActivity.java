@@ -177,8 +177,8 @@ public class PersonalDetailsActivity extends BaseActivity {
                         .hideBottomControls(true)// 是否显示uCrop工具栏，默认不显示 true or false
                         .isGif(false)// 是否显示gif图片 true or false
                         .freeStyleCropEnabled(true)// 裁剪框是否可拖拽 true or false
-                        .circleDimmedLayer(false)// 是否圆形裁剪 true or false
-                        .showCropFrame(true)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
+                        .circleDimmedLayer(true)// 是否圆形裁剪 true or false
+                        .showCropFrame(false)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
                         .showCropGrid(true)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
                         .openClickSound(true)// 是否开启点击声音 true or false
                         .selectionMedia(selectList)// 是否传入已选图片 List<LocalMedia> list

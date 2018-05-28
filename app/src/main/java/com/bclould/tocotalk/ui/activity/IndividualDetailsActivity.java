@@ -105,7 +105,7 @@ public class IndividualDetailsActivity extends BaseActivity {
             imageQr.setVisibility(View.INVISIBLE);
             rlRemark.setVisibility(View.GONE);
             btnBrak.setText(getString(R.string.add_friend));
-            if(UtilTool.getUser().equals(mName)){
+            if (UtilTool.getUser().equals(mName)) {
                 btnBrak.setVisibility(View.GONE);
             }
         }
@@ -120,6 +120,11 @@ public class IndividualDetailsActivity extends BaseActivity {
                 tvRegion.setText(individualInfo.getCountry());
                 avatar=individualInfo.getAvatar();
                 Glide.with(IndividualDetailsActivity.this).load(individualInfo.getAvatar()).apply(new RequestOptions().placeholder(R.mipmap.img_nfriend_headshot1)).into(ivHead);
+                if (!individualInfo.getAvatar().isEmpty()) {
+                    UtilTool.setCircleImg(IndividualDetailsActivity.this, individualInfo.getAvatar(), ivHead);
+                } else {
+                    UtilTool.setCircleImg(IndividualDetailsActivity.this, R.mipmap.img_nfriend_headshot1, ivHead);
+                }
             }
         });
     }

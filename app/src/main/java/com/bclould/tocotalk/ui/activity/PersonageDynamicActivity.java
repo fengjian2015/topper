@@ -17,9 +17,14 @@ import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.DynamicListInfo;
 import com.bclould.tocotalk.ui.adapter.DynamicRVAdapter;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,10 +65,29 @@ public class PersonageDynamicActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_dynamic);
         ButterKnife.bind(this);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         initIntent();
         initListener();
         initRecyclerView();
         initData();
+    }
+
+    //接受通知
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(getString(R.string.delete_dynamic))) {
+            String id = event.getId();
+            for (int i = 0; i < mDataList.size(); i++) {
+                if (mDataList.get(i).getId() == Integer.parseInt(id)) {
+                    mDataList.remove(i);
+                    mDynamicRVAdapter.notifyItemRemoved(i);
+                    mDynamicRVAdapter.notifyItemRangeChanged(0, mDataList.size() - i);
+                    return;
+                }
+            }
+        }
     }
 
     private void initListener() {
@@ -109,6 +133,13 @@ public class PersonageDynamicActivity extends BaseActivity {
     private void initIntent() {
         mName = getIntent().getStringExtra("name");
         mTvTitle.setText(mName);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 
     @OnClick(R.id.bark)

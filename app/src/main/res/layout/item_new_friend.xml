@@ -10,8 +10,7 @@
         android:layout_width="@dimen/x100"
         android:layout_height="@dimen/x100"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/x20"
-        android:src="@mipmap/img_nfriend_headshot1"/>
+        android:layout_marginLeft="@dimen/x20"/>
 
 
     <TextView
@@ -22,7 +21,6 @@
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginTop="@dimen/y12"
         android:layout_toRightOf="@+id/iv_touxiang"
-        android:text="安子"
         android:textColor="@android:color/black"
         android:textSize="@dimen/x32"/>
 
@@ -30,6 +28,7 @@
         android:id="@+id/btn_consent"
         android:layout_width="@dimen/x120"
         android:layout_height="@dimen/y70"
+        android:visibility="gone"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/x20"
