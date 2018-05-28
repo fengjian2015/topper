@@ -41,6 +41,7 @@ import com.bclould.tocotalk.model.StateInfo;
 import com.bclould.tocotalk.model.TransRecordInfo;
 import com.bclould.tocotalk.model.TransferInfo;
 import com.bclould.tocotalk.model.TransferListInfo;
+import com.bclould.tocotalk.model.UpdateLogInfo;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -1032,6 +1033,14 @@ public interface MyService {
     Observable<BaseInfo> searchUser(
             @Header("Authorization") String token,
             @Field("username") String username
+    );
+
+    //刪除動態
+    @FormUrlEncoded
+    @POST("updateLog")
+    Observable<UpdateLogInfo> getUpdateLogList(
+            @Header("Authorization") String token,
+            @Field("type") int type
     );
 
 }

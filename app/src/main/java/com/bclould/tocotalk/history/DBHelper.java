@@ -34,7 +34,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //如果DATABASE_VERSION值被改为2,系统发现现有数据库版本不同,即会调用onUpgrade
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if ((newVersion - oldVersion) >= 2) {
+       /* if ((newVersion - oldVersion) >= 2) {
             onCreate(db);
         }else{
             //创建房间表和成员表
@@ -43,16 +43,16 @@ public class DBHelper extends SQLiteOpenHelper {
             String roomMember = "create table if not exists RoomMember"  + "(name text,jid text,image_url text,remark text,my_user text)";
             db.execSQL( roomMember );
 
-            //20180523增加房间类型，用于新增群聊判断
-//            db.execSQL("ALTER TABLE ConversationRecord ADD chatType TEXT");
-//            db.execSQL("ALTER TABLE MessageRecord ADD send TEXT");//2018-5-15增加是誰發送的消息
-            //2018-5-22增加定位字段
-//            db.execSQL("ALTER TABLE MessageRecord ADD lat REAL");
-//            db.execSQL("ALTER TABLE MessageRecord ADD lng REAL");
-//            db.execSQL("ALTER TABLE MessageRecord ADD address TEXT");
-//            db.execSQL("ALTER TABLE MessageRecord ADD title TEXT");
+//            20180523增加房间类型，用于新增群聊判断
+            db.execSQL("ALTER TABLE ConversationRecord ADD chatType TEXT");
+            db.execSQL("ALTER TABLE MessageRecord ADD send TEXT");//2018-5-15增加是誰發送的消息
+//            2018-5-22增加定位字段
+            db.execSQL("ALTER TABLE MessageRecord ADD lat REAL");
+            db.execSQL("ALTER TABLE MessageRecord ADD lng REAL");
+            db.execSQL("ALTER TABLE MessageRecord ADD address TEXT");
+            db.execSQL("ALTER TABLE MessageRecord ADD title TEXT");
         }
-//        db.execSQL("ALTER TABLE ConversationRecord ADD istop TEXT");
-//        db.execSQL("ALTER TABLE UserImage ADD remark TEXT");
+        db.execSQL("ALTER TABLE ConversationRecord ADD istop TEXT");
+        db.execSQL("ALTER TABLE UserImage ADD remark TEXT");*/
     }
 }

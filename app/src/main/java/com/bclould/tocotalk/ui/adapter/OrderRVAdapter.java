@@ -110,9 +110,9 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
                 /*String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
                 UtilTool.getImage(mMgr, jid, mContext, mIvTouxiang);*/
             if (dataBean.getAvatar().isEmpty()) {
-                mIvTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));
+                UtilTool.setCircleImg(mContext, R.mipmap.img_nfriend_headshot1, mIvTouxiang);
             } else {
-                Glide.with(mContext).load(dataBean.getAvatar()).into(mIvTouxiang);
+                UtilTool.setCircleImg(mContext, dataBean.getAvatar(), mIvTouxiang);
             }
             if (dataBean.getType() == 1) {
                 mTvName.setText(dataBean.getUser_name());

@@ -149,7 +149,6 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     mContext.startActivity(new Intent(mContext, DynamicDetailActivity.class));
 
                 }
@@ -220,9 +219,9 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 mIvDelete.setVisibility(View.GONE);
             }
             if (!dataBean.getAvatar().isEmpty()) {
-                Glide.with(mContext).load(dataBean.getAvatar()).into(mTouxiang);
+                UtilTool.setCircleImg(mContext, dataBean.getAvatar(), mTouxiang);
             } else {
-                mTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));
+                UtilTool.setCircleImg(mContext, R.mipmap.img_nfriend_headshot1, mTouxiang);
             }
             if (dataBean.getReviewList().size() != 0) {
                 mLlReview.setVisibility(View.VISIBLE);
@@ -303,9 +302,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     mContext.startActivity(new Intent(mContext, DynamicDetailActivity.class));
-
                 }
             });
         }
@@ -424,9 +421,9 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             mImgList = (ArrayList<String>) dataBean.getKey_urls();
             mNglImages.setImagesData(mCompressImgList);
             if (!dataBean.getAvatar().isEmpty()) {
-                Glide.with(mContext).load(dataBean.getAvatar()).into(mIvTouxiang);
+                UtilTool.setCircleImg(mContext, dataBean.getAvatar(), mIvTouxiang);
             } else {
-                mIvTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));
+                UtilTool.setCircleImg(mContext, R.mipmap.img_nfriend_headshot1, mIvTouxiang);
             }
             if (dataBean.getIs_self() == 1) {
                 mIvDelete.setVisibility(View.VISIBLE);

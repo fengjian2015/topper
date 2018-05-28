@@ -22,8 +22,6 @@ import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.roster.Roster;
@@ -95,7 +93,7 @@ public class IndividualDetailsActivity extends BaseActivity {
             imageQr.setVisibility(View.INVISIBLE);
             rlRemark.setVisibility(View.GONE);
             btnBrak.setText(getString(R.string.add_friend));
-            if(UtilTool.getUser().equals(mName)){
+            if (UtilTool.getUser().equals(mName)) {
                 btnBrak.setVisibility(View.GONE);
             }
         }
@@ -108,7 +106,11 @@ public class IndividualDetailsActivity extends BaseActivity {
                 tvName.setText(individualInfo.getName());
                 tvRemark.setText(individualInfo.getRemark());
                 tvRegion.setText(individualInfo.getCountry());
-                Glide.with(IndividualDetailsActivity.this).load(individualInfo.getAvatar()).apply(new RequestOptions().placeholder(R.mipmap.img_nfriend_headshot1)).into(ivHead);
+                if (!individualInfo.getAvatar().isEmpty()) {
+                    UtilTool.setCircleImg(IndividualDetailsActivity.this, individualInfo.getAvatar(), ivHead);
+                } else {
+                    UtilTool.setCircleImg(IndividualDetailsActivity.this, R.mipmap.img_nfriend_headshot1, ivHead);
+                }
             }
         });
     }

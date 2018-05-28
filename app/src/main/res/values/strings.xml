@@ -853,4 +853,7 @@
     <string name="ggf">廣告費</string>
     <string name="delete_dynamic">刪除動態</string>
     <string name="delete_dynamic_hint">是否刪除該動態？</string>
+    <string name="update_log">更新日誌</string>
+    <string name="zhuyao_update">主要更新</string>
+    <string name="update_log_details">更新日誌詳情</string>
 </resources>

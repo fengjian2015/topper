@@ -32,6 +32,8 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
@@ -608,6 +610,9 @@ public class UtilTool {
         return prefix + str;
     }
 
+    public static void setCircleImg(Context context, Object url, ImageView imageView) {
+        Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
+    }
 
     public static Bitmap getImage(DBManager mgr, String myUser, Context context, ImageView imageView) {
         Bitmap bitmap = null;
@@ -615,16 +620,12 @@ public class UtilTool {
             UserInfo info = mgr.queryUser(myUser);
             if (!info.getPath().isEmpty()) {
                 UtilTool.Log("頭像", info.getPath());
-                if (info.getPath().startsWith("https://")) {
-                    Glide.with(context).load(info.getPath()).into(imageView);
-                } else {
-                    imageView.setImageBitmap(BitmapFactory.decodeFile(info.getPath()));
-                }
+                Glide.with(context).load(info.getPath()).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
             } else {
-                imageView.setImageBitmap(setDefaultimage(context));
+                Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
             }
         } else {
-            imageView.setImageBitmap(setDefaultimage(context));
+            Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
         }
         return bitmap;
     }
@@ -800,8 +801,8 @@ public class UtilTool {
     }
 
     // 判断是否为网址
-    public static  boolean checkLinkedExe(String resultString) {
-        if(TextUtils.isEmpty(resultString)){
+    public static boolean checkLinkedExe(String resultString) {
+        if (TextUtils.isEmpty(resultString)) {
             return false;
         }
         resultString = resultString.toLowerCase();
@@ -811,7 +812,7 @@ public class UtilTool {
         return m.matches();
     }
 
-    public static Pattern searchUrl(){
+    public static Pattern searchUrl() {
 //		String pattern1 = "((www|WWW)\\.){1}([a-zA-Z0-9\\u4e00-\\u9fa5\\.\\-\\~\\@\\#\\%\\^\\&\\+\\?\\:\\_\\/\\=\\<\\>]+)"; //有www.开头的
 //		String pattern2 = "((((ht|f|Ht|F)tp(s?))|rtsp|Rtsp)\\://)(www\\.)?([a-zA-Z0-9\\u4e00-\\u9fa5\\.\\-\\~\\@\\#\\%\\^\\&\\+\\?\\:\\_\\/\\=\\<\\>]+)"; //有http等协议号开头
 //		String pattern3 = "([a-zA-Z0-9\\u4e00-\\u9fa5]+)([a-zA-Z0-9\\u4e00-\\u9fa5\\.]+)(\\.(com|edu|gov|mil|net|org|biz|info|name|museum|us|ca|uk|cn))(\\:((6553[0-5])|655[0-2]{2}\\d|65[0-4]\\d{2}|6[0-4]\\d{3}|[1-5]\\d{4}|([1-9]\\d{3}|[1-9]\\d{2}|[1-9]\\d|[0-9])))?(/([(a-zA-Z0-9)(\\u4e00-\\u9fa5)(\\.-~@#%^&+?:_/=<>)]*)*)"; //有.com等后缀的，并有参数
@@ -823,11 +824,11 @@ public class UtilTool {
         String domainName = "(\\.(com|edu|gov|mil|net|org|biz|info|name|museum|us|ca|uk|cn|co|int|biz|CC|TV|pro|coop|aero|hk|tw))";
         String pattern1 = "((www|WWW)\\.){1}([a-zA-Z0-9\\u4e00-\\u9fa5\\$\\-\\_\\.\\+\\!\\*\\'\\(\\)\\,\\;\\?\\&\\=]+)"; //有www.开头的
         String pattern2 = "((((ht|f|Ht|F)tp(s?))|rtsp|Rtsp)\\://)(www\\.)?(.+)"; //有http等协议号开头
-        String pattern3 = pattern1+"([a-zA-Z0-9\\u4e00-\\u9fa5]+)([a-zA-Z0-9\\u4e00-\\u9fa5\\.]+)"+domainName+port+"(/(.*)*)"; //有.com等后缀的，并有参数
-        String pattern4 = pattern1+"([a-zA-Z0-9\\u4e00-\\u9fa5]+)([a-zA-Z0-9\\u4e00-\\u9fa5\\.]+)"+domainName+port; //有.com等后缀结尾的，无参数
-        String pattern5 = "((((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[1-9])\\.)((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){2}((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])))"+port+"(\\/(.+))?)"; //ip地址的
-        String pattern = pattern1+"|"+pattern2+"|"+pattern3+"|"+pattern4+"|"+pattern5;
+        String pattern3 = pattern1 + "([a-zA-Z0-9\\u4e00-\\u9fa5]+)([a-zA-Z0-9\\u4e00-\\u9fa5\\.]+)" + domainName + port + "(/(.*)*)"; //有.com等后缀的，并有参数
+        String pattern4 = pattern1 + "([a-zA-Z0-9\\u4e00-\\u9fa5]+)([a-zA-Z0-9\\u4e00-\\u9fa5\\.]+)" + domainName + port; //有.com等后缀结尾的，无参数
+        String pattern5 = "((((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[1-9])\\.)((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){2}((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])))" + port + "(\\/(.+))?)"; //ip地址的
+        String pattern = pattern1 + "|" + pattern2 + "|" + pattern3 + "|" + pattern4 + "|" + pattern5;
         Pattern p = Pattern.compile(pattern);
-        return  p;
+        return p;
     }
 }

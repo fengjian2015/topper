@@ -154,12 +154,12 @@ public class DynamicDetailActivity extends BaseActivity {
             public void send(ReviewListInfo.DataBean data) {
                 if (!data.getInfo().getAvatar().isEmpty()) {
                     try {
-                        Glide.with(DynamicDetailActivity.this).load(data.getInfo().getAvatar()).into(mTouxiang);
+                        UtilTool.setCircleImg(DynamicDetailActivity.this, data.getInfo().getAvatar(), mTouxiang);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
-                    mTouxiang.setImageBitmap(UtilTool.setDefaultimage(DynamicDetailActivity.this));
+                    UtilTool.setCircleImg(DynamicDetailActivity.this, R.mipmap.img_nfriend_headshot1, mTouxiang);
                 }
                 mInfo = data.getInfo();
                 if (data.getInfo().getIs_like() == 1) {

@@ -1,19 +1,23 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bclould.tocotalk.Presenter.PersonalDetailsPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.AddRequestInfo;
+import com.bclould.tocotalk.model.AuatarListInfo;
 import com.bclould.tocotalk.ui.adapter.NewFriendRVAdapter;
 
 import java.util.ArrayList;
@@ -28,6 +32,7 @@ import butterknife.OnClick;
  * Created by GA on 2017/10/11.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class NewFriendActivity extends BaseActivity {
 
 
@@ -39,6 +44,7 @@ public class NewFriendActivity extends BaseActivity {
     RecyclerView mRecyclerView;
     private DBManager mMgr;
     List<AddRequestInfo> mAddRequestInfos = new ArrayList<>();
+    List<String> mImageList = new ArrayList<>();
     private NewFriendRVAdapter mNewFriendRVAdapter;
 
     @Override
@@ -56,12 +62,32 @@ public class NewFriendActivity extends BaseActivity {
         ArrayList<AddRequestInfo> addRequestInfos = mMgr.queryAllRequest();
         Collections.reverse(addRequestInfos);
         mAddRequestInfos.addAll(addRequestInfos);
-        mNewFriendRVAdapter.notifyDataSetChanged();
+        String userList = "";
+        for (AddRequestInfo info : mAddRequestInfos) {
+            if (userList.isEmpty()) {
+                userList = info.getUser();
+            } else {
+                userList += "," + info.getUser();
+            }
+        }
+        PersonalDetailsPresenter personalDetailsPresenter = new PersonalDetailsPresenter(this);
+        personalDetailsPresenter.getFriendImageList(userList, new PersonalDetailsPresenter.CallBack2() {
+            @Override
+            public void send(final List<AuatarListInfo.DataBean> data) {
+                if (data != null && data.size() != 0) {
+                    for (int i = 0; i < data.size(); i++) {
+                        mImageList.add(data.get(i).getAvatar());
+                    }
+                    mNewFriendRVAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
     }
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mNewFriendRVAdapter = new NewFriendRVAdapter(this, mAddRequestInfos, mMgr);
+        mNewFriendRVAdapter = new NewFriendRVAdapter(this, mAddRequestInfos, mMgr, mImageList);
         mRecyclerView.setAdapter(mNewFriendRVAdapter);
     }
 
