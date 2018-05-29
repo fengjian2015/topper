@@ -1,24 +1,45 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.Request;
+import com.amazonaws.Response;
+import com.amazonaws.auth.BasicSessionCredentials;
+import com.amazonaws.handlers.RequestHandler2;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.bclould.tocotalk.Presenter.DynamicPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
@@ -28,6 +49,7 @@ import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.model.ReviewListInfo;
 import com.bclould.tocotalk.ui.adapter.DynamicDetailRVAdapter;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
@@ -35,19 +57,28 @@ import com.bumptech.glide.request.RequestOptions;
 import com.jaeger.ninegridimageview.ItemImageClickListener;
 import com.jaeger.ninegridimageview.NineGridImageView;
 import com.jaeger.ninegridimageview.NineGridImageViewAdapter;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.compress.Luban;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.previewlibrary.enitity.ThumbViewInfo;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.luck.picture.lib.config.PictureMimeType.ofImage;
 
 /**
  * Created by GA on 2017/10/19.
@@ -94,6 +125,10 @@ public class DynamicDetailActivity extends BaseActivity {
     ScrollView mScrollView;
     @Bind(R.id.tv_delete)
     TextView mTvDelete;
+    @Bind(R.id.iv_selector_img)
+    ImageView mIvSelectorImg;
+    @Bind(R.id.xx2)
+    TextView mXx2;
 
     private ArrayList<ThumbViewInfo> mThumbViewInfoList = new ArrayList<>();
     private NineGridImageViewAdapter<String> mAdapter = new NineGridImageViewAdapter<String>() {
@@ -122,19 +157,46 @@ public class DynamicDetailActivity extends BaseActivity {
     private DynamicDetailRVAdapter mDynamicDetailRVAdapter;
     private ReviewListInfo.DataBean.InfoBean mInfo;
     private int mIs_self;
+    private List<LocalMedia> selectList = new ArrayList<>();
+    private String mReply_id;
+    private boolean mType;
+    private DisplayMetrics mDm;
+    private int mWidthPixels;
+    private int mHeightPixels;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dynamic_detail);
+        getPhoneSize();
         ButterKnife.bind(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         mMgr = new DBManager(this);
         mDynamicPresenter = new DynamicPresenter(this);
         initInterface();
         initData();
         initListener();
         MyApp.getInstance().addActivity(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(getString(R.string.reply_comment))) {
+            mReply_id = event.getId();
+            String name = event.getCoinName();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                mType = true;
+                mIvSelectorImg.setVisibility(View.GONE);
+                mCommentEt.requestFocus();
+                imm.toggleSoftInput(0, 0);
+                mCommentEt.setHint(getString(R.string.reply) + name);
+            }
+        }
     }
 
     private void initListener() {
@@ -235,21 +297,183 @@ public class DynamicDetailActivity extends BaseActivity {
         mRecyclerView.setNestedScrollingEnabled(false);
     }
 
-    @OnClick({R.id.bark, R.id.touxiang, R.id.send, R.id.ll_zan, R.id.tv_delete})
+    //拿到选择的图片
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PictureConfig.CHOOSE_REQUEST:
+                    try {
+                        // 图片选择结果回调
+                        selectList = PictureSelector.obtainMultipleResult(data);
+                        if (selectList.size() != 0) {
+                            initPopWindow();
+                        }
+//                        upImg(selectList.get(0).getCompressPath());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+            }
+        }
+    }
+
+    //获取屏幕高度
+    private void getPhoneSize() {
+        mDm = new DisplayMetrics();
+        if (this != null)
+            getWindowManager().getDefaultDisplay().getMetrics(mDm);
+        mHeightPixels = mDm.heightPixels;
+        mWidthPixels = mDm.widthPixels;
+    }
+
+    //初始化pop
+    private ViewGroup mView;
+    private PopupWindow mPopupWindow;
+
+    private void initPopWindow() {
+        mView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.pop_img, null);
+        mPopupWindow = new PopupWindow(mView, 200, 200, true);
+        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
+        mPopupWindow.setFocusable(false);
+        mPopupWindow.setOutsideTouchable(false);
+        // 设置背景颜色变暗
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = 0.9f;
+        getWindow().setAttributes(lp);
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams lp = getWindow().getAttributes();
+                lp.alpha = 1f;
+                getWindow().setAttributes(lp);
+            }
+        });
+        int[] location = new int[2];
+        mXx2.getLocationOnScreen(location);
+        mPopupWindow.showAtLocation(mXx2, Gravity.NO_GRAVITY, location[0] + mWidthPixels / 2, location[1] - mPopupWindow.getHeight() - 10);
+        ImageView img = (ImageView) mView.findViewById(R.id.iv_image);
+        img.setImageBitmap(BitmapFactory.decodeFile(selectList.get(0).getCompressPath()));
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectList.clear();
+                mPopupWindow.dismiss();
+            }
+        });
+    }
+
+
+   /* @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(mPopupWindow!=null&&mPopupWindow.isShowing()){
+            return false;
+        }
+        return super.dispatchTouchEvent(ev);
+    }*/
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    String key = (String) msg.obj;
+                    sendComment(mId, 0, key, 1);
+                    break;
+                case 1:
+                    Toast.makeText(DynamicDetailActivity.this, getString(R.string.comment_erorr), Toast.LENGTH_SHORT).show();
+                    break;
+            }
+
+        }
+    };
+
+    private void upImg(String compressPath) {
+        File file = new File(compressPath);
+        final String key = UtilTool.getUserId() + UtilTool.createtFileName() + "compress" + UtilTool.getPostfix2(file.getName());
+        //缩略图储存路径
+        final File newFile = new File(Constants.PUBLICDIR + key);
+        UtilTool.comp(BitmapFactory.decodeFile(compressPath), newFile);//压缩图片
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
+                            Constants.ACCESS_KEY_ID,
+                            Constants.SECRET_ACCESS_KEY,
+                            Constants.SESSION_TOKEN);
+                    AmazonS3Client s3Client = new AmazonS3Client(
+                            sessionCredentials);
+                    Regions regions = Regions.fromName("ap-northeast-2");
+                    Region region = Region.getRegion(regions);
+                    s3Client.setRegion(region);
+                    s3Client.addRequestHandler(new RequestHandler2() {
+                        @Override
+                        public void beforeRequest(Request<?> request) {
+
+                        }
+
+                        @Override
+                        public void afterResponse(Request<?> request, Response<?> response) {
+                            Message message = new Message();
+                            message.obj = key;
+                            message.what = 0;
+                            mHandler.sendMessage(message);
+                        }
+
+                        @Override
+                        public void afterError(Request<?> request, Response<?> response, Exception e) {
+
+                        }
+                    });
+                    PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, newFile);
+                    s3Client.putObject(por);
+                } catch (AmazonClientException e) {
+                    mHandler.sendEmptyMessage(1);
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    @OnClick({R.id.bark, R.id.touxiang, R.id.send, R.id.ll_zan, R.id.tv_delete, R.id.iv_selector_img, R.id.dynamic_content})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.dynamic_content:
+                mCommentEt.setHint(getString(R.string.et_comment));
+                mIvSelectorImg.setVisibility(View.VISIBLE);
+                mType = false;
+                break;
+            case R.id.iv_selector_img:
+                selectorImg();
                 break;
             case R.id.touxiang:
                 //跳转个人资料页面
 //                startActivity(new Intent(this, FriendDataActivity.class));
                 break;
             case R.id.send:
-                if (mCommentEt.getText().toString().isEmpty()) {
-                    Toast.makeText(this, getString(R.string.toast_comment), Toast.LENGTH_SHORT).show();
+                if (selectList.size() == 0) {
+                    if (mCommentEt.getText().toString().isEmpty()) {
+                        Toast.makeText(this, getString(R.string.toast_comment), Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (mType) {
+                            sendComment(mId, Integer.parseInt(mReply_id), "", 0);
+                        } else {
+                            sendComment(mId, 0, "", 0);
+                        }
+                    }
                 } else {
-                    sendComment();
+                    if (mCommentEt.getText().toString().isEmpty()) {
+                        Toast.makeText(this, getString(R.string.toast_comment), Toast.LENGTH_SHORT).show();
+                    } else {
+                        upImg(selectList.get(0).getCompressPath());
+                    }
                 }
                 break;
             case R.id.ll_zan:
@@ -259,6 +483,31 @@ public class DynamicDetailActivity extends BaseActivity {
                 showDialog();
                 break;
         }
+    }
+
+    private void selectorImg() {
+        PictureSelector.create(this)
+                .openGallery(ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()
+//                        .theme(R.style.picture_white_style)
+                .maxSelectNum(1)// 最大图片选择数量 int
+                .imageSpanCount(3)// 每行显示个数 int
+                .selectionMode(PictureConfig.SINGLE)// 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
+                .previewImage(true)// 是否可预览图片 true or false
+                .compressGrade(Luban.THIRD_GEAR)// luban压缩档次，默认3档 Luban.THIRD_GEAR、Luban.FIRST_GEAR、Luban.CUSTOM_GEAR
+                .isCamera(true)// 是否显示拍照按钮 true or false
+                .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
+                .sizeMultiplier(0.5f)// glide 加载图片大小 0~1之间 如设置 .glideOverride()无效
+                .setOutputCameraPath("/CustomPath")// 自定义拍照保存路径,可不填
+                .enableCrop(false)// 是否裁剪 true or false
+                .compress(true)// 是否压缩 true or false
+                .compressMode(PictureConfig.SYSTEM_COMPRESS_MODE)//系统自带 or 鲁班压缩 PictureConfig.SYSTEM_COMPRESS_MODE or LUBAN_COMPRESS_MODE
+                .glideOverride(160, 160)// int glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
+                .withAspectRatio(1, 1)// int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
+                .hideBottomControls(true)// 是否显示uCrop工具栏，默认不显示 true or false
+                .isGif(false)// 是否显示gif图片 true or false
+                .openClickSound(true)// 是否开启点击声音 true or false
+                .selectionMedia(selectList)// 是否传入已选图片 List<LocalMedia> list
+                .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
     }
 
     private void showDialog() {
@@ -288,22 +537,42 @@ public class DynamicDetailActivity extends BaseActivity {
         mDynamicPresenter.deleteDynamic(mId);
     }
 
-    private void sendComment() {
+    private void sendComment(final String id, final int reply_id, String key, int key_type) {
         final String comment = mCommentEt.getText().toString();
-        mDynamicPresenter.sendComment(mId, comment, new DynamicPresenter.CallBack5() {
+        mDynamicPresenter.sendComment(id, comment, reply_id, key, key_type, new DynamicPresenter.CallBack5() {
             @Override
             public void send(List<ReviewListInfo.DataBean.ListBean> data) {
                 mCommentEt.setText("");
-                mDataList.add(0, data.get(0));
-                mDynamicDetailRVAdapter.notifyItemInserted(0);
-                mDynamicDetailRVAdapter.notifyItemRangeChanged(0, mDataList.size() - 0);
-                //发送消息通知
-                MessageEvent messageEvent = new MessageEvent(getString(R.string.publish_comment));
-                messageEvent.setReviewCount(mDataList.size() + "");
-                messageEvent.setId(mId);
-                messageEvent.setCoinName(UtilTool.getUser());
-                messageEvent.setFiltrate(comment);
-                EventBus.getDefault().post(messageEvent);
+                selectList.clear();
+                if (mType) {
+                    for (int i = 0; i < mDataList.size(); i++) {
+                        if (mDataList.get(i).getId() == reply_id) {
+                            ReviewListInfo.DataBean.ListBean.ReplyListsBean replyListsBean = new ReviewListInfo.DataBean.ListBean.ReplyListsBean();
+                            replyListsBean.setContent(data.get(0).getContent());
+                            replyListsBean.setUser_name(data.get(0).getUser_name());
+                            if (mDataList.get(i).getReply_lists() == null) {
+                                List<ReviewListInfo.DataBean.ListBean.ReplyListsBean> list = new ArrayList<>();
+                                list.add(replyListsBean);
+                                mDataList.get(i).setReply_lists(list);
+                            } else {
+                                mDataList.get(i).getReply_lists().add(0, replyListsBean);
+                            }
+                            mDynamicDetailRVAdapter.notifyItemChanged(i);
+                            break;
+                        }
+                    }
+                } else {
+                    mDataList.add(0, data.get(0));
+                    mDynamicDetailRVAdapter.notifyItemInserted(0);
+                    mDynamicDetailRVAdapter.notifyItemRangeChanged(0, mDataList.size() - 0);
+                    //发送消息通知
+                    MessageEvent messageEvent = new MessageEvent(getString(R.string.publish_comment));
+                    messageEvent.setReviewCount(mDataList.size() + "");
+                    messageEvent.setId(mId);
+                    messageEvent.setCoinName(UtilTool.getUser());
+                    messageEvent.setFiltrate(comment);
+                    EventBus.getDefault().post(messageEvent);
+                }
             }
         });
     }
@@ -312,17 +581,17 @@ public class DynamicDetailActivity extends BaseActivity {
         mDynamicPresenter.like(mId, new DynamicPresenter.CallBack4() {
             @Override
             public void send(LikeInfo data) {
-                mTvLikeCount.setText(data.getLikeCounts() + "");
-                if (data.getStatus() == 1) {
+                mTvLikeCount.setText(data.getData().getLikeCounts() + "");
+                if (data.getData().getStatus() == 1) {
                     mLlZan.setSelected(true);
                 } else {
                     mLlZan.setSelected(false);
                 }
                 //发送消息通知
                 MessageEvent messageEvent = new MessageEvent(getString(R.string.zan));
-                messageEvent.setLikeCount(data.getLikeCounts() + "");
+                messageEvent.setLikeCount(data.getData().getLikeCounts() + "");
                 messageEvent.setId(mId);
-                messageEvent.setType(data.getStatus() == 1 ? true : false);
+                messageEvent.setType(data.getData().getStatus() == 1 ? true : false);
                 EventBus.getDefault().post(messageEvent);
             }
         });
@@ -347,5 +616,12 @@ public class DynamicDetailActivity extends BaseActivity {
             item.setBounds(bounds);
             mThumbViewInfoList.add(item);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 }

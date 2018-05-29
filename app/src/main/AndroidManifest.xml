@@ -393,7 +393,7 @@
         <activity
             android:name=".ui.activity.DynamicDetailActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+            android:windowSoftInputMode="stateHidden" />
 
         <!-- 赞页面 -->
         <activity
@@ -808,7 +808,7 @@
                   android:screenOrientation="portrait"
                   android:windowSoftInputMode="stateHidden|adjustPan"/>
 
-        <!--更新日誌頁-->
+        更新日誌頁
         <activity android:name=".ui.activity.UpdateLogActivity"
                   android:screenOrientation="portrait"
                   android:windowSoftInputMode="stateHidden|adjustPan"/>

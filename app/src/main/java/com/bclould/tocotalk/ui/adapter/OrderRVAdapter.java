@@ -19,7 +19,6 @@ import com.bclould.tocotalk.ui.activity.OrderCloseActivity;
 import com.bclould.tocotalk.ui.activity.OrderDetailsActivity;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -180,9 +179,9 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             mTvCoinType.setText(dataBean.getCoin_name() + dataBean.getType_name());
             if (dataBean.getType() == 1) {
                 if (dataBean.getAvatar().isEmpty()) {
-                    mIvTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));
+                    UtilTool.setCircleImg(mContext, R.mipmap.img_nfriend_headshot1, mIvTouxiang);
                 } else {
-                    Glide.with(mContext).load(dataBean.getAvatar()).into(mIvTouxiang);
+                    UtilTool.setCircleImg(mContext, dataBean.getAvatar(), mIvTouxiang);
                 }
                 mTvName.setText(dataBean.getUser_name());
                 mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape));

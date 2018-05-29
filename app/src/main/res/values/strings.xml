@@ -858,4 +858,9 @@
     <string name="update_log">更新日誌</string>
     <string name="zhuyao_update">主要更新</string>
     <string name="update_log_details">更新日誌詳情</string>
+    <string name="reply_comment">回複評論</string>
+    <string name="look_reply">查看回復>></string>
+    <string name="reply">回復</string>
+    <string name="comment_erorr">評論失敗</string>
+    <string name="pack_up_reply">收起回復</string>
 </resources>

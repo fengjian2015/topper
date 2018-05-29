@@ -69,6 +69,15 @@ public class BaseInfo {
         private String desc;
         private String bet_coin;
         private String name;
+        private String merchant_name;
+
+        public String getMerchant_name() {
+            return merchant_name;
+        }
+
+        public void setMerchant_name(String merchant_name) {
+            this.merchant_name = merchant_name;
+        }
 
         public String getName() {
             return name;

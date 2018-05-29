@@ -72,8 +72,8 @@
 
                     <ImageView
                         android:id="@+id/touxiang"
-                        android:layout_width="@dimen/x78"
-                        android:layout_height="@dimen/x78"
+                        android:layout_width="@dimen/x100"
+                        android:layout_height="@dimen/x100"
                         android:layout_marginLeft="@dimen/x25"
                         android:layout_marginTop="@dimen/x36"
                         android:src="@mipmap/img_nfriend_headshot1"/>
@@ -198,12 +198,14 @@
         android:layout_alignParentBottom="true">
 
         <TextView
+            android:id="@+id/xx2"
             style="@style/HCutOffRule"/>
 
         <EditText
             android:id="@+id/comment_et"
-            android:layout_width="@dimen/x600"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/iv_selector_img"
             android:background="@color/transparent"
             android:hint="@string/et_comment"
             android:paddingBottom="@dimen/x30"
@@ -214,14 +216,23 @@
             android:textCursorDrawable="@null"
             android:textSize="@dimen/x26"/>
 
+        <ImageView
+            android:id="@+id/iv_selector_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/send"
+            android:paddingRight="@dimen/x20"
+            android:src="@mipmap/icon_tail_photo"/>
+
         <TextView
             android:id="@+id/send"
-            android:layout_width="@dimen/x80"
-            android:layout_height="@dimen/x80"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/x34"
             android:gravity="center"
+            android:paddingRight="@dimen/x20"
             android:text="@string/send"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>

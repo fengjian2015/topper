@@ -18,7 +18,6 @@ import com.bclould.tocotalk.model.MyAdListInfo;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -132,9 +131,9 @@ public class MyPushAdRVAdapter extends RecyclerView.Adapter {
                 }
             }
             if (dataBean.getAvatar().isEmpty()) {
-                mIvTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));
+                UtilTool.setCircleImg(mContext, R.mipmap.img_nfriend_headshot1, mIvTouxiang);
             } else {
-                Glide.with(mContext).load(dataBean.getAvatar()).into(mIvTouxiang);
+                UtilTool.setCircleImg(mContext, dataBean.getAvatar(), mIvTouxiang);
             }
             mTvPayWay.setText(dataBean.getPay_type());
             mTvPrice.setText(dataBean.getPrice() + " " + dataBean.getCurrency());
@@ -157,9 +156,9 @@ public class MyPushAdRVAdapter extends RecyclerView.Adapter {
                     @Override
                     public void send() {
                         dataBean.setStatus(0);
-                        if(mType == 1){
+                        if (mType == 1) {
                             EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.sold_out_buy)));
-                        }else {
+                        } else {
                             EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.sold_out_sell)));
                         }
                         notifyDataSetChanged();

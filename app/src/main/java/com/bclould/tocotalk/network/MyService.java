@@ -545,7 +545,10 @@ public interface MyService {
     Observable<ReviewListInfo> publishReview(
             @Header("Authorization") String token,
             @Field("dynamic_id") String dynamic_id,
-            @Field("content") String content
+            @Field("content") String content,
+            @Field("reply_id") int reply_id,
+            @Field("key") String key,
+            @Field("key_type") int key_type
     );
 
     //评论列表
@@ -1041,6 +1044,14 @@ public interface MyService {
     Observable<UpdateLogInfo> getUpdateLogList(
             @Header("Authorization") String token,
             @Field("type") int type
+    );
+
+    //掃描商家二維碼
+    @FormUrlEncoded
+    @POST("merchant/recharge_code_info")
+    Observable<BaseInfo> rechargeInfo(
+            @Header("Authorization") String token,
+            @Field("code") int code
     );
 
 }

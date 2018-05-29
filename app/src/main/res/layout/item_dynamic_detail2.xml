@@ -60,7 +60,17 @@
             android:layout_marginTop="@dimen/y20"
             android:layout_toRightOf="@+id/touxiang"
             android:text="文字文字文字文字文字文字"
-            android:textSize="@dimen/x26"/>
+            android:textSize="@dimen/x26"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/iv_img"
+            android:layout_width="@dimen/x200"
+            android:layout_height="@dimen/x200"
+            android:layout_alignLeft="@+id/name"
+            android:layout_below="@+id/comment_text"
+            android:layout_marginTop="@dimen/y20"
+            android:scaleType="center"/>
 
         <LinearLayout
             android:id="@+id/ll_zan"
@@ -88,7 +98,6 @@
         </LinearLayout>
 
     </RelativeLayout>
-
 
     <android.support.v7.widget.RecyclerView
         android:paddingLeft="@dimen/x20"

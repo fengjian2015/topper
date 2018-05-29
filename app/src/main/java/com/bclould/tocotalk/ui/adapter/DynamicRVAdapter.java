@@ -267,8 +267,8 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                     mDynamicPresenter.like(dataBean.getId() + "", new DynamicPresenter.CallBack4() {
                         @Override
                         public void send(LikeInfo data) {
-                            mTvZan.setText(data.getLikeCounts() + "");
-                            if (data.getStatus() == 1) {
+                            mTvZan.setText(data.getData().getLikeCounts() + "");
+                            if (data.getData().getStatus() == 1) {
                                 mTvZan.setSelected(true);
                             } else {
                                 mTvZan.setSelected(false);
@@ -482,9 +482,9 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                     mDynamicPresenter.like(dataBean.getId() + "", new DynamicPresenter.CallBack4() {
                         @Override
                         public void send(LikeInfo data) {
-                            mTvZan.setText(data.getLikeCounts() + "");
-                            dataBean.setLike_count(data.getLikeCounts());
-                            if (data.getStatus() == 1) {
+                            mTvZan.setText(data.getData().getLikeCounts() + "");
+                            dataBean.setLike_count(data.getData().getLikeCounts());
+                            if (data.getData().getStatus() == 1) {
                                 mTvZan.setSelected(true);
                                 dataBean.setIs_like(1);
                             } else {

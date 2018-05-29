@@ -231,8 +231,11 @@ public class DynamicPresenter {
                         @Override
                         public void onNext(LikeInfo likeInfo) {
 //                            hideDialog();
-                            callBack4.send(likeInfo);
-
+                            if (likeInfo.getStatus() == 1) {
+                                callBack4.send(likeInfo);
+                            } else {
+                                Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                            }
                         }
 
                         @Override
@@ -251,12 +254,12 @@ public class DynamicPresenter {
         }
     }
 
-    public void sendComment(String id, String comment, final CallBack5 callBack5) {
+    public void sendComment(String id, String comment, int reply_id, String key, int key_type, final CallBack5 callBack5) {
         if (UtilTool.isNetworkAvailable(mContext)) {
 //            showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .publishReview(UtilTool.getToken(), id, comment)
+                    .publishReview(UtilTool.getToken(), id, comment, reply_id, key, key_type)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<ReviewListInfo>() {
