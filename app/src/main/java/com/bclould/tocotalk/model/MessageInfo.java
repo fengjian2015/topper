@@ -33,6 +33,10 @@ public class MessageInfo implements Serializable {
     //2018-05-28新增名片分享
     private String headUrl;
     private String cardUser;
+    //2018-05-29新增鏈接分享和用於會話列表顯示字段
+    private String linkUrl;
+    private String content;
+    private String converstaion;
 
     @Override
     public String toString() {
@@ -60,7 +64,34 @@ public class MessageInfo implements Serializable {
                 ", title='" + title + '\'' +
                 ", headUrl='" + headUrl + '\'' +
                 ", cardUser='" + cardUser + '\'' +
+                ", linkUrl='" + linkUrl + '\'' +
+                ", content='" + content + '\'' +
+                ", converstaion='" + converstaion + '\'' +
                 '}';
+    }
+
+    public String getLinkUrl() {
+        return linkUrl;
+    }
+
+    public void setLinkUrl(String linkUrl) {
+        this.linkUrl = linkUrl;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getConverstaion() {
+        return converstaion;
+    }
+
+    public void setConverstaion(String converstaion) {
+        this.converstaion = converstaion;
     }
 
     public String getHeadUrl() {

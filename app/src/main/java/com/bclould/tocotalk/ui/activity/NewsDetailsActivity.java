@@ -1,5 +1,6 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,7 +25,9 @@ import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
+import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
 
 import org.json.JSONException;
@@ -33,6 +36,9 @@ import org.json.JSONObject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_CARD_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_LINK_MSG;
 
 /**
  * Created by GA on 2018/5/8.
@@ -62,10 +68,14 @@ public class NewsDetailsActivity extends BaseActivity {
     RelativeLayout mRlWebView;
     @Bind(R.id.ll_load_error)
     LinearLayout mLlLoadError;
+    @Bind(R.id.iv_share)
+    ImageView ivShare;
     private int mId;
     private boolean mLoadError = false;
     private int mType;
     private String mUrl;
+    private MessageInfo messageInfo=new MessageInfo();
+    private boolean isLoaded=false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,6 +106,7 @@ public class NewsDetailsActivity extends BaseActivity {
                     WebSettings.LOAD_CACHE_ELSE_NETWORK);
         }
         mWebView.addJavascriptInterface(this, "callback");
+        mWebView.addJavascriptInterface(new InJavaScriptLocalObj(), "local_obj");
         // 把图片加载放在最后来加载渲染
         mWebView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
         // 支持多窗口
@@ -104,6 +115,7 @@ public class NewsDetailsActivity extends BaseActivity {
         mWebView.getSettings().setDomStorageEnabled(true);
         // 开启 Application Caches 功能
         mWebView.getSettings().setAppCacheEnabled(true);
+
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -116,6 +128,9 @@ public class NewsDetailsActivity extends BaseActivity {
                     mLlLoadError.setVisibility(View.GONE);
                     mRlWebView.setVisibility(View.VISIBLE);
                 }
+                view.loadUrl("javascript:window.local_obj.showSource(document.getElementsByTagName('p')[1].innerText);");
+                view.loadUrl("javascript:window.local_obj.showSourceImage(document.getElementsByTagName('img')[0].src);");
+                isLoaded=true;
             }
 
             @Override
@@ -126,19 +141,55 @@ public class NewsDetailsActivity extends BaseActivity {
                 mLoadError = true;
             }
 
+
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
                 mProgressBar.setVisibility(View.VISIBLE);
             }
+
         });
         mWebView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
                 mProgressBar.setMax(100);
                 mProgressBar.setProgress(progress);
             }
+
+            @Override
+            public void onReceivedTitle(WebView view, String title) {
+                super.onReceivedTitle(view, title);
+                UtilTool.Log("fengjian---", "分享標題："+title);
+                messageInfo.setTitle(title);
+            }
+
         });
         mWebView.loadUrl(mUrl);
+    }
+
+    public final class InJavaScriptLocalObj {
+        @JavascriptInterface
+        public void showSource(String html) {
+            //需要分享的文本內容
+            html= html.replace("\n","");
+            if(html.length()>40){
+                html=html.substring(0,40);
+            }
+            UtilTool.Log("fengjian---", "分享內容："+html);
+            if(StringUtils.isEmpty(messageInfo.getTitle())){
+                messageInfo.setTitle(html);
+            }
+            if(StringUtils.isEmpty(html)){
+                html=messageInfo.getTitle();
+            }
+            messageInfo.setContent(html);
+        }
+
+        @JavascriptInterface
+        public void showSourceImage(String url) {
+            //需要分享的文本內容
+            UtilTool.Log("fengjian---", "分享圖片鏈接："+url);
+            messageInfo.setHeadUrl(url);
+        }
     }
 
     @JavascriptInterface
@@ -171,13 +222,16 @@ public class NewsDetailsActivity extends BaseActivity {
             if (mType == Constants.NEW_MY_TYPE || mType == Constants.NEW_DRAFTS_TYPE) {
                 mRlEdit.setVisibility(View.GONE);
             }
+            ivShare.setVisibility(View.VISIBLE);
             mTitleName.setText(getString(R.string.news_details));
+            //!!更換拼接方式時，修改chatAdapter中的鏈接跳轉
             mUrl = Constants.BASE_URL + Constants.NEWS_WEB_URL + mId + "/" + UtilTool.getUserId();
+            messageInfo.setLinkUrl(mUrl);
         }
     }
 
 
-    @OnClick({R.id.bark, R.id.send})
+    @OnClick({R.id.bark, R.id.send,R.id.iv_share})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -186,7 +240,19 @@ public class NewsDetailsActivity extends BaseActivity {
             case R.id.send:
                 review();
                 break;
+            case R.id.iv_share:
+                goShare();
+                break;
         }
+    }
+
+    private void goShare() {
+        if(!isLoaded)return;
+        Intent intent = new Intent(this, SelectFriendActivity.class);
+        intent.putExtra("type", 2);
+        intent.putExtra("msgType",TO_LINK_MSG);
+        intent.putExtra("messageInfo", messageInfo);
+        this.startActivity(intent);
     }
 
     private void review() {

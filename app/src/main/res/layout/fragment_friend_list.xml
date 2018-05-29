@@ -149,7 +149,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y10"
                 android:background="@color/light"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                />
 
             <RelativeLayout
                 android:id="@+id/my_group"
@@ -157,7 +158,8 @@
                 android:layout_height="@dimen/y100"
                 android:layout_marginLeft="@dimen/x20"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="gone"
+                >
 
                 <ImageView
                     android:id="@+id/iv1"
@@ -237,7 +239,7 @@
                     app:sidebar_position="right"
                     app:sidebar_text_alignment="center"
                     app:sidebar_text_color="@color/black"
-                    app:sidebar_text_size="@dimen/y26"/>
+                    app:sidebar_text_size="@dimen/y28"/>
 
             </RelativeLayout>
 

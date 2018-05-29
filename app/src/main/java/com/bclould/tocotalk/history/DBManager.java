@@ -65,6 +65,9 @@ public class DBManager {
         values.put("title",messageInfo.getTitle());
         values.put("cardUser",messageInfo.getCardUser());
         values.put("headUrl",messageInfo.getHeadUrl());
+        values.put("linkUrl",messageInfo.getLinkUrl());
+        values.put("content",messageInfo.getContent());
+        values.put("converstaion",messageInfo.getConverstaion());
         int id = (int) db.insert("MessageRecord", null, values);
         UtilTool.Log("日志", "添加成功" + messageInfo.toString());
         return id;
@@ -113,6 +116,9 @@ public class DBManager {
                 messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
                 messageInfo.setHeadUrl(c.getString(c.getColumnIndex("headUrl")));
                 messageInfo.setCardUser(c.getString(c.getColumnIndex("cardUser")));
+                messageInfo.setLinkUrl(c.getString(c.getColumnIndex("linkUrl")));
+                messageInfo.setContent(c.getString(c.getColumnIndex("content")));
+                messageInfo.setConverstaion(c.getString(c.getColumnIndex("converstaion")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -152,6 +158,9 @@ public class DBManager {
                 messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
                 messageInfo.setHeadUrl(c.getString(c.getColumnIndex("headUrl")));
                 messageInfo.setCardUser(c.getString(c.getColumnIndex("cardUser")));
+                messageInfo.setLinkUrl(c.getString(c.getColumnIndex("linkUrl")));
+                messageInfo.setContent(c.getString(c.getColumnIndex("content")));
+                messageInfo.setConverstaion(c.getString(c.getColumnIndex("converstaion")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -191,6 +200,9 @@ public class DBManager {
                 messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
                 messageInfo.setHeadUrl(c.getString(c.getColumnIndex("headUrl")));
                 messageInfo.setCardUser(c.getString(c.getColumnIndex("cardUser")));
+                messageInfo.setLinkUrl(c.getString(c.getColumnIndex("linkUrl")));
+                messageInfo.setContent(c.getString(c.getColumnIndex("content")));
+                messageInfo.setConverstaion(c.getString(c.getColumnIndex("converstaion")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -230,6 +242,9 @@ public class DBManager {
                 messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
                 messageInfo.setHeadUrl(c.getString(c.getColumnIndex("headUrl")));
                 messageInfo.setCardUser(c.getString(c.getColumnIndex("cardUser")));
+                messageInfo.setLinkUrl(c.getString(c.getColumnIndex("linkUrl")));
+                messageInfo.setContent(c.getString(c.getColumnIndex("content")));
+                messageInfo.setConverstaion(c.getString(c.getColumnIndex("converstaion")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -275,6 +290,9 @@ public class DBManager {
                 messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
                 messageInfo.setHeadUrl(c.getString(c.getColumnIndex("headUrl")));
                 messageInfo.setCardUser(c.getString(c.getColumnIndex("cardUser")));
+                messageInfo.setLinkUrl(c.getString(c.getColumnIndex("linkUrl")));
+                messageInfo.setContent(c.getString(c.getColumnIndex("content")));
+                messageInfo.setConverstaion(c.getString(c.getColumnIndex("converstaion")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -334,6 +352,9 @@ public class DBManager {
                 messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
                 messageInfo.setHeadUrl(c.getString(c.getColumnIndex("headUrl")));
                 messageInfo.setCardUser(c.getString(c.getColumnIndex("cardUser")));
+                messageInfo.setLinkUrl(c.getString(c.getColumnIndex("linkUrl")));
+                messageInfo.setContent(c.getString(c.getColumnIndex("content")));
+                messageInfo.setConverstaion(c.getString(c.getColumnIndex("converstaion")));
                 messageInfos.add(messageInfo);
             }
             c.close();
@@ -415,6 +436,18 @@ public class DBManager {
     public void deleteSingleMessage(String mUser,String id){
         db = helper.getWritableDatabase();
         db.delete("MessageRecord", "user=? and my_user=? and id=?", new String[]{mUser, UtilTool.getJid(),id});
+    }
+
+    public String findLastMessageConversation(String roomid) {
+        db = helper.getReadableDatabase();
+        String friend = null;
+        Cursor cursor = db.rawQuery("select converstaion from MessageRecord where user=? and my_user=?",
+                new String[]{roomid, UtilTool.getJid()});
+        while (cursor.moveToNext()) {
+            friend = cursor.getString(cursor.getColumnIndex("friend"));
+        }
+        cursor.close();
+        return friend;
     }
 
     public void updateMessageState(String id, int state) {
@@ -520,6 +553,13 @@ public class DBManager {
         ContentValues cv = new ContentValues();
         cv.put("number", number);
         cv.put("time", time);
+        cv.put("message", chat);
+        db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
+    }
+
+    public void updateConversationMessage(String user, String chat) {
+        db = helper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
         cv.put("message", chat);
         db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
     }

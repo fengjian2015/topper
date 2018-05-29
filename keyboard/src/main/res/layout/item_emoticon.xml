@@ -12,8 +12,8 @@
 
         <ImageView
             android:id="@+id/iv_emoticon"
-            android:layout_width="@dimen/item_emoticon_size_default"
-            android:layout_height="@dimen/item_emoticon_size_default"
+            android:layout_width="@dimen/x64"
+            android:layout_height="@dimen/y64"
             android:layout_gravity="center"
             android:clickable="false"
             android:focusable="false"

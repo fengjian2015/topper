@@ -67,6 +67,8 @@ public class IndividualDetailsActivity extends BaseActivity {
     RelativeLayout rlQr;
     @Bind(R.id.rl_remark)
     RelativeLayout rlRemark;
+    @Bind(R.id.rl_card)
+    RelativeLayout rlCard;
 
     private DBManager mMgr;
     private String mUser;
@@ -108,6 +110,7 @@ public class IndividualDetailsActivity extends BaseActivity {
             if (UtilTool.getUser().equals(mName)) {
                 btnBrak.setVisibility(View.GONE);
             }
+            rlCard.setVisibility(View.GONE);
         }
         IndividualDetailsPresenter presenter = new IndividualDetailsPresenter(this);
         presenter.getIndividual(mName, new IndividualDetailsPresenter.CallBack() {
@@ -129,7 +132,7 @@ public class IndividualDetailsActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.rl_dynamic, R.id.bark, R.id.btn_brak, R.id.rl_qr, R.id.rl_remark,R.id.iv_else})
+    @OnClick({R.id.rl_dynamic, R.id.bark, R.id.btn_brak, R.id.rl_qr, R.id.rl_remark,R.id.rl_card})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_dynamic:
@@ -153,13 +156,17 @@ public class IndividualDetailsActivity extends BaseActivity {
             case R.id.rl_remark:
                 goChangeRemark();
                 break;
-            case R.id.iv_else:
+            case R.id.rl_card:
                 sendCard();
                 break;
         }
     }
 
     private void sendCard() {
+        if (individualInfo == null) {
+            init();
+            return;
+        }
         Intent intent = new Intent(this, SelectFriendActivity.class);
         intent.putExtra("type", 2);
         MessageInfo messageInfo=new MessageInfo();

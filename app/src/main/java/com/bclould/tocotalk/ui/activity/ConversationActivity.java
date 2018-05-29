@@ -464,6 +464,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     @Override
     public void onDestroy() {
         super.onDestroy();
+        roomManage.removerMessageManageListener(this);
         mediaPlayer.release();
         mediaPlayer = null;
         EventBus.getDefault().unregister(this);

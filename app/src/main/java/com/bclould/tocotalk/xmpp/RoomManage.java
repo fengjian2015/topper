@@ -44,11 +44,11 @@ public class RoomManage {
 
     public synchronized Room addSingleMessageManage(String roomId, String roomName){
         if(roomHashMap!=null){
-            if(getRoom(getRoomId(roomId))!=null){
-                return getRoom(getRoomId(roomId));
+            if(getRoom(roomId)!=null){
+                return getRoom(roomId);
             }
             SingleManage singleManage =new SingleManage(mMgr,roomId,context,roomName);
-            roomHashMap.put(getRoomId(roomId), singleManage);
+            roomHashMap.put(roomId, singleManage);
             return singleManage;
         }
         return null;
@@ -56,11 +56,11 @@ public class RoomManage {
 
     public synchronized Room addMultiMessageManage(String roomId, String roomName){
         if(roomHashMap!=null){
-            if(getRoom(getRoomId(roomId))!=null){
-                return getRoom(getRoomId(roomId));
+            if(getRoom(roomId)!=null){
+                return getRoom(roomId);
             }
             MultiManage multiManage =new MultiManage(mMgr,dbRoomMember,dbRoomManage,roomId,context,roomName);
-            roomHashMap.put(getRoomId(roomId), multiManage);
+            roomHashMap.put(roomId, multiManage);
             return multiManage;
         }
         return null;
@@ -68,23 +68,14 @@ public class RoomManage {
 
     public synchronized void removeRoom(String roomId){
         if(roomHashMap!=null){
-             roomHashMap.remove(getRoomId(roomId));
+             roomHashMap.remove(roomId);
         }
     }
 
     public synchronized Room getRoom(String roomId){
         if(roomHashMap!=null){
-          return roomHashMap.get(getRoomId(roomId));
+          return roomHashMap.get(roomId);
         }
         return null;
-    }
-
-    /***
-     *
-     * 获得房间号
-     *
-     */
-    public String getRoomId(String roomId) {
-        return UtilTool.getJid() + "&" + roomId;
     }
 }

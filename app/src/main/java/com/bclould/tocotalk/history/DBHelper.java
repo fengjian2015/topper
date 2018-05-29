@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
 
     public DBHelper(Context context) {
         //CursorFactory设置为null,使用默认值
@@ -24,14 +24,20 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("create table ConversationRecord(id integer primary key autoincrement, my_user varchar, number integer, message varchar, time varchar, user varchar, friend varchar, istop varchar,chatType varchar)");
         db.execSQL("create table MessageRecord(id integer primary key autoincrement, my_user varchar, user varchar, message varchar, time varchar, type integer, coin varchar, count varchar, remark varchar" +
                 ", state integer, redId integer, voice varchar, voiceStatus integer, voiceTime varchar, sendStatus integer, msgType integer" +
-                ", imageType integer,send varchar,lat float,lng float,address varchar,title varchar,headUrl varchar,cardUser varchar)");
+                ", imageType integer,send varchar,lat float,lng float,address varchar,title varchar,headUrl varchar,cardUser varchar,linkUrl varchar" +
+                ",content varchar,converstaion varchar)");
         db.execSQL("create table AddRequest(id integer primary key autoincrement, my_user varchar, user varchar, type integer)");
         db.execSQL("create table UserImage(id integer primary key autoincrement, my_user varchar, user varchar, status integer, path varchar, remark varchar)");
         db.execSQL("create table RoomManage(id integer primary key autoincrement, roomImage varchar, roomId varchar, roomName varchar, roomNumber integer,my_user varchar)");
         db.execSQL("create table RoomMember(id integer primary key autoincrement, name varchar, jid varchar, image_url varchar, remark varchar,my_user varchar)");
     }
 
-    //如果DATABASE_VERSION值被改为2,系统发现现有数据库版本不同,即会调用onUpgrade
+    /**
+     * 不要加break，用於夸版本升級
+     * @param db
+     * @param oldVersion
+     * @param newVersion
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         switch (oldVersion){
@@ -44,7 +50,11 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL( roomManage );
                 String roomMember = "create table if not exists RoomMember"  + "(name text,jid text,image_url text,remark text,my_user text)";
                 db.execSQL( roomMember );
-                break;
+            case 9:
+                //2018-05-29增加新聞分享和用於會話列表顯示（刪除最後一條消息后，列表還是不變）
+                db.execSQL("ALTER TABLE MessageRecord ADD linkUrl TEXT");
+                db.execSQL("ALTER TABLE MessageRecord ADD content TEXT");
+                db.execSQL("ALTER TABLE MessageRecord ADD converstaion TEXT");
         }
 
             //20180523增加房间类型，用于新增群聊判断

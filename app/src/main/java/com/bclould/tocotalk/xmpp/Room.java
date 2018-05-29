@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface Room {
     void addMessageManageListener(MessageManageListener messageManageListener);
+    void removerMessageManageListener(MessageManageListener messageManageListener);
     void sendVoice(int duration, String fileName);
     MessageInfo sendMessage(String message);
     void Upload(final String path);
@@ -23,4 +24,5 @@ public interface Room {
     MultiUserChat joinMultiUserChat(String user, String roomJid);
     void changeName(String name);
     boolean sendCaed(MessageInfo messageInfo);
+    boolean sendShareLink(MessageInfo messageInfo);
 }

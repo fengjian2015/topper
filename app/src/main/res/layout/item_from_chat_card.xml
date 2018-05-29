@@ -32,6 +32,7 @@
         android:layout_toRightOf="@+id/iv_touxiang"
         android:layout_below="@+id/tv_name"
         android:background="@color/white"
+        android:paddingBottom="@dimen/y20"
         >
         <ImageView
             android:id="@+id/iv_head"
@@ -43,31 +44,28 @@
         <TextView
             android:id="@+id/tv_username"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/y80"
+            android:layout_height="@dimen/y50"
             android:layout_toRightOf="@+id/iv_head"
             android:textColor="@color/black"
-            android:gravity="center_vertical"
+            android:gravity="bottom"
             android:layout_marginLeft="@dimen/x20"
             android:layout_marginTop="@dimen/y20"
             android:layout_marginRight="@dimen/x20"
             android:singleLine="true"
             android:textSize="@dimen/x32"/>
-        <View
-            android:id="@+id/iv1"
-            style="@style/HCutOffRule"
-            android:layout_below="@+id/iv_head"
-            android:layout_marginTop="@dimen/y20"
-            ></View>
         <TextView
+            android:id="@+id/tv1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv1"
+            android:layout_height="@dimen/y30"
+            android:layout_toRightOf="@+id/iv_head"
+            android:layout_below="@+id/tv_username"
             android:textColor="@color/gray3"
-            android:textSize="@dimen/x24"
+            android:gravity="top"
             android:layout_marginLeft="@dimen/x20"
-            android:paddingTop="@dimen/y10"
-            android:paddingBottom="@dimen/y10"
-            android:text="@string/person_business_card"/>
+            android:text="@string/person_business_card"
+            android:layout_marginRight="@dimen/x20"
+            android:singleLine="true"
+            android:textSize="@dimen/x22"/>
     </RelativeLayout>
 
 </RelativeLayout>

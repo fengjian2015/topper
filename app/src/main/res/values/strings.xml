@@ -863,4 +863,6 @@
     <string name="reply">回復</string>
     <string name="comment_erorr">評論失敗</string>
     <string name="pack_up_reply">收起回復</string>
+    <string name="share">分享</string>
+    <string name="business_card">名片</string>
 </resources>
