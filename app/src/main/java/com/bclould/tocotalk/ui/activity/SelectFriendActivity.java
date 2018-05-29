@@ -324,7 +324,9 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
 
     @Override
     protected void onDestroy() {
-        singleManage.removerMessageManageListener(this);
+        if(singleManage!=null){
+            singleManage.removerMessageManageListener(this);
+        }
         super.onDestroy();
     }
 }

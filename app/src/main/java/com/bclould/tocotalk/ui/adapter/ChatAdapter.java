@@ -1286,7 +1286,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             }
 
             tvUsername.setText(messageInfo.getMessage());
-            Glide.with(mContext).load(messageInfo.getHeadUrl()).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(ivHead);
+            Glide.with(mContext).load(messageInfo.getHeadUrl()).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1)).into(ivHead);
             rlCard.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
@@ -1334,7 +1334,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             }
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             tvUsername.setText(messageInfo.getMessage());
-            Glide.with(mContext).load(messageInfo.getHeadUrl()).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(ivHead);
+            Glide.with(mContext).load(messageInfo.getHeadUrl()).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1)).into(ivHead);
             rlCard.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
