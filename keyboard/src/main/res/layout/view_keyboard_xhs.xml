@@ -11,24 +11,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp">
+        android:paddingBottom="@dimen/y16"
+        android:paddingTop="@dimen/y16">
         <!-- 语音/文字切换-->
         <ImageView
             android:id="@+id/btn_otr_text"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
+            android:layout_width="@dimen/x68"
+            android:layout_height="@dimen/y68"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="@dimen/x24"
             android:src="@drawable/icon_encrypt_no"/>
         <!-- 语音/文字切换-->
         <ImageView
             android:id="@+id/btn_voice_or_text"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
+            android:layout_width="@dimen/x68"
+            android:layout_height="@dimen/y68"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@id/btn_otr_text"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="@dimen/x24"
             android:src="@drawable/btn_voice_or_text" />
 
         <!--语音输入-->
@@ -36,9 +36,9 @@
             android:id="@+id/btn_voice"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="34dp"
+            android:layout_height="@dimen/y68"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="@dimen/x16"
             android:layout_toLeftOf="@+id/rl_multi_and_send"
             android:layout_toRightOf="@+id/btn_voice_or_text"
             android:background="@drawable/btn_voice"
@@ -52,13 +52,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="@dimen/x16"
             android:layout_toLeftOf="@+id/rl_multi_and_send"
             android:layout_toRightOf="@+id/btn_voice_or_text"
             android:background="@drawable/input_bg_gray"
             android:orientation="horizontal"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp">
+            android:paddingBottom="@dimen/y10"
+            android:paddingTop="@dimen/y10">
 
             <!--输入框-->
             <sj.keyboard.widget.EmoticonsEditText
@@ -70,25 +70,25 @@
                 android:background="@null"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:lineSpacingExtra="4dp"
+                android:lineSpacingExtra="@dimen/y8"
                 android:maxLines="4"
-                android:paddingLeft="8dp"
-                android:textSize="16sp"/>
+                android:paddingLeft="@dimen/x16"
+                android:textSize="@dimen/x32"/>
 
             <!--表情-->
             <ImageView
                 android:id="@+id/btn_face"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/x48"
+                android:layout_height="@dimen/y48"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="@dimen/x20"
                 android:src="@drawable/icon_face_nomal"/>
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rl_multi_and_send"
-            android:layout_width="58dp"
+            android:layout_width="@dimen/x116"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
@@ -98,23 +98,23 @@
             <!--apps 功能-->
             <ImageView
                 android:id="@+id/btn_multimedia"
-                android:layout_width="34dp"
-                android:layout_height="34dp"
+                android:layout_width="@dimen/x68"
+                android:layout_height="@dimen/y68"
                 android:layout_centerInParent="true"
                 android:src="@drawable/btn_multi_bg"/>
 
             <!--发送-->
             <Button
                 android:id="@+id/btn_send"
-                android:layout_width="50dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/x100"
+                android:layout_height="@dimen/y60"
                 android:layout_centerInParent="true"
                 android:background="@drawable/btn_send_bg_disable"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:paddingLeft="@dimen/x20"
+                android:paddingRight="@dimen/x20"
                 android:text="@string/btn_text_send"
                 android:textColor="@color/btn_send_textcolor"
-                android:textSize="12sp"
+                android:textSize="@dimen/x24"
                 android:visibility="gone"/>
         </RelativeLayout>
     </RelativeLayout>

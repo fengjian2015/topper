@@ -147,6 +147,7 @@ public class XmppConnection {
         context.stopService(new Intent(context, IMService.class));
         LoginThread.isStartExReconnect = false;
         stopAllIMCoreService(context);
+        UtilTool.Log("fengjina","退出");
 //		MyLogger.xuxLog().i("将静态startService变为了logout-"+IMCoreService.startService);
     }
 

@@ -21,7 +21,7 @@
         android:layout_above="@+id/view_spit"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingBottom="@dimen/indicator_margin" />
+        android:paddingBottom="@dimen/y20" />
 
     <include
         android:id="@+id/view_spit"
@@ -33,7 +33,7 @@
     <sj.keyboard.widget.EmoticonsToolBarView
         android:id="@+id/view_etv"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/bar_height"
+        android:layout_height="@dimen/y64"
         android:layout_alignParentBottom="true"
         android:orientation="vertical" />
 </RelativeLayout>

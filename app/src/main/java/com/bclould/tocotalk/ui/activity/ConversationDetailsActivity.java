@@ -225,6 +225,7 @@ public class ConversationDetailsActivity extends BaseActivity {
             public void onClick(View view) {
                 try {
                     mMgr.deleteMessage(mUser);
+                    mMgr.updateConversationMessage(mUser,"");
                     Toast.makeText(ConversationDetailsActivity.this, getString(R.string.empty_success), Toast.LENGTH_SHORT).show();
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.msg_database_update)));
                     deleteCacheDialog.dismiss();

@@ -38,6 +38,7 @@ import com.bclould.tocotalk.ui.activity.ChatLookLocationActivity;
 import com.bclould.tocotalk.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tocotalk.ui.activity.ImageViewActivity;
 import com.bclould.tocotalk.ui.activity.IndividualDetailsActivity;
+import com.bclould.tocotalk.ui.activity.NewsDetailsActivity;
 import com.bclould.tocotalk.ui.activity.OrderCloseActivity;
 import com.bclould.tocotalk.ui.activity.OrderDetailsActivity;
 import com.bclould.tocotalk.ui.activity.PayDetailsActivity;
@@ -48,6 +49,7 @@ import com.bclould.tocotalk.ui.activity.TransferDetailsActivity;
 import com.bclould.tocotalk.ui.activity.VideoActivity;
 import com.bclould.tocotalk.ui.widget.ChatCopyDialog;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.CustomLinkMovementMethod;
 import com.bclould.tocotalk.utils.HyperLinkUtil;
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -59,6 +61,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
@@ -102,8 +105,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public static final int TO_LOCATION_MSG = 21;//發送定位
     public static final int FROM_CARD_MSG = 22;//接受名片
     public static final int TO_CARD_MSG = 23;//發送名片
-    public static final int FROM_SHARE_MSG = 24;//接受新聞分享
-    public static final int TO_SHARE_MSG = 25;//發送新聞分享
+    public static final int FROM_LINK_MSG = 24;//接受新聞分享
+    public static final int TO_LINK_MSG = 25;//發送新聞分享
 
     public static final int ADMINISTRATOR_OTC_ORDER_MSG = 14;//管理員otc訂單消息
     public static final int ADMINISTRATOR_RED_PACKET_EXPIRED_MSG = 15;//管理員紅包過期消息
@@ -194,10 +197,12 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } else if (viewType == TO_CARD_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_to_chat_card, parent, false);
             holder = new ToCardHolder(view);
-        } else if (viewType == FROM_SHARE_MSG) {
-
-        } else if (viewType == TO_SHARE_MSG) {
-
+        } else if (viewType == FROM_LINK_MSG) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_link, parent, false);
+            holder = new FromLinkHolder(view);
+        } else if (viewType == TO_LINK_MSG) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_to_chat_link, parent, false);
+            holder = new ToLinkHolder(view);
         } else if (viewType == FROM_LOCATION_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_location, parent, false);
             holder = new FromLocationHolder(view);
@@ -337,13 +342,14 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 FromCardHolder fromCardHolder= (FromCardHolder) holder;
                 fromCardHolder.setData(mMessageList.get(position));
                 break;
-            case TO_SHARE_MSG:
-
+            case TO_LINK_MSG:
+                ToLinkHolder toLinkHolder= (ToLinkHolder) holder;
+                toLinkHolder.setData(mMessageList.get(position));
                 break;
-            case FROM_SHARE_MSG:
-
+            case FROM_LINK_MSG:
+                FromLinkHolder fromLinkHolder= (FromLinkHolder) holder;
+                fromLinkHolder.setData(mMessageList.get(position));
                 break;
-
             case ADMINISTRATOR_OTC_ORDER_MSG:
                 OtcOrderStatusHolder orderStatusHolder = (OtcOrderStatusHolder) holder;
                 orderStatusHolder.setData(mMessageList.get(position));
@@ -880,6 +886,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     RequestOptions requestOptions = new RequestOptions()
             .placeholder(R.mipmap.image_placeholder)
+            .error(R.mipmap.image_placeholder)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .centerCrop();
 
@@ -1279,7 +1286,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             }
 
             tvUsername.setText(messageInfo.getMessage());
-            Glide.with(mContext).load(messageInfo.getHeadUrl()).into(ivHead);
+            Glide.with(mContext).load(messageInfo.getHeadUrl()).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(ivHead);
             rlCard.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
@@ -1327,7 +1334,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             }
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             tvUsername.setText(messageInfo.getMessage());
-            Glide.with(mContext).load(messageInfo.getHeadUrl()).into(ivHead);
+            Glide.with(mContext).load(messageInfo.getHeadUrl()).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(ivHead);
             rlCard.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
@@ -1348,6 +1355,133 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
     }
 
+
+    class ToLinkHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.iv_touxiang)
+        ImageView mIvTouxiang;
+        @Bind(R.id.iv_head)
+        ImageView ivHead;
+        @Bind(R.id.tv_title)
+        TextView tvTitle;
+        @Bind(R.id.tv_content)
+        TextView tvContent;
+        @Bind(R.id.rl_link)
+        RelativeLayout rlLink;
+        @Bind(R.id.iv_warning)
+        ImageView mIvWarning;
+        @Bind(R.id.iv_load)
+        ImageView mIvLoad;
+
+        ToLinkHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final MessageInfo messageInfo) {
+            UtilTool.getImage(mMgr, UtilTool.getJid(), mContext, mIvTouxiang);
+            goIndividualDetails(mIvTouxiang, UtilTool.getJid(), mToName, messageInfo);
+            if (messageInfo.getSendStatus() == 0) {
+                mIvLoad.setVisibility(View.VISIBLE);
+                mIvWarning.setVisibility(View.GONE);
+            } else if (messageInfo.getSendStatus() == 2) {
+                mIvWarning.setVisibility(View.VISIBLE);
+                mIvLoad.setVisibility(View.GONE);
+            } else {
+                mIvWarning.setVisibility(View.GONE);
+                mIvLoad.setVisibility(View.GONE);
+            }
+
+            Glide.with(mContext).load(messageInfo.getHeadUrl()).apply(requestOptions).into(ivHead);
+            tvTitle.setText(messageInfo.getTitle());
+            tvContent.setText(messageInfo.getContent());
+            rlLink.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    return false;
+                }
+            });
+            rlLink.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int id = 0;
+                    try {
+                        String idtext=messageInfo.getLinkUrl().substring((Constants.BASE_URL.length() + Constants.NEWS_WEB_URL.length()),messageInfo.getLinkUrl().lastIndexOf("/"));
+                        id=Integer.parseInt(idtext);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        UtilTool.Log("fengjian---","轉換id失敗");
+                    }
+
+                    UtilTool.Log("fengjian---","跳轉id："+id+"\n"+"url："+messageInfo.getLinkUrl());
+                    Intent intent = new Intent(mContext, NewsDetailsActivity.class);
+                    intent.putExtra("id", id);
+                    intent.putExtra("type", Constants.NEWS_MAIN_TYPE);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+    }
+
+    class FromLinkHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.iv_touxiang)
+        ImageView mIvTouxiang;
+        @Bind(R.id.tv_name)
+        TextView tvName;
+        @Bind(R.id.iv_head)
+        ImageView ivHead;
+        @Bind(R.id.tv_title)
+        TextView tvTitle;
+        @Bind(R.id.tv_content)
+        TextView tvContent;
+        @Bind(R.id.rl_link)
+        RelativeLayout rlLink;
+
+        FromLinkHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final MessageInfo messageInfo) {
+            // TODO: 2018/5/28 所有的from需要增加一個名字
+
+            if (messageInfo.getSend() != null) {
+                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
+            } else {
+                UtilTool.getImage(mMgr, mRoomId, mContext, mIvTouxiang);
+            }
+            goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
+            tvTitle.setText(messageInfo.getTitle());
+            tvContent.setText(messageInfo.getContent());
+            Glide.with(mContext).load(messageInfo.getHeadUrl()).apply(requestOptions).into(ivHead);
+            rlLink.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    return false;
+                }
+            });
+            rlLink.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int id = 0;
+                    try {
+                        String idtext=messageInfo.getLinkUrl().substring((Constants.BASE_URL.length() + Constants.NEWS_WEB_URL.length()),messageInfo.getLinkUrl().lastIndexOf("/"));
+                        id=Integer.parseInt(idtext);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        UtilTool.Log("fengjian---","轉換id失敗");
+                    }
+
+                    UtilTool.Log("fengjian---","跳轉id："+id+"\n"+"url："+messageInfo.getLinkUrl());
+                    Intent intent = new Intent(mContext, NewsDetailsActivity.class);
+                    intent.putExtra("id", id);
+                    intent.putExtra("type", Constants.NEWS_MAIN_TYPE);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+    }
 
     class ToTransferHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_touxiang)

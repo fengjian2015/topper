@@ -96,6 +96,7 @@ import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_RED_PACK
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_TRANSFER_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_CARD_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_IMG_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_LINK_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_LOCATION_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_RED_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_TEXT_MSG;
@@ -146,7 +147,7 @@ public class XmppListener {
         getOfflineMessage();
         initBroadcastListener();
         initListener();
-//        initPacketListener();
+        initPacketListener();
     }
 
 
@@ -519,15 +520,20 @@ public class XmppListener {
                                 if (msgType == FROM_VOICE_MSG)
                                     messageInfo.setVoiceTime(UtilTool.getFileDuration(file.getAbsolutePath(), context) + "");
                             }
-                        } else if(chatMsg.contains(Constants.CARD)){
+                        } else if(chatMsg.contains(Constants.SHARE_LINK)){
                             String object = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
-                            MessageInfo messageInfo1=new MessageInfo();
-                            messageInfo1= JSONObject.parseObject(object,MessageInfo.class);
-                            chatMsg=messageInfo1.getMessage();
-                            messageInfo.setCardUser(messageInfo1.getCardUser());
-                            messageInfo.setHeadUrl(messageInfo1.getHeadUrl());
+                            messageInfo= JSONObject.parseObject(object,MessageInfo.class);
+                            chatMsg=messageInfo.getMessage();
+                            redpacket = "[" + context.getString(R.string.share) + "]";
+                            msgType=FROM_LINK_MSG;
+                            goChat(from,context.getString(R.string.share),messageType,sendFrom);
+                        }else if(chatMsg.contains(Constants.CARD)){
+                            String object = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
+                            messageInfo= JSONObject.parseObject(object,MessageInfo.class);
+                            chatMsg=messageInfo.getMessage();
                             redpacket = "[" + context.getString(R.string.person_business_card) + "]";
                             msgType=FROM_CARD_MSG;
+                            goChat(from,context.getString(R.string.person_business_card),messageType,sendFrom);
                         }else if (chatMsg.contains(Constants.REDBAG)) {
                             String s = chatMsg.replace(Constants.CHUANCODE, ",");
                             String[] split = s.split(",");
@@ -696,6 +702,7 @@ public class XmppListener {
                         messageInfo.setRemark(remark);
                         messageInfo.setStatus(status);
                         messageInfo.setRedId(redId);
+                        messageInfo.setConverstaion(redpacket);
                         mgr.addMessage(messageInfo);
                         int number = mgr.queryNumber(from);
                         if (mgr.findConversation(from)) {
