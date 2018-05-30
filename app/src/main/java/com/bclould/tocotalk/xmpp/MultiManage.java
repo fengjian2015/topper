@@ -18,6 +18,7 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.bclould.tocotalk.Presenter.GroupPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.history.DBRoomManage;
@@ -27,6 +28,7 @@ import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.RoomManageInfo;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.model.VoiceInfo;
+import com.bclould.tocotalk.ui.activity.CreateGroupRoomActivity;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.StringUtils;
@@ -58,6 +60,7 @@ import top.zibin.luban.OnCompressListener;
 
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_CARD_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_FILE_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_GUESS_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_IMG_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_LINK_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_LOCATION_MSG;
@@ -793,9 +796,6 @@ public class MultiManage implements Room{
             return null;
         MultiUserChat muc = null;
         try {
-            if(StringUtils.isEmpty(roomName)){
-                roomName="群聊";
-            }
             // 创建一个MultiUserChat
             muc = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection())
                     .getMultiUserChat(JidCreate.entityBareFrom(roomJid));
@@ -830,7 +830,7 @@ public class MultiManage implements Room{
             submitForm.setAnswer("muc#roomconfig_roomname", roomName);
             //设置最大群人数
             List<String> maxuser=new ArrayList<>();
-            maxuser.add("200");
+            maxuser.add(RoomManage.ROOM_MAX_NUMBER+"");
             submitForm.setAnswer("muc#roomconfig_maxusers", maxuser);
 
             // 设置聊天室是持久聊天室，即将要被保存下来
@@ -860,14 +860,38 @@ public class MultiManage implements Room{
             // 发送已完成的表单（有默认值）到服务器来配置聊天室
             muc.sendConfigurationForm(submitForm);
             muc.join(Resourcepart.from(nickName));
-            grantOwnership(owners,roomJid,roomName);
-            dbRoomManage.addRoom(createRoomInfo(roomJid,roomName));
+            createRoom(users,roomJid,roomName,owners);
+
         } catch (XMPPException | XmppStringprepException | SmackException | InterruptedException e) {
             e.printStackTrace();
             return null;
         }
         return muc;
     }
+
+    private void createRoom(List<UserInfo> mUserInfoList, final String roomJid, final String roomName, final List<String> owners){
+        GroupPresenter presenter=new GroupPresenter(context);
+        StringBuffer stringBuffer=new StringBuffer();
+        stringBuffer.append(UtilTool.getUser()+"@"+Constants.DOMAINNAME+",");
+        for (int i = 0; i < mUserInfoList.size(); i++) {  //添加群成员,用户jid格式和之前一样 用户名@openfire服务器名称
+            stringBuffer.append(mUserInfoList.get(i).getUser());
+            if(i!=mUserInfoList.size()-1){
+                stringBuffer.append(",");
+            }
+        }
+        presenter.createGroup(roomJid,roomName, RoomManage.ROOM_MAX_NUMBER, "", stringBuffer.toString(), new GroupPresenter.CallBack() {
+            @Override
+            public void send() {
+                try {
+                    dbRoomManage.addRoom(createRoomInfo(roomJid,roomName));
+                    grantOwnership(owners,roomJid,roomName);
+                } catch (XMPPException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     public static boolean grantOwnership(Collection<String> jids, String roomJid,String roomName) throws XMPPException {
         if (XmppConnection.getInstance().getConnection() == null || !XmppConnection.getInstance().getConnection().isConnected()
                 || !XmppConnection.getInstance().getConnection().isAuthenticated()) {
@@ -1038,6 +1062,71 @@ public class MultiManage implements Room{
             messageInfo.setTime(time);
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_LINK_MSG);
+            messageInfo.setSendStatus(1);
+            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setConverstaion(converstaion);
+            messageInfo.setId(mMgr.addMessage(messageInfo));
+            if (mMgr.findConversation(roomId)) {
+                mMgr.updateConversation(roomId, 0, converstaion, time);
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                info.setFriend(roomName);
+                info.setUser(roomId);
+                info.setMessage(converstaion);
+                info.setChatType(RoomManage.ROOM_TYPE_MULTI);
+                mMgr.addConversation(info);
+            }
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            refreshAddData(messageInfo);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean sendShareGuess(MessageInfo messageInfo) {
+        String converstaion="[" + context.getString(R.string.share_guess) + "]";
+        try {
+            //创建jid实体
+            EntityBareJid groupJid = JidCreate.entityBareFrom(roomId);
+            //群管理对象
+            MultiUserChatManager multiUserChatManager = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+            MultiUserChat multiUserChat = multiUserChatManager.getMultiUserChat(groupJid);
+            multiUserChat.sendMessage(Constants.SHARE_GUESS+":"+JSON.toJSONString(messageInfo));
+
+            messageInfo.setUsername(roomId);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setMsgType(TO_GUESS_MSG);
+            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setConverstaion(converstaion);
+            messageInfo.setId(mMgr.addMessage(messageInfo));
+            if (mMgr.findConversation(roomId)) {
+                mMgr.updateConversation(roomId, 0, converstaion, time);
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                info.setFriend(roomName);
+                info.setUser(roomId);
+                info.setMessage(converstaion);
+                info.setChatType(RoomManage.ROOM_TYPE_MULTI);
+                mMgr.addConversation(info);
+            }
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            refreshAddData(messageInfo);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            messageInfo.setUsername(roomId);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setMsgType(TO_GUESS_MSG);
             messageInfo.setSendStatus(1);
             messageInfo.setSend(UtilTool.getJid());
             messageInfo.setConverstaion(converstaion);

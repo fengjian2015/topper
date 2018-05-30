@@ -95,6 +95,7 @@ import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_RECEIPT_
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_RED_PACKET_EXPIRED_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_TRANSFER_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_CARD_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_GUESS_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_IMG_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_LINK_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_LOCATION_MSG;
@@ -520,7 +521,15 @@ public class XmppListener {
                                 if (msgType == FROM_VOICE_MSG)
                                     messageInfo.setVoiceTime(UtilTool.getFileDuration(file.getAbsolutePath(), context) + "");
                             }
-                        } else if(chatMsg.contains(Constants.SHARE_LINK)){
+                        } else if(chatMsg.contains(Constants.SHARE_GUESS)){
+                            String object = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
+                            messageInfo= JSONObject.parseObject(object,MessageInfo.class);
+                            chatMsg=messageInfo.getMessage();
+                            coin=messageInfo.getCoin();
+                            redpacket = "[" + context.getString(R.string.share_guess) + "]";
+                            msgType=FROM_GUESS_MSG;
+                            goChat(from,context.getString(R.string.share_guess),messageType,sendFrom);
+                        }else if(chatMsg.contains(Constants.SHARE_LINK)){
                             String object = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
                             messageInfo= JSONObject.parseObject(object,MessageInfo.class);
                             chatMsg=messageInfo.getMessage();

@@ -16,6 +16,7 @@ import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.model.GonggaoListInfo;
 import com.bclould.tocotalk.model.GoogleInfo;
 import com.bclould.tocotalk.model.GrabRedInfo;
+import com.bclould.tocotalk.model.GroupInfo;
 import com.bclould.tocotalk.model.GuessInfo;
 import com.bclould.tocotalk.model.GuessListInfo;
 import com.bclould.tocotalk.model.InOutInfo;
@@ -1053,6 +1054,17 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("code") int code
     );
+    //創建群聊房間
+    @FormUrlEncoded
+    @POST("room/create")
+    Observable<BaseInfo> createGroup(
+            @Header("Authorization") String token,
+            @Field("room_name") String room_name,
+            @Field("name") String name,
+            @Field("room_max_people_number") int room_max_people_number,
+            @Field("logo") String logo,
+            @Field("jids") String jids
+    );
 
     //動態打賞
     @FormUrlEncoded
@@ -1064,4 +1076,10 @@ public interface MyService {
             @Field("coin_id") int coin_id,
             @Field("second_password") String second_password);
 
+    //獲取群聊房間
+    @FormUrlEncoded
+    @POST("room/create")
+    Observable<GroupInfo> getGroup(
+            @Header("Authorization") String token
+    );
 }

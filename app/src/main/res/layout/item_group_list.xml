@@ -4,7 +4,9 @@
               android:layout_height="@dimen/y120"
               android:background="@color/white"
               android:orientation="vertical">
-
+    <TextView
+        style="@style/HCutOffRule"
+        android:layout_marginLeft="@dimen/x20"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y119"
@@ -31,7 +33,6 @@
 
     </RelativeLayout>
 
-    <TextView
-        style="@style/HCutOffRule"/>
+
 
 </LinearLayout>

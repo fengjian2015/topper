@@ -33,6 +33,7 @@ public class Constants {
     public static String CHUANCODE = "爨^(&";
     public static String CARD = "[card]";
     public static String SHARE_LINK = "[share_link]";
+    public static String SHARE_GUESS = "[share_guess]";
     public static String REDBAG = "[redBag]";
     public static String TRANSFER = "[transfer]";
     public static String REDPACKAGE = "redPackage";

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,26 +25,83 @@
             android:textSize="@dimen/x32"/>
 
         <TextView
-            android:id="@+id/tv_create"
+            android:id="@+id/tv_delete"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:gravity="center"
             android:paddingRight="@dimen/x20"
-            android:text="创建"
-            android:textColor="@color/black"
+            android:text="@string/delete"
+            android:textColor="@color/blue2"
             android:textSize="@dimen/x32"/>
-
     </RelativeLayout>
 
     <TextView
         style="@style/HCutOffRule"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/x30">
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@mipmap/icon_jc_more"
+            android:text="@string/create_group"
+            android:drawablePadding="@dimen/x12"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"
+            android:gravity="center_vertical"
+            />
+        <EditText
+            android:id="@+id/et_create"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y80"
+            android:layout_below="@+id/tv1"
+            android:background="@drawable/bg_grey_shape3"
+            android:hint="@string/et_group_name"
+            android:paddingLeft="@dimen/x20"
+            android:paddingRight="@dimen/x20"
+            android:layout_marginTop="@dimen/y20"
+            android:layout_toLeftOf="@+id/tv_create"
+            />
+        <TextView
+            android:id="@+id/tv_create"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y80"
+            android:layout_marginTop="@dimen/y20"
+            android:layout_below="@+id/tv1"
+            android:gravity="center"
+            android:textSize="@dimen/x32"
+            android:textColor="@color/blue2"
+            android:text="@string/confirm"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_group_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y20"
+        android:background="@color/light"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y80"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/x20"
+        android:text="@string/group"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x28"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
     </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

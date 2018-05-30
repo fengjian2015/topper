@@ -30,10 +30,15 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bclould.tocotalk.Presenter.GroupPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.history.DBRoomManage;
+import com.bclould.tocotalk.history.DBRoomMember;
 import com.bclould.tocotalk.model.ConversationInfo;
+import com.bclould.tocotalk.model.GroupInfo;
 import com.bclould.tocotalk.model.QrRedInfo;
+import com.bclould.tocotalk.model.RoomManageInfo;
 import com.bclould.tocotalk.service.IMCoreService;
 import com.bclould.tocotalk.ui.activity.AddFriendActivity;
 import com.bclould.tocotalk.ui.activity.GrabQRCodeRedActivity;
@@ -410,7 +415,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     }
 
     private void initRecyclerView() {
-        mConversationAdapter = new ConversationAdapter(this, getActivity(), getSimpleData(), mgr);
+        mConversationAdapter = new ConversationAdapter(this, getActivity(), getSimpleData(), mgr,mRlTitle);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mConversationAdapter);
     }

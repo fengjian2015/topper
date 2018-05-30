@@ -68,6 +68,10 @@ public class DBManager {
         values.put("linkUrl",messageInfo.getLinkUrl());
         values.put("content",messageInfo.getContent());
         values.put("converstaion",messageInfo.getConverstaion());
+        values.put("guessPw",messageInfo.getGuessPw());
+        values.put("initiator",messageInfo.getInitiator());
+        values.put("betId",messageInfo.getBetId());
+        values.put("periodQty",messageInfo.getPeriodQty());
         int id = (int) db.insert("MessageRecord", null, values);
         UtilTool.Log("日志", "添加成功" + messageInfo.toString());
         return id;
@@ -92,38 +96,46 @@ public class DBManager {
         Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), fromtype + "", sentype + "", sendred + "", fromred + "", limit * 10 + ""});
         if (c != null) {
             while (c.moveToNext()) {
-                MessageInfo messageInfo = new MessageInfo();
-                messageInfo.setUsername(c.getString(c.getColumnIndex("user")));
-                messageInfo.setMessage(c.getString(c.getColumnIndex("message")));
-                messageInfo.setTime(c.getString(c.getColumnIndex("time")));
-                messageInfo.setType(c.getInt(c.getColumnIndex("type")));
-                messageInfo.setCount(c.getString(c.getColumnIndex("count")));
-                messageInfo.setCoin(c.getString(c.getColumnIndex("coin")));
-                messageInfo.setRemark(c.getString(c.getColumnIndex("remark")));
-                messageInfo.setStatus(c.getInt(c.getColumnIndex("state")));
-                messageInfo.setId(c.getInt(c.getColumnIndex("id")));
-                messageInfo.setRedId(c.getInt(c.getColumnIndex("redId")));
-                messageInfo.setVoiceStatus(c.getInt(c.getColumnIndex("voiceStatus")));
-                messageInfo.setVoice(c.getString(c.getColumnIndex("voice")));
-                messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
-                messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
-                messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
-                messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
-                messageInfo.setSend(c.getString(c.getColumnIndex("send")));
-                messageInfo.setLng(c.getFloat(c.getColumnIndex("lng")));
-                messageInfo.setLat(c.getFloat(c.getColumnIndex("lat")));
-                messageInfo.setAddress(c.getString(c.getColumnIndex("address")));
-                messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
-                messageInfo.setHeadUrl(c.getString(c.getColumnIndex("headUrl")));
-                messageInfo.setCardUser(c.getString(c.getColumnIndex("cardUser")));
-                messageInfo.setLinkUrl(c.getString(c.getColumnIndex("linkUrl")));
-                messageInfo.setContent(c.getString(c.getColumnIndex("content")));
-                messageInfo.setConverstaion(c.getString(c.getColumnIndex("converstaion")));
-                messageInfos.add(messageInfo);
+                messageInfos.add(addMessage(c));
             }
             c.close();
         }
         return messageInfos;
+    }
+
+    private MessageInfo addMessage(Cursor c){
+        MessageInfo messageInfo = new MessageInfo();
+        messageInfo.setUsername(c.getString(c.getColumnIndex("user")));
+        messageInfo.setMessage(c.getString(c.getColumnIndex("message")));
+        messageInfo.setTime(c.getString(c.getColumnIndex("time")));
+        messageInfo.setType(c.getInt(c.getColumnIndex("type")));
+        messageInfo.setCount(c.getString(c.getColumnIndex("count")));
+        messageInfo.setCoin(c.getString(c.getColumnIndex("coin")));
+        messageInfo.setRemark(c.getString(c.getColumnIndex("remark")));
+        messageInfo.setStatus(c.getInt(c.getColumnIndex("state")));
+        messageInfo.setId(c.getInt(c.getColumnIndex("id")));
+        messageInfo.setRedId(c.getInt(c.getColumnIndex("redId")));
+        messageInfo.setVoiceStatus(c.getInt(c.getColumnIndex("voiceStatus")));
+        messageInfo.setVoice(c.getString(c.getColumnIndex("voice")));
+        messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
+        messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
+        messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
+        messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
+        messageInfo.setSend(c.getString(c.getColumnIndex("send")));
+        messageInfo.setLng(c.getFloat(c.getColumnIndex("lng")));
+        messageInfo.setLat(c.getFloat(c.getColumnIndex("lat")));
+        messageInfo.setAddress(c.getString(c.getColumnIndex("address")));
+        messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
+        messageInfo.setHeadUrl(c.getString(c.getColumnIndex("headUrl")));
+        messageInfo.setCardUser(c.getString(c.getColumnIndex("cardUser")));
+        messageInfo.setLinkUrl(c.getString(c.getColumnIndex("linkUrl")));
+        messageInfo.setContent(c.getString(c.getColumnIndex("content")));
+        messageInfo.setConverstaion(c.getString(c.getColumnIndex("converstaion")));
+        messageInfo.setGuessPw(c.getString(c.getColumnIndex("guessPw")));
+        messageInfo.setInitiator(c.getString(c.getColumnIndex("initiator")));
+        messageInfo.setBetId(c.getString(c.getColumnIndex("betId")));
+        messageInfo.setPeriodQty(c.getString(c.getColumnIndex("periodQty")));
+        return messageInfo;
     }
 
     //模糊查找文本消息
@@ -134,34 +146,7 @@ public class DBManager {
         Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), "%" + content + "%", limit * 10 + ""});
         if (c != null) {
             while (c.moveToNext()) {
-                MessageInfo messageInfo = new MessageInfo();
-                messageInfo.setUsername(c.getString(c.getColumnIndex("user")));
-                messageInfo.setMessage(c.getString(c.getColumnIndex("message")));
-                messageInfo.setTime(c.getString(c.getColumnIndex("time")));
-                messageInfo.setType(c.getInt(c.getColumnIndex("type")));
-                messageInfo.setCount(c.getString(c.getColumnIndex("count")));
-                messageInfo.setCoin(c.getString(c.getColumnIndex("coin")));
-                messageInfo.setRemark(c.getString(c.getColumnIndex("remark")));
-                messageInfo.setStatus(c.getInt(c.getColumnIndex("state")));
-                messageInfo.setId(c.getInt(c.getColumnIndex("id")));
-                messageInfo.setRedId(c.getInt(c.getColumnIndex("redId")));
-                messageInfo.setVoiceStatus(c.getInt(c.getColumnIndex("voiceStatus")));
-                messageInfo.setVoice(c.getString(c.getColumnIndex("voice")));
-                messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
-                messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
-                messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
-                messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
-                messageInfo.setSend(c.getString(c.getColumnIndex("send")));
-                messageInfo.setLng(c.getFloat(c.getColumnIndex("lng")));
-                messageInfo.setLat(c.getFloat(c.getColumnIndex("lat")));
-                messageInfo.setAddress(c.getString(c.getColumnIndex("address")));
-                messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
-                messageInfo.setHeadUrl(c.getString(c.getColumnIndex("headUrl")));
-                messageInfo.setCardUser(c.getString(c.getColumnIndex("cardUser")));
-                messageInfo.setLinkUrl(c.getString(c.getColumnIndex("linkUrl")));
-                messageInfo.setContent(c.getString(c.getColumnIndex("content")));
-                messageInfo.setConverstaion(c.getString(c.getColumnIndex("converstaion")));
-                messageInfos.add(messageInfo);
+                messageInfos.add(addMessage(c));
             }
             c.close();
         }
@@ -176,34 +161,7 @@ public class DBManager {
         Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), fromtype + "", sentype + "", limit * 20 + ""});
         if (c != null) {
             while (c.moveToNext()) {
-                MessageInfo messageInfo = new MessageInfo();
-                messageInfo.setUsername(c.getString(c.getColumnIndex("user")));
-                messageInfo.setMessage(c.getString(c.getColumnIndex("message")));
-                messageInfo.setTime(c.getString(c.getColumnIndex("time")));
-                messageInfo.setType(c.getInt(c.getColumnIndex("type")));
-                messageInfo.setCount(c.getString(c.getColumnIndex("count")));
-                messageInfo.setCoin(c.getString(c.getColumnIndex("coin")));
-                messageInfo.setRemark(c.getString(c.getColumnIndex("remark")));
-                messageInfo.setStatus(c.getInt(c.getColumnIndex("state")));
-                messageInfo.setId(c.getInt(c.getColumnIndex("id")));
-                messageInfo.setRedId(c.getInt(c.getColumnIndex("redId")));
-                messageInfo.setVoiceStatus(c.getInt(c.getColumnIndex("voiceStatus")));
-                messageInfo.setVoice(c.getString(c.getColumnIndex("voice")));
-                messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
-                messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
-                messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
-                messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
-                messageInfo.setSend(c.getString(c.getColumnIndex("send")));
-                 messageInfo.setLng(c.getFloat(c.getColumnIndex("lng")));
-                messageInfo.setLat(c.getFloat(c.getColumnIndex("lat")));
-                messageInfo.setAddress(c.getString(c.getColumnIndex("address")));
-                messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
-                messageInfo.setHeadUrl(c.getString(c.getColumnIndex("headUrl")));
-                messageInfo.setCardUser(c.getString(c.getColumnIndex("cardUser")));
-                messageInfo.setLinkUrl(c.getString(c.getColumnIndex("linkUrl")));
-                messageInfo.setContent(c.getString(c.getColumnIndex("content")));
-                messageInfo.setConverstaion(c.getString(c.getColumnIndex("converstaion")));
-                messageInfos.add(messageInfo);
+                messageInfos.add(addMessage(c));
             }
             c.close();
         }
@@ -218,34 +176,7 @@ public class DBManager {
         Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), count - 10 + "", 10 + ""});
         if (c != null) {
             while (c.moveToNext()) {
-                MessageInfo messageInfo = new MessageInfo();
-                messageInfo.setUsername(c.getString(c.getColumnIndex("user")));
-                messageInfo.setMessage(c.getString(c.getColumnIndex("message")));
-                messageInfo.setTime(c.getString(c.getColumnIndex("time")));
-                messageInfo.setType(c.getInt(c.getColumnIndex("type")));
-                messageInfo.setCount(c.getString(c.getColumnIndex("count")));
-                messageInfo.setCoin(c.getString(c.getColumnIndex("coin")));
-                messageInfo.setRemark(c.getString(c.getColumnIndex("remark")));
-                messageInfo.setStatus(c.getInt(c.getColumnIndex("state")));
-                messageInfo.setId(c.getInt(c.getColumnIndex("id")));
-                messageInfo.setRedId(c.getInt(c.getColumnIndex("redId")));
-                messageInfo.setVoiceStatus(c.getInt(c.getColumnIndex("voiceStatus")));
-                messageInfo.setVoice(c.getString(c.getColumnIndex("voice")));
-                messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
-                messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
-                messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
-                messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
-                messageInfo.setSend(c.getString(c.getColumnIndex("send")));
-                messageInfo.setLng(c.getFloat(c.getColumnIndex("lng")));
-                messageInfo.setLat(c.getFloat(c.getColumnIndex("lat")));
-                messageInfo.setAddress(c.getString(c.getColumnIndex("address")));
-                messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
-                messageInfo.setHeadUrl(c.getString(c.getColumnIndex("headUrl")));
-                messageInfo.setCardUser(c.getString(c.getColumnIndex("cardUser")));
-                messageInfo.setLinkUrl(c.getString(c.getColumnIndex("linkUrl")));
-                messageInfo.setContent(c.getString(c.getColumnIndex("content")));
-                messageInfo.setConverstaion(c.getString(c.getColumnIndex("converstaion")));
-                messageInfos.add(messageInfo);
+                messageInfos.add(addMessage(c));
             }
             c.close();
         }
@@ -266,34 +197,7 @@ public class DBManager {
         Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), id + "", 10 + ""});
         if (c != null) {
             while (c.moveToNext()) {
-                MessageInfo messageInfo = new MessageInfo();
-                messageInfo.setUsername(c.getString(c.getColumnIndex("user")));
-                messageInfo.setMessage(c.getString(c.getColumnIndex("message")));
-                messageInfo.setTime(c.getString(c.getColumnIndex("time")));
-                messageInfo.setType(c.getInt(c.getColumnIndex("type")));
-                messageInfo.setCount(c.getString(c.getColumnIndex("count")));
-                messageInfo.setCoin(c.getString(c.getColumnIndex("coin")));
-                messageInfo.setRemark(c.getString(c.getColumnIndex("remark")));
-                messageInfo.setStatus(c.getInt(c.getColumnIndex("state")));
-                messageInfo.setId(c.getInt(c.getColumnIndex("id")));
-                messageInfo.setRedId(c.getInt(c.getColumnIndex("redId")));
-                messageInfo.setVoiceStatus(c.getInt(c.getColumnIndex("voiceStatus")));
-                messageInfo.setVoice(c.getString(c.getColumnIndex("voice")));
-                messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
-                messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
-                messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
-                messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
-                messageInfo.setSend(c.getString(c.getColumnIndex("send")));
-                messageInfo.setLng(c.getFloat(c.getColumnIndex("lng")));
-                messageInfo.setLat(c.getFloat(c.getColumnIndex("lat")));
-                messageInfo.setAddress(c.getString(c.getColumnIndex("address")));
-                messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
-                messageInfo.setHeadUrl(c.getString(c.getColumnIndex("headUrl")));
-                messageInfo.setCardUser(c.getString(c.getColumnIndex("cardUser")));
-                messageInfo.setLinkUrl(c.getString(c.getColumnIndex("linkUrl")));
-                messageInfo.setContent(c.getString(c.getColumnIndex("content")));
-                messageInfo.setConverstaion(c.getString(c.getColumnIndex("converstaion")));
-                messageInfos.add(messageInfo);
+                messageInfos.add(addMessage(c));
             }
             c.close();
         }
@@ -328,34 +232,7 @@ public class DBManager {
         Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), id + "", 10 + ""});
         if (c != null) {
             while (c.moveToNext()) {
-                MessageInfo messageInfo = new MessageInfo();
-                messageInfo.setUsername(c.getString(c.getColumnIndex("user")));
-                messageInfo.setMessage(c.getString(c.getColumnIndex("message")));
-                messageInfo.setTime(c.getString(c.getColumnIndex("time")));
-                messageInfo.setType(c.getInt(c.getColumnIndex("type")));
-                messageInfo.setCount(c.getString(c.getColumnIndex("count")));
-                messageInfo.setCoin(c.getString(c.getColumnIndex("coin")));
-                messageInfo.setRemark(c.getString(c.getColumnIndex("remark")));
-                messageInfo.setStatus(c.getInt(c.getColumnIndex("state")));
-                messageInfo.setId(c.getInt(c.getColumnIndex("id")));
-                messageInfo.setRedId(c.getInt(c.getColumnIndex("redId")));
-                messageInfo.setVoiceStatus(c.getInt(c.getColumnIndex("voiceStatus")));
-                messageInfo.setVoice(c.getString(c.getColumnIndex("voice")));
-                messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
-                messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
-                messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
-                messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
-                messageInfo.setSend(c.getString(c.getColumnIndex("send")));
-                messageInfo.setLng(c.getFloat(c.getColumnIndex("lng")));
-                messageInfo.setLat(c.getFloat(c.getColumnIndex("lat")));
-                messageInfo.setAddress(c.getString(c.getColumnIndex("address")));
-                messageInfo.setTitle(c.getString(c.getColumnIndex("title")));
-                messageInfo.setHeadUrl(c.getString(c.getColumnIndex("headUrl")));
-                messageInfo.setCardUser(c.getString(c.getColumnIndex("cardUser")));
-                messageInfo.setLinkUrl(c.getString(c.getColumnIndex("linkUrl")));
-                messageInfo.setContent(c.getString(c.getColumnIndex("content")));
-                messageInfo.setConverstaion(c.getString(c.getColumnIndex("converstaion")));
-                messageInfos.add(messageInfo);
+                messageInfos.add(addMessage(c));
             }
             c.close();
         }
@@ -440,14 +317,15 @@ public class DBManager {
 
     public String findLastMessageConversation(String roomid) {
         db = helper.getReadableDatabase();
-        String friend = null;
+        String conversation = null;
         Cursor cursor = db.rawQuery("select converstaion from MessageRecord where user=? and my_user=?",
                 new String[]{roomid, UtilTool.getJid()});
-        while (cursor.moveToNext()) {
-            friend = cursor.getString(cursor.getColumnIndex("friend"));
+
+        if (cursor.moveToLast()) {
+            conversation = cursor.getString(cursor.getColumnIndex("converstaion"));
         }
         cursor.close();
-        return friend;
+        return conversation;
     }
 
     public void updateMessageState(String id, int state) {

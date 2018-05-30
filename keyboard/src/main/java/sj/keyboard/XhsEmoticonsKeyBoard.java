@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,6 +20,7 @@ import android.widget.RelativeLayout;
 import com.keyboard.view.R;
 
 import java.util.ArrayList;
+import java.util.logging.Handler;
 
 import sj.keyboard.adpater.PageSetAdapter;
 import sj.keyboard.data.PageSetEntity;
@@ -36,6 +38,8 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
 
     public static final int FUNC_TYPE_EMOTION = -1;
     public static final int FUNC_TYPE_APPPS = -2;
+    public final static String ROOM_TYPE_SINGLE = "single";
+    public final static String ROOM_TYPE_MULTI = "multi";
 
     protected LayoutInflater mInflater;
 
@@ -57,6 +61,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     private RecordIndicator recordIndicator;
     private boolean initRecordIndicator = false;
     private OnResultOTR onResultOTR;
+    private String roomType;//房间类型
 
     public XhsEmoticonsKeyBoard(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -165,6 +170,14 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         mLyKvml.addFuncView(FUNC_TYPE_APPPS, view);
     }
 
+    public void setRoomType(String roomType){
+        this.roomType=roomType;
+        if (ROOM_TYPE_MULTI.equals(roomType)) {
+            mbtnOtrText.setVisibility(View.GONE);
+        }else{
+            mbtnOtrText.setVisibility(View.VISIBLE);
+        }
+    }
 
     public void reset() {
         EmoticonsKeyboardUtils.closeSoftKeyboard(this);
@@ -275,13 +288,25 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     }
 
     public void changeOTR(String isopen) {
+        Log.i("fengjian---","修改你的状态"+isopen);
         if("true".equals(isopen)){
             mbtnOtrText.setImageResource(R.drawable.icon_encrypt_ch);
             mEtChat.setHint(R.string.intput_otr_ch);
         }else {
+            if(mContext.getString(R.string.start_otr).equals(mEtChat.getHint())){
+                return;
+            }
             mbtnOtrText.setImageResource(R.drawable.icon_encrypt_no);
             mEtChat.setHint(R.string.intput_otr_no);
         }
+    }
+
+    public void timeoutOTR(){
+        mEtChat.setHint(mContext.getString(R.string.intput_otr_no));
+    }
+
+    public void startOTR(){
+        mEtChat.setHint(mContext.getString(R.string.start_otr));
     }
 
     public void addOnResultOTR(OnResultOTR onResultOTR){

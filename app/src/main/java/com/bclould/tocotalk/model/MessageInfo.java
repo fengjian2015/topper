@@ -37,6 +37,11 @@ public class MessageInfo implements Serializable {
     private String linkUrl;
     private String content;
     private String converstaion;
+    //2018-05-29新增分享竞猜字段
+    private String guessPw;
+    private String initiator;//发起人
+    private String betId;
+    private String periodQty;
 
     @Override
     public String toString() {
@@ -67,7 +72,43 @@ public class MessageInfo implements Serializable {
                 ", linkUrl='" + linkUrl + '\'' +
                 ", content='" + content + '\'' +
                 ", converstaion='" + converstaion + '\'' +
+                ", guessPw='" + guessPw + '\'' +
+                ", initiator='" + initiator + '\'' +
+                ", betId='" + betId + '\'' +
+                ", periodQty='" + periodQty + '\'' +
                 '}';
+    }
+
+    public String getBetId() {
+        return betId;
+    }
+
+    public void setBetId(String betId) {
+        this.betId = betId;
+    }
+
+    public String getPeriodQty() {
+        return periodQty;
+    }
+
+    public void setPeriodQty(String periodQty) {
+        this.periodQty = periodQty;
+    }
+
+    public String getGuessPw() {
+        return guessPw;
+    }
+
+    public void setGuessPw(String guessPw) {
+        this.guessPw = guessPw;
+    }
+
+    public String getInitiator() {
+        return initiator;
+    }
+
+    public void setInitiator(String initiator) {
+        this.initiator = initiator;
     }
 
     public String getLinkUrl() {

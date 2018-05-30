@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -39,9 +40,11 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.model.BetInfo;
 import com.bclould.tocotalk.model.GuessInfo;
+import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.ui.adapter.GuessBetRVAdapter;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.ui.widget.MenuListPopWindow;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
 import com.bclould.tocotalk.utils.Constants;
@@ -53,6 +56,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -63,6 +67,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.bclould.tocotalk.R.style.BottomDialog;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_CARD_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_GUESS_MSG;
 
 /**
  * Created by GA on 2018/4/23.
@@ -891,30 +897,48 @@ public class GuessDetailsActivity extends BaseActivity {
     }
 
     private void showShareDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_guess_share, this, R.style.dialog);
-        deleteCacheDialog.show();
-        Button shareFriend = (Button) deleteCacheDialog.findViewById(R.id.btn_share_friend);
-        Button shareDynamic = (Button) deleteCacheDialog.findViewById(R.id.btn_share_dynamic);
-        shareFriend.setOnClickListener(new View.OnClickListener() {
+        List<String> list = Arrays.asList(new String[]{getString(R.string.share_friend), getString(R.string.share_dynamic)});
+        final MenuListPopWindow menu = new MenuListPopWindow(this, list);
+        menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
             @Override
-            public void onClick(View view) {
-                deleteCacheDialog.dismiss();
+            public void onclickitem(int position) {
+                Intent intent;
+                switch (position) {
+                    case 0:
+                        menu.dismiss();
+                        break;
+                    case 1:
+                        menu.dismiss();
+                        intent = new Intent(GuessDetailsActivity.this, SelectFriendActivity.class);
+                        intent.putExtra("type", 2);
+                        MessageInfo messageInfo = new MessageInfo();
+                        messageInfo.setTitle(mTvTitle.getText().toString());
+                        messageInfo.setInitiator(mTvWho.getText().toString());
+                        messageInfo.setCoin(mTvCoin.getText().toString());
+                        messageInfo.setGuessPw(mGuess_pw);
+                        messageInfo.setPeriodQty(mPeriod_qty + "");
+                        messageInfo.setBetId(mBet_id + "");
+                        messageInfo.setMessage(mTvTitle.getText().toString());
+                        intent.putExtra("msgType", TO_GUESS_MSG);
+                        intent.putExtra("messageInfo", messageInfo);
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        menu.dismiss();
+                        Intent intent2 = new Intent(GuessDetailsActivity.this, GuessShareDynamicActivity.class);
+                        intent2.putExtra("title", mTvTitle.getText().toString());
+                        intent2.putExtra("name", mTvWho.getText().toString());
+                        intent2.putExtra("coin_name", mTvCoin.getText().toString());
+                        intent2.putExtra("guess_id", mBet_id);
+                        intent2.putExtra("period_aty", mPeriod_qty);
+                        intent2.putExtra("guess_pw", mGuess_pw);
+                        startActivity(intent2);
+                        break;
+                }
             }
         });
-        shareDynamic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteCacheDialog.dismiss();
-                Intent intent = new Intent(GuessDetailsActivity.this, GuessShareDynamicActivity.class);
-                intent.putExtra("title", mTvTitle.getText().toString());
-                intent.putExtra("name", mTvWho.getText().toString());
-                intent.putExtra("coin_name", mTvCoin.getText().toString());
-                intent.putExtra("guess_id", mBet_id);
-                intent.putExtra("period_aty", mPeriod_qty);
-                intent.putExtra("guess_pw", mGuess_pw);
-                startActivity(intent);
-            }
-        });
+        menu.setColor(Color.BLACK);
+        menu.showAtLocation(mBark, Gravity.BOTTOM, 0, 0);
     }
 
     private void showHashDialog() {

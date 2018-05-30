@@ -220,7 +220,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     //初始化表情盘
     private void initEmoticonsKeyboard() {
         SimpleAppsGridView simpleAppsGridView = new SimpleAppsGridView(this);
-        simpleAppsGridView.setData(roomId);
+        simpleAppsGridView.setData(roomId,roomType);
         mEkbEmoticonsKeyboard.addFuncView(simpleAppsGridView);
         mEkbEmoticonsKeyboard.addOnFuncKeyBoardListener(this);
         mEkbEmoticonsKeyboard.getEtChat().setOnSizeChangedListener(new EmoticonsEditText.OnSizeChangedListener() {
@@ -423,6 +423,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         } catch (XmppStringprepException e) {
             e.printStackTrace();
         }
+        //设置房间类型
+        mEkbEmoticonsKeyboard.setRoomType(roomType);
     }
 
     private void sendMessage(String message) {
@@ -511,7 +513,14 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             finish();
         } else if (msg.equals(getString(R.string.change_friend_remark))) {
             setTitleName();
+        }else if(msg.equals(getString(R.string.start_otr_timeout))){
+            UtilTool.Log("fengjian---","加密超时");
+            mEkbEmoticonsKeyboard.timeoutOTR();
+        }else if(msg.equals(getString(R.string.start_otr))){
+            mEkbEmoticonsKeyboard.startOTR();
+            UtilTool.Log("fengjian---","开启加密");
         }
+
     }
 
 
@@ -756,7 +765,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private void initAdapter() {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mChatAdapter = new ChatAdapter(this, mMessageList, mUserImage, roomId, mMgr, mediaPlayer,mName,roomType);
+        mChatAdapter = new ChatAdapter(this, mMessageList, mUserImage, roomId, mMgr, mediaPlayer,mName,roomType,mRlTitle);
         mRecyclerView.setAdapter(mChatAdapter);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -943,8 +952,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     @Override
     public void resultOTR() {
         try {
-            OtrChatListenerManager.getInstance().changeState(JidCreate.entityBareFrom(roomId).toString(), this);
             mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(roomId).toString()));
+            OtrChatListenerManager.getInstance().changeState(JidCreate.entityBareFrom(roomId).toString(), this);
         } catch (Exception e) {
             e.printStackTrace();
         }
