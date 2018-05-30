@@ -85,7 +85,7 @@
                     android:id="@+id/tv_reward"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/pinglun_selector"
+                    android:drawableLeft="@mipmap/ico_dy_give"
                     android:drawablePadding="@dimen/x10"
                     android:gravity="center"
                     android:paddingLeft="@dimen/x10"

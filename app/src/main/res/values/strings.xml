@@ -870,12 +870,9 @@
     <string name="create_failure">創建失敗</string>
     <string name="share_friend">分享到好友</string>
     <string name="share_dynamic">分享到動態</string>
-<<<<<<< HEAD
     <string name="reward">打賞</string>
     <string name="reward_hint">帶*為必填項；\n打賞金額將直接進入對方錢包地址</string>
     <string name="reward_succeed">打賞成功</string>
-=======
     <string name="share_guess">竞猜分享</string>
     <string name="send_card">發送名片</string>
->>>>>>> dd3b7c94f1f6b8f397d4368cc521f430af0d4770
 </resources>

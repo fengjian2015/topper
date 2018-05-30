@@ -157,6 +157,7 @@ public class DynamicDetailRVAdapter extends RecyclerView.Adapter {
                         mTvLookReply.setText(mContext.getString(R.string.pack_up_reply));
                         mRecyclerView.setVisibility(View.VISIBLE);
                     } else {
+                        mTvLookReply.setText(mContext.getString(R.string.look_reply));
                         mRecyclerView.setVisibility(View.GONE);
                     }
                 }
@@ -266,6 +267,7 @@ public class DynamicDetailRVAdapter extends RecyclerView.Adapter {
                         mTvLookReply.setText(mContext.getString(R.string.pack_up_reply));
                         mRecyclerView.setVisibility(View.VISIBLE);
                     } else {
+                        mTvLookReply.setText(mContext.getString(R.string.look_reply));
                         mRecyclerView.setVisibility(View.GONE);
                     }
                 }

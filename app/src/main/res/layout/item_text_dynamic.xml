@@ -47,8 +47,8 @@
                 android:id="@+id/iv_delete"
                 android:layout_width="@dimen/x60"
                 android:layout_height="@dimen/x40"
-                android:paddingRight="@dimen/x20"
                 android:layout_alignParentRight="true"
+                android:paddingRight="@dimen/x20"
                 android:src="@mipmap/icon_delete"/>
 
             <TextView
@@ -73,7 +73,7 @@
                     android:id="@+id/tv_reward"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/pinglun_selector"
+                    android:drawableLeft="@mipmap/ico_dy_give"
                     android:drawablePadding="@dimen/x10"
                     android:gravity="center"
                     android:paddingLeft="@dimen/x10"
