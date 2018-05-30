@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/x300"
+    android:layout_height="@dimen/x300"
+    android:background="@drawable/bg_white_shape"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="@dimen/x180"
+        android:layout_height="@dimen/x180"
+        android:src="@mipmap/icon_w_ok"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y30"
+        android:text="@string/reward_succeed"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x32"/>
+
+</LinearLayout>

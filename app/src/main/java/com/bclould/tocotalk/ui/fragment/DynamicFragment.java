@@ -1,7 +1,10 @@
 package com.bclould.tocotalk.ui.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -19,6 +22,7 @@ import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.DynamicListInfo;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.adapter.DynamicRVAdapter;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -133,7 +137,28 @@ public class DynamicFragment extends Fragment {
                     return;
                 }
             }
+        } else if (msg.equals(getString(R.string.reward_succeed))) {
+            showRewardSucceedDialog();
+            int id = Integer.parseInt(event.getId());
+            for (int i = 0; i < mDataList.size(); i++) {
+                if (mDataList.get(i).getId() == id) {
+                    mDataList.get(i).setRewardCount(mDataList.get(i).getRewardCount() + 1);
+                    mDynamicRVAdapter.notifyItemChanged(i);
+                    break;
+                }
+            }
         }
+    }
+
+    @SuppressLint("HandlerLeak")
+    private void showRewardSucceedDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_reward, getContext(), R.style.dialog);
+        deleteCacheDialog.show();
+        new Handler() {
+            public void handleMessage(Message msg) {
+                deleteCacheDialog.dismiss();
+            }
+        }.sendEmptyMessageDelayed(0, 1500);
     }
 
     List<DynamicListInfo.DataBean> mDataList = new ArrayList<>();
@@ -190,7 +215,6 @@ public class DynamicFragment extends Fragment {
 
 
     private void initRecyclerView() {
-
         final LinearLayoutManager manager = new LinearLayoutManager(getContext());
 
         mRecyclerView.setLayoutManager(manager);

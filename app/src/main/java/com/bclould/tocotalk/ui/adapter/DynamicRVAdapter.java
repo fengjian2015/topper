@@ -6,15 +6,18 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bclould.tocotalk.Presenter.DynamicPresenter;
@@ -23,8 +26,12 @@ import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.DynamicListInfo;
 import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.ui.activity.DynamicDetailActivity;
+import com.bclould.tocotalk.ui.activity.GuessDetailsActivity;
 import com.bclould.tocotalk.ui.activity.PreviewImgActivity;
+import com.bclould.tocotalk.ui.activity.RewardActivity;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.utils.AnimatorTool;
+import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -50,6 +57,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
     public static final int IMAGE_DYNAMIC = 1;//图片动态
     public static final int VIDEO_DYNAMIC = 3;//视频动态
     public static final int MUSIC_DYNAMIC = 2;//音乐动态
+    public static final int GUESS_DYNAMIC = 4;//音乐动态
     private final Context mContext;
     private final List<DynamicListInfo.DataBean> mDataList;
     private final DBManager mMgr;
@@ -84,6 +92,10 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 view = LayoutInflater.from(mContext).inflate(R.layout.item_image_dynamic, parent, false);
                 holder = new ImageHolder(view);
                 break;
+            case GUESS_DYNAMIC:
+                view = LayoutInflater.from(mContext).inflate(R.layout.item_guess_dynamic, parent, false);
+                holder = new GuessHolder(view);
+                break;
         }
         return holder;
     }
@@ -107,6 +119,10 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             case IMAGE_DYNAMIC:
                 ImageHolder imageHolder = (ImageHolder) holder;
                 imageHolder.setData(mDataList.get(position));
+                break;
+            case GUESS_DYNAMIC:
+                GuessHolder guessHolder = (GuessHolder) holder;
+                guessHolder.setData(mDataList.get(position));
                 break;
         }
     }
@@ -183,6 +199,8 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         LinearLayout mLlReview;
         @Bind(R.id.recycler_view)
         RecyclerView mRecyvlerView;
+        @Bind(R.id.tv_reward)
+        TextView mTvReward;
         private DynamicListInfo.DataBean mDataBean;
 
         TextHolder(View view) {
@@ -200,6 +218,16 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                     bundle.putString("time", mDataBean.getCreated_at());
                     bundle.putInt("is_self", mDataBean.getIs_self());
                     intent.putExtras(bundle);
+                    mContext.startActivity(intent);
+                }
+            });
+            mTvReward.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, RewardActivity.class);
+                    intent.putExtra("name", mDataBean.getUser_name());
+                    intent.putExtra("url", mDataBean.getAvatar());
+                    intent.putExtra("dynamic_id", mDataBean.getId());
                     mContext.startActivity(intent);
                 }
             });
@@ -251,6 +279,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             } else {
                 mLlReview.setVisibility(View.GONE);
             }
+            mTvReward.setText(dataBean.getRewardCount() + "");
             mTime.setText(dataBean.getCreated_at());
             mName.setText(dataBean.getUser_name());
             mTextContent.setText(dataBean.getContent());
@@ -337,6 +366,8 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         TextView mTvLook;
         @Bind(R.id.iv_delete)
         ImageView mIvDelete;
+        @Bind(R.id.tv_reward)
+        TextView mTvReward;
         private ArrayList<ThumbViewInfo> mThumbViewInfoList = new ArrayList<>();
         private NineGridImageViewAdapter<String> mAdapter = new NineGridImageViewAdapter<String>() {
             @Override
@@ -396,6 +427,16 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
 
                 }
             });
+            mTvReward.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, RewardActivity.class);
+                    intent.putExtra("name", mDataBean.getUser_name());
+                    intent.putExtra("url", mDataBean.getAvatar());
+                    intent.putExtra("dynamic_id", mDataBean.getId());
+                    mContext.startActivity(intent);
+                }
+            });
         }
 
         private void computeBoundsBackward(List<String> list) {
@@ -412,7 +453,6 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 item.setBounds(bounds);
                 mThumbViewInfoList.add(item);
             }
-
         }
 
         public void setData(final DynamicListInfo.DataBean dataBean) {
@@ -466,6 +506,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             } else {
                 mLlReview.setVisibility(View.GONE);
             }
+            mTvReward.setText(dataBean.getRewardCount() + "");
             mTvTime.setText(dataBean.getCreated_at());
             mTvName.setText(dataBean.getUser_name());
             mTvContent.setText(dataBean.getContent());
@@ -521,4 +562,205 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         });
     }
 
+    class GuessHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.iv_touxiang)
+        ImageView mIvTouxiang;
+        @Bind(R.id.tv_name)
+        TextView mTvName;
+        @Bind(R.id.tv_time)
+        TextView mTvTime;
+        @Bind(R.id.iv_delete)
+        ImageView mIvDelete;
+        @Bind(R.id.tv_content)
+        TextView mTvContent;
+        @Bind(R.id.iv_logo)
+        ImageView mIvLogo;
+        @Bind(R.id.tv_title)
+        TextView mTvTitle;
+        @Bind(R.id.tv_who)
+        TextView mTvWho;
+        @Bind(R.id.tv_coin)
+        TextView mTvCoin;
+        @Bind(R.id.cv_guess)
+        CardView mCvGuess;
+        @Bind(R.id.tv_pinglun)
+        TextView mTvPinglun;
+        @Bind(R.id.tv_zan)
+        TextView mTvZan;
+        @Bind(R.id.ll_dynamic_content)
+        LinearLayout mLlDynamicContent;
+        @Bind(R.id.recycler_view)
+        RecyclerView mRecyclerView;
+        @Bind(R.id.tv_look)
+        TextView mTvLook;
+        @Bind(R.id.ll_review)
+        LinearLayout mLlReview;
+        private DynamicListInfo.DataBean mDataBean;
+        private String mGuessPw;
+        private int mGuessId;
+        private int mPeriod_aty;
+        @Bind(R.id.tv_reward)
+        TextView mTvReward;
+
+        GuessHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent();
+                    Bundle bundle = new Bundle();
+                    intent.setClass(mContext, DynamicDetailActivity.class);
+                    bundle.putString("id", mDataBean.getId() + "");
+                    bundle.putString("content", mDataBean.getContent());
+                    bundle.putString("name", mDataBean.getUser_name());
+                    bundle.putString("time", mDataBean.getCreated_at());
+                    bundle.putInt("is_self", mDataBean.getIs_self());
+                    intent.putExtras(bundle);
+                    mContext.startActivity(intent);
+                }
+            });
+            mCvGuess.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mGuessPw != null) {
+                        showPWDialog(mGuessPw, mGuessId, mPeriod_aty);
+                    } else {
+                        Intent intent = new Intent(mContext, GuessDetailsActivity.class);
+                        intent.putExtra("bet_id", mGuessId);
+                        intent.putExtra("period_qty", mPeriod_aty);
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
+            mTvReward.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, RewardActivity.class);
+                    intent.putExtra("name", mDataBean.getUser_name());
+                    intent.putExtra("url", mDataBean.getAvatar());
+                    intent.putExtra("dynamic_id", mDataBean.getId());
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+
+        public void setData(final DynamicListInfo.DataBean dataBean) {
+            mDataBean = dataBean;
+            if (dataBean.getIs_self() == 1) {
+                mIvDelete.setVisibility(View.VISIBLE);
+                mIvDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showDialog(dataBean.getId() + "");
+                    }
+                });
+            } else {
+                mIvDelete.setVisibility(View.GONE);
+            }
+            if (!dataBean.getAvatar().isEmpty()) {
+                UtilTool.setCircleImg(mContext, dataBean.getAvatar(), mIvTouxiang);
+            } else {
+                UtilTool.setCircleImg(mContext, R.mipmap.img_nfriend_headshot1, mIvTouxiang);
+            }
+            if (dataBean.getReviewList().size() != 0) {
+                mLlReview.setVisibility(View.VISIBLE);
+                if (dataBean.getReviewList().size() > 5) {
+                    mTvLook.setVisibility(View.VISIBLE);
+                } else {
+                    mTvLook.setVisibility(View.GONE);
+                }
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+                mDynamicReviewRVAdapter = new DynamicReviewRVAdapter(dataBean.getReviewList(), mContext);
+                mRecyclerView.setAdapter(mDynamicReviewRVAdapter);
+                mTvLook.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent();
+                        Bundle bundle = new Bundle();
+                        intent.setClass(mContext, DynamicDetailActivity.class);
+                        bundle.putString("id", mDataBean.getId() + "");
+                        bundle.putString("content", mDataBean.getContent());
+                        bundle.putString("name", mDataBean.getUser_name());
+                        bundle.putString("time", mDataBean.getCreated_at());
+                        bundle.putInt("is_self", mDataBean.getIs_self());
+                        intent.putExtras(bundle);
+                        mContext.startActivity(intent);
+                    }
+                });
+            } else {
+                mLlReview.setVisibility(View.GONE);
+            }
+            if (dataBean.getContent().contains(Constants.GUESS_DYNAMIC_SEPARATOR)) {
+                UtilTool.Log("競猜分享", dataBean.getContent());
+                String[] split = dataBean.getContent().split(Constants.GUESS_DYNAMIC_SEPARATOR);
+                if (split.length == 7) {
+                    mGuessPw = split[6];
+                } else {
+                    mGuessPw = null;
+                }
+                mGuessId = Integer.parseInt(split[4]);
+                mPeriod_aty = Integer.parseInt(split[5]);
+                mTvContent.setText(split[0]);
+                mTvTitle.setText(split[1]);
+                mTvWho.setText(mContext.getString(R.string.fa_qi_ren) + ":" + split[2]);
+                mTvCoin.setText(split[3] + mContext.getString(R.string.guess));
+            }
+            mTvReward.setText(dataBean.getRewardCount() + "");
+            mTvTime.setText(dataBean.getCreated_at());
+            mTvName.setText(dataBean.getUser_name());
+            mTvPinglun.setText(dataBean.getReview_count() + "");
+            mTvZan.setText(dataBean.getLike_count() + "");
+            if (dataBean.getIs_like() == 1) {
+                mTvZan.setSelected(true);
+            } else {
+                mTvZan.setSelected(false);
+            }
+            mTvZan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mDynamicPresenter.like(dataBean.getId() + "", new DynamicPresenter.CallBack4() {
+                        @Override
+                        public void send(LikeInfo data) {
+                            mTvZan.setText(data.getData().getLikeCounts() + "");
+                            if (data.getData().getStatus() == 1) {
+                                mTvZan.setSelected(true);
+                            } else {
+                                mTvZan.setSelected(false);
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    private void showPWDialog(final String guessPw, final int guessId, final int period_aty) {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_command, mContext, R.style.dialog);
+        deleteCacheDialog.show();
+        final EditText etGuessPw = (EditText) deleteCacheDialog.findViewById(R.id.et_guess_password);
+        Button btnConfirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String pw = etGuessPw.getText().toString();
+                if (pw.isEmpty()) {
+                    AnimatorTool.getInstance().editTextAnimator(etGuessPw);
+                    Toast.makeText(mContext, mContext.getString(R.string.toast_guess_pw), Toast.LENGTH_SHORT).show();
+                } else {
+                    if (guessPw.equals(pw)) {
+                        Intent intent = new Intent(mContext, GuessDetailsActivity.class);
+                        intent.putExtra("bet_id", guessId);
+                        intent.putExtra("period_qty", period_aty);
+                        intent.putExtra("guess_pw", guessPw);
+                        mContext.startActivity(intent);
+                        deleteCacheDialog.dismiss();
+                    } else {
+                        AnimatorTool.getInstance().editTextAnimator(etGuessPw);
+                        Toast.makeText(mContext, mContext.getString(R.string.toast_guess_pw_error), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+    }
 }

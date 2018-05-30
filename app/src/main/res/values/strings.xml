@@ -867,4 +867,7 @@
     <string name="business_card">名片</string>
     <string name="share_friend">分享到好友</string>
     <string name="share_dynamic">分享到動態</string>
+    <string name="reward">打賞</string>
+    <string name="reward_hint">帶*為必填項；\n打賞金額將直接進入對方錢包地址</string>
+    <string name="reward_succeed">打賞成功</string>
 </resources>

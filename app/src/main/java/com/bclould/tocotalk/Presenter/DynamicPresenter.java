@@ -373,6 +373,43 @@ public class DynamicPresenter {
         }
     }
 
+    public void reward(int dynamic_id, String count, int id, String password, final CallBack callBack) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .giveReward(UtilTool.getToken(), dynamic_id, count, id, password)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(BaseInfo baseInfo) {
+                            if (baseInfo.getStatus() == 1) {
+                                callBack.send();
+                            } else {
+                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     //定义接口
     public interface CallBack {
         void send();

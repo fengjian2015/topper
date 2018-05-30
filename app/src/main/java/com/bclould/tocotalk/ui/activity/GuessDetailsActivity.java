@@ -909,6 +909,8 @@ public class GuessDetailsActivity extends BaseActivity {
                 intent.putExtra("title", mTvTitle.getText().toString());
                 intent.putExtra("name", mTvWho.getText().toString());
                 intent.putExtra("coin_name", mTvCoin.getText().toString());
+                intent.putExtra("guess_id", mBet_id);
+                intent.putExtra("period_aty", mPeriod_qty);
                 intent.putExtra("guess_pw", mGuess_pw);
                 startActivity(intent);
             }

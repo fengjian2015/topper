@@ -1054,4 +1054,14 @@ public interface MyService {
             @Field("code") int code
     );
 
+    //動態打賞
+    @FormUrlEncoded
+    @POST("dynamic/reward")
+    Observable<BaseInfo> giveReward(
+            @Header("Authorization") String token,
+            @Field("dynamic_id") int dynamic_id,
+            @Field("number") String number,
+            @Field("coin_id") int coin_id,
+            @Field("second_password") String second_password);
+
 }

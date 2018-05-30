@@ -74,4 +74,5 @@ public class Constants {
     public static String NEWS_DRAFTS_URL = "news/edit/";
     public static int UPDATE_LOG_TYPE = 5;
     public static String UPDATE_LOG_URL = "updateLogInfo/";
+    public static String GUESS_DYNAMIC_SEPARATOR = "__";
 }

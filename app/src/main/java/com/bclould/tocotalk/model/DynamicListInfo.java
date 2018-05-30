@@ -62,6 +62,15 @@ public class DynamicListInfo {
         private String created_at;
         private String avatar;
         private int is_self;
+        private int rewardCount;
+
+        public int getRewardCount() {
+            return rewardCount;
+        }
+
+        public void setRewardCount(int rewardCount) {
+            this.rewardCount = rewardCount;
+        }
 
         public int getIs_self() {
             return is_self;

@@ -15,6 +15,7 @@ import com.bclould.tocotalk.model.CoinInfo;
 import com.bclould.tocotalk.ui.activity.ChatTransferActivity;
 import com.bclould.tocotalk.ui.activity.PaymentActivity;
 import com.bclould.tocotalk.ui.activity.PushBuyingActivity;
+import com.bclould.tocotalk.ui.activity.RewardActivity;
 import com.bclould.tocotalk.ui.activity.SendQRCodeRedActivity;
 import com.bclould.tocotalk.ui.activity.SendRedPacketActivity;
 import com.bumptech.glide.Glide;
@@ -87,8 +88,11 @@ public class BottomDialogRVAdapter2 extends RecyclerView.Adapter {
                     } else if (mContext instanceof ChatTransferActivity) {
                         ChatTransferActivity activity = (ChatTransferActivity) mContext;
                         activity.hideDialog(mName, mId);
-                    }else if (mContext instanceof SendQRCodeRedActivity) {
+                    } else if (mContext instanceof SendQRCodeRedActivity) {
                         SendQRCodeRedActivity activity = (SendQRCodeRedActivity) mContext;
+                        activity.hideDialog(mName, mId);
+                    } else if (mContext instanceof RewardActivity) {
+                        RewardActivity activity = (RewardActivity) mContext;
                         activity.hideDialog(mName, mId);
                     }
                 }

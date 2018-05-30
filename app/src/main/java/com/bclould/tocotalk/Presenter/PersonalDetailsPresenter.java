@@ -109,9 +109,9 @@ public class PersonalDetailsPresenter {
                         public void onNext(AuatarListInfo auatarListInfo) {
                             if (auatarListInfo.getStatus() == 1) {
                                 callBack2.send(auatarListInfo.getData());
-                            }else {
+                            }/*else {
                                 Toast.makeText(mContext, auatarListInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
+                            }*/
                         }
 
                         @Override

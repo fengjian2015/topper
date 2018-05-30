@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:ngl="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -119,6 +120,68 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/x28"/>
 
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/cv_guess"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/dynamic_text"
+                        android:layout_marginBottom="@dimen/y20"
+                        android:layout_marginLeft="@dimen/x25"
+                        android:layout_marginRight="@dimen/x20"
+                        android:layout_marginTop="@dimen/y20"
+                        android:visibility="gone"
+                        app:cardCornerRadius="@dimen/x15">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/x20">
+
+                            <ImageView
+                                android:id="@+id/iv_logo"
+                                android:layout_width="@dimen/x150"
+                                android:layout_height="@dimen/x150"
+                                android:src="@mipmap/img_tocotalk1"/>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="@dimen/x20"
+                                android:layout_toRightOf="@+id/iv_logo"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:singleLine="true"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/x32"
+                                    android:textStyle="bold"/>
+
+                                <TextView
+                                    android:id="@+id/tv_who"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/y10"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/x28"/>
+
+                                <TextView
+                                    android:id="@+id/tv_coin"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/y10"
+                                    android:textSize="@dimen/x26"/>
+
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+                    </android.support.v7.widget.CardView>
+
                     <com.jaeger.ninegridimageview.NineGridImageView
                         android:id="@+id/ngl_images"
                         android:layout_width="match_parent"
@@ -128,6 +191,7 @@
                         android:layout_marginLeft="@dimen/x25"
                         android:layout_marginRight="@dimen/x20"
                         android:layout_marginTop="@dimen/y20"
+                        android:visibility="gone"
                         ngl:imgGap="@dimen/x10"
                         ngl:showStyle="fill"
                         ngl:singleImgSize="@dimen/x360"/>
@@ -218,11 +282,12 @@
 
         <ImageView
             android:id="@+id/iv_selector_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/x80"
             android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x20"
             android:layout_toLeftOf="@+id/send"
-            android:paddingRight="@dimen/x20"
+            android:scaleType="center"
             android:src="@mipmap/icon_tail_photo"/>
 
         <TextView

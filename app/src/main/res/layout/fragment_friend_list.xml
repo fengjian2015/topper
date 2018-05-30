@@ -205,7 +205,7 @@
                      android:textSize="@dimen/x32"/>
 
              </LinearLayout>-->
-
+<!--
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y80"
@@ -217,7 +217,7 @@
                 android:textSize="@dimen/x28"/>
 
             <TextView
-                style="@style/HCutOffRule"/>
+                style="@style/HCutOffRule"/>-->
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -239,7 +239,7 @@
                     app:sidebar_position="right"
                     app:sidebar_text_alignment="center"
                     app:sidebar_text_color="@color/black"
-                    app:sidebar_text_size="@dimen/y28"/>
+                    app:sidebar_text_size="@dimen/y24"/>
 
             </RelativeLayout>
 

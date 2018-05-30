@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -49,6 +50,7 @@ import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.model.ReviewListInfo;
 import com.bclould.tocotalk.ui.adapter.DynamicDetailRVAdapter;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.utils.AnimatorTool;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
@@ -129,6 +131,16 @@ public class DynamicDetailActivity extends BaseActivity {
     ImageView mIvSelectorImg;
     @Bind(R.id.xx2)
     TextView mXx2;
+    @Bind(R.id.iv_logo)
+    ImageView mIvLogo;
+    @Bind(R.id.tv_title)
+    TextView mTvTitle;
+    @Bind(R.id.tv_who)
+    TextView mTvWho;
+    @Bind(R.id.tv_coin)
+    TextView mTvCoin;
+    @Bind(R.id.cv_guess)
+    CardView mCvGuess;
 
     private ArrayList<ThumbViewInfo> mThumbViewInfoList = new ArrayList<>();
     private NineGridImageViewAdapter<String> mAdapter = new NineGridImageViewAdapter<String>() {
@@ -163,6 +175,9 @@ public class DynamicDetailActivity extends BaseActivity {
     private DisplayMetrics mDm;
     private int mWidthPixels;
     private int mHeightPixels;
+    private int mGuessId;
+    private int mPeriod_aty;
+    private String mGuessPw;
 
 
     @Override
@@ -255,11 +270,38 @@ public class DynamicDetailActivity extends BaseActivity {
         }
         mName.setText(mUserName);
         mTime.setText(mTimes);
-        mDynamicText.setText(mContent);
-//        String jid = mUserName + "@" + Constants.DOMAINNAME;
-
-        //        mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, DynamicDetailActivity.this));
+        if (mContent.contains(Constants.GUESS_DYNAMIC_SEPARATOR)) {
+            mCvGuess.setVisibility(View.VISIBLE);
+            UtilTool.Log("競猜分享", mContent);
+            String[] split = mContent.split(Constants.GUESS_DYNAMIC_SEPARATOR);
+            if (split.length == 7) {
+                mGuessPw = split[6];
+            }
+            mGuessId = Integer.parseInt(split[4]);
+            mPeriod_aty = Integer.parseInt(split[5]);
+            mDynamicText.setText(split[0]);
+            mTvTitle.setText(split[1]);
+            mTvWho.setText(getString(R.string.fa_qi_ren) + ":" + split[2]);
+            mTvCoin.setText(split[3] + getString(R.string.guess));
+            mCvGuess.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mGuessPw != null) {
+                        showPWDialog(mGuessPw, mGuessId, mPeriod_aty);
+                    } else {
+                        Intent intent = new Intent(DynamicDetailActivity.this, GuessDetailsActivity.class);
+                        intent.putExtra("bet_id", mGuessId);
+                        intent.putExtra("period_qty", mPeriod_aty);
+                        startActivity(intent);
+                    }
+                }
+            });
+        } else {
+            mCvGuess.setVisibility(View.GONE);
+            mDynamicText.setText(mContent);
+        }
         if (mCompressImgList != null && mCompressImgList.size() != 0) {//判断是否有数据，没有显示另一个状态
+            mNglImages.setVisibility(View.VISIBLE);
             mNglImages.setAdapter(mAdapter);
             mNglImages.setImagesData(mCompressImgList);
             //九宫格图片填充数据
@@ -271,13 +313,6 @@ public class DynamicDetailActivity extends BaseActivity {
                     intent.putExtra("index", index);
                     intent.putStringArrayListExtra("imgList", mCompressImgList);
                     context.startActivity(intent);
-                    /*computeBoundsBackward(mImageList);//组成数据
-                    GPreviewBuilder.from((Activity) context)
-                            .setSingleFling(true)
-                            .setData(mThumbViewInfoList)
-                            .setCurrentIndex(index)
-                            .setType(GPreviewBuilder.IndicatorType.Dot)
-                            .start();//启动*/
                 }
             });
 
@@ -286,6 +321,35 @@ public class DynamicDetailActivity extends BaseActivity {
         }
         //初始化列表
         initRecyclerView();
+    }
+
+    private void showPWDialog(final String guessPw, final int guessId, final int period_aty) {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_command, DynamicDetailActivity.this, R.style.dialog);
+        deleteCacheDialog.show();
+        final EditText etGuessPw = (EditText) deleteCacheDialog.findViewById(R.id.et_guess_password);
+        Button btnConfirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String pw = etGuessPw.getText().toString();
+                if (pw.isEmpty()) {
+                    AnimatorTool.getInstance().editTextAnimator(etGuessPw);
+                    Toast.makeText(DynamicDetailActivity.this, getString(R.string.toast_guess_pw), Toast.LENGTH_SHORT).show();
+                } else {
+                    if (guessPw.equals(pw)) {
+                        Intent intent = new Intent(DynamicDetailActivity.this, GuessDetailsActivity.class);
+                        intent.putExtra("bet_id", guessId);
+                        intent.putExtra("period_qty", period_aty);
+                        intent.putExtra("guess_pw", guessPw);
+                        startActivity(intent);
+                        deleteCacheDialog.dismiss();
+                    } else {
+                        AnimatorTool.getInstance().editTextAnimator(etGuessPw);
+                        Toast.makeText(DynamicDetailActivity.this, getString(R.string.toast_guess_pw_error), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
     }
 
     List<ReviewListInfo.DataBean.ListBean> mDataList = new ArrayList<>();
@@ -308,9 +372,8 @@ public class DynamicDetailActivity extends BaseActivity {
                         // 图片选择结果回调
                         selectList = PictureSelector.obtainMultipleResult(data);
                         if (selectList.size() != 0) {
-                            initPopWindow();
+                            mIvSelectorImg.setImageBitmap(BitmapFactory.decodeFile(selectList.get(0).getCompressPath()));
                         }
-//                        upImg(selectList.get(0).getCompressPath());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

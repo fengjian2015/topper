@@ -10,8 +10,15 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.bclould.tocotalk.Presenter.DynamicPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
+import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.ToastShow;
+import com.bclould.tocotalk.utils.UtilTool;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,12 +50,16 @@ public class GuessShareDynamicActivity extends BaseActivity {
     private String mCoin_name;
     private String mName;
     private String mTitle;
+    private DynamicPresenter mDynamicPresenter;
+    private int mPeriod_aty;
+    private int mGuess_id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guess_share_dynamic);
         ButterKnife.bind(this);
+        mDynamicPresenter = new DynamicPresenter(this);
         initIntent();
     }
 
@@ -57,6 +68,8 @@ public class GuessShareDynamicActivity extends BaseActivity {
         mName = getIntent().getStringExtra("name");
         mCoin_name = getIntent().getStringExtra("coin_name");
         mGuess_pw = getIntent().getStringExtra("guess_pw");
+        mPeriod_aty = getIntent().getIntExtra("period_aty", 0);
+        mGuess_id = getIntent().getIntExtra("guess_id", 0);
         mTvTitle.setText(mTitle);
         mTvWho.setText(getString(R.string.fa_qi_ren) + ":" + mName);
         mTvCoin.setText(mCoin_name + getString(R.string.guess));
@@ -69,12 +82,30 @@ public class GuessShareDynamicActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_share:
-                publicshDynamic();
+                if (mTextEt.getText().toString().isEmpty()) {
+                    ToastShow.showToast2(this, getString(R.string.et_content));
+                } else {
+                    publicshDynamic();
+                }
                 break;
         }
     }
 
     private void publicshDynamic() {
-
+        String text = mTextEt.getText().toString();
+        String content;
+        if (mGuess_pw != null) {
+            content = text + Constants.GUESS_DYNAMIC_SEPARATOR + mTitle + Constants.GUESS_DYNAMIC_SEPARATOR + mName + Constants.GUESS_DYNAMIC_SEPARATOR + mCoin_name + Constants.GUESS_DYNAMIC_SEPARATOR + mGuess_id + Constants.GUESS_DYNAMIC_SEPARATOR + mPeriod_aty + Constants.GUESS_DYNAMIC_SEPARATOR + mGuess_pw;
+        } else {
+            content = text + Constants.GUESS_DYNAMIC_SEPARATOR + mTitle + Constants.GUESS_DYNAMIC_SEPARATOR + mName + Constants.GUESS_DYNAMIC_SEPARATOR + mCoin_name + Constants.GUESS_DYNAMIC_SEPARATOR + mGuess_id + Constants.GUESS_DYNAMIC_SEPARATOR + mPeriod_aty;
+        }
+        UtilTool.Log("競猜分享", content);
+        mDynamicPresenter.publicsh(content, 4 + "", "", "", "", new DynamicPresenter.CallBack() {
+            @Override
+            public void send() {
+                finish();
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.publish_dynamic)));
+            }
+        });
     }
 }
