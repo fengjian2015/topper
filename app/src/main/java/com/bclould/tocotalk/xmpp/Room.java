@@ -25,4 +25,5 @@ public interface Room {
     void changeName(String name);
     boolean sendCaed(MessageInfo messageInfo);
     boolean sendShareLink(MessageInfo messageInfo);
+    boolean sendShareGuess(MessageInfo messageInfo);
 }

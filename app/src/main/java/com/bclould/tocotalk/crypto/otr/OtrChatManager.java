@@ -77,11 +77,11 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public String startSession(SessionID sessionID){
         try {
-            getHandler(sessionID.getRemoteUserId(),1000);
+            getHandler(sessionID.getRemoteUserId(),10000);
             isAboutOpen=true;
             localEngineImpl.endSession(sessionID);
             localEngineImpl.startSession(sessionID);
-            Toast.makeText(context,context.getString(R.string.start_otr),Toast.LENGTH_SHORT).show();
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.start_otr)));
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
             Chat chat = manager.createChat(JidCreate.entityBareFrom(sessionID.getRemoteUserId()), null);
             chat.sendMessage(Constants.OTR_REQUEST);
@@ -103,7 +103,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSm.OtrSmEngineHost 
             public void run() {
                 SessionStatus sessionStatus =localEngineImpl.getSessionStatus(sessionID(UtilTool.getJid(),from));
                 if(sessionStatus!= SessionStatus.ENCRYPTED){
-                    Toast.makeText(context,context.getString(R.string.start_otr_timeout),Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post(new MessageEvent(context.getString(R.string.start_otr_timeout)));
                 }
                 isAboutOpen=false;
             }

@@ -1,6 +1,8 @@
 package com.bclould.tocotalk.ui.adapter;
 
 import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.activity.CreateGroupRoomActivity;
 import com.bclould.tocotalk.utils.StringUtils;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import java.util.List;
 
@@ -23,15 +27,17 @@ import butterknife.ButterKnife;
 /**
  * Created by GA on 2018/1/5.
  */
-
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class CreateGroupRVAdapter extends RecyclerView.Adapter {
 
     private final List<UserInfo> mUserInfos;
     private final CreateGroupRoomActivity mActivity;
+    private DBManager mgr;
 
-    public CreateGroupRVAdapter(CreateGroupRoomActivity activity, List<UserInfo> userInfos) {
+    public CreateGroupRVAdapter(CreateGroupRoomActivity activity, List<UserInfo> userInfos, DBManager mgr) {
         mUserInfos = userInfos;
         mActivity = activity;
+        this.mgr=mgr;
     }
 
     @Override
@@ -61,18 +67,20 @@ public class CreateGroupRVAdapter extends RecyclerView.Adapter {
         ImageView mIvTouxiang;
         @Bind(R.id.tv_name)
         TextView mTvName;
-
+        private String mUser;
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
 
         public void setData(final UserInfo userInfo) {
-            if(StringUtils.isEmpty(userInfo.getRemark())){
-                mTvName.setText(userInfo.getRemark());
-            }else{
-                mTvName.setText(userInfo.getUser());
-            }
+            String remark = userInfo.getRemark();
+            mUser = userInfo.getUser();
+            if (!StringUtils.isEmpty(remark)) {
+                mTvName.setText(remark);
+            } else if (mUser.contains("@"))
+                mTvName.setText(mUser.substring(0, mUser.indexOf("@")));
+            UtilTool.getImage(mgr, userInfo.getUser(),mActivity , mIvTouxiang);
             mIvTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfo.getPath()));
             mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override

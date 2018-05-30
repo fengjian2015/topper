@@ -60,6 +60,7 @@ import top.zibin.luban.OnCompressListener;
 
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_CARD_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_FILE_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_GUESS_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_IMG_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_LINK_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_LOCATION_MSG;
@@ -871,7 +872,7 @@ public class MultiManage implements Room{
     private void createRoom(List<UserInfo> mUserInfoList, final String roomJid, final String roomName, final List<String> owners){
         GroupPresenter presenter=new GroupPresenter(context);
         StringBuffer stringBuffer=new StringBuffer();
-
+        stringBuffer.append(UtilTool.getUser()+"@"+Constants.DOMAINNAME+",");
         for (int i = 0; i < mUserInfoList.size(); i++) {  //添加群成员,用户jid格式和之前一样 用户名@openfire服务器名称
             stringBuffer.append(mUserInfoList.get(i).getUser());
             if(i!=mUserInfoList.size()-1){
@@ -1061,6 +1062,71 @@ public class MultiManage implements Room{
             messageInfo.setTime(time);
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_LINK_MSG);
+            messageInfo.setSendStatus(1);
+            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setConverstaion(converstaion);
+            messageInfo.setId(mMgr.addMessage(messageInfo));
+            if (mMgr.findConversation(roomId)) {
+                mMgr.updateConversation(roomId, 0, converstaion, time);
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                info.setFriend(roomName);
+                info.setUser(roomId);
+                info.setMessage(converstaion);
+                info.setChatType(RoomManage.ROOM_TYPE_MULTI);
+                mMgr.addConversation(info);
+            }
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            refreshAddData(messageInfo);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean sendShareGuess(MessageInfo messageInfo) {
+        String converstaion="[" + context.getString(R.string.share_guess) + "]";
+        try {
+            //创建jid实体
+            EntityBareJid groupJid = JidCreate.entityBareFrom(roomId);
+            //群管理对象
+            MultiUserChatManager multiUserChatManager = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+            MultiUserChat multiUserChat = multiUserChatManager.getMultiUserChat(groupJid);
+            multiUserChat.sendMessage(Constants.SHARE_GUESS+":"+JSON.toJSONString(messageInfo));
+
+            messageInfo.setUsername(roomId);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setMsgType(TO_GUESS_MSG);
+            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setConverstaion(converstaion);
+            messageInfo.setId(mMgr.addMessage(messageInfo));
+            if (mMgr.findConversation(roomId)) {
+                mMgr.updateConversation(roomId, 0, converstaion, time);
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                info.setFriend(roomName);
+                info.setUser(roomId);
+                info.setMessage(converstaion);
+                info.setChatType(RoomManage.ROOM_TYPE_MULTI);
+                mMgr.addConversation(info);
+            }
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            refreshAddData(messageInfo);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            messageInfo.setUsername(roomId);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setMsgType(TO_GUESS_MSG);
             messageInfo.setSendStatus(1);
             messageInfo.setSend(UtilTool.getJid());
             messageInfo.setConverstaion(converstaion);

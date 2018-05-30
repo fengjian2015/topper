@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
@@ -17,11 +18,13 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -32,10 +35,12 @@ import com.bclould.tocotalk.Presenter.GrabRedPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.GrabRedInfo;
+import com.bclould.tocotalk.model.GuessListInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.SerMap;
 import com.bclould.tocotalk.ui.activity.ChatLookLocationActivity;
 import com.bclould.tocotalk.ui.activity.GrabQRCodeRedActivity;
+import com.bclould.tocotalk.ui.activity.GuessDetailsActivity;
 import com.bclould.tocotalk.ui.activity.ImageViewActivity;
 import com.bclould.tocotalk.ui.activity.IndividualDetailsActivity;
 import com.bclould.tocotalk.ui.activity.NewsDetailsActivity;
@@ -47,8 +52,10 @@ import com.bclould.tocotalk.ui.activity.RedPacketActivity;
 import com.bclould.tocotalk.ui.activity.SelectFriendActivity;
 import com.bclould.tocotalk.ui.activity.TransferDetailsActivity;
 import com.bclould.tocotalk.ui.activity.VideoActivity;
-import com.bclould.tocotalk.ui.widget.ChatCopyDialog;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.ui.widget.MenuListPopWindow;
+import com.bclould.tocotalk.utils.AnimatorTool;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.CustomLinkMovementMethod;
 import com.bclould.tocotalk.utils.HyperLinkUtil;
@@ -71,6 +78,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -107,6 +115,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public static final int TO_CARD_MSG = 23;//發送名片
     public static final int FROM_LINK_MSG = 24;//接受新聞分享
     public static final int TO_LINK_MSG = 25;//發送新聞分享
+    public static final int FROM_GUESS_MSG = 26;//接受竞猜分享
+    public static final int TO_GUESS_MSG = 27;//發送竞猜分享
 
     public static final int ADMINISTRATOR_OTC_ORDER_MSG = 14;//管理員otc訂單消息
     public static final int ADMINISTRATOR_RED_PACKET_EXPIRED_MSG = 15;//管理員紅包過期消息
@@ -124,16 +134,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
     //    private final Bitmap mToBitmap;
     private final MediaPlayer mMediaPlayer;
     ArrayList<String> mImageList = new ArrayList<>();
-    @Bind(R.id.iv_touxiang)
-    ImageView ivTouxiang;
-    @Bind(R.id.tv_name)
-    TextView tvName;
-    @Bind(R.id.iv_head)
-    ImageView ivHead;
-    @Bind(R.id.tv_username)
-    TextView tvUsername;
-    @Bind(R.id.rl_card)
-    RelativeLayout rlCard;
     private CurrencyDialog mCurrencyDialog;
     private String mFileName;
     private AnimationDrawable mAnim;
@@ -141,8 +141,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private String mRoomType;
     private String mName;
     private String mToName;
+    private RelativeLayout mrlTitle;
 
-    public ChatAdapter(Context context, List<MessageInfo> messageList, Bitmap fromBitmap, String roomId, DBManager mgr, MediaPlayer mediaPlayer, String name, String roomType) {
+    public ChatAdapter(Context context, List<MessageInfo> messageList, Bitmap fromBitmap, String roomId, DBManager mgr, MediaPlayer mediaPlayer, String name, String roomType,RelativeLayout rlTitle) {
         mContext = context;
         mMessageList = messageList;
 //        mFromBitmap = fromBitmap;
@@ -155,6 +156,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         //繼續保留這兩個字段是用於之前版本有的消息沒有send字段
         mName = name;
         mToName = UtilTool.getJid().substring(0, UtilTool.getJid().lastIndexOf("@"));
+        mrlTitle=rlTitle;
     }
 
     @Override
@@ -203,6 +205,12 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } else if (viewType == TO_LINK_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_to_chat_link, parent, false);
             holder = new ToLinkHolder(view);
+        }else if (viewType == FROM_GUESS_MSG) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_guess, parent, false);
+            holder = new FromGuessHolder(view);
+        } else if (viewType == TO_GUESS_MSG) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_to_chat_guess, parent, false);
+            holder = new ToGuessHolder(view);
         } else if (viewType == FROM_LOCATION_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_location, parent, false);
             holder = new FromLocationHolder(view);
@@ -350,6 +358,14 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 FromLinkHolder fromLinkHolder= (FromLinkHolder) holder;
                 fromLinkHolder.setData(mMessageList.get(position));
                 break;
+            case TO_GUESS_MSG:
+                ToGuessHolder toGuessHolder= (ToGuessHolder) holder;
+                toGuessHolder.setData(mMessageList.get(position));
+                break;
+            case FROM_GUESS_MSG:
+                FromGuessHolder fromGuessHolder= (FromGuessHolder) holder;
+                fromGuessHolder.setData(mMessageList.get(position));
+                break;
             case ADMINISTRATOR_OTC_ORDER_MSG:
                 OtcOrderStatusHolder orderStatusHolder = (OtcOrderStatusHolder) holder;
                 orderStatusHolder.setData(mMessageList.get(position));
@@ -389,52 +405,64 @@ public class ChatAdapter extends RecyclerView.Adapter {
         return 0;
     }
 
-    private void showCopyDialog(final int msgtype, final MessageInfo messageInfo, boolean isCopy, boolean isTransmit) {
-        final ChatCopyDialog chatCopyDialog = new ChatCopyDialog(R.layout.dialog_chat_copy, mContext, R.style.dialog);
-        chatCopyDialog.show();
-        chatCopyDialog.isCopy(isCopy, mContext.getString(R.string.copy));
-        chatCopyDialog.isShowTransmit(isTransmit, mContext.getString(R.string.transmit));
-        Button copy = (Button) chatCopyDialog.findViewById(R.id.btn_copy);
-        Button transmit = (Button) chatCopyDialog.findViewById(R.id.btn_transmit);
-        Button delete = (Button) chatCopyDialog.findViewById(R.id.btn_delete);
-        copy.setOnClickListener(new View.OnClickListener() {
+    private void showCopyDialog(final int msgtype, final MessageInfo messageInfo, final boolean isCopy, boolean isTransmit){
+        List<String> list =new ArrayList<>();
+        list.add(mContext.getString(R.string.delete));
+        if(isCopy)
+            list.add(mContext.getString(R.string.copy));
+        if(isTransmit)
+            list.add(mContext.getString(R.string.transmit));
+
+        final MenuListPopWindow menu = new MenuListPopWindow(mContext, list);
+        menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
             @Override
-            public void onClick(View view) {
-                //获取剪贴板管理器：
-                ClipboardManager cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-                // 创建普通字符型ClipData
-                ClipData mClipData = ClipData.newPlainText("Label", messageInfo.getMessage());
-                // 将ClipData内容放到系统剪贴板里。
-                cm.setPrimaryClip(mClipData);
-                ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.copy_succeed));
-                chatCopyDialog.dismiss();
-            }
-        });
-        transmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, SelectFriendActivity.class);
-                intent.putExtra("type", 1);
-                intent.putExtra("msgType", msgtype);
-                intent.putExtra("messageInfo", messageInfo);
-                mContext.startActivity(intent);
-                chatCopyDialog.dismiss();
-            }
-        });
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMgr.deleteSingleMessage(mRoomId, messageInfo.getId() + "");
-                String conversation=mMgr.findLastMessageConversation(mRoomId);
-                if(!StringUtils.isEmpty(conversation)){
-                    mMgr.updateConversationMessage(mRoomId,conversation);
+            public void onclickitem(int position) {
+                switch (position){
+                    case 0:
+                        menu.dismiss();
+                        break;
+                    case 1:
+                        menu.dismiss();
+                        mMgr.deleteSingleMessage(mRoomId, messageInfo.getId() + "");
+                        String conversation=mMgr.findLastMessageConversation(mRoomId);
+                        if(!StringUtils.isEmpty(conversation)){
+                            mMgr.updateConversationMessage(mRoomId,conversation);
+                        }
+                        mMessageList.remove(messageInfo);
+                        notifyDataSetChanged();
+                        EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
+                        break;
+                    case 2:
+                        menu.dismiss();
+                        if(isCopy){
+                            //获取剪贴板管理器：
+                            ClipboardManager cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                            // 创建普通字符型ClipData
+                            ClipData mClipData = ClipData.newPlainText("Label", messageInfo.getMessage());
+                            // 将ClipData内容放到系统剪贴板里。
+                            cm.setPrimaryClip(mClipData);
+                            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.copy_succeed));
+                        }else{
+                            Intent intent = new Intent(mContext, SelectFriendActivity.class);
+                            intent.putExtra("type", 1);
+                            intent.putExtra("msgType", msgtype);
+                            intent.putExtra("messageInfo", messageInfo);
+                            mContext.startActivity(intent);
+                        }
+                        break;
+                    case 3:
+                        menu.dismiss();
+                        Intent intent = new Intent(mContext, SelectFriendActivity.class);
+                        intent.putExtra("type", 1);
+                        intent.putExtra("msgType", msgtype);
+                        intent.putExtra("messageInfo", messageInfo);
+                        mContext.startActivity(intent);
+                        break;
                 }
-                mMessageList.remove(messageInfo);
-                notifyDataSetChanged();
-                EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
-                chatCopyDialog.dismiss();
             }
         });
+        menu.setColor(Color.BLACK);
+        menu.showAtLocation(mrlTitle, Gravity.BOTTOM,0,0);
     }
 
     @Override
@@ -1487,6 +1515,134 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
     }
 
+    class ToGuessHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.iv_touxiang)
+        ImageView mIvTouxiang;
+        @Bind(R.id.tv_coin)
+        TextView tvCoin;
+        @Bind(R.id.tv_who)
+        TextView tvWho;
+        @Bind(R.id.tv_title)
+        TextView tvTitle;
+        @Bind(R.id.rl_guess)
+        RelativeLayout rlGuess;
+        @Bind(R.id.iv_warning)
+        ImageView mIvWarning;
+        @Bind(R.id.iv_load)
+        ImageView mIvLoad;
+
+        ToGuessHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final MessageInfo messageInfo) {
+            UtilTool.getImage(mMgr, UtilTool.getJid(), mContext, mIvTouxiang);
+            goIndividualDetails(mIvTouxiang, UtilTool.getJid(), mToName, messageInfo);
+            if (messageInfo.getSendStatus() == 0) {
+                mIvLoad.setVisibility(View.VISIBLE);
+                mIvWarning.setVisibility(View.GONE);
+            } else if (messageInfo.getSendStatus() == 2) {
+                mIvWarning.setVisibility(View.VISIBLE);
+                mIvLoad.setVisibility(View.GONE);
+            } else {
+                mIvWarning.setVisibility(View.GONE);
+                mIvLoad.setVisibility(View.GONE);
+            }
+            tvTitle.setText(messageInfo.getTitle());
+            tvCoin.setText(messageInfo.getCoin()+mContext.getString(R.string.guess));
+            tvWho.setText(mContext.getString(R.string.fa_qi_ren)+":"+messageInfo.getInitiator());
+            rlGuess.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    return false;
+                }
+            });
+            rlGuess.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (messageInfo.getGuessPw()!= null) {
+                        if (messageInfo.getGuessPw().isEmpty()) {
+                            Intent intent = new Intent(mContext, GuessDetailsActivity.class);
+                            intent.putExtra("bet_id", Integer.parseInt(messageInfo.getBetId()));
+                            intent.putExtra("period_qty", Integer.parseInt(messageInfo.getPeriodQty()));
+                            mContext.startActivity(intent);
+                        } else {
+                            showPWDialog(messageInfo);
+                        }
+                    }else {
+                        Intent intent = new Intent(mContext, GuessDetailsActivity.class);
+                        intent.putExtra("bet_id", Integer.parseInt(messageInfo.getBetId()));
+                        intent.putExtra("period_qty", Integer.parseInt(messageInfo.getPeriodQty()));
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
+        }
+    }
+
+    class FromGuessHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.iv_touxiang)
+        ImageView mIvTouxiang;
+        @Bind(R.id.tv_name)
+        TextView tvName;
+        @Bind(R.id.tv_coin)
+        TextView tvCoin;
+        @Bind(R.id.tv_who)
+        TextView tvWho;
+        @Bind(R.id.tv_title)
+        TextView tvTitle;
+        @Bind(R.id.rl_guess)
+        RelativeLayout rlGuess;
+
+        FromGuessHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final MessageInfo messageInfo) {
+            // TODO: 2018/5/28 所有的from需要增加一個名字
+
+            if (messageInfo.getSend() != null) {
+                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
+            } else {
+                UtilTool.getImage(mMgr, mRoomId, mContext, mIvTouxiang);
+            }
+            goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
+            tvTitle.setText(messageInfo.getTitle());
+            tvCoin.setText(messageInfo.getCoin()+mContext.getString(R.string.guess));
+            tvWho.setText(mContext.getString(R.string.fa_qi_ren)+":"+messageInfo.getInitiator());
+            rlGuess.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    return false;
+                }
+            });
+            rlGuess.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (messageInfo.getGuessPw()!= null) {
+                        if (messageInfo.getGuessPw().isEmpty()) {
+                            Intent intent = new Intent(mContext, GuessDetailsActivity.class);
+                            intent.putExtra("bet_id", Integer.parseInt(messageInfo.getBetId()));
+                            intent.putExtra("period_qty", Integer.parseInt(messageInfo.getPeriodQty()));
+                            mContext.startActivity(intent);
+                        } else {
+                            showPWDialog(messageInfo);
+                        }
+                    }else {
+                        Intent intent = new Intent(mContext, GuessDetailsActivity.class);
+                        intent.putExtra("bet_id", Integer.parseInt(messageInfo.getBetId()));
+                        intent.putExtra("period_qty", Integer.parseInt(messageInfo.getPeriodQty()));
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
+        }
+    }
+
     class ToTransferHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_touxiang)
         ImageView mIvTouxiang;
@@ -1916,5 +2072,34 @@ public class ChatAdapter extends RecyclerView.Adapter {
         public void setData(MessageInfo messageInfo) {
 
         }
+    }
+
+    private void showPWDialog(final MessageInfo messageInfo) {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_command, mContext,R.style.dialog);
+        deleteCacheDialog.show();
+        final EditText etGuessPw = (EditText) deleteCacheDialog.findViewById(R.id.et_guess_password);
+        Button btnConfirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String pw = etGuessPw.getText().toString();
+                if (pw.isEmpty()) {
+                    AnimatorTool.getInstance().editTextAnimator(etGuessPw);
+                    Toast.makeText(mContext, mContext.getString(R.string.toast_guess_pw), Toast.LENGTH_SHORT).show();
+                } else {
+                    if (messageInfo.getGuessPw().equals(pw)) {
+                        Intent intent = new Intent(mContext, GuessDetailsActivity.class);
+                        intent.putExtra("bet_id", Integer.parseInt(messageInfo.getBetId()));
+                        intent.putExtra("period_qty", Integer.parseInt(messageInfo.getPeriodQty()));
+                        intent.putExtra("guess_pw", messageInfo.getGuessPw());
+                        mContext.startActivity(intent);
+                        deleteCacheDialog.dismiss();
+                    } else {
+                        AnimatorTool.getInstance().editTextAnimator(etGuessPw);
+                        Toast.makeText(mContext, mContext.getString(R.string.toast_guess_pw_error), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
     }
 }

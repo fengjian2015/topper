@@ -201,6 +201,7 @@ public class GuessListRVAdapter extends RecyclerView.Adapter {
                         Intent intent = new Intent(mContext, GuessDetailsActivity.class);
                         intent.putExtra("bet_id", dataBean.getId());
                         intent.putExtra("period_qty", dataBean.getPeriod_qty());
+                        intent.putExtra("guess_pw", dataBean.getPassword());
                         mContext.startActivity(intent);
                         deleteCacheDialog.dismiss();
                     } else {

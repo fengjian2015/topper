@@ -33,6 +33,7 @@ import org.jxmpp.jid.impl.JidCreate;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class CreateGroupRoomActivity extends BaseActivity {
     TextView mTvCreate;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    private List<UserInfo> mUserInfos;
+    private List<UserInfo> mUserInfos=new ArrayList<>();
     private List<UserInfo> mUserInfoList = new ArrayList<>();
     DBManager mgr;
     private String roomName;
@@ -68,12 +69,26 @@ public class CreateGroupRoomActivity extends BaseActivity {
     private void initData() {
         roomName=getIntent().getStringExtra("roomName");
         mgr = new DBManager(this);
-        mUserInfos = mgr.queryAllUser();
+        List<UserInfo> userInfos = mgr.queryAllUser();
+        UserInfo userInfo = null;
+        UserInfo userInfo2 = null;
+        for (UserInfo info : userInfos) {
+            if (info.getUser().equals(UtilTool.getJid())) {
+                userInfo = info;
+            } else if (info.getUser().isEmpty()) {
+                userInfo2 = info;
+            }
+        }
+        userInfos.remove(userInfo);
+        if (userInfo2 != null)
+            userInfos.remove(userInfo2);
+        mUserInfos.addAll(userInfos);
+        Collections.sort(mUserInfos);
     }
 
     private void initRecylerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        CreateGroupRVAdapter createGroupRVAdapter = new CreateGroupRVAdapter(this, mUserInfos);
+        CreateGroupRVAdapter createGroupRVAdapter = new CreateGroupRVAdapter(this, mUserInfos,mgr);
         mRecyclerView.setAdapter(createGroupRVAdapter);
     }
 

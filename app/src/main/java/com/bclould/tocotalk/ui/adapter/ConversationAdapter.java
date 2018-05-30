@@ -5,10 +5,12 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,23 +22,29 @@ import android.widget.TextView;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.ConversationInfo;
+import com.bclould.tocotalk.model.MessageInfo;
+import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.activity.ConversationActivity;
+import com.bclould.tocotalk.ui.activity.RemarkActivity;
 import com.bclould.tocotalk.ui.activity.SelectFriendActivity;
 import com.bclould.tocotalk.ui.fragment.ConversationFragment;
 import com.bclould.tocotalk.ui.widget.CenterEntryDialog;
-import com.bclould.tocotalk.ui.widget.ChatCopyDialog;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.ui.widget.MenuListPopWindow;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.StringUtils;
-import com.bclould.tocotalk.utils.ToastShow;
 import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_CARD_MSG;
 
 /**
  * Created by GA on 2017/12/20.
@@ -48,11 +56,13 @@ public class ConversationAdapter extends RecyclerView.Adapter {
     private final Context mContext;
     private final List<ConversationInfo> mConversationList;
     private final DBManager mMgr;
+    private RelativeLayout mRlTitle;
 
-    public ConversationAdapter(ConversationFragment conversationFragment, Context context, List<ConversationInfo> ConversationList, DBManager mgr) {
+    public ConversationAdapter(ConversationFragment conversationFragment, Context context, List<ConversationInfo> ConversationList, DBManager mgr, RelativeLayout mRlTitle) {
         mContext = context;
         mConversationList = ConversationList;
         mMgr = mgr;
+        this.mRlTitle=mRlTitle;
     }
 
     @Override
@@ -174,30 +184,39 @@ public class ConversationAdapter extends RecyclerView.Adapter {
 
     private void showDialog(final ConversationInfo conversationInfo){
         final String istop=conversationInfo.getIstop();
-        final CenterEntryDialog centerEntryDialog = new CenterEntryDialog(mContext, R.style.dialog);
-        centerEntryDialog.show();
-        centerEntryDialog.isTop(istop,mContext);
-        Button btn_delete = (Button) centerEntryDialog.findViewById(R.id.btn_delete);
-        Button btn_stick = (Button) centerEntryDialog.findViewById(R.id.btn_stick);
-        btn_delete.setOnClickListener(new View.OnClickListener() {
+        List<String> list = new ArrayList<>();
+        list.add(mContext.getString(R.string.delete));
+        if("true".equals(istop)){
+            list.add(mContext.getString(R.string.cancel_the_top));
+        }else{
+            list.add(mContext.getString(R.string.stick));
+        }
+        final MenuListPopWindow menu = new MenuListPopWindow(mContext, list);
+        menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
             @Override
-            public void onClick(View view) {
-                showDeleteDialog(conversationInfo.getUser());
-                centerEntryDialog.dismiss();
-            }
-        });
-        btn_stick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if("true".equals(istop)){
-                    mMgr.updateConversationIstop(conversationInfo.getUser(),"false");
-                }else{
-                    mMgr.updateConversationIstop(conversationInfo.getUser(),"true");
+            public void onclickitem(int position) {
+                switch (position){
+                    case 0:
+                        menu.dismiss();
+                        break;
+                    case 1:
+                        menu.dismiss();
+                        showDeleteDialog(conversationInfo.getUser());
+                        break;
+                    case 2:
+                        menu.dismiss();
+                        if("true".equals(istop)){
+                            mMgr.updateConversationIstop(conversationInfo.getUser(),"false");
+                        }else{
+                            mMgr.updateConversationIstop(conversationInfo.getUser(),"true");
+                        }
+                        EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.message_top_change)));
+                        break;
                 }
-                EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.message_top_change)));
-                centerEntryDialog.dismiss();
             }
         });
+        menu.setColor(Color.BLACK);
+        menu.showAtLocation(mRlTitle, Gravity.BOTTOM,0,0);
     }
 
 }

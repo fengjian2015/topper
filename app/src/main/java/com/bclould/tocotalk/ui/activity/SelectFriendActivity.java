@@ -40,11 +40,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_CARD_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_GUESS_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_IMG_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_LINK_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_TEXT_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_VIDEO_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_CARD_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_GUESS_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_IMG_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_LINK_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_TEXT_MSG;
@@ -269,6 +271,13 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
                 }
             }else if(TO_LINK_MSG==msgType||msgType==FROM_LINK_MSG){
                 if(singleManage.sendShareLink(messageInfo)){
+                    ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.send_succeed));
+                    SelectFriendActivity.this.finish();
+                }else{
+                    ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.send_error));
+                }
+            }else if(TO_GUESS_MSG==msgType||msgType==FROM_GUESS_MSG){
+                if(singleManage.sendShareGuess(messageInfo)){
                     ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.send_succeed));
                     SelectFriendActivity.this.finish();
                 }else{

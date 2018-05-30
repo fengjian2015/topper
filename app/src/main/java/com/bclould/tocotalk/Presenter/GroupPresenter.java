@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.BaseInfo;
+import com.bclould.tocotalk.model.GroupInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.ToastShow;
@@ -89,9 +90,52 @@ public class GroupPresenter {
         }
     }
 
+    public void getGroup(final CallBack1 callBack) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .getGroup(UtilTool.getToken())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<GroupInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(GroupInfo baseInfo) {
+                            hideDialog();
+                            if (baseInfo.getStatus() == 1) {
+                                callBack.send(baseInfo);
+                            } else {
+                                ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.create_failure));
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            hideDialog();
+                            ToastShow.showToast2((Activity) mContext, e.getMessage());
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.toast_network_error));
+        }
+    }
+
     //定义接口
     public interface CallBack {
         void send();
+    }
+    //定义接口
+    public interface CallBack1 {
+        void send(GroupInfo baseInfo);
     }
 
 }

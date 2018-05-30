@@ -57,6 +57,7 @@ import top.zibin.luban.OnCompressListener;
 
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_CARD_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_FILE_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_GUESS_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_IMG_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_LINK_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_LOCATION_MSG;
@@ -581,6 +582,71 @@ public class SingleManage implements Room{
             messageInfo.setTime(time);
             messageInfo.setType(2);
             messageInfo.setMsgType(TO_LINK_MSG);
+            messageInfo.setSendStatus(2);
+            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setConverstaion(converstaion);
+            messageInfo.setId(mMgr.addMessage(messageInfo));
+            if (mMgr.findConversation(mUser)) {
+                mMgr.updateConversation(mUser, 0, converstaion, time);
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                info.setFriend(mName);
+                info.setUser(mUser);
+                info.setMessage(converstaion);
+                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
+                mMgr.addConversation(info);
+            }
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            refreshAddData(messageInfo);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean sendShareGuess(MessageInfo messageInfo) {
+        String converstaion="[" + context.getString(R.string.share_guess) + "]";
+        try {
+            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
+            chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(Constants.SHARE_GUESS+":"+JSON.toJSONString(messageInfo) ,
+                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
+            messageInfo.setUsername(mUser);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setMsgType(TO_GUESS_MSG);
+            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setSendStatus(1);
+            messageInfo.setConverstaion(converstaion);
+            messageInfo.setId(mMgr.addMessage(messageInfo));
+            if (mMgr.findConversation(mUser)) {
+                mMgr.updateConversation(mUser, 0, converstaion, time);
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                info.setFriend(mName);
+                info.setUser(mUser);
+                info.setMessage(converstaion);
+                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
+                mMgr.addConversation(info);
+            }
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            refreshAddData(messageInfo);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
+            messageInfo.setUsername(mUser);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(2);
+            messageInfo.setMsgType(TO_GUESS_MSG);
             messageInfo.setSendStatus(2);
             messageInfo.setSend(UtilTool.getJid());
             messageInfo.setConverstaion(converstaion);

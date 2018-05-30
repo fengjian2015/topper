@@ -550,7 +550,7 @@ public class FriendListFragment extends Fragment {
 
     private void initRecylerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mFriendListRVAdapter = new FriendListRVAdapter(getContext(), mUsers, mMgr);
+        mFriendListRVAdapter = new FriendListRVAdapter(getContext(), mUsers, mMgr,mRlTitle);
         mRecyclerView.setAdapter(mFriendListRVAdapter);
         mRecyclerView.setNestedScrollingEnabled(false);
     }

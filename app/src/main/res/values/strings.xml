@@ -868,4 +868,8 @@
     <string name="create_group">創建群組</string>
     <string name="group">群組：</string>
     <string name="create_failure">創建失敗</string>
+    <string name="share_friend">分享到好友</string>
+    <string name="share_dynamic">分享到動態</string>
+    <string name="share_guess">竞猜分享</string>
+    <string name="send_card">發送名片</string>
 </resources>

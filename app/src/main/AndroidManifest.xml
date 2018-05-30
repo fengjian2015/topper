@@ -715,13 +715,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
-        <!-- 個人動態頁 -->
-        <activity
-            android:name=".richtext.richtexteditor.MainActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-
-        <!-- 個人動態頁 -->
+        <!-- 支付密碼管理頁 -->
         <activity
             android:name=".ui.activity.PayPwSelectorActivity"
             android:screenOrientation="portrait"
@@ -808,8 +802,13 @@
                   android:screenOrientation="portrait"
                   android:windowSoftInputMode="stateHidden|adjustPan"/>
 
-        更新日誌頁
+        <!--更新日誌頁-->
         <activity android:name=".ui.activity.UpdateLogActivity"
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--競猜分享到動態頁-->
+        <activity android:name=".ui.activity.GuessShareDynamicActivity"
                   android:screenOrientation="portrait"
                   android:windowSoftInputMode="stateHidden|adjustPan"/>
     </application>
