@@ -1053,5 +1053,15 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("code") int code
     );
-
+    //創建群聊房間
+    @FormUrlEncoded
+    @POST("room/create")
+    Observable<BaseInfo> createGroup(
+            @Header("Authorization") String token,
+            @Field("room_name") String room_name,
+            @Field("name") String name,
+            @Field("room_max_people_number") int room_max_people_number,
+            @Field("logo") String logo,
+            @Field("jids") String jids
+    );
 }

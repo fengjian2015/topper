@@ -20,6 +20,7 @@ import java.util.Map;
 public class RoomManage {
     public final static String ROOM_TYPE_SINGLE = "single";
     public final static String ROOM_TYPE_MULTI = "multi";
+    public final static int ROOM_MAX_NUMBER=200;
     private Map<String, Room> roomMap=new HashMap<>();
     public static RoomManage roomManage;
     public Context context;

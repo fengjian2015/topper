@@ -440,14 +440,15 @@ public class DBManager {
 
     public String findLastMessageConversation(String roomid) {
         db = helper.getReadableDatabase();
-        String friend = null;
+        String conversation = null;
         Cursor cursor = db.rawQuery("select converstaion from MessageRecord where user=? and my_user=?",
                 new String[]{roomid, UtilTool.getJid()});
-        while (cursor.moveToNext()) {
-            friend = cursor.getString(cursor.getColumnIndex("friend"));
+
+        if (cursor.moveToLast()) {
+            conversation = cursor.getString(cursor.getColumnIndex("converstaion"));
         }
         cursor.close();
-        return friend;
+        return conversation;
     }
 
     public void updateMessageState(String id, int state) {

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bclould.tocotalk.Presenter.GroupPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.history.DBManager;
@@ -27,6 +28,8 @@ import com.bclould.tocotalk.xmpp.XmppConnection;
 import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smackx.muc.MultiUserChat;
+import org.jxmpp.jid.EntityBareJid;
+import org.jxmpp.jid.impl.JidCreate;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,13 +50,12 @@ public class CreateGroupRoomActivity extends BaseActivity {
     ImageView mBark;
     @Bind(R.id.tv_create)
     TextView mTvCreate;
-    @Bind(R.id.et_group_name)
-    EditText mEtGroupName;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     private List<UserInfo> mUserInfos;
     private List<UserInfo> mUserInfoList = new ArrayList<>();
     DBManager mgr;
+    private String roomName;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,7 @@ public class CreateGroupRoomActivity extends BaseActivity {
     }
 
     private void initData() {
+        roomName=getIntent().getStringExtra("roomName");
         mgr = new DBManager(this);
         mUserInfos = mgr.queryAllUser();
     }
@@ -83,8 +86,7 @@ public class CreateGroupRoomActivity extends BaseActivity {
             case R.id.tv_create:
                 if (mUserInfoList != null)
                     try {
-                    String roomJid= UtilTool.getUser()+System.currentTimeMillis() + "@conference." + XmppConnection.getInstance().getConnection().getServiceName();
-                    String roomName=mEtGroupName.getText().toString();
+                    final String roomJid= UtilTool.getUser()+System.currentTimeMillis() + "@conference." + XmppConnection.getInstance().getConnection().getServiceName();
                     String nickName=UtilTool.getUser();
                         if(StringUtils.isEmpty(roomName)){
                             roomName="群聊";
@@ -96,6 +98,7 @@ public class CreateGroupRoomActivity extends BaseActivity {
                         }else {
                             createConversation(roomJid,roomName);
                             EventBus.getDefault().post(new MessageEvent(getString(R.string.oneself_send_msg)));
+
                         }
                         finish();
                     } catch (Exception e) {

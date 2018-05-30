@@ -425,6 +425,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View view) {
                 mMgr.deleteSingleMessage(mRoomId, messageInfo.getId() + "");
+                String conversation=mMgr.findLastMessageConversation(mRoomId);
+                if(!StringUtils.isEmpty(conversation)){
+                    mMgr.updateConversationMessage(mRoomId,conversation);
+                }
                 mMessageList.remove(messageInfo);
                 notifyDataSetChanged();
                 EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
