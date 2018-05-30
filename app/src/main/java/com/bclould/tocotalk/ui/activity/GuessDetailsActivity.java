@@ -41,6 +41,7 @@ import com.bclould.tocotalk.model.BetInfo;
 import com.bclould.tocotalk.model.GuessInfo;
 import com.bclould.tocotalk.ui.adapter.GuessBetRVAdapter;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
+import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
 import com.bclould.tocotalk.utils.Constants;
@@ -226,6 +227,8 @@ public class GuessDetailsActivity extends BaseActivity {
     CardView mCvTime;
     @Bind(R.id.ll_hash)
     LinearLayout mLlHash;
+    @Bind(R.id.iv_share)
+    ImageView mIvShare;
     private Animation mEnterAnim;
     private Animation mExitAnim;
     private Dialog mRedDialog;
@@ -312,6 +315,7 @@ public class GuessDetailsActivity extends BaseActivity {
     private double mLimit_number;
     private String[] mUrlArr;
     private int mLimit_people_number;
+    private String mGuess_pw = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -387,7 +391,9 @@ public class GuessDetailsActivity extends BaseActivity {
                         mLlGuessCount.setVisibility(View.GONE);
                         mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
                         mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
+                        mIvShare.setVisibility(View.GONE);
                     } else {
+                        mIvShare.setVisibility(View.VISIBLE);
                         if (data.getOver_count_num() == 0) {
                             mLlGuessCount.setVisibility(View.GONE);
                             mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
@@ -397,6 +403,7 @@ public class GuessDetailsActivity extends BaseActivity {
                         }
                     }
                 } else if (data.getStatus() == 3) {
+                    mIvShare.setVisibility(View.GONE);
                     mLlNo.setVisibility(View.GONE);
                     mLlAlready.setVisibility(View.VISIBLE);
                     String[] split = data.getWin_number().split("_");
@@ -405,6 +412,7 @@ public class GuessDetailsActivity extends BaseActivity {
                     mTvNumber3.setText(split[2]);
                     mTvNumber4.setText(split[3]);
                 } else if (data.getStatus() == 4) {
+                    mIvShare.setVisibility(View.GONE);
                     mLlNo.setVisibility(View.VISIBLE);
                     mLlAlready.setVisibility(View.GONE);
                     mLlGuessCount.setVisibility(View.GONE);
@@ -423,6 +431,7 @@ public class GuessDetailsActivity extends BaseActivity {
         Intent intent = getIntent();
         mBet_id = intent.getIntExtra("bet_id", 0);
         mPeriod_qty = intent.getIntExtra("period_qty", 0);
+        mGuess_pw = intent.getStringExtra("guess_pw");
     }
 
 
@@ -708,7 +717,7 @@ public class GuessDetailsActivity extends BaseActivity {
             }
         });
         valueList = virtualKeyboardView.getValueList();
-        countCoin.setText(UtilTool.doubleMultiply(count, Double.parseDouble(mSingle_coin))+ mTvCoin.getText().toString());
+        countCoin.setText(UtilTool.doubleMultiply(count, Double.parseDouble(mSingle_coin)) + mTvCoin.getText().toString());
         coin.setText(getString(R.string.bet) + mTvCoin.getText().toString() + getString(R.string.guess));
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -782,11 +791,13 @@ public class GuessDetailsActivity extends BaseActivity {
         }
     };
 
-    @OnClick({R.id.ll_hash, R.id.btn_plus, R.id.btn_minus, R.id.bark, R.id.btn_random, R.id.btn_random2, R.id.btn_random3, R.id.btn_random4, R.id.btn_random5, R.id.btn_bet, R.id.btn_confirm})
+    @OnClick({R.id.iv_share, R.id.ll_hash, R.id.btn_plus, R.id.btn_minus, R.id.bark, R.id.btn_random, R.id.btn_random2, R.id.btn_random3, R.id.btn_random4, R.id.btn_random5, R.id.btn_bet, R.id.btn_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+            case R.id.iv_share:
+                showShareDialog();
                 break;
             case R.id.ll_hash:
                 showHashDialog();
@@ -877,6 +888,31 @@ public class GuessDetailsActivity extends BaseActivity {
                 }
                 break;
         }
+    }
+
+    private void showShareDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_guess_share, this, R.style.dialog);
+        deleteCacheDialog.show();
+        Button shareFriend = (Button) deleteCacheDialog.findViewById(R.id.btn_share_friend);
+        Button shareDynamic = (Button) deleteCacheDialog.findViewById(R.id.btn_share_dynamic);
+        shareFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        shareDynamic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                Intent intent = new Intent(GuessDetailsActivity.this, GuessShareDynamicActivity.class);
+                intent.putExtra("title", mTvTitle.getText().toString());
+                intent.putExtra("name", mTvWho.getText().toString());
+                intent.putExtra("coin_name", mTvCoin.getText().toString());
+                intent.putExtra("guess_pw", mGuess_pw);
+                startActivity(intent);
+            }
+        });
     }
 
     private void showHashDialog() {

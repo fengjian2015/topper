@@ -28,6 +28,16 @@
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
+        <ImageView
+            android:id="@+id/iv_share"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/ico_news_share"
+            android:visibility="gone"/>
+
     </RelativeLayout>
 
     <TextView
@@ -432,16 +442,16 @@
                         android:padding="@dimen/x30">
 
                         <TextView
-                            android:textSize="@dimen/x26"
-                            android:text="@string/bet_hint"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:text="@string/bet_hint"
+                            android:textSize="@dimen/x26"/>
 
                         <LinearLayout
-                            android:layout_marginTop="@dimen/y20"
                             android:id="@+id/ll_guess_count"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/y80"
+                            android:layout_marginTop="@dimen/y20"
                             android:visibility="visible">
 
                             <Button

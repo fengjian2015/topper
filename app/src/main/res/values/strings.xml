@@ -865,4 +865,6 @@
     <string name="pack_up_reply">收起回復</string>
     <string name="share">分享</string>
     <string name="business_card">名片</string>
+    <string name="share_friend">分享到好友</string>
+    <string name="share_dynamic">分享到動態</string>
 </resources>
