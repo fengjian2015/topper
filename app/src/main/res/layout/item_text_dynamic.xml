@@ -31,7 +31,8 @@
                 android:layout_height="wrap_content"
                 android:text="安子"
                 android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+                android:textSize="@dimen/x32"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/time"
@@ -49,7 +50,7 @@
                 android:layout_height="@dimen/x40"
                 android:layout_alignParentRight="true"
                 android:paddingRight="@dimen/x20"
-                android:src="@mipmap/icon_delete"/>
+                android:src="@mipmap/ico_dy_delete"/>
 
             <TextView
                 android:id="@+id/text_content"
@@ -59,11 +60,11 @@
                 android:layout_marginRight="@dimen/x30"
                 android:layout_marginTop="@dimen/y10"
                 android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+                android:textSize="@dimen/x30"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/y80"
+                android:layout_height="@dimen/y100"
                 android:layout_below="@+id/text_content"
                 android:layout_marginRight="@dimen/x30"
                 android:gravity="right|center_vertical"
@@ -76,10 +77,10 @@
                     android:drawableLeft="@mipmap/ico_dy_give"
                     android:drawablePadding="@dimen/x10"
                     android:gravity="center"
-                    android:paddingLeft="@dimen/x10"
-                    android:paddingRight="@dimen/x10"
+                    android:paddingLeft="@dimen/x20"
+                    android:paddingRight="@dimen/x20"
                     android:text="0"
-                    android:textSize="@dimen/x26"/>
+                    android:textSize="@dimen/x30"/>
 
                 <TextView
                     android:id="@+id/tv_pinglun"
@@ -88,10 +89,10 @@
                     android:drawableLeft="@drawable/pinglun_selector"
                     android:drawablePadding="@dimen/x10"
                     android:gravity="center"
-                    android:paddingLeft="@dimen/x10"
-                    android:paddingRight="@dimen/x10"
+                    android:paddingLeft="@dimen/x20"
+                    android:paddingRight="@dimen/x20"
                     android:text="0"
-                    android:textSize="@dimen/x26"/>
+                    android:textSize="@dimen/x30"/>
 
 
                 <TextView
@@ -101,10 +102,10 @@
                     android:drawableLeft="@drawable/zan_selector"
                     android:drawablePadding="@dimen/x10"
                     android:gravity="center"
-                    android:paddingLeft="@dimen/x10"
-                    android:paddingRight="@dimen/x10"
+                    android:paddingLeft="@dimen/x20"
+                    android:paddingRight="@dimen/x20"
                     android:text="0"
-                    android:textSize="@dimen/x26"/>
+                    android:textSize="@dimen/x30"/>
 
             </LinearLayout>
 
@@ -119,7 +120,6 @@
         android:layout_below="@+id/ll_dynamic_content"
         android:layout_marginBottom="@dimen/y30"
         android:layout_marginLeft="@dimen/x100"
-        android:layout_marginRight="@dimen/x20"
         android:background="#F7F7F7"
         android:orientation="vertical"
         android:padding="@dimen/y20"

@@ -87,7 +87,8 @@ public class PayRecordActivity extends BaseActivity {
         mFiltrateList.add(getString(R.string.transfer));
         mFiltrateList.add(getString(R.string.receipt_payment));
         mFiltrateList.add(getString(R.string.in_coin));
-        mFiltrateList.add(getString(R.string.out_coin));/*
+        mFiltrateList.add(getString(R.string.out_coin));
+        mFiltrateList.add(getString(R.string.reward));/*
         mFiltrateList.add(getString(R.string.bank_card));
         mFiltrateList.add(getString(R.string.ru_zhang));
         mFiltrateList.add(getString(R.string.qi_ta));*/
@@ -271,6 +272,8 @@ public class PayRecordActivity extends BaseActivity {
                     mTypes = "4";
                 } else if (typeName.equals(getString(R.string.out_coin))) {
                     mTypes = "5";
+                } else if (typeName.equals(getString(R.string.reward))) {
+                    mTypes = "6";
                 }
                 initData();
                 mMap.put(getString(R.string.filtrate), position);

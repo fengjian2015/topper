@@ -875,4 +875,8 @@
     <string name="reward_succeed">打賞成功</string>
     <string name="share_guess">竞猜分享</string>
     <string name="send_card">發送名片</string>
+    <string name="no_look_ta_dy">不看Ta的動態</string>
+    <string name="no_look_ta_dy_hint">您已屏蔽Ta的動態</string>
+    <string name="shield_dy">屏蔽動態</string>
+    <string name="no_look_ta_dy2">不讓Ta看我的動態</string>
 </resources>

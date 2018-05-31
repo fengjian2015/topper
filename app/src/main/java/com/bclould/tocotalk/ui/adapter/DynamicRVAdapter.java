@@ -243,7 +243,9 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                         showDialog(dataBean.getId() + "");
                     }
                 });
+                mTvReward.setVisibility(View.GONE);
             } else {
+                mTvReward.setVisibility(View.VISIBLE);
                 mIvDelete.setVisibility(View.GONE);
             }
             if (!dataBean.getAvatar().isEmpty()) {
@@ -473,7 +475,9 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                         showDialog(dataBean.getId() + "");
                     }
                 });
+                mTvReward.setVisibility(View.GONE);
             } else {
+                mTvReward.setVisibility(View.VISIBLE);
                 mIvDelete.setVisibility(View.GONE);
             }
             if (dataBean.getReviewList().size() != 0) {
@@ -655,7 +659,9 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                         showDialog(dataBean.getId() + "");
                     }
                 });
+                mTvReward.setVisibility(View.GONE);
             } else {
+                mTvReward.setVisibility(View.VISIBLE);
                 mIvDelete.setVisibility(View.GONE);
             }
             if (!dataBean.getAvatar().isEmpty()) {

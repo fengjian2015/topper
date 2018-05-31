@@ -2,21 +2,17 @@ package com.bclould.tocotalk.ui.fragment;
 
 
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
@@ -51,16 +47,26 @@ public class DiscoverFragment extends Fragment {
     TextView mDongtaiXx;
     @Bind(R.id.cloud_circle_menu)
     LinearLayout mCloudCircleMenu;
-    @Bind(R.id.iv_more)
-    ImageView mIvMore;
+    @Bind(R.id.iv_gonggao_manager)
+    ImageView mIvGonggaoManager;
+    @Bind(R.id.ll_gonggao)
+    LinearLayout mLlGonggao;
+    @Bind(R.id.iv_news_manager)
+    ImageView mIvNewsManager;
+    @Bind(R.id.iv_news_push)
+    ImageView mIvNewsPush;
+    @Bind(R.id.ll_news)
+    LinearLayout mLlNews;
+    @Bind(R.id.iv_push_dynamic)
+    ImageView mIvPushDynamic;
+    @Bind(R.id.iv_my_dynamic)
+    ImageView mIvMyDynamic;
+    @Bind(R.id.ll_dynamic)
+    LinearLayout mLlDynamic;
     @Bind(R.id.xx)
     TextView mXx;
     @Bind(R.id.cloud_circle_vp)
     ViewPager mCloudCircleVp;
-    private DisplayMetrics mDm;
-    private int mHeightPixels;
-    private ViewGroup mView;
-    private PopupWindow mPopupWindow;
 
 
     public static DiscoverFragment getInstance() {
@@ -77,7 +83,7 @@ public class DiscoverFragment extends Fragment {
         ButterKnife.bind(this, view);
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
-        getPhoneSize();
+//        getPhoneSize();
         initInterface();
         return view;
     }
@@ -92,6 +98,7 @@ public class DiscoverFragment extends Fragment {
 
     //初始化界面
     private void initInterface() {
+        mLlGonggao.setVisibility(View.VISIBLE);
         setSelector(0);
         mCloudCircleVp.setCurrentItem(0);
         initTopMenu();
@@ -110,11 +117,23 @@ public class DiscoverFragment extends Fragment {
         mCloudCircleVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
             public void onPageSelected(int position) {
+                if (position == 0) {
+                    mLlGonggao.setVisibility(View.VISIBLE);
+                    mLlDynamic.setVisibility(View.GONE);
+                    mLlNews.setVisibility(View.GONE);
+                } else if (position == 1) {
+                    mLlGonggao.setVisibility(View.GONE);
+                    mLlDynamic.setVisibility(View.GONE);
+                    mLlNews.setVisibility(View.VISIBLE);
+                } else {
+                    mLlGonggao.setVisibility(View.GONE);
+                    mLlDynamic.setVisibility(View.VISIBLE);
+                    mLlNews.setVisibility(View.GONE);
+                }
                 setSelector(position);
             }
 
@@ -191,7 +210,30 @@ public class DiscoverFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
-    //获取屏幕高度
+    @OnClick({R.id.iv_gonggao_manager, R.id.iv_news_manager, R.id.iv_news_push, R.id.iv_push_dynamic, R.id.iv_my_dynamic})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_gonggao_manager:
+                startActivity(new Intent(getActivity(), GonggaoManagerActivity.class));
+                break;
+            case R.id.iv_news_manager:
+                startActivity(new Intent(getActivity(), NewsManagerActivity.class));
+                break;
+            case R.id.iv_news_push:
+                startActivity(new Intent(getActivity(), NewsEditActivity.class));
+                break;
+            case R.id.iv_push_dynamic:
+                startActivity(new Intent(getActivity(), PublicshDynamicActivity.class));
+                break;
+            case R.id.iv_my_dynamic:
+                Intent intent = new Intent(getActivity(), PersonageDynamicActivity.class);
+                intent.putExtra("name", UtilTool.getUser());
+                startActivity(intent);
+                break;
+        }
+    }
+
+   /* //获取屏幕高度
     private void getPhoneSize() {
         mDm = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(mDm);
@@ -266,14 +308,5 @@ public class DiscoverFragment extends Fragment {
                 }
             });
         }
-    }
-
-    @OnClick({R.id.iv_more})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.iv_more:
-                showPopup();
-                break;
-        }
-    }
+    }*/
 }

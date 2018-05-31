@@ -147,6 +147,8 @@ public class DynamicFragment extends Fragment {
                     break;
                 }
             }
+        } else if (msg.equals(getString(R.string.shield_dy))) {
+            initData(PULL_DOWN);
         }
     }
 

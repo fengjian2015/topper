@@ -14,6 +14,16 @@ public class DynamicListInfo {
      */
 
     private int status;
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     private List<DataBean> data;
 
     public int getStatus() {

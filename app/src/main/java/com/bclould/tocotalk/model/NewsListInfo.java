@@ -102,6 +102,15 @@ public class NewsListInfo {
         private String created_at;
         private String index_pic;
         private int is_important;
+        private int is_ad;
+
+        public int getIs_ad() {
+            return is_ad;
+        }
+
+        public void setIs_ad(int is_ad) {
+            this.is_ad = is_ad;
+        }
 
         public int getId() {
             return id;

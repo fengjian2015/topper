@@ -1054,6 +1054,7 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("code") int code
     );
+
     //創建群聊房間
     @FormUrlEncoded
     @POST("room/create")
@@ -1081,5 +1082,14 @@ public interface MyService {
     @POST("room/create")
     Observable<GroupInfo> getGroup(
             @Header("Authorization") String token
+    );
+
+    //不看他的動態
+    @FormUrlEncoded
+    @POST("dynamic/shield")
+    Observable<BaseInfo> noLookTaDy(
+            @Header("Authorization") String token,
+            @Field("type") int type,
+            @Field("name") String name
     );
 }

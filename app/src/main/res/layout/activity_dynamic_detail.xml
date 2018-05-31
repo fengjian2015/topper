@@ -87,7 +87,8 @@
                         android:layout_marginTop="@dimen/x36"
                         android:layout_toRightOf="@+id/touxiang"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/x32"/>
+                        android:textSize="@dimen/x32"
+                        android:textStyle="bold"/>
 
                     <ImageView
                         android:id="@+id/time_tv"
@@ -118,7 +119,7 @@
                         android:layout_marginLeft="@dimen/x25"
                         android:layout_marginTop="@dimen/y20"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/x28"/>
+                        android:textSize="@dimen/x30"/>
 
                     <android.support.v7.widget.CardView
                         android:id="@+id/cv_guess"
@@ -201,8 +202,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:layout_alignTop="@+id/touxiang"
                         android:layout_marginRight="@dimen/x25"
-                        android:layout_marginTop="@dimen/y50"
                         android:padding="@dimen/x20">
 
                         <ImageView
@@ -214,9 +215,10 @@
                             android:id="@+id/tv_like_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/x10"
                             android:textColor="@drawable/text_blue_selector"
-                            android:textSize="@dimen/x22"/>
+                            android:textSize="@dimen/x30"/>
 
                     </LinearLayout>
 

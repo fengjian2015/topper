@@ -16,6 +16,8 @@ import com.bclould.tocotalk.model.NewsListInfo;
 import com.bclould.tocotalk.ui.activity.NewsDetailsActivity;
 import com.bclould.tocotalk.utils.Constants;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -91,6 +93,8 @@ public class NewsRVAdapter extends RecyclerView.Adapter {
         TextView mTvNewsTitle;
         @Bind(R.id.tv_time)
         TextView mTvTime;
+        @Bind(R.id.tv_type)
+        TextView mTvType;
         private int mId;
 
         ViewHolder(View view) {
@@ -108,6 +112,11 @@ public class NewsRVAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(NewsListInfo.ListsBean listsBean) {
+            if (listsBean.getIs_ad() == 1) {
+                mTvType.setVisibility(View.VISIBLE);
+            } else {
+                mTvType.setVisibility(View.GONE);
+            }
             mId = listsBean.getId();
             mTvNewsTitle.setText(listsBean.getTitle());
             mTvTime.setText(listsBean.getCreated_at());
@@ -121,6 +130,8 @@ public class NewsRVAdapter extends RecyclerView.Adapter {
         TextView mTvNewsTitle;
         @Bind(R.id.tv_time)
         TextView mTvTime;
+        @Bind(R.id.tv_type)
+        TextView mTvType;
         private int mId;
 
         ViewHolder2(View view) {
@@ -139,10 +150,21 @@ public class NewsRVAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(NewsListInfo.ListsBean listBean) {
+            if (listBean.getIs_ad() == 1) {
+                mTvType.setVisibility(View.VISIBLE);
+            } else {
+                mTvType.setVisibility(View.GONE);
+            }
             mId = listBean.getId();
             mTvNewsTitle.setText(listBean.getTitle());
             mTvTime.setText(listBean.getCreated_at());
-            Glide.with(mContext).load(listBean.getIndex_pic()).into(mIvImage);
+
+            RequestOptions requestOptions = new RequestOptions()
+                    .error(R.mipmap.ic_empty_photo)
+                    .centerCrop()
+                    .placeholder(R.mipmap.ic_empty_photo)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+            Glide.with(mContext).load(listBean.getIndex_pic()).apply(requestOptions).into(mIvImage);
         }
     }
 }

@@ -1,7 +1,5 @@
 package com.bclould.tocotalk.model;
 
-import java.util.List;
-
 /**
  * Created by GIjia on 2018/5/10.
  */
@@ -40,7 +38,25 @@ public class IndividualInfo {
         private String name;
         private String avatar;
         private String country;
+        private int no_see_me;
+        private int no_see_him;
         private String remark;
+
+        public int getNo_see_me() {
+            return no_see_me;
+        }
+
+        public void setNo_see_me(int no_see_me) {
+            this.no_see_me = no_see_me;
+        }
+
+        public int getNo_see_him() {
+            return no_see_him;
+        }
+
+        public void setNo_see_him(int no_see_him) {
+            this.no_see_him = no_see_him;
+        }
 
         public String getName() {
             return name;
