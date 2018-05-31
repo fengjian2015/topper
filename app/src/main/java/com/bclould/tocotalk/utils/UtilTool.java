@@ -50,6 +50,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jxmpp.jid.impl.JidCreate;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -221,6 +222,24 @@ public class UtilTool {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 把batmap 转file
+     * @param bitmap
+     * @param filepath
+     */
+    public static File saveBitmapFile(Bitmap bitmap, String filepath){
+        File file=new File(filepath);//将要保存图片的路径
+        try {
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            bos.flush();
+            bos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
     }
 
     /**

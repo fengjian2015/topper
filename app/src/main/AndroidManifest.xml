@@ -336,9 +336,8 @@
         <activity
             android:name=".ui.activity.LocationActivity"
             android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
-            />
+            android:windowSoftInputMode="adjustPan" />
 
         <!-- 账号安全页面 -->
         <activity
@@ -793,29 +792,33 @@
             android:name=".ui.activity.HTMLActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-
-        <activity android:name=".ui.activity.ChatLookLocationActivity"
+        <activity
+            android:name=".ui.activity.ChatLookLocationActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".ui.activity.SetGesturePWActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
-        <activity android:name=".ui.activity.SetGesturePWActivity"
-                  android:screenOrientation="portrait"
-                  android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <!-- 更新日誌頁 -->
+        <activity
+            android:name=".ui.activity.UpdateLogActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
-        <!--更新日誌頁-->
-        <activity android:name=".ui.activity.UpdateLogActivity"
-                  android:screenOrientation="portrait"
-                  android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <!-- 競猜分享到動態頁 -->
+        <activity
+            android:name=".ui.activity.GuessShareDynamicActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
-        <!--競猜分享到動態頁-->
-        <activity android:name=".ui.activity.GuessShareDynamicActivity"
-                  android:screenOrientation="portrait"
-                  android:windowSoftInputMode="stateHidden|adjustPan"/>
-
-        <!--動態打賞頁-->
-        <activity android:name=".ui.activity.RewardActivity"
-                  android:screenOrientation="portrait"
-                  android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <!-- 動態打賞頁 -->
+        <activity
+            android:name=".ui.activity.RewardActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".ui.activity.CameraActivity"></activity>
     </application>
 
 </manifest>

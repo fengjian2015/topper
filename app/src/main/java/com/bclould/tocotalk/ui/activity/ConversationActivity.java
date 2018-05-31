@@ -119,12 +119,11 @@ import static com.bclould.tocotalk.R.style.BottomDialog;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class ConversationActivity extends AppCompatActivity implements FuncLayout.OnFuncKeyBoardListener, XhsEmoticonsKeyBoard.OnResultOTR, MessageManageListener {
 
-    private static final int CODE_TAKE_PHOTO = 1;
+    private static final int CODE_TAKE_PHOTO_SHOOTING = 100;
     private static final int FILE_SELECT_CODE = 2;
     public static final String ACCESSKEYID = "access_key_id";
     public static final String SECRETACCESSKEY = "secret_access_key";
     public static final String SESSIONTOKEN = "session_token";
-    private static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 3;
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.title_name)
@@ -489,15 +488,13 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             initData();
         } else if (msg.equals(getString(R.string.transfer))) {
             initData();
+        }else if(msg.equals(getString(R.string.open_shooting))){
+            openShooting();
         } else if (msg.equals(getString(R.string.open_photo_album))) {
             selectorImages();
-        } else if (msg.equals(getString(R.string.open_camera))) {
-            photograph();
-        } else if (msg.equals(getString(R.string.open_file_manage))) {
+        }else if (msg.equals(getString(R.string.open_file_manage))) {
             showFileChooser();
-        } else if (msg.equals(getString(R.string.open_vidicon))) {
-            openCameraShooting();
-        } else if (msg.equals(getString(R.string.look_original))) {
+        }else if (msg.equals(getString(R.string.look_original))) {
             String id = event.getId();
             for (MessageInfo info : mMessageList) {
                 info.setImageType(1);
@@ -523,26 +520,31 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     }
 
-
-    //打开系统视频录制
-    private void openCameraShooting() {
-        Uri uri = null;
-        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 15);
-        intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 1024 * 6000);
-        try {
-            File cacheDir = new File(getFilesDir().getAbsolutePath() + "/images");
-            if (!cacheDir.exists())
-                cacheDir.mkdirs();
-            mImagePath = ConversationActivity.this.getFilesDir().getAbsolutePath() + "/images/" + UtilTool.createtFileName() + ".mp4";
-            File file = new File(mImagePath);
-            uri = FileProvider.getUriForFile(this, "com.bclould.tocotalk.provider", file);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
+    //打開拍攝
+    private void openShooting(){
+        Intent intent=new Intent(this,CameraActivity.class);
+        startActivityForResult(intent, CODE_TAKE_PHOTO_SHOOTING);
     }
+
+//    //打开系统视频录制
+//    private void openCameraShooting() {
+//        Uri uri = null;
+//        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+//        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 15);
+//        intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 1024 * 6000);
+//        try {
+//            File cacheDir = new File(getFilesDir().getAbsolutePath() + "/images");
+//            if (!cacheDir.exists())
+//                cacheDir.mkdirs();
+//            mImagePath = ConversationActivity.this.getFilesDir().getAbsolutePath() + "/images/" + UtilTool.createtFileName() + ".mp4";
+//            File file = new File(mImagePath);
+//            uri = FileProvider.getUriForFile(this, "com.bclould.tocotalk.provider", file);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+//        startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
+//    }
 
     //选择图片
     private void selectorImages() {
@@ -578,52 +580,13 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
     }
 
-    //调用相机
-    private void photograph() {
-        try {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            File cacheDir = new File(getFilesDir().getAbsolutePath() + "/images");
-            if (!cacheDir.exists())
-                cacheDir.mkdirs();
-            mImagePath = getFilesDir().getAbsolutePath() + "/images/" + UtilTool.createtFileName() + ".jpg";
-            File file = new File(mImagePath);
-            //添加权限
-            Uri uri = FileProvider.getUriForFile(this, "com.bclould.tocotalk.provider", file);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-            startActivityForResult(intent, CODE_TAKE_PHOTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-//    public File makeFileDirs(Context context, String photoName) {
-//        File cacheDir;
-//        // 如果有SD卡则在SD卡中建一个LazyList的目录存放缓存的图片
-//        // 没有SD卡就放在系统的缓存目录中
-//        if (Environment.getExternalStorageState().equals(
-//                Environment.MEDIA_MOUNTED)) {
-//            cacheDir = new File(Environment.getExternalStorageDirectory()
-//                    .getAbsolutePath()+"/tocotalk/"+photoName);
-//        } else if (Environment.getDataDirectory().getAbsolutePath() != null) {
-//            cacheDir = new File(ConstantsUtil.DATADIRECTORY + "Img/"
-//                    + photoName);
-//        } else
-//            cacheDir = context.getCacheDir();
-//        if (!cacheDir.exists())
-//            cacheDir.mkdirs();
-//        return cacheDir;
-//    }
 
     //页面返回数据处理
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            if (requestCode == CODE_TAKE_PHOTO) {
-                int degree = UtilTool.readPictureDegree(mImagePath);
-                UtilTool.toturn(mImagePath, BitmapFactory.decodeFile(mImagePath), degree);
-                roomManage.Upload(mImagePath);
-            } else if (requestCode == FILE_SELECT_CODE) {
+            if (requestCode == FILE_SELECT_CODE) {
 
             } else if (requestCode == PictureConfig.CHOOSE_REQUEST) {
                 selectList = PictureSelector.obtainMultipleResult(data);
@@ -633,8 +596,10 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                     }
                     selectList.clear();
                 }
-            } else if (requestCode == CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE) {
-                roomManage.Upload(mImagePath);
+            }else if(requestCode==CODE_TAKE_PHOTO_SHOOTING){
+                String url=data.getStringExtra("path_url");
+                if(!com.bclould.tocotalk.utils.StringUtils.isEmpty(url))
+                    roomManage.Upload(url);
             }
         }
     }

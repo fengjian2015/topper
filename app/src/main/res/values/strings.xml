@@ -875,4 +875,6 @@
     <string name="reward_succeed">打賞成功</string>
     <string name="share_guess">竞猜分享</string>
     <string name="send_card">發送名片</string>
+    <string name="shooting">拍攝</string>
+    <string name="open_shooting">打開拍攝</string>
 </resources>

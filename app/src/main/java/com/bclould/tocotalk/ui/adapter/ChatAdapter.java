@@ -487,7 +487,20 @@ public class ChatAdapter extends RecyclerView.Adapter {
 //            mIvTouxiang.setImageBitmap(mToBitmap);
             UtilTool.getImage(mMgr, UtilTool.getJid(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getJid(), mToName, messageInfo);
-            mTvMessamge.setText(HyperLinkUtil.getHyperClickableSpan(mContext, new SpannableStringBuilder(messageInfo.getMessage()), false));
+            HyperLinkUtil hyperLinkUtil=new HyperLinkUtil();
+            mTvMessamge.setText(hyperLinkUtil.getHyperClickableSpan(mContext, new SpannableStringBuilder(messageInfo.getMessage()), false, messageInfo.getId(), mMgr, new HyperLinkUtil.OnChangeLinkListener() {
+                @Override
+                public void changeLink(String message,String oldMessage) {
+                    if(!messageInfo.getMessage().equals(oldMessage))return;
+                    messageInfo.setMessage(message);
+                    ((Activity)mContext).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            notifyDataSetChanged();
+                        }
+                    });
+                }
+            }));
             mTvMessamge.setMovementMethod(new CustomLinkMovementMethod());
             if (messageInfo.getSendStatus() == 1) {
                 mIvWarning.setVisibility(View.VISIBLE);
@@ -539,7 +552,20 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 UtilTool.getImage(mMgr, mRoomId, mContext, mIvTouxiang);
             }
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
-            mTvMessamge.setText(HyperLinkUtil.getHyperClickableSpan(mContext, new SpannableStringBuilder(messageInfo.getMessage()), true));
+            HyperLinkUtil hyperLinkUtil=new HyperLinkUtil();
+            mTvMessamge.setText(hyperLinkUtil.getHyperClickableSpan(mContext, new SpannableStringBuilder(messageInfo.getMessage()), true, messageInfo.getId(), mMgr, new HyperLinkUtil.OnChangeLinkListener() {
+                @Override
+                public void changeLink(String message,String oldMessage) {
+                    if(!messageInfo.getMessage().equals(oldMessage))return;
+                    messageInfo.setMessage(message);
+                    ((Activity)mContext).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            notifyDataSetChanged();
+                        }
+                    });
+                }
+            }));
             mTvMessamge.setMovementMethod(new CustomLinkMovementMethod());
             mTvMessamge.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override

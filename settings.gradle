@@ -1,1 +1,1 @@
-include ':app', ':library', ':keyboard', ':otr4jandroid', ':richtexteditorlib', ':lubottommenu'
+include ':app', ':library', ':keyboard', ':otr4jandroid', ':richtexteditorlib', ':lubottommenu', ':camera'

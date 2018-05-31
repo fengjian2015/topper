@@ -85,12 +85,14 @@ public class AppsAdapter extends BaseAdapter {
                         mContext.startActivity(intent);
                     } else if (name.equals(mContext.getString(R.string.image))) {
                         EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.open_photo_album)));
-                    } else if (name.equals(mContext.getString(R.string.paizhao))) {
-                        EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.open_camera)));
-                    } else if (name.equals(mContext.getString(R.string.file))) {
+                    }
+//                    else if (name.equals(mContext.getString(R.string.video))) {
+//                        EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.open_vidicon)));
+//                    } else if (name.equals(mContext.getString(R.string.paizhao))) {
+//                        EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.open_camera)));
+//                    }
+                    else if (name.equals(mContext.getString(R.string.file))) {
                         EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.open_file_manage)));
-                    } else if (name.equals(mContext.getString(R.string.video))) {
-                        EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.open_vidicon)));
                     } else if (name.equals(mContext.getString(R.string.location))) {
                         Intent intent = new Intent(mContext, LocationActivity.class);
                         intent.putExtra("user", mUser);
@@ -99,6 +101,8 @@ public class AppsAdapter extends BaseAdapter {
                         Intent intent = new Intent(mContext, ChatTransferActivity.class);
                         intent.putExtra("user", mUser);
                         mContext.startActivity(intent);
+                    }else if(name.equals(mContext.getString(R.string.shooting))){
+                        EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.open_shooting)));
                     }
                 }
             });
