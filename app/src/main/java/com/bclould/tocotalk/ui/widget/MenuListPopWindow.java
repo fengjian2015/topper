@@ -1,9 +1,15 @@
 package com.bclould.tocotalk.ui.widget;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -39,13 +45,11 @@ public class MenuListPopWindow extends PopupWindow {
     private Context context;
     private int color = 0;
 
-    public MenuListPopWindow(Context context, List<String> menunames){
+    public MenuListPopWindow(Context context, List<String> menunames) {
         View view = View.inflate(context, R.layout.menulist_popwindow, null);
-        view.startAnimation(AnimationUtils.loadAnimation(context,
-                R.anim.fade_ins));
         this.menunames = menunames;
         this.context = context;
-
+        setAnimationStyle(R.style.BottomPop);
         setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
         setBackgroundDrawable(new BitmapDrawable());
@@ -75,12 +79,78 @@ public class MenuListPopWindow extends PopupWindow {
                 }
             }
         });
-
     }
 
-    public void setBgBackgroundColor(int color,float alpha){
+    // 设置屏幕透明度
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = ((Activity)context).getWindow().getAttributes();
+        lp.alpha = bgAlpha;
+        ((Activity)context).getWindow().setAttributes(lp);
+    }
+
+    Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            float alp= (float) msg.obj;
+            backgroundAlpha(alp);
+        }
+    };
+
+    private float alpha=1;
+
+    @Override
+    public void showAtLocation(View parent, int gravity, int x, int y) {
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                while(alpha>0.5f){
+                    try {
+                        //4是根据弹出动画时间和减少的透明度计算
+                        Thread.sleep(8);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Message msg =handler.obtainMessage();
+                    msg.what = 1;
+                    //每次减少0.01，精度越高，变暗的效果越流畅
+                    alpha-=0.01f;
+                    msg.obj =alpha ;
+                    handler.sendMessage(msg);
+                }
+            }
+        }).start();
+        super.showAtLocation(parent, gravity, x, y);
+    }
+
+    @Override
+    public void dismiss() {
+        // TODO Auto-generated method stub
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                //此处while的条件alpha不能<= 否则会出现黑屏
+                while(alpha<1f){
+                    try {
+                        Thread.sleep(8);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Message msg =handler.obtainMessage();
+                    msg.what = 1;
+                    alpha+=0.01f;
+                    msg.obj =alpha ;
+                    handler.sendMessage(msg);
+                }
+            }
+        }).start();
+        super.dismiss();
+    }
+
+
+    public void setBgBackgroundColor(int color, float alpha){
         quit_popupwindows_bg.setBackgroundColor(color);
         quit_popupwindows_bg.setAlpha(alpha);
+
     }
 
     public void setColor(int color) {

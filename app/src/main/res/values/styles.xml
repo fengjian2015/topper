@@ -62,6 +62,11 @@
         <item name="android:windowExitAnimation">@anim/anim_out</item>
     </style>
 
+    <style name="BottomPop" >
+        <item name="android:windowEnterAnimation">@anim/popup_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_out</item>
+    </style>
+
     <style name="BottomDialog2" parent="android:style/android:Theme.Material.Light.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>

@@ -686,6 +686,13 @@ public class DBManager {
         db.update("MessageRecord", values, "id=?", new String[]{id + ""});
     }
 
+    public void updateMessage(int id,String message) {
+        db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("message", message);
+        db.update("MessageRecord", values, "id=?", new String[]{id + ""});
+    }
+
     public void updateMessage(String url, int id) {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();

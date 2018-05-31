@@ -2,25 +2,42 @@ package com.bclould.tocotalk.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.URLSpan;
 import android.util.Patterns;
 import android.view.View;
 
 
+import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.ui.activity.HTMLActivity;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.regex.Matcher;
 
 /**
  * Created by xux on 2016/7/6.
  */
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class HyperLinkUtil {
-    public static SpannableStringBuilder getHyperClickableSpan(Context context, SpannableStringBuilder spanStr) {
+    private OnChangeLinkListener mOnChangeLinkListener;
+
+    public interface OnChangeLinkListener{
+        void changeLink(String message,String oldMessage);
+    }
+
+
+    public  SpannableStringBuilder getHyperClickableSpan(Context context, SpannableStringBuilder spanStr) {
         if (spanStr == null || spanStr.length() == 0) {
             return spanStr;
         }
@@ -31,7 +48,9 @@ public class HyperLinkUtil {
         }
         return spanStr;
     }
-    public static SpannableStringBuilder getHyperClickableSpan(Context context, SpannableStringBuilder spanStr, boolean isChatLeft) {
+
+    public  SpannableStringBuilder getHyperClickableSpan(Context context, SpannableStringBuilder spanStr, boolean isChatLeft, int messageId, DBManager dbManager, OnChangeLinkListener onChangeLinkListener) {
+        mOnChangeLinkListener=onChangeLinkListener;
         if (spanStr == null || spanStr.length() == 0) {
             return spanStr;
         }
@@ -39,7 +58,49 @@ public class HyperLinkUtil {
         Matcher m = UtilTool.searchUrl().matcher(spanStr);
         while (m.find()) {
             spanStr = showHyperLinkString(context, spanStr, m.group(), m.start(),isChatLeft);
+            String html5Url=m.group();
+            if (!UtilTool.checkLinkedExe(html5Url)) {
+                html5Url = "http://" + html5Url;
+            }
+            spanStr=getTitleText(html5Url,m.start(),spanStr,messageId,dbManager,isChatLeft);
         }
+        return spanStr;
+    }
+
+    private  SpannableStringBuilder getTitleText(final String html5Url, final int start, final SpannableStringBuilder spanStr, final int messageId, final DBManager dbManager, boolean isChatLeft) {
+        String oldString=spanStr.toString().substring(0,start);
+        int lastRight=oldString.lastIndexOf(">");
+        if(lastRight>0&&lastRight==start-1){
+            oldString=oldString.substring(0,lastRight);
+            int lastLeft=oldString.lastIndexOf("<");
+            if(lastLeft>=0){
+                // TODO: 2018/5/31 改變字體顏色
+                int color;
+                if(isChatLeft){
+                    color=0xff42B0FF;
+                }else{
+                    color=0xffffffff;
+                }
+                spanStr.setSpan(new ForegroundColorSpan(color), lastLeft, start, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);//背景色
+                return spanStr;
+            }
+        }
+        new Thread(){
+            @Override
+            public void run() {
+                try {
+                    Document doc = Jsoup.connect(html5Url).get();
+                    if(!StringUtils.isEmpty(doc.title())) {
+                        String oldString=spanStr.toString();
+                        spanStr.insert(start, "<" + doc.title() + ">");
+                        dbManager.updateMessage(messageId,spanStr.toString());
+                        mOnChangeLinkListener.changeLink(spanStr.toString(),oldString);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }.start();
         return spanStr;
     }
 

@@ -879,4 +879,6 @@
     <string name="no_look_ta_dy_hint">您已屏蔽Ta的動態</string>
     <string name="shield_dy">屏蔽動態</string>
     <string name="no_look_ta_dy2">不讓Ta看我的動態</string>
+    <string name="shooting">拍攝</string>
+    <string name="open_shooting">打開拍攝</string>
 </resources>

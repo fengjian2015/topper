@@ -42,8 +42,9 @@ public class SimpleAppsGridView extends RelativeLayout {
         GridView gv_apps = (GridView) view.findViewById(R.id.gv_apps);
         ArrayList<AppInfo> mAppBeanList = new ArrayList<>();
         mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_photo, mContext.getString(R.string.image)));
-        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_camera, mContext.getString(R.string.paizhao)));
-        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_video, mContext.getString(R.string.video)));
+        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_camera, mContext.getString(R.string.shooting)));
+//        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_camera, mContext.getString(R.string.paizhao)));
+//        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_video, mContext.getString(R.string.video)));
 //        mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_file, "文件"));
         if(!RoomManage.ROOM_TYPE_MULTI.equals(roomType)){
             mAppBeanList.add(new AppInfo(R.mipmap.icon_tail_transfer, mContext.getString(R.string.transfer)));
