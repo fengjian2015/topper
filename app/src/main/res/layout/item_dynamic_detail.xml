@@ -72,8 +72,8 @@
             android:padding="@dimen/x20">
 
             <ImageView
-                android:layout_width="@dimen/x25"
-                android:layout_height="@dimen/y25"
+                android:layout_width="@dimen/x30"
+                android:layout_height="@dimen/x30"
                 android:src="@drawable/zan_selector"/>
 
             <TextView
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x10"
                 android:text="7489"
-                android:textColor="@drawable/text_blue_selector"
+                android:textColor="#6F6F6F"
                 android:textSize="@dimen/x22"/>
 
         </LinearLayout>
@@ -91,13 +91,13 @@
 
 
     <android.support.v7.widget.RecyclerView
-        android:paddingLeft="@dimen/x20"
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x141"
         android:layout_marginTop="@dimen/y20"
         android:background="@color/light"
+        android:paddingLeft="@dimen/x20"
         android:visibility="gone">
     </android.support.v7.widget.RecyclerView>
 

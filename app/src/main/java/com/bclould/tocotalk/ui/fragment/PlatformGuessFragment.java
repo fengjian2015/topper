@@ -20,6 +20,7 @@ import com.bclould.tocotalk.ui.adapter.GuessListRVAdapter;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
@@ -47,8 +48,11 @@ public class PlatformGuessFragment extends Fragment {
     @Bind(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
+    private int PULL_UP = 0;
+    private int PULL_DOWN = 1;
+    private int end = 0;
     private int mPage = 1;
-    private int mPageSize = 1000;
+    private int mPageSize = 10;
     private String mUser = "";
     private GuessListRVAdapter mGuessListRVAdapter;
 
@@ -72,15 +76,15 @@ public class PlatformGuessFragment extends Fragment {
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.bet))) {
-            initData(mUser);
-        }else if (msg.equals(getString(R.string.guess_cancel))) {
-            initData(mUser);
+            initData(mUser, PULL_DOWN);
+        } else if (msg.equals(getString(R.string.guess_cancel))) {
+            initData(mUser, PULL_DOWN);
         }
     }
 
     private void init() {
         mBlockchainGuessPresenter = new BlockchainGuessPresenter(getContext());
-        initData(mUser);
+        initData(mUser, PULL_DOWN);
         initRecyclerView();
         initListener();
     }
@@ -90,7 +94,14 @@ public class PlatformGuessFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
-                initData(mUser);
+                initData(mUser, PULL_DOWN);
+            }
+        });
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                refreshLayout.finishLoadMore(1000);
+                initData(mUser, PULL_UP);
             }
         });
     }
@@ -103,17 +114,38 @@ public class PlatformGuessFragment extends Fragment {
 
     List<GuessListInfo.DataBean> mDataList = new ArrayList<>();
 
-    private void initData(String user) {
+    private void initData(String user, final int type) {
+        if (type == PULL_DOWN) {
+            mPage = 1;
+            end = 0;
+        }
         mBlockchainGuessPresenter.getGuessList(mPage, mPageSize, 2, user, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
-                    if (data.size() != 0) {
+                    if (mDataList.size() != 0 || data.size() != 0) {
+                        if (type == PULL_UP) {
+                            if (data.size() == mPageSize) {
+                                mPage++;
+                                mDataList.addAll(data);
+                                mGuessListRVAdapter.notifyDataSetChanged();
+                            } else {
+                                if (end == 0) {
+                                    end++;
+                                    mDataList.addAll(data);
+                                    mGuessListRVAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        } else {
+                            if (mPage == 1) {
+                                mPage++;
+                            }
+                            mDataList.clear();
+                            mDataList.addAll(data);
+                            mGuessListRVAdapter.notifyDataSetChanged();
+                        }
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
-                        mDataList.clear();
-                        mDataList.addAll(data);
-                        mGuessListRVAdapter.notifyDataSetChanged();
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);

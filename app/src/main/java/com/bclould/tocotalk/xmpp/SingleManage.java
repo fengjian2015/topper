@@ -72,49 +72,51 @@ import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_VOICE_MSG;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class SingleManage implements Room{
+public class SingleManage implements Room {
     private DBManager mMgr;
     private String mUser;
     private Context context;
     private String mName;
-    private ArrayList<MessageManageListener> listeners=new ArrayList<>();
+    private ArrayList<MessageManageListener> listeners = new ArrayList<>();
 
-    public SingleManage(DBManager mMgr, String mUser, Context context, String mName){
-        this.mMgr=mMgr;
-        this.mUser=mUser;
-        this.context= context;
-        this.mName=mName;
+    public SingleManage(DBManager mMgr, String mUser, Context context, String mName) {
+        this.mMgr = mMgr;
+        this.mUser = mUser;
+        this.context = context;
+        this.mName = mName;
     }
 
     @Override
-    public void addMessageManageListener(MessageManageListener messageManageListener){
+    public void addMessageManageListener(MessageManageListener messageManageListener) {
         listeners.add(messageManageListener);
     }
 
     @Override
     public void removerMessageManageListener(MessageManageListener messageManageListener) {
-        if(listeners.contains(messageManageListener)){
+        if (listeners.contains(messageManageListener)) {
             listeners.remove(messageManageListener);
         }
     }
 
-    private void refreshAddData(MessageInfo messageInfo){
-        if(listeners!=null){
-            for (MessageManageListener messageManageListener:listeners){
+    private void refreshAddData(MessageInfo messageInfo) {
+        if (listeners != null) {
+            for (MessageManageListener messageManageListener : listeners) {
                 messageManageListener.refreshAddData(messageInfo);
             }
         }
     }
-    private void sendFileResults(String newFile2,boolean isSuccess){
-        if(listeners!=null){
-            for (MessageManageListener messageManageListener:listeners){
-                messageManageListener.sendFileResults(newFile2,isSuccess);
+
+    private void sendFileResults(String newFile2, boolean isSuccess) {
+        if (listeners != null) {
+            for (MessageManageListener messageManageListener : listeners) {
+                messageManageListener.sendFileResults(newFile2, isSuccess);
             }
         }
     }
-    private void sendError(int id){
-        if(listeners!=null){
-            for (MessageManageListener messageManageListener:listeners){
+
+    private void sendError(int id) {
+        if (listeners != null) {
+            for (MessageManageListener messageManageListener : listeners) {
                 messageManageListener.sendError(id);
             }
         }
@@ -203,10 +205,10 @@ public class SingleManage implements Room{
         //缩略图储存路径
         final File newFile = new File(Constants.PUBLICDIR + key);
         String postfixs = file.getName().substring(file.getName().lastIndexOf("."));
-        if(!".gif".equals(postfixs)&&!".GIF".equals(postfixs)){
+        if (!".gif".equals(postfixs) && !".GIF".equals(postfixs)) {
             UtilTool.comp(bitmap, newFile);//压缩图片
-        }else{
-            UtilTool.copyFile(file.getAbsolutePath(),newFile.getAbsolutePath());
+        } else {
+            UtilTool.copyFile(file.getAbsolutePath(), newFile.getAbsolutePath());
         }
         //上传视频到aws
         if (postfix.equals("Video")) {
@@ -232,13 +234,13 @@ public class SingleManage implements Room{
                             //上传之前把消息储存数据库
                             public void beforeRequest(Request<?> request) {
                                 UtilTool.Log("aws", "之前");
-                               mId[0] = sendFileMessage(path,postfix,key,newFile.getPath());
+                                mId[0] = sendFileMessage(path, postfix, key, newFile.getPath());
                             }
 
                             //上传文件完成
                             @Override
                             public void afterResponse(Request<?> request, Response<?> response) {
-                                sendFileAfterMessage(key,postfix,newFile.getPath(),mId[0]);
+                                sendFileAfterMessage(key, postfix, newFile.getPath(), mId[0]);
                             }
 
                             @Override
@@ -291,13 +293,13 @@ public class SingleManage implements Room{
                                             //上传之前把消息储存数据库
                                             public void beforeRequest(Request<?> request) {
                                                 UtilTool.Log("aws", "之前");
-                                               mId[0] = sendFileMessage(path,postfix,key,newFile.getPath());
+                                                mId[0] = sendFileMessage(path, postfix, key, newFile.getPath());
                                             }
 
                                             //上传文件完成
                                             @Override
                                             public void afterResponse(Request<?> request, Response<?> response) {
-                                                sendFileAfterMessage(key,postfix,newFile.getPath(),mId[0]);
+                                                sendFileAfterMessage(key, postfix, newFile.getPath(), mId[0]);
                                             }
 
                                             @Override
@@ -315,6 +317,7 @@ public class SingleManage implements Room{
                                 }
                             }).start();
                         }
+
                         @Override
                         public void onError(Throwable e) {
                         }
@@ -322,8 +325,8 @@ public class SingleManage implements Room{
         }
     }
 
-    public void sendLocationMessage(Bitmap bitmap, String title, String address, float lat, float lng){
-        String converstaion="[" + context.getString(R.string.location) + "]";
+    public void sendLocationMessage(Bitmap bitmap, String title, String address, float lat, float lng) {
+        String converstaion = "[" + context.getString(R.string.location) + "]";
         final String postfix = "LOCATION";//获取文件后缀
         final String key = UtilTool.getUserId() + UtilTool.createtFileName() + ".AN.jpg";//命名aws文件名
         //缩略图储存路径
@@ -339,7 +342,7 @@ public class SingleManage implements Room{
             String base64 = Base64.encodeToString(bytes);
             voiceInfo.setElementText(base64);
             message.addExtension(voiceInfo);
-            MessageInfo messageInfo=new MessageInfo();
+            MessageInfo messageInfo = new MessageInfo();
             messageInfo.setTitle(title);
             messageInfo.setAddress(address);
             messageInfo.setLat(lat);
@@ -361,7 +364,7 @@ public class SingleManage implements Room{
             messageInfo.setMsgType(TO_LOCATION_MSG);
             messageInfo.setSend(UtilTool.getJid());
             messageInfo.setConverstaion(converstaion);
-            mId= mMgr.addMessage(messageInfo);
+            mId = mMgr.addMessage(messageInfo);
             messageInfo.setId(mId);
             refreshAddData(messageInfo);
             //给聊天列表更新消息
@@ -379,7 +382,7 @@ public class SingleManage implements Room{
             //发送消息通知
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
             mMgr.updateMessageHint(mId, 1);
-            sendFileResults(newFile.getAbsolutePath(),true);
+            sendFileResults(newFile.getAbsolutePath(), true);
             return;
         } catch (Exception e) {
             Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
@@ -395,7 +398,7 @@ public class SingleManage implements Room{
             messageInfo.setMsgType(TO_LOCATION_MSG);
             messageInfo.setSendStatus(2);
             messageInfo.setConverstaion(converstaion);
-            mId=mMgr.addMessage(messageInfo);
+            mId = mMgr.addMessage(messageInfo);
             messageInfo.setId(mId);
             refreshAddData(messageInfo);
 
@@ -413,7 +416,7 @@ public class SingleManage implements Room{
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
 
             mMgr.updateMessageHint(mId, 2);
-            sendFileResults(newFile.getAbsolutePath(),false);
+            sendFileResults(newFile.getAbsolutePath(), false);
 
         }
     }
@@ -458,7 +461,7 @@ public class SingleManage implements Room{
     }
 
     @Override
-    public MultiUserChat createRoom(String roomJid,String roomName, String password, List<UserInfo> users) {
+    public MultiUserChat createRoom(String roomJid, String roomName, String password, List<UserInfo> users) {
         return null;
     }
 
@@ -474,11 +477,11 @@ public class SingleManage implements Room{
 
     @Override
     public boolean sendCaed(MessageInfo messageInfo) {
-        String converstaion="[" + context.getString(R.string.person_business_card) + "]";
+        String converstaion = "[" + context.getString(R.string.person_business_card) + "]";
         try {
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
             Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
-            chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(Constants.CARD+":"+JSON.toJSONString(messageInfo) ,
+            chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(Constants.CARD + ":" + JSON.toJSONString(messageInfo),
                     OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
             messageInfo.setUsername(mUser);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -540,11 +543,11 @@ public class SingleManage implements Room{
 
     @Override
     public boolean sendShareLink(MessageInfo messageInfo) {
-        String converstaion="[" + context.getString(R.string.share) + "]";
+        String converstaion = "[" + context.getString(R.string.share) + "]";
         try {
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
             Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
-            chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(Constants.SHARE_LINK+":"+JSON.toJSONString(messageInfo) ,
+            chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(Constants.SHARE_LINK + ":" + JSON.toJSONString(messageInfo),
                     OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
             messageInfo.setUsername(mUser);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -605,11 +608,11 @@ public class SingleManage implements Room{
 
     @Override
     public boolean sendShareGuess(MessageInfo messageInfo) {
-        String converstaion="[" + context.getString(R.string.share_guess) + "]";
+        String converstaion = "[" + context.getString(R.string.share_guess) + "]";
         try {
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
             Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
-            chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(Constants.SHARE_GUESS+":"+JSON.toJSONString(messageInfo) ,
+            chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(Constants.SHARE_GUESS + ":" + JSON.toJSONString(messageInfo),
                     OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
             messageInfo.setUsername(mUser);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -668,7 +671,7 @@ public class SingleManage implements Room{
         }
     }
 
-    private void sendFileAfterMessage(String key,String postfix,String newFile,int mId){
+    private void sendFileAfterMessage(String key, String postfix, String newFile, int mId) {
         try {
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
             Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
@@ -682,11 +685,11 @@ public class SingleManage implements Room{
                     OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
             chat.sendMessage(message);
             mMgr.updateMessageHint(mId, 1);
-            sendFileResults(newFile,true);
+            sendFileResults(newFile, true);
             return;
         } catch (Exception e) {
             mMgr.updateMessageHint(mId, 2);
-            sendFileResults(newFile,false);
+            sendFileResults(newFile, false);
         }
     }
 
@@ -716,10 +719,10 @@ public class SingleManage implements Room{
                 if (postfix.equals("Image")) {
                     mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.image) + "]", time);
                     messageInfo.setConverstaion("[" + context.getString(R.string.image) + "]");
-                } else if (postfix.equals("Video")){
+                } else if (postfix.equals("Video")) {
                     mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.video) + "]", time);
                     messageInfo.setConverstaion("[" + context.getString(R.string.video) + "]");
-                }else {
+                } else {
                     mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.file) + "]", time);
                     messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
                 }
@@ -731,10 +734,10 @@ public class SingleManage implements Room{
                 if (postfix.equals("Image")) {
                     info.setMessage("[" + context.getString(R.string.image) + "]");
                     messageInfo.setConverstaion("[" + context.getString(R.string.image) + "]");
-                }else if (postfix.equals("Video")) {
+                } else if (postfix.equals("Video")) {
                     info.setMessage("[" + context.getString(R.string.video) + "]");
                     messageInfo.setConverstaion("[" + context.getString(R.string.video) + "]");
-                }else {
+                } else {
                     info.setMessage("[" + context.getString(R.string.file) + "]");
                     messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
                 }
@@ -770,10 +773,10 @@ public class SingleManage implements Room{
                 if (postfix.equals("Image")) {
                     mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.image) + "]", time);
                     messageInfo.setConverstaion("[" + context.getString(R.string.image) + "]");
-                } else if (postfix.equals("Video")){
+                } else if (postfix.equals("Video")) {
                     mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.video) + "]", time);
                     messageInfo.setConverstaion("[" + context.getString(R.string.video) + "]");
-                }else {
+                } else {
                     mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.file) + "]", time);
                     messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
                 }
@@ -785,17 +788,17 @@ public class SingleManage implements Room{
                 if (postfix.equals("Image")) {
                     info.setMessage("[" + context.getString(R.string.image) + "]");
                     messageInfo.setConverstaion("[" + context.getString(R.string.image) + "]");
-                }else if (postfix.equals("Video")) {
+                } else if (postfix.equals("Video")) {
                     info.setMessage("[" + context.getString(R.string.video) + "]");
                     messageInfo.setConverstaion("[" + context.getString(R.string.video) + "]");
-                }else {
+                } else {
                     info.setMessage("[" + context.getString(R.string.file) + "]");
                     messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
                 }
                 info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
                 mMgr.addConversation(info);
             }
-            mId=mMgr.addMessage(messageInfo);
+            mId = mMgr.addMessage(messageInfo);
             messageInfo.setId(mId);
             refreshAddData(messageInfo);
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
@@ -806,7 +809,7 @@ public class SingleManage implements Room{
 
     //发送录音
     public void sendVoice(int duration, String fileName) {
-        String converstaion="[" + context.getString(R.string.voice) + "]";
+        String converstaion = "[" + context.getString(R.string.voice) + "]";
         try {
             //实例化聊天管理类
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
@@ -889,8 +892,8 @@ public class SingleManage implements Room{
 
     }
 
-    public void sendTransfer(String mRemark,String mCoin,String mCount){
-        String converstaion="[" + context.getString(R.string.transfer) + "]";
+    public void sendTransfer(String mRemark, String mCoin, String mCount) {
+        String converstaion = "[" + context.getString(R.string.transfer) + "]";
         String message = Constants.TRANSFER + Constants.CHUANCODE + mRemark + Constants.CHUANCODE + mCoin + Constants.CHUANCODE + mCount;
         try {
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
@@ -930,8 +933,8 @@ public class SingleManage implements Room{
     }
 
     @Override
-    public void sendRed(String mRemark,String mCoin,double mCount,int id) {
-        String converstaion="[" + context.getString(R.string.red_package) + "]";
+    public void sendRed(String mRemark, String mCoin, double mCount, int id) {
+        String converstaion = "[" + context.getString(R.string.red_package) + "]";
         String message = Constants.REDBAG + Constants.CHUANCODE + mRemark + Constants.CHUANCODE + mCoin + Constants.CHUANCODE + mCount + Constants.CHUANCODE + id;
         try {
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());

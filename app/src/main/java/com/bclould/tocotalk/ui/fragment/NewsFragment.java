@@ -22,7 +22,6 @@ import com.bclould.tocotalk.model.NewsListInfo;
 import com.bclould.tocotalk.ui.activity.NewsDetailsActivity;
 import com.bclould.tocotalk.ui.adapter.NewsRVAdapter;
 import com.bclould.tocotalk.utils.Constants;
-import com.bclould.tocotalk.utils.SpaceItemDecoration2;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -177,7 +176,6 @@ public class NewsFragment extends Fragment implements OnBannerListener {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mNewsRVAdapter = new NewsRVAdapter(getContext(), mNewsList);
         mRecyclerView.setAdapter(mNewsRVAdapter);
-        mRecyclerView.addItemDecoration(new SpaceItemDecoration2(40));
         mRecyclerView.setNestedScrollingEnabled(false);
     }
 

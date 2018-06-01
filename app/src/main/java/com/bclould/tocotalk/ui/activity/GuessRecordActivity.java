@@ -18,6 +18,7 @@ import com.bclould.tocotalk.model.GuessListInfo;
 import com.bclould.tocotalk.ui.adapter.GuessListRVAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
@@ -47,8 +48,11 @@ public class GuessRecordActivity extends BaseActivity {
     LinearLayout mLlNoData;
     private GuessListRVAdapter mGuessListRVAdapter;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
+    private int PULL_UP = 0;
+    private int PULL_DOWN = 1;
+    private int end = 0;
     private int mPage = 1;
-    private int mPage_size = 1000;
+    private int mPageSize = 10;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +61,7 @@ public class GuessRecordActivity extends BaseActivity {
         ButterKnife.bind(this);
         mBlockchainGuessPresenter = new BlockchainGuessPresenter(this);
         initRecylerView();
-        initData();
+        initData(PULL_DOWN);
         initListener();
     }
 
@@ -66,22 +70,46 @@ public class GuessRecordActivity extends BaseActivity {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
-                initData();
+                initData(PULL_DOWN);
+            }
+        });
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                refreshLayout.finishLoadMore(1000);
+                initData(PULL_UP);
             }
         });
     }
 
-    private void initData() {
-        mBlockchainGuessPresenter.getGuessHistory(mPage, mPage_size, new BlockchainGuessPresenter.CallBack() {
+    private void initData(final int type) {
+        mBlockchainGuessPresenter.getGuessHistory(mPage, mPageSize, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
-                    if (data.size() != 0) {
+                    if (mDataList.size() != 0 || data.size() != 0) {
+                        if (type == PULL_UP) {
+                            if (data.size() == mPageSize) {
+                                mPage++;
+                                mDataList.addAll(data);
+                                mGuessListRVAdapter.notifyDataSetChanged();
+                            } else {
+                                if (end == 0) {
+                                    end++;
+                                    mDataList.addAll(data);
+                                    mGuessListRVAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        } else {
+                            if (mPage == 1) {
+                                mPage++;
+                            }
+                            mDataList.clear();
+                            mDataList.addAll(data);
+                            mGuessListRVAdapter.notifyDataSetChanged();
+                        }
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
-                        mDataList.clear();
-                        mDataList.addAll(data);
-                        mGuessListRVAdapter.notifyDataSetChanged();
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);

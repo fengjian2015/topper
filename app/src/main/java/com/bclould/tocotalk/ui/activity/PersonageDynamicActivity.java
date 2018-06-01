@@ -20,6 +20,7 @@ import com.bclould.tocotalk.ui.adapter.DynamicRVAdapter;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,8 +57,11 @@ public class PersonageDynamicActivity extends BaseActivity {
     SmartRefreshLayout mRefreshLayout;
     private String mName;
     private DynamicPresenter mDynamicPresenter;
+    private int PULL_UP = 0;
+    private int PULL_DOWN = 1;
+    private int end = 0;
     private int mPage = 1;
-    private int mPageSize = 1000;
+    private int mPageSize = 10;
     private DynamicRVAdapter mDynamicRVAdapter;
 
     @Override
@@ -70,7 +74,7 @@ public class PersonageDynamicActivity extends BaseActivity {
         initIntent();
         initListener();
         initRecyclerView();
-        initData();
+        initData(PULL_DOWN);
     }
 
     //接受通知
@@ -95,24 +99,52 @@ public class PersonageDynamicActivity extends BaseActivity {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
                 refreshLayout.finishRefresh(2000);
-                initData();
+                initData(PULL_DOWN);
+            }
+        });
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                refreshLayout.finishLoadMore(1000);
+                initData(PULL_UP);
             }
         });
     }
 
     List<DynamicListInfo.DataBean> mDataList = new ArrayList<>();
 
-    private void initData() {
+    private void initData(final int type) {
+        if (type == PULL_DOWN) {
+            mPage = 1;
+            end = 0;
+        }
         mDynamicPresenter.taDynamicList(mPage, mPageSize, mName, new DynamicPresenter.CallBack2() {
             @Override
             public void send(List<DynamicListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
-                    if (data.size() != 0) {
+                    if (mDataList.size() != 0 || data.size() != 0) {
+                        if (type == PULL_UP) {
+                            if (data.size() == mPageSize) {
+                                mPage++;
+                                mDataList.addAll(data);
+                                mDynamicRVAdapter.notifyDataSetChanged();
+                            } else {
+                                if (end == 0) {
+                                    end++;
+                                    mDataList.addAll(data);
+                                    mDynamicRVAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        } else {
+                            if (mPage == 1) {
+                                mPage++;
+                            }
+                            mDataList.clear();
+                            mDataList.addAll(data);
+                            mDynamicRVAdapter.notifyDataSetChanged();
+                        }
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
-                        mDataList.clear();
-                        mDataList.addAll(data);
-                        mDynamicRVAdapter.notifyDataSetChanged();
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);

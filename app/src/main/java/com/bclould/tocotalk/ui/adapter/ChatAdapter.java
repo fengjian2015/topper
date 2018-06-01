@@ -35,7 +35,6 @@ import com.bclould.tocotalk.Presenter.GrabRedPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.GrabRedInfo;
-import com.bclould.tocotalk.model.GuessListInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.SerMap;
 import com.bclould.tocotalk.ui.activity.ChatLookLocationActivity;
@@ -78,7 +77,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -143,7 +141,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private String mToName;
     private RelativeLayout mrlTitle;
 
-    public ChatAdapter(Context context, List<MessageInfo> messageList, Bitmap fromBitmap, String roomId, DBManager mgr, MediaPlayer mediaPlayer, String name, String roomType,RelativeLayout rlTitle) {
+    public ChatAdapter(Context context, List<MessageInfo> messageList, Bitmap fromBitmap, String roomId, DBManager mgr, MediaPlayer mediaPlayer, String name, String roomType, RelativeLayout rlTitle) {
         mContext = context;
         mMessageList = messageList;
 //        mFromBitmap = fromBitmap;
@@ -156,7 +154,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         //繼續保留這兩個字段是用於之前版本有的消息沒有send字段
         mName = name;
         mToName = UtilTool.getJid().substring(0, UtilTool.getJid().lastIndexOf("@"));
-        mrlTitle=rlTitle;
+        mrlTitle = rlTitle;
     }
 
     @Override
@@ -205,7 +203,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } else if (viewType == TO_LINK_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_to_chat_link, parent, false);
             holder = new ToLinkHolder(view);
-        }else if (viewType == FROM_GUESS_MSG) {
+        } else if (viewType == FROM_GUESS_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_guess, parent, false);
             holder = new FromGuessHolder(view);
         } else if (viewType == TO_GUESS_MSG) {
@@ -343,27 +341,27 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 fromTransferHolder.setData(mMessageList.get(position));
                 break;
             case TO_CARD_MSG:
-                ToCardHolder toCardHolder= (ToCardHolder) holder;
+                ToCardHolder toCardHolder = (ToCardHolder) holder;
                 toCardHolder.setData(mMessageList.get(position));
                 break;
             case FROM_CARD_MSG:
-                FromCardHolder fromCardHolder= (FromCardHolder) holder;
+                FromCardHolder fromCardHolder = (FromCardHolder) holder;
                 fromCardHolder.setData(mMessageList.get(position));
                 break;
             case TO_LINK_MSG:
-                ToLinkHolder toLinkHolder= (ToLinkHolder) holder;
+                ToLinkHolder toLinkHolder = (ToLinkHolder) holder;
                 toLinkHolder.setData(mMessageList.get(position));
                 break;
             case FROM_LINK_MSG:
-                FromLinkHolder fromLinkHolder= (FromLinkHolder) holder;
+                FromLinkHolder fromLinkHolder = (FromLinkHolder) holder;
                 fromLinkHolder.setData(mMessageList.get(position));
                 break;
             case TO_GUESS_MSG:
-                ToGuessHolder toGuessHolder= (ToGuessHolder) holder;
+                ToGuessHolder toGuessHolder = (ToGuessHolder) holder;
                 toGuessHolder.setData(mMessageList.get(position));
                 break;
             case FROM_GUESS_MSG:
-                FromGuessHolder fromGuessHolder= (FromGuessHolder) holder;
+                FromGuessHolder fromGuessHolder = (FromGuessHolder) holder;
                 fromGuessHolder.setData(mMessageList.get(position));
                 break;
             case ADMINISTRATOR_OTC_ORDER_MSG:
@@ -405,28 +403,28 @@ public class ChatAdapter extends RecyclerView.Adapter {
         return 0;
     }
 
-    private void showCopyDialog(final int msgtype, final MessageInfo messageInfo, final boolean isCopy, boolean isTransmit){
-        List<String> list =new ArrayList<>();
+    private void showCopyDialog(final int msgtype, final MessageInfo messageInfo, final boolean isCopy, boolean isTransmit) {
+        List<String> list = new ArrayList<>();
         list.add(mContext.getString(R.string.delete));
-        if(isCopy)
+        if (isCopy)
             list.add(mContext.getString(R.string.copy));
-        if(isTransmit)
+        if (isTransmit)
             list.add(mContext.getString(R.string.transmit));
 
         final MenuListPopWindow menu = new MenuListPopWindow(mContext, list);
         menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
             @Override
             public void onclickitem(int position) {
-                switch (position){
+                switch (position) {
                     case 0:
                         menu.dismiss();
                         break;
                     case 1:
                         menu.dismiss();
                         mMgr.deleteSingleMessage(mRoomId, messageInfo.getId() + "");
-                        String conversation=mMgr.findLastMessageConversation(mRoomId);
-                        if(!StringUtils.isEmpty(conversation)){
-                            mMgr.updateConversationMessage(mRoomId,conversation);
+                        String conversation = mMgr.findLastMessageConversation(mRoomId);
+                        if (!StringUtils.isEmpty(conversation)) {
+                            mMgr.updateConversationMessage(mRoomId, conversation);
                         }
                         mMessageList.remove(messageInfo);
                         notifyDataSetChanged();
@@ -434,7 +432,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                         break;
                     case 2:
                         menu.dismiss();
-                        if(isCopy){
+                        if (isCopy) {
                             //获取剪贴板管理器：
                             ClipboardManager cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
                             // 创建普通字符型ClipData
@@ -442,7 +440,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                             // 将ClipData内容放到系统剪贴板里。
                             cm.setPrimaryClip(mClipData);
                             ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.copy_succeed));
-                        }else{
+                        } else {
                             Intent intent = new Intent(mContext, SelectFriendActivity.class);
                             intent.putExtra("type", 1);
                             intent.putExtra("msgType", msgtype);
@@ -462,7 +460,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             }
         });
         menu.setColor(Color.BLACK);
-        menu.showAtLocation(mrlTitle, Gravity.BOTTOM,0,0);
+        menu.showAtLocation(mrlTitle, Gravity.BOTTOM, 0, 0);
     }
 
     @Override
@@ -487,13 +485,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
 //            mIvTouxiang.setImageBitmap(mToBitmap);
             UtilTool.getImage(mMgr, UtilTool.getJid(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getJid(), mToName, messageInfo);
-            HyperLinkUtil hyperLinkUtil=new HyperLinkUtil();
+            HyperLinkUtil hyperLinkUtil = new HyperLinkUtil();
             mTvMessamge.setText(hyperLinkUtil.getHyperClickableSpan(mContext, new SpannableStringBuilder(messageInfo.getMessage()), false, messageInfo.getId(), mMgr, new HyperLinkUtil.OnChangeLinkListener() {
                 @Override
-                public void changeLink(String message,String oldMessage) {
-                    if(!messageInfo.getMessage().equals(oldMessage))return;
+                public void changeLink(String message, String oldMessage) {
+                    if (!messageInfo.getMessage().equals(oldMessage)) return;
                     messageInfo.setMessage(message);
-                    ((Activity)mContext).runOnUiThread(new Runnable() {
+                    ((Activity) mContext).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             notifyDataSetChanged();
@@ -552,13 +550,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 UtilTool.getImage(mMgr, mRoomId, mContext, mIvTouxiang);
             }
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
-            HyperLinkUtil hyperLinkUtil=new HyperLinkUtil();
+            HyperLinkUtil hyperLinkUtil = new HyperLinkUtil();
             mTvMessamge.setText(hyperLinkUtil.getHyperClickableSpan(mContext, new SpannableStringBuilder(messageInfo.getMessage()), true, messageInfo.getId(), mMgr, new HyperLinkUtil.OnChangeLinkListener() {
                 @Override
-                public void changeLink(String message,String oldMessage) {
-                    if(!messageInfo.getMessage().equals(oldMessage))return;
+                public void changeLink(String message, String oldMessage) {
+                    if (!messageInfo.getMessage().equals(oldMessage)) return;
                     messageInfo.setMessage(message);
-                    ((Activity)mContext).runOnUiThread(new Runnable() {
+                    ((Activity) mContext).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             notifyDataSetChanged();
@@ -1464,14 +1462,14 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     int id = 0;
                     try {
-                        String idtext=messageInfo.getLinkUrl().substring((Constants.BASE_URL.length() + Constants.NEWS_WEB_URL.length()),messageInfo.getLinkUrl().lastIndexOf("/"));
-                        id=Integer.parseInt(idtext);
-                    }catch (Exception e){
+                        String idtext = messageInfo.getLinkUrl().substring((Constants.BASE_URL.length() + Constants.NEWS_WEB_URL.length()), messageInfo.getLinkUrl().lastIndexOf("/"));
+                        id = Integer.parseInt(idtext);
+                    } catch (Exception e) {
                         e.printStackTrace();
-                        UtilTool.Log("fengjian---","轉換id失敗");
+                        UtilTool.Log("fengjian---", "轉換id失敗");
                     }
 
-                    UtilTool.Log("fengjian---","跳轉id："+id+"\n"+"url："+messageInfo.getLinkUrl());
+                    UtilTool.Log("fengjian---", "跳轉id：" + id + "\n" + "url：" + messageInfo.getLinkUrl());
                     Intent intent = new Intent(mContext, NewsDetailsActivity.class);
                     intent.putExtra("id", id);
                     intent.putExtra("type", Constants.NEWS_MAIN_TYPE);
@@ -1524,14 +1522,14 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     int id = 0;
                     try {
-                        String idtext=messageInfo.getLinkUrl().substring((Constants.BASE_URL.length() + Constants.NEWS_WEB_URL.length()),messageInfo.getLinkUrl().lastIndexOf("/"));
-                        id=Integer.parseInt(idtext);
-                    }catch (Exception e){
+                        String idtext = messageInfo.getLinkUrl().substring((Constants.BASE_URL.length() + Constants.NEWS_WEB_URL.length()), messageInfo.getLinkUrl().lastIndexOf("/"));
+                        id = Integer.parseInt(idtext);
+                    } catch (Exception e) {
                         e.printStackTrace();
-                        UtilTool.Log("fengjian---","轉換id失敗");
+                        UtilTool.Log("fengjian---", "轉換id失敗");
                     }
 
-                    UtilTool.Log("fengjian---","跳轉id："+id+"\n"+"url："+messageInfo.getLinkUrl());
+                    UtilTool.Log("fengjian---", "跳轉id：" + id + "\n" + "url：" + messageInfo.getLinkUrl());
                     Intent intent = new Intent(mContext, NewsDetailsActivity.class);
                     intent.putExtra("id", id);
                     intent.putExtra("type", Constants.NEWS_MAIN_TYPE);
@@ -1576,8 +1574,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 mIvLoad.setVisibility(View.GONE);
             }
             tvTitle.setText(messageInfo.getTitle());
-            tvCoin.setText(messageInfo.getCoin()+mContext.getString(R.string.guess));
-            tvWho.setText(mContext.getString(R.string.fa_qi_ren)+":"+messageInfo.getInitiator());
+            tvCoin.setText(messageInfo.getCoin() + mContext.getString(R.string.guess));
+            tvWho.setText(mContext.getString(R.string.fa_qi_ren) + ":" + messageInfo.getInitiator());
             rlGuess.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
@@ -1588,7 +1586,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             rlGuess.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (messageInfo.getGuessPw()!= null) {
+                    if (messageInfo.getGuessPw() != null) {
                         if (messageInfo.getGuessPw().isEmpty()) {
                             Intent intent = new Intent(mContext, GuessDetailsActivity.class);
                             intent.putExtra("bet_id", Integer.parseInt(messageInfo.getBetId()));
@@ -1597,7 +1595,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                         } else {
                             showPWDialog(messageInfo);
                         }
-                    }else {
+                    } else {
                         Intent intent = new Intent(mContext, GuessDetailsActivity.class);
                         intent.putExtra("bet_id", Integer.parseInt(messageInfo.getBetId()));
                         intent.putExtra("period_qty", Integer.parseInt(messageInfo.getPeriodQty()));
@@ -1637,8 +1635,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
             }
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             tvTitle.setText(messageInfo.getTitle());
-            tvCoin.setText(messageInfo.getCoin()+mContext.getString(R.string.guess));
-            tvWho.setText(mContext.getString(R.string.fa_qi_ren)+":"+messageInfo.getInitiator());
+            tvCoin.setText(messageInfo.getCoin() + mContext.getString(R.string.guess));
+            tvWho.setText(mContext.getString(R.string.fa_qi_ren) + ":" + messageInfo.getInitiator());
             rlGuess.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
@@ -1649,7 +1647,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             rlGuess.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (messageInfo.getGuessPw()!= null) {
+                    if (messageInfo.getGuessPw() != null) {
                         if (messageInfo.getGuessPw().isEmpty()) {
                             Intent intent = new Intent(mContext, GuessDetailsActivity.class);
                             intent.putExtra("bet_id", Integer.parseInt(messageInfo.getBetId()));
@@ -1658,7 +1656,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                         } else {
                             showPWDialog(messageInfo);
                         }
-                    }else {
+                    } else {
                         Intent intent = new Intent(mContext, GuessDetailsActivity.class);
                         intent.putExtra("bet_id", Integer.parseInt(messageInfo.getBetId()));
                         intent.putExtra("period_qty", Integer.parseInt(messageInfo.getPeriodQty()));
@@ -2101,7 +2099,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     }
 
     private void showPWDialog(final MessageInfo messageInfo) {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_command, mContext,R.style.dialog);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_command, mContext, R.style.dialog);
         deleteCacheDialog.show();
         final EditText etGuessPw = (EditText) deleteCacheDialog.findViewById(R.id.et_guess_password);
         Button btnConfirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);

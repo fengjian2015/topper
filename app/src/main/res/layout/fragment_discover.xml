@@ -125,8 +125,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:visibility="gone"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_news_manager"
@@ -146,18 +146,42 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:visibility="gone"
+        <RelativeLayout
             android:id="@+id/ll_dynamic"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:id="@+id/rl_push_dynamic_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/iv_push_dynamic"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/x20"
+                    android:layout_marginTop="@dimen/y20"
+                    android:src="@mipmap/icon_nav_dynamics"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="@dimen/x20"
+                    android:paddingRight="@dimen/x30"
+                    android:src="@mipmap/ico_nav_dying"/>
+
+            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/iv_push_dynamic"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/iv_my_dynamic"
                 android:paddingLeft="@dimen/x20"
                 android:paddingRight="@dimen/x30"
                 android:src="@mipmap/icon_talk_push"/>
@@ -166,11 +190,12 @@
                 android:id="@+id/iv_my_dynamic"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
                 android:paddingLeft="@dimen/x20"
                 android:paddingRight="@dimen/x30"
                 android:src="@mipmap/ico_find_dt"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <!--<ImageView
             android:visibility="visible"

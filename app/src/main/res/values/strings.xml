@@ -881,4 +881,6 @@
     <string name="no_look_ta_dy2">不讓Ta看我的動態</string>
     <string name="shooting">拍攝</string>
     <string name="open_shooting">打開拍攝</string>
+    <string name="destroy_service">銷毀服務</string>
+    <string name="toast_uploading_dynamic">上傳動態中....</string>
 </resources>

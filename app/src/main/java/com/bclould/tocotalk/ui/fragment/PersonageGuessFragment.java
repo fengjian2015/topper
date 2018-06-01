@@ -27,6 +27,7 @@ import com.bclould.tocotalk.ui.adapter.GuessListRVAdapter;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
@@ -62,8 +63,11 @@ public class PersonageGuessFragment extends Fragment {
     ImageView mIvSearch;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
     private GuessListRVAdapter mGuessListRVAdapter;
+    private int PULL_UP = 0;
+    private int PULL_DOWN = 1;
+    private int end = 0;
     private int mPage = 1;
-    private int mPageSize = 1000;
+    private int mPageSize = 10;
 
     @Nullable
     @Override
@@ -81,18 +85,18 @@ public class PersonageGuessFragment extends Fragment {
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.push_guess))) {
-            initData("");
+            initData("", PULL_DOWN);
         } else if (msg.equals(getString(R.string.bet))) {
-            initData("");
+            initData("", PULL_DOWN);
         } else if (msg.equals(getString(R.string.guess_cancel))) {
-            initData("");
+            initData("", PULL_DOWN);
         }
     }
 
     private void init() {
         mBlockchainGuessPresenter = new BlockchainGuessPresenter(getContext());
         initRecyclerView();
-        initData("");
+        initData("", PULL_DOWN);
         initListener();
     }
 
@@ -101,7 +105,14 @@ public class PersonageGuessFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
-                initData("");
+                initData("", PULL_DOWN);
+            }
+        });
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                refreshLayout.finishLoadMore(1000);
+                initData("", PULL_UP);
             }
         });
         mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -113,7 +124,7 @@ public class PersonageGuessFragment extends Fragment {
                             .hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
                                     InputMethodManager.HIDE_NOT_ALWAYS);
                     String user = mEtSearch.getText().toString().trim();
-                    initData(user);
+                    initData(user, PULL_DOWN);
                     return true;
                 }
                 return false;
@@ -129,18 +140,39 @@ public class PersonageGuessFragment extends Fragment {
 
     List<GuessListInfo.DataBean> mDataList = new ArrayList<>();
 
-    private void initData(String user) {
-        mDataList.clear();
+    private void initData(String user, final int type) {
+        if (type == PULL_DOWN) {
+            mPage = 1;
+            end = 0;
+        }
         mGuessListRVAdapter.notifyDataSetChanged();
         mBlockchainGuessPresenter.getGuessList(mPage, mPageSize, 1, user, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
-                    if (data.size() != 0) {
+                    if (mDataList.size() != 0 || data.size() != 0) {
+                        if (type == PULL_UP) {
+                            if (data.size() == mPageSize) {
+                                mPage++;
+                                mDataList.addAll(data);
+                                mGuessListRVAdapter.notifyDataSetChanged();
+                            } else {
+                                if (end == 0) {
+                                    end++;
+                                    mDataList.addAll(data);
+                                    mGuessListRVAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        } else {
+                            if (mPage == 1) {
+                                mPage++;
+                            }
+                            mDataList.clear();
+                            mDataList.addAll(data);
+                            mGuessListRVAdapter.notifyDataSetChanged();
+                        }
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
-                        mDataList.addAll(data);
-                        mGuessListRVAdapter.notifyDataSetChanged();
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);
@@ -164,6 +196,6 @@ public class PersonageGuessFragment extends Fragment {
                 .hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
         String user = mEtSearch.getText().toString().trim();
-        initData(user);
+        initData(user, PULL_DOWN);
     }
 }

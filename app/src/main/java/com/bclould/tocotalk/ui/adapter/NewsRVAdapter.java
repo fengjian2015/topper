@@ -100,7 +100,6 @@ public class NewsRVAdapter extends RecyclerView.Adapter {
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            ButterKnife.bind(this, view);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

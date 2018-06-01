@@ -26,6 +26,7 @@ import com.bclould.tocotalk.ui.adapter.GuessListRVAdapter;
 import com.bclould.tocotalk.ui.adapter.PayManageGVAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
@@ -61,10 +62,12 @@ public class MyJoinActivity extends BaseActivity {
     SmartRefreshLayout mRefreshLayout;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
     private int mType;
-    private int mStatus = 0;
     private List<String> mFiltrateList = new ArrayList<>();
+    private int PULL_UP = 0;
+    private int PULL_DOWN = 1;
+    private int end = 0;
     private int mPage = 1;
-    private int mPage_size = 1000;
+    private int mPageSize = 10;
     private GuessListRVAdapter mGuessListRVAdapter;
     private Dialog mBottomDialog;
     private HashMap<String, Integer> mMap = new HashMap<>();
@@ -83,7 +86,7 @@ public class MyJoinActivity extends BaseActivity {
         setList();
         mBlockchainGuessPresenter = new BlockchainGuessPresenter(this);
         initRecyclerView();
-        initData(mStatus);
+        initData(mType, PULL_DOWN);
     }
 
     private void initListener() {
@@ -91,7 +94,14 @@ public class MyJoinActivity extends BaseActivity {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000);
-                initData(mStatus);
+                initData(mType, PULL_DOWN);
+            }
+        });
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                refreshLayout.finishLoadMore(1000);
+                initData(mType, PULL_UP);
             }
         });
     }
@@ -106,17 +116,38 @@ public class MyJoinActivity extends BaseActivity {
 
     List<GuessListInfo.DataBean> mDataList = new ArrayList<>();
 
-    private void initData(int status) {
-        mBlockchainGuessPresenter.getMyJoin(mPage, mPage_size, status, new BlockchainGuessPresenter.CallBack() {
+    private void initData(int status, final int type) {
+        if (type == PULL_DOWN) {
+            mPage = 1;
+            end = 0;
+        }
+        mBlockchainGuessPresenter.getMyJoin(mPage, mPageSize, status, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
-                    if (data.size() != 0) {
+                    if (mDataList.size() != 0 || data.size() != 0) {
+                        if (type == PULL_UP) {
+                            if (data.size() == mPageSize) {
+                                mPage++;
+                                mDataList.addAll(data);
+                                mGuessListRVAdapter.notifyDataSetChanged();
+                            } else {
+                                if (end == 0) {
+                                    end++;
+                                    mDataList.addAll(data);
+                                    mGuessListRVAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        } else {
+                            if (mPage == 1) {
+                                mPage++;
+                            }
+                            mDataList.clear();
+                            mDataList.addAll(data);
+                            mGuessListRVAdapter.notifyDataSetChanged();
+                        }
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
-                        mDataList.clear();
-                        mDataList.addAll(data);
-                        mGuessListRVAdapter.notifyDataSetChanged();
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);
@@ -184,7 +215,7 @@ public class MyJoinActivity extends BaseActivity {
                 } else if (typeName.equals(getString(R.string.qi_ta))) {
                     mType = 4;
                 }
-                initData(mType);
+                initData(mType, PULL_DOWN);
                 mMap.put(getString(R.string.filtrate), position);
                 mBottomDialog.dismiss();
             }

@@ -2,6 +2,7 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
@@ -284,7 +285,12 @@ public class PublicshDynamicActivity extends BaseActivity {
         String text = mTextEt.getText().toString();
         Intent intent = new Intent(this, ImageUpService.class);
         Bundle bundle = new Bundle();
-        for (LocalMedia localMedia : selectList){
+        for (LocalMedia localMedia : selectList) {
+            int degree = UtilTool.readPictureDegree(localMedia.getCompressPath());
+            UtilTool.Log("圖片信息", degree + "");
+            if (degree != 0) {
+                UtilTool.toturn(localMedia.getCompressPath(), BitmapFactory.decodeFile(localMedia.getCompressPath()), degree);
+            }
             mPathList.add(localMedia.getCompressPath());
         }
         bundle.putStringArrayList("imageList", mPathList);

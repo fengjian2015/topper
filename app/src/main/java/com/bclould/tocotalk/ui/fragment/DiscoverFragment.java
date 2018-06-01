@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
@@ -23,6 +24,7 @@ import com.bclould.tocotalk.ui.activity.PersonageDynamicActivity;
 import com.bclould.tocotalk.ui.activity.PublicshDynamicActivity;
 import com.bclould.tocotalk.ui.adapter.CloudMessageVPAdapter;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.ToastShow;
 import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -57,12 +59,14 @@ public class DiscoverFragment extends Fragment {
     ImageView mIvNewsPush;
     @Bind(R.id.ll_news)
     LinearLayout mLlNews;
+    @Bind(R.id.rl_push_dynamic_status)
+    RelativeLayout mRlPushDynamicStatus;
     @Bind(R.id.iv_push_dynamic)
     ImageView mIvPushDynamic;
     @Bind(R.id.iv_my_dynamic)
     ImageView mIvMyDynamic;
     @Bind(R.id.ll_dynamic)
-    LinearLayout mLlDynamic;
+    RelativeLayout mLlDynamic;
     @Bind(R.id.xx)
     TextView mXx;
     @Bind(R.id.cloud_circle_vp)
@@ -92,7 +96,9 @@ public class DiscoverFragment extends Fragment {
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.start_service))) {
-
+            mRlPushDynamicStatus.setVisibility(View.VISIBLE);
+        } else if (msg.equals(getString(R.string.destroy_service))) {
+            mRlPushDynamicStatus.setVisibility(View.GONE);
         }
     }
 
@@ -210,11 +216,14 @@ public class DiscoverFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
-    @OnClick({R.id.iv_gonggao_manager, R.id.iv_news_manager, R.id.iv_news_push, R.id.iv_push_dynamic, R.id.iv_my_dynamic})
+    @OnClick({R.id.rl_push_dynamic_status, R.id.iv_gonggao_manager, R.id.iv_news_manager, R.id.iv_news_push, R.id.iv_push_dynamic, R.id.iv_my_dynamic})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_gonggao_manager:
                 startActivity(new Intent(getActivity(), GonggaoManagerActivity.class));
+                break;
+            case R.id.rl_push_dynamic_status:
+                ToastShow.showToast2(getActivity(), getString(R.string.toast_uploading_dynamic));
                 break;
             case R.id.iv_news_manager:
                 startActivity(new Intent(getActivity(), NewsManagerActivity.class));

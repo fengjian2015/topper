@@ -50,7 +50,7 @@
                 android:layout_height="@dimen/x40"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x20"
-                android:src="@mipmap/icon_pay_password"/>
+                android:src="@mipmap/ico_pay_num"/>
 
             <TextView
                 android:layout_width="wrap_content"

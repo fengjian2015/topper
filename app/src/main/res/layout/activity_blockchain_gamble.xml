@@ -33,7 +33,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:padding="@dimen/x20"
-            android:src="@mipmap/icon_g_detail"/>
+            android:src="@mipmap/ico_nav_detail"/>
 
         <TextView
             android:id="@+id/xx4"

@@ -226,11 +226,12 @@ public class UtilTool {
 
     /**
      * 把batmap 转file
+     *
      * @param bitmap
      * @param filepath
      */
-    public static File saveBitmapFile(Bitmap bitmap, String filepath){
-        File file=new File(filepath);//将要保存图片的路径
+    public static File saveBitmapFile(Bitmap bitmap, String filepath) {
+        File file = new File(filepath);//将要保存图片的路径
         try {
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);

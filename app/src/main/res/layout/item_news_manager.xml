@@ -5,7 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:padding="@dimen/x20">
+    android:paddingLeft="@dimen/x20"
+    android:paddingRight="@dimen/x20">
+
+    <TextView
+        style="@style/HCutOffRule"/>
 
     <TextView
         android:id="@+id/tv_news_title"
@@ -13,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y20"
         android:layout_toLeftOf="@+id/tv_status"
         android:ellipsize="end"
         android:singleLine="true"
@@ -23,8 +28,9 @@
         android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/y30"
         android:layout_below="@+id/tv_news_title"
+        android:layout_marginBottom="@dimen/y20"
+        android:layout_marginTop="@dimen/y30"
         android:text="2018-02-20 12:25:00"
         android:textSize="@dimen/x24"/>
 

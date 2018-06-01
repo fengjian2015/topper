@@ -53,7 +53,7 @@
             android:layout_marginLeft="@dimen/x30"
             android:gravity="center_vertical"
             android:text="2018-03"
-            android:textColor="@color/blue2"
+            android:textColor="#243042"
             android:textSize="@dimen/x28"/>
 
         <ImageView

@@ -25,8 +25,8 @@ public class Constants {
 
     //    public static final int OPENFIRE_PORT = 5288;
     public static final int OPENFIRE_PORT = 2018;
-    public static final String BASE_URL = "https://www.bclould.com:8112/api/";//测试
-    //        public static final String BASE_URL = "https://api.cnblocklink.com/api/";
+        public static final String BASE_URL = "https://www.bclould.com:8112/api/";//测试
+//    public static final String BASE_URL = "https://api.cnblocklink.com/api/";
     //        public static String DOMAINNAME = "xmpp.bclould.com";//测试
     public static String DOMAINNAME = "xmpp.coingbank.com";
     public static String DOMAINNAME2 = MySharedPreferences.getInstance().getString(XMPP_SERVER);

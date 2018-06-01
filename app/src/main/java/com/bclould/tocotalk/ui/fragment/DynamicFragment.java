@@ -125,8 +125,6 @@ public class DynamicFragment extends Fragment {
             mDynamicRVAdapter.notifyDataSetChanged();
         } else if (msg.equals(getString(R.string.publish_dynamic))) {
             initData(PULL_DOWN);
-        } else if (msg.equals(getString(R.string.start_service))) {
-
         } else if (msg.equals(getString(R.string.delete_dynamic))) {
             String id = event.getId();
             for (int i = 0; i < mDataList.size(); i++) {
