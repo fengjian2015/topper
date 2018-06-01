@@ -2,6 +2,7 @@ package com.bclould.tocotalk.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.text.Spannable;
@@ -10,6 +11,7 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.text.style.URLSpan;
 import android.util.Patterns;
 import android.view.View;
@@ -67,12 +69,12 @@ public class HyperLinkUtil {
         return spanStr;
     }
 
-    private  SpannableStringBuilder getTitleText(final String html5Url, final int start, final SpannableStringBuilder spanStr, final int messageId, final DBManager dbManager, boolean isChatLeft) {
+    private  SpannableStringBuilder getTitleText(final String html5Url, int start, final SpannableStringBuilder spanStr, final int messageId, final DBManager dbManager, boolean isChatLeft) {
         String oldString=spanStr.toString().substring(0,start);
-        int lastRight=oldString.lastIndexOf(">");
+        int lastRight=oldString.lastIndexOf("\n");
         if(lastRight>0&&lastRight==start-1){
             oldString=oldString.substring(0,lastRight);
-            int lastLeft=oldString.lastIndexOf("<");
+            int lastLeft=oldString.lastIndexOf("\n");
             if(lastLeft>=0){
                 // TODO: 2018/5/31 改變字體顏色
                 int color;
@@ -81,10 +83,17 @@ public class HyperLinkUtil {
                 }else{
                     color=0xffffffff;
                 }
+                if(lastLeft==0){
+                    spanStr.replace(0,1,"");
+                    start=start-2;
+                }
+                StyleSpan span = new StyleSpan(Typeface.BOLD_ITALIC);
                 spanStr.setSpan(new ForegroundColorSpan(color), lastLeft, start, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);//背景色
+                spanStr.setSpan(span, lastLeft, start, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 return spanStr;
             }
         }
+        final int finalStart = start;
         new Thread(){
             @Override
             public void run() {
@@ -92,7 +101,7 @@ public class HyperLinkUtil {
                     Document doc = Jsoup.connect(html5Url).get();
                     if(!StringUtils.isEmpty(doc.title())) {
                         String oldString=spanStr.toString();
-                        spanStr.insert(start, "<" + doc.title() + ">");
+                        spanStr.insert(finalStart, "\n" + doc.title() + "\n");
                         dbManager.updateMessage(messageId,spanStr.toString());
                         mOnChangeLinkListener.changeLink(spanStr.toString(),oldString);
                     }

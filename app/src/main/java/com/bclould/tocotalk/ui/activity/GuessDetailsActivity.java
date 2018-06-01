@@ -938,7 +938,7 @@ public class GuessDetailsActivity extends BaseActivity {
             }
         });
         menu.setColor(Color.BLACK);
-        menu.showAtLocation(mBark, Gravity.BOTTOM, 0, 0);
+        menu.showAtLocation();
     }
 
     private void showHashDialog() {

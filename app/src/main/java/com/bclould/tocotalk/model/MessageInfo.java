@@ -43,42 +43,6 @@ public class MessageInfo implements Serializable {
     private String betId;
     private String periodQty;
 
-    @Override
-    public String toString() {
-        return "MessageInfo{" +
-                "message='" + message + '\'' +
-                ", count='" + count + '\'' +
-                ", coin='" + coin + '\'' +
-                ", username='" + username + '\'' +
-                ", time='" + time + '\'' +
-                ", remark='" + remark + '\'' +
-                ", type=" + type +
-                ", status=" + status +
-                ", id=" + id +
-                ", redId=" + redId +
-                ", voice='" + voice + '\'' +
-                ", voiceStatus=" + voiceStatus +
-                ", voiceTime='" + voiceTime + '\'' +
-                ", sendStatus=" + sendStatus +
-                ", msgType=" + msgType +
-                ", imageType=" + imageType +
-                ", send='" + send + '\'' +
-                ", lat=" + lat +
-                ", lng=" + lng +
-                ", address='" + address + '\'' +
-                ", title='" + title + '\'' +
-                ", headUrl='" + headUrl + '\'' +
-                ", cardUser='" + cardUser + '\'' +
-                ", linkUrl='" + linkUrl + '\'' +
-                ", content='" + content + '\'' +
-                ", converstaion='" + converstaion + '\'' +
-                ", guessPw='" + guessPw + '\'' +
-                ", initiator='" + initiator + '\'' +
-                ", betId='" + betId + '\'' +
-                ", periodQty='" + periodQty + '\'' +
-                '}';
-    }
-
     public String getBetId() {
         return betId;
     }

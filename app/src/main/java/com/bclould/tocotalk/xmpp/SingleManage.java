@@ -34,6 +34,7 @@ import com.bclould.tocotalk.service.IMService;
 import com.bclould.tocotalk.ui.activity.ConversationActivity;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -120,6 +121,19 @@ public class SingleManage implements Room{
         }
     }
 
+    @Override
+    public boolean anewSendText(String message, int id) {
+        try {
+            // TODO: 2018/5/31 重發失敗還是顯示成功 
+            mMgr.deleteSingleMessage(mUser,id+"");
+            sendMessage(message);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     //发送文本消息
     public MessageInfo sendMessage(String message) {
         try {
@@ -185,6 +199,12 @@ public class SingleManage implements Room{
             refreshAddData(messageInfo);
             return messageInfo;
         }
+    }
+
+    @Override
+    public void anewSendUpload(MessageInfo messageInfo) {
+        mMgr.deleteSingleMessage(mUser,messageInfo.getId()+"");
+        Upload(messageInfo.getMessage());
     }
 
     //上传文件到aws
@@ -322,13 +342,24 @@ public class SingleManage implements Room{
         }
     }
 
-    public void sendLocationMessage(Bitmap bitmap, String title, String address, float lat, float lng){
+    @Override
+    public void anewSendLocation(MessageInfo messageInfo) {
+        mMgr.deleteSingleMessage(mUser,messageInfo.getId()+"");
+        sendLocationMessage(messageInfo.getVoice(),null,messageInfo.getTitle(),messageInfo.getAddress(),messageInfo.getLat(),messageInfo.getLng());
+    }
+
+    public void sendLocationMessage(String file,Bitmap bitmap, String title, String address, float lat, float lng){
         String converstaion="[" + context.getString(R.string.location) + "]";
         final String postfix = "LOCATION";//获取文件后缀
         final String key = UtilTool.getUserId() + UtilTool.createtFileName() + ".AN.jpg";//命名aws文件名
         //缩略图储存路径
-        final File newFile = new File(Constants.PUBLICDIR + key);
-        UtilTool.comp(bitmap, newFile);//压缩图片
+        File newFile;
+        if(StringUtils.isEmpty(file)) {
+            newFile = new File(Constants.PUBLICDIR + key);
+            UtilTool.comp(bitmap, newFile);//压缩图片
+        }else{
+            newFile=new File(file);
+        }
         int mId;
         try {
             ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
@@ -392,6 +423,10 @@ public class SingleManage implements Room{
             messageInfo.setType(0);
             messageInfo.setUsername(mUser);
             messageInfo.setTime(time);
+            messageInfo.setTitle(title);
+            messageInfo.setAddress(address);
+            messageInfo.setLat(lat);
+            messageInfo.setLng(lng);
             messageInfo.setMsgType(TO_LOCATION_MSG);
             messageInfo.setSendStatus(2);
             messageInfo.setConverstaion(converstaion);
@@ -418,44 +453,6 @@ public class SingleManage implements Room{
         }
     }
 
-    @Override
-    public boolean anewSendText(String message, int id) {
-        try {
-            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
-            chat.sendMessage(OtrChatListenerManager.getInstance().sentMessagesChange(message,
-                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
-            mMgr.updateMessageHint(id, 0);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
-        }
-        return false;
-    }
-
-    @Override
-    public boolean anewSendVoice(MessageInfo messageInfo) {
-        try {
-            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
-            org.jivesoftware.smack.packet.Message message = new org.jivesoftware.smack.packet.Message();
-            byte[] bytes = UtilTool.readStream(messageInfo.getVoice());
-            String base64 = Base64.encodeToString(bytes);
-            VoiceInfo voiceInfo = new VoiceInfo();
-            voiceInfo.setElementText(base64);
-            int duration = UtilTool.getFileDuration(messageInfo.getVoice(), context);
-            message.setBody(OtrChatListenerManager.getInstance().sentMessagesChange("[audio]:" + duration + context.getString(R.string.second),
-                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
-            message.addExtension(voiceInfo);
-            chat.sendMessage(message);
-            mMgr.updateMessageHint(messageInfo.getId(), 0);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     @Override
     public MultiUserChat createRoom(String roomJid,String roomName, String password, List<UserInfo> users) {
@@ -470,6 +467,12 @@ public class SingleManage implements Room{
     @Override
     public void changeName(String name) {
 
+    }
+
+    @Override
+    public void anewSendCard(MessageInfo messageInfo) {
+        mMgr.deleteSingleMessage(mUser,messageInfo.getId()+"");
+        sendCaed(messageInfo);
     }
 
     @Override
@@ -538,6 +541,14 @@ public class SingleManage implements Room{
         }
     }
 
+
+    @Override
+    public void anewSendShareLink(MessageInfo messageInfo) {
+        mMgr.deleteSingleMessage(mUser,messageInfo.getId()+"");
+        sendShareLink(messageInfo);
+    }
+
+
     @Override
     public boolean sendShareLink(MessageInfo messageInfo) {
         String converstaion="[" + context.getString(R.string.share) + "]";
@@ -602,6 +613,13 @@ public class SingleManage implements Room{
             return false;
         }
     }
+
+    @Override
+    public void anewSendShareGuess(MessageInfo messageInfo) {
+        mMgr.deleteSingleMessage(mUser,messageInfo.getId()+"");
+        sendShareGuess(messageInfo);
+    }
+
 
     @Override
     public boolean sendShareGuess(MessageInfo messageInfo) {
@@ -693,8 +711,8 @@ public class SingleManage implements Room{
     //发送文件消息
     public int sendFileMessage(String path, String postfix, String key, String newFile) {
         int mId;
+        MessageInfo messageInfo = new MessageInfo();
         try {
-            MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(mUser);
             messageInfo.setVoice(newFile);
             messageInfo.setMessage(path);
@@ -711,7 +729,6 @@ public class SingleManage implements Room{
                 messageInfo.setMsgType(TO_FILE_MSG);
             }
             messageInfo.setSend(UtilTool.getJid());
-
             if (mMgr.findConversation(mUser)) {
                 if (postfix.equals("Image")) {
                     mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.image) + "]", time);
@@ -748,9 +765,9 @@ public class SingleManage implements Room{
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
-            MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(mUser);
             messageInfo.setVoice(path);
+            messageInfo.setMessage(path);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date curDate = new Date(System.currentTimeMillis());
             String time = formatter.format(curDate);
@@ -803,6 +820,18 @@ public class SingleManage implements Room{
         return mId;
     }
 
+
+    @Override
+    public boolean anewSendVoice(MessageInfo messageInfo) {
+        try {
+            mMgr.deleteSingleMessage(mUser,messageInfo.getId()+"");
+            sendVoice(UtilTool.getFileDuration(messageInfo.getVoice(), context),messageInfo.getVoice());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     //发送录音
     public void sendVoice(int duration, String fileName) {

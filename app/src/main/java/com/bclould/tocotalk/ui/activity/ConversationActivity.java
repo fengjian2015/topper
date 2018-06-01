@@ -154,7 +154,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private RecordIndicator recordIndicator;
     private RecordUtil recordUtil;
     private MediaPlayer mediaPlayer = new MediaPlayer();
-    private String mImagePath;
     private ChatAdapter mChatAdapter;
     private LinearLayoutManager mLayoutManager;
     private Room roomManage;
@@ -561,7 +560,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 .previewVideo(true)// 是否可预览视频
                 .enablePreviewAudio(true) // 是否可播放音频
                 .compressGrade(Luban.THIRD_GEAR)// luban压缩档次，默认3档 Luban.FIRST_GEAR、Luban.CUSTOM_GEAR
-                .isCamera(true)// 是否显示拍照按钮
+                .isCamera(false)// 是否显示拍照按钮
                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                 //.setOutputCameraPath("/CustomPath")// 自定义拍照保存路径
                 .enableCrop(false)// 是否裁剪
@@ -598,6 +597,11 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 }
             }else if(requestCode==CODE_TAKE_PHOTO_SHOOTING){
                 String url=data.getStringExtra("path_url");
+                String postfix = UtilTool.getPostfix(url);//获取文件后缀
+                if (!postfix.equals("Video")) {
+                    int degree = UtilTool.readPictureDegree(url);
+                    UtilTool.toturn(url, BitmapFactory.decodeFile(url), degree);
+                }
                 if(!com.bclould.tocotalk.utils.StringUtils.isEmpty(url))
                     roomManage.Upload(url);
             }

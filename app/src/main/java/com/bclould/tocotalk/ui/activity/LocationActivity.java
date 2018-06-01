@@ -155,7 +155,7 @@ public class LocationActivity extends AppCompatActivity implements
                     public void onMapScreenShot(Bitmap arg0) {
                         // TODO Auto-generated method stub
                         if (mAdapter.getCount()==0)return;
-                        RoomManage.getInstance().getRoom(mUser).sendLocationMessage(arg0
+                        RoomManage.getInstance().getRoom(mUser).sendLocationMessage(null,arg0
                                 ,mAdapter.getItem(oldClick).title
                                 ,mAdapter.getItem(oldClick).address
                                 ,mAdapter.getItem(oldClick).location.lat

@@ -1,30 +1,27 @@
 package com.bclould.tocotalk.ui.widget;
 
-import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Handler;
-import android.os.Message;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 
 import com.bclould.tocotalk.R;
 
 import java.util.List;
 
+import static com.bclould.tocotalk.R.style.BottomDialog;
+
 /**
  * Created by xingyun on 2016/7/19.
  */
-public class MenuListPopWindow extends PopupWindow {
+public class MenuListPopWindow extends Dialog {
 
     public interface ListOnClick{
         /**
@@ -46,17 +43,10 @@ public class MenuListPopWindow extends PopupWindow {
     private int color = 0;
 
     public MenuListPopWindow(Context context, List<String> menunames) {
+        super(context, R.style.BottomDialog2);
         View view = View.inflate(context, R.layout.menulist_popwindow, null);
         this.menunames = menunames;
         this.context = context;
-        setAnimationStyle(R.style.BottomPop);
-        setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-        setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
-        setBackgroundDrawable(new BitmapDrawable());
-        setFocusable(true);
-        setOutsideTouchable(true);
-        setContentView(view);
-
         lv_menu = (ListView) view.findViewById(R.id.lv_menu);
         lv_menu.setAdapter(new MyMenuAdapter());
         button_common3 = (Button) view.findViewById(R.id.button_common3);
@@ -79,78 +69,23 @@ public class MenuListPopWindow extends PopupWindow {
                 }
             }
         });
+
+        //获得dialog的window窗口
+        Window window = getWindow();
+        window.getDecorView().setPadding(0, 0, 0, 0);
+        //获得window窗口的属性
+        WindowManager.LayoutParams lp = window.getAttributes();
+        //设置窗口宽度为充满全屏
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        //将设置好的属性set回去
+        window.setAttributes(lp);
+        window.setGravity(Gravity.BOTTOM);
+        window.setWindowAnimations(BottomDialog);
+        setContentView(view);
+
     }
-
-    // 设置屏幕透明度
-    public void backgroundAlpha(float bgAlpha) {
-        WindowManager.LayoutParams lp = ((Activity)context).getWindow().getAttributes();
-        lp.alpha = bgAlpha;
-        ((Activity)context).getWindow().setAttributes(lp);
-    }
-
-    Handler handler=new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            float alp= (float) msg.obj;
-            backgroundAlpha(alp);
-        }
-    };
-
-    private float alpha=1;
-
-    @Override
-    public void showAtLocation(View parent, int gravity, int x, int y) {
-        new Thread(new Runnable(){
-            @Override
-            public void run() {
-                while(alpha>0.5f){
-                    try {
-                        //4是根据弹出动画时间和减少的透明度计算
-                        Thread.sleep(8);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    Message msg =handler.obtainMessage();
-                    msg.what = 1;
-                    //每次减少0.01，精度越高，变暗的效果越流畅
-                    alpha-=0.01f;
-                    msg.obj =alpha ;
-                    handler.sendMessage(msg);
-                }
-            }
-        }).start();
-        super.showAtLocation(parent, gravity, x, y);
-    }
-
-    @Override
-    public void dismiss() {
-        // TODO Auto-generated method stub
-        new Thread(new Runnable(){
-            @Override
-            public void run() {
-                //此处while的条件alpha不能<= 否则会出现黑屏
-                while(alpha<1f){
-                    try {
-                        Thread.sleep(8);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    Message msg =handler.obtainMessage();
-                    msg.what = 1;
-                    alpha+=0.01f;
-                    msg.obj =alpha ;
-                    handler.sendMessage(msg);
-                }
-            }
-        }).start();
-        super.dismiss();
-    }
-
-
-    public void setBgBackgroundColor(int color, float alpha){
-        quit_popupwindows_bg.setBackgroundColor(color);
-        quit_popupwindows_bg.setAlpha(alpha);
-
+    public void showAtLocation(){
+        show();
     }
 
     public void setColor(int color) {
