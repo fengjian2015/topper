@@ -129,6 +129,18 @@ public class MultiManage implements Room{
     }
 
     @Override
+    public boolean anewSendVoice(MessageInfo messageInfo) {
+        try {
+            mMgr.deleteSingleMessage(roomId,messageInfo.getId()+"");
+            sendVoice(UtilTool.getFileDuration(messageInfo.getVoice(), context),messageInfo.getVoice());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
     public void sendVoice(int duration, String fileName) {
         String converstaion="[" + context.getString(R.string.voice) + "]";
         try {
@@ -211,6 +223,19 @@ public class MultiManage implements Room{
             }
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
         }
+    }
+
+
+    @Override
+    public boolean anewSendText(String message, int id) {
+        try {
+            mMgr.deleteSingleMessage(roomId,id+"");
+            sendMessage(message);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
@@ -306,6 +331,13 @@ public class MultiManage implements Room{
             sendFileResults(newFile,false);
 
         }
+    }
+
+
+    @Override
+    public void anewSendUpload(MessageInfo messageInfo) {
+        mMgr.deleteSingleMessage(roomId,messageInfo.getId()+"");
+        Upload(messageInfo.getVoice());
     }
 
     @Override
@@ -536,13 +568,23 @@ public class MultiManage implements Room{
     }
 
     @Override
-    public void sendLocationMessage(Bitmap bitmap, String title, String address, float lat, float lng) {
+    public void anewSendLocation(MessageInfo messageInfo) {
+        mMgr.deleteSingleMessage(roomId,messageInfo.getId()+"");
+        sendLocationMessage(messageInfo.getVoice(),null,messageInfo.getTitle(),messageInfo.getAddress(),messageInfo.getLat(),messageInfo.getLng());
+    }
+
+    public void sendLocationMessage(String file,Bitmap bitmap, String title, String address, float lat, float lng){
         String converstaion="[" + context.getString(R.string.location) + "]";
         final String postfix = "LOCATION";//获取文件后缀
         final String key = UtilTool.getUserId() + UtilTool.createtFileName() + ".AN.jpg";//命名aws文件名
         //缩略图储存路径
-        final File newFile = new File(Constants.PUBLICDIR + key);
-        UtilTool.comp(bitmap, newFile);//压缩图片
+        File newFile;
+        if(org.jivesoftware.smack.util.StringUtils.isEmpty(file)) {
+            newFile = new File(Constants.PUBLICDIR + key);
+            UtilTool.comp(bitmap, newFile);//压缩图片
+        }else{
+            newFile=new File(file);
+        }
         int mId;
         try {
             //创建jid实体
@@ -607,6 +649,10 @@ public class MultiManage implements Room{
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setVoice(newFile.getAbsolutePath());
             messageInfo.setMessage(title);
+            messageInfo.setTitle(title);
+            messageInfo.setAddress(address);
+            messageInfo.setLat(lat);
+            messageInfo.setLng(lng);
             messageInfo.setType(0);
             messageInfo.setUsername(roomId);
             messageInfo.setTime(time);
@@ -632,49 +678,6 @@ public class MultiManage implements Room{
             sendFileResults(newFile.getAbsolutePath(),false);
 
         }
-    }
-
-    @Override
-    public boolean anewSendText(String message, int id) {
-        try {
-            //创建jid实体
-            EntityBareJid groupJid = JidCreate.entityBareFrom(roomId);
-            //群管理对象
-            MultiUserChatManager multiUserChatManager = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            MultiUserChat multiUserChat = multiUserChatManager.getMultiUserChat(groupJid);
-            multiUserChat.sendMessage(message);
-            mMgr.updateMessageHint(id, 0);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    @Override
-    public boolean anewSendVoice(MessageInfo messageInfo) {
-        try {
-
-            //创建jid实体
-            EntityBareJid groupJid = JidCreate.entityBareFrom(roomId);
-            //群管理对象
-            MultiUserChatManager multiUserChatManager = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            MultiUserChat multiUserChat = multiUserChatManager.getMultiUserChat(groupJid);
-            org.jivesoftware.smack.packet.Message message = new org.jivesoftware.smack.packet.Message();
-            byte[] bytes = UtilTool.readStream(messageInfo.getVoice());
-            String base64 = Base64.encodeToString(bytes);
-            VoiceInfo voiceInfo = new VoiceInfo();
-            voiceInfo.setElementText(base64);
-            int duration = UtilTool.getFileDuration(messageInfo.getVoice(), context);
-            message.setBody("[audio]:" + duration + context.getString(R.string.second));
-            message.addExtension(voiceInfo);
-            multiUserChat.sendMessage(message);
-            mMgr.updateMessageHint(messageInfo.getId(), 0);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     //发送文件消息
@@ -736,6 +739,7 @@ public class MultiManage implements Room{
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(roomId);
             messageInfo.setVoice(path);
+            messageInfo.setMessage(path);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date curDate = new Date(System.currentTimeMillis());
             String time = formatter.format(curDate);
@@ -953,6 +957,12 @@ public class MultiManage implements Room{
     }
 
     @Override
+    public void anewSendCard(MessageInfo messageInfo) {
+        mMgr.deleteSingleMessage(roomId,messageInfo.getId()+"");
+        sendCaed(messageInfo);
+    }
+
+    @Override
     public boolean sendCaed(MessageInfo messageInfo) {
         String converstaion="[" + context.getString(R.string.person_business_card) + "]";
         try {
@@ -1016,6 +1026,13 @@ public class MultiManage implements Room{
             refreshAddData(messageInfo);
             return false;
         }
+    }
+
+
+    @Override
+    public void anewSendShareLink(MessageInfo messageInfo) {
+        mMgr.deleteSingleMessage(roomId,messageInfo.getId()+"");
+        sendShareLink(messageInfo);
     }
 
     @Override
@@ -1082,6 +1099,13 @@ public class MultiManage implements Room{
             return false;
         }
     }
+
+    @Override
+    public void anewSendShareGuess(MessageInfo messageInfo) {
+        mMgr.deleteSingleMessage(roomId,messageInfo.getId()+"");
+        sendShareGuess(messageInfo);
+    }
+
 
     @Override
     public boolean sendShareGuess(MessageInfo messageInfo) {

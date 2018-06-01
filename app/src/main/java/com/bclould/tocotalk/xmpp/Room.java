@@ -17,7 +17,7 @@ public interface Room {
     void Upload(final String path);
     void sendTransfer(String mRemark,String mCoin,String mCount);
     void sendRed(String mRemark,String mCoin,double mCount,int id);
-    void sendLocationMessage(Bitmap bitmap, String title, String address, float lat, float lng);
+    void sendLocationMessage(String file,Bitmap bitmap, String title, String address, float lat, float lng);
     boolean anewSendText(String message, int id);
     boolean anewSendVoice(MessageInfo messageInfo);
     MultiUserChat createRoom(String roomJid,String roomName, String nickName, List<UserInfo> users);
@@ -26,4 +26,9 @@ public interface Room {
     boolean sendCaed(MessageInfo messageInfo);
     boolean sendShareLink(MessageInfo messageInfo);
     boolean sendShareGuess(MessageInfo messageInfo);
+    void anewSendUpload(MessageInfo messageInfo);
+    void anewSendLocation(MessageInfo messageInfo);
+    void anewSendCard(MessageInfo messageInfo);
+    void anewSendShareLink(MessageInfo messageInfo);
+    void anewSendShareGuess(MessageInfo messageInfo);
 }

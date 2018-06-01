@@ -193,6 +193,6 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
             }
         });
         menu.setColor(Color.BLACK);
-        menu.showAtLocation(mRlTitle, Gravity.BOTTOM,0,0);
+        menu.showAtLocation();
     }
 }

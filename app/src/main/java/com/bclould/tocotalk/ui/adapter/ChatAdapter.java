@@ -460,7 +460,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             }
         });
         menu.setColor(Color.BLACK);
-        menu.showAtLocation(mrlTitle, Gravity.BOTTOM, 0, 0);
+        menu.showAtLocation();
     }
 
     @Override
@@ -508,7 +508,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mIvWarning.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    anewSendText(messageInfo.getMessage(), mIvWarning, messageInfo.getId(), messageInfo);
+                    mMessageList.remove(messageInfo);
+                    RoomManage.getInstance().getRoom(mRoomId).anewSendText(messageInfo.getMessage(), messageInfo.getId());
                 }
             });
             mTvMessamge.setOnLongClickListener(new View.OnLongClickListener() {
@@ -518,16 +519,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     return false;
                 }
             });
-        }
-    }
-
-    private void anewSendText(String message, ImageView ivWarning, int id, MessageInfo messageInfo) {
-        if (RoomManage.getInstance().getRoom(mRoomId).anewSendText(message, id)) {
-            ivWarning.setVisibility(View.GONE);
-            messageInfo.setSendStatus(0);
-        } else {
-            ivWarning.setVisibility(View.VISIBLE);
-            Toast.makeText(mContext, mContext.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -808,7 +799,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mIvWarning.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    anewSendVoice(messageInfo, mIvWarning);
+                    mMessageList.remove(messageInfo);
+                    RoomManage.getInstance().getRoom(mRoomId).anewSendVoice(messageInfo);
                 }
             });
             final AnimationDrawable anim = (AnimationDrawable) mIvAnim.getBackground();
@@ -825,17 +817,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     return false;
                 }
             });
-        }
-    }
-
-    private void anewSendVoice(MessageInfo messageInfo, ImageView ivWarning) {
-        if (RoomManage.getInstance().getRoom(mRoomId).anewSendVoice(messageInfo)) {
-            ivWarning.setVisibility(View.GONE);
-            messageInfo.setSendStatus(0);
-            EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.oneself_send_msg)));
-        } else {
-            ivWarning.setVisibility(View.VISIBLE);
-            Toast.makeText(mContext, mContext.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -991,7 +972,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mIvWarning.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    anewSendImg();
+                    mMessageList.remove(messageInfo);
+                    RoomManage.getInstance().getRoom(mRoomId).anewSendUpload(messageInfo);
                 }
             });
             AnimationDrawable animationDrawable = (AnimationDrawable) mIvLoad.getBackground();
@@ -1127,6 +1109,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
             }
             AnimationDrawable animationDrawable = (AnimationDrawable) mIvLoad.getBackground();
             animationDrawable.start();
+            mIvWarning.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mMessageList.remove(messageInfo);
+                    RoomManage.getInstance().getRoom(mRoomId).anewSendUpload(messageInfo);
+                }
+            });
             mRlVideo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -1238,6 +1227,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
             tvTitle.setText(messageInfo.getTitle());
             tvAddress.setText(messageInfo.getAddress());
             ivLocation.setImageBitmap(BitmapFactory.decodeFile(messageInfo.getVoice()));
+            mIvWarning.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mMessageList.remove(messageInfo);
+                    RoomManage.getInstance().getRoom(mRoomId).anewSendLocation(messageInfo);
+                }
+            });
             rlLocation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -1340,7 +1336,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 mIvWarning.setVisibility(View.GONE);
                 mIvLoad.setVisibility(View.GONE);
             }
-
+            mIvWarning.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mMessageList.remove(messageInfo);
+                    RoomManage.getInstance().getRoom(mRoomId).anewSendCard(messageInfo);
+                }
+            });
             tvUsername.setText(messageInfo.getMessage());
             Glide.with(mContext).load(messageInfo.getHeadUrl()).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1)).into(ivHead);
             rlCard.setOnLongClickListener(new View.OnLongClickListener() {
@@ -1446,7 +1448,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 mIvWarning.setVisibility(View.GONE);
                 mIvLoad.setVisibility(View.GONE);
             }
-
+            mIvWarning.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mMessageList.remove(messageInfo);
+                    RoomManage.getInstance().getRoom(mRoomId).anewSendShareLink(messageInfo);
+                }
+            });
             Glide.with(mContext).load(messageInfo.getHeadUrl()).apply(requestOptions).into(ivHead);
             tvTitle.setText(messageInfo.getTitle());
             tvContent.setText(messageInfo.getContent());
@@ -1576,6 +1584,16 @@ public class ChatAdapter extends RecyclerView.Adapter {
             tvTitle.setText(messageInfo.getTitle());
             tvCoin.setText(messageInfo.getCoin() + mContext.getString(R.string.guess));
             tvWho.setText(mContext.getString(R.string.fa_qi_ren) + ":" + messageInfo.getInitiator());
+            tvCoin.setText(messageInfo.getCoin() + mContext.getString(R.string.guess));
+            tvWho.setText(mContext.getString(R.string.fa_qi_ren) + ":" + messageInfo.getInitiator());
+
+            mIvWarning.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mMessageList.remove(messageInfo);
+                    RoomManage.getInstance().getRoom(mRoomId).anewSendShareGuess(messageInfo);
+                }
+            });
             rlGuess.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
