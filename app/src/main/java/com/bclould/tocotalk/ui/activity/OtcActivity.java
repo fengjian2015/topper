@@ -41,6 +41,8 @@ import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -148,7 +150,7 @@ public class OtcActivity extends BaseActivity {
     boolean isCheckBox = false;
 
     private void showDisclaimerDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_otc_disclaimer, this,R.style.dialog);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_otc_disclaimer, this, R.style.dialog);
         deleteCacheDialog.show();
         final LinearLayout showHide = (LinearLayout) deleteCacheDialog.findViewById(R.id.ll_show_hide);
         final CheckBox checkBox = (CheckBox) deleteCacheDialog.findViewById(R.id.check_box);

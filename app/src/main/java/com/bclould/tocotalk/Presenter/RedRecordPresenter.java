@@ -46,7 +46,7 @@ public class RedRecordPresenter {
 
     public void log(String type, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
+//            showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .redPacketLog(UtilTool.getToken(), type)
@@ -62,13 +62,13 @@ public class RedRecordPresenter {
                         public void onNext(RedRecordInfo baseInfo) {
                             if (baseInfo.getStatus() == 1)
                                 callBack.send(baseInfo.getData());
-                            hideDialog();
+//                            hideDialog();
 //                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable e) {
-                            hideDialog();
+//                            hideDialog();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 

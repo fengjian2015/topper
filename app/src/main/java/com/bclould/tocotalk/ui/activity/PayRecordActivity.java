@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -60,6 +61,12 @@ public class PayRecordActivity extends BaseActivity {
     RelativeLayout mRlDateSelector;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.iv)
+    ImageView mIv;
+    @Bind(R.id.tv_hint)
+    TextView mTvHint;
+    @Bind(R.id.ll_no_data)
+    LinearLayout mLlNoData;
     private PayRecordRVAdapter mPayRecordRVAdapter;
     private Dialog mBottomDialog;
     String mPage = "1";
@@ -111,12 +118,21 @@ public class PayRecordActivity extends BaseActivity {
     List<TransferListInfo.DataBean> mDataBeanList = new ArrayList<>();
 
     private void initData() {
-        mDataBeanList.clear();
         mReceiptPaymentPresenter.transRecord(mPage, mPageSize, mTypes, mDate, new ReceiptPaymentPresenter.CallBack4() {
             @Override
             public void send(List<TransferListInfo.DataBean> data) {
-                mDataBeanList.addAll(data);
-                mPayRecordRVAdapter.notifyDataSetChanged();
+                if (mRecyclerView != null) {
+                    if (data.size() != 0) {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mDataBeanList.clear();
+                        mDataBeanList.addAll(data);
+                        mPayRecordRVAdapter.notifyDataSetChanged();
+                    } else {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.VISIBLE);
+                    }
+                }
             }
         });
     }

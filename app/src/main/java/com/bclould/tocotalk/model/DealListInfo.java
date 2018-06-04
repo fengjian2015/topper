@@ -77,9 +77,9 @@ public class DealListInfo implements Serializable {
         private String number;
         private int deadline;
         private String pay_type;
-        private int min_amount;
-        private int max_amount;
         private String remark;
+        private String min_amount;
+        private String max_amount;
         private int status;
         private String created_at;
         private int count_trans_number;
@@ -191,19 +191,19 @@ public class DealListInfo implements Serializable {
             this.pay_type = pay_type;
         }
 
-        public int getMin_amount() {
+        public String getMin_amount() {
             return min_amount;
         }
 
-        public void setMin_amount(int min_amount) {
+        public void setMin_amount(String min_amount) {
             this.min_amount = min_amount;
         }
 
-        public int getMax_amount() {
+        public String getMax_amount() {
             return max_amount;
         }
 
-        public void setMax_amount(int max_amount) {
+        public void setMax_amount(String max_amount) {
             this.max_amount = max_amount;
         }
 

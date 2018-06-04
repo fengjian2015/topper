@@ -229,24 +229,26 @@ public class DynamicDetailActivity extends BaseActivity {
         mDynamicPresenter.reviewList(mId, new DynamicPresenter.CallBack3() {
             @Override
             public void send(ReviewListInfo.DataBean data) {
-                if (!data.getInfo().getAvatar().isEmpty()) {
-                    try {
-                        UtilTool.setCircleImg(DynamicDetailActivity.this, data.getInfo().getAvatar(), mTouxiang);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                if (!DynamicDetailActivity.this.isDestroyed()) {
+                    if (!data.getInfo().getAvatar().isEmpty()) {
+                        try {
+                            UtilTool.setCircleImg(DynamicDetailActivity.this, data.getInfo().getAvatar(), mTouxiang);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        UtilTool.setCircleImg(DynamicDetailActivity.this, R.mipmap.img_nfriend_headshot1, mTouxiang);
                     }
-                } else {
-                    UtilTool.setCircleImg(DynamicDetailActivity.this, R.mipmap.img_nfriend_headshot1, mTouxiang);
+                    mInfo = data.getInfo();
+                    if (data.getInfo().getIs_like() == 1) {
+                        mLlZan.setSelected(true);
+                    } else {
+                        mLlZan.setSelected(false);
+                    }
+                    mDataList.addAll(data.getList());
+                    mTvLikeCount.setText(data.getInfo().getLike_count() + "");
+                    mDynamicDetailRVAdapter.notifyDataSetChanged();
                 }
-                mInfo = data.getInfo();
-                if (data.getInfo().getIs_like() == 1) {
-                    mLlZan.setSelected(true);
-                } else {
-                    mLlZan.setSelected(false);
-                }
-                mDataList.addAll(data.getList());
-                mTvLikeCount.setText(data.getInfo().getLike_count() + "");
-                mDynamicDetailRVAdapter.notifyDataSetChanged();
             }
         });
     }

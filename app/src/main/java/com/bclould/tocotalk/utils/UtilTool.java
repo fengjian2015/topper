@@ -34,6 +34,7 @@ import com.bclould.tocotalk.model.UserInfo;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.util.Util;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
@@ -631,7 +632,9 @@ public class UtilTool {
     }
 
     public static void setCircleImg(Context context, Object url, ImageView imageView) {
-        Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
+        if (Util.isOnMainThread() && context != null) {
+            Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
+        }
     }
 
     public static Bitmap getImage(DBManager mgr, String myUser, Context context, ImageView imageView) {
@@ -640,12 +643,18 @@ public class UtilTool {
             UserInfo info = mgr.queryUser(myUser);
             if (!info.getPath().isEmpty()) {
                 UtilTool.Log("頭像", info.getPath());
-                Glide.with(context).load(info.getPath()).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
+                if (Util.isOnMainThread() && context != null) {
+                    Glide.with(context).load(info.getPath()).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
+                }
             } else {
-                Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
+                if (Util.isOnMainThread()&& context != null) {
+                    Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
+                }
             }
         } else {
-            Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
+            if (Util.isOnMainThread()&& context != null) {
+                Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
+            }
         }
         return bitmap;
     }

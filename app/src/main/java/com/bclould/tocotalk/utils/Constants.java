@@ -25,7 +25,7 @@ public class Constants {
 
     //    public static final int OPENFIRE_PORT = 5288;
     public static final int OPENFIRE_PORT = 2018;
-        public static final String BASE_URL = "https://www.bclould.com:8112/api/";//测试
+            public static final String BASE_URL = "https://www.bclould.com:8112/api/";//测试
 //    public static final String BASE_URL = "https://api.cnblocklink.com/api/";
     //        public static String DOMAINNAME = "xmpp.bclould.com";//测试
     public static String DOMAINNAME = "xmpp.coingbank.com";
@@ -45,6 +45,7 @@ public class Constants {
     public static String SECRET_ACCESS_KEY = MySharedPreferences.getInstance().getString(SECRETACCESSKEY);
     public static String SESSION_TOKEN = MySharedPreferences.getInstance().getString(SESSIONTOKEN);
     public static String BUCKET_NAME = "bclould";
+    public static String BUCKET_NAME2 = "bclould-chat";
     public static String PUBLICDIR = "/sdcard/tocotalk/tocotalk_images/";
     public static String LOG_DIR = "/sdcard/tocotalk/log/";
     public static String QRMONEYIN = "qrMoneyIn";

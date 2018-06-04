@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bclould.tocotalk.Presenter.AddOutCoinSitePresenter;
+import com.bclould.tocotalk.Presenter.OutCoinSitePresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
@@ -140,8 +140,8 @@ public class AddOutCoinSiteActivity extends BaseActivity {
         String address = mEtAddress.getText().toString().trim();
         String memo = mEtRemark.getText().toString().trim();
         String googleCode = mEtGoogleCode.getText().toString();
-        AddOutCoinSitePresenter addOutCoinSitePresenter = new AddOutCoinSitePresenter(this);
-        addOutCoinSitePresenter.addCoinOutAddress(mId, memo, address, googleCode);
+        OutCoinSitePresenter outCoinSitePresenter = new OutCoinSitePresenter(this);
+        outCoinSitePresenter.addCoinOutAddress(mId, memo, address, googleCode);
     }
 
     //判断输入框是否有内容

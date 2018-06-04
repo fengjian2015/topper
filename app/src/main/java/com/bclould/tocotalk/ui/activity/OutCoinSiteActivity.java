@@ -20,8 +20,14 @@ import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.OutCoinSiteInfo;
 import com.bclould.tocotalk.ui.adapter.OutCoinSiteRVAdapter;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -55,21 +61,27 @@ public class OutCoinSiteActivity extends BaseActivity {
     private int mId;
     private OutCoinSitePresenter mOutCoinSitePresenter;
     private String mCoinName;
+    private OutCoinSiteRVAdapter mOutCoinSiteRVAdapter;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_site);
         ButterKnife.bind(this);
+        mOutCoinSitePresenter = new OutCoinSitePresenter(this);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         initInterface();
         MyApp.getInstance().addActivity(this);
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        //获取地址
-        getSite();
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(getString(R.string.add_site))) {
+            getSite();
+        }
     }
 
     //初始化界面
@@ -80,20 +92,34 @@ public class OutCoinSiteActivity extends BaseActivity {
         UtilTool.Log("地址", mCoinName);
         UtilTool.Log("地址", mId + "");
         //获取上个界面传递的Id
+        initRecyclerView();
         getSite();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
+    List<OutCoinSiteInfo.MessageBean> mDataList = new ArrayList<>();
 
     //获取地址
     public void getSite() {
-        mOutCoinSitePresenter = new OutCoinSitePresenter(this);
-        mOutCoinSitePresenter.getSite(mId);
+        mOutCoinSitePresenter.getSite(mId, new OutCoinSitePresenter.CallBack() {
+            @Override
+            public void send(List<OutCoinSiteInfo.MessageBean> data) {
+                if (mRecyclerView != null) {
+                    if (data.size() != 0) {
+                        mDataList.clear();
+                        mDataList.addAll(data);
+                        mOutCoinSiteRVAdapter.notifyItemRangeChanged(0, mDataList.size());
+                    }
+                }
+            }
+        });
 
     }
 
     //初始化列表
-    private void initRecyclerView(List<OutCoinSiteInfo.MessageBean> siteBeanList) {
-        mRecyclerView.setAdapter(new OutCoinSiteRVAdapter(this, siteBeanList, mOutCoinSitePresenter, mId));
+    private void initRecyclerView() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mOutCoinSiteRVAdapter = new OutCoinSiteRVAdapter(this, mDataList, mOutCoinSitePresenter, mId);
+        mRecyclerView.setAdapter(mOutCoinSiteRVAdapter);
     }
 
     @OnClick({R.id.bark, R.id.btn_add_site})
@@ -113,11 +139,6 @@ public class OutCoinSiteActivity extends BaseActivity {
         }
     }
 
-    //请求的列表数据
-    public void setData(List<OutCoinSiteInfo.MessageBean> siteBeanList) {
-        initRecyclerView(siteBeanList);
-    }
-
     //把地址和地址id返回上一个界面
     public void setSite(String address, int id) {
         Intent intent = new Intent();
@@ -125,5 +146,12 @@ public class OutCoinSiteActivity extends BaseActivity {
         intent.putExtra("siteId", id);
         this.setResult(Activity.RESULT_OK, intent);
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+        ButterKnife.unbind(this);
     }
 }

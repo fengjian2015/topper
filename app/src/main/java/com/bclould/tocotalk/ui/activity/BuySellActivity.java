@@ -152,8 +152,8 @@ public class BuySellActivity extends BaseActivity {
             String s = mEtCoin.getText().toString();
             if (!s.isEmpty()) {
                 double count = Double.parseDouble(s);
-                double min_amount = mData.getMin_amount();
-                double max_amount = mData.getMax_amount();
+                double min_amount = Double.parseDouble(mData.getMin_amount());
+                double max_amount = Double.parseDouble(mData.getMax_amount());
                 double money = count * mPrice;
                 if (money < min_amount) {
                     mTvCoinHint.setText(getString(R.string.no_less_than_the_limit));
@@ -175,8 +175,8 @@ public class BuySellActivity extends BaseActivity {
             String s = mEtCoin.getText().toString();
             if (!s.isEmpty()) {
                 double count = Double.parseDouble(s);
-                double min_amount = mData.getMin_amount();
-                double max_amount = mData.getMax_amount();
+                double min_amount = Double.parseDouble(mData.getMin_amount());
+                double max_amount = Double.parseDouble(mData.getMax_amount());
                 double money = count * mPrice;
                 if (money < min_amount) {
                     mTvCoinHint.setText(getString(R.string.no_less_than_the_limit));
@@ -205,8 +205,8 @@ public class BuySellActivity extends BaseActivity {
             String s = mEtCny.getText().toString();
             if (!s.isEmpty()) {
                 double money = Double.parseDouble(s);
-                double min_amount = mData.getMin_amount();
-                double max_amount = mData.getMax_amount();
+                double min_amount = Double.parseDouble(mData.getMin_amount());
+                double max_amount = Double.parseDouble(mData.getMax_amount());
                 if (money < min_amount) {
                     mTvCoinHint.setText(getString(R.string.no_less_than_the_limit));
                 } else if (money > max_amount) {
@@ -228,8 +228,8 @@ public class BuySellActivity extends BaseActivity {
             String s = mEtCny.getText().toString();
             if (!s.isEmpty()) {
                 double money = Double.parseDouble(s);
-                double min_amount = mData.getMin_amount();
-                double max_amount = mData.getMax_amount();
+                double min_amount = Double.parseDouble(mData.getMin_amount());
+                double max_amount = Double.parseDouble(mData.getMax_amount());
                 if (money < min_amount) {
                     mTvCoinHint.setText(getString(R.string.no_less_than_the_limit));
                 } else if (money > max_amount) {
@@ -358,7 +358,7 @@ public class BuySellActivity extends BaseActivity {
         String count = mEtCoin.getText().toString();
         if (!moneys.isEmpty() && !count.isEmpty()) {
             double money = Double.parseDouble(moneys);
-            if (money >= mData.getMin_amount() && money <= mData.getMax_amount()) {
+            if (money >= Double.parseDouble(mData.getMin_amount()) && money <= Double.parseDouble(mData.getMax_amount())) {
                 if (!mType) {
                     showDialog();
                 } else {
@@ -518,7 +518,7 @@ public class BuySellActivity extends BaseActivity {
     };
 
     public void showHintDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this,R.style.dialog);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setCanceledOnTouchOutside(false);
         TextView retry = (TextView) deleteCacheDialog.findViewById(R.id.tv_retry);

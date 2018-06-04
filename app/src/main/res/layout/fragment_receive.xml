@@ -10,6 +10,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/ll_no_data"
             android:orientation="vertical"
             android:layout_width="match_parent"

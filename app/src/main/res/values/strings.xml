@@ -883,4 +883,5 @@
     <string name="open_shooting">打開拍攝</string>
     <string name="destroy_service">銷毀服務</string>
     <string name="toast_uploading_dynamic">上傳動態中....</string>
+    <string name="no_record">沒有交易記錄</string>
 </resources>

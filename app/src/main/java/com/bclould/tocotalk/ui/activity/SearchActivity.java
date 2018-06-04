@@ -1,24 +1,27 @@
 package com.bclould.tocotalk.ui.activity;
 
-import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.support.annotation.RequiresApi;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.UserInfo;
-import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.ui.adapter.SearchAdapter;
+import com.bclould.tocotalk.ui.widget.ClearEditText;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
@@ -29,72 +32,93 @@ import butterknife.OnClick;
  * Created by GA on 2018/1/27.
  */
 
-public class SearchActivity extends AppCompatActivity {
-    @Bind(R.id.bark)
-    ImageView mBark;
-    @Bind(R.id.searchView)
-    SearchView mSearchView;
-    @Bind(R.id.listView)
-    ListView mListView;
-    List<String> mList = new ArrayList<>();
+@RequiresApi(api = Build.VERSION_CODES.N)
+public class SearchActivity extends BaseActivity {
+
+    @Bind(R.id.iv_search)
+    ImageView mIvSearch;
+    @Bind(R.id.et_search)
+    ClearEditText mEtSearch;
+    @Bind(R.id.cb_search)
+    CardView mCbSearch;
+    @Bind(R.id.tv_cancel)
+    TextView mTvCancel;
+    @Bind(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+    private DBManager mMgr;
+    List<UserInfo> mUserList = new ArrayList<>();
+    List<UserInfo> mBackupsList = new ArrayList<>();
+    private SearchAdapter mSearchAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        mMgr = new DBManager(this);
         ButterKnife.bind(this);
-        initListView();
-
+        initListener();
+        initRecyclerView();
+        initData();
     }
 
-    private void initListView() {
-        DBManager dbManager = new DBManager(this);
-        List<UserInfo> userInfos = dbManager.queryAllUser();
-        for (UserInfo info : userInfos) {
-            String user = info.getUser();
-            String name = "";
-            if (user.contains("@"))
-                name = user.substring(0, user.indexOf("@"));
-            else
-                name = user;
-            mList.add(name);
-        }
-        mListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mList));
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView textView = (TextView) view;
-                Intent intent = new Intent(SearchActivity.this, ConversationActivity.class);
-                intent.putExtra("name", textView.getText());
-                intent.putExtra("user", textView.getText() + "@" + Constants.DOMAINNAME);
-                startActivity(intent);
-            }
-        });
-        mListView.setTextFilterEnabled(true);
-        // 设置搜索文本监听
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            // 当点击搜索按钮时触发该方法
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            // 当搜索内容改变时触发该方法
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (!TextUtils.isEmpty(newText)) {
-                    mListView.setFilterText(newText);
-                } else {
-                    mListView.clearTextFilter();
-                }
-                return false;
-            }
-        });
-
+    private void initRecyclerView() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mSearchAdapter = new SearchAdapter(this, mUserList, mMgr);
+        mRecyclerView.setAdapter(mSearchAdapter);
     }
 
-    @OnClick(R.id.bark)
+    @OnClick(R.id.tv_cancel)
     public void onViewClicked() {
         finish();
+    }
+
+    private void initListener() {
+        mEtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String user = mEtSearch.getText().toString().trim();
+                String upperCase = user.toUpperCase();
+                mUserList.clear();
+                for (UserInfo info : mBackupsList) {
+                    if (info.getUser().toUpperCase().contains(upperCase) || info.getRemark().toUpperCase().contains(upperCase)) {
+                        mUserList.add(info);
+                        mSearchAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        });
+    }
+
+    private void initData() {
+        mUserList.clear();
+        List<UserInfo> userInfos = mMgr.queryAllUser();
+        UserInfo userInfo = null;
+        UserInfo userInfo2 = null;
+        for (UserInfo info : userInfos) {
+            if (info.getUser().equals(UtilTool.getJid())) {
+                userInfo = info;
+            } else if (info.getUser().isEmpty()) {
+                userInfo2 = info;
+            } else {
+                String name = info.getUser().substring(0, info.getUser().indexOf("@"));
+                info.setUser(name);
+            }
+        }
+        userInfos.remove(userInfo);
+        if (userInfo2 != null)
+            userInfos.remove(userInfo2);
+        mUserList.addAll(userInfos);
+        mBackupsList.addAll(userInfos);
+        Collections.sort(mUserList);
     }
 }

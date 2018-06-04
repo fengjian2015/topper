@@ -22,4 +22,8 @@
         android:textColor="@color/black"
         android:textSize="@dimen/x30"/>
 
+    <TextView
+        style="@style/HCutOffRule"
+        android:layout_alignParentBottom="true"/>
+
 </RelativeLayout>

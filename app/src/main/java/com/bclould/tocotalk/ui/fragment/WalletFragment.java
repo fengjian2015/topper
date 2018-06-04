@@ -110,29 +110,32 @@ public class WalletFragment extends Fragment {
 
 
     private void initData() {
-        try {
-            SubscribeCoinPresenter subscribeCoinPresenter = new SubscribeCoinPresenter(getContext());
-            subscribeCoinPresenter.getUSDT(new SubscribeCoinPresenter.CallBack3() {
-                @Override
-                public void send(String data) {
-                    if (data != null) {
-                        mTvTotal.setText(data);
+        if (isAdded()) {
+            try {
+                SubscribeCoinPresenter subscribeCoinPresenter = new SubscribeCoinPresenter(getContext());
+                subscribeCoinPresenter.getUSDT(new SubscribeCoinPresenter.CallBack3() {
+                    @Override
+                    public void send(String data) {
+                        if (data != null) {
+                            mTvTotal.setText(data);
+                        }
                     }
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (MyApp.getInstance().mOtcCoinList.size() == 0) {
-            CoinPresenter coinPresenter = new CoinPresenter(getContext());
-            coinPresenter.coinLists("otc", new CoinPresenter.CallBack() {
-                @Override
-                public void send(List<CoinListInfo.DataBean> data) {
-                    UtilTool.Log(getString(R.string.coins), data.size() + "");
-                    MyApp.getInstance().mOtcCoinList.addAll(data);
-                }
-            });
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (MyApp.getInstance().mOtcCoinList.size() == 0) {
+                UtilTool.Log("幣種", "幣種列表");
+                CoinPresenter coinPresenter = new CoinPresenter(getContext());
+                coinPresenter.coinLists("otc", new CoinPresenter.CallBack() {
+                    @Override
+                    public void send(List<CoinListInfo.DataBean> data) {
+                        UtilTool.Log(getString(R.string.coins), data.size() + "");
+                        if (MyApp.getInstance().mOtcCoinList.size() == 0)
+                            MyApp.getInstance().mOtcCoinList.addAll(data);
+                    }
+                });
+            }
         }
     }
 

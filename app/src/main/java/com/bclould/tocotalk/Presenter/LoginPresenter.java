@@ -238,7 +238,7 @@ public class LoginPresenter {
 
     public void loginRecord(final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
+//            showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .loginRecord(UtilTool.getToken())
@@ -252,7 +252,7 @@ public class LoginPresenter {
 
                         @Override
                         public void onNext(LoginRecordInfo loginRecordInfo) {
-                            hideDialog();
+//                            hideDialog();
                             if (loginRecordInfo.getStatus() == 1) {
                                 callBack.send(loginRecordInfo.getData());
                             }
@@ -261,7 +261,7 @@ public class LoginPresenter {
 
                         @Override
                         public void onError(Throwable e) {
-                            hideDialog();
+//                            hideDialog();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -277,7 +277,7 @@ public class LoginPresenter {
 
     public void loginValidateTypeSetting(final int index, String pw, String googleCode) {
         if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
+//            showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .loginValidateTypeSetting(UtilTool.getToken(), index + "", pw, googleCode)
@@ -291,7 +291,7 @@ public class LoginPresenter {
 
                         @Override
                         public void onNext(BaseInfo baseInfo) {
-                            hideDialog();
+//                            hideDialog();
                             if (baseInfo.getStatus() == 1) {
                                 LoginSetActivity activity = (LoginSetActivity) mContext;
                                 activity.finish();
@@ -303,7 +303,7 @@ public class LoginPresenter {
 
                         @Override
                         public void onError(Throwable e) {
-                            hideDialog();
+//                            hideDialog();
                             UtilTool.Log("登录设置", e.getMessage());
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }

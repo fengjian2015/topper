@@ -85,6 +85,7 @@ public class BuySellPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
+                            UtilTool.Log("otc", e.getMessage());
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 

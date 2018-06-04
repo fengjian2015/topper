@@ -81,8 +81,8 @@ public class MyAdListInfo {
         private int deadline;
         private String pay_type;
         private int bank_id;
-        private int min_amount;
-        private int max_amount;
+        private String min_amount;
+        private String max_amount;
         private String remark;
         private int status;
         private String created_at;
@@ -198,19 +198,19 @@ public class MyAdListInfo {
             this.bank_id = bank_id;
         }
 
-        public int getMin_amount() {
+        public String getMin_amount() {
             return min_amount;
         }
 
-        public void setMin_amount(int min_amount) {
+        public void setMin_amount(String min_amount) {
             this.min_amount = min_amount;
         }
 
-        public int getMax_amount() {
+        public String getMax_amount() {
             return max_amount;
         }
 
-        public void setMax_amount(int max_amount) {
+        public void setMax_amount(String max_amount) {
             this.max_amount = max_amount;
         }
 

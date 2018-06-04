@@ -1,5 +1,7 @@
 package com.bclould.tocotalk.ui.adapter;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,7 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/11/3.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class OutCoinSiteRVAdapter extends RecyclerView.Adapter {
 
     private final List<OutCoinSiteInfo.MessageBean> mSiteBeanList;
@@ -96,17 +99,20 @@ public class OutCoinSiteRVAdapter extends RecyclerView.Adapter {
 
                         }
                     });
-
                     Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
-
+                    confirm.setText(mOutCoinSiteActivity.getString(R.string.delete));
+                    confirm.setTextColor(mOutCoinSiteActivity.getResources().getColor(R.color.red));
                     confirm.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            mOutCoinSitePresenter.deleteSite(mId, mMessageBean.getId());
-                            mSiteBeanList.remove(mPosition);
-                            notifyDataSetChanged();
-                            deleteCacheDialog.dismiss();
-
+                            mOutCoinSitePresenter.deleteSite(mId, mMessageBean.getId(), new OutCoinSitePresenter.CallBack2() {
+                                @Override
+                                public void send() {
+                                    mSiteBeanList.remove(mPosition);
+                                    notifyDataSetChanged();
+                                    deleteCacheDialog.dismiss();
+                                }
+                            });
                         }
                     });
                 }

@@ -269,7 +269,7 @@ public class SingleManage implements Room {
                             }
                         });
                         //实例化上传请求
-                        PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
+                        PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME2, key, file);
                         //开始上传
                         s3Client.putObject(por);
                     } catch (Exception e) {
@@ -327,7 +327,7 @@ public class SingleManage implements Room {
                                                 UtilTool.Log("aws", "错误");
                                             }
                                         });
-                                        PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
+                                        PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME2, key, file);
                                         s3Client.putObject(por);
                                     } catch (Exception e) {
                                         mMgr.updateMessageHint(mId[0], 2);

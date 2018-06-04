@@ -1,16 +1,26 @@
 package com.bclould.tocotalk.ui.adapter;
 
-import android.graphics.BitmapFactory;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.UserInfo;
-import com.bclould.tocotalk.ui.activity.SearchActivity;
+import com.bclould.tocotalk.ui.activity.ConversationActivity;
+import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.UtilTool;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -21,54 +31,80 @@ import butterknife.ButterKnife;
  * Created by GA on 2018/1/27.
  */
 
-public class SearchAdapter extends BaseAdapter {
+@RequiresApi(api = Build.VERSION_CODES.N)
+public class SearchAdapter extends RecyclerView.Adapter {
 
-    private final SearchActivity mSearchActivity;
     private final List<UserInfo> mUserInfos;
+    private final Context mContext;
+    private final DBManager mMgr;
 
-    public SearchAdapter(SearchActivity searchActivity, List<UserInfo> userInfos) {
-        mSearchActivity = searchActivity;
+    public SearchAdapter(Context context, List<UserInfo> userInfos, DBManager mgr) {
         mUserInfos = userInfos;
+        mContext = context;
+        mMgr = mgr;
     }
 
     @Override
-    public int getCount() {
-        return mUserInfos.size();
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_search, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public Object getItem(int i) {
-        return mUserInfos.get(i);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        ViewHolder viewHolder = (ViewHolder) holder;
+        viewHolder.setData(mUserInfos.get(position));
     }
 
     @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
-        ViewHolder viewHolder = null;
-        if (convertView == null) {
-            convertView = LayoutInflater.from(mSearchActivity).inflate(R.layout.item_search2, viewGroup, false);
-            viewHolder = new ViewHolder(convertView, i);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+    public int getItemCount() {
+        if (mUserInfos.size() != 0) {
+            return mUserInfos.size();
         }
-        return convertView;
+        return 0;
     }
 
-    class ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_touxiang)
         ImageView mIvTouxiang;
         @Bind(R.id.tv_name)
         TextView mTvName;
+        private String mName;
+        private String mUser;
 
-        ViewHolder(View view, int i) {
+        ViewHolder(View view) {
+            super(view);
             ButterKnife.bind(this, view);
-            mIvTouxiang.setImageBitmap(BitmapFactory.decodeFile(mUserInfos.get(i).getPath()));
-            mTvName.setText(mUserInfos.get(i).getUser());
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, ConversationActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("name", mName);
+                    bundle.putString("user", mUser);
+                    intent.putExtras(bundle);
+                    mMgr.updateNumber(mUser, 0);
+                    EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+
+        public void setData(UserInfo userInfo) {
+            mName = userInfo.getUser();
+            mUser = userInfo.getUser() + "@" + Constants.DOMAINNAME;
+            UtilTool.getImage(mMgr, userInfo.getUser() + "@" + Constants.DOMAINNAME, mContext, mIvTouxiang);
+            if (!userInfo.getRemark().isEmpty()) {
+                mTvName.setText(userInfo.getRemark());
+            } else {
+                mTvName.setText(userInfo.getUser());
+            }
         }
     }
 }

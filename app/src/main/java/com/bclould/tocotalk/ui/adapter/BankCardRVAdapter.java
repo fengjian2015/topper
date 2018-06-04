@@ -36,6 +36,7 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
     private final BankCardActivity mActivity;
     private final List<CardListInfo.DataBean> mCardList;
     private final BankCardPresenter mBankCardPresenter;
+
     //构造方法
     public BankCardRVAdapter(BankCardActivity activity, List<CardListInfo.DataBean> cardList, BankCardPresenter bankCardPresenter) {
         mActivity = activity;
@@ -122,9 +123,14 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
         deleteCacheDialog.show();
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         TextView title = (TextView) deleteCacheDialog.findViewById(R.id.tv_title);
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
         if (type == 0) {
+            confirm.setTextColor(mActivity.getResources().getColor(R.color.red));
+            confirm.setText(mActivity.getString(R.string.delete));
             title.setText(mActivity.getString(R.string.delete_bank_card_hint));
         } else {
+            confirm.setTextColor(mActivity.getResources().getColor(R.color.blue2));
+            confirm.setText(mActivity.getString(R.string.confirm));
             title.setText(mActivity.getString(R.string.set_the_default_bank_card_hint));
         }
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +139,6 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
                 deleteCacheDialog.dismiss();
             }
         });
-        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
