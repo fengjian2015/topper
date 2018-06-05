@@ -1688,6 +1688,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            if (messageInfo.getSend() != null) {
+                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
+            } else {
+                UtilTool.getImage(mMgr, mRoomId, mContext, mIvTouxiang);
+            }
             goIndividualDetails(mIvTouxiang, UtilTool.getJid(), mToName, messageInfo);
             mTvRemark.setText(messageInfo.getRemark());
             mTvCoinCount.setText(messageInfo.getCount() + messageInfo.getCoin());
@@ -1974,6 +1979,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, PayDetailsActivity.class);
                     intent.putExtra("id", messageInfo.getRedId() + "");
+                    intent.putExtra("log_id", messageInfo.getBetId());
                     intent.putExtra("type_number", messageInfo.getType() + "");
                     mContext.startActivity(intent);
                 }
@@ -2025,6 +2031,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, PayDetailsActivity.class);
                     intent.putExtra("id", messageInfo.getRedId() + "");
+                    intent.putExtra("log_id", messageInfo.getBetId());
                     intent.putExtra("type_number", messageInfo.getType() + "");
                     mContext.startActivity(intent);
                 }
@@ -2062,6 +2069,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, PayDetailsActivity.class);
                     intent.putExtra("id", messageInfo.getRedId() + "");
+                    intent.putExtra("log_id", messageInfo.getBetId());
                     intent.putExtra("type_number", messageInfo.getType() + "");
                     mContext.startActivity(intent);
                 }
