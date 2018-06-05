@@ -1106,6 +1106,11 @@ public class MultiManage implements Room{
         sendShareGuess(messageInfo);
     }
 
+    @Override
+    public void transmitVideo(MessageInfo messageInfo) {
+
+    }
+
 
     @Override
     public boolean sendShareGuess(MessageInfo messageInfo) {

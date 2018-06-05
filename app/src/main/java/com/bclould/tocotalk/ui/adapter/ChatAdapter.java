@@ -1124,17 +1124,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
                 }
             });
-//            mRlVideo.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View view) {
-//                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false);
-//                    return false;
-//                }
-//            });
             mRlVideo.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true);
                     return false;
                 }
             });
@@ -1173,17 +1166,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
                 }
             });
-//            mRlVideo.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View view) {
-//                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false);
-//                    return false;
-//                }
-//            });
             mRlVideo.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true);
                     return false;
                 }
             });

@@ -345,6 +345,148 @@ public class SingleManage implements Room {
         }
     }
 
+    //僅僅是url鏈接
+    @Override
+    public void transmitVideo(MessageInfo messageInfo) {
+       int mid= sendFileMessage(messageInfo.getMessage(),"Video","",messageInfo.getVoice());
+        sendFileAfterMessage(messageInfo.getMessage(),"Video",messageInfo.getVoice(),mid);
+    }
+
+    private void sendFileAfterMessage(String key, String postfix, String newFile, int mId) {
+        try {
+            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
+            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
+            org.jivesoftware.smack.packet.Message message = new org.jivesoftware.smack.packet.Message();
+            VoiceInfo voiceInfo = new VoiceInfo();
+            byte[] bytes = UtilTool.readStream(newFile);
+            String base64 = Base64.encodeToString(bytes);
+            voiceInfo.setElementText(base64);
+            message.addExtension(voiceInfo);
+            message.setBody(OtrChatListenerManager.getInstance().sentMessagesChange("[" + postfix + "]:" + key,
+                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
+            chat.sendMessage(message);
+            mMgr.updateMessageHint(mId, 1);
+            sendFileResults(newFile, true);
+            return;
+        } catch (Exception e) {
+            mMgr.updateMessageHint(mId, 2);
+            sendFileResults(newFile, false);
+        }
+    }
+
+    //发送文件消息
+    public int sendFileMessage(String path, String postfix, String key, String newFile) {
+        int mId;
+        MessageInfo messageInfo = new MessageInfo();
+        try {
+            messageInfo.setUsername(mUser);
+            messageInfo.setVoice(newFile);
+            messageInfo.setMessage(path);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            if (postfix.equals("Image")) {
+                messageInfo.setMsgType(TO_IMG_MSG);
+            } else if (postfix.equals("Video")) {
+                messageInfo.setMsgType(TO_VIDEO_MSG);
+            } else {
+                messageInfo.setMsgType(TO_FILE_MSG);
+            }
+            messageInfo.setSend(UtilTool.getJid());
+            if (mMgr.findConversation(mUser)) {
+                if (postfix.equals("Image")) {
+                    mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.image) + "]", time);
+                    messageInfo.setConverstaion("[" + context.getString(R.string.image) + "]");
+                } else if (postfix.equals("Video")) {
+                    mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.video) + "]", time);
+                    messageInfo.setConverstaion("[" + context.getString(R.string.video) + "]");
+                } else {
+                    mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.file) + "]", time);
+                    messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
+                }
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                info.setFriend(mName);
+                info.setUser(mUser);
+                if (postfix.equals("Image")) {
+                    info.setMessage("[" + context.getString(R.string.image) + "]");
+                    messageInfo.setConverstaion("[" + context.getString(R.string.image) + "]");
+                } else if (postfix.equals("Video")) {
+                    info.setMessage("[" + context.getString(R.string.video) + "]");
+                    messageInfo.setConverstaion("[" + context.getString(R.string.video) + "]");
+                } else {
+                    info.setMessage("[" + context.getString(R.string.file) + "]");
+                    messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
+                }
+                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
+                mMgr.addConversation(info);
+            }
+            mId = mMgr.addMessage(messageInfo);
+            messageInfo.setId(mId);
+            refreshAddData(messageInfo);
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
+            messageInfo.setUsername(mUser);
+            messageInfo.setVoice(path);
+            messageInfo.setMessage(path);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setSendStatus(2);
+            if (postfix.equals("Image")) {
+                messageInfo.setMsgType(TO_IMG_MSG);
+            } else if (postfix.equals("Video")) {
+                messageInfo.setMsgType(TO_VIDEO_MSG);
+            } else {
+                messageInfo.setMsgType(TO_FILE_MSG);
+            }
+            messageInfo.setSend(UtilTool.getJid());
+
+            if (mMgr.findConversation(mUser)) {
+                if (postfix.equals("Image")) {
+                    mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.image) + "]", time);
+                    messageInfo.setConverstaion("[" + context.getString(R.string.image) + "]");
+                } else if (postfix.equals("Video")) {
+                    mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.video) + "]", time);
+                    messageInfo.setConverstaion("[" + context.getString(R.string.video) + "]");
+                } else {
+                    mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.file) + "]", time);
+                    messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
+                }
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                info.setFriend(mName);
+                info.setUser(mUser);
+                if (postfix.equals("Image")) {
+                    info.setMessage("[" + context.getString(R.string.image) + "]");
+                    messageInfo.setConverstaion("[" + context.getString(R.string.image) + "]");
+                } else if (postfix.equals("Video")) {
+                    info.setMessage("[" + context.getString(R.string.video) + "]");
+                    messageInfo.setConverstaion("[" + context.getString(R.string.video) + "]");
+                } else {
+                    info.setMessage("[" + context.getString(R.string.file) + "]");
+                    messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
+                }
+                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
+                mMgr.addConversation(info);
+            }
+            mId = mMgr.addMessage(messageInfo);
+            messageInfo.setId(mId);
+            refreshAddData(messageInfo);
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+        }
+        return mId;
+    }
+
+
     @Override
     public void anewSendLocation(MessageInfo messageInfo) {
         mMgr.deleteSingleMessage(mUser,messageInfo.getId()+"");
@@ -689,140 +831,6 @@ public class SingleManage implements Room {
         }
     }
 
-    private void sendFileAfterMessage(String key, String postfix, String newFile, int mId) {
-        try {
-            ChatManager manager = ChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            Chat chat = manager.createChat(JidCreate.entityBareFrom(mUser), null);
-            org.jivesoftware.smack.packet.Message message = new org.jivesoftware.smack.packet.Message();
-            VoiceInfo voiceInfo = new VoiceInfo();
-            byte[] bytes = UtilTool.readStream(newFile);
-            String base64 = Base64.encodeToString(bytes);
-            voiceInfo.setElementText(base64);
-            message.addExtension(voiceInfo);
-            message.setBody(OtrChatListenerManager.getInstance().sentMessagesChange("[" + postfix + "]:" + key,
-                    OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), String.valueOf(JidCreate.entityBareFrom(mUser)))));
-            chat.sendMessage(message);
-            mMgr.updateMessageHint(mId, 1);
-            sendFileResults(newFile, true);
-            return;
-        } catch (Exception e) {
-            mMgr.updateMessageHint(mId, 2);
-            sendFileResults(newFile, false);
-        }
-    }
-
-    //发送文件消息
-    public int sendFileMessage(String path, String postfix, String key, String newFile) {
-        int mId;
-        MessageInfo messageInfo = new MessageInfo();
-        try {
-            messageInfo.setUsername(mUser);
-            messageInfo.setVoice(newFile);
-            messageInfo.setMessage(path);
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date curDate = new Date(System.currentTimeMillis());
-            String time = formatter.format(curDate);
-            messageInfo.setTime(time);
-            messageInfo.setType(0);
-            if (postfix.equals("Image")) {
-                messageInfo.setMsgType(TO_IMG_MSG);
-            } else if (postfix.equals("Video")) {
-                messageInfo.setMsgType(TO_VIDEO_MSG);
-            } else {
-                messageInfo.setMsgType(TO_FILE_MSG);
-            }
-            messageInfo.setSend(UtilTool.getJid());
-            if (mMgr.findConversation(mUser)) {
-                if (postfix.equals("Image")) {
-                    mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.image) + "]", time);
-                    messageInfo.setConverstaion("[" + context.getString(R.string.image) + "]");
-                } else if (postfix.equals("Video")) {
-                    mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.video) + "]", time);
-                    messageInfo.setConverstaion("[" + context.getString(R.string.video) + "]");
-                } else {
-                    mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.file) + "]", time);
-                    messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
-                }
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                if (postfix.equals("Image")) {
-                    info.setMessage("[" + context.getString(R.string.image) + "]");
-                    messageInfo.setConverstaion("[" + context.getString(R.string.image) + "]");
-                } else if (postfix.equals("Video")) {
-                    info.setMessage("[" + context.getString(R.string.video) + "]");
-                    messageInfo.setConverstaion("[" + context.getString(R.string.video) + "]");
-                } else {
-                    info.setMessage("[" + context.getString(R.string.file) + "]");
-                    messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
-                }
-                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-                mMgr.addConversation(info);
-            }
-            mId = mMgr.addMessage(messageInfo);
-            messageInfo.setId(mId);
-            refreshAddData(messageInfo);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
-            messageInfo.setUsername(mUser);
-            messageInfo.setVoice(path);
-            messageInfo.setMessage(path);
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date curDate = new Date(System.currentTimeMillis());
-            String time = formatter.format(curDate);
-            messageInfo.setTime(time);
-            messageInfo.setType(0);
-            messageInfo.setSendStatus(2);
-            if (postfix.equals("Image")) {
-                messageInfo.setMsgType(TO_IMG_MSG);
-            } else if (postfix.equals("Video")) {
-                messageInfo.setMsgType(TO_VIDEO_MSG);
-            } else {
-                messageInfo.setMsgType(TO_FILE_MSG);
-            }
-            messageInfo.setSend(UtilTool.getJid());
-
-            if (mMgr.findConversation(mUser)) {
-                if (postfix.equals("Image")) {
-                    mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.image) + "]", time);
-                    messageInfo.setConverstaion("[" + context.getString(R.string.image) + "]");
-                } else if (postfix.equals("Video")) {
-                    mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.video) + "]", time);
-                    messageInfo.setConverstaion("[" + context.getString(R.string.video) + "]");
-                } else {
-                    mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.file) + "]", time);
-                    messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
-                }
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                if (postfix.equals("Image")) {
-                    info.setMessage("[" + context.getString(R.string.image) + "]");
-                    messageInfo.setConverstaion("[" + context.getString(R.string.image) + "]");
-                } else if (postfix.equals("Video")) {
-                    info.setMessage("[" + context.getString(R.string.video) + "]");
-                    messageInfo.setConverstaion("[" + context.getString(R.string.video) + "]");
-                } else {
-                    info.setMessage("[" + context.getString(R.string.file) + "]");
-                    messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
-                }
-                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-                mMgr.addConversation(info);
-            }
-            mId = mMgr.addMessage(messageInfo);
-            messageInfo.setId(mId);
-            refreshAddData(messageInfo);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
-        }
-        return mId;
-    }
-
 
     @Override
     public boolean anewSendVoice(MessageInfo messageInfo) {
@@ -932,7 +940,7 @@ public class SingleManage implements Room {
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(mUser);
             messageInfo.setMessage(message);
-            android.icu.text.SimpleDateFormat formatter = new android.icu.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date curDate = new Date(System.currentTimeMillis());
             String time = formatter.format(curDate);
             messageInfo.setTime(time);
