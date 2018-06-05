@@ -31,4 +31,5 @@ public interface Room {
     void anewSendCard(MessageInfo messageInfo);
     void anewSendShareLink(MessageInfo messageInfo);
     void anewSendShareGuess(MessageInfo messageInfo);
+    void transmitVideo(MessageInfo messageInfo);
 }

@@ -398,9 +398,10 @@ public class XmppListener {
                             from = Constants.ADMINISTRATOR_NAME;
                         }
                         String friend = from;
-                        if (from.contains("/"))
-                            sendFrom=from.substring(from.indexOf("/")+1, from.length())+"@"+Constants.DOMAINNAME;
-                        from = from.substring(0, from.indexOf("/"));
+                        if (from.contains("/")) {
+                            sendFrom = from.substring(from.indexOf("/") + 1, from.length()) + "@" + Constants.DOMAINNAME;
+                            from = from.substring(0, from.indexOf("/"));
+                        }
                         if (from.contains("@"))
                             friend = from.substring(0, from.indexOf("@"));
 
@@ -472,24 +473,27 @@ public class XmppListener {
                                     goChat(from,context.getString(R.string.image),messageType,sendFrom);
                                 } else if (chatMsg.contains("[Video]")) {
                                     String key = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
-
-                                    BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
-                                            MySharedPreferences.getInstance().getString(ACCESSKEYID),
-                                            MySharedPreferences.getInstance().getString(SECRETACCESSKEY),
-                                            MySharedPreferences.getInstance().getString(SESSIONTOKEN));
-                                    AmazonS3Client s3Client = new AmazonS3Client(
-                                            sessionCredentials);
-                                    Regions regions = Regions.fromName("ap-northeast-2");
-                                    Region region = Region.getRegion(regions);
-                                    s3Client.setRegion(region);
-                                    GeneratePresignedUrlRequest urlRequest = new GeneratePresignedUrlRequest(
-                                            Constants.BUCKET_NAME, key);
-                                    Date expirationDate = new SimpleDateFormat("yyyy-MM-dd").parse(UtilTool.getTitles());
-                                    //设置过期时间
-                                    urlRequest.setExpiration(expirationDate);
-                                    //生成公用的url
-                                    String url = s3Client.generatePresignedUrl(urlRequest).toString();
-
+                                    String url = "";
+                                    if (key.startsWith("https://")) {
+                                        url=key;
+                                    }else {
+                                        BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
+                                                MySharedPreferences.getInstance().getString(ACCESSKEYID),
+                                                MySharedPreferences.getInstance().getString(SECRETACCESSKEY),
+                                                MySharedPreferences.getInstance().getString(SESSIONTOKEN));
+                                        AmazonS3Client s3Client = new AmazonS3Client(
+                                                sessionCredentials);
+                                        Regions regions = Regions.fromName("ap-northeast-2");
+                                        Region region = Region.getRegion(regions);
+                                        s3Client.setRegion(region);
+                                        GeneratePresignedUrlRequest urlRequest = new GeneratePresignedUrlRequest(
+                                                Constants.BUCKET_NAME, key);
+                                        Date expirationDate = new SimpleDateFormat("yyyy-MM-dd").parse(UtilTool.getTitles());
+                                        //设置过期时间
+                                        urlRequest.setExpiration(expirationDate);
+                                        //生成公用的url
+                                        url = s3Client.generatePresignedUrl(urlRequest).toString();
+                                    }
                                     chatMsg = url;
                                     redpacket = "[" + context.getString(R.string.video) + "]";
                                     msgType = FROM_VIDEO_MSG;

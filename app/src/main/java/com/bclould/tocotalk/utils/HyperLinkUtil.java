@@ -76,7 +76,6 @@ public class HyperLinkUtil {
             oldString=oldString.substring(0,lastRight);
             int lastLeft=oldString.lastIndexOf("\n");
             if(lastLeft>=0){
-                // TODO: 2018/5/31 改變字體顏色
                 int color;
                 if(isChatLeft){
                     color=0xff42B0FF;
