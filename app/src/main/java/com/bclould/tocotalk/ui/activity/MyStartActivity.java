@@ -90,6 +90,7 @@ public class MyStartActivity extends BaseActivity {
         initData(mType, PULL_DOWN);
     }
 
+    boolean isFinish = true;
     private void initListener() {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -122,11 +123,13 @@ public class MyStartActivity extends BaseActivity {
             mPage = 1;
             end = 0;
         }
+        isFinish = false;
         mBlockchainGuessPresenter.getMyStart(mPage, mPageSize, status, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
                     if (mDataList.size() != 0 || data.size() != 0) {
+                        isFinish =true;
                         if (type == PULL_UP) {
                             if (data.size() == mPageSize) {
                                 mPage++;

@@ -23,7 +23,7 @@
         android:lineSpacingExtra="@dimen/x10"
         android:layout_marginRight="@dimen/x30"
         android:layout_marginTop="@dimen/y10"
-        android:text="您的賬號已被凍結，請聯繫管理員處理，郵箱：tocotalk@outlook.com"
+        android:text="您的賬號已被凍結，請聯繫管理員處理，郵箱：topperchat@outlook.com"
         android:textColor="@color/black"
         android:textSize="@dimen/x32"/>
 

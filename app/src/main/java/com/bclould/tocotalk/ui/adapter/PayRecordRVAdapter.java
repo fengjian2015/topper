@@ -75,7 +75,8 @@ public class PayRecordRVAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, PayDetailsActivity.class);
-                    intent.putExtra("id", mDataBean.getLog_id() + "");
+                    intent.putExtra("log_id", mDataBean.getLog_id() + "");
+                    intent.putExtra("id", mDataBean.getId() + "");
                     intent.putExtra("type_number", mDataBean.getType_number() + "");
                     mContext.startActivity(intent);
                 }
@@ -95,6 +96,8 @@ public class PayRecordRVAdapter extends RecyclerView.Adapter {
                 mIvPhoto.setImageResource(R.mipmap.icon_record_send);
             } else if (dataBean.getType_number() == 12 || dataBean.getType_number() == 13) {
                 mIvPhoto.setImageResource(R.mipmap.icon_record_give);
+            } else if (dataBean.getType_number() == 14 || dataBean.getType_number() == 15) {
+                mIvPhoto.setImageResource(R.mipmap.icon_record_ex);
             }
             mDataBean = dataBean;
             mTvName.setText(dataBean.getType());
@@ -102,10 +105,10 @@ public class PayRecordRVAdapter extends RecyclerView.Adapter {
             mTvTime.setText(dataBean.getCreated_at());
             if (dataBean.getNumber().contains("-")) {
                 mTvMoney.setText(dataBean.getNumber() + " " + dataBean.getCoin_name());
-                mTvMoney.setTextColor(mContext.getResources().getColor(R.color.green));
+                mTvMoney.setTextColor(mContext.getResources().getColor(R.color.red));
             } else {
                 mTvMoney.setText("+" + dataBean.getNumber() + " " + dataBean.getCoin_name());
-                mTvMoney.setTextColor(mContext.getResources().getColor(R.color.red));
+                mTvMoney.setTextColor(mContext.getResources().getColor(R.color.blue2));
             }
         }
     }

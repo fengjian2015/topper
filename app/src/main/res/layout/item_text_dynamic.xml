@@ -60,7 +60,7 @@
                 android:layout_marginRight="@dimen/x30"
                 android:layout_marginTop="@dimen/y10"
                 android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
+                android:textSize="@dimen/x32"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

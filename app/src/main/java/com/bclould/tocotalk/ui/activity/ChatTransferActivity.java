@@ -116,11 +116,17 @@ public class ChatTransferActivity extends BaseActivity {
     private void initIntent() {
         Intent intent = getIntent();
         mUser = intent.getStringExtra("user");
-        mName = mUser.substring(0, mUser.indexOf("@"));
-        mTvName.setText(mName);
-        String jid = mName + "@" + Constants.DOMAINNAME;
+        if (mUser.contains("@"))
+            mName = mUser.substring(0, mUser.indexOf("@"));
+        String remark = mMgr.queryRemark(mUser);
+        if (remark.isEmpty()) {
+            mTvName.setText(mName);
+        } else {
+            mTvName.setText(remark);
+        }
+//        String jid = mName + "@" + Constants.DOMAINNAME;
 //        mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, ChatTransferActivity.this));
-    UtilTool.getImage(mMgr, jid, ChatTransferActivity.this, mIvTouxiang);
+        UtilTool.getImage(mMgr, mUser, ChatTransferActivity.this, mIvTouxiang);
     }
 
     @OnClick({R.id.bark, R.id.tv_transfer_record, R.id.rl_selector_coin, R.id.btn_confirm})
@@ -251,14 +257,14 @@ public class ChatTransferActivity extends BaseActivity {
         mCount = mEtCount.getText().toString();
         mRemark = mEtRemark.getText().toString();
         if (mRemark.isEmpty()) {
-            mRemark = getString(R.string.transfer) + getString(R.string.transfer_give) + mName;
+            mRemark = getString(R.string.transfer) + getString(R.string.transfer_give) + mTvName.getText().toString();
         }
         mCoin = mTvCoin.getText().toString();
         mRedPacketPresenter.transgerfriend(mCoin, mName, Double.parseDouble(mCount), password, mRemark);
     }
 
     public void showHintDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this,R.style.dialog);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setCanceledOnTouchOutside(false);
         TextView retry = (TextView) deleteCacheDialog.findViewById(R.id.tv_retry);
@@ -338,7 +344,8 @@ public class ChatTransferActivity extends BaseActivity {
         mBottomDialog.show();
         RecyclerView recyclerView = (RecyclerView) mBottomDialog.findViewById(R.id.recycler_view);
         TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
-        Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);Button cancel = (Button) mBottomDialog.findViewById(R.id.btn_cancel);
+        Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
+        Button cancel = (Button) mBottomDialog.findViewById(R.id.btn_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -371,7 +378,7 @@ public class ChatTransferActivity extends BaseActivity {
     }
 
     public void sendMessage() {
-        RoomManage.getInstance().getRoom(mUser).sendTransfer(mRemark,mCoin,mCount);
+        RoomManage.getInstance().getRoom(mUser).sendTransfer(mRemark, mCoin, mCount);
         finish();
     }
 }

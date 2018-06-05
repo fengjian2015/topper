@@ -85,7 +85,6 @@ public class BillDataFragment extends Fragment {
 
     //初始化条目
     private void initListView() {
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mBillDataRVAapter = new BillDataRVAapter(getActivity(), mDataList);
         mRecyclerView.setAdapter(mBillDataRVAapter);

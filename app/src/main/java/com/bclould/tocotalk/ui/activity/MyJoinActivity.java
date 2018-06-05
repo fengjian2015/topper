@@ -89,6 +89,8 @@ public class MyJoinActivity extends BaseActivity {
         initData(mType, PULL_DOWN);
     }
 
+    boolean isFinish = true;
+
     private void initListener() {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -101,7 +103,9 @@ public class MyJoinActivity extends BaseActivity {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 refreshLayout.finishLoadMore(1000);
-                initData(mType, PULL_UP);
+                if (isFinish) {
+                    initData(mType, PULL_UP);
+                }
             }
         });
     }
@@ -121,11 +125,13 @@ public class MyJoinActivity extends BaseActivity {
             mPage = 1;
             end = 0;
         }
+        isFinish = false;
         mBlockchainGuessPresenter.getMyJoin(mPage, mPageSize, status, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
                     if (mDataList.size() != 0 || data.size() != 0) {
+                        isFinish = true;
                         if (type == PULL_UP) {
                             if (data.size() == mPageSize) {
                                 mPage++;

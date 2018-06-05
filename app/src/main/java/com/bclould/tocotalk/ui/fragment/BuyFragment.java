@@ -114,6 +114,8 @@ public class BuyFragment extends Fragment {
         }
     }*/
 
+    boolean isFinish = true;
+
     private void initListener() {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -126,7 +128,9 @@ public class BuyFragment extends Fragment {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 refreshLayout.finishLoadMore(1000);
-                initData(mCoinName, mState, PULL_UP);
+                if (isFinish) {
+                    initData(mCoinName, mState, PULL_UP);
+                }
             }
         });
     }
@@ -143,11 +147,13 @@ public class BuyFragment extends Fragment {
             mPage = 1;
             end = 0;
         }
+        isFinish = false;
         mBuySellPresenter.getDealList(mPage, mPageSize, 1, coinName, state, new BuySellPresenter.CallBack() {
             @Override
             public void send(List<DealListInfo.DataBean> dataBean, String coin) {
                 if (mRecyclerView != null) {
                     if (mDataList.size() != 0 || dataBean.size() != 0) {
+                        isFinish = true;
                         if (type == PULL_UP) {
                             if (dataBean.size() == mPageSize) {
                                 mPage++;

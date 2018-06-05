@@ -55,7 +55,7 @@ public class SimpleAppsGridView extends RelativeLayout {
         gv_apps.setAdapter(adapter);
     }
 
-    public void setData(String user,String roomType) {
+    public void setData(String user, String roomType) {
         mUser = user;
         init(roomType);
     }

@@ -36,7 +36,7 @@
             android:gravity="center"
             android:padding="@dimen/x20"
             android:text="@string/question"
-            android:textColor="@color/blue"
+            android:textColor="@color/blue2"
             android:textSize="@dimen/x28"/>
 
     </RelativeLayout>
@@ -158,7 +158,7 @@
 
                 <Button
                     android:id="@+id/btn_float"
-                    android:layout_width="@dimen/x150"
+                    android:layout_width="wrap_content"
                     android:layout_height="@dimen/y70"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"

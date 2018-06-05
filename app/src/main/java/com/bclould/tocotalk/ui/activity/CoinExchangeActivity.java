@@ -222,9 +222,9 @@ public class CoinExchangeActivity extends BaseActivity {
                             mPrice = mTvPrice.getText().toString();
                             mTvCny.setText("≈ " + price + " " + MySharedPreferences.getInstance().getString(CURRENCY));
                             if (data.getTrend().contains("-")) {
-                                mBtnFloat.setText(data.getTrend() + "% ↓");
+                                mBtnFloat.setText(data.getTrend() + "%↓");
                             } else {
-                                mBtnFloat.setText(data.getTrend() + "% ↑");
+                                mBtnFloat.setText(data.getTrend() + "%↑");
                             }
                         }
                     }

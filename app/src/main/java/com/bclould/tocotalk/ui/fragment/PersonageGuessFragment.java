@@ -100,6 +100,7 @@ public class PersonageGuessFragment extends Fragment {
         initListener();
     }
 
+    boolean isFinish = true;
     private void initListener() {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -112,7 +113,9 @@ public class PersonageGuessFragment extends Fragment {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 refreshLayout.finishLoadMore(1000);
-                initData("", PULL_UP);
+                if (isFinish) {
+                    initData("", PULL_UP);
+                }
             }
         });
         mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -145,12 +148,14 @@ public class PersonageGuessFragment extends Fragment {
             mPage = 1;
             end = 0;
         }
+        isFinish = false;
         mGuessListRVAdapter.notifyDataSetChanged();
         mBlockchainGuessPresenter.getGuessList(mPage, mPageSize, 1, user, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
                     if (mDataList.size() != 0 || data.size() != 0) {
+                        isFinish = true;
                         if (type == PULL_UP) {
                             if (data.size() == mPageSize) {
                                 mPage++;

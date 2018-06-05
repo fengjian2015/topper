@@ -43,7 +43,6 @@ import com.bclould.tocotalk.model.GuessInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.ui.adapter.GuessBetRVAdapter;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
-import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.MenuListPopWindow;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
@@ -67,7 +66,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.bclould.tocotalk.R.style.BottomDialog;
-import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_CARD_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_GUESS_MSG;
 
 /**
@@ -1000,8 +998,9 @@ public class GuessDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                Intent intent = new Intent(GuessDetailsActivity.this, GuessHashActivity.class);
+                Intent intent = new Intent(GuessDetailsActivity.this, WebViewActivity.class);
                 intent.putExtra("url", mUrlArr[0]);
+                intent.putExtra("title", getString(R.string.hash_details));
                 startActivity(intent);
             }
         });
@@ -1009,8 +1008,9 @@ public class GuessDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                Intent intent = new Intent(GuessDetailsActivity.this, GuessHashActivity.class);
+                Intent intent = new Intent(GuessDetailsActivity.this, WebViewActivity.class);
                 intent.putExtra("url", mUrlArr[1]);
+                intent.putExtra("title", getString(R.string.hash_details));
                 startActivity(intent);
             }
         });
@@ -1018,8 +1018,9 @@ public class GuessDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                Intent intent = new Intent(GuessDetailsActivity.this, GuessHashActivity.class);
+                Intent intent = new Intent(GuessDetailsActivity.this, WebViewActivity.class);
                 intent.putExtra("url", mUrlArr[2]);
+                intent.putExtra("title", getString(R.string.hash_details));
                 startActivity(intent);
 
             }
@@ -1028,8 +1029,9 @@ public class GuessDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                Intent intent = new Intent(GuessDetailsActivity.this, GuessHashActivity.class);
+                Intent intent = new Intent(GuessDetailsActivity.this, WebViewActivity.class);
                 intent.putExtra("url", mUrlArr[3]);
+                intent.putExtra("title", getString(R.string.hash_details));
                 startActivity(intent);
 
             }

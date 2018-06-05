@@ -30,6 +30,9 @@ import com.bclould.tocotalk.ui.adapter.PayRecordRVAdapter;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,10 +70,15 @@ public class PayRecordActivity extends BaseActivity {
     TextView mTvHint;
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
+    @Bind(R.id.refresh_layout)
+    SmartRefreshLayout mRefreshLayout;
     private PayRecordRVAdapter mPayRecordRVAdapter;
     private Dialog mBottomDialog;
-    String mPage = "1";
-    String mPageSize = "1000";
+    private int PULL_UP = 0;
+    private int PULL_DOWN = 1;
+    private int end = 0;
+    private int mPage = 1;
+    private int mPageSize = 10;
     String mTypes = "";
     String mDate = "";
     private Map<String, Integer> mMap = new HashMap<>();
@@ -83,6 +91,29 @@ public class PayRecordActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_record);
         ButterKnife.bind(this);
+        getOptionData();
+        initIntent();
+        initRecycler();
+        initMap();
+        initData(PULL_DOWN);
+        initListener();
+    }
+
+    boolean isFinish = true;
+
+    private void initListener() {
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                refreshLayout.finishLoadMore(1000);
+                if (isFinish) {
+                    initData(PULL_UP);
+                }
+            }
+        });
+    }
+
+    private void initIntent() {
         mType = getIntent().getIntExtra("type", 0);
         if (mType == 0) {
             mTypes = "0";
@@ -95,16 +126,10 @@ public class PayRecordActivity extends BaseActivity {
         mFiltrateList.add(getString(R.string.receipt_payment));
         mFiltrateList.add(getString(R.string.in_coin));
         mFiltrateList.add(getString(R.string.out_coin));
-        mFiltrateList.add(getString(R.string.reward));/*
-        mFiltrateList.add(getString(R.string.bank_card));
-        mFiltrateList.add(getString(R.string.ru_zhang));
-        mFiltrateList.add(getString(R.string.qi_ta));*/
-        getOptionData();
+        mFiltrateList.add(getString(R.string.reward));
+        mFiltrateList.add(getString(R.string.exchange));
         mTvDate.setText(mDate);
         mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);
-        initRecycler();
-        initMap();
-        initData();
     }
 
     private void initMap() {
@@ -115,19 +140,42 @@ public class PayRecordActivity extends BaseActivity {
         }
     }
 
-    List<TransferListInfo.DataBean> mDataBeanList = new ArrayList<>();
+    List<TransferListInfo.DataBean> mDataList = new ArrayList<>();
 
-    private void initData() {
+    private void initData(final int type) {
+        if (type == PULL_DOWN) {
+            mPage = 1;
+            end = 0;
+        }
+        isFinish = false;
         mReceiptPaymentPresenter.transRecord(mPage, mPageSize, mTypes, mDate, new ReceiptPaymentPresenter.CallBack4() {
             @Override
             public void send(List<TransferListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
-                    if (data.size() != 0) {
+                    if (mDataList.size() != 0 || data.size() != 0) {
+                        isFinish = true;
+                        if (type == PULL_UP) {
+                            if (data.size() == mPageSize) {
+                                mPage++;
+                                mDataList.addAll(data);
+                                mPayRecordRVAdapter.notifyDataSetChanged();
+                            } else {
+                                if (end == 0) {
+                                    end++;
+                                    mDataList.addAll(data);
+                                    mPayRecordRVAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        } else {
+                            if (mPage == 1) {
+                                mPage++;
+                            }
+                            mDataList.clear();
+                            mDataList.addAll(data);
+                            mPayRecordRVAdapter.notifyDataSetChanged();
+                        }
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
-                        mDataBeanList.clear();
-                        mDataBeanList.addAll(data);
-                        mPayRecordRVAdapter.notifyDataSetChanged();
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);
@@ -139,7 +187,7 @@ public class PayRecordActivity extends BaseActivity {
 
     private void initRecycler() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mPayRecordRVAdapter = new PayRecordRVAdapter(this, mDataBeanList);
+        mPayRecordRVAdapter = new PayRecordRVAdapter(this, mDataList);
         mRecyclerView.setAdapter(mPayRecordRVAdapter);
     }
 
@@ -172,7 +220,7 @@ public class PayRecordActivity extends BaseActivity {
                     mDate = options1Items.get(options1).getPickerViewText()
                             + "-" + options2Items.get(options1).get(options2);
                     mTvDate.setText(mDate);
-                    initData();
+                    initData(PULL_DOWN);
                 }
             })
                     .setContentTextSize(20)//设置滚轮文字大小
@@ -290,8 +338,10 @@ public class PayRecordActivity extends BaseActivity {
                     mTypes = "5";
                 } else if (typeName.equals(getString(R.string.reward))) {
                     mTypes = "6";
+                } else if (typeName.equals(getString(R.string.exchange))) {
+                    mTypes = "7";
                 }
-                initData();
+                initData(PULL_DOWN);
                 mMap.put(getString(R.string.filtrate), position);
                 mBottomDialog.dismiss();
             }

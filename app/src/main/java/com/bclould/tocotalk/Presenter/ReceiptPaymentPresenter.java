@@ -223,7 +223,7 @@ public class ReceiptPaymentPresenter {
         }
     }
 
-    public void transRecord(String page, String pageSize, String type, String date, final CallBack4 callBack4) {
+    public void transRecord(int page, int pageSize, String type, String date, final CallBack4 callBack4) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
                     .getServer()

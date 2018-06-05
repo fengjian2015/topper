@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.Presenter.CoinPresenter;
@@ -33,6 +34,8 @@ public class ExpectCoinActivity extends BaseActivity {
     EditText mEtContent;
     @Bind(R.id.et_contact)
     EditText mEtContact;
+    @Bind(R.id.tv_email)
+    TextView mTvEmail;
     private CoinPresenter mCoinPresenter;
 
     @Override
@@ -40,6 +43,7 @@ public class ExpectCoinActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expect_coin);
         ButterKnife.bind(this);
+        mTvEmail.setText(getString(R.string.email) + " : " + getString(R.string.official_email));
         mCoinPresenter = new CoinPresenter(this);
     }
 

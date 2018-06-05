@@ -65,6 +65,7 @@ public class GuessRecordActivity extends BaseActivity {
         initListener();
     }
 
+    boolean isFinish = true;
     private void initListener() {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -77,7 +78,9 @@ public class GuessRecordActivity extends BaseActivity {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 refreshLayout.finishLoadMore(1000);
-                initData(PULL_UP);
+                if (isFinish) {
+                    initData(PULL_UP);
+                }
             }
         });
     }

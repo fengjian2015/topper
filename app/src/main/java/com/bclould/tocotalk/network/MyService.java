@@ -642,8 +642,8 @@ public interface MyService {
     @FormUrlEncoded
     Observable<TransferListInfo> getTransRecord(
             @Header("Authorization") String token,
-            @Field("page") String page,
-            @Field("page_size") String page_size,
+            @Field("page") int page,
+            @Field("page_size") int page_size,
             @Field("type") String type,
             @Field("date") String date
     );
@@ -791,7 +791,8 @@ public interface MyService {
     Observable<TransRecordInfo> transRecord(
             @Header("Authorization") String token,
             @Field("log_id") String log_id,
-            @Field("type_number") String type_number
+            @Field("type_number") String type_number,
+            @Field("id") String id
     );
 
     //支付記錄詳情

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/light"
@@ -66,49 +67,58 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_pay_record_shape">
+        android:id="@+id/refresh_layout"
+        app:srlDisableContentWhenRefresh="true"
+        app:srlEnableRefresh="false"
+        app:srlEnableScrollContentWhenRefreshed="false"
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/ll_no_data"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/cb_search"
-            android:layout_marginTop="@dimen/y20"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:background="@drawable/bg_pay_record_shape">
 
-            <ImageView
-                android:id="@+id/iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:src="@mipmap/icon_nothing_img"/>
+            <LinearLayout
+                android:id="@+id/ll_no_data"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/cb_search"
+                android:layout_marginTop="@dimen/y20"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <TextView
-                android:id="@+id/tv_hint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no_record"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/x30"/>
+                <ImageView
+                    android:id="@+id/iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@mipmap/icon_nothing_img"/>
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_record"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/x30"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:visibility="gone"
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/x40"
-            android:paddingRight="@dimen/x40"
-            android:paddingTop="@dimen/y40">
-        </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
 
-    </RelativeLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/x40"
+                android:paddingRight="@dimen/x40"
+                android:paddingTop="@dimen/y40"
+                android:visibility="gone">
+            </android.support.v7.widget.RecyclerView>
 
+        </RelativeLayout>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>

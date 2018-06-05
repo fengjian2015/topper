@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
@@ -37,7 +38,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_CARD_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_LINK_MSG;
 
 /**
@@ -74,8 +74,8 @@ public class NewsDetailsActivity extends BaseActivity {
     private boolean mLoadError = false;
     private int mType;
     private String mUrl;
-    private MessageInfo messageInfo=new MessageInfo();
-    private boolean isLoaded=false;
+    private MessageInfo messageInfo = new MessageInfo();
+    private boolean isLoaded = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -118,6 +118,19 @@ public class NewsDetailsActivity extends BaseActivity {
 
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                if (!url.equals(mUrl)) {
+                    mRlEdit.setVisibility(View.GONE);
+                    ivShare.setVisibility(View.GONE);
+                } else {
+                    ivShare.setVisibility(View.VISIBLE);
+                    mRlEdit.setVisibility(View.VISIBLE);
+                }
+                return false;
+            }
+
+            @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 mProgressBar.setVisibility(View.GONE);
@@ -130,7 +143,7 @@ public class NewsDetailsActivity extends BaseActivity {
                 }
                 view.loadUrl("javascript:window.local_obj.showSource(document.getElementsByTagName('p')[1].innerText);");
                 view.loadUrl("javascript:window.local_obj.showSourceImage(document.getElementsByTagName('img')[0].src);");
-                isLoaded=true;
+                isLoaded = true;
             }
 
             @Override
@@ -158,7 +171,7 @@ public class NewsDetailsActivity extends BaseActivity {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-                UtilTool.Log("fengjian---", "分享標題："+title);
+                UtilTool.Log("fengjian---", "分享標題：" + title);
                 messageInfo.setTitle(title);
             }
 
@@ -170,16 +183,16 @@ public class NewsDetailsActivity extends BaseActivity {
         @JavascriptInterface
         public void showSource(String html) {
             //需要分享的文本內容
-            html= html.replace("\n","");
-            if(html.length()>40){
-                html=html.substring(0,40);
+            html = html.replace("\n", "");
+            if (html.length() > 40) {
+                html = html.substring(0, 40);
             }
-            UtilTool.Log("fengjian---", "分享內容："+html);
-            if(StringUtils.isEmpty(messageInfo.getTitle())){
+            UtilTool.Log("fengjian---", "分享內容：" + html);
+            if (StringUtils.isEmpty(messageInfo.getTitle())) {
                 messageInfo.setTitle(html);
             }
-            if(StringUtils.isEmpty(html)){
-                html=messageInfo.getTitle();
+            if (StringUtils.isEmpty(html)) {
+                html = messageInfo.getTitle();
             }
             messageInfo.setContent(html);
         }
@@ -187,7 +200,7 @@ public class NewsDetailsActivity extends BaseActivity {
         @JavascriptInterface
         public void showSourceImage(String url) {
             //需要分享的文本內容
-            UtilTool.Log("fengjian---", "分享圖片鏈接："+url);
+            UtilTool.Log("fengjian---", "分享圖片鏈接：" + url);
             messageInfo.setHeadUrl(url);
         }
     }
@@ -231,7 +244,7 @@ public class NewsDetailsActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.bark, R.id.send,R.id.iv_share})
+    @OnClick({R.id.bark, R.id.send, R.id.iv_share})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -247,11 +260,11 @@ public class NewsDetailsActivity extends BaseActivity {
     }
 
     private void goShare() {
-        if(!isLoaded)return;
+        if (!isLoaded) return;
         messageInfo.setMessage(messageInfo.getTitle());
         Intent intent = new Intent(this, SelectFriendActivity.class);
         intent.putExtra("type", 2);
-        intent.putExtra("msgType",TO_LINK_MSG);
+        intent.putExtra("msgType", TO_LINK_MSG);
         intent.putExtra("messageInfo", messageInfo);
         this.startActivity(intent);
     }
@@ -284,5 +297,21 @@ public class NewsDetailsActivity extends BaseActivity {
         super.onDestroy();
         mWebView.removeAllViews();
         mWebView.destroy();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {//监听返回键
+        if (keyCode == event.KEYCODE_BACK) {
+            if (mWebView.canGoBack()) {
+                mWebView.goBack();
+                if (!mWebView.canGoBack()) {
+                    mRlEdit.setVisibility(View.VISIBLE);
+                    ivShare.setVisibility(View.VISIBLE);
+                }
+            } else {
+                finish();
+            }
+        }
+        return true;
     }
 }
