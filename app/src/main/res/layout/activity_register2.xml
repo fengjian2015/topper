@@ -1,149 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#2B353F"
-              android:fitsSystemWindows="true"
-              android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#243042"
+                android:fitsSystemWindows="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y80">
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/x40"
+        android:paddingRight="@dimen/x40"
+        android:paddingTop="@dimen/y100">
 
-        <TextView
+        <ImageView
+            android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="@dimen/y20"
-            android:text="@string/register"
-            android:textColor="@color/white"
-            android:textSize="@dimen/x40"/>
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_return_white"/>
 
         <TextView
             android:id="@+id/tv_login"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:paddingRight="@dimen/x30"
-            android:text="@string/login"
-            android:textColor="@color/white"/>
-
-    </RelativeLayout>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y120"
-        android:src="@mipmap/img_toco_logo"/>
-
-    <LinearLayout
-        android:id="@+id/ll_step_one"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y580"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginRight="@dimen/x20"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_back"
             android:layout_marginTop="@dimen/y20"
-            android:background="@mipmap/img_signup"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/x50"
-            android:paddingRight="@dimen/x50"
-            android:paddingTop="@dimen/y166">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/username"
-                android:textSize="@dimen/x30"/>
-
-            <EditText
-                android:id="@+id/et_user"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y120"
-                android:hint="@string/et_username"
-                android:inputType="text"
-                android:lines="1"
-                android:maxLength="20"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@android:color/black"
-                android:textCursorDrawable="@null"
-                android:textSize="@dimen/x32"
-                android:theme="@style/MyEditText"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y20"
-                android:text="@string/email"
-                android:textSize="@dimen/x30"/>
-
-            <EditText
-                android:id="@+id/et_email"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y120"
-                android:hint="@string/et_emily"
-                android:inputType="textWebEmailAddress"
-                android:lines="1"
-                android:maxLength="28"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@android:color/black"
-                android:textCursorDrawable="@null"
-                android:textSize="@dimen/x32"
-                android:theme="@style/MyEditText"/>
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_next"
-            android:layout_width="@dimen/x250"
-            android:layout_height="@dimen/y100"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/y20"
-            android:background="@drawable/bg_blue_shape"
-            android:text="@string/next_step"
+            android:paddingLeft="@dimen/x20"
+            android:text="@string/register"
             android:textColor="@color/white"
-            android:textSize="@dimen/x35"/>
+            android:textSize="@dimen/x60"/>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_step_tow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+        <ImageView
+            android:layout_width="@dimen/x200"
+            android:layout_height="@dimen/x200"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/logo"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y580"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginRight="@dimen/x20"
-            android:layout_marginTop="@dimen/y20"
-            android:background="@mipmap/img_signup"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_login"
+            android:layout_marginTop="@dimen/y50"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/x50"
-            android:paddingRight="@dimen/x50"
-            android:paddingTop="@dimen/y150">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/password"
-                android:textSize="@dimen/x30"/>
+            android:paddingTop="@dimen/y100">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y120">
+
+                <EditText
+                    android:id="@+id/et_vcode"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/et_vcode"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:maxLength="6"
+                    android:maxLines="1"
+                    android:paddingLeft="@dimen/x20"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/ashen"
+                    android:textCursorDrawable="@null"
+                    android:textSize="@dimen/x32"
+                    android:theme="@style/MyEditText"/>
+
+                <TextView
+                    android:id="@+id/tv_send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:padding="@dimen/x25"
+                    android:src="@drawable/set_disturb_seletor2"
+                    android:text="@string/send"
+                    android:textColor="@color/blue3"
+                    android:textSize="@dimen/x32"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y120"
+                android:layout_marginTop="@dimen/y66">
 
                 <EditText
                     android:id="@+id/et_password"
@@ -154,102 +95,38 @@
                     android:lines="1"
                     android:maxLength="20"
                     android:maxLines="1"
+                    android:paddingLeft="@dimen/x20"
                     android:singleLine="true"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/ashen"
                     android:textCursorDrawable="@null"
                     android:textSize="@dimen/x32"
                     android:theme="@style/MyEditText"/>
 
                 <ImageView
                     android:id="@+id/eye"
-                    android:layout_width="@dimen/x50"
-                    android:paddingRight="@dimen/x20"
-                    android:paddingTop="@dimen/x20"
-                    android:paddingBottom="@dimen/x20"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/password_selector"/>
+                    android:padding="@dimen/x25"
+                    android:src="@drawable/set_disturb_seletor2"/>
 
             </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y20"
-                android:text="@string/vcode"
-                android:textSize="@dimen/x30"/>
-
-            <EditText
-                android:id="@+id/et_email_code"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y120"
-                android:hint="@string/et_vcode"
-                android:inputType="number"
-                android:lines="1"
-                android:maxLength="20"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@android:color/black"
-                android:textCursorDrawable="@null"
-                android:textSize="@dimen/x32"
-                android:theme="@style/MyEditText"/>
-
-           <!-- <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/y20">
-
-                <CheckBox
-                    android:id="@+id/check_box"
-                    style="@style/CustomCheckboxTheme"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/x20"
-                    android:text="@string/agree_with_the_protocol"
-                    android:textColor="@color/blue2"
-                    android:textSize="@dimen/x30"/>
-
-            </LinearLayout>-->
-
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/x30"
-            android:paddingRight="@dimen/x30">
-
-            <Button
-                android:id="@+id/btn_last_step"
-                android:layout_width="@dimen/x250"
-                android:layout_height="@dimen/y100"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/y20"
-                android:background="@drawable/bg_blue_shape"
-                android:text="@string/last_step"
-                android:textColor="@color/white"
-                android:textSize="@dimen/x35"/>
-
             <Button
                 android:id="@+id/btn_register"
-                android:layout_width="@dimen/x250"
-                android:layout_height="@dimen/y100"
-                android:layout_alignParentRight="true"
+                android:layout_width="@dimen/x450"
+                android:layout_height="@dimen/y80"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/y20"
-                android:background="@drawable/bg_blue_shape"
+                android:layout_marginTop="@dimen/y66"
+                android:background="@drawable/bg_blue_shape3"
                 android:text="@string/register"
                 android:textColor="@color/white"
                 android:textSize="@dimen/x35"/>
 
-        </RelativeLayout>
+        </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

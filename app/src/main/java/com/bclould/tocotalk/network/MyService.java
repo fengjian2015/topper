@@ -199,7 +199,7 @@ public interface MyService {
     Observable<BaseInfo> coinOutAction(
             @Header("Authorization") String token,
             @Field("coin_id") String id,
-            @Field("coinout_address_id") String coinout_address_id,
+            @Field("address") String address,
             @Field("coinout_number") String number,
             @Field("google_code") String google_code,
             @Field("second_password") String second_password,

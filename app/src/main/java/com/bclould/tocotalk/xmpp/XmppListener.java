@@ -1,6 +1,7 @@
 package com.bclould.tocotalk.xmpp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -12,13 +13,11 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Base64;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.amazonaws.auth.BasicSessionCredentials;
 import com.amazonaws.regions.Region;
@@ -41,7 +40,6 @@ import com.bclould.tocotalk.ui.activity.ConversationActivity;
 import com.bclould.tocotalk.ui.activity.OrderCloseActivity;
 import com.bclould.tocotalk.ui.activity.OrderDetailsActivity;
 import com.bclould.tocotalk.ui.activity.PayDetailsActivity;
-import com.bclould.tocotalk.ui.fragment.ConversationFragment;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
@@ -51,7 +49,6 @@ import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.AbstractXMPPConnection;
-import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
@@ -60,16 +57,12 @@ import org.jivesoftware.smack.chat.ChatManager;
 import org.jivesoftware.smack.chat.ChatManagerListener;
 import org.jivesoftware.smack.chat.ChatMessageListener;
 import org.jivesoftware.smack.filter.AndFilter;
-import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.filter.StanzaFilter;
 import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Stanza;
-import org.jivesoftware.smackx.muc.MultiUserChatManager;
 import org.jivesoftware.smackx.offline.OfflineMessageManager;
-import org.xutils.common.util.LogUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;

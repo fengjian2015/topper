@@ -27,9 +27,11 @@ import com.bclould.tocotalk.Presenter.CurrencyInOutPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.model.BaseInfo;
+import com.bclould.tocotalk.model.InCoinInfo;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
+import com.google.gson.Gson;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;
@@ -50,14 +52,17 @@ import static com.bclould.tocotalk.R.style.BottomDialog;
 public class OutCoinActivity extends BaseActivity {
 
     private static final int SELECTORSITE = 1;
+    private static final int SCANOUTSITE = 3;
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.tv_record)
     TextView mTvRecord;
     @Bind(R.id.tv_out_coin_site)
-    TextView mTvOutCoinSite;
-    @Bind(R.id.btn_selector_site)
-    Button mBtnSelectorSite;
+    EditText mTvOutCoinSite;
+    @Bind(R.id.iv_qr_code)
+    ImageView mIvQrCode;
+    @Bind(R.id.iv_selector_site)
+    ImageView mIvSelectorSite;
     @Bind(R.id.et_coin_count)
     EditText mEtCoinCount;
     @Bind(R.id.tv_yu_e)
@@ -77,6 +82,7 @@ public class OutCoinActivity extends BaseActivity {
     @Bind(R.id.tv_desc)
     TextView mTvDesc;
 
+
     private int mId;
     private int mSiteId;
     private Animation mEnterAnim;
@@ -87,6 +93,7 @@ public class OutCoinActivity extends BaseActivity {
     private String mCoinName;
     private String mOver;
     private ArrayList<Map<String, String>> valueList;
+    private String mSite;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,26 +126,22 @@ public class OutCoinActivity extends BaseActivity {
         mTvCoinCount.setText(mOver);
     }
 
-    @OnClick({R.id.bark, R.id.tv_record, R.id.btn_selector_site, R.id.btn_confirm})
+    @OnClick({R.id.iv_qr_code, R.id.bark, R.id.tv_record, R.id.iv_selector_site, R.id.btn_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.tv_record:
-                Intent intent2 = new Intent(this, BillDetailsActivity.class);
-                intent2.putExtra("type", 1);
-                intent2.putExtra("coin_id", mId + "");
-                intent2.putExtra("coin_name", mCoinName);
-                startActivity(intent2);
+            case R.id.iv_qr_code:
+                Intent intent = new Intent(this, ScanQRCodeActivity.class);
+                intent.putExtra("code", SCANOUTSITE);
+                startActivityForResult(intent, SCANOUTSITE);
                 break;
-            case R.id.btn_selector_site:
-                Intent intent = new Intent(this, OutCoinSiteActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("id", mId);
-                bundle.putString("coinName", mCoinName);
-                intent.putExtras(bundle);
-                startActivityForResult(intent, SELECTORSITE);
+            case R.id.tv_record:
+                skipRecord();
+                break;
+            case R.id.iv_selector_site:
+                selectorSite();
                 break;
             case R.id.btn_confirm:
                 if (editCheck()) {
@@ -146,6 +149,23 @@ public class OutCoinActivity extends BaseActivity {
                 }
                 break;
         }
+    }
+
+    private void selectorSite() {
+        Intent intent = new Intent(this, OutCoinSiteActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", mId);
+        bundle.putString("coinName", mCoinName);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, SELECTORSITE);
+    }
+
+    private void skipRecord() {
+        Intent intent = new Intent(this, BillDetailsActivity.class);
+        intent.putExtra("type", 1);
+        intent.putExtra("coin_id", mId + "");
+        intent.putExtra("coin_name", mCoinName);
+        startActivity(intent);
     }
 
     private void showPWDialog() {
@@ -276,7 +296,7 @@ public class OutCoinActivity extends BaseActivity {
     };
 
     public void showHintDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this,R.style.dialog);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setCanceledOnTouchOutside(false);
         TextView retry = (TextView) deleteCacheDialog.findViewById(R.id.tv_retry);
@@ -303,19 +323,25 @@ public class OutCoinActivity extends BaseActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == SELECTORSITE) {
                 mSiteId = data.getIntExtra("siteId", 0);
-                String site = data.getStringExtra("address");
-                mTvOutCoinSite.setText(site);
+                mSite = data.getStringExtra("address");
+                mTvOutCoinSite.setText(mSite);
+            } else if (requestCode == SCANOUTSITE) {
+                String result = data.getStringExtra("address");
+                Gson gson = new Gson();
+                InCoinInfo inCoinInfo = gson.fromJson(result, InCoinInfo.class);
+                mSite = inCoinInfo.getAddress();
+                mTvOutCoinSite.setText(mSite);
             }
         }
     }
 
     private void outCoin(String password) {
-        String site = mTvOutCoinSite.getText().toString().trim();
+        mSite = mTvOutCoinSite.getText().toString().trim();
         String count = mEtCoinCount.getText().toString().trim();
         String googleCode = mEtGoogleCode.getText().toString().trim();
         String remark = mEtRemark.getText().toString().trim();
         CurrencyInOutPresenter currencyInOutPresenter = new CurrencyInOutPresenter(this);
-        currencyInOutPresenter.coinOutAction(mId + "", mSiteId + "", count, googleCode, password, remark);
+        currencyInOutPresenter.coinOutAction(mId + "", mSite, count, googleCode, password, remark);
     }
 
     private boolean editCheck() {
@@ -328,6 +354,9 @@ public class OutCoinActivity extends BaseActivity {
         } else if (mEtGoogleCode.getText().toString().isEmpty()) {
             Toast.makeText(this, getString(R.string.toast_google_code), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtGoogleCode);
+        } else if (mEtRemark.getText().toString().isEmpty()) {
+            Toast.makeText(this, getString(R.string.toast_tag), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mEtRemark);
         } else {
             return true;
         }

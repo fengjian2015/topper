@@ -127,7 +127,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                     Intent intent = new Intent(ScanQRCodeActivity.this, IndividualDetailsActivity.class);
                     intent.putExtra("name", name.split("@")[0]);
                     intent.putExtra("user", name);
-                    intent.putExtra("roomId",name);
+                    intent.putExtra("roomId", name);
                     startActivity(intent);
                     finish();
                 } else if (result.contains(Constants.MONEYIN)) {
@@ -199,12 +199,18 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                     setResult(RESULT_OK, intent);
                     finish();
                 }
-            } else if (mCode == 2) {
-                Intent intent = new Intent(ScanQRCodeActivity.this, FriendListFragment.class);
-                intent.putExtra("result", result);
-                setResult(RESULT_OK, intent);
-                finish();
             }
+        } else if (mCode == 2) {
+            Intent intent = new Intent(ScanQRCodeActivity.this, FriendListFragment.class);
+            intent.putExtra("result", result);
+            setResult(RESULT_OK, intent);
+            finish();
+        } else if (mCode == 3) {
+            Intent intent = new Intent(ScanQRCodeActivity.this, OutCoinActivity.class);
+            intent.putExtra("address", result);
+            setResult(RESULT_OK, intent);
+            UtilTool.Log("日志", result);
+            finish();
         }
         //再次延时1.5秒后启动
         mZxingview.startSpot();

@@ -5,12 +5,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.Presenter.RegisterPresenter;
 import com.bclould.tocotalk.R;
-import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.utils.Constants;
 
 import butterknife.Bind;
@@ -22,7 +22,7 @@ import butterknife.OnClick;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ServiceAgreementActivity extends BaseActivity {
+public class ServiceAgreementActivity extends AppCompatActivity {
 
 
     @Bind(R.id.tv_title)
@@ -55,7 +55,7 @@ public class ServiceAgreementActivity extends BaseActivity {
 
     private void initIntent() {
         Intent intent = getIntent();
-        mUser = intent.getStringExtra("user");
+        mUser = intent.getStringExtra("username");
         mEmail = intent.getStringExtra("email");
         mVcode = intent.getStringExtra("vcode");
         mPassword = intent.getStringExtra("password");

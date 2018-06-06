@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/y30"
-                android:src="@mipmap/img_logo"/>
+                android:src="@mipmap/logo"/>
 
             <TextView
                 android:id="@+id/tv_version"
@@ -60,7 +60,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/y30"
                 android:layout_marginTop="@dimen/y20"
-                android:text="TocoTalk V2.8"
                 android:textSize="@dimen/x30"/>
 
         </LinearLayout>

@@ -127,7 +127,7 @@
     <string name="str_recorder_recording">鬆開 結束</string>
     <string name="str_recorder_want_cancel">鬆開手指 取消發送</string>
     <string name="get_code">谷歌驗證不能為空</string>
-    <string name="confirm">確認</string>
+    <string name="confirm">確定</string>
     <string name="selected_legal_tender">法幣</string>
     <string name="selector_payment_time">選擇付款期限</string>
     <string name="toast_coin">幣種不能為空</string>
@@ -227,13 +227,13 @@
     <string name="cancel_order">取消訂單</string>
     <string name="confirm_payment">確認付款</string>
     <string name="trading_hint">交易提示</string>
-    <string name="trading_hint2">1.場外交易中，買家的匯款將直接進入賣家賬號，交易過程中賣家出售的數字資產將由平台託管。\n2.請在規定時間內完成付款，並務必點擊“確認付款”，賣家確認收款後，系統會將數字資產劃轉至您的賬戶。\n3.請勿頻繁取消訂單，否則將導致限制交易。\n4.打款前請務必根據對方提供的郵箱、手機號或者Tocotalk聯繫賣家，以免出現賣家一直未放幣訂單超時情況\n5.打款的時候可以把參考號發給賣家以便參看是哪筆交易</string>
+    <string name="trading_hint2">1.場外交易中，買家的匯款將直接進入賣家賬號，交易過程中賣家出售的數字資產將由平台託管。\n2.請在規定時間內完成付款，並務必點擊“確認付款”，賣家確認收款後，系統會將數字資產劃轉至您的賬戶。\n3.請勿頻繁取消訂單，否則將導致限制交易。\n4.打款前請務必根據對方提供的郵箱、手機號或者TopperChat聯繫賣家，以免出現賣家一直未放幣訂單超時情況\n5.打款的時候可以把參考號發給賣家以便參看是哪筆交易</string>
     <string name="order">訂單</string>
     <string name="selector_coin">選擇幣種</string>
     <string name="push_ad">發佈廣告</string>
     <string name="out_coin">提幣</string>
     <string name="send_site">發送地址</string>
-    <string name="et_out_coin_site">選擇提幣地址</string>
+    <string name="et_out_coin_site">輸入或選擇提幣地址</string>
     <string name="selecotr_site">選擇地址</string>
     <string name="out_coin_hint">1.提幣手續費為0.5%，請仔細確認后再確認</string>
     <string name="out_coin_hint2">2.每筆轉出最小限額100個幣，最大限額100000個幣，每天轉出限額500000個幣</string>
@@ -299,7 +299,7 @@
     <string name="private_hint">保存登錄密碼</string>
     <string name="delete_cache">清除緩存</string>
     <string name="transfer">轉賬</string>
-    <string name="transfer_hint">站內轉行不收取手續費\nTocoTalk保障安全服務</string>
+    <string name="transfer_hint">站內轉行不收取手續費\nTopperChat保障安全服務</string>
     <string name="transfer_details">轉賬詳情</string>
     <string name="already_deposited_wallet">已經存入錢包</string>
     <string name="transfer_time">轉賬時間</string>
@@ -325,7 +325,7 @@
     <string name="logout_hint">確認要退出當前賬號嗎?</string>
     <string name="payment_pw_error_hint">支付密碼錯誤，請重試！</string>
     <string name="retry">重試</string>
-    <string name="binding_google_hint">1.安裝“Google Authenticator”應用程序，選擇“手動輸入密鑰”; \n2.粘貼以上“密鑰”到“密鑰”輸入欄，並填寫您的Tocotalk賬號，點擊完成; \n3.複製“谷歌驗證碼“，粘貼至上方輸入欄;\n4.請勿刪除此雙重驗證密碼賬戶，否則將導致您無法進行賬戶操作;如果誤刪，您可通過重置密鑰重新獲取。</string>
+    <string name="binding_google_hint">1.安裝“Google Authenticator”應用程序，選擇“手動輸入密鑰”; \n2.粘貼以上“密鑰”到“密鑰”輸入欄，並填寫您的TopperChat賬號，點擊完成; \n3.複製“谷歌驗證碼“，粘貼至上方輸入欄;\n4.請勿刪除此雙重驗證密碼賬戶，否則將導致您無法進行賬戶操作;如果誤刪，您可通過重置密鑰重新獲取。</string>
     <string name="set_pay_pw_hint">尚未設置交易密碼</string>
     <string name="search_issue">搜索問題</string>
     <string name="no_receipt_transfer_record">沒有轉賬記錄</string>
@@ -355,13 +355,12 @@
     <string name="protection">護照</string>
     <string name="loading">加載中....</string>
     <string name="disclaimer">免責聲明</string>
-    <string name="otc_disclaimer">\t\t\t\t比特幣等數字貨幣系特殊的虛擬商品，作為互聯網上的商品買賣行為，普通民眾在自擔風險的前提下擁有參與自由的權利。\n\t\t\t\t數字貨幣行業目前存在很多不確定性，不可控的風險因素（如預挖，暴漲暴跌，莊家操控，團隊解散，技術缺陷等），導致交易具有極高的風險。\n\t\t\t\tTOCOTALK APP平台不承擔任何審查，擔保，賠償的法律條款，責任。</string>
+    <string name="otc_disclaimer">\t\t\t\t比特幣等數字貨幣系特殊的虛擬商品，作為互聯網上的商品買賣行為，普通民眾在自擔風險的前提下擁有參與自由的權利。\n\t\t\t\t數字貨幣行業目前存在很多不確定性，不可控的風險因素（如預挖，暴漲暴跌，莊家操控，團隊解散，技術缺陷等），導致交易具有極高的風險。\n\t\t\t\tTopperChat APP平台不承擔任何審查，擔保，賠償的法律條款，責任。</string>
     <string name="show_hide">記住選擇，不再提示</string>
     <string name="compellation">姓名</string>
     <string name="my_roger">我知道了</string>
-    <string name="tocotalk_agreement">TocoTalk服務協議</string>
+    <string name="tocotalk_agreement">TopperChat服務協議</string>
     <string name="consent_agreement">我已閱讀并同意>></string>
-    <string name="service_agreement_content">TOCOTALK  APP與用戶共同確認：\n\t\t\t\t1.用戶點擊TOCOTALK註冊頁面的[註冊]按鈕並完成註冊程式，獲得TOCOTALK帳號和密碼時，視為用戶與TOCOTALK已達成《用戶協議》(下稱“本協議”)，就用戶進入TOCOTALK使用TOCOTALK相應的兌換服務達成本協議的全部約定。 \n\t\t\t\t2.TOCOTALK及用戶均已認真閱讀《用戶協議》中全部條款及TOCOTALK發佈的法律聲明和操作規則的內容，對本協議及前述服務條款、法律聲明和操作規則均已知曉、理解並接受，同意將其作為確定雙方權利義務的依據。TOCOTALK《法律聲明》為本協議的必要組成部分，用戶接受本協議的同時即視為接受TOCOTALK《法律聲明》的全部內容。本協議內容包括本協議正文以及TOCOTALK已經發佈的或將來可能發佈的各類規則、聲明、說明。 所有規則、聲明、說明為協議不可分割的一部分，與協議正文具有同等法律效力。 \n\t\t\t\t3.本協議不涉及TOCOTALK用戶與其他用戶之間因數字貨幣兌換而產生的法律關係及法律糾紛。 \n一、定義條款 \n\t\t\t\t1.1“數字貨幣”：簡稱為DIGICCY，是英文的“Digital Currency”（數字貨幣）的縮寫。是電子貨幣形式的替代貨幣。數字金幣和密碼貨幣都屬於數字貨幣（DIGICCY）。 1.2 “TOCOTALK”：中文名字簡稱“拖哥”，通過該網路交易平臺為數字貨幣玩家提供數字貨幣兌換服務。本協議下文中，“TOCOTALK”既指綜合性數字貨幣兌換交流平臺。 1.3 “用戶”：接受並同意本協議全部條款及TOCOTALK不時發佈或更新的法律條款及操作規則、通過TOCOTALK進行數字貨幣兌換的TOCOTALK註冊會員。 1.4 “用戶註冊”：用戶註冊是指用戶登錄TOCOTALK並按要求填寫相關資訊並確認，同意履行相關用戶協議的過程。 1.5 “數字貨幣投資”：用戶通過TOCOTALK進行的比特幣、萊特幣等數字貨幣兌換活動。 1.6 “充值款”：用戶為購買數字貨幣/出售數字貨幣而向TOCOTALK平臺預充入的數字貨幣的款項。 1.7 “手續費”：用戶在TOCOTALK達成數字貨幣投資而向TOCOTALK支付的各項服務費用。   二、用戶註冊 2.1 註冊資格 用戶承諾：用戶具有完全民事權利能力和行為能力，或雖不具有完全民事權利能力和行為能力,但點擊註冊按鈕，本APP即視為經其法定代理人同意並由其法定代理人代理註冊及應用TOCOTALK服務。 2.2 註冊目的 用戶承諾：用戶進行用戶註冊並非出於違反法律法規或破壞TOCOTALK秩序的目的。 2.3 註冊流程 2.3.1 用戶同意根據TOCOTALK用戶註冊頁面的要求提供有效電子郵箱等資訊，設置TOCOTALK帳號及密碼，用戶應確保所提供全部資訊的真實性、完整性和準確性。 2.3.2 用戶合法、完整並有效提供註冊所需資訊的，有權獲得TOCOTALK帳號和密碼，TOCOTALK帳號和密碼用於用戶在TOCOTALK進行會員登錄。 2.3.3 用戶獲得TOCOTALK帳號及密碼時視為用戶註冊成功，用戶同意接收TOCOTALK發送的與TOCOTALK軟體管理、運營相關的電子郵件、短消息。 2.3.4 用戶註冊成功後進行數字貨幣交易及投資。   三、用戶服務 TOCOTALK為用戶通過TOCOTALK提供數字貨幣投資活動、網路兌換平臺服務。TOCOTALK不作為買家或是賣家參與買賣數字貨幣兌換。 3.1 服務內容 3.1.1 用戶有權在TOCOTALK流覽數字貨幣兌換資訊、有權通過TOCOTALK提交數字貨幣兌換指令並完成數字貨幣兌換。 3.1.2 用戶有權在TOCOTALK查看其TOCOTALK會員帳號下的資訊，有權應用TOCOTALK提供的功能進行操作。 3.1.3 用戶有權按照TOCOTALK發佈的活動規則參與TOCOTALK組織的APP活動。 3.1.4 TOCOTALK承諾為用戶提供的其他服務。 3.2 服務規則 用戶承諾遵守下列TOCOTALK服務規則： 3.2.1 用戶應當遵守法律法規、規章、規範性檔及政策要求的規定，保證帳戶中所有資金和數字貨幣來源的合法性，不得在TOCOTALK或利用TOCOTALK服務從事非法或其他損害TOCOTALK或第三方權益的活動，如發送任何違法、違規、違反公序良俗、侵犯他人權益的資訊，發送傳銷材料或存在其他危害的資訊或言論，未經TOCOTALK授權使用或偽造TOCOTALK電子郵件題頭資訊等。 3.2.2 用戶應當遵守法律法規應當妥善使用和保管其TOCOTALK帳號及密碼、資金密碼、和其註冊時綁定的手機號碼、以及手機接收的手機驗證碼的安全。用戶對使用其TOCOTALK帳號和密碼、資金密碼、手機驗證碼進行的任何操作和後果承擔全部責任。當用戶發現TOCOTALK帳號、密碼、或資金密碼、驗證碼被未經其授權的第三方使用，或存在其他帳號安全問題時，應立即有效通知TOCOTALK，要求TOCOTALK暫停該TOCOTALK帳號的服務。TOCOTALK有權在合理時間內對用戶的緊急請求採取行動，但對於TOCOTALK採取行動前用戶已經遭受的損失不承擔任何責任。用戶在未經TOCOTALK同意的情況下不得將TOCOTALK帳號以贈與、借用、租用、轉讓或其他方式處分給他人。 3.2.3 用戶應當遵守TOCOTALK不時發佈和更新的用戶協議以及其他服務條款和操作規則。   四、用戶的權利和義務 4.1 用戶有權按照本協議約定，接受TOCOTALK提供的數字貨幣平臺服務。 4.2 用戶有權隨時終止使用TOCOTALK服務。 4.3 用戶有權隨時提取在TOCOTALK的資金餘額，包括人民幣以及數字貨幣，但需向TOCOTALK支付相應的提現手續費用。 4.4 用戶對註冊時提供的個人資料的真實性、有效性及安全性負責。 4.5 用戶在TOCOTALK進行數字貨幣兌換時不得惡意干擾數字貨幣兌換的正常進行、破壞交易秩序。 4.6 用戶不得以任何技術手段或其他方式干擾TOCOTALK的正常運行或干擾其他用戶對TOCOTALK服務的使用。 4.7 如用戶因網上交易與其他用戶產生訴訟的，不得通過司法或行政以外的途徑要求TOCOTALK提供相關資料。 4.8 用戶不得以虛構事實等方式惡意詆毀TOCOTALK的商譽。   五、TOCOTALK的權利和義務 5.1 如用戶不具備本協議約定的註冊資格，則TOCOTALK有權拒絕用戶進行註冊，對已經註冊的用戶有權註銷其TOCOTALK會員帳號，TOCOTALK因此而遭受損失的有權向前述用戶或其法定代理人主張賠償。同時，TOCOTALK保留其他任何情況下決定是否接受用戶註冊的權利。 5.2 TOCOTALK發現帳戶使用者並非帳戶初始註冊人時，有權中止該帳戶的使用。 5.3 TOCOTALK通過技術檢測、人工抽檢等檢測方式確認用戶提供的資訊錯誤、不實、失效或不完整時，有權通知用戶更正、更新資訊或中止、終止為其提供TOCOTALK服務。 5.4 TOCOTALK有權在發現TOCOTALK上顯示的任何資訊存在明顯錯誤時，對資訊予以更正。 5.5 TOCOTALK保留隨時修改、中止或終止TOCOTALK服務的權利，TOCOTALK行使修改或中止服務的權利不需事先告知用戶，TOCOTALK終止TOCOTALK一項或多項服務的，終止自TOCOTALK在網站上發佈終止公告之日生效。 5.6 TOCOTALK應當採取必要的技術手段和管理措施保障TOCOTALK的正常運行，並提供必要、可靠的交易環境和交易服務，維護數字貨幣交易秩序。 5.7 如用戶連續一年未使用TOCOTALK會員帳號和密碼登錄TOCOTALK，則TOCOTALK有權註銷用戶的TOCOTALK帳號。帳號註銷後，TOCOTALK有權將相應的會員名開放給其他用戶註冊使用。 5.8 TOCOTALK通過加強技術投入、提升安全防範等措施保障用戶的人民幣資金及數字貨幣託管安全，有義務在用戶資金出現可以預見的安全風險時提前通知用戶。 5.9 TOCOTALK有權在本協議履行期間及本協議終止後保留用戶的註冊資訊及用戶應用TOCOTALK服務期間的全部交易資訊，但不得非法使用該等資訊。 5.10 TOCOTALK有權隨時刪除TOCOTALK網站內各類不符合相關國家法律法規、規範性檔或TOCOTALK網站規定的用戶評價等內容資訊，TOCOTALK行使該等權利不需提前通知用戶。   六、特別聲明 6.1 在法律允許的範圍內，不論在何種情況下，TOCOTALK對由於資訊網絡設備維護、資訊網絡連接故障、電腦、通訊或其他系統的故障、電力故障、罷工、勞動爭議、暴亂、起義、騷亂、生產力或生產資料不足、火災、洪水、風暴、爆炸、戰爭、政府行為、司法行政機關的命令、其他不可抗力或第三方的不作為而造成的不能服務或延遲服務，以及用戶因此而遭受的損失不承擔責任。   七、知識產權 7.1 TOCOTALK所包含的全部智力成果包括但不限於網站標誌、資料庫、網站設計、文字和圖表、軟體、照片、錄影、音樂、聲音及其前述組合， 軟體編譯、相關源代碼和軟體 (包括小應用程式和腳本)的知識產權權利均歸TOCOTALK所有。用戶不得為商業目的複製、更改、拷貝、發送或使用前述任何材料或內容。 7.2 用戶接受本協議即視為用戶主動將其在TOCOTALK發表的任何形式的資訊的著作權，包括但不限於：複製權、發行權、出租權、展覽權、表演權、放映權、廣播權、資訊網絡傳播權、攝製權、改編權、翻譯權、彙編權以及應當由著作權人享有的其他可轉讓權利無償獨家轉讓給TOCOTALK所有，TOCOTALK有權利就任何主體侵權單獨提起訴訟並獲得全部賠償。本協議屬於《中華人民共和國著作權法》第二十五條規定的書面協議，其效力及於用戶在TOCOTALK發佈的任何受著作權法保護的作品內容， 無論該內容形成於本協議簽訂前還是本協議簽訂後。 7.3 用戶在使用TOCOTALK服務過程中不得非法使用或處分TOCOTALK或他人的知識產權權利。用戶不得將已發表於TOCOTALK的資訊以任何形式發佈或授權其他網站（及媒體）使用。   八、客戶服務 TOCOTALK建立專業的客服團隊，並建立完善的客戶服務制度，從技術、人員和制度上保障用戶提問及投訴管道的暢通，為用戶提供及時的疑難解答與投訴回饋。   九、協議的變更和終止 9.1 協議的變更：TOCOTALK有權隨時對本協議內容或TOCOTALK發佈的其他服務條款及操作規則的內容進行變更，變更時TOCOTALK將在TOCOTALK站內顯著位置發佈公告，變更自公告發佈之時生效，如用戶繼續使用TOCOTALK提供的服務即視為用戶同意該等內容變更，如用戶不同意變更後的內容則用戶有權註銷TOCOTALK帳戶、停止使用TOCOTALK服務。 9.2 協議的終止 9.2.1 TOCOTALK有權依據本協議約定註銷用戶的TOCOTALK帳號，本協議於帳號註銷之日終止。 9.2.2 TOCOTALK有權依據本協議約定終止全部TOCOTALK服務，本協議於TOCOTALK全部服務終止之日終止。 9.2.3 本協議終止後，用戶無權要求TOCOTALK繼續向其提供任何服務或履行任何其他義務，包括但不限於要求TOCOTALK為用戶保留或向用戶披露其原TOCOTALK帳號中的任何資訊，向用戶或第三方轉發任何其未曾閱讀或發送過的資訊等。 9.2.4 本協議的終止不影響守約方向違約方追究違約責任。   十、隱私權政策 10.1 適用範圍 10.1.1 在用戶註冊TOCOTALK帳號或者支付帳戶時，用戶根據TOCOTALK要求提供的個人註冊資訊，包括但不限於身份證件資訊； 10.1.2 在用戶使用TOCOTALK服務時或訪問TOCOTALK網頁時，TOCOTALK自動接收並記錄的用戶流覽器上的伺服器數值，包括但不限於IP地址等數據及用戶要求取用的網頁記錄； 10.1.3 TOCOTALK收集到的用戶在TOCOTALK進行交易的有關數據，包括但不限於出價、購買等記錄； 10.1.4 TOCOTALK通過合法途徑取得的其他用戶個人資訊。 10.2 資訊使用 10.2.1 TOCOTALK不會向任何人出售或出借用戶的個人資訊，除非事先得到用戶的許可。TOCOTALK也不允許任何第三方以任何手段收集、編輯、出售或者無償傳播用戶的個人資訊。 10.3 TOCOTALK對所獲得的客戶身份資料和兌換資訊進行保密，不得向任何單位和個人提供客戶身份資料和兌換資訊，法律法規另有規定的除外。   十一、反洗錢 11.1 TOCOTALK遵守和執行國際反洗錢法的規定，對用戶進行身份識別、客戶身份資料和兌換記錄保存制度，以及大額和可疑交易報告的制度。 11.2 用戶註冊、掛失交易密碼或者資金密碼時，應當提供並上傳身份證影本，TOCOTALK對用戶提供的身份證資訊進行識別及比對。TOCOTALK有合理的理由懷疑用戶使用虛假身份註冊時，有權拒絕註冊或者註銷已經註冊的帳戶。 11.3 TOCOTALK參照《金融機構大額交易和可疑交易報告管理辦法》的規定，保存大額交易和有洗錢嫌疑的交易記錄，在監管機構要求提供大額交易和可疑交易的記錄時，向監管機構提供。 11.4 TOCOTALK對用戶身份資訊以及大額交易、可疑交易記錄進行保存，依法協助、配合司法機關和行政執法機關打擊洗錢活動，依照法律法規的規定協助司法機關、海關、稅務等部門查詢、凍結和扣劃客戶存款。   十二、風險提示 12.1 數字貨幣交易有極高的風險。 12.1.1 數字貨幣市場是全新的、未經確認的，且可能不會增長。目前，數字貨幣主要由投機者大量使用，零售和商業市場使用相對較少，因此數字貨幣價格易產生波動，進而對數字貨幣投資產生不利影響。 12.1.2 數字貨幣市場沒有漲跌停限制，同時是24小時開放的。數字貨幣由於籌碼較少，價格易受莊家控制，有可能出現一天價格漲幾倍的情況，同時也可能出現一天內價格跌去一半的情況。 12.2 參與數字貨幣交易，用戶應當自行控制風險，評估數字貨幣投資價值和投資風險，承擔損失全部投資的經濟風險。 12.3 因國家法律、法規和規範性檔的制定或者修改，導致數字貨幣的交易被暫停、或者禁止的，由此造成的經濟損失全部由用戶自行承擔。   十三、違約責任 13.1 TOCOTALK或用戶違反本協議的約定即構成違約，違約方應當向守約方承擔違約責任。 13.2 如因用戶提供的資訊不真實、不完整或不准確給TOCOTALK造成損失的，TOCOTALK有權要求用戶對TOCOTALK進行損失的賠償。 13.3 如因用戶違反法律法規或本協議約定，在TOCOTALK或利用TOCOTALK服務從事非法活動的，TOCOTALK有權立即終止繼續對其提供TOCOTALK服務，註銷其帳號，並要求其賠償由此給TOCOTALK造成的損失。 13.4 如用戶以技術手段干擾TOCOTALK的運行或干擾其他用戶對TOCOTALK使用的，TOCOTALK有權立即註銷其TOCOTALK帳號，並有權要求其賠償由此給TOCOTALK造成的損失。 13.5 如用戶以虛構事實等方式惡意詆毀TOCOTALK的聲譽，TOCOTALK有權要求用戶向TOCOTALK公開道歉，賠償其給TOCOTALK造成的損失，並有權終止對其提供TOCOTALK服務。   十四、爭議解決 14.1 用戶與TOCOTALK因本協議的履行發生爭議的應通過友好協商解決，協商解決不成的，任一方有權將爭議提交北京仲裁委員會依據該會仲裁規則進行仲裁。   十五、協議的生效和解釋 15.1 本協議於用戶點擊TOCOTALK註冊頁面的註冊並完成註冊程式、獲得TOCOTALK帳號和密碼時生效，對TOCOTALK和用戶均具有約束力。</string>
     <string name="download_failed">下載失敗</string>
     <string name="download_completes_open">下載完成點擊打開</string>
     <string name="binding_google_hint1">請先綁定谷歌驗證</string>
@@ -886,4 +885,10 @@
     <string name="no_record">沒有交易記錄</string>
     <string name="exchange_underway">兌換中</string>
     <string name="official_email">topperchat@outlook.com</string>
+    <string name="initial_hint">©2018 TopperChat 版權所有</string>
+    <string name="toast_email_format">郵箱格式不正確</string>
+    <string name="tag">標籤</string>
+    <string name="et_tag">輸入標籤</string>
+    <string name="toast_tag">標籤不能為空</string>
+    <string name="toast_username_min">用戶名長度不能小於六位</string>
 </resources>
