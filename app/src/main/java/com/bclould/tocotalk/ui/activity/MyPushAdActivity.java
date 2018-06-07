@@ -127,14 +127,16 @@ public class MyPushAdActivity extends BaseActivity {
         buySellPresenter.getTotal(mCoinName, new BuySellPresenter.CallBack6() {
             @Override
             public void send(OrderStatisticsInfo.DataBean data) {
-                mTvSumBuy.setText(data.getBuy_sum());
-                mTvSumSell.setText(data.getSale_sum());
-                mTvSumDealCount.setText(data.getTotal_trans() + "");
-                mTvAnomalyOrderSum.setText(data.getAbnormal() + "");
-                mTvCancelSum.setText(data.getCancel() + "");
-                mTvFinishSum.setText(data.getComplete() + "");
-                mTvOrderSum.setText(data.getAll() + "");
-                mTvUnderwaySum.setText(data.getProcessing() + "");
+                if (!MyPushAdActivity.this.isDestroyed()) {
+                    mTvSumBuy.setText(data.getBuy_sum());
+                    mTvSumSell.setText(data.getSale_sum());
+                    mTvSumDealCount.setText(data.getTotal_trans() + "");
+                    mTvAnomalyOrderSum.setText(data.getAbnormal() + "");
+                    mTvCancelSum.setText(data.getCancel() + "");
+                    mTvFinishSum.setText(data.getComplete() + "");
+                    mTvOrderSum.setText(data.getAll() + "");
+                    mTvUnderwaySum.setText(data.getProcessing() + "");
+                }
             }
         });
     }

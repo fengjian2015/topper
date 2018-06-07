@@ -461,7 +461,7 @@
     <string name="no_time">0分鐘</string>
     <string name="fb">放幣</string>
     <string name="cancel_order_hint">是否取消訂單?</string>
-    <string name="fb_hint">[提示]為了避免發生錯誤，請務必確認收到款後再進一步操作。</string>
+    <string name="fb_hint">為了避免發生錯誤，請務必確認收到款後再進一步操作。</string>
     <string name="confirm_fk">確認付款</string>
     <string name="fk_succeed">付款成功</string>
     <string name="dengdai_fb">等待放行</string>
@@ -727,7 +727,7 @@
     <string name="et_single_count">輸入單筆投注數量</string>
     <string name="toast_bet_count">總投注數量不能為空</string>
     <string name="toast_single_count">單筆投注數量不能為空</string>
-    <string name="buy_coin_hint">[提示]為了避免發生錯誤，請仔細判斷對方身份無風險後再進一步操作。</string>
+    <string name="buy_coin_hint">為了避免發生錯誤，請仔細判斷對方身份無風險後再進一步操作。</string>
     <string name="fk_hint">是否已經付款？</string>
     <string name="qukuai">區塊</string>
     <string name="hash_value">的hash值</string>

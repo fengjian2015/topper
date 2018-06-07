@@ -208,7 +208,6 @@ public class PublicshDynamicActivity extends BaseActivity {
                     String postfix = UtilTool.getPostfix(localMedia.getPath());
                     if (postfix.equals("Video") && selectList.size() != 1) {
                         Toast.makeText(this, getString(R.string.selecotr_video_hint), Toast.LENGTH_SHORT).show();
-                        mType = true;
                         selectList.clear();
                         selectList.add(localMedia);
                     } else {
@@ -286,12 +285,18 @@ public class PublicshDynamicActivity extends BaseActivity {
         Intent intent = new Intent(this, ImageUpService.class);
         Bundle bundle = new Bundle();
         for (LocalMedia localMedia : selectList) {
-            int degree = UtilTool.readPictureDegree(localMedia.getCompressPath());
-            UtilTool.Log("圖片信息", degree + "");
-            if (degree != 0) {
-                UtilTool.toturn(localMedia.getCompressPath(), BitmapFactory.decodeFile(localMedia.getCompressPath()), degree);
+            if (UtilTool.getPostfix(selectList.get(0).getPath()).equals("Image")) {
+                mType = false;
+                int degree = UtilTool.readPictureDegree(localMedia.getCompressPath());
+                UtilTool.Log("圖片信息", degree + "");
+                if (degree != 0) {
+                    UtilTool.toturn(localMedia.getCompressPath(), BitmapFactory.decodeFile(localMedia.getCompressPath()), degree);
+                }
+                mPathList.add(localMedia.getCompressPath());
+            } else {
+                mType = true;
+                mPathList.add(localMedia.getPath());
             }
-            mPathList.add(localMedia.getCompressPath());
         }
         bundle.putStringArrayList("imageList", mPathList);
         bundle.putString("text", text);

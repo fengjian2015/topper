@@ -84,7 +84,6 @@ public class PayRecordActivity extends BaseActivity {
     private Map<String, Integer> mMap = new HashMap<>();
     private ReceiptPaymentPresenter mReceiptPaymentPresenter;
     private List<String> mFiltrateList = new ArrayList<>();
-    private int mType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -114,12 +113,7 @@ public class PayRecordActivity extends BaseActivity {
     }
 
     private void initIntent() {
-        mType = getIntent().getIntExtra("type", 0);
-        if (mType == 0) {
-            mTypes = "0";
-        } else {
-            mTypes = "3";
-        }
+        mTypes = getIntent().getStringExtra("type");
         mFiltrateList.add(getString(R.string.all));
         mFiltrateList.add(getString(R.string.red_package));
         mFiltrateList.add(getString(R.string.transfer));
@@ -133,11 +127,7 @@ public class PayRecordActivity extends BaseActivity {
     }
 
     private void initMap() {
-        if (mType == 0) {
-            mMap.put(getString(R.string.filtrate), 0);
-        } else {
-            mMap.put(getString(R.string.filtrate), 3);
-        }
+        mMap.put(getString(R.string.filtrate), Integer.parseInt(mTypes));
     }
 
     List<TransferListInfo.DataBean> mDataList = new ArrayList<>();
@@ -153,6 +143,8 @@ public class PayRecordActivity extends BaseActivity {
             public void send(List<TransferListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
                     if (mDataList.size() != 0 || data.size() != 0) {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mLlNoData.setVisibility(View.GONE);
                         isFinish = true;
                         if (type == PULL_UP) {
                             if (data.size() == mPageSize) {
@@ -167,15 +159,18 @@ public class PayRecordActivity extends BaseActivity {
                                 }
                             }
                         } else {
-                            if (mPage == 1) {
-                                mPage++;
+                            if (data.size() == 0) {
+                                mRecyclerView.setVisibility(View.GONE);
+                                mLlNoData.setVisibility(View.VISIBLE);
+                            } else {
+                                if (mPage == 1) {
+                                    mPage++;
+                                }
+                                mDataList.clear();
+                                mDataList.addAll(data);
+                                mPayRecordRVAdapter.notifyDataSetChanged();
                             }
-                            mDataList.clear();
-                            mDataList.addAll(data);
-                            mPayRecordRVAdapter.notifyDataSetChanged();
                         }
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        mLlNoData.setVisibility(View.GONE);
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);

@@ -477,7 +477,9 @@
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
         <!-- 视频播放页面 -->
-        <activity android:name=".ui.activity.VideoActivity"/>
+        <activity
+            android:name=".ui.activity.VideoActivity"
+            android:theme="@style/Theme.AppStartLoadTranslucent"/>
 
         <!-- 紅包页面 -->
         <activity

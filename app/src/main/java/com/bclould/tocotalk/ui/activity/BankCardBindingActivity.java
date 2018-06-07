@@ -100,14 +100,16 @@ public class BankCardBindingActivity extends BaseActivity {
         mBankCardPresenter.bankCardInfo(cardNumber, new BankCardPresenter.CallBack() {
             @Override
             public void send(BankCardInfo.DataBean data) {
-                Intent intent = new Intent(BankCardBindingActivity.this, BankCardBindingActivity2.class);
-                if (data.getTruename() != null && data.getTruename().isEmpty()) {
-                    showDialog();
-                } else {
-                    intent.putExtra("data", data);
-                    intent.putExtra("cardNumber", cardNumber);
-                    startActivity(intent);
-                    finish();
+                if (!BankCardBindingActivity.this.isDestroyed()) {
+                    Intent intent = new Intent(BankCardBindingActivity.this, BankCardBindingActivity2.class);
+                    if (data.getTruename() != null && data.getTruename().isEmpty()) {
+                        showDialog();
+                    } else {
+                        intent.putExtra("data", data);
+                        intent.putExtra("cardNumber", cardNumber);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
             }
         });

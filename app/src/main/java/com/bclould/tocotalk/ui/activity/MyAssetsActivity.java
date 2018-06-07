@@ -30,6 +30,9 @@ import com.bclould.tocotalk.model.MyAssetsInfo;
 import com.bclould.tocotalk.ui.adapter.MyWalletRVAapter;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.SpaceItemDecoration;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -64,6 +67,8 @@ public class MyAssetsActivity extends BaseActivity {
     TextView mTvCurrency;
     @Bind(R.id.tv_total)
     TextView mTvTotal;
+    @Bind(R.id.refreshLayout)
+    SmartRefreshLayout mRefreshLayout;
     private MyWalletRVAapter mMyWalletRVAapter;
     private ViewGroup mPopupWindowView;
     private PopupWindow mPopupWindow;
@@ -83,23 +88,30 @@ public class MyAssetsActivity extends BaseActivity {
         initRecyclerView();
         initData();
         initEdit();
+        initListener();
+    }
 
+    private void initListener() {
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshLayout) {
+                refreshLayout.finishRefresh(2000);
+                getTotal();
+                initData();
+            }
+        });
     }
 
     private void getTotal() {
-        try {
-            mSubscribeCoinPresenter.getTotal(new SubscribeCoinPresenter.CallBack3() {
-                @Override
-                public void send(String data) {
-                    if (data != null) {
-                        mTvCurrency.setText(getString(R.string.total_assets_usd));
-                        mTvTotal.setText("≈" + data);
-                    }
+        mSubscribeCoinPresenter.getTotal(new SubscribeCoinPresenter.CallBack3() {
+            @Override
+            public void send(String data) {
+                if (data != null && !MyAssetsActivity.this.isDestroyed()) {
+                    mTvCurrency.setText(getString(R.string.total_assets_usd));
+                    mTvTotal.setText("≈" + data);
                 }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            }
+        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -145,13 +157,16 @@ public class MyAssetsActivity extends BaseActivity {
     }
 
     private void initData() {
-        mDataList.clear();
         mSubscribeCoinPresenter.getMyAssets(new SubscribeCoinPresenter.CallBack() {
             @Override
             public void send(List<MyAssetsInfo.DataBean> info) {
-                mDataList.addAll(info);
-                mDiltrateData.addAll(info);
-                mMyWalletRVAapter.notifyDataSetChanged();
+                if (!MyAssetsActivity.this.isDestroyed() && info.size() != 0) {
+                    mDataList.clear();
+                    mDiltrateData.clear();
+                    mDataList.addAll(info);
+                    mDiltrateData.addAll(info);
+                    mMyWalletRVAapter.notifyDataSetChanged();
+                }
             }
         });
     }

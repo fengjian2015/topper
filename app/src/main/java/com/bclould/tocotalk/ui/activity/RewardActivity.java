@@ -121,11 +121,16 @@ public class RewardActivity extends BaseActivity {
         mTvName.setText(getString(R.string.user) + " : " + mName);
     }
 
-    @OnClick({R.id.bark, R.id.rl_selector_coin, R.id.btn_confirm})
+    @OnClick({R.id.tv_record, R.id.bark, R.id.rl_selector_coin, R.id.btn_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.tv_record:
+                Intent intent = new Intent(this, PayRecordActivity.class);
+                intent.putExtra("type", "6");
+                startActivity(intent);
                 break;
             case R.id.rl_selector_coin:
                 showCoinDialog();

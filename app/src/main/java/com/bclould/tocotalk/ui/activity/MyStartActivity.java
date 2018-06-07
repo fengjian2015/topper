@@ -129,7 +129,9 @@ public class MyStartActivity extends BaseActivity {
             public void send(List<GuessListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
                     if (mDataList.size() != 0 || data.size() != 0) {
-                        isFinish =true;
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mLlNoData.setVisibility(View.GONE);
+                        isFinish = true;
                         if (type == PULL_UP) {
                             if (data.size() == mPageSize) {
                                 mPage++;
@@ -143,15 +145,18 @@ public class MyStartActivity extends BaseActivity {
                                 }
                             }
                         } else {
-                            if (mPage == 1) {
-                                mPage++;
+                            if (data.size() == 0) {
+                                mRecyclerView.setVisibility(View.GONE);
+                                mLlNoData.setVisibility(View.VISIBLE);
+                            } else {
+                                if (mPage == 1) {
+                                    mPage++;
+                                }
+                                mDataList.clear();
+                                mDataList.addAll(data);
+                                mGuessListRVAdapter.notifyDataSetChanged();
                             }
-                            mDataList.clear();
-                            mDataList.addAll(data);
-                            mGuessListRVAdapter.notifyDataSetChanged();
                         }
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        mLlNoData.setVisibility(View.GONE);
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);

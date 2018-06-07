@@ -92,11 +92,11 @@ public class EmitFragment extends Fragment {
     }
 
     private void initData() {
-        try {
-            RedRecordPresenter redRecordPresenter = new RedRecordPresenter(getActivity());
-            redRecordPresenter.log("send", new RedRecordPresenter.CallBack() {
-                @Override
-                public void send(RedRecordInfo.DataBean data) {
+        RedRecordPresenter redRecordPresenter = new RedRecordPresenter(getActivity());
+        redRecordPresenter.log("send", new RedRecordPresenter.CallBack() {
+            @Override
+            public void send(RedRecordInfo.DataBean data) {
+                if (!getActivity().isDestroyed()) {
                     if (data.getLog().size() == 0) {
                         mLlTotal.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);
@@ -113,10 +113,8 @@ public class EmitFragment extends Fragment {
                     mLogBeanList.addAll(data.getLog());
                     mReceiveRVAdapter.notifyDataSetChanged();
                 }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            }
+        });
     }
 
     private void initRecyclerView() {

@@ -28,6 +28,16 @@
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
+        <TextView
+            android:id="@+id/tv_record"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:paddingRight="@dimen/x20"
+            android:text="@string/record"
+            android:textColor="@color/blue2"
+            android:textSize="@dimen/x30"/>
     </RelativeLayout>
 
     <TextView
