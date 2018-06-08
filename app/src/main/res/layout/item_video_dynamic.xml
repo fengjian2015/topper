@@ -41,8 +41,7 @@
                 android:layout_below="@+id/name"
                 android:layout_marginTop="@dimen/y10"
                 android:text="2017.09.28  11:00"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/x20"/>
+                android:textSize="@dimen/x26"/>
 
             <ImageView
                 android:id="@+id/iv_delete"
@@ -73,8 +72,8 @@
                 <ImageView
                     android:id="@+id/iv_video"
                     android:layout_width="@dimen/x288"
-                    android:scaleType="center"
-                    android:layout_height="@dimen/y288"/>
+                    android:layout_height="@dimen/y288"
+                    android:scaleType="center"/>
 
                 <ImageView
                     android:id="@+id/iv_video_play"
@@ -85,10 +84,30 @@
 
             </RelativeLayout>
 
+            <ImageView
+                android:id="@+id/iv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tv_location"
+                android:layout_alignTop="@+id/tv_location"
+                android:layout_below="@+id/cv_guess"
+                android:src="@mipmap/ico_dy_place"/>
+
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rl_video"
+                android:layout_marginLeft="@dimen/x10"
+                android:layout_marginTop="@dimen/y20"
+                android:layout_toRightOf="@+id/iv_location"
+                android:text="2017.09.28  11:00"
+                android:textSize="@dimen/x26"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y100"
-                android:layout_below="@+id/rl_video"
+                android:layout_below="@+id/tv_location"
                 android:layout_marginRight="@dimen/x30"
                 android:gravity="right|center_vertical"
                 android:orientation="horizontal">

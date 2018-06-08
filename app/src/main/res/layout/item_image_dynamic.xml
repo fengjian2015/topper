@@ -31,9 +31,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="安子"
-                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="@dimen/x32"/>
+                android:textSize="@dimen/x32"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/tv_time"
@@ -42,15 +42,14 @@
                 android:layout_below="@+id/tv_name"
                 android:layout_marginTop="@dimen/y10"
                 android:text="2017.09.28  11:00"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/x20"/>
+                android:textSize="@dimen/x26"/>
 
             <ImageView
                 android:id="@+id/iv_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingRight="@dimen/x30"
                 android:layout_alignParentRight="true"
+                android:paddingRight="@dimen/x30"
                 android:src="@mipmap/ico_dy_delete"/>
 
             <TextView
@@ -74,10 +73,30 @@
                 ngl:showStyle="fill"
                 ngl:singleImgSize="@dimen/x360"/>
 
+            <ImageView
+                android:id="@+id/iv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/tv_location"
+                android:layout_alignTop="@+id/tv_location"
+                android:layout_below="@+id/cv_guess"
+                android:src="@mipmap/ico_dy_place"/>
+
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ngl_images"
+                android:layout_marginLeft="@dimen/x10"
+                android:layout_marginTop="@dimen/y20"
+                android:layout_toRightOf="@+id/iv_location"
+                android:text="2017.09.28  11:00"
+                android:textSize="@dimen/x26"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y100"
-                android:layout_below="@+id/ngl_images"
+                android:layout_below="@+id/tv_location"
                 android:layout_marginRight="@dimen/x30"
                 android:gravity="right|center_vertical"
                 android:orientation="horizontal">
@@ -86,8 +105,8 @@
                     android:id="@+id/tv_reward"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:drawableRight="@mipmap/ico_dy_give"
                     android:drawablePadding="@dimen/x10"
+                    android:drawableRight="@mipmap/ico_dy_give"
                     android:gravity="center"
                     android:paddingRight="@dimen/x40"
                     android:text="0"
@@ -97,8 +116,8 @@
                     android:id="@+id/tv_pinglun"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:drawableRight="@drawable/pinglun_selector"
                     android:drawablePadding="@dimen/x10"
+                    android:drawableRight="@drawable/pinglun_selector"
                     android:gravity="center"
                     android:paddingLeft="@dimen/x40"
                     android:paddingRight="@dimen/x40"
@@ -110,8 +129,8 @@
                     android:id="@+id/tv_zan"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:drawableRight="@drawable/zan_selector"
                     android:drawablePadding="@dimen/x10"
+                    android:drawableRight="@drawable/zan_selector"
                     android:gravity="center"
                     android:paddingLeft="@dimen/x40"
                     android:text="0"
@@ -130,8 +149,8 @@
         android:layout_below="@+id/ll_dynamic_content"
         android:layout_marginBottom="@dimen/y30"
         android:layout_marginLeft="@dimen/x140"
-        android:background="#15000000"
         android:layout_marginRight="@dimen/x30"
+        android:background="#15000000"
         android:orientation="vertical"
         android:padding="@dimen/y20"
         android:visibility="gone">

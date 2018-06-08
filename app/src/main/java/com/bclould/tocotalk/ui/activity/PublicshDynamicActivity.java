@@ -6,8 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,19 +13,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.Request;
-import com.amazonaws.Response;
-import com.amazonaws.auth.BasicSessionCredentials;
-import com.amazonaws.handlers.RequestHandler2;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.bclould.tocotalk.Presenter.DynamicPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
@@ -35,9 +25,8 @@ import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.service.ImageUpService;
 import com.bclould.tocotalk.ui.adapter.PublicshDynamicGVAdapter;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
-import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.FullyGridLayoutManager;
-import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.ToastShow;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.compress.Luban;
@@ -47,9 +36,6 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.permissions.RxPermissions;
 import com.luck.picture.lib.tools.PictureFileUtils;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +52,7 @@ import io.reactivex.disposables.Disposable;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class PublicshDynamicActivity extends BaseActivity {
 
+    private static final int LOCATION = 1;
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.publish)
@@ -76,6 +63,12 @@ public class PublicshDynamicActivity extends BaseActivity {
     ScrollView mScrollView;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.iv)
+    ImageView mIv;
+    @Bind(R.id.tv_location)
+    TextView mTvLocation;
+    @Bind(R.id.rl_site)
+    RelativeLayout mRlSite;
 
 
     private List<LocalMedia> selectList = new ArrayList<>();
@@ -211,14 +204,13 @@ public class PublicshDynamicActivity extends BaseActivity {
                         selectList.clear();
                         selectList.add(localMedia);
                     } else {
-                        // 例如 LocalMedia 里面返回三种path
-                        // 1.media.getPath(); 为原图path
-                        // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
-                        // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
-                        // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
                         adapter.setList(selectList);
                         adapter.notifyDataSetChanged();
                     }
+                    break;
+                case LOCATION:
+                    String location = data.getStringExtra("location");
+                    mTvLocation.setText(location);
                     break;
             }
         }
@@ -241,27 +233,16 @@ public class PublicshDynamicActivity extends BaseActivity {
         }
     }
 
-    private void showDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = LoadingProgressDialog.createDialog(this);
-            mProgressDialog.setMessage(getString(R.string.uploading));
-        }
-
-        mProgressDialog.show();
-    }
-
-    private void hideDialog() {
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-        }
-    }
-
-    @OnClick({R.id.bark, R.id.publish})
+    @OnClick({R.id.bark, R.id.publish, R.id.rl_site})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.rl_site:
+                Intent intent = new Intent(this, LocationActivity.class);
+                intent.putExtra("type", 2);
+                startActivityForResult(intent, LOCATION);
                 break;
             case R.id.publish:
                 String text = mTextEt.getText().toString();
@@ -282,6 +263,7 @@ public class PublicshDynamicActivity extends BaseActivity {
 
     private void checkFile() {
         String text = mTextEt.getText().toString();
+        String location = mTvLocation.getText().toString();
         Intent intent = new Intent(this, ImageUpService.class);
         Bundle bundle = new Bundle();
         for (LocalMedia localMedia : selectList) {
@@ -298,12 +280,17 @@ public class PublicshDynamicActivity extends BaseActivity {
                 mPathList.add(localMedia.getPath());
             }
         }
-        bundle.putStringArrayList("imageList", mPathList);
-        bundle.putString("text", text);
-        bundle.putBoolean("type", mType);
-        intent.putExtras(bundle);
-        startService(intent);
-        finish();
+        if (!UtilTool.isServiceRunning(this, "com.bclould.tocotalk.service.ImageUpService")) {
+            bundle.putStringArrayList("imageList", mPathList);
+            bundle.putString("text", text);
+            bundle.putString("location", location);
+            bundle.putBoolean("type", mType);
+            intent.putExtras(bundle);
+            startService(intent);
+            finish();
+        }else {
+            ToastShow.showToast2(this, getString(R.string.dynamic_underway_uploading));
+        }
 
       /*  showDialog();
         if (selectList.size() != 0) {
@@ -347,7 +334,7 @@ public class PublicshDynamicActivity extends BaseActivity {
         }*/
     }
 
-
+/*
     private void upImage(final String key, File file, final boolean type) {
         UtilTool.Log("aws", Constants.ACCESS_KEY_ID);
         UtilTool.Log("aws", Constants.SECRET_ACCESS_KEY);
@@ -486,5 +473,5 @@ public class PublicshDynamicActivity extends BaseActivity {
                 }
             }
         }).start();
-    }
+    }*/
 }

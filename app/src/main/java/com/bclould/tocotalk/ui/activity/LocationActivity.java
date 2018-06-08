@@ -1,7 +1,9 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -77,7 +79,7 @@ public class LocationActivity extends AppCompatActivity implements
     private boolean isActiveMove = false;//是不是主动拖动屏幕
     TencentSearch tencentSearch = new TencentSearch(this);
     private CenterIcon centerIcon = null;
-    private int oldClick=0;//記錄上次點擊點
+    private int oldClick = 0;//記錄上次點擊點
     private String mUser;
     private Context context;
 
@@ -99,13 +101,14 @@ public class LocationActivity extends AppCompatActivity implements
         iniRecycerView();
 
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         startLocation();
     }
 
-    private void checkSelf(){
+    private void checkSelf() {
         if (Build.VERSION.SDK_INT >= 23) {
             String[] permissions = {
                     Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -113,21 +116,20 @@ public class LocationActivity extends AppCompatActivity implements
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
             };
 
-            if (checkSelfPermission(permissions[0]) != PackageManager.PERMISSION_GRANTED)
-            {
+            if (checkSelfPermission(permissions[0]) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(permissions, 0);
-            }else{
+            } else {
                 startLocation();
             }
-        }else{
+        } else {
             startLocation();
         }
     }
 
     private void startLocation() {
         LogUtil.e("开始定位" + mLocationManager);
-        TencentLocationListener listener=this;
-        TencentLocationRequest request =TencentLocationRequest.create();
+        TencentLocationListener listener = this;
+        TencentLocationRequest request = TencentLocationRequest.create();
         request.setInterval(10000);
 
         request.setRequestLevel(TencentLocationRequest.REQUEST_LEVEL_NAME);
@@ -135,37 +137,53 @@ public class LocationActivity extends AppCompatActivity implements
         request.setAllowDirection(true);
         TencentLocationManager locationManager = TencentLocationManager.getInstance(this);
         int error = locationManager.requestLocationUpdates(request, listener);
-        LogUtil.e("定位error:" + error+"   GPS:"+ request.isAllowGPS());
+        LogUtil.e("定位error:" + error + "   GPS:" + request.isAllowGPS());
 
     }
 
 
     public void initView() {
-        mUser=getIntent().getStringExtra("user");
+        final int type = getIntent().getIntExtra("type", 0);
+        String right;
+        if (type == 1) {
+            mUser = getIntent().getStringExtra("user");
+            right = getString(R.string.send);
+        } else {
+            right = getString(R.string.confirm);
+        }
         appTitle.setCenterTitle(getString(R.string.location)).setLeftButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
-        }).setRightText(getString(R.string.send)).setRightTextClickListener(new View.OnClickListener() {
+        }).setRightText(right).setRightTextClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mapView.getMap().getScreenShot(new TencentMap.OnScreenShotListener() {
                     @Override
                     public void onMapScreenShot(Bitmap arg0) {
                         // TODO Auto-generated method stub
-                        if (mAdapter.getCount()==0)return;
-                        RoomManage.getInstance().getRoom(mUser).sendLocationMessage(null,arg0
-                                ,mAdapter.getItem(oldClick).title
-                                ,mAdapter.getItem(oldClick).address
-                                ,mAdapter.getItem(oldClick).location.lat
-                                ,mAdapter.getItem(oldClick).location.lng);
+                        if (mAdapter.getCount() == 0) return;
+                        if (type == 1) {
+                            RoomManage.getInstance().getRoom(mUser).sendLocationMessage(null, arg0
+                                    , mAdapter.getItem(oldClick).title
+                                    , mAdapter.getItem(oldClick).address
+                                    , mAdapter.getItem(oldClick).location.lat
+                                    , mAdapter.getItem(oldClick).location.lng);
+                        } else {
+                            Intent intent = new Intent(LocationActivity.this, PublicshDynamicActivity.class);
+                            String address = mAdapter.getItem(oldClick).address;
+                            String city = address.substring(address.indexOf("省") + 1, address.indexOf("市"));
+                            intent.putExtra("location", city + "•" + mAdapter.getItem(oldClick).title);
+                            setResult(Activity.RESULT_OK, intent);
+                        }
                         finish();
                     }
                 });
             }
         });
     }
+
     private void initMap() {
         // 初始化屏幕中心
         centerIcon = new CenterIcon(this, mapView);
@@ -195,11 +213,11 @@ public class LocationActivity extends AppCompatActivity implements
         mAdapter.setOnItemClickListener(new RecyclerArrayAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                UtilTool.Log("fengjian----","點擊的位置："+position);
-                if(position==-1)return;
-                mAdapter.getItem(oldClick).id="";
-                oldClick=position;
-                mAdapter.getItem(position).id="true";
+                UtilTool.Log("fengjian----", "點擊的位置：" + position);
+                if (position == -1) return;
+                mAdapter.getItem(oldClick).id = "";
+                oldClick = position;
+                mAdapter.getItem(position).id = "true";
                 mAdapter.notifyDataSetChanged();
             }
         });
@@ -216,10 +234,10 @@ public class LocationActivity extends AppCompatActivity implements
             if (TencentLocation.GPS_PROVIDER.equals(provider)) {
                 // location 是GPS定位结果
                 latLngLocation = new LatLng(tencentLocation.getLatitude(), tencentLocation.getLongitude());
-                UtilTool.Log("位置", tencentLocation.getAddress()+"");
+                UtilTool.Log("位置", tencentLocation.getAddress() + "");
             } else if (TencentLocation.NETWORK_PROVIDER.equals(provider)) {
                 // location 是网络定位结果
-                UtilTool.Log("位置", tencentLocation.getAddress()+"");
+                UtilTool.Log("位置", tencentLocation.getAddress() + "");
                 latLngLocation = new LatLng(tencentLocation.getLatitude(), tencentLocation.getLongitude());
             }
             mLocation = tencentLocation;
@@ -259,7 +277,7 @@ public class LocationActivity extends AppCompatActivity implements
     }
 
     private void stopLocation() {
-        if(mLocationManager==null)return;
+        if (mLocationManager == null) return;
         mLocationManager.removeUpdates(this);
     }
 
@@ -313,14 +331,14 @@ public class LocationActivity extends AppCompatActivity implements
                     Geo2AddressResultObject.ReverseAddressResult re = oj.result;
 
                     if (re.pois != null) {
-                        oldClick=0;
-                        if(re.pois.size()>0) {
+                        oldClick = 0;
+                        if (re.pois.size() > 0) {
                             re.pois.get(oldClick).id = "true";
                         }
                         mAdapter.addAll(re.pois);
 
                         for (Geo2AddressResultObject.ReverseAddressResult.Poi poi : re.pois) {
-                            LogUtil.e("移动屏幕后检索当前位置信息--" + poi.title + "----" + poi.address+"  ---"+poi.location);
+                            LogUtil.e("移动屏幕后检索当前位置信息--" + poi.title + "----" + poi.address + "  ---" + poi.location);
                         }
                     }
 

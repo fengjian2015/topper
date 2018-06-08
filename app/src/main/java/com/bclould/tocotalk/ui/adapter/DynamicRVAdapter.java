@@ -184,24 +184,28 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         TextView mName;
         @Bind(R.id.time)
         TextView mTime;
-        @Bind(R.id.text_content)
-        TextView mTextContent;
-        @Bind(R.id.tv_pinglun)
-        TextView mTvPinglun;
-        @Bind(R.id.tv_look)
-        TextView mTvLook;
         @Bind(R.id.iv_delete)
         ImageView mIvDelete;
+        @Bind(R.id.text_content)
+        TextView mTextContent;
+        @Bind(R.id.iv_location)
+        ImageView mIvLocation;
+        @Bind(R.id.tv_location)
+        TextView mTvLocation;
+        @Bind(R.id.tv_reward)
+        TextView mTvReward;
+        @Bind(R.id.tv_pinglun)
+        TextView mTvPinglun;
         @Bind(R.id.tv_zan)
         TextView mTvZan;
         @Bind(R.id.ll_dynamic_content)
         LinearLayout mLlDynamicContent;
+        @Bind(R.id.recycler_view)
+        RecyclerView mRecyclerView;
+        @Bind(R.id.tv_look)
+        TextView mTvLook;
         @Bind(R.id.ll_review)
         LinearLayout mLlReview;
-        @Bind(R.id.recycler_view)
-        RecyclerView mRecyvlerView;
-        @Bind(R.id.tv_reward)
-        TextView mTvReward;
         private DynamicListInfo.DataBean mDataBean;
 
         TextHolder(View view) {
@@ -237,6 +241,14 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
 
         public void setData(final DynamicListInfo.DataBean dataBean) {
             mDataBean = dataBean;
+            if (dataBean.getPosition() != null && !dataBean.getPosition().isEmpty()) {
+                mTvLocation.setVisibility(View.VISIBLE);
+                mIvLocation.setVisibility(View.VISIBLE);
+                mTvLocation.setText(dataBean.getPosition());
+            } else {
+                mTvLocation.setVisibility(View.GONE);
+                mIvLocation.setVisibility(View.GONE);
+            }
             if (dataBean.getIs_self() == 1) {
                 mIvDelete.setVisibility(View.VISIBLE);
                 mIvDelete.setOnClickListener(new View.OnClickListener() {
@@ -262,9 +274,9 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 } else {
                     mTvLook.setVisibility(View.GONE);
                 }
-                mRecyvlerView.setLayoutManager(new LinearLayoutManager(mContext));
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
                 mDynamicReviewRVAdapter = new DynamicReviewRVAdapter(dataBean.getReviewList(), mContext);
-                mRecyvlerView.setAdapter(mDynamicReviewRVAdapter);
+                mRecyclerView.setAdapter(mDynamicReviewRVAdapter);
                 mTvLook.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -331,6 +343,10 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         ImageView mIvVideoPlay;
         @Bind(R.id.rl_video)
         RelativeLayout mRlVideo;
+        @Bind(R.id.iv_location)
+        ImageView mIvLocation;
+        @Bind(R.id.tv_location)
+        TextView mTvLocation;
         @Bind(R.id.tv_reward)
         TextView mTvReward;
         @Bind(R.id.tv_pinglun)
@@ -394,6 +410,14 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             mDataBean = dataBean;
             mCompressImgList = (ArrayList<String>) dataBean.getKey_compress_urls();
             mImgList = (ArrayList<String>) dataBean.getKey_urls();
+            if (dataBean.getPosition() != null && !dataBean.getPosition().isEmpty()) {
+                mTvLocation.setVisibility(View.VISIBLE);
+                mIvLocation.setVisibility(View.VISIBLE);
+                mTvLocation.setText(dataBean.getPosition());
+            } else {
+                mTvLocation.setVisibility(View.GONE);
+                mIvLocation.setVisibility(View.GONE);
+            }
             if (dataBean.getIs_self() == 1) {
                 mIvDelete.setVisibility(View.VISIBLE);
                 mIvDelete.setOnClickListener(new View.OnClickListener() {
@@ -443,7 +467,10 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             } else {
                 mLlReview.setVisibility(View.GONE);
             }
-            Glide.with(mContext).load((dataBean.getKey_compress_urls()).get(0)).into(mIvVideo);
+            Glide.with(mContext)
+                    .load((dataBean.getKey_compress_urls()).get(0))
+                    .apply(new RequestOptions().error(R.mipmap.ic_empty_photo).centerCrop().placeholder(R.mipmap.ic_empty_photo))
+                    .into(mIvVideo);
             mTvReward.setText(dataBean.getRewardCount() + "");
             mTime.setText(dataBean.getCreated_at());
             mName.setText(dataBean.getUser_name());
@@ -481,26 +508,30 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         TextView mTvName;
         @Bind(R.id.tv_time)
         TextView mTvTime;
+        @Bind(R.id.iv_delete)
+        ImageView mIvDelete;
         @Bind(R.id.tv_content)
         TextView mTvContent;
         @Bind(R.id.ngl_images)
         NineGridImageView mNglImages;
+        @Bind(R.id.iv_location)
+        ImageView mIvLocation;
+        @Bind(R.id.tv_location)
+        TextView mTvLocation;
+        @Bind(R.id.tv_reward)
+        TextView mTvReward;
         @Bind(R.id.tv_pinglun)
         TextView mTvPinglun;
         @Bind(R.id.tv_zan)
         TextView mTvZan;
         @Bind(R.id.ll_dynamic_content)
         LinearLayout mLlDynamicContent;
-        @Bind(R.id.ll_review)
-        LinearLayout mLlReview;
         @Bind(R.id.recycler_view)
-        RecyclerView mRecyvlerView;
+        RecyclerView mRecyclerView;
         @Bind(R.id.tv_look)
         TextView mTvLook;
-        @Bind(R.id.iv_delete)
-        ImageView mIvDelete;
-        @Bind(R.id.tv_reward)
-        TextView mTvReward;
+        @Bind(R.id.ll_review)
+        LinearLayout mLlReview;
         private ArrayList<ThumbViewInfo> mThumbViewInfoList = new ArrayList<>();
         private NineGridImageViewAdapter<String> mAdapter = new NineGridImageViewAdapter<String>() {
             @Override
@@ -593,6 +624,14 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             mDataBean = dataBean;
             mCompressImgList = (ArrayList<String>) dataBean.getKey_compress_urls();
             mImgList = (ArrayList<String>) dataBean.getKey_urls();
+            if (dataBean.getPosition() != null && !dataBean.getPosition().isEmpty()) {
+                mTvLocation.setVisibility(View.VISIBLE);
+                mIvLocation.setVisibility(View.VISIBLE);
+                mTvLocation.setText(dataBean.getPosition());
+            } else {
+                mTvLocation.setVisibility(View.GONE);
+                mIvLocation.setVisibility(View.GONE);
+            }
             mNglImages.setImagesData(mCompressImgList);
             if (!dataBean.getAvatar().isEmpty()) {
                 UtilTool.setCircleImg(mContext, dataBean.getAvatar(), mIvTouxiang);
@@ -619,9 +658,9 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 } else {
                     mTvLook.setVisibility(View.GONE);
                 }
-                mRecyvlerView.setLayoutManager(new LinearLayoutManager(mContext));
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
                 mDynamicReviewRVAdapter = new DynamicReviewRVAdapter(dataBean.getReviewList(), mContext);
-                mRecyvlerView.setAdapter(mDynamicReviewRVAdapter);
+                mRecyclerView.setAdapter(mDynamicReviewRVAdapter);
                 mTvLook.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -720,6 +759,12 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         TextView mTvCoin;
         @Bind(R.id.cv_guess)
         CardView mCvGuess;
+        @Bind(R.id.iv_location)
+        ImageView mIvLocation;
+        @Bind(R.id.tv_location)
+        TextView mTvLocation;
+        @Bind(R.id.tv_reward)
+        TextView mTvReward;
         @Bind(R.id.tv_pinglun)
         TextView mTvPinglun;
         @Bind(R.id.tv_zan)
@@ -736,8 +781,6 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         private String mGuessPw;
         private int mGuessId;
         private int mPeriod_aty;
-        @Bind(R.id.tv_reward)
-        TextView mTvReward;
 
         GuessHolder(View view) {
             super(view);
@@ -785,6 +828,14 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
 
         public void setData(final DynamicListInfo.DataBean dataBean) {
             mDataBean = dataBean;
+            if (dataBean.getPosition() != null && !dataBean.getPosition().isEmpty()) {
+                mTvLocation.setVisibility(View.VISIBLE);
+                mIvLocation.setVisibility(View.VISIBLE);
+                mTvLocation.setText(dataBean.getPosition());
+            } else {
+                mTvLocation.setVisibility(View.GONE);
+                mIvLocation.setVisibility(View.GONE);
+            }
             if (dataBean.getIs_self() == 1) {
                 mIvDelete.setVisibility(View.VISIBLE);
                 mIvDelete.setOnClickListener(new View.OnClickListener() {

@@ -46,6 +46,7 @@ public class ImageUpService extends Service {
     private DynamicPresenter mDynamicPresenter;
     private List<String> mPathList = new ArrayList<>();
     private boolean mType;
+    private String mLocation;
 
     @Nullable
     @Override
@@ -79,6 +80,9 @@ public class ImageUpService extends Service {
             }
             if (bundle.containsKey("type")) {
                 mType = bundle.getBoolean("type", false);
+            }
+            if (bundle.containsKey("location")) {
+                mLocation = bundle.getString("location");
             }
             checkFile();
         } else {
@@ -125,12 +129,14 @@ public class ImageUpService extends Service {
                 }).start();
             }
         } else {
-            publicshDynamic("0", mKeyList, mkeyCompressList);
+            publicshDynamic("0");
         }
     }
 
-    private void publicshDynamic(String type, String keyList, String mkeyCompressList) {
-        mDynamicPresenter.publicsh(mText, type, keyList, mkeyCompressList, "", new DynamicPresenter.CallBack() {
+    private void publicshDynamic(String type) {
+        UtilTool.Log("動態", mKeyList);
+        UtilTool.Log("動態", mkeyCompressList);
+        mDynamicPresenter.publicsh(mText, type, mKeyList, mkeyCompressList, mLocation, new DynamicPresenter.CallBack() {
             @Override
             public void send() {
                 EventBus.getDefault().post(new MessageEvent(getString(R.string.publish_dynamic)));
@@ -141,9 +147,7 @@ public class ImageUpService extends Service {
     }
 
     private void upImage(final String key, File file, final boolean type) {
-        UtilTool.Log("aws", Constants.ACCESS_KEY_ID);
-        UtilTool.Log("aws", Constants.SECRET_ACCESS_KEY);
-        UtilTool.Log("aws", Constants.SESSION_TOKEN);
+        UtilTool.Log("動態", key);
         BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
                 Constants.ACCESS_KEY_ID,
                 Constants.SECRET_ACCESS_KEY,
@@ -241,7 +245,7 @@ public class ImageUpService extends Service {
                 case 0:
                     count++;
                     if (count == 2) {
-                        publicshDynamic("3", mKeyList, mkeyCompressList);
+                        publicshDynamic("3");
                     }
                     break;
                 case 1:
@@ -262,7 +266,7 @@ public class ImageUpService extends Service {
                             mkeyCompressList = key;
                     }
                     if (count == mPathList.size() * 2) {
-                        publicshDynamic("1", mKeyList, mkeyCompressList);
+                        publicshDynamic("1");
                     }
                     break;
                 case 2:
@@ -276,7 +280,13 @@ public class ImageUpService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mKeyList = "";
+        mkeyCompressList = "";
+        count = 0;
+        keyCount = 0;
+        keyCompress = 0;
         EventBus.getDefault().post(new MessageEvent(getString(R.string.destroy_service)));
         UtilTool.Log("發佈動態", "銷毀掉服務");
+        stopSelf();
     }
 }

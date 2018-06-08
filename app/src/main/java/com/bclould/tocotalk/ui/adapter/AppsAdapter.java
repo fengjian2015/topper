@@ -96,6 +96,7 @@ public class AppsAdapter extends BaseAdapter {
                     } else if (name.equals(mContext.getString(R.string.location))) {
                         Intent intent = new Intent(mContext, LocationActivity.class);
                         intent.putExtra("user", mUser);
+                        intent.putExtra("type", 1);
                         mContext.startActivity(intent);
                     }else if (name.equals(mContext.getString(R.string.transfer))) {
                         Intent intent = new Intent(mContext, ChatTransferActivity.class);
