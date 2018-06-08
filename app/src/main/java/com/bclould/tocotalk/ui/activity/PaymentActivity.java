@@ -262,6 +262,7 @@ public class PaymentActivity extends BaseActivity {
                 bundle.putString("name", data.getName());
                 bundle.putString("number", data.getNumber());
                 bundle.putString("type", Constants.MONEYIN);
+                bundle.putString("user",data.getToco_id());
                 intent.putExtras(bundle);
                 startActivity(intent);
                 Toast.makeText(PaymentActivity.this, getString(R.string.fk_succeed), Toast.LENGTH_SHORT).show();
@@ -436,6 +437,7 @@ public class PaymentActivity extends BaseActivity {
                 bundle.putString("name", data.getName());
                 bundle.putString("number", data.getNumber());
                 bundle.putString("type", Constants.MONEYIN);
+                bundle.putString("user",data.getToco_id());
                 intent.putExtras(bundle);
                 startActivity(intent);
                 Toast.makeText(PaymentActivity.this, getString(R.string.fk_succeed), Toast.LENGTH_SHORT).show();

@@ -69,6 +69,7 @@ public class AddFriendAdapter extends RecyclerView.Adapter {
         @Bind(R.id.tv_name)
         TextView mTvName;
         private String mName;
+        private String tocoId;
 
         ViewHolder(View view) {
             super(view);
@@ -76,15 +77,9 @@ public class AddFriendAdapter extends RecyclerView.Adapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String jid;
                     int type;
-                    if (mName.equals(UtilTool.getUser())) {
-                        jid = mName + "@" + Constants.DOMAINNAME2;
-                    } else {
-                        jid = mName + "@" + Constants.DOMAINNAME;
-                    }
-                    if (mMgr.findUser(jid)) {
-                        if(jid.equals(UtilTool.getJid())){
+                    if (mMgr.findUser(tocoId)) {
+                        if(tocoId.equals(UtilTool.getTocoId())){
                             type = 2;
                         }else {
                             type = 1;
@@ -95,7 +90,7 @@ public class AddFriendAdapter extends RecyclerView.Adapter {
                     Intent intent = new Intent(mContext, IndividualDetailsActivity.class);
                     intent.putExtra("type", type);
                     intent.putExtra("name", mName);
-                    intent.putExtra("user", jid);
+                    intent.putExtra("user", tocoId);
                     mContext.startActivity(intent);
                 }
             });
@@ -103,6 +98,7 @@ public class AddFriendAdapter extends RecyclerView.Adapter {
 
         public void setData(BaseInfo.DataBean dataBean) {
             mName = dataBean.getName();
+            tocoId=dataBean.getToco_id();
             if (dataBean.getUrl().isEmpty()) {
                 Glide.with(mContext).load(UtilTool.setDefaultimage(mContext)).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(mIvTouxiang);
 //                mIvTouxiang.setImageBitmap(UtilTool.setDefaultimage(mContext));

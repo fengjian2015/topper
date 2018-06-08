@@ -53,7 +53,6 @@ import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tocotalk.xmpp.IConnectStateChangeListener;
 import com.bclould.tocotalk.xmpp.XmppConnection;
-import com.bclould.tocotalk.xmpp.XmppListener;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -153,7 +152,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                    XmppListener.xmppListener = null;
                     initRecyclerView();
                     initData();
                     //发送登录失败通知
@@ -164,7 +162,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                     ToastShow.showToast2((Activity) getContext(), getString(R.string.toast_network_error));
                     break;
                 case 1:
-                    XmppListener.get(getContext());
                     initRecyclerView();
                     initData();
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
@@ -197,7 +194,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                         mAnim = (AnimationDrawable) mIvAnim.getBackground();
                         mAnim.start();
                     }
-                    XmppListener.xmppListener = null;
                     break;
             }
         }

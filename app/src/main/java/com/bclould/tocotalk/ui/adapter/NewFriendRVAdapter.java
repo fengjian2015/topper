@@ -11,9 +11,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bclould.tocotalk.Presenter.PersonalDetailsPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.AddRequestInfo;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
 
@@ -87,17 +89,18 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
             mBtnConsent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Presence presenceRes = new Presence(Presence.Type.subscribed);
-                    presenceRes.setTo(mAddRequestInfo.getUser());
                     try {
-                        XmppConnection.getInstance().getConnection().sendStanza(presenceRes);
-                        Roster.getInstanceFor(XmppConnection.getInstance().getConnection()).createEntry(JidCreate.entityBareFrom(mAddRequestInfo.getUser()), null, new String[]{"Friends"});
-                        mMgr.updateRequest(mAddRequestInfo.getId(), 1);
-                        EventBus.getDefault().post(mContext.getString(R.string.new_friend));
-                        mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-                        mBtnConsent.setText(mContext.getString(R.string.agrd_agreed));
-                        mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.gray));
-                        mBtnConsent.setEnabled(false);
+                        new PersonalDetailsPresenter(mContext).confirmAddFriend(mAddRequestInfo.getUser(), 1, new PersonalDetailsPresenter.CallBack() {
+                            @Override
+                            public void send() {
+                                mMgr.updateRequest(mAddRequestInfo.getId(), 1);
+                                EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.new_friend)));
+                                mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                                mBtnConsent.setText(mContext.getString(R.string.agrd_agreed));
+                                mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.gray));
+                                mBtnConsent.setEnabled(false);
+                            }
+                        });
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -113,10 +116,15 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
             } else {
                 UtilTool.setCircleImg(mContext, url, mIvTouxiang);
             }
-            mName.setText(addRequestInfo.getUser().substring(0, addRequestInfo.getUser().indexOf("@")));
+            mName.setText(addRequestInfo.getUserName());
             if (addRequestInfo.getType() == 1) {
                 mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                 mBtnConsent.setText(mContext.getString(R.string.agrd_agreed));
+                mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.gray));
+                mBtnConsent.setEnabled(false);
+            }else if(addRequestInfo.getType() == 2){
+                mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                mBtnConsent.setText(mContext.getString(R.string.denied));
                 mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.gray));
                 mBtnConsent.setEnabled(false);
             }

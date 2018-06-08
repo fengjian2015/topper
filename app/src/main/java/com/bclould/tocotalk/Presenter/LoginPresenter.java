@@ -39,6 +39,7 @@ import io.reactivex.schedulers.Schedulers;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class LoginPresenter {
 
+    public static final String TOCOID="toco_id";
     public static final String TOKEN = "token";
     public static final String USERID = "user_id";
     public static final String LOGINPW = "login_pw";
@@ -106,6 +107,7 @@ public class LoginPresenter {
                             } else if (baseInfo.getStatus() == 1) {
                                 UtilTool.Log("日志", baseInfo.getData().getName());
                                 MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
+                                MySharedPreferences.getInstance().setString(TOCOID, baseInfo.getData().getToco_id());
                                 MySharedPreferences.getInstance().setInteger(USERID, baseInfo.getData().getUser_id());
                                 MySharedPreferences.getInstance().setString(MYUSERNAME, baseInfo.getData().getName() + "@" + baseInfo.getData().getXmpp());
                                 MySharedPreferences.getInstance().setString(EMAIL, email);

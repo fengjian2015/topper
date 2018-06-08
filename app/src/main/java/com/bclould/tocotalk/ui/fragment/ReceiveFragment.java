@@ -96,9 +96,9 @@ public class ReceiveFragment extends Fragment {
                         mLlTotal.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
                     }
-                    UtilTool.getImage(mDbManager, UtilTool.getJid(), getContext(), mIvTouxiang);
+                    UtilTool.getImage(mDbManager, UtilTool.getTocoId(), getContext(), mIvTouxiang);
 
-//                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mDbManager, UtilTool.getJid(), getContext()));
+//                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mDbManager, UtilTool.getTocoId(), getContext()));
                     mTvName.setText(data.getName() + "共收到");
                     mTvCount.setText(data.getTotal_money() + "");
                     mTvRedCount.setText(data.getRp_number() + "");

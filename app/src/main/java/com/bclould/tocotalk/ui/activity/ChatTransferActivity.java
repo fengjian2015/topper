@@ -35,6 +35,7 @@ import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.history.DBRoomManage;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
@@ -43,6 +44,7 @@ import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.RoomManage;
 import com.bclould.tocotalk.xmpp.XmppConnection;
@@ -102,6 +104,7 @@ public class ChatTransferActivity extends BaseActivity {
     private String mRemark;
     private String mName;
     private String mCoin;
+    private DBRoomManage mdbRoomManage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,6 +112,7 @@ public class ChatTransferActivity extends BaseActivity {
         setContentView(R.layout.activity_chat_transfer);
         ButterKnife.bind(this);
         mMgr = new DBManager(this);
+        mdbRoomManage=new DBRoomManage(this);
         mRedPacketPresenter = new RedPacketPresenter(this);
         initIntent();
     }
@@ -116,11 +120,13 @@ public class ChatTransferActivity extends BaseActivity {
     private void initIntent() {
         Intent intent = getIntent();
         mUser = intent.getStringExtra("user");
-        mName = mUser.substring(0, mUser.indexOf("@"));
+        mName=mMgr.findUserName(mUser);
+        if(StringUtils.isEmpty(mName)){
+            mName=mdbRoomManage.findRoomName(mUser);
+        }
         mTvName.setText(mName);
-        String jid = mName + "@" + Constants.DOMAINNAME;
 //        mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, ChatTransferActivity.this));
-    UtilTool.getImage(mMgr, jid, ChatTransferActivity.this, mIvTouxiang);
+        UtilTool.getImage(mMgr, mUser, ChatTransferActivity.this, mIvTouxiang);
     }
 
     @OnClick({R.id.bark, R.id.tv_transfer_record, R.id.rl_selector_coin, R.id.btn_confirm})
@@ -254,7 +260,7 @@ public class ChatTransferActivity extends BaseActivity {
             mRemark = getString(R.string.transfer) + getString(R.string.transfer_give) + mName;
         }
         mCoin = mTvCoin.getText().toString();
-        mRedPacketPresenter.transgerfriend(mCoin, mName, Double.parseDouble(mCount), password, mRemark);
+        mRedPacketPresenter.transgerfriend(mCoin, mUser, Double.parseDouble(mCount), password, mRemark);
     }
 
     public void showHintDialog() {

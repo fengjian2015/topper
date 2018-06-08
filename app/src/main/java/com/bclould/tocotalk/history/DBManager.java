@@ -43,7 +43,7 @@ public class DBManager {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("count", messageInfo.getCount());
-        values.put("my_user", UtilTool.getJid());
+        values.put("my_user", UtilTool.getTocoId());
         values.put("type", messageInfo.getType());
         values.put("remark", messageInfo.getRemark());
         values.put("message", messageInfo.getMessage());
@@ -72,6 +72,7 @@ public class DBManager {
         values.put("initiator",messageInfo.getInitiator());
         values.put("betId",messageInfo.getBetId());
         values.put("periodQty",messageInfo.getPeriodQty());
+        values.put("filekey",messageInfo.getKey());
         int id = (int) db.insert("MessageRecord", null, values);
         UtilTool.Log("日志", "添加成功" + messageInfo.toString());
         return id;
@@ -80,7 +81,7 @@ public class DBManager {
     public long queryMessageCount(String user) {
         db = helper.getReadableDatabase();
         String sql = "select count(*) from MessageRecord where user=? and my_user=?";
-        Cursor cursor = db.rawQuery(sql, new String[]{user, UtilTool.getJid()});
+        Cursor cursor = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId()});
         cursor.moveToFirst();
         long count = cursor.getLong(0);
         cursor.close();
@@ -93,7 +94,7 @@ public class DBManager {
         db = helper.getReadableDatabase();
         ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
         String sql = "select * from MessageRecord where user=? and my_user=? and (msgType=? or msgType=? or msgType=? or msgType=?) ORDER BY id desc limit ?";
-        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), fromtype + "", sentype + "", sendred + "", fromred + "", limit * 10 + ""});
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), fromtype + "", sentype + "", sendred + "", fromred + "", limit * 10 + ""});
         if (c != null) {
             while (c.moveToNext()) {
                 messageInfos.add(addMessage(c));
@@ -135,6 +136,7 @@ public class DBManager {
         messageInfo.setInitiator(c.getString(c.getColumnIndex("initiator")));
         messageInfo.setBetId(c.getString(c.getColumnIndex("betId")));
         messageInfo.setPeriodQty(c.getString(c.getColumnIndex("periodQty")));
+        messageInfo.setKey(c.getString(c.getColumnIndex("filekey")));
         return messageInfo;
     }
 
@@ -143,7 +145,7 @@ public class DBManager {
         db = helper.getReadableDatabase();
         ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
         String sql = "select * from MessageRecord where user=? and my_user=? and message like ? ORDER BY id desc limit ?";
-        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), "%" + content + "%", limit * 10 + ""});
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), "%" + content + "%", limit * 10 + ""});
         if (c != null) {
             while (c.moveToNext()) {
                 messageInfos.add(addMessage(c));
@@ -158,7 +160,7 @@ public class DBManager {
         db = helper.getReadableDatabase();
         ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
         String sql = "select * from MessageRecord where user=? and my_user=? and (msgType=? or msgType=?) ORDER BY id desc limit ?";
-        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), fromtype + "", sentype + "", limit * 20 + ""});
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), fromtype + "", sentype + "", limit * 20 + ""});
         if (c != null) {
             while (c.moveToNext()) {
                 messageInfos.add(addMessage(c));
@@ -173,7 +175,7 @@ public class DBManager {
         db = helper.getReadableDatabase();
         ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
         String sql = "select * from MessageRecord where user=? and my_user=? limit ?,?";
-        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), count - 10 + "", 10 + ""});
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), count - 10 + "", 10 + ""});
         if (c != null) {
             while (c.moveToNext()) {
                 messageInfos.add(addMessage(c));
@@ -194,7 +196,7 @@ public class DBManager {
         db = helper.getReadableDatabase();
         ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
         String sql = "select * from MessageRecord where user=? and my_user=? and id < ? ORDER BY id desc limit ?";
-        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), id + "", 10 + ""});
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), id + "", 10 + ""});
         if (c != null) {
             while (c.moveToNext()) {
                 messageInfos.add(addMessage(c));
@@ -229,7 +231,7 @@ public class DBManager {
         } else {
             sql = "select * from MessageRecord where user=? and my_user=? and id > ? limit ?";
         }
-        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), id + "", 10 + ""});
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), id + "", 10 + ""});
         if (c != null) {
             while (c.moveToNext()) {
                 messageInfos.add(addMessage(c));
@@ -253,23 +255,23 @@ public class DBManager {
 //                Log.e("wgy", "再次查询" + mOffset);
 //                if (count - mOffset * 10 < 0) {
 //                    if (count - mOffset * 10 > -10) {
-//                        c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), 0 + "", count - (mOffset - 1) * 10 + ""});
+//                        c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), 0 + "", count - (mOffset - 1) * 10 + ""});
 //                        mOffset++;
 //                    } else {
 //                        Toast.makeText(mContext, "没有更多记录了", Toast.LENGTH_SHORT).show();
 //                    }
 //                } else {
-//                    c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), count - mOffset * 10 + "", 10 + ""});
+//                    c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), count - mOffset * 10 + "", 10 + ""});
 //                    mOffset++;
 //                }
 //            } else {
 //                mOffset = 2;
 //                if (count - mOffset * 10 < 0) {
-//                    c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), 0 + "", count - (mOffset - 1) * 10 + ""});
+//                    c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), 0 + "", count - (mOffset - 1) * 10 + ""});
 //                    mOffset++;
 //                } else {
 //                    Log.e("wgy", "一开始查询" + mOffset);
-//                    c = db.rawQuery(sql, new String[]{user, UtilTool.getJid(), count - 10 * mOffset + "", 10 + ""});
+//                    c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), count - 10 * mOffset + "", 10 + ""});
 //                    mOffset++;
 //                }
 //            }
@@ -307,19 +309,19 @@ public class DBManager {
 
     public void deleteMessage(String user) {
         db = helper.getWritableDatabase();
-        db.delete("MessageRecord", "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
+        db.delete("MessageRecord", "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
     }
 
     public void deleteSingleMessage(String mUser,String id){
         db = helper.getWritableDatabase();
-        db.delete("MessageRecord", "user=? and my_user=? and id=?", new String[]{mUser, UtilTool.getJid(),id});
+        db.delete("MessageRecord", "user=? and my_user=? and id=?", new String[]{mUser, UtilTool.getTocoId(),id});
     }
 
     public String findLastMessageConversation(String roomid) {
         db = helper.getReadableDatabase();
         String conversation = null;
         Cursor cursor = db.rawQuery("select converstaion from MessageRecord where user=? and my_user=?",
-                new String[]{roomid, UtilTool.getJid()});
+                new String[]{roomid, UtilTool.getTocoId()});
 
         if (cursor.moveToLast()) {
             conversation = cursor.getString(cursor.getColumnIndex("converstaion"));
@@ -342,12 +344,13 @@ public class DBManager {
         db.update("MessageRecord", values, "id=?", new String[]{id});
     }
 
-    public int addRequest(String user, int type) {
+    public int addRequest(String user, int type,String userName) {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("my_user", UtilTool.getJid());
+        values.put("my_user", UtilTool.getTocoId());
         values.put("user", user);
         values.put("type", type);
+        values.put("userName",userName);
         int id = (int) db.insert("AddRequest", null, values);
         Log.e("wgy", "添加请求数据库成功");
         return id;
@@ -356,7 +359,7 @@ public class DBManager {
     public boolean findRequest(String user) {
         db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from AddRequest where user=? and my_user=?",
-                new String[]{user, UtilTool.getJid()});
+                new String[]{user, UtilTool.getTocoId()});
         boolean result = cursor.moveToNext();
         cursor.close();
         return result;
@@ -365,12 +368,13 @@ public class DBManager {
     public AddRequestInfo queryRequest(String user) {
         db = helper.getWritableDatabase();
         String sql = "select * from AddRequest where my_user=? and user=?";
-        Cursor c = db.rawQuery(sql, new String[]{UtilTool.getJid(), user});
+        Cursor c = db.rawQuery(sql, new String[]{UtilTool.getTocoId(), user});
         AddRequestInfo addRequestInfo = new AddRequestInfo();
         while (c.moveToNext()) {
             addRequestInfo.setUser(c.getString(c.getColumnIndex("user")));
             addRequestInfo.setId(c.getInt(c.getColumnIndex("id")));
             addRequestInfo.setType(c.getInt(c.getColumnIndex("type")));
+            addRequestInfo.setUserName(c.getString(c.getColumnIndex("userName")));
         }
         c.close();
         return addRequestInfo;
@@ -380,19 +384,26 @@ public class DBManager {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("type", type);
-        db.update("AddRequest", values, "id=? and my_user=?", new String[]{id + "", UtilTool.getJid()});
+        db.update("AddRequest", values, "id=? and my_user=?", new String[]{id + "", UtilTool.getTocoId()});
+    }
+    public void updateRequest(String toco_id, int type) {
+        db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("type", type);
+        db.update("AddRequest", values, "user=? and my_user=?", new String[]{toco_id, UtilTool.getTocoId()});
     }
 
     public ArrayList<AddRequestInfo> queryAllRequest() {
         db = helper.getReadableDatabase();
         ArrayList<AddRequestInfo> addRequestInfos = new ArrayList<>();
         String sql = "select * from AddRequest where my_user=?";
-        Cursor c = db.rawQuery(sql, new String[]{UtilTool.getJid()});
+        Cursor c = db.rawQuery(sql, new String[]{UtilTool.getTocoId()});
         while (c.moveToNext()) {
             AddRequestInfo addRequestInfo = new AddRequestInfo();
             addRequestInfo.setUser(c.getString(c.getColumnIndex("user")));
             addRequestInfo.setId(c.getInt(c.getColumnIndex("id")));
             addRequestInfo.setType(c.getInt(c.getColumnIndex("type")));
+            addRequestInfo.setUserName(c.getString(c.getColumnIndex("userName")));
             addRequestInfos.add(addRequestInfo);
         }
         c.close();
@@ -407,7 +418,7 @@ public class DBManager {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("number", conversationInfo.getNumber());
-        values.put("my_user", UtilTool.getJid());
+        values.put("my_user", UtilTool.getTocoId());
         values.put("message", conversationInfo.getMessage());
         values.put("user", conversationInfo.getUser());
         values.put("time", conversationInfo.getTime());
@@ -420,7 +431,7 @@ public class DBManager {
     public boolean findConversation(String user) {
         db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from ConversationRecord where user=? and my_user=?",
-                new String[]{user, UtilTool.getJid()});
+                new String[]{user, UtilTool.getTocoId()});
         boolean result = cursor.moveToNext();
         cursor.close();
         return result;
@@ -432,28 +443,28 @@ public class DBManager {
         cv.put("number", number);
         cv.put("time", time);
         cv.put("message", chat);
-        db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
+        db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
     }
 
     public void updateConversationMessage(String user, String chat) {
         db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("message", chat);
-        db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
+        db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
     }
 
     public void updateConversationIstop(String user, String istop) {
         db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("istop", istop);
-        db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
+        db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
     }
 
     public String findConversationIstop(String user) {
         db = helper.getReadableDatabase();
         String istop = null;
         Cursor cursor = db.rawQuery("select istop from ConversationRecord where user=? and my_user=?",
-                new String[]{user, UtilTool.getJid()});
+                new String[]{user, UtilTool.getTocoId()});
         while (cursor.moveToNext()) {
             istop = cursor.getString(cursor.getColumnIndex("istop"));
         }
@@ -465,7 +476,7 @@ public class DBManager {
         db = helper.getReadableDatabase();
         String friend = null;
         Cursor cursor = db.rawQuery("select friend from ConversationRecord where user=? and my_user=?",
-                new String[]{user, UtilTool.getJid()});
+                new String[]{user, UtilTool.getTocoId()});
         while (cursor.moveToNext()) {
             friend = cursor.getString(cursor.getColumnIndex("friend"));
         }
@@ -477,7 +488,7 @@ public class DBManager {
         db = helper.getWritableDatabase();
         List<ConversationInfo> conversationList = new ArrayList<>();
         String sql = "select * from ConversationRecord where my_user=?";
-        Cursor c = db.rawQuery(sql, new String[]{UtilTool.getJid()});
+        Cursor c = db.rawQuery(sql, new String[]{UtilTool.getTocoId()});
         while (c.moveToNext()) {
             ConversationInfo conversationInfo = new ConversationInfo();
             conversationInfo.setNumber(c.getInt(c.getColumnIndex("number")));
@@ -496,7 +507,7 @@ public class DBManager {
     public int queryNumber(String user) {
         db = helper.getWritableDatabase();
         String sql = "select * from ConversationRecord where my_user=? and user=?";
-        Cursor c = db.rawQuery(sql, new String[]{UtilTool.getJid(), user});
+        Cursor c = db.rawQuery(sql, new String[]{UtilTool.getTocoId(), user});
         int number = 0;
         while (c.moveToNext()) {
             number = c.getInt(c.getColumnIndex("number"));
@@ -509,46 +520,59 @@ public class DBManager {
         db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("number", number);
-        db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
+        db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
     }
 
     public void deleteConversation(String user) {
         db = helper.getWritableDatabase();
-        db.delete("ConversationRecord", "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
+        db.delete("ConversationRecord", "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
     }
 
     public void addUser(String user, String path) {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("my_user", UtilTool.getJid());
+        values.put("my_user", UtilTool.getTocoId());
         values.put("user", user);
         values.put("path", path);
         values.put("remark", "");
+        values.put("userName", "");
         values.put("status", 0);
+        db.insert("UserImage", null, values);
+    }
+    public void addUser(UserInfo userInfo) {
+        db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("my_user", UtilTool.getTocoId());
+        values.put("user", userInfo.getUser());
+        values.put("path", userInfo.getPath());
+        values.put("remark", userInfo.getRemark());
+        values.put("userName", userInfo.getUserName());
+        values.put("status", userInfo.getStatus());
         db.insert("UserImage", null, values);
     }
 
     public void addUserList(List<AuatarListInfo.DataBean> data) {
         db = helper.getWritableDatabase();
         for (AuatarListInfo.DataBean info : data) {
-            UtilTool.Log("好友", info.getName());
-            if (!findUser(info.getName())) {
+//            UtilTool.Log("好友", info.getToco_id());
+            if (!findUser(info.getToco_id())) {
                 ContentValues values = new ContentValues();
-                values.put("my_user", UtilTool.getJid());
-                values.put("user", info.getName());
+                values.put("my_user", UtilTool.getTocoId());
+                values.put("user", info.getToco_id());
+                values.put("userName", info.getName());
                 values.put("path", info.getAvatar());
                 values.put("remark", info.getRemark() + "");
                 values.put("status", 0);
                 db.insert("UserImage", null, values);
             } else {
                 ContentValues values = new ContentValues();
-                if (!queryUser(info.getName()).getPath().equals(info.getAvatar())) {
+                if (!queryUser(info.getToco_id()).getPath().equals(info.getAvatar())) {
                     values.put("path", info.getAvatar());
-                    db.update("UserImage", values, "user=? and my_user=?", new String[]{info.getName(), UtilTool.getJid()});
+                    db.update("UserImage", values, "user=? and my_user=?", new String[]{info.getToco_id(), UtilTool.getTocoId()});
                 }
-                if (!queryUser(info.getName()).getRemark().equals(info.getRemark() + "")) {
+                if (!queryUser(info.getToco_id()).getRemark().equals(info.getRemark() + "")) {
                     values.put("remark", info.getRemark());
-                    db.update("UserImage", values, "user=? and my_user=?", new String[]{info.getName(), UtilTool.getJid()});
+                    db.update("UserImage", values, "user=? and my_user=?", new String[]{info.getToco_id(), UtilTool.getTocoId()});
 
                 }
             }
@@ -559,11 +583,12 @@ public class DBManager {
         db = helper.getWritableDatabase();
         UserInfo userInfo = new UserInfo();
         String sql = "select * from UserImage where user=? and my_user=?";
-        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid()});
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId()});
         while (c.moveToNext()) {
             userInfo.setUser(c.getString(c.getColumnIndex("user")));
             userInfo.setPath(c.getString(c.getColumnIndex("path")));
             userInfo.setRemark(c.getString(c.getColumnIndex("remark")));
+            userInfo.setUserName(c.getString(c.getColumnIndex("userName")));
         }
         c.close();
         return userInfo;
@@ -574,13 +599,14 @@ public class DBManager {
         try {
             db = helper.getWritableDatabase();
             String sql = "select * from UserImage where my_user=?";
-            Cursor c = db.rawQuery(sql, new String[]{UtilTool.getJid()});
+            Cursor c = db.rawQuery(sql, new String[]{UtilTool.getTocoId()});
             while (c.moveToNext()) {
                 UserInfo userInfo = new UserInfo();
                 userInfo.setUser(c.getString(c.getColumnIndex("user")));
                 userInfo.setPath(c.getString(c.getColumnIndex("path")));
                 userInfo.setStatus(c.getInt(c.getColumnIndex("status")));
                 userInfo.setRemark(c.getString(c.getColumnIndex("remark")));
+                userInfo.setUserName(c.getString(c.getColumnIndex("userName")));
                 userInfos.add(userInfo);
             }
             c.close();
@@ -595,7 +621,7 @@ public class DBManager {
         try {
             db = helper.getWritableDatabase();
             String sql = "select user from UserImage where my_user=?";
-            Cursor c = db.rawQuery(sql, new String[]{UtilTool.getJid()});
+            Cursor c = db.rawQuery(sql, new String[]{UtilTool.getTocoId()});
             while (c.moveToNext()) {
                 String user = c.getString(c.getColumnIndex("user"));
                 userInfos.add(user);
@@ -611,7 +637,7 @@ public class DBManager {
         db = helper.getWritableDatabase();
         String remark = "";
         String sql = "select remark from UserImage where user=? and my_user=?";
-        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getJid()});
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId()});
         while (c.moveToNext()) {
             remark = c.getString(c.getColumnIndex("remark"));
         }
@@ -624,7 +650,7 @@ public class DBManager {
         for (RemarkListInfo.DataBean dataBean : listdata) {
             ContentValues cv = new ContentValues();
             cv.put("remark", dataBean.getRemark());
-            db.update("UserImage", cv, "user=? and my_user=?", new String[]{dataBean.getName(), UtilTool.getJid()});
+            db.update("UserImage", cv, "user=? and my_user=?", new String[]{dataBean.getName(), UtilTool.getTocoId()});
         }
     }
 
@@ -632,14 +658,14 @@ public class DBManager {
         db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("remark", remark);
-        db.update("UserImage", cv, "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
+        db.update("UserImage", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
     }
 
     public boolean findUser(String user) {
         Cursor cursor = null;
         try {
             db = helper.getReadableDatabase();
-            cursor = db.rawQuery("select * from UserImage where user=? and my_user=?", new String[]{user, UtilTool.getJid()});
+            cursor = db.rawQuery("select * from UserImage where user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
             boolean result = cursor.moveToNext();
             return result;
         } catch (Exception e) {
@@ -651,9 +677,21 @@ public class DBManager {
         return false;
     }
 
+    public String findUserName(String user) {
+        db = helper.getReadableDatabase();
+        String roomName = null;
+        Cursor cursor = db.rawQuery("select userName from UserImage where user=? and my_user=?",
+                new String[]{user, UtilTool.getTocoId()});
+        while (cursor.moveToNext()) {
+            roomName = cursor.getString(cursor.getColumnIndex("userName"));
+        }
+        cursor.close();
+        return roomName;
+    }
+
     public void deleteUser(String user) {
         db = helper.getWritableDatabase();
-        int type = db.delete("UserImage", "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
+        int type = db.delete("UserImage", "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
         UtilTool.Log("fsdafa", type + "");
         UtilTool.Log("fsdafa", "删除" + user);
     }
@@ -662,14 +700,23 @@ public class DBManager {
         db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("status", status);
-        db.update("UserImage", cv, "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
+        db.update("UserImage", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
     }
 
     public void updatePath(String user, String path) {
         db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("path", path);
-        db.update("UserImage", cv, "user=? and my_user=?", new String[]{user, UtilTool.getJid()});
+        db.update("UserImage", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
+    }
+
+    public void deleteAllFriend(){
+        db = helper.getWritableDatabase();
+        //不刪除自己的頭像
+        UserInfo userInfo= queryUser(UtilTool.getTocoId());
+        db.execSQL("DELETE FROM UserImage");
+        addUser(userInfo);
+
     }
 
     public void updateMessageHint(int id, int status) {

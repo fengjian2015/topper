@@ -884,4 +884,5 @@
     <string name="destroy_service">銷毀服務</string>
     <string name="toast_uploading_dynamic">上傳動態中....</string>
     <string name="no_record">沒有交易記錄</string>
+    <string name="denied">已拒絕</string>
 </resources>

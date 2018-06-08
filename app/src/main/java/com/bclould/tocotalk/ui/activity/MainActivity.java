@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.bclould.tocotalk.Presenter.CoinPresenter;
 import com.bclould.tocotalk.Presenter.DillDataPresenter;
+import com.bclould.tocotalk.Presenter.IndividualDetailsPresenter;
 import com.bclould.tocotalk.Presenter.PersonalDetailsPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
@@ -35,6 +36,7 @@ import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.AuatarListInfo;
 import com.bclould.tocotalk.model.AwsInfo;
 import com.bclould.tocotalk.model.GitHubInfo;
+import com.bclould.tocotalk.model.IndividualInfo;
 import com.bclould.tocotalk.network.DownLoadApk;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
@@ -45,6 +47,7 @@ import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -144,6 +147,7 @@ public class MainActivity extends BaseActivity {
     //初始化界面
     private void initInterface() {
         getMyImage();
+        getFriends();
         //开始选中聊天Fragment
         setSelector(0);
         //切换Fragment
@@ -168,17 +172,34 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getMyImage() {
-        if (!mMgr.findUser(UtilTool.getJid())) {
-            PersonalDetailsPresenter personalDetailsPresenter = new PersonalDetailsPresenter(this);
-            personalDetailsPresenter.getFriendImageList(UtilTool.getJid(), new PersonalDetailsPresenter.CallBack2() {
+        if (!mMgr.findUser(UtilTool.getTocoId())) {
+            IndividualDetailsPresenter personalDetailsPresenter = new IndividualDetailsPresenter(this);
+            personalDetailsPresenter.getIndividual(UtilTool.getTocoId(), new IndividualDetailsPresenter.CallBack() {
                 @Override
-                public void send(List<AuatarListInfo.DataBean> data) {
-                    if (data != null && data.size() != 0) {
-                        mMgr.addUserList(data);
+                public void send(IndividualInfo.DataBean data) {
+                    if (data != null ) {
+                        List<AuatarListInfo.DataBean> datas=new ArrayList<>();
+                        AuatarListInfo.DataBean dataBean=new AuatarListInfo.DataBean();
+                        dataBean.setAvatar(data.getAvatar());
+                        dataBean.setName(data.getName());
+                        dataBean.setRemark(data.getRemark());
+                        dataBean.setToco_id(UtilTool.getTocoId());
+                        datas.add(dataBean);
+                        mMgr.addUserList(datas);
                     }
                 }
             });
         }
+    }
+
+    private void getFriends(){
+        new PersonalDetailsPresenter(this).getFriendList(new PersonalDetailsPresenter.CallBack2() {
+            @Override
+            public void send(List<AuatarListInfo.DataBean> data) {
+                mMgr.deleteAllFriend();
+                mMgr.addUserList(data);
+            }
+        });
     }
 
     private void initAWS() {

@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 13;
 
     public DBHelper(Context context) {
         //CursorFactory设置为null,使用默认值
@@ -25,9 +25,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("create table MessageRecord(id integer primary key autoincrement, my_user varchar, user varchar, message varchar, time varchar, type integer, coin varchar, count varchar, remark varchar" +
                 ", state integer, redId integer, voice varchar, voiceStatus integer, voiceTime varchar, sendStatus integer, msgType integer" +
                 ", imageType integer,send varchar,lat float,lng float,address varchar,title varchar,headUrl varchar,cardUser varchar,linkUrl varchar" +
-                ",content varchar,converstaion varchar,guessPw varchar,initiator varchar,betId varchr,periodQty varchar)");
-        db.execSQL("create table AddRequest(id integer primary key autoincrement, my_user varchar, user varchar, type integer)");
-        db.execSQL("create table UserImage(id integer primary key autoincrement, my_user varchar, user varchar, status integer, path varchar, remark varchar)");
+                ",content varchar,converstaion varchar,guessPw varchar,initiator varchar,betId varchr,periodQty varchar,filekey varchar)");
+        db.execSQL("create table AddRequest(id integer primary key autoincrement, my_user varchar, user varchar, type integer,userName varchar)");
+        db.execSQL("create table UserImage(id integer primary key autoincrement, my_user varchar, user varchar, status integer, path varchar, remark varchar,userName varchar)");
         db.execSQL("create table RoomManage(id integer primary key autoincrement, roomImage varchar, roomId varchar, roomName varchar, roomNumber integer,my_user varchar)");
         db.execSQL("create table RoomMember(id integer primary key autoincrement, name varchar, jid varchar, image_url varchar, remark varchar,my_user varchar)");
     }
@@ -61,6 +61,11 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE MessageRecord ADD initiator TEXT");
                 db.execSQL("ALTER TABLE MessageRecord ADD betId TEXT");
                 db.execSQL("ALTER TABLE MessageRecord ADD periodQty TEXT");
+            case 12:
+                //2018-06-06新曾亞馬遜的filekey,夥伴的名稱
+                db.execSQL("ALTER TABLE MessageRecord ADD filekey TEXT");
+                db.execSQL("ALTER TABLE UserImage ADD userName TEXT");
+                db.execSQL("ALTER TABLE AddRequest ADD userName TEXT");
         }
 
             //20180523增加房间类型，用于新增群聊判断

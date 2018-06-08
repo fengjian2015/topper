@@ -79,7 +79,7 @@ public class RemarkActivity extends BaseActivity {
             Toast.makeText(this, getString(R.string.toast_remark), Toast.LENGTH_SHORT).show();
         }else{
             IndividualDetailsPresenter presenter = new IndividualDetailsPresenter(this);
-            presenter.getChangeRemark(mName,remarkName, new IndividualDetailsPresenter.CallBack() {
+            presenter.getChangeRemark(mUser,remarkName, new IndividualDetailsPresenter.CallBack() {
                 @Override
                 public void send(IndividualInfo.DataBean data) {
                     mMgr.updateRemark(data.getRemark(), mUser);

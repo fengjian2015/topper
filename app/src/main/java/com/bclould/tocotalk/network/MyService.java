@@ -62,7 +62,7 @@ public interface MyService {
 
     //登录
     @FormUrlEncoded
-    @POST("signIn")
+    @POST("api/signIn")
     Observable<LoginInfo> login(
             @Field("email") String email,
             @Field("password") String password,
@@ -75,14 +75,14 @@ public interface MyService {
 
     //发送注册验证码
     @FormUrlEncoded
-    @POST("sendRegcode")
+    @POST("api/sendRegcode")
     Observable<BaseInfo> sendRegcode(
             @Field("email") String email
     );
 
     //验证用户名和邮箱
     @FormUrlEncoded
-    @POST("signUpValidator")
+    @POST("api/signUpValidator")
     Observable<BaseInfo> signUpValidator(
             @Field("email") String email,
             @Field("name") String name
@@ -90,14 +90,14 @@ public interface MyService {
 
     //发送找回密码验证码
     @FormUrlEncoded
-    @POST("sendFindPasscode")
+    @POST("api/sendFindPasscode")
     Observable<BaseInfo> sendFindPasscode(
             @Field("email") String email
     );
 
     //找回密码
     @FormUrlEncoded
-    @POST("finadPassword")
+    @POST("api/finadPassword")
     Observable<BaseInfo> findPassword(
             @Field("vcode") String vcode,
             @Field("email") String email,
@@ -105,7 +105,7 @@ public interface MyService {
     );
 
     //注册
-    @POST("signUp")
+    @POST("api/signUp")
     @FormUrlEncoded
     Observable<BaseInfo> signUp(
             @Field("name") String name,
@@ -115,7 +115,7 @@ public interface MyService {
     );
 
     //重置登录密码
-    @POST("safty/modifyPassword")
+    @POST("api/safty/modifyPassword")
     @FormUrlEncoded
     Observable<BaseInfo> modifyPassword(
             @Header("Authorization") String token,
@@ -125,7 +125,7 @@ public interface MyService {
     );
 
     //重置交易密码
-    @POST("safty/modifySecondPassword")
+    @POST("api/safty/modifySecondPassword")
     @FormUrlEncoded
     Observable<BaseInfo> modifySecondPassword(
             @Header("Authorization") String token,
@@ -136,7 +136,7 @@ public interface MyService {
 
     //登录状态下 发送验证码
     @FormUrlEncoded
-    @POST("sendVcode")
+    @POST("api/sendVcode")
     Observable<BaseInfo> sendVcode(
             @Header("Cookie") String cookie,
             @Header("Authorization") String token,
@@ -144,13 +144,13 @@ public interface MyService {
     );
 
     //获取用户资产
-    @POST("finance/getUserAssets")
+    @POST("api/finance/getUserAssets")
     Observable<MyAssetsInfo> getMyAssets(
             @Header("Authorization") String token
     );
 
     //取消订阅资产
-    @POST("finance/unsubscribeAsset")
+    @POST("api/finance/unsubscribeAsset")
     @FormUrlEncoded
     Observable<BaseInfo> unSubscribeAsset(
             @Header("Authorization") String token,
@@ -158,7 +158,7 @@ public interface MyService {
     );
 
     //订阅资产
-    @POST("finance/subscribeAsset")
+    @POST("api/finance/subscribeAsset")
     @FormUrlEncoded
     Observable<BaseInfo> subscribeAsset(
             @Header("Authorization") String token,
@@ -166,7 +166,7 @@ public interface MyService {
     );
 
     //获取提币地址
-    @POST("finance/withdrawalAddresses")
+    @POST("api/finance/withdrawalAddresses")
     @FormUrlEncoded
     Observable<OutCoinSiteInfo> withdrawalAddresses(
             @Header("Authorization") String token,
@@ -174,7 +174,7 @@ public interface MyService {
     );
 
     //添加提币地址
-    @POST("finance/addCoinOutAddress")
+    @POST("api/finance/addCoinOutAddress")
     @FormUrlEncoded
     Observable<BaseInfo> addCoinOutAddress(
             @Header("Authorization") String token,
@@ -185,7 +185,7 @@ public interface MyService {
     );
 
     //删除提币地址
-    @POST("finance/deleteCoinOutAddress")
+    @POST("api/finance/deleteCoinOutAddress")
     @FormUrlEncoded
     Observable<BaseInfo> deleteCoinOutAddress(
             @Header("Authorization") String token,
@@ -194,7 +194,7 @@ public interface MyService {
     );
 
     //提币处理
-    @POST("finance/coinoutAction")
+    @POST("api/finance/coinoutAction")
     @FormUrlEncoded
     Observable<BaseInfo> coinOutAction(
             @Header("Authorization") String token,
@@ -207,13 +207,13 @@ public interface MyService {
     );
 
     //退出登录
-    @POST("logout")
+    @POST("api/logout")
     Observable<BaseInfo> logout(
             @Header("Authorization") String token
     );
 
     //充币地址
-    @POST("finance/coininAction")
+    @POST("api/finance/coininAction")
     @FormUrlEncoded
     Observable<BaseInfo> getAddress(
             @Header("Authorization") String token,
@@ -221,7 +221,7 @@ public interface MyService {
     );
 
     //转账
-    @POST("finance/transfer")
+    @POST("api/finance/transfer")
     @FormUrlEncoded
     Observable<BaseInfo> transfer(
             @Header("Authorization") String token,
@@ -239,7 +239,7 @@ public interface MyService {
     );
 
     //绑定谷歌验证
-    @POST("security/bindGoogleAuthenticator")
+    @POST("api/security/bindGoogleAuthenticator")
     @FormUrlEncoded
     Observable<BaseInfo> bindGoogle(
             @Header("Authorization") String token,
@@ -247,7 +247,7 @@ public interface MyService {
     );
 
     //解除绑定谷歌验证
-    @POST("security/unBindGoogleAuthenticator")
+    @POST("api/security/unBindGoogleAuthenticator")
     @FormUrlEncoded
     Observable<BaseInfo> unBindGoogle(
             @Header("Authorization") String token,
@@ -255,11 +255,11 @@ public interface MyService {
     );
 
     //创建红包
-    @POST("redPacket/create")
+    @POST("api/redPacket/createV2")
     @FormUrlEncoded
     Observable<BaseInfo> sendRedPacket(
             @Header("Authorization") String token,
-            @Field("for_id") String jid,
+            @Field("toco_id") String toco_id,
             @Field("type") int type,
             @Field("coin_name") String coin_name,
             @Field("intro") String intro,
@@ -271,7 +271,7 @@ public interface MyService {
     );
 
     //抢红包
-    @POST("redPacket/grab")
+    @POST("api/redPacket/grab")
     @FormUrlEncoded
     Observable<GrabRedInfo> grabRedPacket(
             @Header("Authorization") String token,
@@ -279,7 +279,7 @@ public interface MyService {
     );
 
     //红包记录
-    @POST("redPacket/log")
+    @POST("api/redPacket/log")
     @FormUrlEncoded
     Observable<RedRecordInfo> redPacketLog(
             @Header("Authorization") String token,
@@ -287,7 +287,7 @@ public interface MyService {
     );
 
     //单个红包记录
-    @POST("redPacket/signRpLog")
+    @POST("api/redPacket/signRpLog")
     @FormUrlEncoded
     Observable<GrabRedInfo> singleRpLog(
             @Header("Authorization") String token,
@@ -295,7 +295,7 @@ public interface MyService {
     );
 
     //发布交易
-    @POST("trans/publish")
+    @POST("api/trans/publish")
     @FormUrlEncoded
     Observable<BaseInfo> publishDeal(
             @Header("Authorization") String token,
@@ -315,7 +315,7 @@ public interface MyService {
     );
 
     //交易列表
-    @POST("trans/lists")
+    @POST("api/trans/lists")
     @FormUrlEncoded
     Observable<DealListInfo> getDealList(
             @Header("Authorization") String token,
@@ -327,7 +327,7 @@ public interface MyService {
     );
 
     //买币
-    @POST("trans/buyCoin")
+    @POST("api/trans/buyCoin")
     @FormUrlEncoded
     Observable<DealListInfo> buyCoin(
             @Header("Authorization") String token,
@@ -335,7 +335,7 @@ public interface MyService {
     );
 
     //卖币
-    @POST("trans/sellCoin")
+    @POST("api/trans/sellCoin")
     @FormUrlEncoded
     Observable<DealListInfo> sellCoin(
             @Header("Authorization") String token,
@@ -344,7 +344,7 @@ public interface MyService {
     );
 
     //生成订单
-    @POST("trans/createOrder")
+    @POST("api/trans/createOrder")
     @FormUrlEncoded
     Observable<OrderInfo> createOrder(
             @Header("Authorization") String token,
@@ -356,7 +356,7 @@ public interface MyService {
     );
 
     //确认付款
-    @POST("trans/payment")
+    @POST("api/trans/payment")
     @FormUrlEncoded
     Observable<BaseInfo> payment(
             @Header("Authorization") String token,
@@ -365,7 +365,7 @@ public interface MyService {
     );
 
     //完成交易
-    @POST("trans/PaymentComplete")
+    @POST("api/trans/PaymentComplete")
     @FormUrlEncoded
     Observable<BaseInfo> paymentComplete(
             @Header("Authorization") String token,
@@ -374,7 +374,7 @@ public interface MyService {
     );
 
     //取消交易
-    @POST("trans/cancelPayment")
+    @POST("api/trans/cancelPayment")
     @FormUrlEncoded
     Observable<BaseInfo> cancelPayment(
             @Header("Authorization") String token,
@@ -383,7 +383,7 @@ public interface MyService {
     );
 
     //订单列表
-    @POST("trans/orderLists")
+    @POST("api/trans/orderLists")
     @FormUrlEncoded
     Observable<OrderListInfo> getOrderList(
             @Header("Authorization") String token,
@@ -395,7 +395,7 @@ public interface MyService {
     );
 
     //订单详情
-    @POST("trans/orderInfo")
+    @POST("api/trans/orderInfo")
     @FormUrlEncoded
     Observable<OrderInfo2> orderInfo(
             @Header("Authorization") String token,
@@ -403,7 +403,7 @@ public interface MyService {
     );
 
     //获取市场参考价
-    @POST("trans/getCoinPrice")
+    @POST("api/trans/getCoinPrice")
     @FormUrlEncoded
     Observable<BaseInfo> getCoinPrice(
             @Header("Authorization") String token,
@@ -412,7 +412,7 @@ public interface MyService {
     );
 
     //获取市场参考价
-    @POST("updateToken")
+    @POST("api/updateToken")
     Observable<BaseInfo> updataToken(
             @Header("Authorization") String token
     );
@@ -424,19 +424,19 @@ public interface MyService {
     );
 
     //币种列表
-    @POST("finance/AssetNameV2")
+    @POST("api/finance/AssetNameV2")
     Observable<CoinInfo> AssetName(
             @Header("Authorization") String token
     );
 
     //账单列表
-    @POST("finance/transferDetails")
+    @POST("api/finance/transferDetails")
     Observable<TransferInfo> getTransfer(
             @Header("Authorization") String token
     );
 
     //账单明细
-    @POST("finance/transferDetailsLog")
+    @POST("api/finance/transferDetailsLog")
     @FormUrlEncoded
     Observable<TransferInfo> getTransferLog(
             @Header("Authorization") String token,
@@ -444,13 +444,13 @@ public interface MyService {
     );
 
     //aws
-    @POST("awsS3/getSessionToken")
+    @POST("api/awsS3/getSessionToken")
     Observable<AwsInfo> getSessionToken(
             @Header("Authorization") String token
     );
 
     //充币提币记录
-    @POST("finance/coinOutLog")
+    @POST("api/finance/coinOutLog")
     @FormUrlEncoded
     Observable<InOutInfo> coinOutLog(
             @Header("Authorization") String token,
@@ -459,7 +459,7 @@ public interface MyService {
     );
 
     //实名认证
-    @POST("user/realNameVerify")
+    @POST("api/user/realNameVerify")
     @FormUrlEncoded
     Observable<BaseInfo> realNameVerify(
             @Header("Authorization") String token,
@@ -470,13 +470,13 @@ public interface MyService {
     );
 
     //验证实名是否通过
-    @POST("user/realNameInfo")
+    @POST("api/user/realNameInfo")
     Observable<BaseInfo> realNameInfo(
             @Header("Authorization") String token
     );
 
     //实名绑定
-    @POST("user/bindRealName")
+    @POST("api/user/bindRealName")
     @FormUrlEncoded
     Observable<BaseInfo> bindRealName(
             @Header("Authorization") String token,
@@ -484,7 +484,7 @@ public interface MyService {
     );
 
     //绑定银行
-    @POST("user/bindBankCard")
+    @POST("api/user/bindBankCard")
     @FormUrlEncoded
     Observable<BaseInfo> bindBankCard(
             @Header("Authorization") String token,
@@ -495,13 +495,13 @@ public interface MyService {
     );
 
     //银行卡列表
-    @POST("user/bankCardList")
+    @POST("api/user/bankCardList")
     Observable<CardListInfo> bankCardList(
             @Header("Authorization") String token
     );
 
     //银行卡列表
-    @POST("user/unBindBankCard")
+    @POST("api/user/unBindBankCard")
     @FormUrlEncoded
     Observable<BaseInfo> unBindBankCard(
             @Header("Authorization") String token,
@@ -509,7 +509,7 @@ public interface MyService {
     );
 
     //发布动态
-    @POST("dynamic/publish")
+    @POST("api/dynamic/publish")
     @FormUrlEncoded
     Observable<BaseInfo> publishDynamic(
             @Header("Authorization") String token,
@@ -521,7 +521,7 @@ public interface MyService {
     );
 
     //动态列表
-    @POST("dynamic/dynamicList")
+    @POST("api/dynamic/dynamicListV2")
     @FormUrlEncoded
     Observable<DynamicListInfo> dynamicList(
             @Header("Authorization") String token,
@@ -531,17 +531,17 @@ public interface MyService {
     );
 
     //個人動態列表
-    @POST("dynamic/myDynamicList")
+    @POST("api/dynamic/myDynamicListV2")
     @FormUrlEncoded
     Observable<DynamicListInfo> taDynamicList(
             @Header("Authorization") String token,
             @Field("page") int page,
             @Field("page_size") int page_size,
-            @Field("user_name") String user_name
+            @Field("toco_id") String toco_id
     );
 
     //发表评论
-    @POST("review/publish")
+    @POST("api/review/publish")
     @FormUrlEncoded
     Observable<ReviewListInfo> publishReview(
             @Header("Authorization") String token,
@@ -553,7 +553,7 @@ public interface MyService {
     );
 
     //评论列表
-    @POST("review/reviewList")
+    @POST("api/review/reviewList")
     @FormUrlEncoded
     Observable<ReviewListInfo> reviewList(
             @Header("Authorization") String token,
@@ -561,7 +561,7 @@ public interface MyService {
     );
 
     //赞
-    @POST("dynamic/like")
+    @POST("api/dynamic/like")
     @FormUrlEncoded
     Observable<LikeInfo> like(
             @Header("Authorization") String token,
@@ -569,7 +569,7 @@ public interface MyService {
     );
 
     //评论点赞
-    @POST("review/like")
+    @POST("api/review/like")
     @FormUrlEncoded
     Observable<LikeInfo> reviewLike(
             @Header("Authorization") String token,
@@ -577,7 +577,7 @@ public interface MyService {
     );
 
     //生成收款二维码
-    @POST("receipt/generateReceiptQrCode")
+    @POST("api/receipt/generateReceiptQrCode")
     @FormUrlEncoded
     Observable<BaseInfo> generateReceiptQrCode(
             @Header("Authorization") String token,
@@ -587,7 +587,7 @@ public interface MyService {
     );
 
     //扫收款码
-    @POST("receipt/payment")
+    @POST("api/receipt/payment")
     @FormUrlEncoded
     Observable<ReceiptInfo> payment(
             @Header("Authorization") String token,
@@ -598,7 +598,7 @@ public interface MyService {
     );
 
     //生成付款二维码
-    @POST("receipt/generatePaymentQrCode")
+    @POST("api/receipt/generatePaymentQrCode")
     @FormUrlEncoded
     Observable<BaseInfo> generatePaymentQrCode(
             @Header("Authorization") String token,
@@ -608,7 +608,7 @@ public interface MyService {
     );
 
     //扫付款码，收款操作
-    @POST("receipt/receipt")
+    @POST("api/receipt/receipt")
     @FormUrlEncoded
     Observable<ReceiptInfo> receipt(
             @Header("Authorization") String token,
@@ -616,13 +616,13 @@ public interface MyService {
     );
 
     //获取国家列表
-    @POST("common/getCountryList")
+    @POST("api/common/getCountryList")
     Observable<StateInfo> getCountryList(
             @Header("Authorization") String token
     );
 
     //验证支付密码
-    @POST("common/verifySecondPassword")
+    @POST("api/common/verifySecondPassword")
     @FormUrlEncoded
     Observable<BaseInfo> verifySecondPassword(
             @Header("Authorization") String token,
@@ -630,7 +630,7 @@ public interface MyService {
     );
 
     //获取银行卡信息
-    @POST("user/bankCardInfo")
+    @POST("api/user/bankCardInfo")
     @FormUrlEncoded
     Observable<BankCardInfo> bankCardInfo(
             @Header("Authorization") String token,
@@ -638,7 +638,7 @@ public interface MyService {
     );
 
     //获取支付记录
-    @POST("common/transRecord")
+    @POST("api/common/transRecord")
     @FormUrlEncoded
     Observable<TransferListInfo> getTransRecord(
             @Header("Authorization") String token,
@@ -649,25 +649,25 @@ public interface MyService {
     );
 
     //登录记录
-    @POST("loginLog")
+    @POST("api/loginLog")
     Observable<LoginRecordInfo> loginRecord(
             @Header("Authorization") String token
     );
 
     //验证实名认证
-    @POST("user/realNameStatus")
+    @POST("api/user/realNameStatus")
     Observable<BaseInfo> realNameStatus(
             @Header("Authorization") String token
     );
 
     //验证是否绑定银行卡
-    @POST("user/bindBankStatus")
+    @POST("api/user/bindBankStatus")
     Observable<BaseInfo> bindBankStatus(
             @Header("Authorization") String token
     );
 
     //登录设置
-    @POST("loginValidateTypeSetting")
+    @POST("api/loginValidateTypeSetting")
     @FormUrlEncoded
     Observable<BaseInfo> loginValidateTypeSetting(
             @Header("Authorization") String token,
@@ -677,19 +677,19 @@ public interface MyService {
     );
 
     //获取总估值
-    @POST("finance/totalAssetsValuation")
+    @POST("api/finance/totalAssetsValuation")
     Observable<BaseInfo> totalAssetsValuation(
             @Header("Authorization") String token
     );
 
     //获取usdt的数量
-    @POST("finance/currentUSD")
+    @POST("api/finance/currentUSD")
     Observable<BaseInfo> getUSDT(
             @Header("Authorization") String token
     );
 
     //获取币种估值
-    @POST("finance/assetsValuation")
+    @POST("api/finance/assetsValuation")
     @FormUrlEncoded
     Observable<BaseInfo> assetsValuation(
             @Header("Authorization") String token,
@@ -697,19 +697,19 @@ public interface MyService {
     );
 
     //获取币种估值
-    @POST("finance/friendTransfer")
+    @POST("api/finance/friendTransferV2")
     @FormUrlEncoded
     Observable<BaseInfo> friendTransfer(
             @Header("Authorization") String token,
             @Field("coin_name") String coin_name,
-            @Field("user_name") String user_name,
+            @Field("toco_id") String toco_id,
             @Field("number") double number,
             @Field("second_password") String second_password,
             @Field("mark") String mark
     );
 
     //获取兑换币种列表
-    @POST("common/coinLists")
+    @POST("api/common/coinLists")
     @FormUrlEncoded
     Observable<CoinListInfo> coinLists(
             @Header("Authorization") String token,
@@ -717,7 +717,7 @@ public interface MyService {
     );
 
     //币种兑换记录
-    @POST("exchange/orders")
+    @POST("api/exchange/orders")
     @FormUrlEncoded
     Observable<ExchangeOrderInfo> exchangeOrders(
             @Header("Authorization") String token,
@@ -728,7 +728,7 @@ public interface MyService {
     );
 
     //币种兑换
-    @POST("exchange/sale")
+    @POST("api/exchange/sale")
     @FormUrlEncoded
     Observable<BaseInfo> exchangeSale(
             @Header("Authorization") String token,
@@ -740,13 +740,13 @@ public interface MyService {
     );
 
     //获取usdt的数量
-    @POST("common/isBindBankPayWechat")
+    @POST("api/common/isBindBankPayWechat")
     Observable<ModeOfPaymentInfo> getModeOfPayment(
             @Header("Authorization") String token
     );
 
     //设置默认银行卡
-    @POST("user/setDefaultBankCard")
+    @POST("api/user/setDefaultBankCard")
     @FormUrlEncoded
     Observable<BaseInfo> setDefaultBankCard(
             @Header("Authorization") String token,
@@ -754,7 +754,7 @@ public interface MyService {
     );
 
     //获取usdt的数量
-    @POST("question/hopeCoin")
+    @POST("api/question/hopeCoin")
     @FormUrlEncoded
     Observable<BaseInfo> hopeCoin(
             @Header("Authorization") String token,
@@ -763,7 +763,7 @@ public interface MyService {
     );
 
     //上传问题反馈图片
-    @POST("question/feedbacks")
+    @POST("api/question/feedbacks")
     @FormUrlEncoded
     Observable<BaseInfo> feedbacks(
             @Header("Authorization") String token,
@@ -772,13 +772,13 @@ public interface MyService {
     );
 
     //获取问题列表
-    @POST("question/lists")
+    @POST("api/question/lists")
     Observable<QuestionInfo> getQuestionList(
             @Header("Authorization") String token
     );
 
     //提幣說明
-    @POST("finance/coinoutDesc")
+    @POST("api/finance/coinoutDesc")
     @FormUrlEncoded
     Observable<BaseInfo> outCoinDesc(
             @Header("Authorization") String token,
@@ -786,7 +786,7 @@ public interface MyService {
     );
 
     //支付記錄詳情
-    @POST("common/transRecordInfo")
+    @POST("api/common/transRecordInfo")
     @FormUrlEncoded
     Observable<TransRecordInfo> transRecord(
             @Header("Authorization") String token,
@@ -795,7 +795,7 @@ public interface MyService {
     );
 
     //支付記錄詳情
-    @POST("trans/cancelTrans")
+    @POST("api/trans/cancelTrans")
     @FormUrlEncoded
     Observable<BaseInfo> cancelTrans(
             @Header("Authorization") String token,
@@ -803,23 +803,23 @@ public interface MyService {
     );
 
     //修改頭像
-    @POST("user/uploadAvatar")
+    @POST("api/user/uploadAvatar")
     @FormUrlEncoded
     Observable<BaseInfo> uploadAvatar(
             @Header("Authorization") String token,
             @Field("content") String content
     );
 
-    //修改頭像
-    @POST("user/avatarList")
+    //獲取頭像
+    @POST("api/user/avatarListV2")
     @FormUrlEncoded
     Observable<AuatarListInfo> avatarList(
             @Header("Authorization") String token,
-            @Field("names") String names
+            @Field("toco_id") String toco_id
     );
 
     //競猜列表
-    @POST("bet/list")
+    @POST("api/bet/list")
     @FormUrlEncoded
     Observable<GuessListInfo> GuessList(
             @Header("Authorization") String token,
@@ -830,7 +830,7 @@ public interface MyService {
     );
 
     //發佈競猜
-    @POST("bet/publish")
+    @POST("api/bet/publish")
     @FormUrlEncoded
     Observable<BaseInfo> publishGuess(
             @Header("Authorization") String token,
@@ -844,7 +844,7 @@ public interface MyService {
     );
 
     //競猜詳情
-    @POST("bet/info")
+    @POST("api/bet/info")
     @FormUrlEncoded
     Observable<GuessInfo> GuessInfo(
             @Header("Authorization") String token,
@@ -853,13 +853,13 @@ public interface MyService {
     );
 
     //獲取隨機數組
-    @POST("bet/randomNumber")
+    @POST("api/bet/randomNumber")
     Observable<BaseInfo> getRandom(
             @Header("Authorization") String token
     );
 
     //投注
-    @POST("bet/coin")
+    @POST("api/bet/coin")
     @FormUrlEncoded
     Observable<BetInfo> bet(
             @Header("Authorization") String token,
@@ -871,7 +871,7 @@ public interface MyService {
     );
 
     //我發佈的競猜列表
-    @POST("bet/userPublishList")
+    @POST("api/bet/userPublishList")
     @FormUrlEncoded
     Observable<GuessListInfo> getMyStart(
             @Header("Authorization") String token,
@@ -881,7 +881,7 @@ public interface MyService {
     );
 
     //我參與的競猜列表
-    @POST("bet/userJoinList")
+    @POST("api/bet/userJoinList")
     @FormUrlEncoded
     Observable<GuessListInfo> getMyJoin(
             @Header("Authorization") String token,
@@ -892,7 +892,7 @@ public interface MyService {
 
 
     //我的廣告列表
-    @POST("trans/userLists")
+    @POST("api/trans/userLists")
     @FormUrlEncoded
     Observable<MyAdListInfo> getMyAdList(
             @Header("Authorization") String token,
@@ -904,7 +904,7 @@ public interface MyService {
     );
 
     //歷史競猜
-    @POST("bet/history")
+    @POST("api/bet/history")
     @FormUrlEncoded
     Observable<GuessListInfo> getGuessHistory(
             @Header("Authorization") String token,
@@ -913,7 +913,7 @@ public interface MyService {
     );
 
     //新聞列表
-    @POST("news/list")
+    @POST("api/news/list")
     @FormUrlEncoded
     Observable<NewsListInfo> getNewsList(
             @Header("Authorization") String token,
@@ -922,7 +922,7 @@ public interface MyService {
     );
 
     //我發佈的新聞列表
-    @POST("news/myNews")
+    @POST("api/news/myNews")
     @FormUrlEncoded
     Observable<GonggaoListInfo> myNewsList(
             @Header("Authorization") String token,
@@ -932,7 +932,7 @@ public interface MyService {
     );
 
     //草稿箱列表
-    @POST("news/myNewsDraft")
+    @POST("api/news/myNewsDraft")
     @FormUrlEncoded
     Observable<GonggaoListInfo> NewsDraftList(
             @Header("Authorization") String token,
@@ -941,7 +941,7 @@ public interface MyService {
     );
 
     //刪除新聞
-    @POST("news/delete")
+    @POST("api/news/delete")
     @FormUrlEncoded
     Observable<BaseInfo> deleteNews(
             @Header("Authorization") String token,
@@ -949,7 +949,7 @@ public interface MyService {
     );
 
     //公告列表
-    @POST("bulletin/list")
+    @POST("api/bulletin/list")
     @FormUrlEncoded
     Observable<GonggaoListInfo> GonggaoList(
             @Header("Authorization") String token,
@@ -959,7 +959,7 @@ public interface MyService {
     );
 
     //瀏覽記錄列表
-    @POST("news/history")
+    @POST("api/news/history")
     @FormUrlEncoded
     Observable<GonggaoListInfo> NewsHistoryList(
             @Header("Authorization") String token,
@@ -969,24 +969,24 @@ public interface MyService {
 
     //個人資料
     @FormUrlEncoded
-    @POST("user/profile/by_name")
+    @POST("chat/user/profile")
     Observable<IndividualInfo> getIndividual(
             @Header("Authorization") String token,
-            @Field("name") String name
+            @Field("toco_id") String toco_id
     );
 
     //修改備註
     @FormUrlEncoded
-    @POST("user/setUserRemark")
+    @POST("chat/user/remark")
     Observable<IndividualInfo> getChangeRemark(
             @Header("Authorization") String token,
-            @Field("name") String name,
+            @Field("toco_id") String toco_id,
             @Field("remark") String remark
     );
 
     //獲取好友備註名
     @FormUrlEncoded
-    @POST("user/getUserRemark")
+    @POST("api/user/getUserRemark")
     Observable<RemarkListInfo> getRemarkList(
             @Header("Authorization") String token,
             @Field("name") String name
@@ -994,14 +994,14 @@ public interface MyService {
 
     //修改備註
     @FormUrlEncoded
-    @POST("trans/total")
+    @POST("api/trans/total")
     Observable<OrderStatisticsInfo> getTotal(
             @Header("Authorization") String token,
             @Field("coin_name") String coin_name
     );
 
     //瀏覽記錄列表
-    @POST("trans/myOrderLists")
+    @POST("api/trans/myOrderLists")
     @FormUrlEncoded
     Observable<OrderListInfo> getMyOrderList(
             @Header("Authorization") String token,
@@ -1012,28 +1012,28 @@ public interface MyService {
     );
 
     //清除新聞瀏覽記錄
-    @POST("news/deleteHistory")
+    @POST("api/news/deleteHistory")
     Observable<BaseInfo> deleteDrowsingHistory(
             @Header("Authorization") String token
     );
 
     //發佈新聞費用
-    @POST("news/ad_cost")
+    @POST("api/news/ad_cost")
     Observable<BaseInfo> getAdCost(
             @Header("Authorization") String token
     );
 
     //刪除動態
     @FormUrlEncoded
-    @POST("dynamic/destroy")
+    @POST("api/dynamic/destroy")
     Observable<BaseInfo> deleteDynamic(
             @Header("Authorization") String token,
             @Field("dynamic_id") String dynamic_id
     );
 
-    //刪除動態
+    //搜索用戶
     @FormUrlEncoded
-    @POST("search/friend")
+    @POST("chat/search/friend")
     Observable<BaseInfo> searchUser(
             @Header("Authorization") String token,
             @Field("username") String username
@@ -1041,7 +1041,7 @@ public interface MyService {
 
     //刪除動態
     @FormUrlEncoded
-    @POST("updateLog")
+    @POST("api/updateLog")
     Observable<UpdateLogInfo> getUpdateLogList(
             @Header("Authorization") String token,
             @Field("type") int type
@@ -1049,7 +1049,7 @@ public interface MyService {
 
     //掃描商家二維碼
     @FormUrlEncoded
-    @POST("merchant/recharge_code_info")
+    @POST("api/merchant/recharge_code_info")
     Observable<BaseInfo> rechargeInfo(
             @Header("Authorization") String token,
             @Field("code") int code
@@ -1057,7 +1057,7 @@ public interface MyService {
 
     //創建群聊房間
     @FormUrlEncoded
-    @POST("room/create")
+    @POST("api/room/create")
     Observable<BaseInfo> createGroup(
             @Header("Authorization") String token,
             @Field("room_name") String room_name,
@@ -1069,7 +1069,7 @@ public interface MyService {
 
     //動態打賞
     @FormUrlEncoded
-    @POST("dynamic/reward")
+    @POST("api/dynamic/reward")
     Observable<BaseInfo> giveReward(
             @Header("Authorization") String token,
             @Field("dynamic_id") int dynamic_id,
@@ -1079,17 +1079,60 @@ public interface MyService {
 
     //獲取群聊房間
     @FormUrlEncoded
-    @POST("room/create")
+    @POST("api/room/create")
     Observable<GroupInfo> getGroup(
             @Header("Authorization") String token
     );
 
     //不看他的動態
     @FormUrlEncoded
-    @POST("dynamic/shield")
+    @POST("api/dynamic/shieldV2")
     Observable<BaseInfo> noLookTaDy(
             @Header("Authorization") String token,
             @Field("type") int type,
-            @Field("name") String name
+            @Field("toco_id") String toco_id
+    );
+
+    //獲取好友列表
+    @POST("chat/friend/list")
+    Observable<AuatarListInfo> getFriendsList(
+            @Header("Authorization") String token
+    );
+
+    //添加好友
+    @FormUrlEncoded
+    @POST("chat/add/friend")
+    Observable<BaseInfo> addFriend(
+            @Header("Authorization") String token,
+            @Field("toco_id") String toco_id,
+            @Field("friend_label") String friend_label
+    );
+
+    //刪除好友
+    @FormUrlEncoded
+    @POST("chat/del/friend")
+    Observable<BaseInfo> deleteFriend(
+            @Header("Authorization") String token,
+            @Field("toco_id") String toco_id
+    );
+
+    //確認添加好友
+    @FormUrlEncoded
+    @POST("chat/confirm/add/friend")
+    Observable<BaseInfo> confirmAddFriend(
+            @Header("Authorization") String token,
+            @Field("toco_id") String toco_id,
+            @Field("status") int status
+    );
+    //獲取離線消息
+    @POST("chat/offline/news")
+    Observable<BaseInfo> getOffline(
+            @Header("Authorization") String token
+    );
+
+    //離線消息回調
+    @POST("chat/offline/news/callback")
+    Observable<BaseInfo> OfflineCallback (
+            @Header("Authorization") String token
     );
 }

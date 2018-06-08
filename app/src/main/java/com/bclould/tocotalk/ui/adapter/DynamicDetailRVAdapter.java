@@ -175,12 +175,7 @@ public class DynamicDetailRVAdapter extends RecyclerView.Adapter {
             } else {
                 mLlZan.setSelected(false);
             }
-            String user;
-            if (listBean.getUser_name().equals(UtilTool.getUser())) {
-                user = UtilTool.getJid();
-            } else {
-                user = listBean.getUser_name() + "@" + Constants.DOMAINNAME;
-            }
+            String user=listBean.getToco_id();
             UtilTool.getImage(mMgr, user, mContext, mTouxiang);
             if (listBean.getReply_lists() != null) {
                 if (listBean.getReply_lists().size() != 0) {
@@ -292,12 +287,7 @@ public class DynamicDetailRVAdapter extends RecyclerView.Adapter {
             } else {
                 mLlZan.setSelected(false);
             }
-            String user;
-            if (listBean.getUser_name().equals(UtilTool.getUser())) {
-                user = UtilTool.getJid();
-            } else {
-                user = listBean.getUser_name() + "@" + Constants.DOMAINNAME;
-            }
+            String user = listBean.getToco_id();
             UtilTool.getImage(mMgr, user, mContext, mTouxiang);
             if (listBean.getReply_lists() != null) {
                 if (listBean.getReply_lists().size() != 0) {

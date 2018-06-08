@@ -70,6 +70,15 @@ public class BaseInfo {
         private String bet_coin;
         private String name;
         private String merchant_name;
+        private String toco_id;
+
+        public String getToco_id() {
+            return toco_id;
+        }
+
+        public void setToco_id(String toco_id) {
+            this.toco_id = toco_id;
+        }
 
         public String getMerchant_name() {
             return merchant_name;

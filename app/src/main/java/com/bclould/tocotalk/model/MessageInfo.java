@@ -42,6 +42,15 @@ public class MessageInfo implements Serializable {
     private String initiator;//发起人
     private String betId;
     private String periodQty;
+    private String key;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     public String getBetId() {
         return betId;

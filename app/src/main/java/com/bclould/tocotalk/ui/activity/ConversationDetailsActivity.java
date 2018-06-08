@@ -119,18 +119,18 @@ public class ConversationDetailsActivity extends BaseActivity {
     }
 
     private void changeFree(){
-        boolean free= MySharedPreferences.getInstance().getBoolean(SETTING+mUser+UtilTool.getJid());
+        boolean free= MySharedPreferences.getInstance().getBoolean(SETTING+mUser+UtilTool.getTocoId());
         onOffMessageFree.setSelected(free);
     }
 
     private void changeOTRState(){
-        if(OtrChatListenerManager.getInstance().isVerified(OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(),mUser),this)){
+        if(OtrChatListenerManager.getInstance().isVerified(OtrChatListenerManager.getInstance().sessionID(UtilTool.getTocoId(),mUser),this)){
             tvOtrState.setText(getString(R.string.otr_authenticated));
         }else{
             tvOtrState.setText(getString(R.string.otr_unauthorized));
         }
-        tvOtr.setText(OtrChatListenerManager.getInstance().getRemotePublicKey(OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(),mUser),this));
-        tvMyOtr.setText(OtrChatListenerManager.getInstance().getLocalPublicKey(OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(),mUser),this));
+        tvOtr.setText(OtrChatListenerManager.getInstance().getRemotePublicKey(OtrChatListenerManager.getInstance().sessionID(UtilTool.getTocoId(),mUser),this));
+        tvMyOtr.setText(OtrChatListenerManager.getInstance().getLocalPublicKey(OtrChatListenerManager.getInstance().sessionID(UtilTool.getTocoId(),mUser),this));
         if("true".equals(OtrChatListenerManager.getInstance().getOTRState(mUser))){
             onOffOtr.setSelected(true);
         }else{
@@ -173,13 +173,13 @@ public class ConversationDetailsActivity extends BaseActivity {
     }
 
     private void messageFree(){
-        boolean free= MySharedPreferences.getInstance().getBoolean(SETTING+mUser+UtilTool.getJid());
+        boolean free= MySharedPreferences.getInstance().getBoolean(SETTING+mUser+UtilTool.getTocoId());
         if(free){
             onOffMessageFree.setSelected(false);
-            MySharedPreferences.getInstance().setBoolean(SETTING+mUser+UtilTool.getJid(),false);
+            MySharedPreferences.getInstance().setBoolean(SETTING+mUser+UtilTool.getTocoId(),false);
         }else{
             onOffMessageFree.setSelected(true);
-            MySharedPreferences.getInstance().setBoolean(SETTING+mUser+UtilTool.getJid(),true);
+            MySharedPreferences.getInstance().setBoolean(SETTING+mUser+UtilTool.getTocoId(),true);
         }
     }
 
@@ -247,7 +247,7 @@ public class ConversationDetailsActivity extends BaseActivity {
 
     private void resultOTR(){
         try {
-             OtrChatListenerManager.getInstance().changeState(JidCreate.entityBareFrom(mUser).toString(),this);
+             OtrChatListenerManager.getInstance().changeState(mUser.toString(),this);
         }catch (Exception e){
             e.printStackTrace();
         }

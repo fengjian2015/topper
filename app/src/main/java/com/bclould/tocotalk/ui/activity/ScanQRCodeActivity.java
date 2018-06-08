@@ -7,6 +7,7 @@ import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -25,9 +26,6 @@ import com.bclould.tocotalk.ui.fragment.FriendListFragment;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.google.gson.Gson;
-
-import org.jivesoftware.smack.util.stringencoder.Base64;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -115,15 +113,12 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
             if (result != null && !result.isEmpty()) {
                 if (result.contains(Constants.BUSINESSCARD)) {
                     String base64 = result.substring(Constants.BUSINESSCARD.length(), result.length());
-                    String jsonresult = Base64.decodeToString(base64);
+                    String jsonresult = new String(Base64.decode(base64,Base64.DEFAULT));
                     UtilTool.Log("日志", jsonresult);
 
                     Gson gson = new Gson();
                     QrCardInfo qrCardInfo = gson.fromJson(jsonresult, QrCardInfo.class);
                     String name = qrCardInfo.getName();
-                    if (!qrCardInfo.getName().contains(Constants.DOMAINNAME)) {
-                        name = name + "@" + Constants.DOMAINNAME;
-                    }
                     Intent intent = new Intent(ScanQRCodeActivity.this, IndividualDetailsActivity.class);
                     intent.putExtra("name", name.split("@")[0]);
                     intent.putExtra("user", name);
@@ -133,7 +128,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                 } else if (result.contains(Constants.MONEYIN)) {
                     try {
                         String base64 = result.substring(Constants.MONEYIN.length(), result.length());
-                        String jsonresult = Base64.decodeToString(base64);
+                        String jsonresult =new String(Base64.decode(base64,Base64.DEFAULT));
                         UtilTool.Log("日志", jsonresult);
                         Gson gson = new Gson();
                         QrReceiptInfo qrReceiptInfo = gson.fromJson(jsonresult, QrReceiptInfo.class);
@@ -160,7 +155,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                 } else if (result.contains(Constants.MONEYOUT)) {
                     try {
                         String base64 = result.substring(Constants.MONEYOUT.length(), result.length());
-                        String jsonresult = Base64.decodeToString(base64);
+                        String jsonresult = new String(Base64.decode(base64,Base64.DEFAULT));
                         UtilTool.Log("日志", jsonresult);
                         Gson gson = new Gson();
                         QrPaymentInfo qrPaymentInfo = gson.fromJson(jsonresult, QrPaymentInfo.class);
@@ -175,6 +170,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                                     bundle.putString("name", data.getName());
                                     bundle.putString("number", data.getNumber());
                                     bundle.putString("type", Constants.MONEYOUT);
+                                    bundle.putString("user", data.getToco_id());
                                     intent.putExtras(bundle);
                                     startActivity(intent);
                                     finish();

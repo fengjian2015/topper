@@ -80,6 +80,15 @@ public class OrderInfo2 {
         private String otc_free;
         private String mobile;
         private String email;
+        private String toco_id;
+
+        public String getToco_id() {
+            return toco_id;
+        }
+
+        public void setToco_id(String toco_id) {
+            this.toco_id = toco_id;
+        }
 
         public String getEmail() {
             return email;

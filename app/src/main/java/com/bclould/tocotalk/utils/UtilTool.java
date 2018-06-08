@@ -63,6 +63,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.TimeZone;
@@ -74,6 +75,7 @@ import io.reactivex.disposables.Disposable;
 
 import static com.bclould.tocotalk.Presenter.LoginPresenter.LOGINPW;
 import static com.bclould.tocotalk.Presenter.LoginPresenter.MYUSERNAME;
+import static com.bclould.tocotalk.Presenter.LoginPresenter.TOCOID;
 import static com.bclould.tocotalk.Presenter.LoginPresenter.TOKEN;
 import static com.bclould.tocotalk.Presenter.LoginPresenter.USERID;
 
@@ -168,6 +170,13 @@ public class UtilTool {
         SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         String fileName = fmt.format(dt);
         return fileName;
+    }
+
+    public static String createChatTime(){
+        //获取当前时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date curDate = new Date(System.currentTimeMillis());
+        return formatter.format(curDate);
     }
 
     public static void comp(Bitmap image, File file) {
@@ -508,6 +517,14 @@ public class UtilTool {
         return "bearer" + MySharedPreferences.getInstance().getString(TOKEN);
 
     }
+
+
+    public static String getTocoId() {
+
+        return MySharedPreferences.getInstance().getString(TOCOID);
+
+    }
+
 
     public static int getUserId() {
 
@@ -853,8 +870,8 @@ public class UtilTool {
         String domainName = "(\\.(com.cn|com|edu|gov|mil|net|org|biz|info|name|museum|us|ca|uk|cn|co|int|biz|CC|TV|pro|coop|aero|hk|tw|top))";
         String pattern1 = "((www|WWW)\\.){1}([a-zA-Z0-9\\u4e00-\\u9fa5\\$\\-\\_\\.\\+\\!\\*\\'\\(\\)\\,\\;\\?\\&\\=]+)"; //有www.开头的
         String pattern2 = "((((ht|f|Ht|F)tp(s?))|rtsp|Rtsp)\\://)(www\\.)?(.+)"; //有http等协议号开头
-        String pattern3 = pattern1 + "([a-zA-Z0-9\\u4e00-\\u9fa5]+)([a-zA-Z0-9\\u4e00-\\u9fa5\\.]+)" + domainName + port + "(/(.*)*)"; //有.com等后缀的，并有参数
-        String pattern4 = pattern1 + "([a-zA-Z0-9\\u4e00-\\u9fa5]+)([a-zA-Z0-9\\u4e00-\\u9fa5\\.]+)" + domainName + port; //有.com等后缀结尾的，无参数
+        String pattern3 = pattern2 + "([a-zA-Z0-9\\u4e00-\\u9fa5]+)([a-zA-Z0-9\\u4e00-\\u9fa5\\.]+)" + domainName + port + "(/(.*)*)"; //有.com等后缀的，并有参数
+        String pattern4 = pattern2 + "([a-zA-Z0-9\\u4e00-\\u9fa5]+)([a-zA-Z0-9\\u4e00-\\u9fa5\\.]+)" + domainName + port; //有.com等后缀结尾的，无参数
         String pattern5 = "((((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[1-9])\\.)((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){2}((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])))" + port + "(\\/(.+))?)"; //ip地址的
         String pattern6 ="([a-zA-Z0-9\\.\\-\\~\\@\\#\\%\\^\\&\\+\\?\\:\\_\\/\\=\\<\\>]+)" + domainName + port; //有.com等后缀结尾的，无参数
         String pattern = pattern1 + "|" + pattern2 + "|" + pattern3 + "|" + pattern4 + "|" + pattern5+"|" +pattern6;

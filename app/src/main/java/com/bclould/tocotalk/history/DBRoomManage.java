@@ -37,7 +37,7 @@ public class DBRoomManage {
         }else {
             ContentValues values = new ContentValues();
             values.put("roomImage", roomManageInfo.getRoomImage());
-            values.put("my_user", UtilTool.getJid());
+            values.put("my_user", UtilTool.getTocoId());
             values.put("roomId", roomManageInfo.getRoomId());
             values.put("roomName", roomManageInfo.getRoomName());
             values.put("roomNumber", roomManageInfo.getRoomNumber());
@@ -51,13 +51,13 @@ public class DBRoomManage {
         db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("roomName", roomName);
-        db.update("RoomManage", cv, "roomId=? and my_user=?", new String[]{roomId, UtilTool.getJid()});
+        db.update("RoomManage", cv, "roomId=? and my_user=?", new String[]{roomId, UtilTool.getTocoId()});
     }
 
     public boolean findRoom(String roomJid){
         db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from RoomManage where roomId=? and my_user=?",
-                new String[]{roomJid, UtilTool.getJid()});
+                new String[]{roomJid, UtilTool.getTocoId()});
         boolean result = cursor.moveToNext();
         UtilTool.Log("fengjian----","房间id："+roomJid+"   是否创建过："+result);
         cursor.close();
@@ -68,7 +68,7 @@ public class DBRoomManage {
         db = helper.getReadableDatabase();
         String roomName = null;
         Cursor cursor = db.rawQuery("select roomName from RoomManage where roomId=? and my_user=?",
-                new String[]{roomJid, UtilTool.getJid()});
+                new String[]{roomJid, UtilTool.getTocoId()});
         while (cursor.moveToNext()) {
             roomName = cursor.getString(cursor.getColumnIndex("roomName"));
         }
@@ -84,7 +84,7 @@ public class DBRoomManage {
         db = helper.getReadableDatabase();
         ArrayList<RoomManageInfo> addRequestInfos = new ArrayList<>();
         String sql = "select * from RoomManage where my_user=?";
-        Cursor c = db.rawQuery(sql, new String[]{UtilTool.getJid()});
+        Cursor c = db.rawQuery(sql, new String[]{UtilTool.getTocoId()});
         while (c.moveToNext()) {
             RoomManageInfo addRequestInfo = new RoomManageInfo();
             addRequestInfo.setRoomName(c.getString(c.getColumnIndex("roomName")));

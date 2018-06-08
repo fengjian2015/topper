@@ -184,6 +184,15 @@ public class ReviewListInfo {
             private int is_like;
             private String url;
             private List<ReplyListsBean> reply_lists;
+            private String toco_id;
+
+            public String getToco_id() {
+                return toco_id;
+            }
+
+            public void setToco_id(String toco_id) {
+                this.toco_id = toco_id;
+            }
 
             public int getId() {
                 return id;

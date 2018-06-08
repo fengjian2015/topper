@@ -68,6 +68,7 @@ public class CreateGroupRVAdapter extends RecyclerView.Adapter {
         @Bind(R.id.tv_name)
         TextView mTvName;
         private String mUser;
+        private String mName;
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -76,10 +77,11 @@ public class CreateGroupRVAdapter extends RecyclerView.Adapter {
         public void setData(final UserInfo userInfo) {
             String remark = userInfo.getRemark();
             mUser = userInfo.getUser();
+            mName= userInfo.getUserName();
             if (!StringUtils.isEmpty(remark)) {
                 mTvName.setText(remark);
-            } else if (mUser.contains("@"))
-                mTvName.setText(mUser.substring(0, mUser.indexOf("@")));
+            } else
+                mTvName.setText(mName);
             UtilTool.getImage(mgr, userInfo.getUser(),mActivity , mIvTouxiang);
             mIvTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfo.getPath()));
             mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

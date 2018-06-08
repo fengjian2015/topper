@@ -7,15 +7,11 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.RequiresApi;
 
+import com.bclould.tocotalk.topperchat.WsConnection;
 import com.bclould.tocotalk.utils.CheckClassIsWork;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tocotalk.xmpp.IMLogin;
-import com.bclould.tocotalk.xmpp.XmppConnection;
-
-import org.jivesoftware.smack.AbstractXMPPConnection;
-import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.packet.Presence;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class IMService extends Service{
@@ -62,9 +58,8 @@ public class IMService extends Service{
             this.stopService(new Intent(this, IMService.class));
             return;
         }
-        if ((XmppConnection.getInstance().getConnection() != null && XmppConnection.getInstance().getConnection()
-                .isConnected()&&XmppConnection.getInstance().getConnection()
-                .isAuthenticated())) {
+        if (WsConnection.getInstance().get(IMService.this)!=null&&WsConnection.getInstance().get(IMService.this).isOpen()||
+                WsConnection.getInstance().isLogin()) {
             ConnectStateChangeListenerManager.get().notifyListener(
                     ConnectStateChangeListenerManager.CONNECTED);
             handler.removeMessages(EXLOGIN);
@@ -72,7 +67,6 @@ public class IMService extends Service{
         }else {
             ConnectStateChangeListenerManager.get().notifyListener(
                     ConnectStateChangeListenerManager.CONNECTING);
-            XmppConnection.getInstance().getConnection();
             IMLogin.login(this);
         }
     }
@@ -94,7 +88,7 @@ public class IMService extends Service{
                                     ConnectStateChangeListenerManager.DISCONNECT);
                         }
                         if (IMLogin.isNetworkActivity(IMService.this)
-                                && !XmppConnection.getInstance().getConnection().isConnected()) {
+                                && !WsConnection.getInstance().isLogin()) {
                             ConnectStateChangeListenerManager.get().notifyListener(
                                     ConnectStateChangeListenerManager.CONNECTING);
                             fistlogIm();
@@ -105,24 +99,24 @@ public class IMService extends Service{
                     case EXLOGIN: {
                         synchronized (this) {
                             if (CheckClassIsWork.isTopActivity(IMService.this, "LoginActivity")) {
-                                XmppConnection.getInstance().closeConnection();
+                                WsConnection.getInstance().get(IMService.this).disconnect();
                                 break;
                             }
-                            if(XmppConnection.getInstance().getConnection()==null){
+                            if(WsConnection.getInstance().get(IMService.this)==null){
                                 exReconnect(2000);
                                 break;
                             }
-                            if (XmppConnection.getInstance().getConnection().isConnected()) {
+                            if (WsConnection.getInstance().get(IMService.this).isOpen()) {
 //                            MyLogger.xuxLog().i("-----EXLOGIN1");
                                 if (ConnectStateChangeListenerManager.get().getCurrentState()
                                         != ConnectStateChangeListenerManager.CONNECTED && ConnectStateChangeListenerManager.get().getCurrentState()
                                         != ConnectStateChangeListenerManager.RECEIVING) {
                                     disconnect();
-                                    UtilTool.Log("---------","目前登錄狀態不符合："+ConnectStateChangeListenerManager.get().getCurrentState()+"    "+XmppConnection.getInstance().getConnection().isConnected());
+                                    UtilTool.Log("---------","目前登錄狀態不符合："+ConnectStateChangeListenerManager.get().getCurrentState()+"    "+WsConnection.getInstance().get(IMService.this).isOpen());
                                 }
-                                if(!XmppConnection.getInstance().getConnection().isAuthenticated()){
+                                if(!WsConnection.getInstance().isLogin()){
                                     disconnect();
-                                    UtilTool.Log("---------","目前登錄狀態不符合："+XmppConnection.getInstance().getConnection().isAuthenticated());
+                                    UtilTool.Log("---------","目前登錄狀態不符合："+WsConnection.getInstance().isLogin());
                                 }
                                 exReconnect(2000);
                                 break;
@@ -159,7 +153,7 @@ public class IMService extends Service{
         new Thread(){
             @Override
             public void run() {
-                XmppConnection.getInstance().getConnection().disconnect();
+                WsConnection.getInstance().get(IMService.this).disconnect();
             }
         }.start();
     }
@@ -180,8 +174,8 @@ public class IMService extends Service{
                 this.stopService(new Intent(this, IMService.class));
                 return;
             }
-            UtilTool.Log("---------","重連："+XmppConnection.getInstance().getConnection().isConnected()+"   "+
-                    XmppConnection.getInstance().getConnection().isAuthenticated());
+            UtilTool.Log("---------","重連："+WsConnection.getInstance().get(IMService.this).isOpen()+"   "+
+                    WsConnection.getInstance().isLogin());
             try {
                 UtilTool.Log("fengjian","ConnectionListener：开始准备重连IM");
                 setConnectState();
@@ -190,27 +184,21 @@ public class IMService extends Service{
                     exReconnect(1000);
                     return;
                 }
-                XmppConnection.getInstance().getConnection();
+                WsConnection.getInstance().get(IMService.this);
                 thread1.sleep(10000);
 
-                if(XmppConnection.getInstance().getConnection().isAuthenticated()){
-                    Presence presence = new Presence(Presence.Type.unavailable);
-                    presence.setPriority(0);
-                    XmppConnection.getInstance().getConnection().sendPacket(presence);
-                    XmppConnection.getInstance().getConnection().disconnect();
-                }
                 UtilTool.Log("fengjian","ConnectionListener：重连IM");
             }catch (Exception e) {
                 UtilTool.Log("fengjian","----拋異常");
                 exReconnect(1000);
                 e.printStackTrace();
             }
-            if (!XmppConnection.getInstance().getConnection().isConnected()) {
+            if (!WsConnection.getInstance().get(IMService.this).isOpen()) {
                 UtilTool.Log("fengjian","----未連接");
                 exReconnect(1000);
                 return;
             }
-            if (IMLogin.loginAction(this, XmppConnection.getInstance().getConnection())) {
+            if (IMLogin.loginAction()) {
                 ConnectStateChangeListenerManager.get().notifyListener(
                         ConnectStateChangeListenerManager.RECEIVING);
                 UtilTool.Log("fengjian","----鏈接成功");

@@ -60,6 +60,15 @@ public class LoginInfo {
         private String country;
         private String currency;
         private String xmpp;
+        private String toco_id;
+
+        public String getToco_id() {
+            return toco_id;
+        }
+
+        public void setToco_id(String toco_id) {
+            this.toco_id = toco_id;
+        }
 
         public String getXmpp() {
             return xmpp;

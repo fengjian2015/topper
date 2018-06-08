@@ -79,7 +79,7 @@ public class GrabQRCodeRedActivity extends AppCompatActivity {
                     if (dataBean.getLog().size() != 0)
                         mTvCount.setText(dataBean.getLog().get(0).getMoney());
                     mTvCoin.setText(dataBean.getCoin_name());
-                    String user = dataBean.getSend_rp_user_name() + "@" + Constants.DOMAINNAME;
+                    String user= dataBean.getToco_id();
                     UtilTool.getImage(mMgr, user, GrabQRCodeRedActivity.this, mIvTouxiang);
                     //                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, user, GrabQRCodeRedActivity.this));
                 }

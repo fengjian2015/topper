@@ -93,10 +93,10 @@ public class MyFragment extends Fragment {
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.xg_touxaing))) {
-            /*Bitmap bitmap = UtilTool.getImage(mMgr, UtilTool.getJid(), getContext());
+            /*Bitmap bitmap = UtilTool.getImage(mMgr, UtilTool.getTocoId(), getContext());
             if (bitmap != null)
                 mIvTouxiang.setImageBitmap(bitmap);*/
-            UtilTool.getImage(mMgr, UtilTool.getJid(), getContext(), mIvTouxiang);
+            UtilTool.getImage(mMgr, UtilTool.getTocoId(), getContext(), mIvTouxiang);
         } else if (msg.equals(getString(R.string.check_new_version))) {
             mTvNewUpdate.setVisibility(View.VISIBLE);
         }
@@ -109,12 +109,12 @@ public class MyFragment extends Fragment {
     }
 
     private void init() {
-        mTvName.setText(UtilTool.getJid().substring(0, UtilTool.getJid().lastIndexOf("@")));
+        mTvName.setText(UtilTool.getUser());
         mMgr = new DBManager(getContext());
-        /*Bitmap bitmap = UtilTool.getImage(mMgr, UtilTool.getJid(), getContext());
+        /*Bitmap bitmap = UtilTool.getImage(mMgr, UtilTool.getTocoId(), getContext());
         if (bitmap != null)
             mIvTouxiang.setImageBitmap(bitmap);*/
-        UtilTool.getImage(mMgr, UtilTool.getJid(),getContext(), mIvTouxiang);
+        UtilTool.getImage(mMgr, UtilTool.getTocoId(),getContext(), mIvTouxiang);
     }
 
     @Override

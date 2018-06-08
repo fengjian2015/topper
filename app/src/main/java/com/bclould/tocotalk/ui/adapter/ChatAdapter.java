@@ -138,22 +138,18 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private final String mRoomId;
     private String mRoomType;
     private String mName;
-    private String mToName;
     private RelativeLayout mrlTitle;
 
-    public ChatAdapter(Context context, List<MessageInfo> messageList, Bitmap fromBitmap, String roomId, DBManager mgr, MediaPlayer mediaPlayer, String name, String roomType, RelativeLayout rlTitle) {
+    public ChatAdapter(Context context, List<MessageInfo> messageList, String roomId, DBManager mgr, MediaPlayer mediaPlayer, String name, String roomType, RelativeLayout rlTitle) {
         mContext = context;
         mMessageList = messageList;
-//        mFromBitmap = fromBitmap;
         mRoomId = roomId;
         mRoomType = roomType;
         mMgr = mgr;
         mMediaPlayer = mediaPlayer;
         mGrabRedPresenter = new GrabRedPresenter(mContext);
-//        mToBitmap = UtilTool.getImage(mMgr, UtilTool.getJid(), mContext);
         //繼續保留這兩個字段是用於之前版本有的消息沒有send字段
         mName = name;
-        mToName = UtilTool.getJid().substring(0, UtilTool.getJid().lastIndexOf("@"));
         mrlTitle = rlTitle;
     }
 
@@ -483,8 +479,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mToBitmap);
-            UtilTool.getImage(mMgr, UtilTool.getJid(), mContext, mIvTouxiang);
-            goIndividualDetails(mIvTouxiang, UtilTool.getJid(), mToName, messageInfo);
+            UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
+            goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             HyperLinkUtil hyperLinkUtil = new HyperLinkUtil();
             mTvMessamge.setText(hyperLinkUtil.getHyperClickableSpan(mContext, new SpannableStringBuilder(messageInfo.getMessage()), false, messageInfo.getId(), mMgr, new HyperLinkUtil.OnChangeLinkListener() {
                 @Override
@@ -587,8 +583,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mToBitmap);
-            UtilTool.getImage(mMgr, UtilTool.getJid(), mContext, mIvTouxiang);
-            goIndividualDetails(mIvTouxiang, UtilTool.getJid(), mToName, messageInfo);
+            UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
+            final String mName=mMgr.findUserName(UtilTool.getTocoId());
+            goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             mTvCoinRedpacket.setText(messageInfo.getCoin() + mContext.getString(R.string.red_package));
             mTvRemark.setText(messageInfo.getRemark());
             mCvRedpacket.setOnClickListener(new View.OnClickListener() {
@@ -603,8 +600,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
                             mMgr.updateMessageState(messageInfo.getId() + "", 1);
                             messageInfo.setStatus(1);
                             notifyDataSetChanged();
-//                            skip(info, mToBitmap, UtilTool.getJid(), 0);
-                            skip(info, UtilTool.getJid(), 0);
+//                            skip(info, mToBitmap, UtilTool.getTocoId(), 0);
+                            skip(info, UtilTool.getTocoId(), 0,mName);
                         }
                     });
                 }
@@ -624,10 +621,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private void skip(GrabRedInfo baseInfo, String user, int who) {
+    private void skip(GrabRedInfo baseInfo, String user, int who,String name) {
         Intent intent = new Intent(mContext, RedPacketActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("user", user);
+        bundle.putString("name",name);
         bundle.putSerializable("grabRedInfo", baseInfo);
         /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -664,6 +662,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             if (StringUtils.isEmpty(mUser))
                 mUser = mRoomId;
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
+            final String mName=mMgr.findUserName(mUser);
             UtilTool.getImage(mMgr, mUser, mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, mUser, mName, messageInfo);
             mTvCoinRedpacket.setText(messageInfo.getCoin() + mContext.getString(R.string.red_package));
@@ -685,7 +684,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                                     Toast.makeText(mContext, info.getMessage(), Toast.LENGTH_SHORT).show();
                                 } else {
 //                                    skip(info, mFromBitmap, mUser, 1);
-                                    skip(info, finalMUser, 1);
+                                    skip(info, finalMUser, 1,mName);
                                 }
                             }
                         });
@@ -713,9 +712,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     //显示币种弹框
     private void showDialog(final MessageInfo messageInfo) {
+        //暫無群聊，所以沒有考慮群聊情況
         String mUser = messageInfo.getSend();
         if (StringUtils.isEmpty(mUser))
             mUser = mRoomId;
+        final String mName=mMgr.findUserName(mUser);
         mCurrencyDialog = new CurrencyDialog(R.layout.dialog_redpacket, mContext, R.style.dialog);
         Window window = mCurrencyDialog.getWindow();
         window.setWindowAnimations(R.style.CustomDialog);
@@ -728,7 +729,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ImageView bark = (ImageView) mCurrencyDialog.findViewById(R.id.iv_bark);
         Button open = (Button) mCurrencyDialog.findViewById(R.id.btn_open);
         from.setText(mContext.getString(R.string.red_package_hint) + messageInfo.getCoin() + mContext.getString(R.string.red_package));
-        name.setText(mUser.substring(0, mUser.indexOf("@")));
+        name.setText(mName);
         tvRemark.setText(messageInfo.getRemark());
 //        touxiang.setImageBitmap(mFromBitmap);
         UtilTool.getImage(mMgr, mUser, mContext, touxiang);
@@ -752,7 +753,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                             Toast.makeText(mContext, info.getMessage(), Toast.LENGTH_SHORT).show();
                         } else {
 //                            skip(info, mFromBitmap, mUser, 1);
-                            skip(info, finalMUser, 1);
+                            skip(info, finalMUser, 1,mName);
                         }
                     }
                 });
@@ -782,8 +783,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mToBitmap);
-            UtilTool.getImage(mMgr, UtilTool.getJid(), mContext, mIvTouxiang);
-            goIndividualDetails(mIvTouxiang, UtilTool.getJid(), mToName, messageInfo);
+            UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
+            goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             mTvVoiceTime.setText(messageInfo.getVoiceTime() + "''");
             int wide = Integer.parseInt(messageInfo.getVoiceTime()) * 2;
             String blank = " ";
@@ -944,8 +945,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mToBitmap);
-            UtilTool.getImage(mMgr, UtilTool.getJid(), mContext, mIvTouxiang);
-            goIndividualDetails(mIvTouxiang, UtilTool.getJid(), mToName, messageInfo);
+            UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
+            goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             Glide.with(mContext).load(new File(messageInfo.getVoice())).listener(new RequestListener<Drawable>() {
                 @Override
                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -1094,8 +1095,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mToBitmap);
-            UtilTool.getImage(mMgr, UtilTool.getJid(), mContext, mIvTouxiang);
-            goIndividualDetails(mIvTouxiang, UtilTool.getJid(), mToName, messageInfo);
+            UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
+            goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             mIvVideo.setImageBitmap(BitmapFactory.decodeFile(messageInfo.getVoice()));
             if (messageInfo.getSendStatus() == 0) {
                 mIvLoad.setVisibility(View.VISIBLE);
@@ -1124,17 +1125,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
                 }
             });
-//            mRlVideo.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View view) {
-//                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false);
-//                    return false;
-//                }
-//            });
             mRlVideo.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true);
                     return false;
                 }
             });
@@ -1173,17 +1167,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
                 }
             });
-//            mRlVideo.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View view) {
-//                    showCopyDialog(messageInfo.getMsgType(),messageInfo,false);
-//                    return false;
-//                }
-//            });
             mRlVideo.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true);
                     return false;
                 }
             });
@@ -1212,8 +1199,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
-            UtilTool.getImage(mMgr, UtilTool.getJid(), mContext, mIvTouxiang);
-            goIndividualDetails(mIvTouxiang, UtilTool.getJid(), mToName, messageInfo);
+            UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
+            goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             if (messageInfo.getSendStatus() == 0) {
                 mIvLoad.setVisibility(View.VISIBLE);
                 mIvWarning.setVisibility(View.GONE);
@@ -1324,8 +1311,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
-            UtilTool.getImage(mMgr, UtilTool.getJid(), mContext, mIvTouxiang);
-            goIndividualDetails(mIvTouxiang, UtilTool.getJid(), mToName, messageInfo);
+            UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
+            goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             if (messageInfo.getSendStatus() == 0) {
                 mIvLoad.setVisibility(View.VISIBLE);
                 mIvWarning.setVisibility(View.GONE);
@@ -1436,8 +1423,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
-            UtilTool.getImage(mMgr, UtilTool.getJid(), mContext, mIvTouxiang);
-            goIndividualDetails(mIvTouxiang, UtilTool.getJid(), mToName, messageInfo);
+            UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
+            goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             if (messageInfo.getSendStatus() == 0) {
                 mIvLoad.setVisibility(View.VISIBLE);
                 mIvWarning.setVisibility(View.GONE);
@@ -1569,8 +1556,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
-            UtilTool.getImage(mMgr, UtilTool.getJid(), mContext, mIvTouxiang);
-            goIndividualDetails(mIvTouxiang, UtilTool.getJid(), mToName, messageInfo);
+            UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
+            goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             if (messageInfo.getSendStatus() == 0) {
                 mIvLoad.setVisibility(View.VISIBLE);
                 mIvWarning.setVisibility(View.GONE);
@@ -1703,7 +1690,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
-            goIndividualDetails(mIvTouxiang, UtilTool.getJid(), mToName, messageInfo);
+            goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
+            UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             mTvRemark.setText(messageInfo.getRemark());
             mTvCoinCount.setText(messageInfo.getCount() + messageInfo.getCoin());
             if (messageInfo.getStatus() == 0) {
@@ -1905,6 +1893,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                         mContext.startActivity(intent);
                     } else {
                         Intent intent = new Intent(mContext, GrabQRCodeRedActivity.class);
+                        intent.putExtra("id",messageInfo.getRedId()+"");
                         mContext.startActivity(intent);
                     }
                 }

@@ -237,6 +237,7 @@ public class DiscoverFragment extends Fragment {
             case R.id.iv_my_dynamic:
                 Intent intent = new Intent(getActivity(), PersonageDynamicActivity.class);
                 intent.putExtra("name", UtilTool.getUser());
+                intent.putExtra("user",UtilTool.getTocoId());
                 startActivity(intent);
                 break;
         }

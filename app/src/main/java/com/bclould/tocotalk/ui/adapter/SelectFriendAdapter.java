@@ -104,13 +104,14 @@ public class SelectFriendAdapter extends RecyclerView.Adapter{
 
         UserInfo mUserInfo;
         private String mUser;
+        private String mName;
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onItemListener.onItemClick(mFriendChildName.getText().toString(),mUser.substring(0, mUser.indexOf("@"))
+                    onItemListener.onItemClick(mFriendChildName.getText().toString(),mName
                             ,mUser);
                 }
             });
@@ -119,6 +120,7 @@ public class SelectFriendAdapter extends RecyclerView.Adapter{
         public void setData(UserInfo userInfo, final int position) {
             mUserInfo = userInfo;
             mUser = userInfo.getUser();
+            mName= userInfo.getUserName();
             String remark = userInfo.getRemark();
             //根据position获取首字母作为目录catalog
             String catalog = userInfo.getFirstLetter();
@@ -135,8 +137,8 @@ public class SelectFriendAdapter extends RecyclerView.Adapter{
             UtilTool.Log("好友", userInfo.getUser());
             if (!StringUtils.isEmpty(userInfo.getRemark())) {
                 mFriendChildName.setText(remark);
-            } else if (userInfo.getUser().contains("@")) {
-                mFriendChildName.setText(userInfo.getUser().substring(0, userInfo.getUser().indexOf("@")));
+            } else {
+                mFriendChildName.setText(mName);
             }
 
         }

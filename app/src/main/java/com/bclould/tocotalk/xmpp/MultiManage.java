@@ -20,6 +20,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.bclould.tocotalk.Presenter.GroupPresenter;
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.history.DBRoomManage;
 import com.bclould.tocotalk.history.DBRoomMember;
@@ -28,11 +29,14 @@ import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.RoomManageInfo;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.model.VoiceInfo;
+import com.bclould.tocotalk.topperchat.WsConnection;
+import com.bclould.tocotalk.topperchat.WsContans;
 import com.bclould.tocotalk.ui.activity.CreateGroupRoomActivity;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.SmackException;
@@ -48,12 +52,16 @@ import org.jxmpp.jid.EntityBareJid;
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.jid.parts.Resourcepart;
 import org.jxmpp.stringprep.XmppStringprepException;
+import org.msgpack.jackson.dataformat.MessagePackFactory;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
@@ -93,6 +101,51 @@ public class MultiManage implements Room{
         this.dbRoomMember=dbRoomMember;
     }
 
+    private boolean send(String to,byte[] attachment,String body,int msgType) throws Exception{
+        ObjectMapper objectMapper =  new ObjectMapper(new MessagePackFactory());
+        Map<Object,Object> messageMap = new HashMap<>();
+        messageMap.put("body", OtrChatListenerManager.getInstance().sentMessagesChange(body,
+                OtrChatListenerManager.getInstance().sessionID(UtilTool.getTocoId(), String.valueOf(roomId))));
+        messageMap.put("attachment",attachment);
+
+        Map<Object,Object> contentMap = new HashMap<>();
+        contentMap.put("to",to);
+        contentMap.put("from",UtilTool.getTocoId());
+        if("true".equals(OtrChatListenerManager.getInstance().getOTRState(roomId.toString()))){
+            contentMap.put("crypt",true);
+        }else{
+            contentMap.put("crypt",false);
+        }
+        contentMap.put("message",objectMapper.writeValueAsBytes(messageMap));
+        contentMap.put("type",msgType);
+
+        Map<Object,Object> sendMap = new HashMap<>();
+        sendMap.put("type",3);
+        sendMap.put("content",objectMapper.writeValueAsBytes(contentMap));
+        WsConnection.getInstance().get(context).sendBinary(objectMapper.writeValueAsBytes(sendMap));
+        return true;
+    }
+
+    private boolean sendOTR(String to,byte[] attachment,String body,int msgType) throws Exception{
+        ObjectMapper objectMapper =  new ObjectMapper(new MessagePackFactory());
+        Map<Object,Object> messageMap = new HashMap<>();
+        messageMap.put("body",OtrChatListenerManager.getInstance().sentMessagesChange(body,
+                OtrChatListenerManager.getInstance().sessionID(UtilTool.getTocoId(), String.valueOf(roomId))));
+        messageMap.put("attachment",attachment);
+
+        Map<Object,Object> contentMap = new HashMap<>();
+        contentMap.put("to",to);
+        contentMap.put("from",UtilTool.getTocoId());
+        contentMap.put("crypt",true);
+        contentMap.put("message",objectMapper.writeValueAsBytes(messageMap));
+        contentMap.put("type",msgType);
+
+        Map<Object,Object> sendMap = new HashMap<>();
+        sendMap.put("type",3);
+        sendMap.put("content",objectMapper.writeValueAsBytes(contentMap));
+        WsConnection.getInstance().get(context).sendBinary(objectMapper.writeValueAsBytes(sendMap));
+        return true;
+    }
 
     @Override
     public void addMessageManageListener(MessageManageListener messageManageListener){
@@ -129,6 +182,11 @@ public class MultiManage implements Room{
     }
 
     @Override
+    public void sendOTR(String message) {
+
+    }
+
+    @Override
     public boolean anewSendVoice(MessageInfo messageInfo) {
         try {
             mMgr.deleteSingleMessage(roomId,messageInfo.getId()+"");
@@ -144,27 +202,14 @@ public class MultiManage implements Room{
     public void sendVoice(int duration, String fileName) {
         String converstaion="[" + context.getString(R.string.voice) + "]";
         try {
-            //创建jid实体
-            EntityBareJid groupJid = JidCreate.entityBareFrom(roomId);
-            //群管理对象
-            MultiUserChatManager multiUserChatManager = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            MultiUserChat multiUserChat = multiUserChatManager.getMultiUserChat(groupJid);
-            //发送信息
-            org.jivesoftware.smack.packet.Message message = new org.jivesoftware.smack.packet.Message();//实例化消息
-            VoiceInfo voiceInfo = new VoiceInfo();//实例化语音model
             byte[] bytes = UtilTool.readStream(fileName);//把语音文件转换成二进制
-            String base64 = Base64.encodeToString(bytes);//二进制转成Base64
-            voiceInfo.setElementText(base64);//设置进model
-            message.setBody("[audio]:" + duration + context.getString(R.string.second));
-            message.addExtension(voiceInfo);//扩展message,把语音添加进标签
-            multiUserChat.sendMessage(message);//发送消息
+            send(roomId,bytes,"", WsContans.MSG_AUDIO);
 
             //把消息添加进数据库
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date curDate = new Date(System.currentTimeMillis());
             String time = formatter.format(curDate);
             MessageInfo messageInfo = new MessageInfo();
-            messageInfo.setMessage(message.getBody());
             messageInfo.setType(0);
             messageInfo.setUsername(roomId);
             messageInfo.setVoice(fileName);
@@ -172,7 +217,7 @@ public class MultiManage implements Room{
             messageInfo.setMsgType(TO_VOICE_MSG);
             messageInfo.setVoiceTime(duration + "");
             messageInfo.setVoiceStatus(1);
-            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
             messageInfo.setId(mMgr.addMessage(messageInfo));
             refreshAddData(messageInfo);
@@ -241,13 +286,10 @@ public class MultiManage implements Room{
     @Override
     public MessageInfo sendMessage(String message) {
         try {
-            //创建jid实体
-            EntityBareJid groupJid = JidCreate.entityBareFrom(roomId);
-            //群管理对象
-            MultiUserChatManager multiUserChatManager = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            MultiUserChat multiUserChat = multiUserChatManager.getMultiUserChat(groupJid);
-            //发送信息
-            multiUserChat.sendMessage(message);
+            MessageInfo sendMessage=new MessageInfo();
+            sendMessage.setMessage(message);
+            send(roomId,null,JSON.toJSONString(sendMessage), WsContans.MSG_TEXT);
+
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(roomId);
             messageInfo.setMessage(message);
@@ -257,7 +299,7 @@ public class MultiManage implements Room{
             messageInfo.setTime(time);
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_TEXT_MSG);
-            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(message);
             messageInfo.setId(mMgr.addMessage(messageInfo));
             if (mMgr.findConversation(roomId)) {
@@ -286,7 +328,7 @@ public class MultiManage implements Room{
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_TEXT_MSG);
             messageInfo.setSendStatus(1);
-            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(message);
             messageInfo.setId(mMgr.addMessage(messageInfo));
 
@@ -309,20 +351,16 @@ public class MultiManage implements Room{
 
     private void sendFileAfterMessage(String key,String postfix,String newFile,int mId){
         try {
-            //创建jid实体
-            EntityBareJid groupJid = JidCreate.entityBareFrom(roomId);
-            //群管理对象
-            MultiUserChatManager multiUserChatManager = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            MultiUserChat multiUserChat = multiUserChatManager.getMultiUserChat(groupJid);
-            org.jivesoftware.smack.packet.Message message = new org.jivesoftware.smack.packet.Message();
-            VoiceInfo voiceInfo = new VoiceInfo();
             byte[] bytes = UtilTool.readStream(newFile);
-            String base64 = Base64.encodeToString(bytes);
-            voiceInfo.setElementText(base64);
-            message.addExtension(voiceInfo);
-            message.setBody("[" + postfix + "]:" + key);
-            //发送信息
-            multiUserChat.sendMessage(message);
+            MessageInfo sendMessage=new MessageInfo();
+            sendMessage.setKey(key);
+            int type = 0;
+            if (postfix.equals("Image")) {
+                type=WsContans.MSG_IMAGE;
+            } else if (postfix.equals("Video")) {
+                type=WsContans.MSG_VIDEO;
+            }
+            send(roomId,bytes,JSON.toJSONString(sendMessage),type);
             mMgr.updateMessageHint(mId, 1);
             sendFileResults(newFile,true);
             return;
@@ -475,16 +513,16 @@ public class MultiManage implements Room{
 
     @Override
     public void sendTransfer(String mRemark, String mCoin, String mCount) {
-        String converstaion="[" + context.getString(R.string.transfer) + "]";
-        String message = Constants.TRANSFER + Constants.CHUANCODE + mRemark + Constants.CHUANCODE + mCoin + Constants.CHUANCODE + mCount;
+
         try {
-            //创建jid实体
-            EntityBareJid groupJid = JidCreate.entityBareFrom(roomId);
-            //群管理对象
-            MultiUserChatManager multiUserChatManager = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            MultiUserChat multiUserChat = multiUserChatManager.getMultiUserChat(groupJid);
-            //发送信息
-            multiUserChat.sendMessage(message);
+            String converstaion = "[" + context.getString(R.string.transfer) + "]";
+            String message = Constants.TRANSFER + Constants.CHUANCODE + mRemark + Constants.CHUANCODE + mCoin + Constants.CHUANCODE + mCount;
+            MessageInfo sendMessage=new MessageInfo();
+            sendMessage.setRemark(mRemark);
+            sendMessage.setCoin(mCoin);
+            sendMessage.setCount(mCount);
+            sendMessage.setMessage(message);
+            send(roomId,null,JSON.toJSONString(sendMessage), WsContans.MSG_TRANSFER);
 
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(roomId);
@@ -498,7 +536,7 @@ public class MultiManage implements Room{
             messageInfo.setMsgType(TO_TRANSFER_MSG);
             messageInfo.setCount(mCount);
             messageInfo.setStatus(0);
-            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
             mMgr.addMessage(messageInfo);
 
@@ -521,16 +559,16 @@ public class MultiManage implements Room{
 
     @Override
     public void sendRed(String mRemark,String mCoin,double mCount,int id) {
-        String converstaion="[" + context.getString(R.string.red_package) + "]";
+        String converstaion = "[" + context.getString(R.string.red_package) + "]";
         String message = Constants.REDBAG + Constants.CHUANCODE + mRemark + Constants.CHUANCODE + mCoin + Constants.CHUANCODE + mCount + Constants.CHUANCODE + id;
         try {
-            //创建jid实体
-            EntityBareJid groupJid = JidCreate.entityBareFrom(roomId);
-            //群管理对象
-            MultiUserChatManager multiUserChatManager = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            MultiUserChat multiUserChat = multiUserChatManager.getMultiUserChat(groupJid);
-            //发送信息
-            multiUserChat.sendMessage(message);
+            MessageInfo sendMessage=new MessageInfo();
+            sendMessage.setRemark(mRemark);
+            sendMessage.setCoin(mCoin);
+            sendMessage.setCount(mCount+"");
+            sendMessage.setRedId(id);
+            sendMessage.setMessage(message);
+            send(roomId,null,JSON.toJSONString(sendMessage), WsContans.MSG_REDBAG);
 
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(roomId);
@@ -546,7 +584,7 @@ public class MultiManage implements Room{
             messageInfo.setCount(mCount + "");
             messageInfo.setStatus(0);
             messageInfo.setRedId(id);
-            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
             mMgr.addMessage(messageInfo);
             if (mMgr.findConversation(roomId)) {
@@ -587,28 +625,15 @@ public class MultiManage implements Room{
         }
         int mId;
         try {
-            //创建jid实体
-            EntityBareJid groupJid = JidCreate.entityBareFrom(roomId);
-            //群管理对象
-            MultiUserChatManager multiUserChatManager = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            MultiUserChat multiUserChat = multiUserChatManager.getMultiUserChat(groupJid);
-
-            org.jivesoftware.smack.packet.Message message = new org.jivesoftware.smack.packet.Message();
-            VoiceInfo voiceInfo = new VoiceInfo();
-            byte[] bytes = UtilTool.readStream(newFile.getAbsolutePath());
-            String base64 = Base64.encodeToString(bytes);
-            voiceInfo.setElementText(base64);
-            message.addExtension(voiceInfo);
-            MessageInfo messageInfo=new MessageInfo();
+            MessageInfo messageInfo = new MessageInfo();
             messageInfo.setTitle(title);
             messageInfo.setAddress(address);
             messageInfo.setLat(lat);
             messageInfo.setLng(lng);
-            message.setBody("[" + postfix + "]:" + JSON.toJSONString(messageInfo));
-            //发送信息
-            multiUserChat.sendMessage(message);
-
+            byte[] bytes = UtilTool.readStream(newFile.getAbsolutePath());
+            send(roomId,bytes,JSON.toJSONString(messageInfo),WsContans.MSG_LOCATION);
             //把消息添加进数据库
+
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date curDate = new Date(System.currentTimeMillis());
             String time = formatter.format(curDate);
@@ -619,7 +644,7 @@ public class MultiManage implements Room{
             messageInfo.setTime(time);
             messageInfo.setMessage(title);
             messageInfo.setMsgType(TO_LOCATION_MSG);
-            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
             mId= mMgr.addMessage(messageInfo);
             messageInfo.setId(mId);
@@ -700,7 +725,7 @@ public class MultiManage implements Room{
             } else {
                 messageInfo.setMsgType(TO_FILE_MSG);
             }
-            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setSend(UtilTool.getTocoId());
             if (mMgr.findConversation(roomId)) {
                 if (postfix.equals("Image")) {
                     mMgr.updateConversation(roomId, 0, "[" + context.getString(R.string.image) + "]", time);
@@ -753,7 +778,7 @@ public class MultiManage implements Room{
             } else {
                 messageInfo.setMsgType(TO_FILE_MSG);
             }
-            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setSend(UtilTool.getTocoId());
             if (mMgr.findConversation(roomId)) {
                 if (postfix.equals("Image")) {
                     mMgr.updateConversation(roomId, 0, "[" + context.getString(R.string.image) + "]", time);
@@ -821,7 +846,7 @@ public class MultiManage implements Room{
             }
             // 设置聊天室的新拥有者
             List<String> owners = new ArrayList<>();
-            owners.add(UtilTool.getJid());
+            owners.add(UtilTool.getTocoId());
 
             //这里的用户实体我要说一下，因为这是我这个项目的实体，实际上这里只需要知道用户的jid获者名称就可以了
             if (users != null && !users.isEmpty()) {
@@ -966,12 +991,7 @@ public class MultiManage implements Room{
     public boolean sendCaed(MessageInfo messageInfo) {
         String converstaion="[" + context.getString(R.string.person_business_card) + "]";
         try {
-            //创建jid实体
-            EntityBareJid groupJid = JidCreate.entityBareFrom(roomId);
-            //群管理对象
-            MultiUserChatManager multiUserChatManager = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            MultiUserChat multiUserChat = multiUserChatManager.getMultiUserChat(groupJid);
-            multiUserChat.sendMessage(Constants.CARD+":"+JSON.toJSONString(messageInfo));
+            send(roomId,null,JSON.toJSONString(messageInfo),WsContans.MSG_CARD);
 
             messageInfo.setUsername(roomId);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -980,7 +1000,7 @@ public class MultiManage implements Room{
             messageInfo.setTime(time);
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_CARD_MSG);
-            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
             messageInfo.setId(mMgr.addMessage(messageInfo));
             if (mMgr.findConversation(roomId)) {
@@ -1007,7 +1027,7 @@ public class MultiManage implements Room{
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_CARD_MSG);
             messageInfo.setSendStatus(1);
-            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
             messageInfo.setId(mMgr.addMessage(messageInfo));
 
@@ -1039,12 +1059,7 @@ public class MultiManage implements Room{
     public boolean sendShareLink(MessageInfo messageInfo) {
         String converstaion="[" + context.getString(R.string.share) + "]";
         try {
-            //创建jid实体
-            EntityBareJid groupJid = JidCreate.entityBareFrom(roomId);
-            //群管理对象
-            MultiUserChatManager multiUserChatManager = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            MultiUserChat multiUserChat = multiUserChatManager.getMultiUserChat(groupJid);
-            multiUserChat.sendMessage(Constants.SHARE_LINK+":"+JSON.toJSONString(messageInfo));
+            send(roomId,null,JSON.toJSONString(messageInfo),WsContans.MSG_SHARE_LINK);
 
             messageInfo.setUsername(roomId);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -1053,7 +1068,7 @@ public class MultiManage implements Room{
             messageInfo.setTime(time);
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_LINK_MSG);
-            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
             messageInfo.setId(mMgr.addMessage(messageInfo));
             if (mMgr.findConversation(roomId)) {
@@ -1080,7 +1095,7 @@ public class MultiManage implements Room{
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_LINK_MSG);
             messageInfo.setSendStatus(1);
-            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
             messageInfo.setId(mMgr.addMessage(messageInfo));
             if (mMgr.findConversation(roomId)) {
@@ -1106,17 +1121,17 @@ public class MultiManage implements Room{
         sendShareGuess(messageInfo);
     }
 
+    @Override
+    public void transmitVideo(MessageInfo messageInfo) {
+
+    }
+
 
     @Override
     public boolean sendShareGuess(MessageInfo messageInfo) {
         String converstaion="[" + context.getString(R.string.share_guess) + "]";
         try {
-            //创建jid实体
-            EntityBareJid groupJid = JidCreate.entityBareFrom(roomId);
-            //群管理对象
-            MultiUserChatManager multiUserChatManager = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-            MultiUserChat multiUserChat = multiUserChatManager.getMultiUserChat(groupJid);
-            multiUserChat.sendMessage(Constants.SHARE_GUESS+":"+JSON.toJSONString(messageInfo));
+            send(roomId,null,JSON.toJSONString(messageInfo),WsContans.MSG_SHARE_GUESS);
 
             messageInfo.setUsername(roomId);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -1125,7 +1140,7 @@ public class MultiManage implements Room{
             messageInfo.setTime(time);
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_GUESS_MSG);
-            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
             messageInfo.setId(mMgr.addMessage(messageInfo));
             if (mMgr.findConversation(roomId)) {
@@ -1152,7 +1167,7 @@ public class MultiManage implements Room{
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_GUESS_MSG);
             messageInfo.setSendStatus(1);
-            messageInfo.setSend(UtilTool.getJid());
+            messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
             messageInfo.setId(mMgr.addMessage(messageInfo));
             if (mMgr.findConversation(roomId)) {

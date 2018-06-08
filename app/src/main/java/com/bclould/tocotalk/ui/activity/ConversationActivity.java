@@ -46,6 +46,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.history.DBRoomManage;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.ui.adapter.ChatAdapter;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
@@ -416,11 +417,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             e.printStackTrace();
         }
         //初始化OTR
-        try {
-            mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(roomId).toString()));
-        } catch (XmppStringprepException e) {
-            e.printStackTrace();
-        }
+        mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(roomId.toString()));
         //设置房间类型
         mEkbEmoticonsKeyboard.setRoomType(roomType);
     }
@@ -500,11 +497,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 mChatAdapter.notifyDataSetChanged();
             }
         } else if (msg.equals(getString(R.string.otr_isopen))) {
-            try {
-                mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(roomId).toString()));
-            } catch (XmppStringprepException e) {
-                e.printStackTrace();
-            }
+            mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(roomId.toString()));
         } else if (msg.equals(getString(R.string.delete_friend))) {
             finish();
         } else if (msg.equals(getString(R.string.change_friend_remark))) {
@@ -658,7 +651,12 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                         MessageInfo messageInfo = (MessageInfo) bundle3.getSerializable("MessageInfo");
                         messageInfos1 = mMgr.queryLoadMessage(roomId, messageInfo.getId(), isFist);
                     } else {
-                        messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(mMessageList.size() - 1).getId(), isFist);
+                        if(mMessageList.size()==0){
+                            messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(0).getId(), isFist);
+                        }else{
+                            messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(mMessageList.size() - 1).getId(), isFist);
+                        }
+
                     }
                     List<MessageInfo> MessageList3 = new ArrayList<MessageInfo>();
                     MessageList3.addAll(mMessageList);
@@ -692,7 +690,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             BitmapDrawable bd = (BitmapDrawable) drawable;
             mUserImage = bd.getBitmap();
             mName = "tester_001";
-            roomId = Constants.MYUSER;
+            roomId = UtilTool.getTocoId();
         } else {
             mName = bundle.getString("name");
             roomId = bundle.getString("user");
@@ -734,7 +732,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private void initAdapter() {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mChatAdapter = new ChatAdapter(this, mMessageList, mUserImage, roomId, mMgr, mediaPlayer,mName,roomType,mRlTitle);
+        mChatAdapter = new ChatAdapter(this, mMessageList, roomId, mMgr, mediaPlayer,mName,roomType,mRlTitle);
         mRecyclerView.setAdapter(mChatAdapter);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -804,54 +802,11 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 mBottomDialog.dismiss();
             }
         });
-        LinearLayout delete = (LinearLayout) mBottomDialog.findViewById(R.id.ll_delete);
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDeleteDialog();
-                mBottomDialog.dismiss();
-
-            }
-        });
         LinearLayout complain = (LinearLayout) mBottomDialog.findViewById(R.id.ll_complain);
         complain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mBottomDialog.dismiss();
-            }
-        });
-    }
-
-    //显示删除好友dialog
-    private void showDeleteDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
-        deleteCacheDialog.show();
-        deleteCacheDialog.setTitle(getString(R.string.confirm_delete) + " " + mName + " " + getString(R.string.what));
-        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
-        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteCacheDialog.dismiss();
-            }
-        });
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Roster roster = Roster.getInstanceFor(XmppConnection.getInstance().getConnection());
-                    RosterEntry entry = roster.getEntry(JidCreate.entityBareFrom(roomId));
-                    roster.removeEntry(entry);
-                    Toast.makeText(ConversationActivity.this, getString(R.string.delete_succeed), Toast.LENGTH_SHORT).show();
-                    mMgr.deleteConversation(roomId);
-                    mMgr.deleteMessage(roomId);
-                    mMgr.deleteUser(roomId);
-                    EventBus.getDefault().post(new MessageEvent(getString(R.string.delete_friend)));
-                    deleteCacheDialog.dismiss();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    UtilTool.Log("fsdafa", e.getMessage());
-                }
             }
         });
     }
@@ -882,7 +837,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         }else{
             Intent intent = new Intent(this, ConversationDetailsActivity.class);
             intent.putExtra("user", roomId);
-            intent.putExtra("name", roomId.split("@")[0]);
+            intent.putExtra("name", mName);
             intent.putExtra("roomId",roomId);
             startActivity(intent);
         }
@@ -921,8 +876,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     @Override
     public void resultOTR() {
         try {
-            mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(JidCreate.entityBareFrom(roomId).toString()));
-            OtrChatListenerManager.getInstance().changeState(JidCreate.entityBareFrom(roomId).toString(), this);
+            mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(roomId.toString()));
+            OtrChatListenerManager.getInstance().changeState(roomId.toString(), this);
         } catch (Exception e) {
             e.printStackTrace();
         }

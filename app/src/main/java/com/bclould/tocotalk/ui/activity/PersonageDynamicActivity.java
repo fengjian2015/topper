@@ -56,6 +56,7 @@ public class PersonageDynamicActivity extends BaseActivity {
     @Bind(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
     private String mName;
+    private String mUser;
     private DynamicPresenter mDynamicPresenter;
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
@@ -118,7 +119,7 @@ public class PersonageDynamicActivity extends BaseActivity {
             mPage = 1;
             end = 0;
         }
-        mDynamicPresenter.taDynamicList(mPage, mPageSize, mName, new DynamicPresenter.CallBack2() {
+        mDynamicPresenter.taDynamicList(mPage, mPageSize, mUser, new DynamicPresenter.CallBack2() {
             @Override
             public void send(List<DynamicListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
@@ -164,6 +165,7 @@ public class PersonageDynamicActivity extends BaseActivity {
 
     private void initIntent() {
         mName = getIntent().getStringExtra("name");
+        mUser= getIntent().getStringExtra("user");
         mTvTitle.setText(mName);
     }
 

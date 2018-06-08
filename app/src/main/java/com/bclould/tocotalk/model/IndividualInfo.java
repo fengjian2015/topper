@@ -41,6 +41,15 @@ public class IndividualInfo {
         private int no_see_me;
         private int no_see_him;
         private String remark;
+        private String toco_id;
+
+        public String getToco_id() {
+            return toco_id;
+        }
+
+        public void setToco_id(String toco_id) {
+            this.toco_id = toco_id;
+        }
 
         public int getNo_see_me() {
             return no_see_me;
