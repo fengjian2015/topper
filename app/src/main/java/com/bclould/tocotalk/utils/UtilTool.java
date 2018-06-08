@@ -1,6 +1,7 @@
 package com.bclould.tocotalk.utils;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -652,7 +653,7 @@ public class UtilTool {
     public static void setCircleImg(Context context, Object url, ImageView imageView) {
         if (Util.isOnMainThread() && context != null) {
             if (url instanceof String) {
-                Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
+                Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1)).into(imageView);
             } else {
                 Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
             }
@@ -666,7 +667,7 @@ public class UtilTool {
             if (!info.getPath().isEmpty()) {
                 UtilTool.Log("頭像", info.getPath());
                 if (Util.isOnMainThread() && context != null) {
-                    Glide.with(context).load(info.getPath()).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
+                    Glide.with(context).load(info.getPath()).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1)).into(imageView);
                 }
             } else {
                 if (Util.isOnMainThread() && context != null) {
@@ -883,5 +884,24 @@ public class UtilTool {
         String pattern = pattern1 + "|" + pattern2 + "|" + pattern3 + "|" + pattern4 + "|" + pattern5 + "|" + pattern6;
         Pattern p = Pattern.compile(pattern);
         return p;
+    }
+
+    public static boolean isServiceRunning(Context mContext, String className) {
+        boolean isRunning = false;
+        ActivityManager activityManager = (ActivityManager)
+                mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> serviceList = activityManager.getRunningServices(30);
+
+        if (!(serviceList.size() > 0)) {
+            return false;
+        }
+
+        for (int i = 0; i < serviceList.size(); i++) {
+            if (serviceList.get(i).service.getClassName().equals(className)) {
+                isRunning = true;
+                break;
+            }
+        }
+        return isRunning;
     }
 }

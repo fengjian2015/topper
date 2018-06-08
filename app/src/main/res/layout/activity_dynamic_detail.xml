@@ -83,32 +83,20 @@
                         android:id="@+id/name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/touxiang"
                         android:layout_marginLeft="@dimen/x40"
-                        android:layout_marginTop="@dimen/x36"
                         android:layout_toRightOf="@+id/touxiang"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x32"
                         android:textStyle="bold"/>
 
-                    <ImageView
-                        android:id="@+id/time_tv"
-                        android:layout_width="@dimen/x20"
-                        android:layout_height="@dimen/x20"
-                        android:layout_below="@+id/name"
-                        android:layout_marginLeft="@dimen/x40"
-                        android:layout_marginTop="@dimen/y20"
-                        android:layout_toRightOf="@+id/touxiang"
-                        android:src="@mipmap/bg_reply_time"/>
-
                     <TextView
                         android:id="@+id/time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/name"
-                        android:layout_marginLeft="@dimen/x10"
-                        android:layout_marginTop="@dimen/y20"
-                        android:layout_toRightOf="@+id/time_tv"
-                        android:textSize="@dimen/x18"/>
+                        android:layout_alignBottom="@+id/touxiang"
+                        android:layout_alignLeft="@+id/name"
+                        android:textSize="@dimen/x26"/>
 
                     <TextView
                         android:id="@+id/dynamic_text"
@@ -210,9 +198,9 @@
 
                         <ImageView
                             android:id="@+id/iv_video"
-                            android:scaleType="center"
                             android:layout_width="@dimen/x288"
-                            android:layout_height="@dimen/y288"/>
+                            android:layout_height="@dimen/y288"
+                            android:scaleType="center"/>
 
                         <ImageView
                             android:id="@+id/iv_video_play"

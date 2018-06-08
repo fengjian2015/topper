@@ -89,8 +89,11 @@ import static com.luck.picture.lib.config.PictureMimeType.ofImage;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class DynamicDetailActivity extends BaseActivity {
 
+
     @Bind(R.id.bark)
     ImageView mBark;
+    @Bind(R.id.tv_delete)
+    TextView mTvDelete;
     @Bind(R.id.title)
     RelativeLayout mTitle;
     @Bind(R.id.xx)
@@ -99,38 +102,10 @@ public class DynamicDetailActivity extends BaseActivity {
     ImageView mTouxiang;
     @Bind(R.id.name)
     TextView mName;
-    @Bind(R.id.time_tv)
-    ImageView mTimeTv;
     @Bind(R.id.time)
     TextView mTime;
     @Bind(R.id.dynamic_text)
     TextView mDynamicText;
-    @Bind(R.id.dynamic_content)
-    RelativeLayout mDynamicContent;
-    @Bind(R.id.recycler_view)
-    RecyclerView mRecyclerView;
-    @Bind(R.id.comment_et)
-    EditText mCommentEt;
-    @Bind(R.id.rl_edit)
-    RelativeLayout mRlEdit;
-    @Bind(R.id.send)
-    TextView mSend;
-    @Bind(R.id.ll_zan)
-    LinearLayout mLlZan;
-    @Bind(R.id.ngl_images)
-    NineGridImageView mNglImages;
-    @Bind(R.id.refreshLayout)
-    SmartRefreshLayout mRefreshLayout;
-    @Bind(R.id.tv_like_count)
-    TextView mTvLikeCount;
-    @Bind(R.id.scrollView)
-    ScrollView mScrollView;
-    @Bind(R.id.tv_delete)
-    TextView mTvDelete;
-    @Bind(R.id.iv_selector_img)
-    ImageView mIvSelectorImg;
-    @Bind(R.id.xx2)
-    TextView mXx2;
     @Bind(R.id.iv_logo)
     ImageView mIvLogo;
     @Bind(R.id.tv_title)
@@ -141,13 +116,36 @@ public class DynamicDetailActivity extends BaseActivity {
     TextView mTvCoin;
     @Bind(R.id.cv_guess)
     CardView mCvGuess;
+    @Bind(R.id.ngl_images)
+    NineGridImageView mNglImages;
     @Bind(R.id.iv_video)
     ImageView mIvVideo;
     @Bind(R.id.iv_video_play)
     ImageView mIvVideoPlay;
     @Bind(R.id.rl_video)
     RelativeLayout mRlVideo;
-
+    @Bind(R.id.tv_like_count)
+    TextView mTvLikeCount;
+    @Bind(R.id.ll_zan)
+    LinearLayout mLlZan;
+    @Bind(R.id.dynamic_content)
+    RelativeLayout mDynamicContent;
+    @Bind(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+    @Bind(R.id.scrollView)
+    ScrollView mScrollView;
+    @Bind(R.id.refreshLayout)
+    SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.xx2)
+    TextView mXx2;
+    @Bind(R.id.comment_et)
+    EditText mCommentEt;
+    @Bind(R.id.iv_selector_img)
+    ImageView mIvSelectorImg;
+    @Bind(R.id.send)
+    TextView mSend;
+    @Bind(R.id.rl_edit)
+    RelativeLayout mRlEdit;
     private ArrayList<ThumbViewInfo> mThumbViewInfoList = new ArrayList<>();
     private NineGridImageViewAdapter<String> mAdapter = new NineGridImageViewAdapter<String>() {
         @Override
