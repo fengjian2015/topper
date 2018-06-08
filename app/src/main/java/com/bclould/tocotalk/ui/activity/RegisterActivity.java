@@ -7,15 +7,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,96 +32,25 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class RegisterActivity extends AppCompatActivity {
 
-
-    @Bind(R.id.tv_login)
-    TextView mTvLogin;
-    @Bind(R.id.et_user)
-    EditText mEtUser;
+    @Bind(R.id.iv_back)
+    ImageView mIvBack;
+    @Bind(R.id.tv_register)
+    TextView mTvRegister;
     @Bind(R.id.et_email)
     EditText mEtEmail;
+    @Bind(R.id.et_username)
+    EditText mEtUsername;
     @Bind(R.id.btn_next)
     Button mBtnNext;
-    @Bind(R.id.ll_step_one)
-    LinearLayout mLlStepOne;
-    @Bind(R.id.et_password)
-    EditText mEtPassword;
-    @Bind(R.id.eye)
-    ImageView mEye;
-    @Bind(R.id.et_email_code)
-    EditText mEtEmailCode;
-    @Bind(R.id.btn_last_step)
-    Button mBtnLastStep;
-    @Bind(R.id.btn_register)
-    Button mBtnRegister;
-    @Bind(R.id.ll_step_tow)
-    LinearLayout mLlStepTow;
+    private RegisterPresenter mRegisterPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register2);
+        setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
-//        listener();
-//        setEdit();
-    }
-
-    /*//不能回车
-    private void setEdit() {
-        mEtEmail.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return true;
-            }
-        });
-        mEtEmailCode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return true;
-            }
-        });
-
-        mEtUser.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return true;
-            }
-        });
-
-        mEtPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return true;
-            }
-        });
-    }*/
-
-    /*  private void listener() {
-          mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-              @Override
-              public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                  if (b) {
-                      mBtnRegister.setBackground(getDrawable(R.drawable.bg_blue_shape));
-                  } else {
-                      mBtnRegister.setBackground(getDrawable(R.drawable.bg_gray_shape));
-                  }
-              }
-          });
-      }
-  */
-    //显示隐藏密码
-    boolean isEye = false;
-
-    private void showHidePassword() {
-        if (isEye) {
-            mEye.setSelected(true);
-            mEtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            mEtPassword.setSelection(mEtPassword.length());
-        } else {
-            mEtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            mEtPassword.setSelection(mEtPassword.length());
-            mEye.setSelected(false);
-        }
+        mRegisterPresenter = new RegisterPresenter(this);
     }
 
     @Override
@@ -167,94 +93,53 @@ public class RegisterActivity extends AppCompatActivity {
         return false;
     }
 
-    //注册
-    private void next() {
-        String email = mEtEmail.getText().toString().trim();
-        String user = mEtUser.getText().toString().trim();
-        RegisterPresenter registerPresenter = new RegisterPresenter(this);
-        registerPresenter.signUpValidator(email, user, new RegisterPresenter.CallBack2() {
-            @Override
-            public void send() {
-                mLlStepOne.setVisibility(View.GONE);
-                mLlStepTow.setVisibility(View.VISIBLE);
-            }
-        });
-    }
-
-    //注册
-    private void register() {
-        String emailCode = mEtEmailCode.getText().toString().trim();
-        String password = mEtPassword.getText().toString().trim();
-        String email = mEtEmail.getText().toString().trim();
-        String user = mEtUser.getText().toString().trim();
-        RegisterPresenter registerPresenter = new RegisterPresenter(this);
-        registerPresenter.register(user, email, password, emailCode);
-    }
-
-    //验证邮箱和图形验证码
-    private boolean checkEdit2() {
-        if (mEtPassword.getText().toString().trim().equals("")) {
-            Toast.makeText(this, getResources().getString(R.string.toast_email), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mEtPassword);
-        } else if (mEtEmailCode.getText().toString().trim().equals("")) {
-            Toast.makeText(this, getResources().getString(R.string.toast_vcode), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mEtEmailCode);
-        } /*else if (!mCheckBox.isChecked()) {
-            Toast.makeText(this, getResources().getString(R.string.toast_agreement), Toast.LENGTH_SHORT).show();
-        }*/ else {
-            return true;
-        }
-        return false;
-    }
 
     //验证邮箱和图形验证码
     private boolean checkEdit() {
         if (mEtEmail.getText().toString().trim().equals("")) {
             Toast.makeText(this, getResources().getString(R.string.toast_email), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtEmail);
-        } else if (mEtUser.getText().toString().trim().equals("")) {
+        } else if (mEtUsername.getText().toString().trim().equals("")) {
             Toast.makeText(this, getResources().getString(R.string.toast_username), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mEtUser);
+            AnimatorTool.getInstance().editTextAnimator(mEtUsername);
+        } else if (!mEtEmail.getText().toString().contains("@")) {
+            Toast.makeText(this, getResources().getString(R.string.toast_email_format), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mEtUsername);
+        } else if (mEtUsername.getText().toString().length() < 6) {
+            Toast.makeText(this, getResources().getString(R.string.toast_username_min), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mEtUsername);
         } else {
             return true;
         }
         return false;
     }
 
-    @OnClick({R.id.tv_login, R.id.btn_next, R.id.eye, R.id.btn_register, R.id.btn_last_step})
+    @OnClick({R.id.iv_back, R.id.btn_next})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_login:
-                startActivity(new Intent(this, LoginActivity.class));
+            case R.id.iv_back:
                 finish();
                 break;
             case R.id.btn_next:
-                if (checkEdit())
+                if (checkEdit()) {
                     next();
-                break;
-            case R.id.eye:
-                isEye = !isEye;
-                showHidePassword();
-                break;
-            case R.id.btn_register:
-                if (checkEdit2()) {
-                    String vcode = mEtEmailCode.getText().toString().trim();
-                    String password = mEtPassword.getText().toString().trim();
-                    String email = mEtEmail.getText().toString().trim();
-                    String user = mEtUser.getText().toString().trim();
-                    Intent intent = new Intent(this, ServiceAgreementActivity.class);
-                    intent.putExtra("user", user);
-                    intent.putExtra("email", email);
-                    intent.putExtra("password", password);
-                    intent.putExtra("vcode", vcode);
-                    startActivity(intent);
                 }
-//                    register();
-                break;
-            case R.id.btn_last_step:
-                mLlStepTow.setVisibility(View.GONE);
-                mLlStepOne.setVisibility(View.VISIBLE);
                 break;
         }
+    }
+
+    //注册
+    private void next() {
+        String email = mEtEmail.getText().toString().trim();
+        String username = mEtUsername.getText().toString().trim();
+        final Intent intent = new Intent(this, RegisterActivity2.class);
+        intent.putExtra("username", username);
+        intent.putExtra("email", email);
+        mRegisterPresenter.signUpValidator(email, username, new RegisterPresenter.CallBack2() {
+            @Override
+            public void send() {
+                startActivity(intent);
+            }
+        });
     }
 }

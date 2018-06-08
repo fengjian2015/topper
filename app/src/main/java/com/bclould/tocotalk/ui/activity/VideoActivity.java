@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
@@ -14,7 +15,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
-import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.ui.widget.VideoPlayer;
 import com.bclould.tocotalk.utils.UtilTool;
@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class VideoActivity extends BaseActivity {
+public class VideoActivity extends AppCompatActivity {
 
 
     Handler UIhandler = new Handler() {

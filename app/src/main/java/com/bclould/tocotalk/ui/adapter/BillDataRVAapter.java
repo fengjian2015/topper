@@ -1,7 +1,6 @@
 package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.TransferInfo;
-import com.bclould.tocotalk.ui.activity.BillDetailsActivity;
 
 import java.util.List;
 
@@ -91,17 +89,17 @@ public class BillDataRVAapter extends RecyclerView.Adapter {
 
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.M)
+        @RequiresApi(api = Build.VERSION_CODES.N)
         public void setData(TransferInfo.DataBean dataBean) {
             mDataBean = dataBean;
             if (dataBean.getDesc().equals(mContext.getString(R.string.shift_to))) {
                 mTypeName.setText(dataBean.getSend_name());
                 mCoinCount.setText("+" + dataBean.getNumber() + " " + dataBean.getCoin_name());
-                mCoinCount.setTextColor(mContext.getResources().getColor(R.color.red));
+                mCoinCount.setTextColor(mContext.getResources().getColor(R.color.blue2));
             } else {
                 mTypeName.setText(dataBean.getReceive_name());
                 mCoinCount.setText("-" + dataBean.getNumber() + " " + dataBean.getCoin_name());
-                mCoinCount.setTextColor(mContext.getResources().getColor(R.color.green));
+                mCoinCount.setTextColor(mContext.getResources().getColor(R.color.red));
             }
             mTime.setText(dataBean.getCreated_at());
         }

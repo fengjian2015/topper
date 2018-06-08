@@ -199,7 +199,7 @@ public interface MyService {
     Observable<BaseInfo> coinOutAction(
             @Header("Authorization") String token,
             @Field("coin_id") String id,
-            @Field("coinout_address_id") String coinout_address_id,
+            @Field("address") String address,
             @Field("coinout_number") String number,
             @Field("google_code") String google_code,
             @Field("second_password") String second_password,
@@ -642,8 +642,8 @@ public interface MyService {
     @FormUrlEncoded
     Observable<TransferListInfo> getTransRecord(
             @Header("Authorization") String token,
-            @Field("page") String page,
-            @Field("page_size") String page_size,
+            @Field("page") int page,
+            @Field("page_size") int page_size,
             @Field("type") String type,
             @Field("date") String date
     );
@@ -791,7 +791,8 @@ public interface MyService {
     Observable<TransRecordInfo> transRecord(
             @Header("Authorization") String token,
             @Field("log_id") String log_id,
-            @Field("type_number") String type_number
+            @Field("type_number") String type_number,
+            @Field("id") String id
     );
 
     //支付記錄詳情

@@ -45,12 +45,22 @@ public class TransferListInfo {
 
         private int user_id;
         private int log_id;
+        private int id;
         private String type;
         private String coin_name;
         private String type_desc;
         private String number;
         private String created_at;
         private int type_number;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
 
         public int getType_number() {
             return type_number;

@@ -172,7 +172,8 @@ public class NewsEditActivity extends BaseActivity {
         //设置WebView支持JavaScript
         mWebView.getSettings().setJavaScriptEnabled(true);
         if (UtilTool.isNetworkAvailable(NewsEditActivity.this)) {
-            mWebView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+            mWebView.getSettings().setCacheMode(
+                    WebSettings.LOAD_CACHE_ELSE_NETWORK);
         } else {
             mWebView.getSettings().setCacheMode(
                     WebSettings.LOAD_CACHE_ELSE_NETWORK);

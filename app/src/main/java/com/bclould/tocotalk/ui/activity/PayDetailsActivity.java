@@ -72,6 +72,7 @@ public class PayDetailsActivity extends BaseActivity {
 
     private void initData() {
         String id = getIntent().getStringExtra("id");
+        String log_id = getIntent().getStringExtra("log_id");
         String type_number = getIntent().getStringExtra("type_number");
         BuySellPresenter buySellPresenter = new BuySellPresenter(this);
         if (Integer.parseInt(type_number) == 7 || Integer.parseInt(type_number) == 8) {
@@ -79,7 +80,7 @@ public class PayDetailsActivity extends BaseActivity {
         } else {
             mRlTxId.setVisibility(View.GONE);
         }
-        buySellPresenter.transRecordInfo(id, type_number, new BuySellPresenter.CallBack3() {
+        buySellPresenter.transRecordInfo(log_id, id, type_number, new BuySellPresenter.CallBack3() {
 
 
             @Override

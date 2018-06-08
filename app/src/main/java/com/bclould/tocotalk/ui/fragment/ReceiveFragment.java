@@ -84,11 +84,11 @@ public class ReceiveFragment extends Fragment {
     }
 
     private void initData() {
-        try {
-            RedRecordPresenter redRecordPresenter = new RedRecordPresenter(getActivity());
-            redRecordPresenter.log("get", new RedRecordPresenter.CallBack() {
-                @Override
-                public void send(RedRecordInfo.DataBean data) {
+        RedRecordPresenter redRecordPresenter = new RedRecordPresenter(getActivity());
+        redRecordPresenter.log("get", new RedRecordPresenter.CallBack() {
+            @Override
+            public void send(RedRecordInfo.DataBean data) {
+                if (!getActivity().isDestroyed()) {
                     if (data.getLog().size() == 0) {
                         mLlTotal.setVisibility(View.GONE);
                     } else {
@@ -106,10 +106,8 @@ public class ReceiveFragment extends Fragment {
                     mTvMostCoin.setText(data.getMost_coin());
                     initRecyclerView(data.getLog());
                 }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            }
+        });
     }
 
     private void initRecyclerView(List<RedRecordInfo.DataBean.LogBean> logBeanList) {

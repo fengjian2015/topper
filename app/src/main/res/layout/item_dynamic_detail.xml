@@ -60,7 +60,8 @@
             android:layout_marginTop="@dimen/y20"
             android:layout_toRightOf="@+id/touxiang"
             android:text="文字文字文字文字文字文字"
-            android:textSize="@dimen/x26"/>
+            android:textColor="@color/bar_grey_90"
+            android:textSize="@dimen/x32"/>
 
         <LinearLayout
             android:id="@+id/ll_zan"
@@ -96,7 +97,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x141"
         android:layout_marginTop="@dimen/y20"
-        android:background="@color/light"
+        android:background="#15000000"
         android:paddingLeft="@dimen/x20"
         android:visibility="gone">
     </android.support.v7.widget.RecyclerView>
@@ -109,7 +110,7 @@
         android:layout_marginTop="@dimen/y20"
         android:text="@string/look_reply"
         android:textColor="@color/blue2"
-        android:textSize="@dimen/x28"
+        android:textSize="@dimen/x32"
         android:visibility="gone"/>
 
     <TextView

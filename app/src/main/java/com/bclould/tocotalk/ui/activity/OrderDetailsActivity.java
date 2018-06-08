@@ -221,38 +221,75 @@ public class OrderDetailsActivity extends BaseActivity {
         mOrderDetailsPresenter.orderInfo(id, new OrderDetailsPresenter.CallBack() {
             @Override
             public void send(OrderInfo2.DataBean data) {
-                mScrollView.setVisibility(View.VISIBLE);
-                mType1 = data.getType();
-                mInfo.setData(data);
-                mTvOrderNumber.setText(getString(R.string.order_number) + ":" + data.getOrder_no());
-                if (data.getType() == 1) {
-                    mLlBuyer.setVisibility(View.VISIBLE);
-                    mLlSeller.setVisibility(View.GONE);
-                    mTvTitle.setText(getString(R.string.buy) + data.getCoin_name());
-                } else {
-                    mLlBuyer.setVisibility(View.GONE);
-                    mLlSeller.setVisibility(View.VISIBLE);
-                    mTvTitle.setText(getString(R.string.work_off) + data.getCoin_name());
-                }
-                if (data.getStatus() == 0) {
-                    mLlBuyer.setVisibility(View.GONE);
-                    mLlSeller.setVisibility(View.GONE);
-                    /*mTimer.cancel();
-                    mTvTime.setText(getString(R.string.no_time));
-                    finish();
-                    Toast.makeText(OrderDetailsActivity.this, getString(R.string.order_cancel), Toast.LENGTH_SHORT).show();*/
-                } else if (data.getStatus() == 1) {
-                    mRecLen = data.getDeadline();
-                    mTimer.schedule(mTask, 1000, 1000);
-                } else if (data.getStatus() == 2) {
-                    mRecLen = data.getDeadline();
-                    mTimer.schedule(mTask, 1000, 1000);
+                if (!OrderDetailsActivity.this.isDestroyed()) {
+                    mScrollView.setVisibility(View.VISIBLE);
+                    mType1 = data.getType();
+                    mInfo.setData(data);
+                    mTvOrderNumber.setText(getString(R.string.order_number) + ":" + data.getOrder_no());
                     if (data.getType() == 1) {
-                        mBtnBuyCancel.setVisibility(View.GONE);
-                        mBtnBuyConfirm.setBackground(getDrawable(R.drawable.bg_gray_shape));
-                        mBtnBuyConfirm.setText(getString(R.string.yi_pay));
+                        mLlBuyer.setVisibility(View.VISIBLE);
+                        mLlSeller.setVisibility(View.GONE);
+                        mTvTitle.setText(getString(R.string.buy) + data.getCoin_name());
+                    } else {
+                        mLlBuyer.setVisibility(View.GONE);
+                        mLlSeller.setVisibility(View.VISIBLE);
+                        mTvTitle.setText(getString(R.string.work_off) + data.getCoin_name());
+                    }
+                    if (data.getStatus() == 0) {
+                        mLlBuyer.setVisibility(View.GONE);
+                        mLlSeller.setVisibility(View.GONE);
+                        /*mTimer.cancel();
+                        mTvTime.setText(getString(R.string.no_time));
+                        finish();
+                        Toast.makeText(OrderDetailsActivity.this, getString(R.string.order_cancel), Toast.LENGTH_SHORT).show();*/
+                    } else if (data.getStatus() == 1) {
+                        mRecLen = data.getDeadline();
+                        mTimer.schedule(mTask, 1000, 1000);
+                    } else if (data.getStatus() == 2) {
+                        mRecLen = data.getDeadline();
+                        mTimer.schedule(mTask, 1000, 1000);
+                        if (data.getType() == 1) {
+                            mBtnBuyCancel.setVisibility(View.GONE);
+                            mBtnBuyConfirm.setBackground(getDrawable(R.drawable.bg_gray_shape));
+                            mBtnBuyConfirm.setText(getString(R.string.yi_pay));
+                        } else {
+                            mBtnSellCancel.setVisibility(View.GONE);
+                        }
+                    } else if (data.getStatus() == 3) {
+                        mLlBuyer.setVisibility(View.GONE);
+                        mLlSeller.setVisibility(View.GONE);
+                    } else if (data.getStatus() == 4) {
+                        mLlBuyer.setVisibility(View.GONE);
+                        mLlSeller.setVisibility(View.GONE);
+                    }
+                    mTo_user_name = data.getTo_user_name();
+                    mUser_name = data.getUser_name();
+                    if (data.getType() == 1) {
+                        mTvTransferHint.setText(getString(R.string.shijidao_transfer));
+                        mTvBuysell.setText(getString(R.string.seller) + ":" + data.getTo_user_name());
+                        mTvBuysell2.setText(getString(R.string.buyer) + ":" + data.getUser_name());
                     } else {
                         mBtnSellCancel.setVisibility(View.GONE);
+                        mTvTransferHint.setText(getString(R.string.shijikou_coin));
+                        mTvBuysell2.setText(getString(R.string.seller) + ":" + data.getTo_user_name());
+                        mTvBuysell.setText(getString(R.string.buyer) + ":" + data.getUser_name());
+                    }
+                    mTvCount.setText(data.getNumber());
+                    mTvMoney.setText(data.getTrans_amount());
+                    mTvPrice.setText(data.getPrice());
+                    mTvPayType.setText(data.getStatus_name());
+                    mTvEmail.setText(data.getEmail());
+                    mTvPhone.setText(data.getMobile());
+                    mTvDealNumber.setText(data.getPayment_no() + "");
+                    mTvServiceCharge.setText(Double.parseDouble(data.getOtc_free()) * 100 + "%");
+                    mTvShiji.setText(data.getActual_number());
+                    if (data.getRemark() != null) {
+                        mTvRemark.setText(getString(R.string.remark) + ":" + data.getRemark());
+                    }
+                    if (data.getBank() != null) {
+                        mTvBankName.setText(data.getBank().getCard_name());
+                        mTvBankNumber.setText(data.getBank().getCard_number());
+                        mTvBankSite.setText(data.getBank().getBank_name());
                     }
                 } else if (data.getStatus() == 3) {
                     mLlBuyer.setVisibility(View.GONE);
@@ -292,7 +329,6 @@ public class OrderDetailsActivity extends BaseActivity {
                     mTvBankNumber.setText(data.getBank().getCard_number());
                     mTvBankSite.setText(data.getBank().getBank_name());
                 }
-
             }
         });
     }

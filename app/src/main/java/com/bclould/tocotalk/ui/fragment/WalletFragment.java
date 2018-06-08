@@ -111,19 +111,15 @@ public class WalletFragment extends Fragment {
 
     private void initData() {
         if (isAdded()) {
-            try {
-                SubscribeCoinPresenter subscribeCoinPresenter = new SubscribeCoinPresenter(getContext());
-                subscribeCoinPresenter.getUSDT(new SubscribeCoinPresenter.CallBack3() {
-                    @Override
-                    public void send(String data) {
-                        if (data != null) {
-                            mTvTotal.setText(data);
-                        }
+            SubscribeCoinPresenter subscribeCoinPresenter = new SubscribeCoinPresenter(getContext());
+            subscribeCoinPresenter.getUSDT(new SubscribeCoinPresenter.CallBack3() {
+                @Override
+                public void send(String data) {
+                    if (data != null) {
+                        mTvTotal.setText(data);
                     }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                }
+            });
             if (MyApp.getInstance().mOtcCoinList.size() == 0) {
                 UtilTool.Log("幣種", "幣種列表");
                 CoinPresenter coinPresenter = new CoinPresenter(getContext());
@@ -156,13 +152,14 @@ public class WalletFragment extends Fragment {
         switch (view.getId()) {
             case R.id.iv_more:
                 Intent intent = new Intent(getActivity(), PayRecordActivity.class);
-                intent.putExtra("type", 0);
+                intent.putExtra("type", "0");
                 startActivity(intent);
                 break;
             case R.id.ll_inout:
                 startActivity(new Intent(getActivity(), ReceiptPaymentActivity.class));
                 break;
             case R.id.ll_usdt:
+                initData();
                 break;
             case R.id.ll_bank_card:
                 startActivity(new Intent(getActivity(), BankCardActivity.class));

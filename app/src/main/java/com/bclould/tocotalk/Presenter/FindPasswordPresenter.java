@@ -1,6 +1,8 @@
 package com.bclould.tocotalk.Presenter;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
@@ -45,7 +47,8 @@ public class FindPasswordPresenter {
         }
     }
 
-    public void sendRegcode(final String email, final CallBack callBack) {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void sendRegcode(final String email) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
             RetrofitUtil.getInstance(mContext)
@@ -62,9 +65,9 @@ public class FindPasswordPresenter {
                         @Override
                         public void onNext(BaseInfo baseInfo) {
                             hideDialog();
-                            if (baseInfo.getStatus() == 1) {
+                            /*if (baseInfo.getStatus() == 1) {
                                 callBack.send();
-                            }
+                            }*/
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 

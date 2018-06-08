@@ -1,6 +1,7 @@
 package com.bclould.tocotalk.xmpp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -12,13 +13,11 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Base64;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.amazonaws.auth.BasicSessionCredentials;
 import com.amazonaws.regions.Region;
@@ -41,7 +40,6 @@ import com.bclould.tocotalk.ui.activity.ConversationActivity;
 import com.bclould.tocotalk.ui.activity.OrderCloseActivity;
 import com.bclould.tocotalk.ui.activity.OrderDetailsActivity;
 import com.bclould.tocotalk.ui.activity.PayDetailsActivity;
-import com.bclould.tocotalk.ui.fragment.ConversationFragment;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
@@ -51,7 +49,6 @@ import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jivesoftware.smack.AbstractXMPPConnection;
-import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
@@ -60,16 +57,12 @@ import org.jivesoftware.smack.chat.ChatManager;
 import org.jivesoftware.smack.chat.ChatManagerListener;
 import org.jivesoftware.smack.chat.ChatMessageListener;
 import org.jivesoftware.smack.filter.AndFilter;
-import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.filter.PacketTypeFilter;
 import org.jivesoftware.smack.filter.StanzaFilter;
 import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.packet.Stanza;
-import org.jivesoftware.smackx.muc.MultiUserChatManager;
 import org.jivesoftware.smackx.offline.OfflineMessageManager;
-import org.xutils.common.util.LogUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -125,23 +118,23 @@ public class XmppListener {
     ExecutorService executorService;//以後用於群聊功能
     public static XmppListener xmppListener;
 
-    public static XmppListener get(Context context){
-        if(xmppListener==null){
-            xmppListener=new XmppListener(context);
+    public static XmppListener get(Context context) {
+        if (xmppListener == null) {
+            xmppListener = new XmppListener(context);
         }
         return xmppListener;
     }
 
-    public void remove(){
-        xmppListener=null;
+    public void remove() {
+        xmppListener = null;
     }
 
     public XmppListener(Context context) {
         this.context = context;
         executorService = Executors.newFixedThreadPool(5);
         mgr = new DBManager(context);
-        mdbRoomManage=new DBRoomManage(context);
-        mdbRoomMember=new DBRoomMember(context);
+        mdbRoomManage = new DBRoomManage(context);
+        mdbRoomMember = new DBRoomMember(context);
         handler = new FragmentOneHandler();
         mNotificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(context);
@@ -152,7 +145,7 @@ public class XmppListener {
     }
 
 
-    public void initBroadcastListener(){
+    public void initBroadcastListener() {
         AbstractXMPPConnection connection = XmppConnection.getInstance().getConnection();
         connection.addAsyncStanzaListener(new StanzaListener() {
             @Override
@@ -172,10 +165,10 @@ public class XmppListener {
                     } else {
                         UtilTool.playHint(context);
                     }
-                    UtilTool.Log("fengjian---","廣播消息");
+                    UtilTool.Log("fengjian---", "廣播消息");
                     android.os.Message msg = new android.os.Message();
                     msg.obj = message;
-                    msg.what=2;
+                    msg.what = 2;
                     handler.sendMessage(msg);
                 }
             }
@@ -206,14 +199,14 @@ public class XmppListener {
                     if (list.get(i) != null && list.get(i).getBody() != null && !list.get(i).getBody().equals("")) {
                         android.os.Message msg = new android.os.Message();
                         msg.obj = list.get(i);
-                        msg.what=2;
+                        msg.what = 2;
                         handler.sendMessage(msg);
                     }
                 }
                 //删除离线消息
                 offlineManager.deleteMessages();
             }
-            UtilTool.Log("fengjian---","收到離線消息"+list.size());
+            UtilTool.Log("fengjian---", "收到離線消息" + list.size());
             //将状态设置成在线
             Presence presence = new Presence(Presence.Type.available);
             XmppConnection.getInstance().getConnection().sendStanza(presence);
@@ -224,7 +217,7 @@ public class XmppListener {
 
     private void initPacketListener() {
         StanzaFilter filter = new AndFilter(new PacketTypeFilter(Message.class));
-        PacketListener listener = new PacketListener(){
+        PacketListener listener = new PacketListener() {
             @Override
             public void processStanza(Stanza packet) throws SmackException.NotConnectedException, InterruptedException {
                 Message message = (Message) packet;
@@ -234,30 +227,30 @@ public class XmppListener {
                     from = Constants.ADMINISTRATOR_NAME;
                 }
                 if (from.contains("/")) {
-                    isMe = from.substring(from.indexOf("/")+1, from.length());
+                    isMe = from.substring(from.indexOf("/") + 1, from.length());
                     from = from.substring(0, from.indexOf("/"));
                 }
-                if(UtilTool.getUser().equals(isMe)){
-                    UtilTool.Log("fengjian---","是自己的消息去掉:"+message.getFrom());
+                if (UtilTool.getUser().equals(isMe)) {
+                    UtilTool.Log("fengjian---", "是自己的消息去掉:" + message.getFrom());
                     return;
                 }
-                if(message.getType()== Message.Type.normal){
-                    UtilTool.Log("fengjian群日志","暂时表示收到邀请群聊"+message.getSubject()+"\n" +message.toXML());
-                    RoomManage.getInstance().addMultiMessageManage(from,from.split("@")[0])
-                            .joinMultiUserChat(UtilTool.getUser(),from);
+                if (message.getType() == Message.Type.normal) {
+                    UtilTool.Log("fengjian群日志", "暂时表示收到邀请群聊" + message.getSubject() + "\n" + message.toXML());
+                    RoomManage.getInstance().addMultiMessageManage(from, from.split("@")[0])
+                            .joinMultiUserChat(UtilTool.getUser(), from);
                     return;
-                }else if(message.getType()==Message.Type.groupchat){
-                    if(message.getSubject()!=null){
+                } else if (message.getType() == Message.Type.groupchat) {
+                    if (message.getSubject() != null) {
                         //表示是群主题修改
-                        createConversation(from,message.getSubject());
+                        createConversation(from, message.getSubject());
                         EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
-                        UtilTool.Log("fengjian---","修改主题："+message.getSubject());
-                    }else{
+                        UtilTool.Log("fengjian---", "修改主题：" + message.getSubject());
+                    } else {
                         android.os.Message msg = new android.os.Message();
                         msg.obj = message;
-                        msg.what=1;
+                        msg.what = 1;
                         handler.sendMessage(msg);
-                        UtilTool.Log("fengjian群日志","接受聊天消息"+message.getType().name()+"    \n"+message.getType().toString()+"\n"+message.getBody());
+                        UtilTool.Log("fengjian群日志", "接受聊天消息" + message.getType().name() + "    \n" + message.getType().toString() + "\n" + message.getBody());
                     }
                 }
 
@@ -266,8 +259,8 @@ public class XmppListener {
         XmppConnection.getInstance().getConnection().addPacketListener(listener, filter);
     }
 
-    private void createConversation(String from, String subject){
-        ConversationInfo info=new ConversationInfo();
+    private void createConversation(String from, String subject) {
+        ConversationInfo info = new ConversationInfo();
         info.setChatType(RoomManage.ROOM_TYPE_MULTI);
         info.setIstop("false");
         info.setFriend(subject);
@@ -278,11 +271,11 @@ public class XmppListener {
         info.setTime(time);
         info.setMessage("加入群聊");
         mgr.addConversation(info);
-        mdbRoomManage.addRoom(createRoomInfo(from,subject));
+        mdbRoomManage.addRoom(createRoomInfo(from, subject));
     }
 
-    private RoomManageInfo createRoomInfo(String roomId,String roomName){
-        RoomManageInfo roomManageInfo=new RoomManageInfo();
+    private RoomManageInfo createRoomInfo(String roomId, String roomName) {
+        RoomManageInfo roomManageInfo = new RoomManageInfo();
         roomManageInfo.setRoomId(roomId);
         roomManageInfo.setRoomName(roomName);
         return roomManageInfo;
@@ -298,13 +291,13 @@ public class XmppListener {
         final ChatMessageListener messageListener = new ChatMessageListener() {
             @Override
             public void processMessage(Chat chat, Message message) {
-                if(message.getType()== Message.Type.groupchat){
+                if (message.getType() == Message.Type.groupchat) {
                     return;
                 }
-                UtilTool.Log("fengjian---","收到聊天消息");
+                UtilTool.Log("fengjian---", "收到聊天消息");
                 android.os.Message msg = new android.os.Message();
                 msg.obj = message;
-                msg.what=1;
+                msg.what = 1;
                 handler.sendMessage(msg);
             }
         };
@@ -319,7 +312,7 @@ public class XmppListener {
         manager.addChatListener(chatManagerListener);
     }
 
-    private Message bellJudgment(Message message){
+    private Message bellJudgment(Message message) {
         //获取Jid和用户名
         String from = message.getFrom().toString();
         if (from.equals(Constants.DOMAINNAME)) {
@@ -327,23 +320,25 @@ public class XmppListener {
         }
         if (from.contains("/"))
             from = from.substring(0, from.indexOf("/"));
-        String chatmesssage=message.getBody();
+        String chatmesssage = message.getBody();
         //鈴聲必須放在處理消息類前面
         SharedPreferences sp = context.getSharedPreferences(SETTING, 0);
 
-        boolean free= MySharedPreferences.getInstance().getBoolean(SETTING+from+UtilTool.getJid());
-        if(OtrChatListenerManager.getInstance().isOtrEstablishMessage(chatmesssage,
-                OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from),context)){
+        boolean free = MySharedPreferences.getInstance().getBoolean(SETTING + from + UtilTool.getJid());
+        if (OtrChatListenerManager.getInstance().isOtrEstablishMessage(chatmesssage,
+                OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from), context)) {
             return null;
         }
-        if(OtrChatListenerManager.getInstance().isExist(OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from))){
-            chatmesssage=OtrChatListenerManager.getInstance().receivedMessagesChange(chatmesssage,
+        if (OtrChatListenerManager.getInstance().isExist(OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from))) {
+            chatmesssage = OtrChatListenerManager.getInstance().receivedMessagesChange(chatmesssage,
                     OtrChatListenerManager.getInstance().sessionID(UtilTool.getJid(), from));
         }
-        if(chatmesssage==null){return null;}
-        if(free){
+        if (chatmesssage == null) {
+            return null;
+        }
+        if (free) {
 
-        }else if (sp.contains(INFORM)) {
+        } else if (sp.contains(INFORM)) {
             if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
                 UtilTool.playHint(context);
             }
@@ -359,11 +354,11 @@ public class XmppListener {
         @Override
         public void handleMessage(android.os.Message msg) {
             super.handleMessage(msg);
-            switch (msg.what){
+            switch (msg.what) {
                 case 1:
                     Message message1 = (Message) msg.obj;
-                    message1=bellJudgment(message1);
-                    if(message1==null){
+                    message1 = bellJudgment(message1);
+                    if (message1 == null) {
                         return;
                     }
                     //当消息返回为空的时候，表示用户正在聊天窗口编辑信息并未发出消
@@ -371,7 +366,7 @@ public class XmppListener {
                         //message为用户所收到的消息
                         android.os.Message msg1 = new android.os.Message();
                         msg1.obj = message1;
-                        msg1.what=2;
+                        msg1.what = 2;
                         handler.sendMessage(msg1);
                     }
                     break;
@@ -379,7 +374,7 @@ public class XmppListener {
                     //获取接收的好友名及聊天消息
                     try {
                         Message message = (Message) msg.obj;
-                        Message.Type messageType=message.getType();
+                        Message.Type messageType = message.getType();
                         int msgType = FROM_TEXT_MSG;
 
                         //获取文本消息
@@ -392,7 +387,7 @@ public class XmppListener {
                         String time = formatter.format(curDate);
 
                         //获取Jid和用户名和发送者
-                        String sendFrom ="";
+                        String sendFrom = "";
                         String from = message.getFrom().toString();
                         if (from.equals(Constants.DOMAINNAME)) {
                             from = Constants.ADMINISTRATOR_NAME;
@@ -407,6 +402,7 @@ public class XmppListener {
                         String remark = null;
                         String coin = null;
                         String count = null;
+                        String logId = null;
                         int status = 0;
                         int redId = 0;
                         int type = 0;
@@ -431,17 +427,17 @@ public class XmppListener {
                                     fileName = UtilTool.createtFileName() + ".amr";
                                     path = context.getFilesDir().getAbsolutePath() + File.separator
                                             + "RecordRemDir";
-                                    goChat(from,context.getString(R.string.voice),messageType,sendFrom);
-                                }else if(chatMsg.contains("[LOCATION]")){
-                                    MessageInfo messageInfo1=new MessageInfo();
-                                    messageInfo1= JSONObject.parseObject(chatMsg.substring(chatMsg.indexOf(":")+1,chatMsg.length()),MessageInfo.class);
-                                    chatMsg=messageInfo1.getTitle();
-                                    messageInfo=messageInfo1;
+                                    goChat(from, context.getString(R.string.voice), messageType, sendFrom);
+                                } else if (chatMsg.contains("[LOCATION]")) {
+                                    MessageInfo messageInfo1 = new MessageInfo();
+                                    messageInfo1 = JSONObject.parseObject(chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length()), MessageInfo.class);
+                                    chatMsg = messageInfo1.getTitle();
+                                    messageInfo = messageInfo1;
                                     redpacket = "[" + context.getString(R.string.location) + "]";
                                     msgType = FROM_LOCATION_MSG;
                                     fileName = UtilTool.createtFileName() + ".jpg";
                                     path = context.getFilesDir().getAbsolutePath() + File.separator + "images";
-                                    goChat(from,context.getString(R.string.location),messageType,sendFrom);
+                                    goChat(from, context.getString(R.string.location), messageType, sendFrom);
                                 } else if (chatMsg.contains("[Image]")) {
                                     String key = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
 
@@ -468,13 +464,14 @@ public class XmppListener {
                                     fileName = UtilTool.createtFileName() + ".jpg";
                                     path = context.getFilesDir().getAbsolutePath() + File.separator
                                             + "images";
-                                    goChat(from,context.getString(R.string.image),messageType,sendFrom);
+                                    goChat(from, context.getString(R.string.image), messageType, sendFrom);
                                 } else if (chatMsg.contains("[Video]")) {
                                     String key = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
                                     String url = "";
                                     if (key.startsWith("https://")) {
                                         url=key;
                                     }else {
+
                                         BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
                                                 MySharedPreferences.getInstance().getString(ACCESSKEYID),
                                                 MySharedPreferences.getInstance().getString(SECRETACCESSKEY),
@@ -498,10 +495,10 @@ public class XmppListener {
                                     fileName = UtilTool.createtFileName() + ".mp4";
                                     path = context.getFilesDir().getAbsolutePath() + File.separator
                                             + "images";
-                                    goChat(from,context.getString(R.string.video),messageType,sendFrom);
-                                }else{
+                                    goChat(from, context.getString(R.string.video), messageType, sendFrom);
+                                } else {
                                     //2018-05-28，新增類型兼容老版本
-                                    chatMsg=context.getString(R.string.please_update_version);
+                                    chatMsg = context.getString(R.string.please_update_version);
                                 }
                                 File dir = new File(path);
                                 if (!dir.exists()) {
@@ -523,29 +520,29 @@ public class XmppListener {
                                 if (msgType == FROM_VOICE_MSG)
                                     messageInfo.setVoiceTime(UtilTool.getFileDuration(file.getAbsolutePath(), context) + "");
                             }
-                        } else if(chatMsg.contains(Constants.SHARE_GUESS)){
+                        } else if (chatMsg.contains(Constants.SHARE_GUESS)) {
                             String object = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
-                            messageInfo= JSONObject.parseObject(object,MessageInfo.class);
-                            chatMsg=messageInfo.getMessage();
-                            coin=messageInfo.getCoin();
+                            messageInfo = JSONObject.parseObject(object, MessageInfo.class);
+                            chatMsg = messageInfo.getMessage();
+                            coin = messageInfo.getCoin();
                             redpacket = "[" + context.getString(R.string.share_guess) + "]";
-                            msgType=FROM_GUESS_MSG;
-                            goChat(from,context.getString(R.string.share_guess),messageType,sendFrom);
-                        }else if(chatMsg.contains(Constants.SHARE_LINK)){
+                            msgType = FROM_GUESS_MSG;
+                            goChat(from, context.getString(R.string.share_guess), messageType, sendFrom);
+                        } else if (chatMsg.contains(Constants.SHARE_LINK)) {
                             String object = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
-                            messageInfo= JSONObject.parseObject(object,MessageInfo.class);
-                            chatMsg=messageInfo.getMessage();
+                            messageInfo = JSONObject.parseObject(object, MessageInfo.class);
+                            chatMsg = messageInfo.getMessage();
                             redpacket = "[" + context.getString(R.string.share) + "]";
-                            msgType=FROM_LINK_MSG;
-                            goChat(from,context.getString(R.string.share),messageType,sendFrom);
-                        }else if(chatMsg.contains(Constants.CARD)){
+                            msgType = FROM_LINK_MSG;
+                            goChat(from, context.getString(R.string.share), messageType, sendFrom);
+                        } else if (chatMsg.contains(Constants.CARD)) {
                             String object = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
-                            messageInfo= JSONObject.parseObject(object,MessageInfo.class);
-                            chatMsg=messageInfo.getMessage();
+                            messageInfo = JSONObject.parseObject(object, MessageInfo.class);
+                            chatMsg = messageInfo.getMessage();
                             redpacket = "[" + context.getString(R.string.person_business_card) + "]";
-                            msgType=FROM_CARD_MSG;
-                            goChat(from,context.getString(R.string.person_business_card),messageType,sendFrom);
-                        }else if (chatMsg.contains(Constants.REDBAG)) {
+                            msgType = FROM_CARD_MSG;
+                            goChat(from, context.getString(R.string.person_business_card), messageType, sendFrom);
+                        } else if (chatMsg.contains(Constants.REDBAG)) {
                             String s = chatMsg.replace(Constants.CHUANCODE, ",");
                             String[] split = s.split(",");
                             remark = split[1];
@@ -554,7 +551,7 @@ public class XmppListener {
                             msgType = FROM_RED_MSG;
                             redId = Integer.parseInt(split[4]);
                             redpacket = "[" + context.getString(R.string.red_package) + "]";
-                            goChat(from,remark,messageType,sendFrom);
+                            goChat(from, remark, messageType, sendFrom);
                         } else if (chatMsg.contains(Constants.TRANSFER)) {
                             String s = chatMsg.replace(Constants.CHUANCODE, ",");
                             String[] split = s.split(",");
@@ -563,7 +560,7 @@ public class XmppListener {
                             count = split[3];
                             msgType = FROM_TRANSFER_MSG;
                             redpacket = "[" + context.getString(R.string.transfer) + "]";
-                            goChat(from,remark,messageType,sendFrom);
+                            goChat(from, remark, messageType, sendFrom);
                         } else if (chatMsg.contains(Constants.OTC_ORDER)) {
                             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.order_update)));
                             msgType = ADMINISTRATOR_OTC_ORDER_MSG;
@@ -631,6 +628,7 @@ public class XmppListener {
                             count = qrcodeReceiptPayInfo.getNumber();
                             coin = qrcodeReceiptPayInfo.getCoin_name();
                             status = qrcodeReceiptPayInfo.getType();
+                            logId = qrcodeReceiptPayInfo.getLog_id() + "";
                             remark = qrcodeReceiptPayInfo.getName();
                             type = qrcodeReceiptPayInfo.getType_number();
                             if (qrcodeReceiptPayInfo.getType() == 1) {
@@ -646,6 +644,7 @@ public class XmppListener {
                             if (transferInformInfo.getType() == 1) {
                                 Intent intent = new Intent(context, PayDetailsActivity.class);
                                 intent.putExtra("id", transferInformInfo.getId() + "");
+                                intent.putExtra("log_id", transferInformInfo.getLog_id() + "");
                                 intent.putExtra("type_number", transferInformInfo.getType_number() + "");
                                 mResultIntent = PendingIntent.getActivity(context, 1, intent,
                                         PendingIntent.FLAG_UPDATE_CURRENT);
@@ -663,6 +662,7 @@ public class XmppListener {
                             count = transferInformInfo.getNumber();
                             coin = transferInformInfo.getCoin_name();
                             status = transferInformInfo.getType();
+                            logId = transferInformInfo.getLog_id() + "";
                             remark = transferInformInfo.getName();
                             type = transferInformInfo.getType_number();
                             if (transferInformInfo.getType() == 1) {
@@ -677,6 +677,7 @@ public class XmppListener {
                             QrcodeReceiptPayInfo transferInformInfo = gson.fromJson(json, QrcodeReceiptPayInfo.class);
                             Intent intent = new Intent(context, PayDetailsActivity.class);
                             intent.putExtra("id", transferInformInfo.getId() + "");
+                            intent.putExtra("log_id", transferInformInfo.getLog_id() + "");
                             intent.putExtra("type_number", transferInformInfo.getType_number() + "");
                             mResultIntent = PendingIntent.getActivity(context, 1, intent,
                                     PendingIntent.FLAG_UPDATE_CURRENT);
@@ -691,16 +692,17 @@ public class XmppListener {
                             time = transferInformInfo.getCreated_at();
                             redId = transferInformInfo.getId();
                             count = transferInformInfo.getNumber();
+                            logId = transferInformInfo.getLog_id() + "";
                             coin = transferInformInfo.getCoin_name();
                             type = transferInformInfo.getType_number();
                             redpacket = "[" + context.getString(R.string.out_coin_inform) + "]";
-                        }else{
-                            goChat(from,chatMsg,messageType,sendFrom);
+                        } else {
+                            goChat(from, chatMsg, messageType, sendFrom);
                         }
                         //添加数据库from
-                        if(messageType==Message.Type.groupchat){
+                        if (messageType == Message.Type.groupchat) {
                             messageInfo.setSend(sendFrom);
-                        }else{
+                        } else {
                             messageInfo.setSend(from);
                         }
                         messageInfo.setUsername(from);
@@ -713,6 +715,7 @@ public class XmppListener {
                         messageInfo.setRemark(remark);
                         messageInfo.setStatus(status);
                         messageInfo.setRedId(redId);
+                        messageInfo.setBetId(logId);
                         messageInfo.setConverstaion(redpacket);
                         mgr.addMessage(messageInfo);
                         int number = mgr.queryNumber(from);
@@ -721,10 +724,10 @@ public class XmppListener {
                         } else {
                             ConversationInfo info = new ConversationInfo();
                             info.setTime(time);
-                            if(messageType==Message.Type.groupchat){
-                                info.setFriend(mdbRoomManage.findRoomName(from)+"");
+                            if (messageType == Message.Type.groupchat) {
+                                info.setFriend(mdbRoomManage.findRoomName(from) + "");
                                 info.setChatType(RoomManage.ROOM_TYPE_MULTI);
-                            }else{
+                            } else {
                                 info.setFriend(friend);
                                 info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
                             }
@@ -743,20 +746,20 @@ public class XmppListener {
         }
     }
 
-    private void goChat(String from, String message, Message.Type messageType, String sendFrom){
-        if(!isApplicationBroughtToBackground(context)){
+    private void goChat(String from, String message, Message.Type messageType, String sendFrom) {
+        if (!isApplicationBroughtToBackground(context)) {
             return;
         }
-        if(from.isEmpty()){
-            from="";
+        if (from.isEmpty()) {
+            from = "";
         }
         ++IMSequence;
         Intent intent = new Intent();
         intent.setClass(context, ConversationActivity.class);
         Bundle bundle = new Bundle();
-        if(messageType==Message.Type.groupchat){
+        if (messageType == Message.Type.groupchat) {
             bundle.putString("name", mdbRoomManage.findRoomName(from));
-        }else{
+        } else {
             bundle.putString("name", from.split("@")[0]);
         }
         bundle.putString("user", from);
@@ -764,9 +767,9 @@ public class XmppListener {
         mResultIntent = PendingIntent.getActivity(context, 1, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setSmallIcon(R.mipmap.logo);
-        if(messageType==Message.Type.groupchat){
+        if (messageType == Message.Type.groupchat) {
             mBuilder.setContentTitle(mdbRoomManage.findRoomName(from));
-        }else {
+        } else {
             String remark = mgr.queryRemark(from);
             if (!StringUtils.isEmpty(remark)) {
                 mBuilder.setContentTitle(remark);
@@ -777,7 +780,7 @@ public class XmppListener {
         mBuilder.setContentText(message);
         mBuilder.setContentIntent(mResultIntent);
         mBuilder.setAutoCancel(true);
-        mBuilder.build().sound=null;
+        mBuilder.build().sound = null;
         Notification notification = mBuilder.build();
         mNotificationManager.notify(IMSequence, notification);
     }

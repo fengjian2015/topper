@@ -32,6 +32,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.util.Util;
@@ -650,7 +651,11 @@ public class UtilTool {
 
     public static void setCircleImg(Context context, Object url, ImageView imageView) {
         if (Util.isOnMainThread() && context != null) {
-            Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
+            if (url instanceof String) {
+                Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
+            } else {
+                Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
+            }
         }
     }
 
@@ -664,13 +669,13 @@ public class UtilTool {
                     Glide.with(context).load(info.getPath()).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
                 }
             } else {
-                if (Util.isOnMainThread()&& context != null) {
-                    Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
+                if (Util.isOnMainThread() && context != null) {
+                    Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop()).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
                 }
             }
         } else {
-            if (Util.isOnMainThread()&& context != null) {
-                Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop())).into(imageView);
+            if (Util.isOnMainThread() && context != null) {
+                Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop()).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
             }
         }
         return bitmap;
@@ -778,6 +783,7 @@ public class UtilTool {
                     list.remove(i);
                 } else if (list.get(i).equals(".")) {
                     list.remove(i);
+                    break;
                 } else {
                     break;
                 }
@@ -873,8 +879,8 @@ public class UtilTool {
         String pattern3 = pattern2 + "([a-zA-Z0-9\\u4e00-\\u9fa5]+)([a-zA-Z0-9\\u4e00-\\u9fa5\\.]+)" + domainName + port + "(/(.*)*)"; //有.com等后缀的，并有参数
         String pattern4 = pattern2 + "([a-zA-Z0-9\\u4e00-\\u9fa5]+)([a-zA-Z0-9\\u4e00-\\u9fa5\\.]+)" + domainName + port; //有.com等后缀结尾的，无参数
         String pattern5 = "((((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[1-9])\\.)((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){2}((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])))" + port + "(\\/(.+))?)"; //ip地址的
-        String pattern6 ="([a-zA-Z0-9\\.\\-\\~\\@\\#\\%\\^\\&\\+\\?\\:\\_\\/\\=\\<\\>]+)" + domainName + port; //有.com等后缀结尾的，无参数
-        String pattern = pattern1 + "|" + pattern2 + "|" + pattern3 + "|" + pattern4 + "|" + pattern5+"|" +pattern6;
+        String pattern6 = "([a-zA-Z0-9\\.\\-\\~\\@\\#\\%\\^\\&\\+\\?\\:\\_\\/\\=\\<\\>]+)" + domainName + port; //有.com等后缀结尾的，无参数
+        String pattern = pattern1 + "|" + pattern2 + "|" + pattern3 + "|" + pattern4 + "|" + pattern5 + "|" + pattern6;
         Pattern p = Pattern.compile(pattern);
         return p;
     }

@@ -123,7 +123,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginTop="@dimen/y30"
-        android:text="TocoTalk服务"
+        android:text="TopperChat服务"
         android:textColor="@color/black"
         android:textSize="@dimen/x28"/>
 

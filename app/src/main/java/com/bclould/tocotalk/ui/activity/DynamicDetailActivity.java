@@ -141,6 +141,12 @@ public class DynamicDetailActivity extends BaseActivity {
     TextView mTvCoin;
     @Bind(R.id.cv_guess)
     CardView mCvGuess;
+    @Bind(R.id.iv_video)
+    ImageView mIvVideo;
+    @Bind(R.id.iv_video_play)
+    ImageView mIvVideoPlay;
+    @Bind(R.id.rl_video)
+    RelativeLayout mRlVideo;
 
     private ArrayList<ThumbViewInfo> mThumbViewInfoList = new ArrayList<>();
     private NineGridImageViewAdapter<String> mAdapter = new NineGridImageViewAdapter<String>() {
@@ -256,10 +262,7 @@ public class DynamicDetailActivity extends BaseActivity {
     //    初始化界面
     private void initInterface() {
         Bundle bundle = getIntent().getExtras();
-        if (bundle.containsKey("imageList")) {
-            mImageList = bundle.getStringArrayList("imageList");//获取上个页面传递的数据
-            mCompressImgList = bundle.getStringArrayList("compressImgList");
-        }
+        int type = bundle.getInt("type");
         mId = bundle.getString("id");
         mUserName = bundle.getString("name");
         mTimes = bundle.getString("time");
@@ -272,54 +275,64 @@ public class DynamicDetailActivity extends BaseActivity {
         }
         mName.setText(mUserName);
         mTime.setText(mTimes);
-        if (mContent.contains(Constants.GUESS_DYNAMIC_SEPARATOR)) {
-            mCvGuess.setVisibility(View.VISIBLE);
-            UtilTool.Log("競猜分享", mContent);
-            String[] split = mContent.split(Constants.GUESS_DYNAMIC_SEPARATOR);
-            if (split.length == 7) {
-                mGuessPw = split[6];
-            }
-            mGuessId = Integer.parseInt(split[4]);
-            mPeriod_aty = Integer.parseInt(split[5]);
-            mDynamicText.setText(split[0]);
-            mTvTitle.setText(split[1]);
-            mTvWho.setText(getString(R.string.fa_qi_ren) + ":" + split[2]);
-            mTvCoin.setText(split[3] + getString(R.string.guess));
-            mCvGuess.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mGuessPw != null) {
-                        showPWDialog(mGuessPw, mGuessId, mPeriod_aty);
-                    } else {
-                        Intent intent = new Intent(DynamicDetailActivity.this, GuessDetailsActivity.class);
-                        intent.putExtra("bet_id", mGuessId);
-                        intent.putExtra("period_qty", mPeriod_aty);
-                        startActivity(intent);
+        switch (type) {
+            case 1:
+                mDynamicText.setText(mContent);
+                break;
+            case 2:
+                mDynamicText.setText(mContent);
+                mNglImages.setVisibility(View.VISIBLE);
+                mImageList = bundle.getStringArrayList("imageList");//获取上个页面传递的数据
+                mCompressImgList = bundle.getStringArrayList("compressImgList");
+                mNglImages.setVisibility(View.VISIBLE);
+                mNglImages.setAdapter(mAdapter);
+                mNglImages.setImagesData(mCompressImgList);
+                //九宫格图片填充数据
+                mNglImages.setItemImageClickListener(new ItemImageClickListener<String>() {
+                    @Override
+                    public void onItemImageClick(Context context, ImageView imageView, int index, List<String> list) {
+
+                        Intent intent = new Intent(DynamicDetailActivity.this, PreviewImgActivity.class);
+                        intent.putExtra("index", index);
+                        intent.putStringArrayListExtra("imgList", mCompressImgList);
+                        context.startActivity(intent);
                     }
+                });
+                break;
+            case 3:
+                mRlVideo.setVisibility(View.VISIBLE);
+                mDynamicText.setText(mContent);
+                mImageList = bundle.getStringArrayList("imageList");//获取上个页面传递的数据
+                mCompressImgList = bundle.getStringArrayList("compressImgList");
+                Glide.with(this).load((mCompressImgList).get(0)).into(mIvVideo);
+                break;
+            case 4:
+                mCvGuess.setVisibility(View.VISIBLE);
+                UtilTool.Log("競猜分享", mContent);
+                String[] split = mContent.split(Constants.GUESS_DYNAMIC_SEPARATOR);
+                if (split.length == 7) {
+                    mGuessPw = split[6];
                 }
-            });
-        } else {
-            mCvGuess.setVisibility(View.GONE);
-            mDynamicText.setText(mContent);
-        }
-        if (mCompressImgList != null && mCompressImgList.size() != 0) {//判断是否有数据，没有显示另一个状态
-            mNglImages.setVisibility(View.VISIBLE);
-            mNglImages.setAdapter(mAdapter);
-            mNglImages.setImagesData(mCompressImgList);
-            //九宫格图片填充数据
-            mNglImages.setItemImageClickListener(new ItemImageClickListener<String>() {
-                @Override
-                public void onItemImageClick(Context context, ImageView imageView, int index, List<String> list) {
-
-                    Intent intent = new Intent(DynamicDetailActivity.this, PreviewImgActivity.class);
-                    intent.putExtra("index", index);
-                    intent.putStringArrayListExtra("imgList", mCompressImgList);
-                    context.startActivity(intent);
-                }
-            });
-
-        } else {
-            mNglImages.setVisibility(View.GONE);
+                mGuessId = Integer.parseInt(split[4]);
+                mPeriod_aty = Integer.parseInt(split[5]);
+                mDynamicText.setText(split[0]);
+                mTvTitle.setText(split[1]);
+                mTvWho.setText(getString(R.string.fa_qi_ren) + ":" + split[2]);
+                mTvCoin.setText(split[3] + getString(R.string.guess));
+                mCvGuess.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mGuessPw != null) {
+                            showPWDialog(mGuessPw, mGuessId, mPeriod_aty);
+                        } else {
+                            Intent intent = new Intent(DynamicDetailActivity.this, GuessDetailsActivity.class);
+                            intent.putExtra("bet_id", mGuessId);
+                            intent.putExtra("period_qty", mPeriod_aty);
+                            startActivity(intent);
+                        }
+                    }
+                });
+                break;
         }
         //初始化列表
         initRecyclerView();
@@ -504,11 +517,16 @@ public class DynamicDetailActivity extends BaseActivity {
         }).start();
     }
 
-    @OnClick({R.id.bark, R.id.touxiang, R.id.send, R.id.ll_zan, R.id.tv_delete, R.id.iv_selector_img, R.id.dynamic_content})
+    @OnClick({R.id.rl_video, R.id.bark, R.id.touxiang, R.id.send, R.id.ll_zan, R.id.tv_delete, R.id.iv_selector_img, R.id.dynamic_content})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.rl_video:
+                Intent intent = new Intent(this, VideoActivity.class);
+                intent.putExtra("url", mImageList.get(0));
+                startActivity(intent);
                 break;
             case R.id.dynamic_content:
                 mCommentEt.setHint(getString(R.string.et_comment));

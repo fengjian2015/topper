@@ -18,7 +18,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -105,8 +104,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public static final int TO_RED_MSG = 9;//发送红包消息类型
     public static final int FROM_FILE_MSG = 10;//接受文件消息类型
     public static final int TO_FILE_MSG = 11;//发送文件消息类型
-    public static final int FROM_TRANSFER_MSG = 12;//接受红包消息类型
-    public static final int TO_TRANSFER_MSG = 13;//发送红包消息类型
+    public static final int FROM_TRANSFER_MSG = 12;//接受转账消息类型
+    public static final int TO_TRANSFER_MSG = 13;//发送转账消息类型
     public static final int FROM_LOCATION_MSG = 20;//接受定位
     public static final int TO_LOCATION_MSG = 21;//發送定位
     public static final int FROM_CARD_MSG = 22;//接受名片
@@ -1978,6 +1977,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, PayDetailsActivity.class);
                     intent.putExtra("id", messageInfo.getRedId() + "");
+                    intent.putExtra("log_id", messageInfo.getBetId());
                     intent.putExtra("type_number", messageInfo.getType() + "");
                     mContext.startActivity(intent);
                 }
@@ -2029,6 +2029,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, PayDetailsActivity.class);
                     intent.putExtra("id", messageInfo.getRedId() + "");
+                    intent.putExtra("log_id", messageInfo.getBetId());
                     intent.putExtra("type_number", messageInfo.getType() + "");
                     mContext.startActivity(intent);
                 }
@@ -2066,6 +2067,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, PayDetailsActivity.class);
                     intent.putExtra("id", messageInfo.getRedId() + "");
+                    intent.putExtra("log_id", messageInfo.getBetId());
                     intent.putExtra("type_number", messageInfo.getType() + "");
                     mContext.startActivity(intent);
                 }

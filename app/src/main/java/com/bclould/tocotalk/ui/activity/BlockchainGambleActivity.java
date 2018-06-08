@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.ui.adapter.BlockchainGambleVPAdapter;
+import com.bclould.tocotalk.utils.Constants;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -175,7 +176,10 @@ public class BlockchainGambleActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 mPopupWindow.dismiss();
-                startActivity(new Intent(BlockchainGambleActivity.this, RegulationStatementActivity.class));
+                Intent intent = new Intent(BlockchainGambleActivity.this, WebViewActivity.class);
+                intent.putExtra("url", Constants.BASE_URL + Constants.GUESS_WEB_URL);
+                intent.putExtra("title", getString(R.string.regulation_statement));
+                startActivity(intent);
             }
         });
         final TextView guessRecord = (TextView) mView.findViewById(R.id.tv_guess_record);

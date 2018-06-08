@@ -88,6 +88,7 @@ public class NewsFragment extends Fragment implements OnBannerListener {
         initData(PULL_DOWN);
     }
 
+    boolean isFinish = true;
     private void initListener() {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -101,7 +102,9 @@ public class NewsFragment extends Fragment implements OnBannerListener {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 refreshLayout.finishLoadMore(1000);
-                initData(PULL_UP);
+                if (isFinish) {
+                    initData(PULL_UP);
+                }
             }
         });
     }
@@ -114,12 +117,14 @@ public class NewsFragment extends Fragment implements OnBannerListener {
             mPage = 1;
             end = 0;
         }
+        isFinish = false;
         UtilTool.Log("分頁", mPage + "");
         mNewsNoticePresenter.getNewsList(mPage, mPageSize, new NewsNoticePresenter.CallBack() {
             @Override
             public void send(List<NewsListInfo.ListsBean> lists, List<NewsListInfo.TopBean> top) {
                 if (lists != null) {
                     if (lists.size() != 0 || mNewsList.size() != 0 || top.size() != 0 || mTopList.size() != 0) {
+                        isFinish = true;
                         if (type == PULL_UP) {
                             if (lists.size() == mPageSize) {
                                 mPage++;

@@ -147,6 +147,8 @@ public class OrderFormFragment extends Fragment {
         }
     }
 
+    boolean isFinish = true;
+
     private void initListener() {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -160,7 +162,9 @@ public class OrderFormFragment extends Fragment {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 refreshLayout.finishLoadMore(1000);
-                initData(mCoinName, mFiltrate, "", PULL_UP);
+                if (isFinish) {
+                    initData(mCoinName, mFiltrate, "", PULL_UP);
+                }
             }
         });
 
@@ -192,12 +196,16 @@ public class OrderFormFragment extends Fragment {
             mPage = 1;
             end = 0;
         }
+        isFinish = false;
         UtilTool.Log("分頁", mPage + "");
         mBuySellPresenter.getOrderList(mPage, mPageSize, coinName, filtrate, user, new BuySellPresenter.CallBack3() {
             @Override
             public void send(List<OrderListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
                     if (mDataList.size() != 0 || data.size() != 0) {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mLlNoData.setVisibility(View.GONE);
+                        isFinish = true;
                         if (type == PULL_UP) {
                             if (data.size() == mPageSize) {
                                 mPage++;
@@ -211,15 +219,18 @@ public class OrderFormFragment extends Fragment {
                                 }
                             }
                         } else {
-                            if (mPage == 1) {
-                                mPage++;
+                            if (data.size() == 0) {
+                                mRecyclerView.setVisibility(View.GONE);
+                                mLlNoData.setVisibility(View.VISIBLE);
+                            } else {
+                                if (mPage == 1) {
+                                    mPage++;
+                                }
+                                mDataList.clear();
+                                mDataList.addAll(data);
+                                mOrderRVAdapter.notifyDataSetChanged();
                             }
-                            mDataList.clear();
-                            mDataList.addAll(data);
-                            mOrderRVAdapter.notifyDataSetChanged();
                         }
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        mLlNoData.setVisibility(View.GONE);
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);

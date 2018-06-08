@@ -1,19 +1,19 @@
 package com.bclould.tocotalk.ui.activity;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,58 +30,35 @@ import butterknife.OnClick;
  * Created by GA on 2017/11/1.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class FindPasswordActivity extends AppCompatActivity {
 
 
+    @Bind(R.id.iv_back)
+    ImageView mIvBack;
+    @Bind(R.id.tv_find_password)
+    TextView mTvFindPassword;
     @Bind(R.id.et_email)
     EditText mEtEmail;
-    @Bind(R.id.btn_next)
-    Button mBtnNext;
-    @Bind(R.id.ll_step_one)
-    LinearLayout mLlStepOne;
+    @Bind(R.id.et_vcode)
+    EditText mEtVcode;
+    @Bind(R.id.tv_send)
+    TextView mTvSend;
     @Bind(R.id.et_password)
     EditText mEtPassword;
     @Bind(R.id.eye)
     ImageView mEye;
-    @Bind(R.id.et_email_code)
-    EditText mEtEmailCode;
-    @Bind(R.id.btn_last_step)
-    Button mBtnLastStep;
-    @Bind(R.id.btn_submit)
-    Button mBtnSubmit;
-    @Bind(R.id.ll_step_tow)
-    LinearLayout mLlStepTow;
+    @Bind(R.id.btn_login)
+    Button mBtnLogin;
+    private FindPasswordPresenter mFindPasswordPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_password);
         ButterKnife.bind(this);
-        setEdit();
         MyApp.getInstance().addActivity(this);
-    }
-
-    //不能回车
-    private void setEdit() {
-        mEtEmail.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return true;
-            }
-        });
-        mEtEmailCode.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return true;
-            }
-        });
-
-        mEtPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return true;
-            }
-        });
+        mFindPasswordPresenter = new FindPasswordPresenter(this);
     }
 
     //监听返回键
@@ -130,6 +107,15 @@ public class FindPasswordActivity extends AppCompatActivity {
         if (mEtEmail.getText().toString().trim().equals("")) {
             Toast.makeText(this, getResources().getString(R.string.toast_email), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtEmail);
+        } else if (mEtVcode.getText().toString().trim().equals("")) {
+            Toast.makeText(this, getResources().getString(R.string.toast_vcode), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mEtVcode);
+        } else if (mEtPassword.getText().toString().trim().equals("")) {
+            Toast.makeText(this, getResources().getString(R.string.toast_password), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mEtPassword);
+        } else if (!mEtEmail.getText().toString().contains("@")) {
+            Toast.makeText(this, getResources().getString(R.string.toast_email_format), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mEtEmail);
         } else {
             return true;
         }
@@ -151,52 +137,44 @@ public class FindPasswordActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick({R.id.btn_next, R.id.eye, R.id.btn_last_step, R.id.btn_submit})
+    @OnClick({R.id.iv_back, R.id.tv_send, R.id.eye, R.id.btn_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.btn_next:
-                if (checkEdit()) {
-                    FindPasswordPresenter findPasswordPresenter = new FindPasswordPresenter(this);
-                    findPasswordPresenter.sendRegcode(mEtEmail.getText().toString(), new FindPasswordPresenter.CallBack() {
-                        @Override
-                        public void send() {
-                            mLlStepOne.setVisibility(View.GONE);
-                            mLlStepTow.setVisibility(View.VISIBLE);
-                        }
-                    });
+            case R.id.iv_back:
+                finish();
+                break;
+            case R.id.tv_send:
+                if (mEtEmail.getText().toString().isEmpty()) {
+                    Toast.makeText(this, getResources().getString(R.string.toast_email), Toast.LENGTH_SHORT).show();
+                    AnimatorTool.getInstance().editTextAnimator(mEtEmail);
+                    sendVcode();
+                } else if (!mEtEmail.getText().toString().contains("@")) {
+                    Toast.makeText(this, getResources().getString(R.string.toast_email_format), Toast.LENGTH_SHORT).show();
+                    AnimatorTool.getInstance().editTextAnimator(mEtEmail);
+                } else {
+                    sendVcode();
                 }
                 break;
             case R.id.eye:
                 isEye = !isEye;
                 showHidePassword();
                 break;
-            case R.id.btn_last_step:
-                mLlStepOne.setVisibility(View.VISIBLE);
-                mLlStepTow.setVisibility(View.GONE);
-                break;
-            case R.id.btn_submit:
-                if (checkEdit2()) {
-                    String email = mEtEmail.getText().toString();
-                    String password = mEtPassword.getText().toString();
-                    String emailCode = mEtEmailCode.getText().toString();
-                    FindPasswordPresenter findPasswordPresenter = new FindPasswordPresenter(this);
-                    findPasswordPresenter.submit(emailCode, email, password);
+            case R.id.btn_login:
+                if (checkEdit()) {
+                    submit();
                 }
                 break;
         }
     }
 
-    //验证手机号和密码
-    private boolean checkEdit2() {
-        if (mEtEmailCode.getText().toString().trim().equals("")) {
-            Toast.makeText(this, getResources().getString(R.string.toast_vcode), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mEtEmailCode);
-        } else if (mEtPassword.getText().toString().trim().equals("")) {
-            Toast.makeText(this, getResources().getString(R.string.toast_password), Toast.LENGTH_SHORT).show();
-            AnimatorTool.getInstance().editTextAnimator(mEtPassword);
-        } else {
-            return true;
-        }
-        return false;
+    private void sendVcode() {
+        mFindPasswordPresenter.sendRegcode(mEtEmail.getText().toString());
+    }
+
+    private void submit() {
+        String email = mEtEmail.getText().toString();
+        String password = mEtPassword.getText().toString();
+        String vcode = mEtVcode.getText().toString();
+        mFindPasswordPresenter.submit(vcode, email, password);
     }
 }

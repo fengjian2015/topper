@@ -295,11 +295,11 @@ public class BuySellPresenter {
         });
     }
 
-    public void transRecordInfo(String id, String type_number, final CallBack3 callBack3) {
+    public void transRecordInfo(String log_id, String id, String type_number, final CallBack3 callBack3) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .transRecord(UtilTool.getToken(), id, type_number)
+                    .transRecord(UtilTool.getToken(), log_id, type_number, id)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<TransRecordInfo>() {
@@ -317,6 +317,7 @@ public class BuySellPresenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            UtilTool.Log("错误", e.getMessage());
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 

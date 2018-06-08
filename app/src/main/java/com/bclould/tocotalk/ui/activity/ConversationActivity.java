@@ -219,7 +219,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     //初始化表情盘
     private void initEmoticonsKeyboard() {
         SimpleAppsGridView simpleAppsGridView = new SimpleAppsGridView(this);
-        simpleAppsGridView.setData(roomId,roomType);
+        simpleAppsGridView.setData(roomId, roomType);
         mEkbEmoticonsKeyboard.addFuncView(simpleAppsGridView);
         mEkbEmoticonsKeyboard.addOnFuncKeyBoardListener(this);
         mEkbEmoticonsKeyboard.getEtChat().setOnSizeChangedListener(new EmoticonsEditText.OnSizeChangedListener() {
@@ -484,13 +484,13 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             initData();
         } else if (msg.equals(getString(R.string.transfer))) {
             initData();
-        }else if(msg.equals(getString(R.string.open_shooting))){
+        } else if (msg.equals(getString(R.string.open_shooting))) {
             openShooting();
         } else if (msg.equals(getString(R.string.open_photo_album))) {
             selectorImages();
-        }else if (msg.equals(getString(R.string.open_file_manage))) {
+        } else if (msg.equals(getString(R.string.open_file_manage))) {
             showFileChooser();
-        }else if (msg.equals(getString(R.string.look_original))) {
+        } else if (msg.equals(getString(R.string.look_original))) {
             String id = event.getId();
             for (MessageInfo info : mMessageList) {
                 info.setImageType(1);
@@ -502,19 +502,19 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             finish();
         } else if (msg.equals(getString(R.string.change_friend_remark))) {
             setTitleName();
-        }else if(msg.equals(getString(R.string.start_otr_timeout))){
-            UtilTool.Log("fengjian---","加密超时");
+        } else if (msg.equals(getString(R.string.start_otr_timeout))) {
+            UtilTool.Log("fengjian---", "加密超时");
             mEkbEmoticonsKeyboard.timeoutOTR();
-        }else if(msg.equals(getString(R.string.start_otr))){
+        } else if (msg.equals(getString(R.string.start_otr))) {
             mEkbEmoticonsKeyboard.startOTR();
-            UtilTool.Log("fengjian---","开启加密");
+            UtilTool.Log("fengjian---", "开启加密");
         }
 
     }
 
     //打開拍攝
-    private void openShooting(){
-        Intent intent=new Intent(this,CameraActivity.class);
+    private void openShooting() {
+        Intent intent = new Intent(this, CameraActivity.class);
         startActivityForResult(intent, CODE_TAKE_PHOTO_SHOOTING);
     }
 
@@ -588,14 +588,14 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                     }
                     selectList.clear();
                 }
-            }else if(requestCode==CODE_TAKE_PHOTO_SHOOTING){
-                String url=data.getStringExtra("path_url");
+            } else if (requestCode == CODE_TAKE_PHOTO_SHOOTING) {
+                String url = data.getStringExtra("path_url");
                 String postfix = UtilTool.getPostfix(url);//获取文件后缀
                 if (!postfix.equals("Video")) {
                     int degree = UtilTool.readPictureDegree(url);
                     UtilTool.toturn(url, BitmapFactory.decodeFile(url), degree);
                 }
-                if(!com.bclould.tocotalk.utils.StringUtils.isEmpty(url))
+                if (!com.bclould.tocotalk.utils.StringUtils.isEmpty(url))
                     roomManage.Upload(url);
             }
         }
@@ -832,9 +832,9 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     private void goDetails() {
         // TODO: 2018/5/28 區分群聊和單聊
-        if(RoomManage.ROOM_TYPE_MULTI.equals(roomType)){
+        if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
 
-        }else{
+        } else {
             Intent intent = new Intent(this, ConversationDetailsActivity.class);
             intent.putExtra("user", roomId);
             intent.putExtra("name", mName);

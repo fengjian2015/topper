@@ -121,7 +121,7 @@ public class CoinExchangeActivity extends BaseActivity {
     boolean isCheckBox = false;
 
     private void showDisclaimerDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_otc_disclaimer, this,R.style.dialog);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_otc_disclaimer, this, R.style.dialog);
         deleteCacheDialog.show();
         final LinearLayout showHide = (LinearLayout) deleteCacheDialog.findViewById(R.id.ll_show_hide);
         final CheckBox checkBox = (CheckBox) deleteCacheDialog.findViewById(R.id.check_box);
@@ -211,7 +211,7 @@ public class CoinExchangeActivity extends BaseActivity {
         mCoinPresenter.getCoinPrice(name, new CoinPresenter.CallBack2() {
             @Override
             public void send(BaseInfo.DataBean data) {
-                try {
+                if (!CoinExchangeActivity.this.isDestroyed()) {
                     if (data.getUSDT() != null && data.getRate() != null && data.getTrend() != null) {
                         if (!data.getUSDT().isEmpty() && !data.getRate().isEmpty() && !data.getTrend().isEmpty()) {
                             double usdt = Double.parseDouble(data.getUSDT());
@@ -222,15 +222,14 @@ public class CoinExchangeActivity extends BaseActivity {
                             mPrice = mTvPrice.getText().toString();
                             mTvCny.setText("≈ " + price + " " + MySharedPreferences.getInstance().getString(CURRENCY));
                             if (data.getTrend().contains("-")) {
-                                mBtnFloat.setText(data.getTrend() + "% ↓");
+                                mBtnFloat.setText(data.getTrend() + "%↓");
                             } else {
-                                mBtnFloat.setText(data.getTrend() + "% ↑");
+                                mBtnFloat.setText(data.getTrend() + "%↑");
                             }
                         }
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+
             }
         });
     }
@@ -257,7 +256,7 @@ public class CoinExchangeActivity extends BaseActivity {
         mCoinPresenter.coinLists("exchange", new CoinPresenter.CallBack() {
             @Override
             public void send(List<CoinListInfo.DataBean> data) {
-                try {
+                if (!CoinExchangeActivity.this.isDestroyed()) {
                     if (data.size() != 0) {
                         mCoinList.addAll(data);
                         mCoin.add(data.get(0).getName());
@@ -269,8 +268,6 @@ public class CoinExchangeActivity extends BaseActivity {
                         initPrice(data.get(0).getName());
                         initListData(data.get(0).getName());
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         });
@@ -414,16 +411,18 @@ public class CoinExchangeActivity extends BaseActivity {
         mCoinPresenter.exchange(price, count, "USDT", coin, password, new CoinPresenter.CallBack4() {
             @Override
             public void send() {
-                String remain = "";
-                for (CoinListInfo.DataBean info : mCoinList) {
-                    if (info.getName().equals(coin)) {
-                        remain = Double.parseDouble(info.getCoin_over()) - Double.parseDouble(count) + "";
-                        info.setCoin_over(remain);
+                if (CoinExchangeActivity.this.isDestroyed()) {
+                    String remain = "";
+                    for (CoinListInfo.DataBean info : mCoinList) {
+                        if (info.getName().equals(coin)) {
+                            remain = Double.parseDouble(info.getCoin_over()) - Double.parseDouble(count) + "";
+                            info.setCoin_over(remain);
+                        }
                     }
+                    mTvRemain.setText(remain);
+                    mEtCount.setText("");
+                    initListData(mCoin.get(0));
                 }
-                mTvRemain.setText(remain);
-                mEtCount.setText("");
-                initListData(mCoin.get(0));
             }
         });
     }

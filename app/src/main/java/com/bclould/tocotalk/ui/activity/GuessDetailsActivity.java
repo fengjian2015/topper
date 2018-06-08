@@ -43,7 +43,6 @@ import com.bclould.tocotalk.model.GuessInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.ui.adapter.GuessBetRVAdapter;
 import com.bclould.tocotalk.ui.widget.CurrencyDialog;
-import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.MenuListPopWindow;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
@@ -67,7 +66,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.bclould.tocotalk.R.style.BottomDialog;
-import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_CARD_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_GUESS_MSG;
 
 /**
@@ -351,83 +349,84 @@ public class GuessDetailsActivity extends BaseActivity {
         mBlockchainGuessPresenter.getGuessInfo(mBet_id, mPeriod_qty, new BlockchainGuessPresenter.CallBack3() {
             @Override
             public void send(GuessInfo.DataBean data) {
-                UtilTool.Log("投注列表", data.getBetList().size() + "");
-                mDataList.addAll(data.getBetList());
-                mGuessBetRVAdapter.notifyDataSetChanged();
-                mTvPresentPeriods.setText(data.getPeriod_qty() + getString(R.string.qi));
-                mTvPresentPeriods2.setText(data.getPeriod_qty() + getString(R.string.qi));
-                mTvWho.setText(data.getUser_name());
-                mTvWho2.setText(data.getUser_name());
-                mTvCoin.setText(data.getCoin_name());
-                mTvCoin2.setText(data.getCoin_name());
-                mTvSingleInsertCount.setText(data.getSingle_coin() + "/" + data.getCoin_name());
-                mTvSingleInsertCount3.setText(data.getSingle_coin() + "/" + data.getCoin_name());
-                mTvPresentInvestCount.setText(data.getCurrent_people_number() + "/" + data.getLimit_people_number());
-                mTvPresentInvestCount2.setText(data.getCurrent_people_number() + "");
-                mTvStartTime.setText(getString(R.string.fa_qi_time) + data.getCreated_at());
-                mTvStartTime2.setText(getString(R.string.fa_qi_time) + data.getCreated_at());
-                mTvSumCoin.setText(data.getLimit_number() + data.getCoin_name());
-                mTvBonusCount.setText(data.getLimit_number() + data.getCoin_name());
-                mTvPresentCoinCount.setText(data.getPrize_pool_number() + data.getCoin_name());
-                mTvTitle.setText(data.getTitle());
-                mTvTitle2.setText(data.getTitle());
-                mHashArr = data.getWin_number_hash().split(",");
-                mIndexArr = data.getWin_number_index().split(",");
-                mUrlArr = data.getWin_number_hash_url().split(",");
-                mLimit_people_number = data.getLimit_people_number();
-                mPrize_pool_number = Double.parseDouble(data.getPrize_pool_number());
-                mLimit_number = Double.parseDouble(data.getLimit_number());
-                int progress = (int) (Double.parseDouble(data.getPrize_pool_number()) / Double.parseDouble(data.getLimit_number()) * 100);
-                UtilTool.Log("進度", progress + "");
-                UtilTool.Log("進度", mPrize_pool_number + "");
-                mProgressBar.setMax(100);
-                mProgressBar.setProgress(progress);
-                mCoin_id = data.getCoin_id();
-                mSingle_coin = data.getSingle_coin();
-                mCurrent_people_number = data.getCurrent_people_number();
-                mOver_count_num = data.getOver_count_num();
-                mStatus = data.getStatus();
-                if (data.getStatus() == 1 || data.getStatus() == 2) {
-                    mLlNo.setVisibility(View.VISIBLE);
-                    mLlAlready.setVisibility(View.GONE);
-                    mCountdown = data.getCountdown();
-                    UtilTool.Log("倒計時", data.getCountdown() + "");
-                    mTimer.schedule(mTask, 1000, 1000);
-                    if (data.getStatus() == 2) {
-                        mLlGuessCount.setVisibility(View.GONE);
-                        mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
-                        mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
-                        mIvShare.setVisibility(View.GONE);
-                    } else {
-                        mIvShare.setVisibility(View.VISIBLE);
-                        if (data.getOver_count_num() == 0) {
+                if (!GuessDetailsActivity.this.isDestroyed()) {
+                    UtilTool.Log("投注列表", data.getBetList().size() + "");
+                    mDataList.addAll(data.getBetList());
+                    mGuessBetRVAdapter.notifyDataSetChanged();
+                    mTvPresentPeriods.setText(data.getPeriod_qty() + getString(R.string.qi));
+                    mTvPresentPeriods2.setText(data.getPeriod_qty() + getString(R.string.qi));
+                    mTvWho.setText(data.getUser_name());
+                    mTvWho2.setText(data.getUser_name());
+                    mTvCoin.setText(data.getCoin_name());
+                    mTvCoin2.setText(data.getCoin_name());
+                    mTvSingleInsertCount.setText(data.getSingle_coin() + "/" + data.getCoin_name());
+                    mTvSingleInsertCount3.setText(data.getSingle_coin() + "/" + data.getCoin_name());
+                    mTvPresentInvestCount.setText(data.getCurrent_people_number() + "/" + data.getLimit_people_number());
+                    mTvPresentInvestCount2.setText(data.getCurrent_people_number() + "");
+                    mTvStartTime.setText(getString(R.string.fa_qi_time) + data.getCreated_at());
+                    mTvStartTime2.setText(getString(R.string.fa_qi_time) + data.getCreated_at());
+                    mTvSumCoin.setText(data.getLimit_number() + data.getCoin_name());
+                    mTvBonusCount.setText(data.getLimit_number() + data.getCoin_name());
+                    mTvPresentCoinCount.setText(data.getPrize_pool_number() + data.getCoin_name());
+                    mTvTitle.setText(data.getTitle());
+                    mTvTitle2.setText(data.getTitle());
+                    mHashArr = data.getWin_number_hash().split(",");
+                    mIndexArr = data.getWin_number_index().split(",");
+                    mUrlArr = data.getWin_number_hash_url().split(",");
+                    mLimit_people_number = data.getLimit_people_number();
+                    mPrize_pool_number = Double.parseDouble(data.getPrize_pool_number());
+                    mLimit_number = Double.parseDouble(data.getLimit_number());
+                    int progress = (int) (Double.parseDouble(data.getPrize_pool_number()) / Double.parseDouble(data.getLimit_number()) * 100);
+                    UtilTool.Log("進度", progress + "");
+                    UtilTool.Log("進度", mPrize_pool_number + "");
+                    mProgressBar.setMax(100);
+                    mProgressBar.setProgress(progress);
+                    mCoin_id = data.getCoin_id();
+                    mSingle_coin = data.getSingle_coin();
+                    mCurrent_people_number = data.getCurrent_people_number();
+                    mOver_count_num = data.getOver_count_num();
+                    mStatus = data.getStatus();
+                    if (data.getStatus() == 1 || data.getStatus() == 2) {
+                        mLlNo.setVisibility(View.VISIBLE);
+                        mLlAlready.setVisibility(View.GONE);
+                        mCountdown = data.getCountdown();
+                        UtilTool.Log("倒計時", data.getCountdown() + "");
+                        mTimer.schedule(mTask, 1000, 1000);
+                        if (data.getStatus() == 2) {
                             mLlGuessCount.setVisibility(View.GONE);
                             mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
                             mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
+                            mIvShare.setVisibility(View.GONE);
                         } else {
-                            mLlGuessCount.setVisibility(View.VISIBLE);
+                            mIvShare.setVisibility(View.VISIBLE);
+                            if (data.getOver_count_num() == 0) {
+                                mLlGuessCount.setVisibility(View.GONE);
+                                mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
+                                mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
+                            } else {
+                                mLlGuessCount.setVisibility(View.VISIBLE);
+                            }
                         }
+                    } else if (data.getStatus() == 3) {
+                        mIvShare.setVisibility(View.GONE);
+                        mLlNo.setVisibility(View.GONE);
+                        mLlAlready.setVisibility(View.VISIBLE);
+                        String[] split = data.getWin_number().split("_");
+                        mTvNumber.setText(split[0]);
+                        mTvNumber2.setText(split[1]);
+                        mTvNumber3.setText(split[2]);
+                        mTvNumber4.setText(split[3]);
+                    } else if (data.getStatus() == 4) {
+                        mIvShare.setVisibility(View.GONE);
+                        mLlNo.setVisibility(View.VISIBLE);
+                        mLlAlready.setVisibility(View.GONE);
+                        mLlGuessCount.setVisibility(View.GONE);
+                        mLlBet.setVisibility(View.GONE);
+                        mCvTime.setVisibility(View.GONE);
+                        mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
+                        mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
                     }
-                } else if (data.getStatus() == 3) {
-                    mIvShare.setVisibility(View.GONE);
-                    mLlNo.setVisibility(View.GONE);
-                    mLlAlready.setVisibility(View.VISIBLE);
-                    String[] split = data.getWin_number().split("_");
-                    mTvNumber.setText(split[0]);
-                    mTvNumber2.setText(split[1]);
-                    mTvNumber3.setText(split[2]);
-                    mTvNumber4.setText(split[3]);
-                } else if (data.getStatus() == 4) {
-                    mIvShare.setVisibility(View.GONE);
-                    mLlNo.setVisibility(View.VISIBLE);
-                    mLlAlready.setVisibility(View.GONE);
-                    mLlGuessCount.setVisibility(View.GONE);
-                    mLlBet.setVisibility(View.GONE);
-                    mCvTime.setVisibility(View.GONE);
-                    mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
-                    mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
                 }
-
             }
         });
     }
@@ -1000,8 +999,9 @@ public class GuessDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                Intent intent = new Intent(GuessDetailsActivity.this, GuessHashActivity.class);
+                Intent intent = new Intent(GuessDetailsActivity.this, WebViewActivity.class);
                 intent.putExtra("url", mUrlArr[0]);
+                intent.putExtra("title", getString(R.string.hash_details));
                 startActivity(intent);
             }
         });
@@ -1009,8 +1009,9 @@ public class GuessDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                Intent intent = new Intent(GuessDetailsActivity.this, GuessHashActivity.class);
+                Intent intent = new Intent(GuessDetailsActivity.this, WebViewActivity.class);
                 intent.putExtra("url", mUrlArr[1]);
+                intent.putExtra("title", getString(R.string.hash_details));
                 startActivity(intent);
             }
         });
@@ -1018,8 +1019,9 @@ public class GuessDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                Intent intent = new Intent(GuessDetailsActivity.this, GuessHashActivity.class);
+                Intent intent = new Intent(GuessDetailsActivity.this, WebViewActivity.class);
                 intent.putExtra("url", mUrlArr[2]);
+                intent.putExtra("title", getString(R.string.hash_details));
                 startActivity(intent);
 
             }
@@ -1028,8 +1030,9 @@ public class GuessDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                Intent intent = new Intent(GuessDetailsActivity.this, GuessHashActivity.class);
+                Intent intent = new Intent(GuessDetailsActivity.this, WebViewActivity.class);
                 intent.putExtra("url", mUrlArr[3]);
+                intent.putExtra("title", getString(R.string.hash_details));
                 startActivity(intent);
 
             }

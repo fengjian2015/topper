@@ -197,6 +197,32 @@
                         ngl:showStyle="fill"
                         ngl:singleImgSize="@dimen/x360"/>
 
+                    <RelativeLayout
+                        android:id="@+id/rl_video"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/dynamic_text"
+                        android:layout_marginBottom="@dimen/y20"
+                        android:layout_marginLeft="@dimen/x25"
+                        android:layout_marginRight="@dimen/x20"
+                        android:layout_marginTop="@dimen/y20"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/iv_video"
+                            android:scaleType="center"
+                            android:layout_width="@dimen/x288"
+                            android:layout_height="@dimen/y288"/>
+
+                        <ImageView
+                            android:id="@+id/iv_video_play"
+                            android:layout_width="@dimen/x50"
+                            android:layout_height="@dimen/x50"
+                            android:layout_centerInParent="true"
+                            android:src="@mipmap/icon_news_play"/>
+
+                    </RelativeLayout>
+
                     <LinearLayout
                         android:id="@+id/ll_zan"
                         android:layout_width="wrap_content"

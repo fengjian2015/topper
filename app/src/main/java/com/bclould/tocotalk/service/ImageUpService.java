@@ -96,7 +96,7 @@ public class ImageUpService extends Service {
                         , MediaStore.Video.Thumbnails.MINI_KIND);
                 //缩略图储存路径
                 final String key = UtilTool.getUserId() + UtilTool.createtFileName() + UtilTool.getPostfix2(file.getName());
-                final String keyCompress = UtilTool.getUserId() + UtilTool.createtFileName() + "compress" + UtilTool.getPostfix2(file.getName());
+                final String keyCompress = UtilTool.getUserId() + UtilTool.createtFileName() + "compress.jpg";
                 final File newFile = new File(Constants.PUBLICDIR + keyCompress);
                 UtilTool.comp(bitmap, newFile);//压缩图片
                 upVoide(key, file, true);

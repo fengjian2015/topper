@@ -95,6 +95,7 @@ public class PersonageDynamicActivity extends BaseActivity {
         }
     }
 
+    boolean isFinish = true;
     private void initListener() {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -107,7 +108,9 @@ public class PersonageDynamicActivity extends BaseActivity {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
                 refreshLayout.finishLoadMore(1000);
-                initData(PULL_UP);
+                if (isFinish) {
+                    initData(PULL_UP);
+                }
             }
         });
     }
@@ -119,11 +122,13 @@ public class PersonageDynamicActivity extends BaseActivity {
             mPage = 1;
             end = 0;
         }
+        isFinish = false;
         mDynamicPresenter.taDynamicList(mPage, mPageSize, mUser, new DynamicPresenter.CallBack2() {
             @Override
             public void send(List<DynamicListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
                     if (mDataList.size() != 0 || data.size() != 0) {
+                        isFinish = true;
                         if (type == PULL_UP) {
                             if (data.size() == mPageSize) {
                                 mPage++;

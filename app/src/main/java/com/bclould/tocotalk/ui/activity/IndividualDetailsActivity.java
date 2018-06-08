@@ -158,29 +158,31 @@ public class IndividualDetailsActivity extends BaseActivity {
         mPresenter.getIndividual(mUser, new IndividualDetailsPresenter.CallBack() {
             @Override
             public void send(IndividualInfo.DataBean data) {
-                if (data == null) return;
-                individualInfo = data;
-                tvName.setText(individualInfo.getName());
-                tvRemark.setText(individualInfo.getRemark());
-                tvRegion.setText(individualInfo.getCountry());
-                avatar = individualInfo.getAvatar();
-                if (data.getNo_see_him() == 1) {
-                    isNoSeeHim = true;
-                } else if (data.getNo_see_him() == 2) {
-                    isNoSeeHim = false;
-                }
-                if (data.getNo_see_me() == 1) {
-                    isNoSeeMe = true;
-                } else if (data.getNo_see_me() == 2) {
-                    isNoSeeMe = false;
-                }
-                mOnOffDy.setSelected(isNoSeeHim);
-                mOnOffDy2.setSelected(isNoSeeMe);
-                Glide.with(IndividualDetailsActivity.this).load(individualInfo.getAvatar()).apply(new RequestOptions().placeholder(R.mipmap.img_nfriend_headshot1)).into(ivHead);
-                if (!individualInfo.getAvatar().isEmpty()) {
-                    UtilTool.setCircleImg(IndividualDetailsActivity.this, individualInfo.getAvatar(), ivHead);
-                } else {
-                    UtilTool.setCircleImg(IndividualDetailsActivity.this, R.mipmap.img_nfriend_headshot1, ivHead);
+                if (!IndividualDetailsActivity.this.isDestroyed()) {
+                    if (data == null) return;
+                    individualInfo = data;
+                    tvName.setText(individualInfo.getName());
+                    tvRemark.setText(individualInfo.getRemark());
+                    tvRegion.setText(individualInfo.getCountry());
+                    avatar = individualInfo.getAvatar();
+                    if (data.getNo_see_him() == 1) {
+                        isNoSeeHim = true;
+                    } else if (data.getNo_see_him() == 2) {
+                        isNoSeeHim = false;
+                    }
+                    if (data.getNo_see_me() == 1) {
+                        isNoSeeMe = true;
+                    } else if (data.getNo_see_me() == 2) {
+                        isNoSeeMe = false;
+                    }
+                    mOnOffDy.setSelected(isNoSeeHim);
+                    mOnOffDy2.setSelected(isNoSeeMe);
+                    Glide.with(IndividualDetailsActivity.this).load(individualInfo.getAvatar()).apply(new RequestOptions().placeholder(R.mipmap.img_nfriend_headshot1)).into(ivHead);
+                    if (!individualInfo.getAvatar().isEmpty()) {
+                        UtilTool.setCircleImg(IndividualDetailsActivity.this, individualInfo.getAvatar(), ivHead);
+                    } else {
+                        UtilTool.setCircleImg(IndividualDetailsActivity.this, R.mipmap.img_nfriend_headshot1, ivHead);
+                    }
                 }
             }
         });

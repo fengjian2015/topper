@@ -150,7 +150,7 @@ public class AddOutCoinSiteActivity extends BaseActivity {
             Toast.makeText(this, getResources().getString(R.string.toast_address), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtAddress);
         } else if (mEtRemark.getText().toString().trim().equals("")) {
-            Toast.makeText(this, getString(R.string.toast_remark), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_tag), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtRemark);
         } else if (mEtGoogleCode.getText().toString().trim().equals("")) {
             Toast.makeText(this, getString(R.string.toast_google_code), Toast.LENGTH_SHORT).show();

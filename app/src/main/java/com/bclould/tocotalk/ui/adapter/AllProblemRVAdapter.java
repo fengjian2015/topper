@@ -2,6 +2,8 @@ package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +13,8 @@ import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.QuestionInfo;
-import com.bclould.tocotalk.ui.activity.QuestionDetailsActivity;
+import com.bclould.tocotalk.ui.activity.WebViewActivity;
+import com.bclould.tocotalk.utils.Constants;
 
 import java.util.List;
 
@@ -22,6 +25,7 @@ import butterknife.ButterKnife;
  * Created by GA on 2017/10/18.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class AllProblemRVAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;
@@ -65,12 +69,6 @@ public class AllProblemRVAdapter extends RecyclerView.Adapter {
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
         }
 
         public void setData(final QuestionInfo.DataBean dataBean) {
@@ -78,8 +76,9 @@ public class AllProblemRVAdapter extends RecyclerView.Adapter {
             mCV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, QuestionDetailsActivity.class);
-                    intent.putExtra("id", dataBean.getId() + "");
+                    Intent intent = new Intent(mContext, WebViewActivity.class);
+                    intent.putExtra("url", Constants.BASE_URL + Constants.QUES_WEB_URL + dataBean.getId());
+                    intent.putExtra("title", mContext.getString(R.string.question_details));
                     mContext.startActivity(intent);
                 }
             });

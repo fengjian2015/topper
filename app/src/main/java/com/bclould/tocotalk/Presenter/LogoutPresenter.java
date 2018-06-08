@@ -11,6 +11,7 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
+import com.bclould.tocotalk.ui.activity.InitialActivity;
 import com.bclould.tocotalk.ui.activity.LoginActivity;
 import com.bclould.tocotalk.ui.activity.SystemSetActivity;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
@@ -102,7 +103,6 @@ public class LogoutPresenter {
         new Thread(new Runnable() {
             @Override
             public void run() {
-
                 try {
                     XmppConnection.getInstance().closeConnection();
                     UtilTool.Log("fsdafa", "退出成功");
@@ -122,7 +122,7 @@ public class LogoutPresenter {
             MyApp.getInstance().exit();
             mSystemSetActivity.finish();
             MySharedPreferences.getInstance().setString(TOKEN, "");
-            mSystemSetActivity.startActivity(new Intent(mSystemSetActivity, LoginActivity.class));
+            mSystemSetActivity.startActivity(new Intent(mSystemSetActivity, InitialActivity.class));
         }
     };
 }

@@ -6,12 +6,21 @@ package com.bclould.tocotalk.model;
 
 public class QrcodeReceiptPayInfo {
     private int id;
+    private int log_id;
     private String name;
     private String number;
     private String coin_name;
     private String created_at;
     private int type;
     private int type_number;
+
+    public int getLog_id() {
+        return log_id;
+    }
+
+    public void setLog_id(int log_id) {
+        this.log_id = log_id;
+    }
 
     public int getType_number() {
         return type_number;

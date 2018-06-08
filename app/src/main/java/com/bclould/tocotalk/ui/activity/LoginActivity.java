@@ -9,7 +9,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -42,8 +41,10 @@ import static com.bclould.tocotalk.ui.activity.SystemSetActivity.PRIVATE;
 public class LoginActivity extends AppCompatActivity {
 
 
-    @Bind(R.id.tv_register)
-    TextView mTvRegister;
+    @Bind(R.id.iv_back)
+    ImageView mIvBack;
+    @Bind(R.id.tv_login)
+    TextView mTvLogin;
     @Bind(R.id.et_emily)
     EditText mEtEmily;
     @Bind(R.id.et_password)
@@ -60,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_login2);
+        setContentView(R.layout.activity_login);
 
         ButterKnife.bind(this);
 
@@ -71,31 +72,10 @@ public class LoginActivity extends AppCompatActivity {
             mEtPassword.setText(logPW);
         }
 
-        setEdit();
-
-//        showCaptcha();
         MyApp.getInstance().addActivity(this);
 
         XmppConnection.getInstance().logoutService(this);
 
-    }
-
-    //不能回车
-    private void setEdit() {
-        if (mEtEmily == null) {
-            mEtEmily.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    return true;
-                }
-            });
-            mEtPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    return true;
-                }
-            });
-        }
     }
 
     //监听返回键
@@ -104,7 +84,6 @@ public class LoginActivity extends AppCompatActivity {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
             if (isShouldHideInput(v, ev)) {
-
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
@@ -140,9 +119,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.eye, R.id.tv_find_password, R.id.btn_login, R.id.tv_register})
+    @OnClick({R.id.iv_back, R.id.eye, R.id.tv_find_password, R.id.btn_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
             case R.id.eye:
                 isEye = !isEye;
                 showHidePassword();//隐藏显示密码
@@ -150,14 +132,10 @@ public class LoginActivity extends AppCompatActivity {
             case R.id.tv_find_password:
                 startActivity(new Intent(this, FindPasswordActivity.class));
                 break;
-            case R.id.tv_register:
-                startActivity(new Intent(this, RegisterActivity.class));
-                break;
             case R.id.btn_login:
                 //判断邮箱、密码、验证码是否为空，格式是否正确
                 if (checkEdit()) {
                     login();
-
                 }
                 break;
         }
@@ -194,6 +172,9 @@ public class LoginActivity extends AppCompatActivity {
         } else if (mEtPassword.getText().toString().trim().equals("")) {
             Toast.makeText(this, getResources().getString(R.string.toast_password), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtPassword);
+        } else if (!mEtEmily.getText().toString().contains("@")) {
+            Toast.makeText(this, getResources().getString(R.string.toast_email_format), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mEtEmily);
         } else {
             return true;
         }

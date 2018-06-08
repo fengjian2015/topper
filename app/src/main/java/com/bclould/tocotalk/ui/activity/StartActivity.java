@@ -1,5 +1,6 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import static com.bclould.tocotalk.Presenter.LoginPresenter.TOKEN;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class StartActivity extends AppCompatActivity {
+    @SuppressLint("HandlerLeak")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +41,7 @@ public class StartActivity extends AppCompatActivity {
         new Handler() {
             public void handleMessage(Message msg) {
                 if (UtilTool.getToken().equals("bearer")) {
-                    startActivity(new Intent(StartActivity.this, LoginActivity.class));
+                    startActivity(new Intent(StartActivity.this, InitialActivity.class));
                     finish();
                 } else {
                     if (UtilTool.isNetworkAvailable(StartActivity.this)) {
@@ -64,7 +66,7 @@ public class StartActivity extends AppCompatActivity {
                                         } else {
                                             finish();
                                             MySharedPreferences.getInstance().setString(TOKEN, "");
-                                            startActivity(new Intent(StartActivity.this, LoginActivity.class));
+                                            startActivity(new Intent(StartActivity.this, InitialActivity.class));
                                         }
                                     }
 
@@ -73,14 +75,14 @@ public class StartActivity extends AppCompatActivity {
                                         if (e.getMessage().equals("HTTP 401 Unauthorized")) {
                                             finish();
                                             MySharedPreferences.getInstance().setString(TOKEN, "");
-                                            startActivity(new Intent(StartActivity.this, LoginActivity.class));
+                                            startActivity(new Intent(StartActivity.this, InitialActivity.class));
                                         } else if (e.getMessage().equals("connect timed out")) {
                                             finish();
                                             startActivity(new Intent(StartActivity.this, MainActivity.class));
                                         } else {
                                             finish();
                                             MySharedPreferences.getInstance().setString(TOKEN, "");
-                                            startActivity(new Intent(StartActivity.this, LoginActivity.class));
+                                            startActivity(new Intent(StartActivity.this, InitialActivity.class));
                                         }
                                         Toast.makeText(StartActivity.this, getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                                         UtilTool.Log("日志", e.getMessage());

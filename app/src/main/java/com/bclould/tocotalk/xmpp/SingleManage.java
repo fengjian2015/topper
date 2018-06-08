@@ -501,7 +501,6 @@ public class SingleManage implements Room {
                 messageInfo.setMsgType(TO_FILE_MSG);
             }
             messageInfo.setSend(UtilTool.getTocoId());
-
             if (mMgr.findConversation(mUser)) {
                 if (postfix.equals("Image")) {
                     mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.image) + "]", time);

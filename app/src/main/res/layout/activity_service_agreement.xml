@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#2B353F"
+                android:background="#243042"
                 android:fitsSystemWindows="true"
                 android:orientation="vertical">
 
@@ -80,7 +80,7 @@
         android:paddingBottom="@dimen/y20"
         android:paddingTop="@dimen/y20"
         android:text="@string/consent_agreement"
-        android:textColor="@color/blue2"
+        android:textColor="@color/blue3"
         android:textSize="@dimen/x28"/>
 
 </RelativeLayout>
