@@ -9,6 +9,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.ui.activity.GonggaoManagerActivity;
+import com.bclould.tocotalk.ui.activity.MainActivity;
 import com.bclould.tocotalk.ui.activity.NewsEditActivity;
 import com.bclould.tocotalk.ui.activity.NewsManagerActivity;
 import com.bclould.tocotalk.ui.activity.PersonageDynamicActivity;
@@ -39,14 +41,18 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class DiscoverFragment extends Fragment {
     public static DiscoverFragment instance = null;
-    @Bind(R.id.status_bar_fix)
-    View mStatusBarFix;
     @Bind(R.id.gonggao_xx)
     TextView mGonggaoXx;
+    @Bind(R.id.ll_gongao_selector)
+    LinearLayout mLlGongaoSelector;
     @Bind(R.id.new_xx)
     TextView mNewXx;
+    @Bind(R.id.ll_news_selector)
+    LinearLayout mLlNewsSelector;
     @Bind(R.id.dongtai_xx)
     TextView mDongtaiXx;
+    @Bind(R.id.ll_dynamic_selector)
+    LinearLayout mLlDynamicSelector;
     @Bind(R.id.cloud_circle_menu)
     LinearLayout mCloudCircleMenu;
     @Bind(R.id.iv_gonggao_manager)
@@ -67,10 +73,15 @@ public class DiscoverFragment extends Fragment {
     ImageView mIvMyDynamic;
     @Bind(R.id.ll_dynamic)
     RelativeLayout mLlDynamic;
+    @Bind(R.id.tv_title)
+    TextView mTvTitle;
     @Bind(R.id.xx)
     TextView mXx;
     @Bind(R.id.cloud_circle_vp)
     ViewPager mCloudCircleVp;
+    @Bind(R.id.rl_title)
+    RelativeLayout mRlTitle;
+    private MainActivity.MyOnTouchListener mTouchListener;
 
 
     public static DiscoverFragment getInstance() {
@@ -87,7 +98,6 @@ public class DiscoverFragment extends Fragment {
         ButterKnife.bind(this, view);
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
-//        getPhoneSize();
         initInterface();
         return view;
     }
@@ -109,6 +119,38 @@ public class DiscoverFragment extends Fragment {
         mCloudCircleVp.setCurrentItem(0);
         initTopMenu();
         initViewPager();
+        mTouchListener = new MainActivity.MyOnTouchListener() {
+            private float mDownY;
+
+            @Override
+            public boolean onTouch(MotionEvent ev) {
+                switch (ev.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        mDownY = ev.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        float moveY = ev.getY();
+                        if (mDownY - moveY > 300) {
+                            mTvTitle.setVisibility(View.VISIBLE);
+                            mRlTitle.setVisibility(View.GONE);
+                            if (mCloudCircleVp.getCurrentItem() == 0) {
+                                mTvTitle.setText(getString(R.string.gonggao));
+                            } else if (mCloudCircleVp.getCurrentItem() == 1) {
+                                mTvTitle.setText(getString(R.string.news));
+                            } else if (mCloudCircleVp.getCurrentItem() == 2) {
+                                mTvTitle.setText(getString(R.string.dynamic));
+                            }
+                        } else if (moveY - mDownY > 300) {
+                            mTvTitle.setVisibility(View.GONE);
+                            mRlTitle.setVisibility(View.VISIBLE);
+                        }
+                        break;
+                }
+                return false;
+            }
+        };
+        // 将myTouchListener注册到分发列表
+        ((MainActivity) this.getActivity()).registerMyOnTouchListener(mTouchListener);
     }
 
 
@@ -127,6 +169,8 @@ public class DiscoverFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
+                mRlTitle.setVisibility(View.VISIBLE);
+                mTvTitle.setVisibility(View.GONE);
                 if (position == 0) {
                     mLlGonggao.setVisibility(View.VISIBLE);
                     mLlDynamic.setVisibility(View.GONE);
@@ -242,80 +286,10 @@ public class DiscoverFragment extends Fragment {
         }
     }
 
-   /* //获取屏幕高度
-    private void getPhoneSize() {
-        mDm = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(mDm);
-        mHeightPixels = mDm.heightPixels;
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // 将myTouchListener注册到分发列表
+        ((MainActivity) this.getActivity()).unregisterMyOnTouchListener(mTouchListener);
     }
-
-    //初始化pop
-    private void showPopup() {
-
-        int widthPixels = mDm.widthPixels;
-
-        mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_news, null);
-
-        mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 3, true);
-        mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-        // 设置背景颜色变暗
-        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-        lp.alpha = 0.9f;
-        getActivity().getWindow().setAttributes(lp);
-        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-
-            @Override
-            public void onDismiss() {
-                WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-                lp.alpha = 1f;
-                getActivity().getWindow().setAttributes(lp);
-            }
-        });
-        mPopupWindow.showAsDropDown(mXx, (widthPixels - widthPixels / 100 * 35 - 20), 0);
-        popChildClick();
-    }
-
-    private void popChildClick() {
-
-        int childCount = mView.getChildCount();
-
-        for (int i = 0; i < childCount; i++) {
-
-            final View childAt = mView.getChildAt(i);
-
-            childAt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    int index = mView.indexOfChild(childAt);
-
-                    switch (index) {
-                        case 0:
-                            startActivity(new Intent(getActivity(), GonggaoManagerActivity.class));
-                            mPopupWindow.dismiss();
-                            break;
-                        case 1:
-                            startActivity(new Intent(getActivity(), NewsManagerActivity.class));
-                            mPopupWindow.dismiss();
-                            break;
-                        case 2:
-                            startActivity(new Intent(getActivity(), NewsEditActivity.class));
-                            mPopupWindow.dismiss();
-                            break;
-                        case 3:
-                            startActivity(new Intent(getActivity(), PublicshDynamicActivity.class));
-                            mPopupWindow.dismiss();
-                            break;
-                        case 4:
-                            Intent intent = new Intent(getActivity(), PersonageDynamicActivity.class);
-                            intent.putExtra("name", UtilTool.getUser());
-                            startActivity(intent);
-                            mPopupWindow.dismiss();
-                            break;
-                    }
-
-                }
-            });
-        }
-    }*/
 }

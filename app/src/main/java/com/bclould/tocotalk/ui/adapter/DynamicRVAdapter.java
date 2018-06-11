@@ -237,6 +237,14 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
                 }
             });
+           /* mTvPinglun.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MessageEvent messageEvent = new MessageEvent(mContext.getString(R.string.comment));
+                    messageEvent.setId(mDataBean.getId() + "");
+                    EventBus.getDefault().post(messageEvent);
+                }
+            });*/
         }
 
         public void setData(final DynamicListInfo.DataBean dataBean) {
@@ -404,6 +412,14 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
                 }
             });
+           /* mTvPinglun.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MessageEvent messageEvent = new MessageEvent(mContext.getString(R.string.comment));
+                    messageEvent.setId(mDataBean.getId() + "");
+                    EventBus.getDefault().post(messageEvent);
+                }
+            });*/
         }
 
         public void setData(final DynamicListInfo.DataBean dataBean) {
@@ -602,6 +618,15 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
                 }
             });
+
+            /*mTvPinglun.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MessageEvent messageEvent = new MessageEvent(mContext.getString(R.string.comment));
+                    messageEvent.setId(mDataBean.getId() + "");
+                    EventBus.getDefault().post(messageEvent);
+                }
+            });*/
         }
 
         private void computeBoundsBackward(List<String> list) {
@@ -824,6 +849,30 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
                 }
             });
+           /* mTvPinglun.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MessageEvent messageEvent = new MessageEvent(mContext.getString(R.string.comment));
+                    messageEvent.setId(mDataBean.getId() + "");
+                    EventBus.getDefault().post(messageEvent);
+                }
+            });*/
+            mTvZan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mDynamicPresenter.like(mDataBean.getId() + "", new DynamicPresenter.CallBack4() {
+                        @Override
+                        public void send(LikeInfo data) {
+                            mTvZan.setText(data.getData().getLikeCounts() + "");
+                            if (data.getData().getStatus() == 1) {
+                                mTvZan.setSelected(true);
+                            } else {
+                                mTvZan.setSelected(false);
+                            }
+                        }
+                    });
+                }
+            });
         }
 
         public void setData(final DynamicListInfo.DataBean dataBean) {
@@ -908,22 +957,6 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             } else {
                 mTvZan.setSelected(false);
             }
-            mTvZan.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mDynamicPresenter.like(dataBean.getId() + "", new DynamicPresenter.CallBack4() {
-                        @Override
-                        public void send(LikeInfo data) {
-                            mTvZan.setText(data.getData().getLikeCounts() + "");
-                            if (data.getData().getStatus() == 1) {
-                                mTvZan.setSelected(true);
-                            } else {
-                                mTvZan.setSelected(false);
-                            }
-                        }
-                    });
-                }
-            });
         }
     }
 

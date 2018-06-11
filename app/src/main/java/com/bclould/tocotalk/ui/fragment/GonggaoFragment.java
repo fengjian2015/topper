@@ -51,6 +51,7 @@ public class GonggaoFragment extends Fragment {
     private int mPage = 1;
     private int mStatus = 1;
     private int mPageSize = 1000;
+    public LinearLayoutManager mLinearLayoutManager;
 
     public static GonggaoFragment getInstance() {
         if (instance == null) {
@@ -109,7 +110,8 @@ public class GonggaoFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mLinearLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mGonggaoManagerRVAdapter = new GonggaoManagerRVAdapter(getContext(), mDataList);
         mRecyclerView.setAdapter(mGonggaoManagerRVAdapter);
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(40));

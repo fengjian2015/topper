@@ -54,13 +54,26 @@ public class DynamicReviewRVAdapter extends RecyclerView.Adapter {
         TextView mTvName;
         @Bind(R.id.tv_content)
         TextView mTvContent;
+        private int mId;
+        private String mUser_name;
 
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            /*view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MessageEvent messageEvent = new MessageEvent(mContext.getString(R.string.comment));
+                    messageEvent.setId(mId + "");
+                    messageEvent.setCoinName(mUser_name);
+                    EventBus.getDefault().post(messageEvent);
+                }
+            });*/
         }
 
         public void setData(DynamicListInfo.DataBean.ReviewListBean reviewListBean) {
+            mId = reviewListBean.getId();
+            mUser_name = reviewListBean.getUser_name();
             mTvName.setText(reviewListBean.getUser_name() + "  :");
             mTvContent.setText(reviewListBean.getContent());
         }

@@ -863,7 +863,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             case R.id.bark:
                 finish();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                boolean isOpen = imm.isActive();//isOpen若返回true，则表示输入法打开
+                boolean isOpen = imm.isActive(mEkbEmoticonsKeyboard.getEtChat());//isOpen若返回true，则表示输入法打开
                 if (isOpen) {
                     imm.hideSoftInputFromWindow(mEkbEmoticonsKeyboard.getEtChat().getWindowToken(), 0);
                 }

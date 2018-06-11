@@ -183,4 +183,5 @@ public class PersonageDynamicActivity extends BaseActivity {
     public void onViewClicked() {
         finish();
     }
+
 }

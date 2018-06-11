@@ -1,6 +1,7 @@
 package com.bclould.tocotalk.ui.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,16 +12,22 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bclould.tocotalk.Presenter.DynamicPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.DynamicListInfo;
 import com.bclould.tocotalk.model.UserInfo;
+import com.bclould.tocotalk.ui.activity.MainActivity;
 import com.bclould.tocotalk.ui.adapter.DynamicRVAdapter;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -46,14 +53,24 @@ import butterknife.ButterKnife;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class DynamicFragment extends Fragment {
     public static DynamicFragment instance = null;
-    @Bind(R.id.recycler_view)
-    RecyclerView mRecyclerView;
-    @Bind(R.id.refreshLayout)
-    SmartRefreshLayout mRefreshLayout;
     @Bind(R.id.iv)
     ImageView mIv;
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
+    @Bind(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+    @Bind(R.id.refreshLayout)
+    SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.xx2)
+    TextView mXx2;
+    @Bind(R.id.comment_et)
+    EditText mCommentEt;
+    @Bind(R.id.iv_selector_img)
+    ImageView mIvSelectorImg;
+    @Bind(R.id.send)
+    TextView mSend;
+    @Bind(R.id.rl_edit)
+    RelativeLayout mRlEdit;
     private DynamicPresenter mDynamicPresenter;
     private DynamicRVAdapter mDynamicRVAdapter;
     private DBManager mMgr;
@@ -62,6 +79,8 @@ public class DynamicFragment extends Fragment {
     private int end = 0;
     private int mPage = 1;
     private int mPageSize = 10;
+    public LinearLayoutManager mLinearLayoutManager;
+    private MainActivity.MyOnTouchListener mTouchListener;
 
     public static DynamicFragment getInstance() {
 
@@ -84,6 +103,7 @@ public class DynamicFragment extends Fragment {
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         initRecyclerView();
+        initListener();
         initData(PULL_DOWN);
         return view;
     }
@@ -147,6 +167,21 @@ public class DynamicFragment extends Fragment {
             }
         } else if (msg.equals(getString(R.string.shield_dy))) {
             initData(PULL_DOWN);
+        } else if (msg.equals(getString(R.string.comment))) {
+            String id = event.getId();
+            String username = event.getCoinName();
+            if (username != null && !username.isEmpty()) {
+                mCommentEt.setHint(getString(R.string.reply) + username);
+            }
+            mRlEdit.setVisibility(View.VISIBLE);
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            boolean isOpen = imm.isActive(mCommentEt);//isOpen若返回true，则表示输入法打开
+            if (!isOpen) {
+                mCommentEt.requestFocus();
+                imm.showSoftInput(mCommentEt, 0);
+            }
+        } else if (msg.equals(getString(R.string.hide_keyboard))) {
+            mRlEdit.setVisibility(View.GONE);
         }
     }
 
@@ -217,21 +252,47 @@ public class DynamicFragment extends Fragment {
 
 
     boolean isFinish = true;
-    private void initRecyclerView() {
-        final LinearLayoutManager manager = new LinearLayoutManager(getContext());
 
-        mRecyclerView.setLayoutManager(manager);
+    private void initRecyclerView() {
+        mLinearLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mDynamicRVAdapter = new DynamicRVAdapter(getActivity(), mDataList, mMgr, mDynamicPresenter);
         mRecyclerView.setAdapter(mDynamicRVAdapter);
-        manager.scrollToPositionWithOffset(0, 0);
+        mLinearLayoutManager.scrollToPositionWithOffset(0, 0);
         mRecyclerView.post(new Runnable() {
             @Override
             public void run() {
-                View view = manager.findViewByPosition(1);
+                View view = mLinearLayoutManager.findViewByPosition(1);
                 if (view != null) System.out.println(view.getMeasuredHeight());
             }
         });
         mDynamicRVAdapter.notifyDataSetChanged();
+        mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                boolean isOpen = imm.isActive(mCommentEt);//isOpen若返回true，则表示输入法打开
+                if (isOpen) {
+                    imm.hideSoftInputFromWindow(mCommentEt.getWindowToken(), 0);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });
+    }
+
+    private void initListener() {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
