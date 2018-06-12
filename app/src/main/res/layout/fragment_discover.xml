@@ -4,13 +4,9 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <View
-        android:id="@+id/status_bar_fix"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="#00000000"/>
 
     <RelativeLayout
+        android:id="@+id/rl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
         android:background="@color/white">
@@ -23,6 +19,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/ll_gongao_selector"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -47,6 +44,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_news_selector"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/x70"
@@ -72,6 +70,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_dynamic_selector"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/x70"
@@ -219,6 +218,16 @@
                     android:textSize="@dimen/x28"/>-->
 
     </RelativeLayout>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_title"
+        android:textSize="@dimen/x32"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white"/>
 
     <TextView
         android:id="@+id/xx"

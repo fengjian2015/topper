@@ -295,7 +295,7 @@ public class SendQRCodeRedActivity extends AppCompatActivity {
         mRedPacketPresenter.sendRedPacket("code", 2, coin, getString(R.string.congratulation), 2, count, single, money, password, new RedPacketPresenter.CallBack() {
             @Override
             public void send(int id) {
-                String code = UtilTool.base64PetToJson(Constants.REDPACKAGE, "redID", id + "", getString(R.string.red_package));
+                String code = UtilTool.base64PetToJson(SendQRCodeRedActivity.this, Constants.REDPACKAGE, "redID", id + "", getString(R.string.red_package));
                 Intent intent = new Intent(SendQRCodeRedActivity.this, QRCodeRedActivity.class);
                 intent.putExtra("code", code);
                 intent.putExtra("type", true);
@@ -322,7 +322,7 @@ public class SendQRCodeRedActivity extends AppCompatActivity {
     }
 
     public void showHintDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this,R.style.dialog);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setCanceledOnTouchOutside(false);
         TextView retry = (TextView) deleteCacheDialog.findViewById(R.id.tv_retry);

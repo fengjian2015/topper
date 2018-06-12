@@ -1,3 +1,4 @@
+/*
 package com.bclould.tocotalk.ui.activity;
 
 import android.annotation.SuppressLint;
@@ -82,9 +83,11 @@ import butterknife.OnClick;
 
 import static com.luck.picture.lib.config.PictureMimeType.ofImage;
 
+*/
 /**
  * Created by GA on 2017/10/19.
- */
+ *//*
+
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class DynamicDetailActivity extends BaseActivity {
@@ -442,13 +445,15 @@ public class DynamicDetailActivity extends BaseActivity {
     }
 
 
-   /* @Override
+   */
+/* @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if(mPopupWindow!=null&&mPopupWindow.isShowing()){
             return false;
         }
         return super.dispatchTouchEvent(ev);
-    }*/
+    }*//*
+
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -678,11 +683,13 @@ public class DynamicDetailActivity extends BaseActivity {
         });
     }
 
-    /**
+    */
+/**
      * 查找信息
      *
      * @param list 图片集合
-     */
+     *//*
+
     private void computeBoundsBackward(List<String> list) {
         ThumbViewInfo item;
         mThumbViewInfoList.clear();
@@ -705,4 +712,4 @@ public class DynamicDetailActivity extends BaseActivity {
         ButterKnife.unbind(this);
         EventBus.getDefault().unregister(this);
     }
-}
+}*/

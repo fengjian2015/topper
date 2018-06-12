@@ -1,3 +1,4 @@
+/*
 package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
@@ -15,12 +16,16 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+*/
 /**
  * Created by GA on 2018/5/22.
- */
+ *//*
+
 
 public class DynamicReviewRVAdapter extends RecyclerView.Adapter {
 
+    private static final int DYNAMIC_COMMENT = 1;
+    private static final int DYNAMIC_REPLY = 2;
     private final List<DynamicListInfo.DataBean.ReviewListBean> mReviewList;
     private final Context mContext;
 
@@ -31,8 +36,9 @@ public class DynamicReviewRVAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_dynamic_review, parent, false);
-        return new ViewHolder(view);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_dynamic_comment, parent, false);
+        ViewHolder viewHolder = new ViewHolder(view);
+        return viewHolder;
     }
 
     @Override
@@ -54,15 +60,31 @@ public class DynamicReviewRVAdapter extends RecyclerView.Adapter {
         TextView mTvName;
         @Bind(R.id.tv_content)
         TextView mTvContent;
+        private int mId;
+        private String mUser_name;
 
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            */
+/*view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MessageEvent messageEvent = new MessageEvent(mContext.getString(R.string.comment));
+                    messageEvent.setId(mId + "");
+                    messageEvent.setCoinName(mUser_name);
+                    EventBus.getDefault().post(messageEvent);
+                }
+            });*//*
+
         }
 
         public void setData(DynamicListInfo.DataBean.ReviewListBean reviewListBean) {
+            mId = reviewListBean.getId();
+            mUser_name = reviewListBean.getUser_name();
             mTvName.setText(reviewListBean.getUser_name() + "  :");
             mTvContent.setText(reviewListBean.getContent());
         }
     }
 }
+*/

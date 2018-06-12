@@ -225,10 +225,47 @@ public class DynamicListInfo {
              */
 
             private int id;
-            private String user_name;
+            private UsersBean replyUser; // 回复人信息
+            private UsersBean commentsUser;  // 评论人信息
             private String content;
+            private String url;
+            private String key_type;
             private String created_at;
             private int like_count;
+
+
+            public String getUrl() {
+                return url;
+            }
+
+            public void setUrl(String url) {
+                this.url = url;
+            }
+
+            public String getKey_type() {
+                return key_type;
+            }
+
+            public void setKey_type(String key_type) {
+                this.key_type = key_type;
+            }
+
+
+            public UsersBean getReplyUser() {
+                return replyUser;
+            }
+
+            public void setReplyUser(UsersBean replyUser) {
+                this.replyUser = replyUser;
+            }
+
+            public UsersBean getCommentsUser() {
+                return commentsUser;
+            }
+
+            public void setCommentsUser(UsersBean commentsUser) {
+                this.commentsUser = commentsUser;
+            }
 
             public int getId() {
                 return id;
@@ -236,14 +273,6 @@ public class DynamicListInfo {
 
             public void setId(int id) {
                 this.id = id;
-            }
-
-            public String getUser_name() {
-                return user_name;
-            }
-
-            public void setUser_name(String user_name) {
-                this.user_name = user_name;
             }
 
             public String getContent() {
@@ -268,6 +297,27 @@ public class DynamicListInfo {
 
             public void setLike_count(int like_count) {
                 this.like_count = like_count;
+            }
+
+            public static class UsersBean {
+                private String user_name;
+                private String toco_id;
+
+                public String getUser_name() {
+                    return user_name;
+                }
+
+                public void setUser_name(String user_name) {
+                    this.user_name = user_name;
+                }
+
+                public String getToco_id() {
+                    return toco_id;
+                }
+
+                public void setToco_id(String toco_id) {
+                    this.toco_id = toco_id;
+                }
             }
         }
     }

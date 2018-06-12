@@ -134,12 +134,12 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                         QrReceiptInfo qrReceiptInfo = gson.fromJson(jsonresult, QrReceiptInfo.class);
                         if (qrReceiptInfo.getCoin_id() == null && qrReceiptInfo.getCoin_name() == null && qrReceiptInfo.getNumber() == null) {
                             Intent intent = new Intent(this, PaymentActivity.class);
-                            intent.putExtra("userId", qrReceiptInfo.getRedId() + "");
+                            intent.putExtra("userId", qrReceiptInfo.getUser_id() + "");
                             intent.putExtra("type", Constants.MONEYIN);
                             startActivity(intent);
                         } else {
                             Intent intent = new Intent(this, PaymentActivity.class);
-                            intent.putExtra("userId", qrReceiptInfo.getRedId() + "");
+                            intent.putExtra("userId", qrReceiptInfo.getUser_id() + "");
                             intent.putExtra("coinId", qrReceiptInfo.getCoin_id());
                             intent.putExtra("coinName", qrReceiptInfo.getCoin_name());
                             intent.putExtra("number", qrReceiptInfo.getNumber());

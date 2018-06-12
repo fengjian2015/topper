@@ -35,6 +35,7 @@
             android:gravity="center"
             android:padding="@dimen/x20"
             android:text="@string/push"
+            android:textColor="@color/blue2"
             android:textSize="@dimen/x28"/>
 
     </RelativeLayout>
@@ -42,17 +43,16 @@
     <TextView
         style="@style/HCutOffRule"/>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/y10">
+        android:orientation="vertical">
 
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y220"
+            android:layout_height="@dimen/y366"
             android:fillViewport="true"
-            android:padding="@dimen/x20"
             android:scrollbars="none">
 
             <EditText
@@ -64,57 +64,68 @@
                 android:hint="@string/et_write_something"
                 android:padding="@dimen/x20"
                 android:textCursorDrawable="@null"
-                android:textSize="@dimen/x24"/>
+                android:textSize="@dimen/x28"/>
 
         </ScrollView>
+
+        <TextView
+            style="@style/HCutOffRule"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/scrollView"
-            android:layout_marginTop="@dimen/x10"
+            android:background="@color/white"
             android:overScrollMode="never"
-            android:paddingBottom="@dimen/x20"
-            android:paddingLeft="@dimen/x20"
-            android:paddingRight="@dimen/x5"
-            android:paddingTop="@dimen/x20"/>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_site"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:layout_marginTop="@dimen/y20"
-        android:background="@color/white"
-        android:gravity="center_vertical">
-
-        <ImageView
-            android:id="@+id/iv"
-            android:layout_width="@dimen/x25"
-            android:layout_height="@dimen/x25"
-            android:layout_marginLeft="@dimen/x20"
-            android:src="@mipmap/icon_writing_address"/>
+            android:padding="@dimen/x20"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_toRightOf="@+id/iv"
-            android:text="位置"
-            android:textSize="@dimen/x24"/>
+            style="@style/HCutOffRule"/>
 
-        <TextView
-            android:id="@+id/tv_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginRight="@dimen/x20"
-            android:textSize="@dimen/x24"/>
+        <RelativeLayout
+            android:id="@+id/rl_site"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            android:background="@color/white"
+            android:gravity="center_vertical">
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/iv"
+                android:layout_width="@dimen/x25"
+                android:layout_height="@dimen/x25"
+                android:layout_marginLeft="@dimen/x20"
+                android:src="@mipmap/icon_writing_address"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/iv"
+                android:text="位置"
+                android:textSize="@dimen/x24"/>
+
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_marginRight="@dimen/x20"
+                android:layout_toLeftOf="@+id/iv_jiantou"
+                android:textSize="@dimen/x24"/>
+
+            <ImageView
+                android:id="@+id/iv_jiantou"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/x30"
+                android:src="@mipmap/iocn_person_turn"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
 
     <!--<TextView
         style="@style/HCutOffRule"/>

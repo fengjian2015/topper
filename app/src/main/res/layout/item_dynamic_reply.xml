@@ -11,17 +11,35 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="liaolinan"
+        android:textColor="#60798E"
+        android:textSize="@dimen/x32"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x10"
+        android:layout_marginRight="@dimen/x10"
+        android:text="@string/reply"
+        android:textColor="@color/bar_grey_90"
+        android:textSize="@dimen/x32"/>
+
+    <TextView
+        android:id="@+id/tv_who"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="liaolinan"
         android:textColor="#60798E"
         android:textSize="@dimen/x32"
         android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/tv_content"
+        android:text="返回數據卡貨到付款sad後方可舉案說法發四大皆空發了撒旦教"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x20"
-        android:ellipsize="end"
-        android:singleLine="true"
         android:textColor="@color/bar_grey_90"
         android:textSize="@dimen/x30"/>
 

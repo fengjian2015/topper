@@ -893,4 +893,6 @@
     <string name="toast_tag">標籤不能為空</string>
     <string name="toast_username_min">用戶名長度不能小於六位</string>
     <string name="dynamic_underway_uploading">已有動態正在上傳中</string>
+    <string name="comment">評論</string>
+    <string name="hide_keyboard">隱藏鍵盤</string>
 </resources>

@@ -48,6 +48,57 @@
             android:fastScrollEnabled="false"
             android:overScrollMode="never"/>
 
+        <RelativeLayout
+            android:visibility="gone"
+            android:background="@color/white"
+            android:id="@+id/rl_edit"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:layout_alignParentBottom="true">
+
+            <TextView
+                android:id="@+id/xx2"
+                style="@style/HCutOffRule"/>
+
+            <EditText
+                android:id="@+id/comment_et"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/iv_selector_img"
+                android:background="@color/transparent"
+                android:hint="@string/et_comment"
+                android:paddingBottom="@dimen/x30"
+                android:paddingLeft="@dimen/x36"
+                android:paddingRight="@dimen/x36"
+                android:paddingTop="@dimen/x30"
+                android:textColor="@color/black"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/x26"/>
+
+            <ImageView
+                android:id="@+id/iv_selector_img"
+                android:layout_width="@dimen/x80"
+                android:layout_height="@dimen/x80"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x20"
+                android:layout_toLeftOf="@+id/send"
+                android:scaleType="center"
+                android:src="@mipmap/icon_tail_photo"/>
+
+            <TextView
+                android:id="@+id/send"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:paddingRight="@dimen/x20"
+                android:text="@string/send"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x32"/>
+
+        </RelativeLayout>
+
     </RelativeLayout>
 
 

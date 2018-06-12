@@ -173,8 +173,12 @@ public class LocationActivity extends AppCompatActivity implements
                         } else {
                             Intent intent = new Intent(LocationActivity.this, PublicshDynamicActivity.class);
                             String address = mAdapter.getItem(oldClick).address;
-                            String city = address.substring(address.indexOf("省") + 1, address.indexOf("市"));
-                            intent.putExtra("location", city + "•" + mAdapter.getItem(oldClick).title);
+                            if (address.contains("省")) {
+                                String city = address.substring(address.indexOf("省") + 1, address.indexOf("市"));
+                                intent.putExtra("location", city + "•" + mAdapter.getItem(oldClick).title);
+                            } else {
+                                intent.putExtra("location", mAdapter.getItem(oldClick).address);
+                            }
                             setResult(Activity.RESULT_OK, intent);
                         }
                         finish();

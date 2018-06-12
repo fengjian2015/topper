@@ -46,7 +46,6 @@ import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +70,7 @@ public class MainActivity extends BaseActivity {
     FrameLayout mMainFl;
     @Bind(R.id.main_bottom_menu)
     LinearLayout mMainBottomMenu;
-
+    private ArrayList<MyOnTouchListener> onTouchListeners = new ArrayList<MyOnTouchListener>(10);
     public static MainActivity instance = null;
     private FragmentManager mSupportFragmentManager;
     private CoinPresenter mCoinPresenter;
@@ -87,6 +86,7 @@ public class MainActivity extends BaseActivity {
         return instance;
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,13 +110,18 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+        for (MyOnTouchListener listener : onTouchListeners) {
+            if (listener != null) {
+                listener.onTouch(ev);
+            }
+        }
+        if (ev.getAction() == MotionEvent.ACTION_DOWN || ev.getAction() == MotionEvent.ACTION_MOVE) {
             View v = getCurrentFocus();
             if (isShouldHideInput(v, ev)) {
-
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+//                    EventBus.getDefault().post(new MessageEvent(getString(R.string.hide_keyboard)));
                 }
             }
             return super.dispatchTouchEvent(ev);
@@ -125,7 +130,15 @@ public class MainActivity extends BaseActivity {
         if (getWindow().superDispatchTouchEvent(ev)) {
             return true;
         }
-        return onTouchEvent(ev);
+        return super.dispatchTouchEvent(ev);
+    }
+
+    public void registerMyOnTouchListener(MyOnTouchListener myOnTouchListener) {
+        onTouchListeners.add(myOnTouchListener);
+    }
+
+    public void unregisterMyOnTouchListener(MyOnTouchListener myOnTouchListener) {
+        onTouchListeners.remove(myOnTouchListener);
     }
 
     public boolean isShouldHideInput(View v, MotionEvent event) {
@@ -558,4 +571,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    public interface MyOnTouchListener {
+        public boolean onTouch(MotionEvent ev);
+    }
 }

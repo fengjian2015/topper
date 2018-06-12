@@ -10,20 +10,13 @@ public class ReviewListInfo {
 
     /**
      * status : 1
-     * data : {"info":{"id":34,"user_id":41,"user_name":"廖矮子","content":"段友","key":"liaolinan2201804022117187791522675033673.png","created_at":"2018-04-02 21:17:27","like_count":3,"is_like":0,"avatar":"https://bclould.s3.ap-northeast-2.amazonaws.com/TOCO41Avatar.png?time=1527492529"},"list":[{"id":74,"user_name":"liaolinan2","content":"愤怒","key_type":0,"created_at":"2018-05-21 14:10:14","like_count":0,"is_like":0,"url":"","reply_lists":[{"user_name":"xihongwei","content":"不要愤怒","created_at":"2018-05-29 15:43:51"}]},{"id":73,"user_name":"liaolinan2","content":"龙","key_type":0,"created_at":"2018-05-21 14:10:11","like_count":0,"is_like":0,"url":"","reply_lists":[]},"..."]}
+     * message : 評論成功!
+     * data : {"list":[{"id":159,"user_name":"xihongwei","content":"回复不要愤怒1","created_at":"2018-06-12 16:23:06","url":"","key_type":"0","commentsUser":{"toco_id":"1c60397ae8842","user_name":"xihongwei"},"replyUser":{"toco_id":"1c60397ae8842","user_name":"xihongwei"}}]}
      */
 
     private int status;
     private String message;
     private DataBean data;
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 
     public int getStatus() {
         return status;
@@ -31,6 +24,14 @@ public class ReviewListInfo {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public DataBean getData() {
@@ -42,27 +43,13 @@ public class ReviewListInfo {
     }
 
     public static class DataBean {
-        /**
-         * info : {"id":34,"user_id":41,"user_name":"廖矮子","content":"段友","key":"liaolinan2201804022117187791522675033673.png","created_at":"2018-04-02 21:17:27","like_count":3,"is_like":0,"avatar":"https://bclould.s3.ap-northeast-2.amazonaws.com/TOCO41Avatar.png?time=1527492529"}
-         * list : [{"id":74,"user_name":"liaolinan2","content":"愤怒","key_type":0,"created_at":"2018-05-21 14:10:14","like_count":0,"is_like":0,"url":"","reply_lists":[{"user_name":"xihongwei","content":"不要愤怒","created_at":"2018-05-29 15:43:51"}]},{"id":73,"user_name":"liaolinan2","content":"龙","key_type":0,"created_at":"2018-05-21 14:10:11","like_count":0,"is_like":0,"url":"","reply_lists":[]},"..."]
-         */
+        private List<DynamicListInfo.DataBean.ReviewListBean> list;
 
-        private InfoBean info;
-        private List<ListBean> list;
-
-        public InfoBean getInfo() {
-            return info;
-        }
-
-        public void setInfo(InfoBean info) {
-            this.info = info;
-        }
-
-        public List<ListBean> getList() {
+        public List<DynamicListInfo.DataBean.ReviewListBean> getList() {
             return list;
         }
 
-        public void setList(List<ListBean> list) {
+        public void setList(List<DynamicListInfo.DataBean.ReviewListBean> list) {
             this.list = list;
         }
 

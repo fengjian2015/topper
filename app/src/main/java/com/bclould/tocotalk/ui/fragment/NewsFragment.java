@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.Presenter.NewsNoticePresenter;
@@ -56,6 +57,8 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     LinearLayout mLlNews;
     @Bind(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.scrollView)
+    ScrollView mScrollView;
     private NewsRVAdapter mNewsRVAdapter;
     private int mPage = 1;
     private int mPageSize = 10;
@@ -63,6 +66,7 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     private int PULL_DOWN = 1;
     private NewsNoticePresenter mNewsNoticePresenter;
     private int end = 0;
+    public LinearLayoutManager mLinearLayoutManager;
 
     public static NewsFragment getInstance() {
         if (instance == null) {
@@ -89,6 +93,7 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     }
 
     boolean isFinish = true;
+
     private void initListener() {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -178,7 +183,8 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     }
 
     private void initRecylerView() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mLinearLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mNewsRVAdapter = new NewsRVAdapter(getContext(), mNewsList);
         mRecyclerView.setAdapter(mNewsRVAdapter);
         mRecyclerView.setNestedScrollingEnabled(false);

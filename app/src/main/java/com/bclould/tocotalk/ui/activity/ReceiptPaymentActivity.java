@@ -96,7 +96,7 @@ public class ReceiptPaymentActivity extends BaseActivity {
         mReceiptPaymentPresenter.generateReceiptQrCode("", "", "", new ReceiptPaymentPresenter.CallBack() {
             @Override
             public void send(BaseInfo.DataBean data) {
-                String code = UtilTool.base64PetToJson(Constants.MONEYIN, "redID", data.getId() + "", getString(R.string.receipt_payment));
+                String code = UtilTool.base64PetToJson(ReceiptPaymentActivity.this, Constants.MONEYIN, "user_id", data.getId() + "", getString(R.string.receipt_payment));
                 Bitmap bitmap = UtilTool.createQRImage(code);
                 mIvQr.setBackground(new BitmapDrawable(bitmap));
             }
@@ -205,7 +205,7 @@ public class ReceiptPaymentActivity extends BaseActivity {
                 String remark = data.getStringExtra("remark");
                 mTvCount.setText(count);
                 mTvCoin.setText(coinName);
-                String base64PetToJson = UtilTool.base64PetToJson2(Constants.MONEYIN, "redID", id, "number", count, "coin_id", coinId, "coin_name", coinName, "mark", remark);
+                String base64PetToJson = UtilTool.base64PetToJson2(Constants.MONEYIN, "user_id", id, "number", count, "coin_id", coinId, "coin_name", coinName, "mark", remark, "user_name", UtilTool.getUser());
                 Bitmap bitmap = UtilTool.createQRImage(base64PetToJson);
                 mIvQr.setImageBitmap(bitmap);
                 if (remark == null) {

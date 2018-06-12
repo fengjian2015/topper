@@ -59,7 +59,7 @@ public class QRCodeActivity extends BaseActivity {
             String user=getIntent().getStringExtra("user");
             UtilTool.getImage(mgr, user, this, mTouxiang);
 //            mTouxiang.setImageBitmap(UtilTool.getImage(mgr,user, this));
-            Bitmap bitmap = UtilTool.createQRImage(UtilTool.base64PetToJson(Constants.BUSINESSCARD, "name", user, "名片"));
+            Bitmap bitmap = UtilTool.createQRImage(UtilTool.base64PetToJson(this, Constants.BUSINESSCARD, "name", user, "名片"));
             mQrCodeIv.setImageBitmap(bitmap);
         } catch (Exception e) {
             e.printStackTrace();

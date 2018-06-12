@@ -149,7 +149,7 @@ public class LoginPresenter {
     }
 
     private void showHintDialog(String message) {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_freeze, mContext,R.style.dialog);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_freeze, mContext, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setCanceledOnTouchOutside(false);
         deleteCacheDialog.setCancelable(false);
@@ -200,7 +200,7 @@ public class LoginPresenter {
     }
 
     private void showGoogleDialog(final String email, final String password) {
-        DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_google_code, mContext,R.style.dialog);
+        DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_google_code, mContext, R.style.dialog);
         deleteCacheDialog.show();
         final EditText etGoogle = (EditText) deleteCacheDialog.findViewById(R.id.et_google_code);
         Button btnConfirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
@@ -218,7 +218,7 @@ public class LoginPresenter {
     }
 
     private void showEmailDialog(final String email, final String password) {
-        DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_google_code, mContext,R.style.dialog);
+        DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_google_code, mContext, R.style.dialog);
         deleteCacheDialog.show();
         final EditText etGoogle = (EditText) deleteCacheDialog.findViewById(R.id.et_google_code);
         etGoogle.setHint(mContext.getString(R.string.et_vcode));
