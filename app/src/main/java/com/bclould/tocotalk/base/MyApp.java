@@ -71,7 +71,6 @@ public class MyApp extends Application {
 
         RoomManage.getInstance().setContext(this);
 
-
         //创建项目公开目录
         createDir();
     }

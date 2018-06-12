@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bumptech.glide.Glide;
@@ -602,12 +603,15 @@ public class UtilTool {
 
     }
 
-    public static String base64PetToJson(String prefix, String key, String value, String message) {
+    public static String base64PetToJson(Context context, String prefix, String key, String value, String message) {
         String jsonresult = "";//定义返回字符串
         JSONObject object = new JSONObject();//创建一个总的对象，这个对象对整个json串
         try {
             object.put(key, value);
             object.put("message", message);
+            if (message.equals(context.getString(R.string.receipt_payment))) {
+                object.put("user_name", getUser());
+            }
             jsonresult = object.toString();//生成返回字符串
         } catch (JSONException e) {
             e.printStackTrace();
@@ -616,7 +620,7 @@ public class UtilTool {
         return prefix + str;
     }
 
-    public static String base64PetToJson2(String prefix, String key, String value, String key2, String value2, String key3, String value3, String key4, String value4, String key5, String value5) {
+    public static String base64PetToJson2(String prefix, String key, String value, String key2, String value2, String key3, String value3, String key4, String value4, String key5, String value5, String key6, String value6) {
         String jsonresult = "";//定义返回字符串
         JSONObject object = new JSONObject();//创建一个总的对象，这个对象对整个json串
         try {
@@ -625,6 +629,7 @@ public class UtilTool {
             object.put(key3, value3);
             object.put(key4, value4);
             object.put(key5, value5);
+            object.put(key6, value6);
             jsonresult = object.toString();//生成返回字符串
         } catch (JSONException e) {
             e.printStackTrace();

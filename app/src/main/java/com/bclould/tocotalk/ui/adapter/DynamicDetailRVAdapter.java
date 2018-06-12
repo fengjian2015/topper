@@ -1,3 +1,4 @@
+/*
 package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
@@ -35,9 +36,11 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+*/
 /**
  * Created by GA on 2017/10/19.
- */
+ *//*
+
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class DynamicDetailRVAdapter extends RecyclerView.Adapter {
@@ -312,3 +315,4 @@ public class DynamicDetailRVAdapter extends RecyclerView.Adapter {
         }
     }
 }
+*/

@@ -298,9 +298,7 @@ public class UpIdCardActivity extends BaseActivity {
                                         s3Client.addRequestHandler(new RequestHandler2() {
                                             @Override
                                             public void beforeRequest(Request<?> request) {
-
                                             }
-
                                             @Override
                                             public void afterResponse(Request<?> request, Response<?> response) {
                                                 Message message = new Message();
@@ -308,10 +306,8 @@ public class UpIdCardActivity extends BaseActivity {
                                                 message.what = 0;
                                                 handler.sendMessage(message);
                                             }
-
                                             @Override
                                             public void afterError(Request<?> request, Response<?> response, Exception e) {
-
                                             }
                                         });
                                         PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key2, file);

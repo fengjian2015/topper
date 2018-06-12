@@ -2,12 +2,9 @@ package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,24 +19,25 @@ import android.widget.Toast;
 
 import com.bclould.tocotalk.Presenter.DynamicPresenter;
 import com.bclould.tocotalk.R;
-import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.DynamicListInfo;
 import com.bclould.tocotalk.model.LikeInfo;
-import com.bclould.tocotalk.ui.activity.DynamicDetailActivity;
 import com.bclould.tocotalk.ui.activity.GuessDetailsActivity;
 import com.bclould.tocotalk.ui.activity.PreviewImgActivity;
 import com.bclould.tocotalk.ui.activity.RewardActivity;
 import com.bclould.tocotalk.ui.activity.VideoActivity;
+import com.bclould.tocotalk.ui.widget.CommentsView;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.AnimatorTool;
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.jaeger.ninegridimageview.ItemImageClickListener;
 import com.jaeger.ninegridimageview.NineGridImageView;
 import com.jaeger.ninegridimageview.NineGridImageViewAdapter;
-import com.previewlibrary.enitity.ThumbViewInfo;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,14 +59,11 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
     public static final int GUESS_DYNAMIC = 4;//音乐动态
     private final Context mContext;
     private final List<DynamicListInfo.DataBean> mDataList;
-    private final DBManager mMgr;
     private final DynamicPresenter mDynamicPresenter;
-    public DynamicReviewRVAdapter mDynamicReviewRVAdapter;
 
-    public DynamicRVAdapter(Context context, List<DynamicListInfo.DataBean> dataList, DBManager mgr, DynamicPresenter dynamicPresenter) {
+    public DynamicRVAdapter(Context context, List<DynamicListInfo.DataBean> dataList,  DynamicPresenter dynamicPresenter) {
         mContext = context;
         mDataList = dataList;
-        mMgr = mgr;
         mDynamicPresenter = dynamicPresenter;
     }
 
@@ -163,13 +158,6 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         MusicHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mContext.startActivity(new Intent(mContext, DynamicDetailActivity.class));
-
-                }
-            });
         }
 
         public void setData(DynamicListInfo.DataBean dataBean) {
@@ -178,6 +166,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
     }
 
     class TextHolder extends RecyclerView.ViewHolder {
+        private DynamicListInfo.DataBean mDataBean;
         @Bind(R.id.touxiang)
         ImageView mTouxiang;
         @Bind(R.id.name)
@@ -200,33 +189,12 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         TextView mTvZan;
         @Bind(R.id.ll_dynamic_content)
         LinearLayout mLlDynamicContent;
-        @Bind(R.id.recycler_view)
-        RecyclerView mRecyclerView;
-        @Bind(R.id.tv_look)
-        TextView mTvLook;
-        @Bind(R.id.ll_review)
-        LinearLayout mLlReview;
-        private DynamicListInfo.DataBean mDataBean;
+        @Bind(R.id.commentView)
+        CommentsView mCommentView;
 
         TextHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent();
-                    Bundle bundle = new Bundle();
-                    intent.setClass(mContext, DynamicDetailActivity.class);
-                    bundle.putString("id", mDataBean.getId() + "");
-                    bundle.putString("content", mDataBean.getContent());
-                    bundle.putInt("type", 1);
-                    bundle.putString("name", mDataBean.getUser_name());
-                    bundle.putString("time", mDataBean.getCreated_at());
-                    bundle.putInt("is_self", mDataBean.getIs_self());
-                    intent.putExtras(bundle);
-                    mContext.startActivity(intent);
-                }
-            });
             mTvReward.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -237,14 +205,31 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
                 }
             });
-           /* mTvPinglun.setOnClickListener(new View.OnClickListener() {
+            mTvZan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mDynamicPresenter.like(mDataBean.getId() + "", new DynamicPresenter.CallBack4() {
+                        @Override
+                        public void send(LikeInfo data) {
+                            mTvZan.setText(data.getData().getLikeCounts() + "");
+                            if (data.getData().getStatus() == 1) {
+                                mTvZan.setSelected(true);
+                            } else {
+                                mTvZan.setSelected(false);
+                            }
+                        }
+                    });
+                }
+            });
+            mTvPinglun.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     MessageEvent messageEvent = new MessageEvent(mContext.getString(R.string.comment));
-                    messageEvent.setId(mDataBean.getId() + "");
+                    messageEvent.setState(mDataBean.getId() + "");
                     EventBus.getDefault().post(messageEvent);
+                    messageEvent.setType(false);
                 }
-            });*/
+            });
         }
 
         public void setData(final DynamicListInfo.DataBean dataBean) {
@@ -276,33 +261,11 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 UtilTool.setCircleImg(mContext, R.mipmap.img_nfriend_headshot1, mTouxiang);
             }
             if (dataBean.getReviewList().size() != 0) {
-                mLlReview.setVisibility(View.VISIBLE);
-                if (dataBean.getReviewList().size() > 5) {
-                    mTvLook.setVisibility(View.VISIBLE);
-                } else {
-                    mTvLook.setVisibility(View.GONE);
-                }
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-                mDynamicReviewRVAdapter = new DynamicReviewRVAdapter(dataBean.getReviewList(), mContext);
-                mRecyclerView.setAdapter(mDynamicReviewRVAdapter);
-                mTvLook.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent();
-                        Bundle bundle = new Bundle();
-                        intent.setClass(mContext, DynamicDetailActivity.class);
-                        bundle.putString("id", mDataBean.getId() + "");
-                        bundle.putString("content", mDataBean.getContent());
-                        bundle.putString("name", mDataBean.getUser_name());
-                        bundle.putInt("type", 1);
-                        bundle.putString("time", mDataBean.getCreated_at());
-                        bundle.putInt("is_self", mDataBean.getIs_self());
-                        intent.putExtras(bundle);
-                        mContext.startActivity(intent);
-                    }
-                });
+                mCommentView.setVisibility(View.VISIBLE);
+                mCommentView.setList(dataBean.getReviewList(), dataBean.getId());
+                mCommentView.notifyDataSetChanged();
             } else {
-                mLlReview.setVisibility(View.GONE);
+                mCommentView.setVisibility(View.GONE);
             }
             mTvReward.setText(dataBean.getRewardCount() + "");
             mTime.setText(dataBean.getCreated_at());
@@ -315,22 +278,6 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             } else {
                 mTvZan.setSelected(false);
             }
-            mTvZan.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mDynamicPresenter.like(dataBean.getId() + "", new DynamicPresenter.CallBack4() {
-                        @Override
-                        public void send(LikeInfo data) {
-                            mTvZan.setText(data.getData().getLikeCounts() + "");
-                            if (data.getData().getStatus() == 1) {
-                                mTvZan.setSelected(true);
-                            } else {
-                                mTvZan.setSelected(false);
-                            }
-                        }
-                    });
-                }
-            });
         }
     }
 
@@ -363,12 +310,8 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         TextView mTvZan;
         @Bind(R.id.ll_dynamic_content)
         LinearLayout mLlDynamicContent;
-        @Bind(R.id.recycler_view)
-        RecyclerView mRecyclerView;
-        @Bind(R.id.tv_look)
-        TextView mTvLook;
-        @Bind(R.id.ll_review)
-        LinearLayout mLlReview;
+        @Bind(R.id.commentView)
+        CommentsView mCommentView;
         private DynamicListInfo.DataBean mDataBean;
         private ArrayList<String> mCompressImgList;
         private ArrayList<String> mImgList;
@@ -376,24 +319,6 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         VideoHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent();
-                    intent.setClass(mContext, DynamicDetailActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putStringArrayList("compressImgList", mCompressImgList);
-                    bundle.putStringArrayList("imageList", mImgList);
-                    bundle.putString("id", mDataBean.getId() + "");
-                    bundle.putInt("type", 3);
-                    bundle.putString("content", mDataBean.getContent());
-                    bundle.putString("name", mDataBean.getUser_name());
-                    bundle.putString("time", mDataBean.getCreated_at());
-                    bundle.putInt("is_self", mDataBean.getIs_self());
-                    intent.putExtras(bundle);
-                    mContext.startActivity(intent);
-                }
-            });
             mTvReward.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -412,14 +337,31 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
                 }
             });
-           /* mTvPinglun.setOnClickListener(new View.OnClickListener() {
+            mTvZan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mDynamicPresenter.like(mDataBean.getId() + "", new DynamicPresenter.CallBack4() {
+                        @Override
+                        public void send(LikeInfo data) {
+                            mTvZan.setText(data.getData().getLikeCounts() + "");
+                            if (data.getData().getStatus() == 1) {
+                                mTvZan.setSelected(true);
+                            } else {
+                                mTvZan.setSelected(false);
+                            }
+                        }
+                    });
+                }
+            });
+            mTvPinglun.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     MessageEvent messageEvent = new MessageEvent(mContext.getString(R.string.comment));
-                    messageEvent.setId(mDataBean.getId() + "");
+                    messageEvent.setState(mDataBean.getId() + "");
+                    messageEvent.setType(false);
                     EventBus.getDefault().post(messageEvent);
                 }
-            });*/
+            });
         }
 
         public void setData(final DynamicListInfo.DataBean dataBean) {
@@ -453,35 +395,16 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 UtilTool.setCircleImg(mContext, R.mipmap.img_nfriend_headshot1, mTouxiang);
             }
             if (dataBean.getReviewList().size() != 0) {
-                mLlReview.setVisibility(View.VISIBLE);
-                if (dataBean.getReviewList().size() > 5) {
-                    mTvLook.setVisibility(View.VISIBLE);
-                } else {
-                    mTvLook.setVisibility(View.GONE);
-                }
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-                mDynamicReviewRVAdapter = new DynamicReviewRVAdapter(dataBean.getReviewList(), mContext);
-                mRecyclerView.setAdapter(mDynamicReviewRVAdapter);
-                mTvLook.setOnClickListener(new View.OnClickListener() {
+                mCommentView.setVisibility(View.VISIBLE);
+                mCommentView.setList(dataBean.getReviewList(), dataBean.getId());
+                mCommentView.setOnItemClickListener(new CommentsView.onItemClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent();
-                        Bundle bundle = new Bundle();
-                        intent.setClass(mContext, DynamicDetailActivity.class);
-                        bundle.putStringArrayList("compressImgList", mCompressImgList);
-                        bundle.putStringArrayList("imageList", mImgList);
-                        bundle.putString("id", mDataBean.getId() + "");
-                        bundle.putInt("type", 3);
-                        bundle.putString("content", mDataBean.getContent());
-                        bundle.putString("name", mDataBean.getUser_name());
-                        bundle.putString("time", mDataBean.getCreated_at());
-                        bundle.putInt("is_self", mDataBean.getIs_self());
-                        intent.putExtras(bundle);
-                        mContext.startActivity(intent);
+                    public void onItemClick(int position, DynamicListInfo.DataBean.ReviewListBean bean) {
                     }
                 });
+                mCommentView.notifyDataSetChanged();
             } else {
-                mLlReview.setVisibility(View.GONE);
+                mCommentView.setVisibility(View.GONE);
             }
             Glide.with(mContext)
                     .load((dataBean.getKey_compress_urls()).get(0))
@@ -498,22 +421,6 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             } else {
                 mTvZan.setSelected(false);
             }
-            mTvZan.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mDynamicPresenter.like(dataBean.getId() + "", new DynamicPresenter.CallBack4() {
-                        @Override
-                        public void send(LikeInfo data) {
-                            mTvZan.setText(data.getData().getLikeCounts() + "");
-                            if (data.getData().getStatus() == 1) {
-                                mTvZan.setSelected(true);
-                            } else {
-                                mTvZan.setSelected(false);
-                            }
-                        }
-                    });
-                }
-            });
         }
     }
 
@@ -542,17 +449,12 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         TextView mTvZan;
         @Bind(R.id.ll_dynamic_content)
         LinearLayout mLlDynamicContent;
-        @Bind(R.id.recycler_view)
-        RecyclerView mRecyclerView;
-        @Bind(R.id.tv_look)
-        TextView mTvLook;
-        @Bind(R.id.ll_review)
-        LinearLayout mLlReview;
-        private ArrayList<ThumbViewInfo> mThumbViewInfoList = new ArrayList<>();
+        @Bind(R.id.commentView)
+        CommentsView mCommentView;
         private NineGridImageViewAdapter<String> mAdapter = new NineGridImageViewAdapter<String>() {
             @Override
             protected void onDisplayImage(Context context, ImageView imageView, String s) {
-                Glide.with(context).load(s).apply(new RequestOptions().placeholder(R.mipmap.ic_empty_photo)).into(imageView);
+                Glide.with(context).load(s).apply(new RequestOptions().placeholder(R.mipmap.ic_empty_photo).error(R.mipmap.ic_empty_photo)).into(imageView);
             }
 
             @Override
@@ -572,24 +474,6 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         public ImageHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent();
-                    intent.setClass(mContext, DynamicDetailActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putStringArrayList("compressImgList", mCompressImgList);
-                    bundle.putStringArrayList("imageList", mImgList);
-                    bundle.putString("id", mDataBean.getId() + "");
-                    bundle.putInt("type", 2);
-                    bundle.putString("content", mDataBean.getContent());
-                    bundle.putString("name", mDataBean.getUser_name());
-                    bundle.putString("time", mDataBean.getCreated_at());
-                    bundle.putInt("is_self", mDataBean.getIs_self());
-                    intent.putExtras(bundle);
-                    mContext.startActivity(intent);
-                }
-            });
             mNglImages.setAdapter(mAdapter);
             mNglImages.setItemImageClickListener(new ItemImageClickListener<String>() {
                 @Override
@@ -598,13 +482,6 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                     intent.putExtra("index", index);
                     intent.putStringArrayListExtra("imgList", mCompressImgList);
                     context.startActivity(intent);
-
-                    /*computeBoundsBackward(list);//组成数据
-                    GPreviewBuilder.from((Activity) context)
-                            .setData(mThumbViewInfoList)
-                            .setCurrentIndex(index)
-                            .setType(GPreviewBuilder.IndicatorType.Dot)
-                            .start();//启动*/
 
                 }
             });
@@ -619,30 +496,35 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 }
             });
 
-            /*mTvPinglun.setOnClickListener(new View.OnClickListener() {
+            mTvZan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mDynamicPresenter.like(mDataBean.getId() + "", new DynamicPresenter.CallBack4() {
+                        @Override
+                        public void send(LikeInfo data) {
+                            mTvZan.setText(data.getData().getLikeCounts() + "");
+                            mDataBean.setLike_count(data.getData().getLikeCounts());
+                            if (data.getData().getStatus() == 1) {
+                                mTvZan.setSelected(true);
+                                mDataBean.setIs_like(1);
+                            } else {
+                                mTvZan.setSelected(false);
+                                mDataBean.setIs_like(0);
+                            }
+                        }
+                    });
+                }
+            });
+
+            mTvPinglun.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     MessageEvent messageEvent = new MessageEvent(mContext.getString(R.string.comment));
-                    messageEvent.setId(mDataBean.getId() + "");
+                    messageEvent.setState(mDataBean.getId() + "");
+                    messageEvent.setType(false);
                     EventBus.getDefault().post(messageEvent);
                 }
-            });*/
-        }
-
-        private void computeBoundsBackward(List<String> list) {
-            ThumbViewInfo item;
-            mThumbViewInfoList.clear();
-            for (int i = 0; i < mNglImages.getChildCount(); i++) {
-                View itemView = mNglImages.getChildAt(i);
-                Rect bounds = new Rect();
-                if (itemView != null) {
-                    ImageView thumbView = (ImageView) itemView;
-                    thumbView.getGlobalVisibleRect(bounds);
-                }
-                item = new ThumbViewInfo(list.get(i));
-                item.setBounds(bounds);
-                mThumbViewInfoList.add(item);
-            }
+            });
         }
 
         public void setData(final DynamicListInfo.DataBean dataBean) {
@@ -677,35 +559,16 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 mIvDelete.setVisibility(View.GONE);
             }
             if (dataBean.getReviewList().size() != 0) {
-                mLlReview.setVisibility(View.VISIBLE);
-                if (dataBean.getReview_count() > 5) {
-                    mTvLook.setVisibility(View.VISIBLE);
-                } else {
-                    mTvLook.setVisibility(View.GONE);
-                }
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-                mDynamicReviewRVAdapter = new DynamicReviewRVAdapter(dataBean.getReviewList(), mContext);
-                mRecyclerView.setAdapter(mDynamicReviewRVAdapter);
-                mTvLook.setOnClickListener(new View.OnClickListener() {
+                mCommentView.setVisibility(View.VISIBLE);
+                mCommentView.setList(dataBean.getReviewList(), dataBean.getId());
+                mCommentView.setOnItemClickListener(new CommentsView.onItemClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent();
-                        intent.setClass(mContext, DynamicDetailActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putStringArrayList("compressImgList", mCompressImgList);
-                        bundle.putStringArrayList("imageList", mImgList);
-                        bundle.putInt("type", 2);
-                        bundle.putString("id", mDataBean.getId() + "");
-                        bundle.putString("content", mDataBean.getContent());
-                        bundle.putString("name", mDataBean.getUser_name());
-                        bundle.putString("time", mDataBean.getCreated_at());
-                        bundle.putInt("is_self", mDataBean.getIs_self());
-                        intent.putExtras(bundle);
-                        mContext.startActivity(intent);
+                    public void onItemClick(int position, DynamicListInfo.DataBean.ReviewListBean bean) {
                     }
                 });
+                mCommentView.notifyDataSetChanged();
             } else {
-                mLlReview.setVisibility(View.GONE);
+                mCommentView.setVisibility(View.GONE);
             }
             mTvReward.setText(dataBean.getRewardCount() + "");
             mTvTime.setText(dataBean.getCreated_at());
@@ -718,25 +581,6 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             } else {
                 mTvZan.setSelected(false);
             }
-            mTvZan.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mDynamicPresenter.like(dataBean.getId() + "", new DynamicPresenter.CallBack4() {
-                        @Override
-                        public void send(LikeInfo data) {
-                            mTvZan.setText(data.getData().getLikeCounts() + "");
-                            dataBean.setLike_count(data.getData().getLikeCounts());
-                            if (data.getData().getStatus() == 1) {
-                                mTvZan.setSelected(true);
-                                dataBean.setIs_like(1);
-                            } else {
-                                mTvZan.setSelected(false);
-                                dataBean.setIs_like(0);
-                            }
-                        }
-                    });
-                }
-            });
         }
     }
 
@@ -796,12 +640,8 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         TextView mTvZan;
         @Bind(R.id.ll_dynamic_content)
         LinearLayout mLlDynamicContent;
-        @Bind(R.id.recycler_view)
-        RecyclerView mRecyclerView;
-        @Bind(R.id.tv_look)
-        TextView mTvLook;
-        @Bind(R.id.ll_review)
-        LinearLayout mLlReview;
+        @Bind(R.id.commentView)
+        CommentsView mCommentView;
         private DynamicListInfo.DataBean mDataBean;
         private String mGuessPw;
         private int mGuessId;
@@ -810,22 +650,6 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         GuessHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent();
-                    Bundle bundle = new Bundle();
-                    intent.setClass(mContext, DynamicDetailActivity.class);
-                    bundle.putString("id", mDataBean.getId() + "");
-                    bundle.putString("content", mDataBean.getContent());
-                    bundle.putInt("type", 4);
-                    bundle.putString("name", mDataBean.getUser_name());
-                    bundle.putString("time", mDataBean.getCreated_at());
-                    bundle.putInt("is_self", mDataBean.getIs_self());
-                    intent.putExtras(bundle);
-                    mContext.startActivity(intent);
-                }
-            });
             mCvGuess.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -849,14 +673,15 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
                 }
             });
-           /* mTvPinglun.setOnClickListener(new View.OnClickListener() {
+            mTvPinglun.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     MessageEvent messageEvent = new MessageEvent(mContext.getString(R.string.comment));
-                    messageEvent.setId(mDataBean.getId() + "");
+                    messageEvent.setState(mDataBean.getId() + "");
+                    messageEvent.setType(false);
                     EventBus.getDefault().post(messageEvent);
                 }
-            });*/
+            });
             mTvZan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -904,33 +729,16 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 UtilTool.setCircleImg(mContext, R.mipmap.img_nfriend_headshot1, mIvTouxiang);
             }
             if (dataBean.getReviewList().size() != 0) {
-                mLlReview.setVisibility(View.VISIBLE);
-                if (dataBean.getReviewList().size() > 5) {
-                    mTvLook.setVisibility(View.VISIBLE);
-                } else {
-                    mTvLook.setVisibility(View.GONE);
-                }
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-                mDynamicReviewRVAdapter = new DynamicReviewRVAdapter(dataBean.getReviewList(), mContext);
-                mRecyclerView.setAdapter(mDynamicReviewRVAdapter);
-                mTvLook.setOnClickListener(new View.OnClickListener() {
+                mCommentView.setVisibility(View.VISIBLE);
+                mCommentView.setList(dataBean.getReviewList(), dataBean.getId());
+                mCommentView.setOnItemClickListener(new CommentsView.onItemClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent();
-                        Bundle bundle = new Bundle();
-                        intent.setClass(mContext, DynamicDetailActivity.class);
-                        bundle.putString("id", mDataBean.getId() + "");
-                        bundle.putString("content", mDataBean.getContent());
-                        bundle.putString("name", mDataBean.getUser_name());
-                        bundle.putString("time", mDataBean.getCreated_at());
-                        bundle.putInt("type", 4);
-                        bundle.putInt("is_self", mDataBean.getIs_self());
-                        intent.putExtras(bundle);
-                        mContext.startActivity(intent);
+                    public void onItemClick(int position, DynamicListInfo.DataBean.ReviewListBean bean) {
                     }
                 });
+                mCommentView.notifyDataSetChanged();
             } else {
-                mLlReview.setVisibility(View.GONE);
+                mCommentView.setVisibility(View.GONE);
             }
             if (dataBean.getContent().contains(Constants.GUESS_DYNAMIC_SEPARATOR)) {
                 UtilTool.Log("競猜分享", dataBean.getContent());

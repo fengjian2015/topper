@@ -114,7 +114,7 @@ public class MainActivity extends BaseActivity {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    EventBus.getDefault().post(new MessageEvent(getString(R.string.hide_keyboard)));
+//                    EventBus.getDefault().post(new MessageEvent(getString(R.string.hide_keyboard)));
                 }
             }
             return super.dispatchTouchEvent(ev);

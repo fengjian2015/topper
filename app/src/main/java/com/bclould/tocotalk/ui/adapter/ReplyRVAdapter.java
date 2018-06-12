@@ -1,3 +1,4 @@
+/*
 package com.bclould.tocotalk.ui.adapter;
 
 import android.content.Context;
@@ -15,9 +16,11 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+*/
 /**
  * Created by GA on 2018/5/29.
- */
+ *//*
+
 
 public class ReplyRVAdapter extends RecyclerView.Adapter {
 
@@ -31,7 +34,7 @@ public class ReplyRVAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_dynamic_review, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_dynamic_comment, parent, false);
         return new ViewHolder(view);
     }
 
@@ -66,3 +69,4 @@ public class ReplyRVAdapter extends RecyclerView.Adapter {
         }
     }
 }
+*/

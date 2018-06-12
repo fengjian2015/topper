@@ -5,7 +5,7 @@ package com.bclould.tocotalk.model;
  */
 
 public class QrReceiptInfo {
-    private int redID;
+    private int user_id;
     private String coin_id;
     private String coin_name;
     private String number;
@@ -19,12 +19,12 @@ public class QrReceiptInfo {
         this.mark = mark;
     }
 
-    public int getRedId() {
-        return redID;
+    public int getUser_id() {
+        return user_id;
     }
 
-    public void setRedId(int redId) {
-        this.redID = redId;
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     public String getCoin_id() {

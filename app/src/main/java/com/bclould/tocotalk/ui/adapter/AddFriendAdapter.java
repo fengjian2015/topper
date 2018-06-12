@@ -93,7 +93,7 @@ public class AddFriendAdapter extends RecyclerView.Adapter {
                         type = 2;
                     }
                     Intent intent = new Intent(mContext, IndividualDetailsActivity.class);
-                    intent.putExtra("type", type);
+                    intent.putExtra("roomId", jid);
                     intent.putExtra("name", mName);
                     intent.putExtra("user", jid);
                     mContext.startActivity(intent);

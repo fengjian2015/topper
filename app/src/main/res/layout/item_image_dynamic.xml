@@ -94,6 +94,7 @@
                 android:textSize="@dimen/x26"/>
 
             <LinearLayout
+                android:id="@+id/ll_menu"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y100"
                 android:layout_below="@+id/tv_location"
@@ -138,38 +139,17 @@
 
             </LinearLayout>
 
+            <com.bclould.tocotalk.ui.widget.CommentsView
+                android:id="@+id/commentView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_menu"
+                android:layout_marginBottom="@dimen/y30"
+                android:layout_marginRight="@dimen/x30"
+                android:background="#10000000"
+                android:padding="@dimen/x15"/>
+
         </RelativeLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_review"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_dynamic_content"
-        android:layout_marginBottom="@dimen/y30"
-        android:layout_marginLeft="@dimen/x140"
-        android:layout_marginRight="@dimen/x30"
-        android:background="#15000000"
-        android:orientation="vertical"
-        android:padding="@dimen/y20"
-        android:visibility="gone">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </android.support.v7.widget.RecyclerView>
-
-        <TextView
-            android:id="@+id/tv_look"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/y15"
-            android:text="@string/view_more"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"
-            android:textStyle="bold"/>
 
     </LinearLayout>
 

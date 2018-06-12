@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.bclould.tocotalk.Presenter.DynamicPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
-import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.DynamicListInfo;
 import com.bclould.tocotalk.ui.adapter.DynamicRVAdapter;
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -161,9 +160,8 @@ public class PersonageDynamicActivity extends BaseActivity {
 
     private void initRecyclerView() {
         mDynamicPresenter = new DynamicPresenter(this);
-        DBManager mgr = new DBManager(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mDynamicRVAdapter = new DynamicRVAdapter(this, mDataList, mgr, mDynamicPresenter);
+        mDynamicRVAdapter = new DynamicRVAdapter(this, mDataList, mDynamicPresenter);
         mRecyclerView.setAdapter(mDynamicRVAdapter);
     }
 

@@ -11,7 +11,6 @@ import com.bclould.tocotalk.model.DynamicListInfo;
 import com.bclould.tocotalk.model.LikeInfo;
 import com.bclould.tocotalk.model.ReviewListInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
-import com.bclould.tocotalk.ui.activity.DynamicDetailActivity;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -121,6 +120,7 @@ public class DynamicPresenter {
                         @Override
                         public void onError(Throwable e) {
 //                            hideDialog();
+                            UtilTool.Log("动态", e.getMessage());
                             Toast.makeText(mContext, mContext.getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -254,7 +254,7 @@ public class DynamicPresenter {
         }
     }
 
-    public void sendComment(String id, String comment, int reply_id, String key, int key_type, final CallBack5 callBack5) {
+    public void sendComment(String id, String comment, String reply_id, String key, int key_type, final CallBack5 callBack5) {
         if (UtilTool.isNetworkAvailable(mContext)) {
 //            showDialog();
             RetrofitUtil.getInstance(mContext)
@@ -282,6 +282,7 @@ public class DynamicPresenter {
                         @Override
                         public void onError(Throwable e) {
 //                            hideDialog();
+                            UtilTool.Log("動態", e.getMessage());
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -347,10 +348,10 @@ public class DynamicPresenter {
                         @Override
                         public void onNext(BaseInfo baseInfo) {
                             if (baseInfo.getStatus() == 1) {
-                                if (mContext instanceof DynamicDetailActivity) {
+                                /*if (mContext instanceof DynamicDetailActivity) {
                                     DynamicDetailActivity activity = (DynamicDetailActivity) mContext;
                                     activity.finish();
-                                }
+                                }*/
                                 MessageEvent messageEvent = new MessageEvent(mContext.getString(R.string.delete_dynamic));
                                 messageEvent.setId(id);
                                 EventBus.getDefault().post(messageEvent);
@@ -432,7 +433,7 @@ public class DynamicPresenter {
 
     //定义接口
     public interface CallBack5 {
-        void send(List<ReviewListInfo.DataBean.ListBean> data);
+        void send(List<DynamicListInfo.DataBean.ReviewListBean> data);
     }
 
     //定义接口

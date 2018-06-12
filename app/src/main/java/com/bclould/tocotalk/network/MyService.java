@@ -547,7 +547,7 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("dynamic_id") String dynamic_id,
             @Field("content") String content,
-            @Field("reply_id") int reply_id,
+            @Field("reply_id") String reply_id,
             @Field("key") String key,
             @Field("key_type") int key_type
     );
