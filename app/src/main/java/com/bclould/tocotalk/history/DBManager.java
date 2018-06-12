@@ -573,7 +573,6 @@ public class DBManager {
                 if (!queryUser(info.getToco_id()).getRemark().equals(info.getRemark() + "")) {
                     values.put("remark", info.getRemark());
                     db.update("UserImage", values, "user=? and my_user=?", new String[]{info.getToco_id(), UtilTool.getTocoId()});
-
                 }
             }
         }

@@ -12,7 +12,16 @@ public class TransRecordInfo {
      */
 
     private int status;
+    private String message;
     private DataBean data;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public int getStatus() {
         return status;

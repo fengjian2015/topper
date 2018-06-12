@@ -77,7 +77,7 @@ public class RedPacketRVAdapter extends RecyclerView.Adapter {
             mTvName.setText(logBean.getName());
             mTvTime.setText(logBean.getTime());
             mTvMoney.setText(logBean.getMoney());
-            UtilTool.getImage(mMgr, logBean.getToco_id(), mContext, mIvTouxiang);
+            UtilTool.setCircleImg(mContext,logBean.getAvatar(), mIvTouxiang);
             //            mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
         }
     }

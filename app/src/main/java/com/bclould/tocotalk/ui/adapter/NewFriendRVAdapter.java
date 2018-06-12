@@ -17,12 +17,7 @@ import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.AddRequestInfo;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bclould.tocotalk.xmpp.XmppConnection;
-
 import org.greenrobot.eventbus.EventBus;
-import org.jivesoftware.smack.packet.Presence;
-import org.jivesoftware.smack.roster.Roster;
-import org.jxmpp.jid.impl.JidCreate;
 
 import java.util.List;
 

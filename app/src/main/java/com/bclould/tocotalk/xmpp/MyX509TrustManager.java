@@ -26,7 +26,7 @@ public class MyX509TrustManager implements X509TrustManager {
     public MyX509TrustManager(InputStream ksfileStream, String kspass) throws Exception {
         // create a "default" JSSE X509TrustManager.
 
-        KeyStore ks = KeyStore.getInstance("BKS");
+        KeyStore ks = KeyStore.getInstance("bks");
         ks.load(ksfileStream, kspass.toCharArray());
 
         TrustManagerFactory tmf = TrustManagerFactory.getInstance("PKIX");

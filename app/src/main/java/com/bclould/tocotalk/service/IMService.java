@@ -8,10 +8,18 @@ import android.os.IBinder;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tocotalk.topperchat.WsConnection;
+import com.bclould.tocotalk.topperchat.WsOfflineConnection;
 import com.bclould.tocotalk.utils.CheckClassIsWork;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tocotalk.xmpp.IMLogin;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.msgpack.jackson.dataformat.MessagePackFactory;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class IMService extends Service{
@@ -54,10 +62,11 @@ public class IMService extends Service{
     }
 
     private void fistlogIm() {
-        if (CheckClassIsWork.isTopActivity(this, "LoginActivity")) {
+        if (CheckClassIsWork.isTopActivity(this, "InitialActivity")) {
             this.stopService(new Intent(this, IMService.class));
             return;
         }
+        WsOfflineConnection.getInstance().get(IMService.this);
         if (WsConnection.getInstance().get(IMService.this)!=null&&WsConnection.getInstance().get(IMService.this).isOpen()||
                 WsConnection.getInstance().isLogin()) {
             ConnectStateChangeListenerManager.get().notifyListener(
@@ -98,10 +107,12 @@ public class IMService extends Service{
                         break;
                     case EXLOGIN: {
                         synchronized (this) {
-                            if (CheckClassIsWork.isTopActivity(IMService.this, "LoginActivity")) {
-                                WsConnection.getInstance().get(IMService.this).disconnect();
+                            if (CheckClassIsWork.isTopActivity(IMService.this, "InitialActivity")) {
+                                WsConnection.getInstance().get(IMService.this).close();
+                                WsOfflineConnection.getInstance().closeConnection();
                                 break;
                             }
+                            WsOfflineConnection.getInstance().get(IMService.this);
                             if(WsConnection.getInstance().get(IMService.this)==null){
                                 exReconnect(2000);
                                 break;
@@ -149,11 +160,12 @@ public class IMService extends Service{
         return handler;
     }
 
+
     private void disconnect(){
         new Thread(){
             @Override
             public void run() {
-                WsConnection.getInstance().get(IMService.this).disconnect();
+                WsConnection.getInstance().get(IMService.this).close();
             }
         }.start();
     }

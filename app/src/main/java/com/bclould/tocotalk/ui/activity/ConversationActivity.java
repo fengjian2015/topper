@@ -33,6 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -59,7 +60,6 @@ import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.MessageManageListener;
 import com.bclould.tocotalk.xmpp.Room;
 import com.bclould.tocotalk.xmpp.RoomManage;
-import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.compress.Luban;
 import com.luck.picture.lib.config.PictureConfig;
@@ -118,7 +118,7 @@ import static com.bclould.tocotalk.R.style.BottomDialog;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ConversationActivity extends AppCompatActivity implements FuncLayout.OnFuncKeyBoardListener, XhsEmoticonsKeyBoard.OnResultOTR, MessageManageListener {
+public class ConversationActivity extends AppCompatActivity implements FuncLayout.OnFuncKeyBoardListener, XhsEmoticonsKeyBoard.OnResultOTR, MessageManageListener ,TextView.OnEditorActionListener {
 
     private static final int CODE_TAKE_PHOTO_SHOOTING = 100;
     private static final int FILE_SELECT_CODE = 2;
@@ -367,6 +367,16 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             public void onClick(View view) {
                 sendMessage(mEkbEmoticonsKeyboard.getEtChat().getText().toString());
                 mEkbEmoticonsKeyboard.getEtChat().setText("");
+            }
+        });
+        mEkbEmoticonsKeyboard.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    sendMessage(mEkbEmoticonsKeyboard.getEtChat().getText().toString());
+                    mEkbEmoticonsKeyboard.getEtChat().setText("");
+                }
+                return false;
             }
         });
 
@@ -928,4 +938,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         });
     }
 
+    @Override
+    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+        return false;
+    }
 }

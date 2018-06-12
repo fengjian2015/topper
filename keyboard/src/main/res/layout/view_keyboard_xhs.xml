@@ -73,6 +73,8 @@
                 android:lineSpacingExtra="@dimen/y8"
                 android:maxLines="4"
                 android:paddingLeft="@dimen/x16"
+                android:imeOptions="actionSend"
+                android:singleLine="true"
                 android:textSize="@dimen/x32"/>
 
             <!--表情-->

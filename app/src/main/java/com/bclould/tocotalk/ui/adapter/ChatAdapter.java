@@ -2078,11 +2078,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private void goIndividualDetails(View view, String user, String name, final MessageInfo messageInfo) {
         //兼容之前沒有send字段問題
         if (messageInfo.getSend() != null) {
-            name = messageInfo.getSend().split("@")[0];
             user = messageInfo.getSend();
+            name = mMgr.findUserName(user);
+            if(StringUtils.isEmpty(name)){
+
+            }
         }
         final String finalName = name;
         final String finalUser = user;
+
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -5,9 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,6 +23,7 @@ import android.widget.Toast;
 
 import com.bclould.tocotalk.Presenter.CoinPresenter;
 import com.bclould.tocotalk.Presenter.DillDataPresenter;
+import com.bclould.tocotalk.Presenter.GroupPresenter;
 import com.bclould.tocotalk.Presenter.IndividualDetailsPresenter;
 import com.bclould.tocotalk.Presenter.PersonalDetailsPresenter;
 import com.bclould.tocotalk.R;
@@ -33,19 +31,21 @@ import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.FragmentFactory;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.history.DBRoomManage;
+import com.bclould.tocotalk.history.DBRoomMember;
 import com.bclould.tocotalk.model.AuatarListInfo;
 import com.bclould.tocotalk.model.AwsInfo;
 import com.bclould.tocotalk.model.GitHubInfo;
+import com.bclould.tocotalk.model.GroupInfo;
 import com.bclould.tocotalk.model.IndividualInfo;
+import com.bclould.tocotalk.model.RoomManageInfo;
 import com.bclould.tocotalk.network.DownLoadApk;
 import com.bclould.tocotalk.network.RetrofitUtil;
+import com.bclould.tocotalk.topperchat.WsConnection;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bclould.tocotalk.xmpp.XmppConnection;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +76,8 @@ public class MainActivity extends BaseActivity {
     private FragmentManager mSupportFragmentManager;
     private CoinPresenter mCoinPresenter;
     private DBManager mMgr;
+    private DBRoomManage mDBRoomManage;
+    private DBRoomMember mDBRoomMember;
 
     //单例
     public static MainActivity getInstance() {
@@ -99,9 +101,11 @@ public class MainActivity extends BaseActivity {
         mCoinPresenter = new CoinPresenter(this);
         ButterKnife.bind(this);
         mMgr = new DBManager(this);
+        mDBRoomManage=new DBRoomManage(this);
+        mDBRoomMember=new DBRoomMember(this);
         initInterface();
         MyApp.getInstance().addActivity(this);
-        XmppConnection.loginService(this);
+        WsConnection.loginService(this);
     }
 
     @Override
@@ -146,6 +150,7 @@ public class MainActivity extends BaseActivity {
 
     //初始化界面
     private void initInterface() {
+        getGroup();
         getMyImage();
         getFriends();
         //开始选中聊天Fragment
@@ -169,6 +174,21 @@ public class MainActivity extends BaseActivity {
         //获取国家
         getStateList();
 
+    }
+
+    private void getGroup() {
+        new GroupPresenter(this).getGroup(new GroupPresenter.CallBack1() {
+            @Override
+            public void send(GroupInfo baseInfo) {
+                // TODO: 2018/6/11 獲取群聊房間塞入數據庫
+                for(GroupInfo.DataBean dataBean:baseInfo.getData()){
+                    RoomManageInfo roomManageInfo=new RoomManageInfo();
+                    roomManageInfo.setRoomName(dataBean.getName());
+                    roomManageInfo.setRoomId(dataBean.getId()+"");
+//                    mDBRoomManage.addRoom();
+                }
+            }
+        });
     }
 
     private void getMyImage() {

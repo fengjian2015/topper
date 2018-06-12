@@ -10,6 +10,7 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.amazonaws.Request;
 import com.amazonaws.Response;
 import com.amazonaws.auth.BasicSessionCredentials;
@@ -28,36 +29,19 @@ import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.RoomManageInfo;
 import com.bclould.tocotalk.model.UserInfo;
-import com.bclould.tocotalk.model.VoiceInfo;
 import com.bclould.tocotalk.topperchat.WsConnection;
 import com.bclould.tocotalk.topperchat.WsContans;
-import com.bclould.tocotalk.ui.activity.CreateGroupRoomActivity;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
-import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.greenrobot.eventbus.EventBus;
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.packet.IQ;
-import org.jivesoftware.smack.util.stringencoder.Base64;
-import org.jivesoftware.smackx.muc.MUCAffiliation;
-import org.jivesoftware.smackx.muc.MultiUserChat;
-import org.jivesoftware.smackx.muc.MultiUserChatManager;
-import org.jivesoftware.smackx.xdata.Form;
-import org.jivesoftware.smackx.xdata.FormField;
-import org.jxmpp.jid.EntityBareJid;
-import org.jxmpp.jid.impl.JidCreate;
-import org.jxmpp.jid.parts.Resourcepart;
-import org.jxmpp.stringprep.XmppStringprepException;
 import org.msgpack.jackson.dataformat.MessagePackFactory;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -109,8 +93,8 @@ public class MultiManage implements Room{
         messageMap.put("attachment",attachment);
 
         Map<Object,Object> contentMap = new HashMap<>();
-        contentMap.put("to",to);
-        contentMap.put("from",UtilTool.getTocoId());
+        contentMap.put("group_id",Integer.parseInt(roomId));
+        contentMap.put("toco_id",UtilTool.getTocoId());
         if("true".equals(OtrChatListenerManager.getInstance().getOTRState(roomId.toString()))){
             contentMap.put("crypt",true);
         }else{
@@ -122,28 +106,25 @@ public class MultiManage implements Room{
         Map<Object,Object> sendMap = new HashMap<>();
         sendMap.put("type",3);
         sendMap.put("content",objectMapper.writeValueAsBytes(contentMap));
-        WsConnection.getInstance().get(context).sendBinary(objectMapper.writeValueAsBytes(sendMap));
+        WsConnection.getInstance().sendMessage(objectMapper.writeValueAsBytes(sendMap));
         return true;
     }
 
-    private boolean sendOTR(String to,byte[] attachment,String body,int msgType) throws Exception{
+    private void sendCreateGroup(String group_name,String toco_id,String json_toco_id) throws Exception {
         ObjectMapper objectMapper =  new ObjectMapper(new MessagePackFactory());
-        Map<Object,Object> messageMap = new HashMap<>();
-        messageMap.put("body",OtrChatListenerManager.getInstance().sentMessagesChange(body,
-                OtrChatListenerManager.getInstance().sessionID(UtilTool.getTocoId(), String.valueOf(roomId))));
-        messageMap.put("attachment",attachment);
-
         Map<Object,Object> contentMap = new HashMap<>();
-        contentMap.put("to",to);
-        contentMap.put("from",UtilTool.getTocoId());
-        contentMap.put("crypt",true);
-        contentMap.put("message",objectMapper.writeValueAsBytes(messageMap));
-        contentMap.put("type",msgType);
+        contentMap.put("group_name",group_name);
+        contentMap.put("toco_id",UtilTool.getTocoId());
+        contentMap.put("toco_ids",json_toco_id);
 
         Map<Object,Object> sendMap = new HashMap<>();
-        sendMap.put("type",3);
+        sendMap.put("type",8);
         sendMap.put("content",objectMapper.writeValueAsBytes(contentMap));
-        WsConnection.getInstance().get(context).sendBinary(objectMapper.writeValueAsBytes(sendMap));
+        WsConnection.getInstance().sendMessage(objectMapper.writeValueAsBytes(sendMap));
+
+    }
+
+    private boolean sendOTR(String to,byte[] attachment,String body,int msgType) throws Exception{
         return true;
     }
 
@@ -203,13 +184,14 @@ public class MultiManage implements Room{
         String converstaion="[" + context.getString(R.string.voice) + "]";
         try {
             byte[] bytes = UtilTool.readStream(fileName);//把语音文件转换成二进制
-            send(roomId,bytes,"", WsContans.MSG_AUDIO);
-
+            MessageInfo messageInfo = new MessageInfo();
+            messageInfo.setMessage(context.getString(R.string.voice));
+            send(roomId,bytes, JSON.toJSONString(messageInfo),WsContans.MSG_AUDIO);
             //把消息添加进数据库
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date curDate = new Date(System.currentTimeMillis());
             String time = formatter.format(curDate);
-            MessageInfo messageInfo = new MessageInfo();
+
             messageInfo.setType(0);
             messageInfo.setUsername(roomId);
             messageInfo.setVoice(fileName);
@@ -817,165 +799,6 @@ public class MultiManage implements Room{
     }
 
 
-
-    @Override
-    public MultiUserChat createRoom(String roomJid,String roomName, String nickName, List<UserInfo> users) {
-        this.roomId=roomJid;
-        if (XmppConnection.getInstance().getConnection() == null)
-            return null;
-        MultiUserChat muc = null;
-        try {
-            // 创建一个MultiUserChat
-            muc = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection())
-                    .getMultiUserChat(JidCreate.entityBareFrom(roomJid));
-
-            // 创建聊天室
-            muc.create(Resourcepart.from(nickName));
-            muc.changeSubject(roomName);
-            // 获得聊天室的配置表单
-            Form form = muc.getConfigurationForm();
-            // 根据原始表单创建一个要提交的新表单。
-            Form submitForm = form.createAnswerForm();
-            // 向要提交的表单添加默认答复
-            for (FormField formField : form.getFields()) {
-                if (FormField.Type.hidden == formField.getType()
-                        && formField.getVariable() != null) {
-                    // 设置默认值作为答复
-                    submitForm.setDefaultAnswer(formField.getVariable());
-                }
-            }
-            // 设置聊天室的新拥有者
-            List<String> owners = new ArrayList<>();
-            owners.add(UtilTool.getTocoId());
-
-            //这里的用户实体我要说一下，因为这是我这个项目的实体，实际上这里只需要知道用户的jid获者名称就可以了
-            if (users != null && !users.isEmpty()) {
-                for (int i = 0; i < users.size(); i++) {  //添加群成员,用户jid格式和之前一样 用户名@openfire服务器名称
-                    EntityBareJid userJid = JidCreate.entityBareFrom(users.get(i).getUser());
-                    muc.invite(userJid, "欢迎加入群聊");
-                }
-            }
-            //设置房间名字
-            submitForm.setAnswer("muc#roomconfig_roomname", roomName);
-            //设置最大群人数
-            List<String> maxuser=new ArrayList<>();
-            maxuser.add(RoomManage.ROOM_MAX_NUMBER+"");
-            submitForm.setAnswer("muc#roomconfig_maxusers", maxuser);
-
-            // 设置聊天室是持久聊天室，即将要被保存下来
-            submitForm.setAnswer("muc#roomconfig_persistentroom", true);
-            // 房间仅对成员开放
-            submitForm.setAnswer("muc#roomconfig_membersonly", false);
-            // 允许占有者邀请其他人
-            submitForm.setAnswer("muc#roomconfig_allowinvites", true);
-            // if (!password.equals("")) {
-            // // 进入是否需要密码
-//			 submitForm.setAnswer("muc#roomconfig_passwordprotectedroom",false);
-            // // 设置进入密码
-            // submitForm.setAnswer("muc#roomconfig_roomsecret", password);
-            // }
-            // 能够发现占有者真实 JID 的角色
-            // submitForm.setAnswer("muc#roomconfig_whois", "anyone");
-//             设置描述
-            submitForm.setAnswer("muc#roomconfig_roomdesc", "mulchat");
-            // 登录房间对话
-            submitForm.setAnswer("muc#roomconfig_enablelogging", true);
-            // 仅允许注册的昵称登录
-            submitForm.setAnswer("x-muc#roomconfig_reservednick", false);
-            // 允许使用者修改昵称
-            submitForm.setAnswer("x-muc#roomconfig_canchangenick", true);
-            // 允许用户注册房间
-            submitForm.setAnswer("x-muc#roomconfig_registration", true);
-            // 发送已完成的表单（有默认值）到服务器来配置聊天室
-            muc.sendConfigurationForm(submitForm);
-            muc.join(Resourcepart.from(nickName));
-            createRoom(users,roomJid,roomName,owners);
-
-        } catch (XMPPException | XmppStringprepException | SmackException | InterruptedException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return muc;
-    }
-
-    private void createRoom(List<UserInfo> mUserInfoList, final String roomJid, final String roomName, final List<String> owners){
-        GroupPresenter presenter=new GroupPresenter(context);
-        StringBuffer stringBuffer=new StringBuffer();
-        stringBuffer.append(UtilTool.getUser()+"@"+Constants.DOMAINNAME+",");
-        for (int i = 0; i < mUserInfoList.size(); i++) {  //添加群成员,用户jid格式和之前一样 用户名@openfire服务器名称
-            stringBuffer.append(mUserInfoList.get(i).getUser());
-            if(i!=mUserInfoList.size()-1){
-                stringBuffer.append(",");
-            }
-        }
-        presenter.createGroup(roomJid,roomName, RoomManage.ROOM_MAX_NUMBER, "", stringBuffer.toString(), new GroupPresenter.CallBack() {
-            @Override
-            public void send() {
-                try {
-                    dbRoomManage.addRoom(createRoomInfo(roomJid,roomName));
-                    grantOwnership(owners,roomJid,roomName);
-                } catch (XMPPException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    public static boolean grantOwnership(Collection<String> jids, String roomJid,String roomName) throws XMPPException {
-        if (XmppConnection.getInstance().getConnection() == null || !XmppConnection.getInstance().getConnection().isConnected()
-                || !XmppConnection.getInstance().getConnection().isAuthenticated()) {
-            return false;
-        }
-        try {
-            MUCRoomAdmin iq = new MUCRoomAdmin();
-            iq.setTo(roomJid);
-            iq.setType(IQ.Type.set);
-            for (String jid : jids) {
-                // Set the new affiliation.
-                MUCRoomItem item = new MUCRoomItem(MUCAffiliation.member,JidCreate.from(jid),"欢迎加入群聊",roomName);
-                iq.addItem(item);
-            }
-            XmppConnection.getInstance().getConnection().sendPacket(iq);
-            return true;
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    /**
-     * 加入会议室
-     *
-     * @param user      昵称
-     * @param roomsName 会议室名
-     * @param mgr
-     */
-    public MultiUserChat joinMultiUserChat(String user, String roomJid) {
-        if (XmppConnection.getInstance().getConnection() == null)
-            return null;
-        try {
-            // 使用XMPPConnection创建一个MultiUserChat窗口
-            MultiUserChat muc = MultiUserChatManager.getInstanceFor(XmppConnection.getInstance().getConnection()).getMultiUserChat(
-                    JidCreate.entityBareFrom(roomJid ));
-            // 用户加入聊天室
-            muc.join(Resourcepart.from(user));
-            Log.i("fengjian", "会议室【" + roomJid + "】加入成功........"+user);
-            dbRoomManage.addRoom(createRoomInfo(roomJid,roomId.split("@")[0]));
-            return muc;
-        } catch (XMPPException | XmppStringprepException | InterruptedException | SmackException e) {
-            e.printStackTrace();
-            Log.i("fengjian", "会议室【" + roomJid + "】加入失败........");
-            return null;
-        }
-    }
-
-    private RoomManageInfo createRoomInfo(String roomId,String roomName){
-        RoomManageInfo roomManageInfo=new RoomManageInfo();
-        roomManageInfo.setRoomId(roomId);
-        roomManageInfo.setRoomName(roomName);
-        return roomManageInfo;
-    }
-
     @Override
     public void changeName(String name) {
         this.roomName=name;
@@ -1187,4 +1010,32 @@ public class MultiManage implements Room{
         }
     }
 
+    @Override
+    public void createRoom(String roomJid,String roomName, List<UserInfo> users) {
+        this.roomId=roomJid;
+        this.roomName=roomName;
+        try {
+            sendCreateGroup(roomName,UtilTool.getTocoId(), JSONArray.toJSONString(users));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 加入会议室
+     *
+     * @param user      昵称
+     * @param roomsName 会议室名
+     * @param mgr
+     */
+    public void joinMultiUserChat(String user, String roomJid) {
+
+    }
+
+    private RoomManageInfo createRoomInfo(String roomId,String roomName){
+        RoomManageInfo roomManageInfo=new RoomManageInfo();
+        roomManageInfo.setRoomId(roomId);
+        roomManageInfo.setRoomName(roomName);
+        return roomManageInfo;
+    }
 }

@@ -59,14 +59,14 @@ public class GrabRedInfo implements Serializable {
         private String coin_name;
         private int rp_number;
         private List<LogBean> log;
-        private String toco_id;
+        private String avatar;
 
-        public String getToco_id() {
-            return toco_id;
+        public String getAvatar() {
+            return avatar;
         }
 
-        public void setToco_id(String toco_id) {
-            this.toco_id = toco_id;
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
         }
 
         public String getSend_rp_user_name() {
@@ -129,14 +129,14 @@ public class GrabRedInfo implements Serializable {
             private String money;
             private int id;
             private int is_good;
-            private String toco_id;
+            private String avatar;
 
-            public String getToco_id() {
-                return toco_id;
+            public String getAvatar() {
+                return avatar;
             }
 
-            public void setToco_id(String toco_id) {
-                this.toco_id = toco_id;
+            public void setAvatar(String avatar) {
+                this.avatar = avatar;
             }
 
             public int getIs_good() {

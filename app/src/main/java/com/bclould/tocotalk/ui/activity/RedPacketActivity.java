@@ -128,7 +128,7 @@ public class RedPacketActivity extends AppCompatActivity {
                     mTvCount.setSpacing(2);
                     mTvRemark.setText(data.getIntro());
                     mTvName.setText(data.getSend_rp_user_name());
-                    UtilTool.getImage(mMgr, data.getToco_id(), RedPacketActivity.this, mIvTouxiang);
+                    UtilTool.setCircleImg(RedPacketActivity.this,data.getAvatar(), mIvTouxiang);
                     //                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, RedPacketActivity.this));
                 }
             });

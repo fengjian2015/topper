@@ -109,7 +109,7 @@ public class SingleManage implements Room {
             Map<Object,Object> sendMap = new HashMap<>();
             sendMap.put("type",3);
             sendMap.put("content",objectMapper.writeValueAsBytes(contentMap));
-            WsConnection.getInstance().get(context).sendBinary(objectMapper.writeValueAsBytes(sendMap));
+            WsConnection.getInstance().sendMessage(objectMapper.writeValueAsBytes(sendMap));
             return true;
     }
 
@@ -129,7 +129,7 @@ public class SingleManage implements Room {
         Map<Object,Object> sendMap = new HashMap<>();
         sendMap.put("type",3);
         sendMap.put("content",objectMapper.writeValueAsBytes(contentMap));
-        WsConnection.getInstance().get(context).sendBinary(objectMapper.writeValueAsBytes(sendMap));
+        WsConnection.getInstance().sendMessage(objectMapper.writeValueAsBytes(sendMap));
         return true;
     }
 
@@ -643,13 +643,12 @@ public class SingleManage implements Room {
 
 
     @Override
-    public MultiUserChat createRoom(String roomJid, String roomName, String password, List<UserInfo> users) {
-        return null;
+    public void createRoom(String roomJid, String roomName, List<UserInfo> users) {
+
     }
 
     @Override
-    public MultiUserChat joinMultiUserChat(String user, String roomJid) {
-        return null;
+    public void joinMultiUserChat(String user, String roomJid) {
     }
 
     @Override

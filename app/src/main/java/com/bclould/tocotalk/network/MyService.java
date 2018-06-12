@@ -16,6 +16,7 @@ import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.model.GonggaoListInfo;
 import com.bclould.tocotalk.model.GoogleInfo;
 import com.bclould.tocotalk.model.GrabRedInfo;
+import com.bclould.tocotalk.model.GroupCreateInfo;
 import com.bclould.tocotalk.model.GroupInfo;
 import com.bclould.tocotalk.model.GuessInfo;
 import com.bclould.tocotalk.model.GuessListInfo;
@@ -1058,14 +1059,12 @@ public interface MyService {
 
     //創建群聊房間
     @FormUrlEncoded
-    @POST("api/room/create")
-    Observable<BaseInfo> createGroup(
+    @POST("chat/room/create")
+    Observable<GroupCreateInfo> createGroup(
             @Header("Authorization") String token,
-            @Field("room_name") String room_name,
             @Field("name") String name,
-            @Field("room_max_people_number") int room_max_people_number,
-            @Field("logo") String logo,
-            @Field("jids") String jids
+            @Field("toco_ids") String toco_ids,
+            @Field("description") String description
     );
 
     //動態打賞
@@ -1079,8 +1078,7 @@ public interface MyService {
             @Field("second_password") String second_password);
 
     //獲取群聊房間
-    @FormUrlEncoded
-    @POST("api/room/create")
+    @POST("chat/room/query")
     Observable<GroupInfo> getGroup(
             @Header("Authorization") String token
     );
@@ -1125,15 +1123,5 @@ public interface MyService {
             @Field("toco_id") String toco_id,
             @Field("status") int status
     );
-    //獲取離線消息
-    @POST("chat/offline/news")
-    Observable<BaseInfo> getOffline(
-            @Header("Authorization") String token
-    );
 
-    //離線消息回調
-    @POST("chat/offline/news/callback")
-    Observable<BaseInfo> OfflineCallback (
-            @Header("Authorization") String token
-    );
 }

@@ -170,7 +170,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                                     bundle.putString("name", data.getName());
                                     bundle.putString("number", data.getNumber());
                                     bundle.putString("type", Constants.MONEYOUT);
-                                    bundle.putString("user", data.getToco_id());
+                                    bundle.putString("avatar", data.getAvatar());
                                     intent.putExtras(bundle);
                                     startActivity(intent);
                                     finish();

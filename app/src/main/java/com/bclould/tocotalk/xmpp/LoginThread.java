@@ -20,7 +20,7 @@ public class LoginThread extends Thread {
 	@Override
 	public void run() {
 		while (true) {
-			if (CheckClassIsWork.isTopActivity(context, "LoginActivity")) {
+			if (CheckClassIsWork.isTopActivity(context, "InitialActivity")) {
 				break;
 			}
 			if (IMLogin.loginServer(context)) {

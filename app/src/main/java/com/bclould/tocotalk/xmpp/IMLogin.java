@@ -7,6 +7,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tocotalk.topperchat.WsConnection;
+import com.bclould.tocotalk.topperchat.WsOfflineConnection;
 import com.bclould.tocotalk.utils.UtilTool;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -41,6 +42,7 @@ public class IMLogin {
 		try {
 			UtilTool.Log("fengjian", "IMLOGIN START");
 			WsConnection.getInstance().login();
+			WsOfflineConnection.getInstance().login();
 			UtilTool.Log("fengjian", "IMLOGIN END");
 		}catch (Exception e) {
 			e.printStackTrace();

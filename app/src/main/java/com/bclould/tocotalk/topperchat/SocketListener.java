@@ -22,7 +22,6 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
-import com.bclould.tocotalk.Presenter.OfflineChatPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
 import com.bclould.tocotalk.history.DBManager;
@@ -40,7 +39,6 @@ import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tocotalk.xmpp.RoomManage;
-import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neovisionaries.ws.client.WebSocket;
@@ -49,9 +47,6 @@ import com.neovisionaries.ws.client.WebSocketException;
 import com.neovisionaries.ws.client.WebSocketFrame;
 
 import org.greenrobot.eventbus.EventBus;
-import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.roster.Roster;
-import org.jxmpp.jid.impl.JidCreate;
 import org.msgpack.jackson.dataformat.MessagePackFactory;
 
 import java.io.ByteArrayInputStream;
@@ -61,7 +56,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -122,7 +116,19 @@ public class SocketListener extends WebSocketAdapter{
     private DBRoomMember mdbRoomMember;
     private int IMSequence = 1000;
     ExecutorService executorService;//以後用於群聊功能
-    public SocketListener(Context context){
+    private static SocketListener mInstance;
+    public static SocketListener getInstance(Context context){
+        if(mInstance == null){
+            synchronized (SocketListener.class){
+                if(mInstance == null){
+                    mInstance = new SocketListener(context);
+                }
+            }
+        }
+        return mInstance;
+    }
+
+    private SocketListener(Context context){
         this.context=context;
         executorService = Executors.newFixedThreadPool(5);
         mgr = new DBManager(context);
@@ -132,10 +138,48 @@ public class SocketListener extends WebSocketAdapter{
         mBuilder = new NotificationCompat.Builder(context);
     }
 
+    public void onBinaryMessage(byte[] binary) {
+        try {
+            ObjectMapper objectMapper =  new ObjectMapper(new MessagePackFactory());
+            Map<Object, Object> deserialized = objectMapper.readValue(binary, new TypeReference<Map<String, Object>>() {});
+            Map<Object, Object> content;
+            UtilTool.Log("fengjian","接受到消息：type="+deserialized.get("type"));
+            switch ((int)deserialized.get("type")){
+                case 16:
+                    //登錄反饋
+                    LoginFeedback(binary);
+                    break;
+                case 3:
+                    //消息
+                    content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
+                    Log.i("fengjian","聊天消息message：to："+content.get("to")+"   from:"+content.get("from")+"   crypt:"+content.get("crypt")+"   message："+content.get("message")+"   type："+content.get("type"));
+                    messageFeedback(content,true, RoomManage.ROOM_TYPE_SINGLE);
+                    break;
+                case 13:
+                    //群組消息
+                    content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
+                    messageFeedback(content,true, RoomManage.ROOM_TYPE_MULTI);
+                    break;
+                case 18:
+                    //廣播消息
+                    friendRequest((byte[]) deserialized.get("content"));
+                    break;
+                case 19:
+                    //創建群組反饋
+                    content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
+                    Log.i("fengjian","群組消息message：group_name："+content.get("group_name")+"  group_id:"+content.get("group_id")+"    status:"+content.get("status"));
+                    break;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onBinaryMessage(WebSocket websocket, byte[] binary) throws Exception {
         ObjectMapper objectMapper =  new ObjectMapper(new MessagePackFactory());
         Map<Object, Object> deserialized = objectMapper.readValue(binary, new TypeReference<Map<String, Object>>() {});
+        Map<Object, Object> content;
         UtilTool.Log("fengjian","接受到消息：type="+deserialized.get("type"));
         switch ((int)deserialized.get("type")){
             case 16:
@@ -144,13 +188,23 @@ public class SocketListener extends WebSocketAdapter{
                 break;
             case 3:
                 //消息
-                Map<Object, Object> content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
+                content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
                 Log.i("fengjian","聊天消息message：to："+content.get("to")+"   from:"+content.get("from")+"   crypt:"+content.get("crypt")+"   message："+content.get("message")+"   type："+content.get("type"));
-                messageFeedback(content,true);
+                messageFeedback(content,true, RoomManage.ROOM_TYPE_SINGLE);
+                break;
+            case 13:
+                //群組消息
+                content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
+                messageFeedback(content,true, RoomManage.ROOM_TYPE_MULTI);
                 break;
             case 18:
                 //廣播消息
                 friendRequest((byte[]) deserialized.get("content"));
+                break;
+            case 19:
+                //創建群組反饋
+                content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
+                Log.i("fengjian","群組消息message：group_name："+content.get("group_name")+"  group_id:"+content.get("group_id")+"    status:"+content.get("status"));
                 break;
         }
 
@@ -189,12 +243,11 @@ public class SocketListener extends WebSocketAdapter{
      * @param binary
      */
     private void LoginFeedback(byte[] binary) throws IOException {
-//        Map<Object, Object> deserialized = objectMapper.readValue(binary, new TypeReference<Map<String, Object>>() {});
-//        Map<Object, Object> content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
         WsConnection.getInstance().setIsLogin(true);
         UtilTool.Log("fengjian","登錄成功");
         ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.RECEIVING);
-        new OfflineChatPresenter(context).getOfflineChat();
+        new PingThread(context).start();
+
     }
 
     /**
@@ -237,9 +290,8 @@ public class SocketListener extends WebSocketAdapter{
      * 消息反饋
      * @param binary
      */
-    private void messageFeedback(Map<Object,Object> content,boolean isPlayHint) {
+    public void messageFeedback(Map<Object,Object> content,boolean isPlayHint,String roomType) {
         try {
-            String roomType="";
             Map<Object, Object>  messageMap = objectMapper.readValue((byte[]) content.get("message"), new TypeReference<Map<String, Object>>() {});
             //處理消息鈴聲
             String from= (String) content.get("from");
@@ -296,7 +348,7 @@ public class SocketListener extends WebSocketAdapter{
                     break;
                 case WsContans.MSG_IMAGE:
                     //圖片
-                    String url=uploadFile(messageInfo.getKey());
+                    String url=downFile(messageInfo.getKey());
                     messageInfo.setMessage(url);
                     redpacket = "[" + context.getString(R.string.image) + "]";
                     msgType = FROM_IMG_MSG;
@@ -315,7 +367,7 @@ public class SocketListener extends WebSocketAdapter{
                     if (key.startsWith("https://")) {
                         url=key;
                     }else {
-                       url=uploadFile(key);
+                       url=downFile(key);
                     }
                     messageInfo.setMessage(url);
                     redpacket = "[" + context.getString(R.string.video) + "]";
@@ -373,6 +425,9 @@ public class SocketListener extends WebSocketAdapter{
                     msgType=FROM_TRANSFER_MSG;
                     goChat(from,messageInfo.getRemark(),roomType);
                     break;
+                default:
+                    goChat(from,messageInfo.getMessage(),roomType);
+                    break;
             }
             //添加数据库from
             //添加数据库from
@@ -412,7 +467,7 @@ public class SocketListener extends WebSocketAdapter{
         }
     }
 
-    private String uploadFile(String key) throws ParseException {
+    private String downFile(String key) throws ParseException {
         BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
                 MySharedPreferences.getInstance().getString(ACCESSKEYID),
                 MySharedPreferences.getInstance().getString(SECRETACCESSKEY),
@@ -561,6 +616,7 @@ public class SocketListener extends WebSocketAdapter{
         messageInfo.setCoin((String) messageMap.get("coin_name"));
         messageInfo.setStatus((Integer) messageMap.get("type"));
         messageInfo.setRemark((String) messageMap.get("name"));
+        messageInfo.setBetId(messageMap.get("log_id")+"");
         messageInfo.setType((Integer) messageMap.get("type_number"));
         addMessage(messageInfo);
     }
@@ -585,6 +641,7 @@ public class SocketListener extends WebSocketAdapter{
         messageInfo.setCoin((String) messageMap.get("coin_name"));
         messageInfo.setStatus((Integer) messageMap.get("type"));
         messageInfo.setRemark((String) messageMap.get("name"));
+        messageInfo.setBetId(messageMap.get("log_id")+"");
         messageInfo.setType((Integer) messageMap.get("type_number"));
         addMessage(messageInfo);
     }
@@ -664,13 +721,12 @@ public class SocketListener extends WebSocketAdapter{
      */
     private void offlineChat(Map<Object, Object> messageMap){
         UtilTool.Log("fengjian","接受到離線消息"+messageMap.toString());
-        new OfflineChatPresenter(context).getOfflineChatcallback();
         List<Map> mapList=JSON.parseArray(messageMap.get("data").toString(),Map.class);
         for (Map<Object,Object> map:mapList) {
             Map<Object,Object> contentmap=JSON.parseObject((String) map.get("content"),Map.class);
             byte[] bytes= Base64.decode((String)contentmap.get("message"),Base64.DEFAULT);
             contentmap.put("message",bytes);
-            messageFeedback(contentmap, false);
+            messageFeedback(contentmap, false,"");
         }
     }
 

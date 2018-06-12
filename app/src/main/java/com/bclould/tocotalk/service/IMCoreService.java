@@ -12,10 +12,9 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
 
+import com.bclould.tocotalk.topperchat.WsConnection;
 import com.bclould.tocotalk.utils.CheckClassIsWork;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bclould.tocotalk.xmpp.XmppConnection;
-import com.yyh.fork.NativeRuntime;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class IMCoreService extends Service {
@@ -106,13 +105,13 @@ public class IMCoreService extends Service {
                 case 0:
                     if (!startService) {
                         UtilTool.Log("--------","service-- 没登录");
-                        if (XmppConnection.isServiceWork(IMCoreService.this, SERVICE_NAME)) {
+                        if (WsConnection.isServiceWork(IMCoreService.this, SERVICE_NAME)) {
                             IMCoreService.this.stopService(new Intent(IMCoreService.this, IMService.class));
                         }
                         this.sendEmptyMessageDelayed(0, time);
                         return;
                     }
-                    if (XmppConnection.isServiceWork(IMCoreService.this, SERVICE_NAME)) {
+                    if (WsConnection.isServiceWork(IMCoreService.this, SERVICE_NAME)) {
                         UtilTool.Log("--------","service-- 打开了！");
                         if (CheckClassIsWork.isTopActivity(IMCoreService.this, "LoginActivity")) {
                             startService = false;

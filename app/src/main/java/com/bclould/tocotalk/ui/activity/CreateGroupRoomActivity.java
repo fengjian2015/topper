@@ -1,5 +1,6 @@
 package com.bclould.tocotalk.ui.activity;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,13 +24,9 @@ import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.RoomManage;
-import com.bclould.tocotalk.xmpp.XmppConnection;
+
 
 import org.greenrobot.eventbus.EventBus;
-import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smackx.muc.MultiUserChat;
-import org.jxmpp.jid.EntityBareJid;
-import org.jxmpp.jid.impl.JidCreate;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,10 +54,12 @@ public class CreateGroupRoomActivity extends BaseActivity {
     private List<UserInfo> mUserInfoList = new ArrayList<>();
     DBManager mgr;
     private String roomName;
+    private Context context;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group_room);
+        context=this;
         ButterKnife.bind(this);
         initData();
         initRecylerView();
@@ -99,30 +98,38 @@ public class CreateGroupRoomActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_create:
-                if (mUserInfoList != null)
-                    try {
-                    final String roomJid= UtilTool.getUser()+System.currentTimeMillis() + "@conference." + XmppConnection.getInstance().getConnection().getServiceName();
-                    String nickName=UtilTool.getUser();
-                        if(StringUtils.isEmpty(roomName)){
-                            roomName="群聊";
-                        }
-                        MultiUserChat multiUserChat=RoomManage.getInstance().addMultiMessageManage(roomJid
-                                ,roomName).createRoom(roomJid,roomName,nickName,mUserInfoList);
-                        if(multiUserChat==null){
-                            RoomManage.getInstance().removeRoom(roomJid);
-                        }else {
-                            createConversation(roomJid,roomName);
-                            EventBus.getDefault().post(new MessageEvent(getString(R.string.oneself_send_msg)));
-
-                        }
-                        finish();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                else
-                    Toast.makeText(this, "请选择好友", Toast.LENGTH_SHORT).show();
+                createGroup();
                 break;
         }
+    }
+
+    private void createGroup(){
+        if (mUserInfoList != null)
+            try {
+                if(StringUtils.isEmpty(roomName)){
+                    roomName="群聊";
+                }
+                StringBuffer stringBuffer=new StringBuffer();
+                for (int i = 0; i < mUserInfoList.size(); i++) {  //添加群成员,用户jid格式和之前一样 用户名@openfire服务器名称
+                    stringBuffer.append(mUserInfoList.get(i).getUser());
+                    if(i!=mUserInfoList.size()-1){
+                        stringBuffer.append(",");
+                    }
+                }
+                new GroupPresenter(context).createGroup(roomName, stringBuffer.toString(), "", new GroupPresenter.CallBack2() {
+                    @Override
+                    public void send(String group_id) {
+                        RoomManage.getInstance().addMultiMessageManage(group_id,roomName).createRoom(group_id,roomName,mUserInfoList);
+                        createConversation(group_id,roomName);
+                        EventBus.getDefault().post(new MessageEvent(getString(R.string.oneself_send_msg)));
+                        finish();
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        else
+            Toast.makeText(this, "请选择好友", Toast.LENGTH_SHORT).show();
     }
 
     private void createConversation(String room,String roomName){
@@ -146,6 +153,4 @@ public class CreateGroupRoomActivity extends BaseActivity {
         else
             mUserInfoList.remove(userInfo);
     }
-
-
 }

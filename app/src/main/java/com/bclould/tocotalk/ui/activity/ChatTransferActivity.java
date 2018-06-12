@@ -33,39 +33,24 @@ import com.bclould.tocotalk.Presenter.RedPacketPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
-import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.history.DBRoomManage;
-import com.bclould.tocotalk.model.ConversationInfo;
-import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
-import com.bclould.tocotalk.utils.Constants;
-import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.RoomManage;
-import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
-
-import org.greenrobot.eventbus.EventBus;
-import org.jivesoftware.smack.chat.Chat;
-import org.jivesoftware.smack.chat.ChatManager;
-import org.jxmpp.jid.impl.JidCreate;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import static com.bclould.tocotalk.R.style.BottomDialog;
-import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_TRANSFER_MSG;
 
 /**
  * Created by GA on 2018/4/2.
@@ -263,7 +248,7 @@ public class ChatTransferActivity extends BaseActivity {
         mCount = mEtCount.getText().toString();
         mRemark = mEtRemark.getText().toString();
         if (mRemark.isEmpty()) {
-            mRemark = getString(R.string.transfer) + getString(R.string.transfer_give) + mTvName.getText().toString();
+            mRemark = getString(R.string.transfer_give) + mTvName.getText().toString();
         }
         mCoin = mTvCoin.getText().toString();
         mRedPacketPresenter.transgerfriend(mCoin, mUser, Double.parseDouble(mCount), password, mRemark);

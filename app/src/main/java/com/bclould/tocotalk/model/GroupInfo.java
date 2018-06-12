@@ -11,7 +11,7 @@ public class GroupInfo {
     /**
      * status : 1
      * message : success
-     * data : [{"user_id":34,"room_name":"xihongwei1","logo":"","room_max_people_number":20,"name":"","users":[{"jid":"","remark":"xihongwei","avatar":"https://bclould.s3.ap-northeast-2.amazonaws.com/TOCO34Avatar.png"},{"jid":"","remark":"廖矮子","avatar":"https://bclould.s3.ap-northeast-2.amazonaws.com/TOCO41Avatar.png?time=1527492529"}]},{"user_id":210,"room_name":"feng1231527650366936@conference.xmpp.coingbank.com","logo":"","room_max_people_number":200,"name":"","users":[{"jid":"","remark":"feng123sss","avatar":""},{"jid":"","remark":"feng123sss","avatar":""},{"jid":"","remark":"xihongwei","avatar":"https://bclould.s3.ap-northeast-2.amazonaws.com/TOCO34Avatar.png"},{"jid":"","remark":"hhjbjmmmws","avatar":"https://bclould.s3.ap-northeast-2.amazonaws.com/TOCO208Avatar.png?time=1527161040"}]},{"user_id":210,"room_name":"feng1231527650515747@conference.xmpp.coingbank.com","logo":"","room_max_people_number":200,"name":"","users":[{"jid":"","remark":"xihongwei","avatar":"https://bclould.s3.ap-northeast-2.amazonaws.com/TOCO34Avatar.png"},{"jid":"","remark":"hhjbjmmmws","avatar":"https://bclould.s3.ap-northeast-2.amazonaws.com/TOCO208Avatar.png?time=1527161040"}]},{"user_id":210,"room_name":"feng1231527652162353@conference.xmpp.coingbank.com","logo":"","room_max_people_number":200,"name":"大大大","users":[{"jid":"xihongwei@xmpp.coingbank.com","remark":"xihongwei","avatar":"https://bclould.s3.ap-northeast-2.amazonaws.com/TOCO34Avatar.png"},{"jid":"fengjian@xmpp.coingbank.com","remark":"hhjbjmmmws","avatar":"https://bclould.s3.ap-northeast-2.amazonaws.com/TOCO208Avatar.png?time=1527161040"}]}]
+     * data : [{"id":14,"user_id":208,"name":"R级","description":"","created_at":"1528703132","users":[{"toco_id":"1c60397ae8842","avatar":"https://bclould.s3.ap-northeast-2.amazonaws.com/TOCO34Avatar.png"},{"toco_id":"0ecf6f29f0cac","avatar":""}]},{"id":15,"user_id":34,"name":"习红卫的群聊","description":"","created_at":"1528703138","users":[{"toco_id":"1c60397ae8842","avatar":"https://bclould.s3.ap-northeast-2.amazonaws.com/TOCO34Avatar.png"}]}]
      */
 
     private int status;
@@ -44,20 +44,28 @@ public class GroupInfo {
 
     public static class DataBean {
         /**
-         * user_id : 34
-         * room_name : xihongwei1
-         * logo :
-         * room_max_people_number : 20
-         * name :
-         * users : [{"jid":"","remark":"xihongwei","avatar":"https://bclould.s3.ap-northeast-2.amazonaws.com/TOCO34Avatar.png"},{"jid":"","remark":"廖矮子","avatar":"https://bclould.s3.ap-northeast-2.amazonaws.com/TOCO41Avatar.png?time=1527492529"}]
+         * id : 14
+         * user_id : 208
+         * name : R级
+         * description :
+         * created_at : 1528703132
+         * users : [{"toco_id":"1c60397ae8842","avatar":"https://bclould.s3.ap-northeast-2.amazonaws.com/TOCO34Avatar.png"},{"toco_id":"0ecf6f29f0cac","avatar":""}]
          */
 
+        private int id;
         private int user_id;
-        private String room_name;
-        private String logo;
-        private int room_max_people_number;
         private String name;
+        private String description;
+        private String created_at;
         private List<UsersBean> users;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
 
         public int getUser_id() {
             return user_id;
@@ -67,36 +75,28 @@ public class GroupInfo {
             this.user_id = user_id;
         }
 
-        public String getRoom_name() {
-            return room_name;
-        }
-
-        public void setRoom_name(String room_name) {
-            this.room_name = room_name;
-        }
-
-        public String getLogo() {
-            return logo;
-        }
-
-        public void setLogo(String logo) {
-            this.logo = logo;
-        }
-
-        public int getRoom_max_people_number() {
-            return room_max_people_number;
-        }
-
-        public void setRoom_max_people_number(int room_max_people_number) {
-            this.room_max_people_number = room_max_people_number;
-        }
-
         public String getName() {
             return name;
         }
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public String getCreated_at() {
+            return created_at;
+        }
+
+        public void setCreated_at(String created_at) {
+            this.created_at = created_at;
         }
 
         public List<UsersBean> getUsers() {
@@ -109,29 +109,19 @@ public class GroupInfo {
 
         public static class UsersBean {
             /**
-             * jid :
-             * remark : xihongwei
+             * toco_id : 1c60397ae8842
              * avatar : https://bclould.s3.ap-northeast-2.amazonaws.com/TOCO34Avatar.png
              */
 
-            private String jid;
-            private String remark;
+            private String toco_id;
             private String avatar;
 
-            public String getJid() {
-                return jid;
+            public String getToco_id() {
+                return toco_id;
             }
 
-            public void setJid(String jid) {
-                this.jid = jid;
-            }
-
-            public String getRemark() {
-                return remark;
-            }
-
-            public void setRemark(String remark) {
-                this.remark = remark;
+            public void setToco_id(String toco_id) {
+                this.toco_id = toco_id;
             }
 
             public String getAvatar() {

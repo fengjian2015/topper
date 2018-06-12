@@ -187,7 +187,7 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
                 mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape));
                 mTvCoinType.setTextColor(mContext.getResources().getColor(R.color.blue2));
             } else {
-                UtilTool.getImage(mMgr, dataBean.getToco_id(), mContext, mIvTouxiang);
+                UtilTool.setCircleImg(mContext, dataBean.getAvatar(), mIvTouxiang);
                 mTvName.setText(dataBean.getUser_name());
                 mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape2));
                 mTvCoinType.setTextColor(mContext.getResources().getColor(R.color.green2));

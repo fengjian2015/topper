@@ -220,5 +220,6 @@ dependencies {
     compile 'org.jsoup:jsoup:1.11.3'
     compile project(path: ':camera')
     compile 'org.msgpack:jackson-dataformat-msgpack:0.8.16'
-    compile 'com.neovisionaries:nv-websocket-client:2.2'
+    compile 'com.neovisionaries:nv-websocket-client:2.5'
+    compile 'com.koushikdutta.async:androidasync:2.+'
 }
