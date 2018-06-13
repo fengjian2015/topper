@@ -50,9 +50,11 @@ public class IndividualDetailsPresenter {
     }
 
     //獲取個人信息
-    public void getIndividual(String toco_id, final CallBack callBack) {
+    public void getIndividual(String toco_id,boolean isShow, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(context)) {
-            showDialog();
+            if(isShow){
+                showDialog();
+            }
             RetrofitUtil.getInstance(context)
                     .getServer()
                     .getIndividual(UtilTool.getToken(), toco_id)

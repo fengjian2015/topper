@@ -5,7 +5,6 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
@@ -15,7 +14,6 @@ import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.LoginThread;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.koushikdutta.async.ByteBufferList;
 import com.koushikdutta.async.DataEmitter;
@@ -38,13 +36,10 @@ import static com.bclould.tocotalk.topperchat.WsContans.TYPE;
  */
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class WsConnection {
-    private static final int FRAME_QUEUE_SIZE = 5;
-    private static final int CONNECT_TIMEOUT = 5000;
     private static WsConnection mInstance;
     private static Context mContext;
     private WebSocket ws;
     private boolean isLogin=false;
-    private SocketListener mSocketListener;
     private boolean isConnection=false;
     public static WsConnection getInstance(){
         if(mInstance == null){
@@ -64,12 +59,6 @@ public class WsConnection {
         try {
             if((ws==null||!ws.isOpen())&&!isConnection){
                 isConnection=true;
-//                if(mSocketListener!=null)ws.removeListener(mSocketListener);
-//                ws = new WebSocketFactory().createSocket(Constants.DOMAINNAME3, CONNECT_TIMEOUT)
-//                        .setFrameQueueSize(FRAME_QUEUE_SIZE)//设置帧队列最大值为5
-//                        .setMissingCloseFrameAllowed(false)//设置不允许服务端关闭连接却未发送关闭帧
-//                        .addListener(mSocketListener=SocketListener.getInstance(mContext))//添加回调监听
-//                        .connectAsynchronously();//异步连接
                 AsyncHttpClient.getDefaultInstance().websocket(Constants.DOMAINNAME3, "2087", new AsyncHttpClient.WebSocketConnectCallback() {
                     @Override
                     public void onCompleted(Exception ex, com.koushikdutta.async.http.WebSocket webSocket) {
@@ -170,8 +159,6 @@ public class WsConnection {
         LoginThread.isStartExReconnect = false;
         if (ws != null) {
             // 移除连接监听
-            if(mSocketListener!=null)
-//            ws.removeListener(mSocketListener);
             if (ws.isOpen())
                 ws.close();
         }
@@ -236,7 +223,5 @@ public class WsConnection {
         Intent intent = new Intent();
         intent.setAction(IMCoreService.ACTION_LOGIN);
         context.sendBroadcast(intent);
-//		IMCoreService.startService = true;
-//		MyLogger.xuxLog().i("将静态startService变为了login-"+IMCoreService.startService);
     }
 }

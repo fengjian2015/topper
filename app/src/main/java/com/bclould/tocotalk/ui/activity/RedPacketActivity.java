@@ -122,12 +122,13 @@ public class RedPacketActivity extends AppCompatActivity {
                 @Override
                 public void send(GrabRedInfo.DataBean data) {
                     List<GrabRedInfo.DataBean.LogBean> logBeanList = data.getLog();
-                    initRecylerView(logBeanList);
+                    mCoin=data.getCoin_name();
                     mTvCoin.setText(data.getCoin_name());
                     mTvCount.setText(data.getTotal_money());
                     mTvCount.setSpacing(2);
                     mTvRemark.setText(data.getIntro());
                     mTvName.setText(data.getSend_rp_user_name());
+                    initRecylerView(logBeanList);
                     UtilTool.setCircleImg(RedPacketActivity.this,data.getAvatar(), mIvTouxiang);
                     //                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, RedPacketActivity.this));
                 }
@@ -136,7 +137,7 @@ public class RedPacketActivity extends AppCompatActivity {
     }
 
     private void initRecylerView(List<GrabRedInfo.DataBean.LogBean> mLogBeanList) {
-        RedPacketRVAdapter redPacketRVAdapter = new RedPacketRVAdapter(this, mLogBeanList, mMgr);
+        RedPacketRVAdapter redPacketRVAdapter = new RedPacketRVAdapter(this, mLogBeanList, mMgr,mCoin);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(redPacketRVAdapter);
     }

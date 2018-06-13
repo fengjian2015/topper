@@ -11,15 +11,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,7 +32,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,10 +43,8 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
 import com.bclould.tocotalk.history.DBManager;
-import com.bclould.tocotalk.history.DBRoomManage;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.ui.adapter.ChatAdapter;
-import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.SimpleAppsGridView;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -433,6 +427,9 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     }
 
     private void sendMessage(String message) {
+        if(StringUtils.isEmpty(message)){
+            return;
+        }
         roomManage.sendMessage(message);
     }
 
@@ -450,6 +447,9 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         recordUtil.finish();
         int duration = recordUtil.getVoiceDuration();
         String fileName = recordUtil.getFileName();
+        if(duration<=0){
+            return;
+        }
         roomManage.sendVoice(duration, fileName);
     }
 
@@ -594,7 +594,12 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 selectList = PictureSelector.obtainMultipleResult(data);
                 if (selectList.size() != 0) {
                     for (int i = 0; i < selectList.size(); i++) {
-                        roomManage.Upload(selectList.get(i).getPath());
+                        String postfix=UtilTool.getPostfix(selectList.get(i).getPath());
+                        if (!postfix.equals("Video")) {
+                            roomManage.Upload(selectList.get(i).getCompressPath());
+                        }else{
+                            roomManage.Upload(selectList.get(i).getPath());
+                        }
                     }
                     selectList.clear();
                 }

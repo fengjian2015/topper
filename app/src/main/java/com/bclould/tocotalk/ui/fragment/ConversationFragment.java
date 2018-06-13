@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,18 +26,14 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bclould.tocotalk.Presenter.GroupPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
-import com.bclould.tocotalk.history.DBRoomManage;
-import com.bclould.tocotalk.history.DBRoomMember;
 import com.bclould.tocotalk.model.ConversationInfo;
-import com.bclould.tocotalk.model.GroupInfo;
 import com.bclould.tocotalk.model.QrRedInfo;
-import com.bclould.tocotalk.model.RoomManageInfo;
 import com.bclould.tocotalk.service.IMCoreService;
 import com.bclould.tocotalk.topperchat.WsConnection;
 import com.bclould.tocotalk.ui.activity.AddFriendActivity;
@@ -54,9 +49,11 @@ import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tocotalk.xmpp.IConnectStateChangeListener;
 import com.google.gson.Gson;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -94,17 +91,16 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     ImageView mIv;
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
-    @Bind(R.id.iv_anim)
-    ImageView mIvAnim;
-    @Bind(R.id.ll_login)
-    LinearLayout mLlLogin;
+    @Bind(R.id.tv_title)
+    TextView mTvTitle;
+    @Bind(R.id.title_progress)
+    ProgressBar mTitleProgress;
     private List<Map<String, Object>> list = new ArrayList<>();
     private List<ConversationInfo> showlist = new ArrayList<>();
     private DBManager mgr;
     public static ConversationFragment instance = null;
     private ConversationAdapter mConversationAdapter;
     private MyReceiver receiver;
-    private AnimationDrawable mAnim;
     private int imState = -1;
     private DisplayMetrics mDm;
     private int mHeightPixels;
@@ -141,6 +137,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         getPhoneSize();
         initRelogin();
         initRecyclerView();
+        initData();
     }
 
     @SuppressLint("HandlerLeak")
@@ -154,45 +151,19 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                     initData();
                     //发送登录失败通知
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.login_error)));
-                    if (mAnim != null)
-                        mAnim.stop();
-                    mLlLogin.setVisibility(View.GONE);
                     ToastShow.showToast2((Activity) getContext(), getString(R.string.toast_network_error));
+                    mTvTitle.setText(getString(R.string.not_link));
                     break;
                 case 1:
                     initRecyclerView();
                     initData();
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
-                    if (mAnim != null)
-                        mAnim.stop();
-                    mLlLogin.setVisibility(View.GONE);
                     if (mRlUnunited != null) {
                         mRlUnunited.setVisibility(View.GONE);
                     }
+                    mTvTitle.setText(getString(R.string.talk));
                     break;
-                /*case 2:
-                    initRecyclerView();
-                    initData();
-                    //发送登录失败通知
-                    Intent intent = new Intent();
-                    intent.setAction("XMPPConnectionListener");
-                    intent.putExtra("type", false);
-                    getContext().sendBroadcast(intent);
-                    if (mAnim != null)
-                        mAnim.stop();
-                    mLlLogin.setVisibility(View.GONE);
-                    break;*/
-                case 3:
-                    if (mLlLogin != null) {
-                        mLlLogin.setVisibility(View.VISIBLE);
-                    }
-                    if (mAnim != null)
-                        mAnim.stop();
-                    if (mIvAnim != null) {
-                        mAnim = (AnimationDrawable) mIvAnim.getBackground();
-                        mAnim.start();
-                    }
-                    break;
+
             }
         }
     };
@@ -210,10 +181,30 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         getContext().startService(intent);
     }
 
+    private void onChangeChatState(final int serviceState){
+        ((Activity)getContext()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (serviceState == ConnectStateChangeListenerManager.CONNECTED) {// 已连接
+                    mTitleProgress.setVisibility(View.GONE);
+                    mTvTitle.setText(getString(R.string.talk));
+                } else if (serviceState == ConnectStateChangeListenerManager.CONNECTING) {// 连接中
+                    mTitleProgress.setVisibility(View.VISIBLE);
+                    mTvTitle.setText(getString(R.string.in_link));
+                } else if (serviceState == ConnectStateChangeListenerManager.DISCONNECT) {// 未连接
+                    mTitleProgress.setVisibility(View.GONE);
+                    mTvTitle.setText(getString(R.string.in_link)+getString(R.string.not_link));
+                } else if (serviceState == ConnectStateChangeListenerManager.RECEIVING) {//收取中
+                    mTitleProgress.setVisibility(View.GONE);
+                    mTvTitle.setText(getString(R.string.talk));
+                }
+            }
+        });
+    }
 
     @Override
     public void onStateChange(int serviceState) {
-        if (serviceState == -1 || mLlLogin == null) return;
+        if (serviceState == -1 || mTvTitle == null) return;
         if (imState == serviceState) {
             return;
         } else {
@@ -222,14 +213,13 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         if (serviceState == ConnectStateChangeListenerManager.CONNECTED) {// 已连接
             mHandler.sendEmptyMessage(1);
         } else if (serviceState == ConnectStateChangeListenerManager.CONNECTING) {// 连接中
-            mHandler.sendEmptyMessage(3);
+
         } else if (serviceState == ConnectStateChangeListenerManager.DISCONNECT) {// 未连接
             mHandler.sendEmptyMessage(0);
         } else if (serviceState == ConnectStateChangeListenerManager.RECEIVING) {//收取中
             mHandler.sendEmptyMessage(1);
-        } else if (serviceState == ConnectStateChangeListenerManager.RECEIVING) {//收取中
-//            mHandler.sendEmptyMessage(1);
         }
+        onChangeChatState(serviceState);
     }
 
 
@@ -409,7 +399,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     }
 
     private void initRecyclerView() {
-        mConversationAdapter = new ConversationAdapter(this, getActivity(), getSimpleData(), mgr,mRlTitle);
+        mConversationAdapter = new ConversationAdapter(this, getActivity(), getSimpleData(), mgr, mRlTitle);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mConversationAdapter);
     }

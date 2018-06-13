@@ -73,6 +73,7 @@ public class DBManager {
         values.put("betId",messageInfo.getBetId());
         values.put("periodQty",messageInfo.getPeriodQty());
         values.put("filekey",messageInfo.getKey());
+        values.put("createTime",messageInfo.getCreateTime());
         int id = (int) db.insert("MessageRecord", null, values);
         UtilTool.Log("日志", "添加成功" + messageInfo.toString());
         return id;
@@ -137,6 +138,7 @@ public class DBManager {
         messageInfo.setBetId(c.getString(c.getColumnIndex("betId")));
         messageInfo.setPeriodQty(c.getString(c.getColumnIndex("periodQty")));
         messageInfo.setKey(c.getString(c.getColumnIndex("filekey")));
+        messageInfo.setCreateTime(c.getLong(c.getColumnIndex("createTime")));
         return messageInfo;
     }
 
@@ -335,6 +337,13 @@ public class DBManager {
         ContentValues values = new ContentValues();
         values.put("state", state);
         db.update("MessageRecord", values, "id=?", new String[]{id});
+    }
+
+    public void updateMessageRedState(String redId, int state) {
+        db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("state", state);
+        db.update("MessageRecord", values, "redId=?", new String[]{redId});
     }
 
     public void updateImageType(String id, int imageType) {

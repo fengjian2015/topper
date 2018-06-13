@@ -43,6 +43,16 @@ public class MessageInfo implements Serializable {
     private String betId;
     private String periodQty;
     private String key;
+    //2018-06-13新增創建消息時間
+    private long createTime;
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
+    }
 
     public String getKey() {
         return key;

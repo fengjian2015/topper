@@ -27,8 +27,11 @@ import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.history.DBRoomManage;
 import com.bclould.tocotalk.history.DBRoomMember;
+import com.bclould.tocotalk.model.AddRequestInfo;
+import com.bclould.tocotalk.model.AddressInfo;
 import com.bclould.tocotalk.model.ConversationInfo;
 import com.bclould.tocotalk.model.MessageInfo;
+import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.activity.ConversationActivity;
 import com.bclould.tocotalk.ui.activity.OrderCloseActivity;
 import com.bclould.tocotalk.ui.activity.PayDetailsActivity;
@@ -41,14 +44,8 @@ import com.bclould.tocotalk.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tocotalk.xmpp.RoomManage;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.neovisionaries.ws.client.WebSocket;
-import com.neovisionaries.ws.client.WebSocketAdapter;
-import com.neovisionaries.ws.client.WebSocketException;
-import com.neovisionaries.ws.client.WebSocketFrame;
-
 import org.greenrobot.eventbus.EventBus;
 import org.msgpack.jackson.dataformat.MessagePackFactory;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -75,6 +72,7 @@ import static com.bclould.tocotalk.topperchat.WsContans.BC_INOUT_COIN_INFORM;
 import static com.bclould.tocotalk.topperchat.WsContans.BC_OFFLINE;
 import static com.bclould.tocotalk.topperchat.WsContans.BC_OTC_ORDER;
 import static com.bclould.tocotalk.topperchat.WsContans.BC_QRCODE_RECEIPT_PAYMENT;
+import static com.bclould.tocotalk.topperchat.WsContans.BC_RED_GET;
 import static com.bclould.tocotalk.topperchat.WsContans.BC_RED_PACKET_EXPIRED;
 import static com.bclould.tocotalk.topperchat.WsContans.BC_TRANSFER_INFORM;
 import static com.bclould.tocotalk.ui.activity.ConversationActivity.ACCESSKEYID;
@@ -97,6 +95,7 @@ import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_TEXT_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_TRANSFER_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_VIDEO_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_VOICE_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.RED_GET_MSG;
 import static com.bclould.tocotalk.ui.fragment.FriendListFragment.NEWFRIEND;
 import static com.bclould.tocotalk.utils.MySharedPreferences.SETTING;
 
@@ -105,7 +104,7 @@ import static com.bclould.tocotalk.utils.MySharedPreferences.SETTING;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class SocketListener extends WebSocketAdapter{
+public class SocketListener{
     private ObjectMapper  objectMapper =  new ObjectMapper(new  MessagePackFactory());
     private Context context;
     private NotificationManager mNotificationManager;
@@ -152,7 +151,7 @@ public class SocketListener extends WebSocketAdapter{
                 case 3:
                     //消息
                     content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
-                    Log.i("fengjian","聊天消息message：to："+content.get("to")+"   from:"+content.get("from")+"   crypt:"+content.get("crypt")+"   message："+content.get("message")+"   type："+content.get("type"));
+                    UtilTool.Log("fengjian","聊天消息message：to："+content.get("to")+"   from:"+content.get("from")+"   crypt:"+content.get("crypt")+"   message："+content.get("message")+"   type："+content.get("type"));
                     messageFeedback(content,true, RoomManage.ROOM_TYPE_SINGLE);
                     break;
                 case 13:
@@ -167,75 +166,21 @@ public class SocketListener extends WebSocketAdapter{
                 case 19:
                     //創建群組反饋
                     content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
-                    Log.i("fengjian","群組消息message：group_name："+content.get("group_name")+"  group_id:"+content.get("group_id")+"    status:"+content.get("status"));
+                    UtilTool.Log("fengjian","群組消息message：group_name："+content.get("group_name")+"  group_id:"+content.get("group_id")+"    status:"+content.get("status"));
+                    break;
+                case 4:
+                    //ping反饋
+                    MySharedPreferences.getInstance().setInteger("ping",1);
+                    break;
+                case 31:
+                    //其他賬號登錄
+                    // TODO: 2018/6/13 暫時需要做不重連
+                    WsConnection.stopAllIMCoreService(context);
                     break;
             }
         }catch (Exception e){
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onBinaryMessage(WebSocket websocket, byte[] binary) throws Exception {
-        ObjectMapper objectMapper =  new ObjectMapper(new MessagePackFactory());
-        Map<Object, Object> deserialized = objectMapper.readValue(binary, new TypeReference<Map<String, Object>>() {});
-        Map<Object, Object> content;
-        UtilTool.Log("fengjian","接受到消息：type="+deserialized.get("type"));
-        switch ((int)deserialized.get("type")){
-            case 16:
-                //登錄反饋
-                LoginFeedback(binary);
-                break;
-            case 3:
-                //消息
-                content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
-                Log.i("fengjian","聊天消息message：to："+content.get("to")+"   from:"+content.get("from")+"   crypt:"+content.get("crypt")+"   message："+content.get("message")+"   type："+content.get("type"));
-                messageFeedback(content,true, RoomManage.ROOM_TYPE_SINGLE);
-                break;
-            case 13:
-                //群組消息
-                content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
-                messageFeedback(content,true, RoomManage.ROOM_TYPE_MULTI);
-                break;
-            case 18:
-                //廣播消息
-                friendRequest((byte[]) deserialized.get("content"));
-                break;
-            case 19:
-                //創建群組反饋
-                content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
-                Log.i("fengjian","群組消息message：group_name："+content.get("group_name")+"  group_id:"+content.get("group_id")+"    status:"+content.get("status"));
-                break;
-        }
-
-    }
-
-    @Override
-    public void onTextMessage(WebSocket websocket, String text) throws Exception {
-        super.onTextMessage(websocket, text);
-        UtilTool.Log("fengjian","text");
-    }
-
-    @Override
-    public void onConnected(WebSocket websocket, Map<String, List<String>> headers)
-            throws Exception {
-        super.onConnected(websocket, headers);
-        UtilTool.Log("fengjian","连接服務器成功");
-    }
-    @Override
-    public void onConnectError(WebSocket websocket, WebSocketException exception)
-            throws Exception {
-        super.onConnectError(websocket, exception);
-        WsConnection.getInstance().setIsLogin(false);
-        UtilTool.Log("fengjian","连接错误"+exception.getError().toString());
-    }
-
-    @Override
-    public void onDisconnected(WebSocket websocket, WebSocketFrame serverCloseFrame, WebSocketFrame clientCloseFrame, boolean closedByServer)
-            throws Exception {
-        super.onDisconnected(websocket, serverCloseFrame, clientCloseFrame, closedByServer);
-        WsConnection.getInstance().setIsLogin(false);
-        UtilTool.Log("fengjian","断开连接");
     }
 
     /**
@@ -247,6 +192,7 @@ public class SocketListener extends WebSocketAdapter{
         UtilTool.Log("fengjian","登錄成功");
         ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.RECEIVING);
         new PingThread(context).start();
+        new PingThreadRequest(context).start();
 
     }
 
@@ -438,6 +384,7 @@ public class SocketListener extends WebSocketAdapter{
             }
             messageInfo.setUsername(from);
             messageInfo.setTime(time);
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setType(type);
             messageInfo.setMsgType(msgType);
             messageInfo.setStatus(status);
@@ -561,6 +508,10 @@ public class SocketListener extends WebSocketAdapter{
                     //實名認證
                     authStatus(messageMap);
                     break;
+                case BC_RED_GET:
+                    //紅包領取通知
+                    redGet(messageMap);
+                    break;
 
             }
 
@@ -568,6 +519,24 @@ public class SocketListener extends WebSocketAdapter{
             e.printStackTrace();
         }
     }
+
+    /**
+     * 紅包被領取通知
+     * @param messageMap
+     */
+    private void redGet(Map<Object, Object> messageMap){
+        mgr.updateMessageRedState(messageMap.get("rp_id")+ "", 1);
+        MessageInfo messageInfo=new MessageInfo();
+        messageInfo.setSend((String) messageMap.get("toco_id"));
+        messageInfo.setUsername((String) messageMap.get("toco_id"));
+        messageInfo.setMsgType(RED_GET_MSG);
+        messageInfo.setConverstaion((String) messageMap.get("desc"));
+        messageInfo.setTime(UtilTool.createChatTime());
+        messageInfo.setRedId((Integer) messageMap.get("rp_id"));
+        messageInfo.setMessage((String) messageMap.get("desc"));
+        addMessage(messageInfo);
+    }
+
     /**
      * 提筆通知
      * @param messageMap
@@ -630,7 +599,7 @@ public class SocketListener extends WebSocketAdapter{
         messageInfo.setSend(Constants.ADMINISTRATOR_NAME);
         messageInfo.setUsername(Constants.ADMINISTRATOR_NAME);
         messageInfo.setMsgType(ADMINISTRATOR_RECEIPT_PAY_MSG);
-        if((int)messageMap.get("type")==1){
+        if((int)messageMap.get("type_number")==5){
             messageInfo.setConverstaion("[" + context.getString(R.string.receipt_inform) + "]");
         }else{
             messageInfo.setConverstaion("[" + context.getString(R.string.pay_inform) + "]");
@@ -769,6 +738,11 @@ public class SocketListener extends WebSocketAdapter{
                 intent.putExtra("response", response);
                 intent.setAction("com.example.eric_jqm_chat.SearchActivity");
                 UtilTool.Log("fengjian", "恭喜，对方同意添加好友！");
+                UserInfo userInfo=new UserInfo();
+                userInfo.setUser(from);
+                userInfo.setUserName(" ");
+                userInfo.setRemark(" ");
+                mgr.addUser(userInfo);
                 EventBus.getDefault().post(new MessageEvent(context.getString(R.string.new_friend)));
                 context.sendBroadcast(intent);
             }else if("2".equals(messageMap.get("status"))){
@@ -800,6 +774,7 @@ public class SocketListener extends WebSocketAdapter{
         String from=messageInfo.getSend();
         String redpacket=messageInfo.getConverstaion();
         String time=messageInfo.getTime();
+        messageInfo.setCreateTime(UtilTool.createChatCreatTime());
         mgr.addMessage(messageInfo);
         int number = mgr.queryNumber(from);
         if (mgr.findConversation(from)) {
@@ -864,7 +839,11 @@ public class SocketListener extends WebSocketAdapter{
             if (!StringUtils.isEmpty(remark)) {
                 mBuilder.setContentTitle(remark);
             } else {
-                mBuilder.setContentTitle(from.split("@")[0]);
+                if(RoomManage.ROOM_TYPE_MULTI.equals(roomType)){
+                    mBuilder.setContentTitle(mdbRoomManage.findRoomName(from));
+                }else{
+                    mBuilder.setContentTitle(mgr.findUserName(from));
+                }
             }
         }
         mBuilder.setContentText(message);

@@ -65,14 +65,6 @@ public class MyApp extends Application {
         //初始化
         ZoomMediaLoader.getInstance().init(GlideImgLoader.getInstance());
 
-        //初始化xmpp
-        WsConnection.getInstance().setContext(this);
-
-        WsOfflineConnection.getInstance().setContext(this);
-
-
-        RoomManage.getInstance().setContext(this);
-
         //创建项目公开目录
         createDir();
     }

@@ -207,7 +207,7 @@ public class MainActivity extends BaseActivity {
     private void getMyImage() {
         if (!mMgr.findUser(UtilTool.getTocoId())) {
             IndividualDetailsPresenter personalDetailsPresenter = new IndividualDetailsPresenter(this);
-            personalDetailsPresenter.getIndividual(UtilTool.getTocoId(), new IndividualDetailsPresenter.CallBack() {
+            personalDetailsPresenter.getIndividual(UtilTool.getTocoId(),false, new IndividualDetailsPresenter.CallBack() {
                 @Override
                 public void send(IndividualInfo.DataBean data) {
                     if (data != null ) {

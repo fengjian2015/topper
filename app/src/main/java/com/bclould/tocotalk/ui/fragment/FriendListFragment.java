@@ -122,8 +122,12 @@ public class FriendListFragment extends Fragment {
                     break;
                 case 1:
                     mNewFriend = MySharedPreferences.getInstance().getInteger(NEWFRIEND);
-                    mNumber.setText(mNewFriend + "");
-                    mNumber.setVisibility(View.VISIBLE);
+                    if (mNewFriend > 0) {
+                        mNumber.setText(mNewFriend + "");
+                        mNumber.setVisibility(View.VISIBLE);
+                    }else{
+                        mNumber.setVisibility(View.GONE);
+                    }
 //                    mId = mMgr.addRequest(from, 0);
                     break;
 //                case 2:
@@ -162,7 +166,7 @@ public class FriendListFragment extends Fragment {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_friend_list, container, false);
         ButterKnife.bind(this, view);
         mNewFriend = MySharedPreferences.getInstance().getInteger(NEWFRIEND);
-        if (mNewFriend != 0) {
+        if (mNewFriend > 0) {
             mNumber.setText(mNewFriend + "");
             mNumber.setVisibility(View.VISIBLE);
         }
@@ -280,8 +284,12 @@ public class FriendListFragment extends Fragment {
                                     @Override
                                     public void send() {
                                         mMgr.updateRequest(tocoId, 1);
+                                        mNewFriend= MySharedPreferences.getInstance().getInteger(NEWFRIEND);
+                                        mNewFriend--;
+                                        MySharedPreferences.getInstance().setInteger(NEWFRIEND, mNewFriend);
+                                        myHandler.sendEmptyMessage(1);
                                         //同意
-                                        initData();
+                                        EventBus.getDefault().post(new MessageEvent(context.getString(R.string.new_friend)));
                                     }
                                 });
                             } catch (Exception e) {
@@ -299,6 +307,10 @@ public class FriendListFragment extends Fragment {
                                     @Override
                                     public void send() {
                                         mMgr.updateRequest(tocoId, 2);
+                                        mNewFriend= MySharedPreferences.getInstance().getInteger(NEWFRIEND);
+                                        mNewFriend--;
+                                        MySharedPreferences.getInstance().setInteger(NEWFRIEND, mNewFriend);
+                                        myHandler.sendEmptyMessage(1);
                                         updateData();
                                     }
                                 });
