@@ -31,11 +31,13 @@ public class RedPacketRVAdapter extends RecyclerView.Adapter {
     private final List<GrabRedInfo.DataBean.LogBean> mLogBeanList;
     private final Context mContext;
     private final DBManager mMgr;
+    private String coin;
 
-    public RedPacketRVAdapter(Context context, List<GrabRedInfo.DataBean.LogBean> logBeanList, DBManager mgr) {
+    public RedPacketRVAdapter(Context context, List<GrabRedInfo.DataBean.LogBean> logBeanList, DBManager mgr, String coin) {
         mLogBeanList = logBeanList;
         mContext = context;
         mMgr = mgr;
+        this.coin=coin;
     }
 
     @Override
@@ -76,7 +78,7 @@ public class RedPacketRVAdapter extends RecyclerView.Adapter {
         public void setData(GrabRedInfo.DataBean.LogBean logBean) {
             mTvName.setText(logBean.getName());
             mTvTime.setText(logBean.getTime());
-            mTvMoney.setText(logBean.getMoney());
+            mTvMoney.setText(logBean.getMoney()+coin);
             UtilTool.setCircleImg(mContext,logBean.getAvatar(), mIvTouxiang);
             //            mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
         }

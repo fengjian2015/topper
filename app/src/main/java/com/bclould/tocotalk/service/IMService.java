@@ -13,6 +13,7 @@ import com.bclould.tocotalk.utils.CheckClassIsWork;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tocotalk.xmpp.IMLogin;
+import com.bclould.tocotalk.xmpp.RoomManage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -31,6 +32,9 @@ public class IMService extends Service{
     public void onCreate() {
         super.onCreate();
         UtilTool.Log("fengjian","----IMService oncreate");
+        RoomManage.getInstance().setContext(this);
+        WsConnection.getInstance().setContext(this);
+        WsOfflineConnection.getInstance().setContext(this);
         if(handler==null) {
             instanceHandler();
         }

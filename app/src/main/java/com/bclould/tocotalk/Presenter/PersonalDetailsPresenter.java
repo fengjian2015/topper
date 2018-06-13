@@ -184,6 +184,7 @@ public class PersonalDetailsPresenter {
                         @Override
                         public void onNext(AuatarListInfo remarkListInfo) {
                             if(((Activity)mContext).isDestroyed())return;
+                            hideDialog();
                             if (remarkListInfo.getStatus() == 1) {
                                 callBack2.send(remarkListInfo.getData());
                             }

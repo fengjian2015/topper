@@ -35,8 +35,7 @@ public class WsContans {
     public static final int BC_COIN_IN_BROAD=5;//充幣通知
     public static final int BC_INOUT_COIN_INFORM=6;//提筆通知
     public static final int BC_AUTH_STATUS=7;//實名認證
-
-
+    public static final int BC_RED_GET=8;//紅包領取
 
 
 }

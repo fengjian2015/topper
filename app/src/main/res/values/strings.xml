@@ -896,4 +896,6 @@
     <string name="comment">評論</string>
     <string name="hide_keyboard">隱藏鍵盤</string>
     <string name="remaining">餘額</string>
+    <string name="in_link">鏈接中...</string>
+    <string name="not_link">(未鏈接)</string>
 </resources>

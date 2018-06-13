@@ -113,6 +113,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public static final int TO_LINK_MSG = 25;//發送新聞分享
     public static final int FROM_GUESS_MSG = 26;//接受竞猜分享
     public static final int TO_GUESS_MSG = 27;//發送竞猜分享
+    public static final int RED_GET_MSG =28;//紅包被領取
 
     public static final int ADMINISTRATOR_OTC_ORDER_MSG = 14;//管理員otc訂單消息
     public static final int ADMINISTRATOR_RED_PACKET_EXPIRED_MSG = 15;//管理員紅包過期消息
@@ -221,6 +222,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } else if (viewType == FROM_TRANSFER_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_transfer, parent, false);
             holder = new FromTransferHolder(view);
+        } else if(viewType == RED_GET_MSG){
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_chat_red_get, parent, false);
+            holder = new ReadGetHolder(view);
         } else if (viewType == ADMINISTRATOR_OTC_ORDER_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_otc_order, parent, false);
             holder = new OtcOrderStatusHolder(view);
@@ -357,6 +361,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
             case FROM_GUESS_MSG:
                 FromGuessHolder fromGuessHolder = (FromGuessHolder) holder;
                 fromGuessHolder.setData(mMessageList.get(position));
+                break;
+            case RED_GET_MSG:
+                ReadGetHolder readGetHolder= (ReadGetHolder) holder;
+                readGetHolder.setData(mMessageList.get(position));
                 break;
             case ADMINISTRATOR_OTC_ORDER_MSG:
                 OtcOrderStatusHolder orderStatusHolder = (OtcOrderStatusHolder) holder;
@@ -1775,6 +1783,32 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public boolean onLongClick(View view) {
                     showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
                     return false;
+                }
+            });
+        }
+    }
+
+    class ReadGetHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.tv_content)
+        TextView tvContent;
+        @Bind(R.id.tv_go)
+        TextView tvGo;
+
+        ReadGetHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final MessageInfo messageInfo) {
+            tvContent.setText(messageInfo.getMessage());
+            tvGo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, RedPacketActivity.class);
+                    intent.putExtra("id", messageInfo.getRedId() + "");
+                    intent.putExtra("from", false);
+                    intent.putExtra("type", false);
+                    mContext.startActivity(intent);
                 }
             });
         }

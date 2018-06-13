@@ -5,26 +5,30 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tocotalk.utils.MySharedPreferences;
+import com.bclould.tocotalk.utils.UtilTool;
 
 /**
  * Created by GIjia on 2018/6/12.
+ * 一分鐘沒有得到反饋需要重連
  */
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class PingThread extends Thread {
+public class PingThreadRequest extends Thread {
     private Context context;
 
-    public PingThread(Context context) {
+    public PingThreadRequest(Context context) {
         this.context = context;
     }
 
     @Override
     public void run() {
-        MySharedPreferences.getInstance().setInteger("ping",0);
         while (WsConnection.getInstance().isLogin()) {
             try {
-                WsConnection.getInstance().senPing();
-                WsOfflineConnection.getInstance().senPing(context);
-                sleep(20 * 1000);
+                sleep(60 * 1000);
+                if(MySharedPreferences.getInstance().getInteger("ping")!=1){
+                    UtilTool.Log("fengjian","未收到ping反饋，需要重新登錄");
+                    WsConnection.getInstance().setIsLogin(false);
+                    WsOfflineConnection.getInstance().setIsLogin(false);
+                }
             }catch (Exception e){
                 e.printStackTrace();
             }

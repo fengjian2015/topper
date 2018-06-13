@@ -174,6 +174,11 @@ public class UtilTool {
         return fileName;
     }
 
+    //創建聊天時間
+    public static Long createChatCreatTime(){
+        return System.currentTimeMillis();
+    }
+
     public static String createChatTime(){
         //获取当前时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -556,9 +561,40 @@ public class UtilTool {
 
     //打印日志
     public static void Log(String clazzName, String s) {
+        String name= getFunctionName();
+        if(name!=null){
+            Log.e(clazzName, name+" - "+s);
+        }else{
+            Log.e(clazzName, s);
+        }
+    }
 
-        Log.e(clazzName, s);
 
+    /**
+     * Get The Current Function Name
+     *
+     * @return
+     */
+    private static String getFunctionName() {
+        StackTraceElement[] sts = Thread.currentThread().getStackTrace();
+        if (sts == null) {
+            return null;
+        }
+        for (StackTraceElement st : sts) {
+            if (st.isNativeMethod()) {
+                continue;
+            }
+            if (st.getClassName().equals(Thread.class.getName())) {
+                continue;
+            }
+            if (st.getClassName().equals("com.bclould.tocotalk.utils.UtilTool")) {
+                continue;
+            }
+            return  "[ " + Thread.currentThread().getName() + ": "
+                    + st.getFileName() + ":" + st.getLineNumber() + " "
+                    + st.getMethodName() + " ]";
+        }
+        return null;
     }
 
     //判斷是否快速點擊
@@ -659,7 +695,7 @@ public class UtilTool {
             if (url instanceof String) {
                 Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1)).into(imageView);
             } else {
-                Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
+                Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).error(R.mipmap.img_nfriend_headshot1).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
             }
         }
     }

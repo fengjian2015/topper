@@ -419,6 +419,9 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     }
 
     private void sendMessage(String message) {
+        if (StringUtils.isEmpty(message)) {
+            return;
+        }
         roomManage.sendMessage(message);
     }
 
@@ -436,6 +439,9 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         recordUtil.finish();
         int duration = recordUtil.getVoiceDuration();
         String fileName = recordUtil.getFileName();
+        if (duration <= 0) {
+            return;
+        }
         roomManage.sendVoice(duration, fileName);
     }
 
@@ -580,7 +586,12 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 selectList = PictureSelector.obtainMultipleResult(data);
                 if (selectList.size() != 0) {
                     for (int i = 0; i < selectList.size(); i++) {
-                        roomManage.Upload(selectList.get(i).getCompressPath());
+                        String postfix = UtilTool.getPostfix(selectList.get(i).getPath());
+                        if (!postfix.equals("Video")) {
+                            roomManage.Upload(selectList.get(i).getCompressPath());
+                        } else {
+                            roomManage.Upload(selectList.get(i).getPath());
+                        }
                     }
                     selectList.clear();
                 }

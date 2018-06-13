@@ -27,6 +27,9 @@ import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -111,6 +114,8 @@ public class IndividualDetailsActivity extends BaseActivity {
         mMgr = new DBManager(this);//初始化数据库管理类
         initIntent();
         init();
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
     }
 
     private void initIntent() {
@@ -118,6 +123,12 @@ public class IndividualDetailsActivity extends BaseActivity {
         mUser = intent.getStringExtra("user");
         mName = intent.getStringExtra("name");
         roomId = intent.getStringExtra("roomId");
+    }
+
+    boolean isNoSeeHim = false;
+    boolean isNoSeeMe = false;
+
+    private void init() {
         if (mMgr.findUser(mUser)) {
             if (mUser.equals(UtilTool.getTocoId())) {
                 type = 3;
@@ -127,13 +138,14 @@ public class IndividualDetailsActivity extends BaseActivity {
         } else {
             type = 2;
         }
-    }
-
-    boolean isNoSeeHim = false;
-    boolean isNoSeeMe = false;
-
-    private void init() {
-        if (type == 2) {
+        if(type ==1){
+            imageQr.setVisibility(View.VISIBLE);
+            rlRemark.setVisibility(View.VISIBLE);
+            btnBrak.setText(getString(R.string.delete));
+            rlCard.setVisibility(View.VISIBLE);
+            mCvNoLookTaDy.setVisibility(View.VISIBLE);
+            mCvNoLookTaDy2.setVisibility(View.VISIBLE);
+        }else if (type == 2) {
             imageQr.setVisibility(View.INVISIBLE);
             rlRemark.setVisibility(View.GONE);
             btnBrak.setText(getString(R.string.add_friend));
@@ -148,7 +160,7 @@ public class IndividualDetailsActivity extends BaseActivity {
             rlRemark.setVisibility(View.GONE);
         }
         mPresenter = new IndividualDetailsPresenter(this);
-        mPresenter.getIndividual(mUser, new IndividualDetailsPresenter.CallBack() {
+        mPresenter.getIndividual(mUser,true, new IndividualDetailsPresenter.CallBack() {
             @Override
             public void send(IndividualInfo.DataBean data) {
                 if (!IndividualDetailsActivity.this.isDestroyed()) {
@@ -323,6 +335,22 @@ public class IndividualDetailsActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(getString(R.string.new_friend))) {
+            init();
+        }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
