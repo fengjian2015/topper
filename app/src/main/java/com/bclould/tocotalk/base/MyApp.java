@@ -8,7 +8,6 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tocotalk.history.DBManager;
-import com.bclould.tocotalk.listener.CrashHandler;
 import com.bclould.tocotalk.model.CoinInfo;
 import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.model.StateInfo;
@@ -60,7 +59,7 @@ public class MyApp extends Application {
         //初始化sp
         MySharedPreferences.getInstance().init(this);
 
-        new CrashHandler(this);
+//        new CrashHandler(this);
         //初始化
         ZoomMediaLoader.getInstance().init(GlideImgLoader.getInstance());
 
@@ -133,7 +132,7 @@ public class MyApp extends Application {
         dbManager = null;
     }
 
-    public static MyApp app() {
+    public MyApp app() {
         return context;
     }
 

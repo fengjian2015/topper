@@ -30,18 +30,15 @@ import com.bclould.tocotalk.base.FragmentFactory;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.AuatarListInfo;
-import com.bclould.tocotalk.model.AwsInfo;
+import com.bclould.tocotalk.model.OSSInfo;
 import com.bclould.tocotalk.model.GitHubInfo;
 import com.bclould.tocotalk.network.DownLoadApk;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.Constants;
-import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.XmppConnection;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -195,15 +192,15 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initAWS() {
-        DillDataPresenter dillDataPresenter = new DillDataPresenter(this);
+       /* DillDataPresenter dillDataPresenter = new DillDataPresenter(this);
         dillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
             @Override
-            public void send(AwsInfo.DataBean data) {
+            public void send(OSSInfo.DataBean data) {
                 MySharedPreferences.getInstance().setString(ACCESSKEYID, data.getAccessKeyId());
                 MySharedPreferences.getInstance().setString(SECRETACCESSKEY, data.getSecretAccessKey());
                 MySharedPreferences.getInstance().setString(SESSIONTOKEN, data.getSessionToken());
             }
-        });
+        });*/
     }
 
 //    private void pingService() {

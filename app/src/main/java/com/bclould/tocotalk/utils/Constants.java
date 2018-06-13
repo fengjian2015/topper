@@ -17,11 +17,6 @@ import static com.bclould.tocotalk.ui.activity.ConversationActivity.SESSIONTOKEN
 public class Constants {
     public static final String ADMINISTRATOR_NAME = "TOCOTALK";
     public static int BET_ARR_COUNT = 4;
-    private final Context mContext;
-
-    public Constants(Context context) {
-        mContext = context;
-    }
 
     //    public static final int OPENFIRE_PORT = 5288;
     public static final int OPENFIRE_PORT = 2018;
@@ -44,8 +39,8 @@ public class Constants {
     public static String ACCESS_KEY_ID = MySharedPreferences.getInstance().getString(ACCESSKEYID);
     public static String SECRET_ACCESS_KEY = MySharedPreferences.getInstance().getString(SECRETACCESSKEY);
     public static String SESSION_TOKEN = MySharedPreferences.getInstance().getString(SESSIONTOKEN);
-    public static String BUCKET_NAME = "bclould";
-    public static String BUCKET_NAME2 = "bclould-chat";
+    public static String BUCKET_NAME = "toco";
+    public static String BUCKET_NAME2 = "topper-chat";
     public static String PUBLICDIR = "/sdcard/tocotalk/tocotalk_images/";
     public static String LOG_DIR = "/sdcard/tocotalk/log/";
     public static String QRMONEYIN = "qrMoneyIn";

@@ -17,13 +17,13 @@ public class FingerprintUtil {
     public static CancellationSignal cancellationSignal;
 
     public static  void callFingerPrint(final OnCallBackListenr listener){
-        FingerprintManagerCompat managerCompat = FingerprintManagerCompat.from(MyApp.app());
+        FingerprintManagerCompat managerCompat = FingerprintManagerCompat.from(MyApp.getInstance().app());
         if (!managerCompat.isHardwareDetected()){ //判断设备是否支持
             if (listener != null)
                 listener.onSupportFailed();
             return;
         }
-        KeyguardManager keyguardManager =(KeyguardManager) MyApp.app().getSystemService(MyApp.app().KEYGUARD_SERVICE);
+        KeyguardManager keyguardManager =(KeyguardManager) MyApp.getInstance().app().getSystemService(MyApp.getInstance().app().KEYGUARD_SERVICE);
         if (!keyguardManager.isKeyguardSecure()) {//判断设备是否处于安全保护中
             if (listener != null)
                 listener.onInsecurity();

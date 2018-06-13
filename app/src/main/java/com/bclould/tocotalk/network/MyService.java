@@ -2,7 +2,7 @@ package com.bclould.tocotalk.network;
 
 
 import com.bclould.tocotalk.model.AuatarListInfo;
-import com.bclould.tocotalk.model.AwsInfo;
+import com.bclould.tocotalk.model.OSSInfo;
 import com.bclould.tocotalk.model.BankCardInfo;
 import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.BetInfo;
@@ -444,8 +444,8 @@ public interface MyService {
     );
 
     //aws
-    @POST("awsS3/getSessionToken")
-    Observable<AwsInfo> getSessionToken(
+    @POST("oss/getSessionToken")
+    Observable<OSSInfo> getSessionToken(
             @Header("Authorization") String token
     );
 

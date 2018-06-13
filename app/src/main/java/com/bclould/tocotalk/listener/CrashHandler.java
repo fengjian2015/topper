@@ -1,3 +1,4 @@
+/*
 package com.bclould.tocotalk.listener;
 
 import android.content.Context;
@@ -13,7 +14,7 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.bclould.tocotalk.Presenter.DillDataPresenter;
-import com.bclould.tocotalk.model.AwsInfo;
+import com.bclould.tocotalk.model.OSSInfo;
 import com.bclould.tocotalk.ui.activity.MainActivity;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MySharedPreferences;
@@ -24,7 +25,6 @@ import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,9 +32,11 @@ import static com.bclould.tocotalk.ui.activity.ConversationActivity.ACCESSKEYID;
 import static com.bclould.tocotalk.ui.activity.ConversationActivity.SECRETACCESSKEY;
 import static com.bclould.tocotalk.ui.activity.ConversationActivity.SESSIONTOKEN;
 
+*/
 /**
  * Created by GA on 2018/4/3.
- */
+ *//*
+
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CrashHandler implements Thread.UncaughtExceptionHandler {
@@ -55,7 +57,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         DillDataPresenter dillDataPresenter = new DillDataPresenter(mContext);
         dillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
             @Override
-            public void send(AwsInfo.DataBean data) {
+            public void send(OSSInfo.DataBean data) {
                 MySharedPreferences.getInstance().setString(ACCESSKEYID, data.getAccessKeyId());
                 MySharedPreferences.getInstance().setString(SECRETACCESSKEY, data.getSecretAccessKey());
                 MySharedPreferences.getInstance().setString(SESSIONTOKEN, data.getSessionToken());
@@ -118,9 +120,11 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         }).start();
     }
 
-    /**
+    */
+/**
      * 记录异常信息
-     */
+     *//*
+
     private boolean handlelException(Throwable ex) {
         // TODO Auto-generated method stub
         if (ex == null) {
@@ -148,13 +152,15 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         return true;
     }
 
-    /**
+    */
+/**
      * 收集记录错误信息
      *
      * @throws PackageManager.NameNotFoundException
      * @throws IllegalArgumentException
      * @throws IllegalAccessException
-     */
+     *//*
+
     private void collectInfoToSDCard(PrintWriter pw, Throwable ex) throws PackageManager.NameNotFoundException, IllegalAccessException, IllegalArgumentException, PackageManager.NameNotFoundException {
         // TODO Auto-generated method stub
         PackageManager pm = mContext.getPackageManager();
@@ -173,3 +179,4 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         ex.printStackTrace(pw);
     }
 }
+*/

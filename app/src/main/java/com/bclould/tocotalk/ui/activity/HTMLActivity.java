@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
-import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
 
@@ -45,7 +44,7 @@ public class HTMLActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_html);
         ButterKnife.bind(this);
-        MyApp.app().addActivity(this);
+        MyApp.getInstance().app().addActivity(this);
         init();
     }
 

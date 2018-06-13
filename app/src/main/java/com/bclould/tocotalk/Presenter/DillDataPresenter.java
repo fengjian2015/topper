@@ -6,7 +6,7 @@ import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
-import com.bclould.tocotalk.model.AwsInfo;
+import com.bclould.tocotalk.model.OSSInfo;
 import com.bclould.tocotalk.model.InOutInfo;
 import com.bclould.tocotalk.model.TransferInfo;
 import com.bclould.tocotalk.model.UrlInfo;
@@ -138,19 +138,16 @@ public class DillDataPresenter {
                     .getSessionToken(UtilTool.getToken())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<AwsInfo>() {
+                    .subscribe(new Observer<OSSInfo>() {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
 
                         }
 
                         @Override
-                        public void onNext(@NonNull AwsInfo awsInfo) {
-                            if (awsInfo.getStatus() == 1) {
-                                callBack3.send(awsInfo.getData());
-                                UtilTool.Log("日志", awsInfo.getData().getAccessKeyId());
-                                UtilTool.Log("日志", awsInfo.getData().getSecretAccessKey());
-                                UtilTool.Log("日志", awsInfo.getData().getSessionToken());
+                        public void onNext(@NonNull OSSInfo OSSInfo) {
+                            if (OSSInfo.getStatus() == 1) {
+                                callBack3.send(OSSInfo.getData());
                             }
                         }
 
@@ -180,7 +177,7 @@ public class DillDataPresenter {
 
     //定义接口
     public interface CallBack3 {
-        void send(AwsInfo.DataBean data);
+        void send(OSSInfo.DataBean data);
     }
 
     //定义接口
