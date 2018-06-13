@@ -271,7 +271,7 @@ public class SocketListener extends WebSocketAdapter{
                         OtrChatListenerManager.getInstance().sessionID(UtilTool.getTocoId(), from));
             }
         }
-        if(!isPlayHint){
+        if(isPlayHint){
             if(free){
 
             }else if (sp.contains(INFORM)) {

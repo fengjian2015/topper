@@ -109,9 +109,6 @@ public class SearchActivity extends BaseActivity {
                 userInfo = info;
             } else if (info.getUser().isEmpty()) {
                 userInfo2 = info;
-            } else {
-                String name = info.getUserName();
-                info.setUser(name);
             }
         }
         userInfos.remove(userInfo);

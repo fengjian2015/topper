@@ -67,19 +67,19 @@ public class Constants {
     public static String NEW_APK_NAME = "new_apk_name";
     public static String NEW_APK_BODY = "new_apk_body";
     public static String KEFU = "W2tlZnVdOkp1bXBjdXN0b21lcnNlcnZpY2VpbnRlcmZhY2U=";
-    public static String GUESS_WEB_URL = "bet/rule";
-    public static String NEWS_WEB_URL = "news/info/";
-    public static String GONGGAO_WEB_URL = "bulletin/info/";
+    public static String GUESS_WEB_URL = "api/bet/rule";
+    public static String NEWS_WEB_URL = "api/news/info/";
+    public static String GONGGAO_WEB_URL = "api/bulletin/info/";
     public static String OTR_REQUEST = "?OTRv2?";
-    public static String NEWS_EDIT_WEB_URL = "news/publish";
+    public static String NEWS_EDIT_WEB_URL = "api/news/publish";
     public static int NEW_BROWSE_TYPE = 2;
     public static int NEW_MY_TYPE = 0;
     public static int GONGGAO_TYPE = 1;
     public static int NEWS_MAIN_TYPE = 4;
     public static int NEW_DRAFTS_TYPE = 3;
-    public static String NEWS_DRAFTS_URL = "news/edit/";
+    public static String NEWS_DRAFTS_URL = "api/news/edit/";
     public static int UPDATE_LOG_TYPE = 5;
-    public static String UPDATE_LOG_URL = "updateLogInfo/";
+    public static String UPDATE_LOG_URL = "api/updateLogInfo/";
     public static String GUESS_DYNAMIC_SEPARATOR = "__";
-    public static String QUES_WEB_URL = "question/";
+    public static String QUES_WEB_URL = "api/question/";
 }
