@@ -19,11 +19,6 @@ import android.text.TextUtils;
 import android.util.Base64;
 
 import com.alibaba.fastjson.JSONObject;
-import com.amazonaws.auth.BasicSessionCredentials;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
 import com.bclould.tocotalk.history.DBManager;
@@ -77,9 +72,6 @@ import java.util.concurrent.Executors;
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.bclould.tocotalk.Presenter.LoginPresenter.CURRENCY;
 import static com.bclould.tocotalk.Presenter.LoginPresenter.STATE;
-import static com.bclould.tocotalk.ui.activity.ConversationActivity.ACCESSKEYID;
-import static com.bclould.tocotalk.ui.activity.ConversationActivity.SECRETACCESSKEY;
-import static com.bclould.tocotalk.ui.activity.ConversationActivity.SESSIONTOKEN;
 import static com.bclould.tocotalk.ui.activity.SystemSetActivity.INFORM;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_AUTH_STATUS_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.ADMINISTRATOR_IN_OUT_COIN_MSG;
@@ -399,8 +391,6 @@ public class XmppListener {
                         }
                         if (from.contains("@"))
                             friend = from.substring(0, from.indexOf("@"));
-
-
                         String remark = null;
                         String coin = null;
                         String count = null;
@@ -441,7 +431,7 @@ public class XmppListener {
                                     path = context.getFilesDir().getAbsolutePath() + File.separator + "images";
                                     goChat(from, context.getString(R.string.location), messageType, sendFrom);
                                 } else if (chatMsg.contains("[Image]")) {
-                                    String key = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
+                                    /*String key = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
 
                                     BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
                                             MySharedPreferences.getInstance().getString(ACCESSKEYID),
@@ -466,14 +456,15 @@ public class XmppListener {
                                     fileName = UtilTool.createtFileName() + ".jpg";
                                     path = context.getFilesDir().getAbsolutePath() + File.separator
                                             + "images";
-                                    goChat(from, context.getString(R.string.image), messageType, sendFrom);
+                                    goChat(from, context.getString(R.string.image), messageType, sendFrom);*/
                                 } else if (chatMsg.contains("[Video]")) {
                                     String key = chatMsg.substring(chatMsg.indexOf(":") + 1, chatMsg.length());
                                     String url = "";
                                     if (key.startsWith("https://")) {
-                                        url = key;
-                                    } else {
-                                        BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
+                                        url=key;
+                                    }else {
+
+                                        /*BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
                                                 MySharedPreferences.getInstance().getString(ACCESSKEYID),
                                                 MySharedPreferences.getInstance().getString(SECRETACCESSKEY),
                                                 MySharedPreferences.getInstance().getString(SESSIONTOKEN));
@@ -488,7 +479,7 @@ public class XmppListener {
                                         //设置过期时间
                                         urlRequest.setExpiration(expirationDate);
                                         //生成公用的url
-                                        url = s3Client.generatePresignedUrl(urlRequest).toString();
+                                        url = s3Client.generatePresignedUrl(urlRequest).toString();*/
                                     }
                                     chatMsg = url;
                                     redpacket = "[" + context.getString(R.string.video) + "]";

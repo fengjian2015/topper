@@ -105,13 +105,10 @@ public class SearchActivity extends BaseActivity {
         UserInfo userInfo = null;
         UserInfo userInfo2 = null;
         for (UserInfo info : userInfos) {
-            if (info.getUser().equals(UtilTool.getJid())) {
+            if (info.getUser().equals(UtilTool.getTocoId())) {
                 userInfo = info;
             } else if (info.getUser().isEmpty()) {
                 userInfo2 = info;
-            } else {
-                String name = info.getUser().substring(0, info.getUser().indexOf("@"));
-                info.setUser(name);
             }
         }
         userInfos.remove(userInfo);

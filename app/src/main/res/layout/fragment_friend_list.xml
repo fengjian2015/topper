@@ -223,11 +223,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:descendantFocusability="blocksDescendants">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view"
+                <com.scwang.smartrefresh.layout.SmartRefreshLayout
+                    android:id="@+id/refresh_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent">
+                    <com.scwang.smartrefresh.header.WaterDropHeader
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/light"/>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
                 <com.gjiazhe.wavesidebar.WaveSideBar
                     android:id="@+id/side_bar"
@@ -235,11 +243,12 @@
                     android:layout_height="match_parent"
                     android:paddingRight="@dimen/x16"
                     app:sidebar_lazy_respond="false"
+                    android:layout_alignParentRight="true"
                     app:sidebar_max_offset="@dimen/x160"
                     app:sidebar_position="right"
                     app:sidebar_text_alignment="center"
                     app:sidebar_text_color="@color/black"
-                    app:sidebar_text_size="@dimen/y24"/>
+                    app:sidebar_text_size="@dimen/y20"/>
 
             </RelativeLayout>
 

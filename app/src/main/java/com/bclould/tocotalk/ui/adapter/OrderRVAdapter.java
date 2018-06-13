@@ -106,7 +106,7 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             } else {
                 mTvType.setTextColor(mContext.getResources().getColor(R.color.black));
             }
-                /*String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
+                /*
                 UtilTool.getImage(mMgr, jid, mContext, mIvTouxiang);*/
             if (dataBean.getAvatar().isEmpty()) {
                 UtilTool.setCircleImg(mContext, R.mipmap.img_nfriend_headshot1, mIvTouxiang);
@@ -187,14 +187,7 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
                 mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape));
                 mTvCoinType.setTextColor(mContext.getResources().getColor(R.color.blue2));
             } else {
-                try {
-                    String jid = dataBean.getUser_name() + "@" + Constants.DOMAINNAME;
-
-                    UtilTool.getImage(mMgr, jid, mContext, mIvTouxiang);
-                    //                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, mContext));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                UtilTool.setCircleImg(mContext, dataBean.getAvatar(), mIvTouxiang);
                 mTvName.setText(dataBean.getUser_name());
                 mTvCoinType.setBackground(mContext.getDrawable(R.drawable.bg_buysell_shape2));
                 mTvCoinType.setTextColor(mContext.getResources().getColor(R.color.green2));

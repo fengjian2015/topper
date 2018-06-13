@@ -8,15 +8,15 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tocotalk.history.DBManager;
-import com.bclould.tocotalk.model.CoinInfo;
 import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.model.StateInfo;
 import com.bclould.tocotalk.service.ImageUpService;
+import com.bclould.tocotalk.topperchat.WsConnection;
+import com.bclould.tocotalk.topperchat.WsOfflineConnection;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.GlideImgLoader;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.xmpp.RoomManage;
-import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.previewlibrary.ZoomMediaLoader;
 
@@ -37,10 +37,11 @@ public class MyApp extends Application {
 
     public static MyApp instance = null;
     private List<Activity> mActivityList = new ArrayList<>();//储存打开的Activity
-    public List<CoinInfo.DataBean> mCoinList = new ArrayList<>();
+    public List<CoinListInfo.DataBean> mCoinList = new ArrayList<>();
     public List<StateInfo.DataBean> mStateList = new ArrayList<>();
     public List<CoinListInfo.DataBean> mOtcCoinList = new ArrayList<>();
     public List<CoinListInfo.DataBean> mBetCoinList = new ArrayList<>();
+    public List<CoinListInfo.DataBean> mPayCoinList = new ArrayList<>();
     public boolean isLogin = false;
 
     //单例
@@ -64,9 +65,10 @@ public class MyApp extends Application {
         ZoomMediaLoader.getInstance().init(GlideImgLoader.getInstance());
 
         //初始化xmpp
-        XmppConnection.getInstance().setDB(new DBManager(this));
+        WsConnection.getInstance().setContext(this);
 
-        XmppConnection.getInstance().setContext(this);
+        WsOfflineConnection.getInstance().setContext(this);
+
 
         RoomManage.getInstance().setContext(this);
 

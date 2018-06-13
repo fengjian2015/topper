@@ -50,7 +50,7 @@ public class ServiceAgreementActivity extends AppCompatActivity {
     }
 
     private void initWebView() {
-        mWebView.loadUrl(Constants.BASE_URL + "user_agreement");
+        mWebView.loadUrl(Constants.BASE_URL + "api/user_agreement");
     }
 
     private void initIntent() {

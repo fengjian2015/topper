@@ -22,7 +22,7 @@
     <string name="toast_vcode">郵箱驗證碼不能為空</string>
     <string name="toast_agreement">請同意服務協議</string>
     <string name="toast_succeed">登錄成功</string>
-    <string name="toast_pay_password">支付密碼不能為空</string>
+    <string name="toast_pay_password">PIN密碼不能為空</string>
     <string name="talk">聊天</string>
     <string name="trade">交易</string>
     <string name="exchange">兌換</string>
@@ -47,7 +47,7 @@
     <string name="refresh">刷新</string>
     <string name="address">地址</string>
     <string name="amount">貨幣數量</string>
-    <string name="payment_password">支付密碼</string>
+    <string name="payment_password">PIN密碼</string>
     <string name="et_coin_address">輸入貨幣地址</string>
     <string name="confirm_send">確認發送</string>
     <string name="et_memo">輸入備註</string>
@@ -113,8 +113,8 @@
     <string name="push">發佈</string>
     <string name="set_login_pw">設置登錄密碼</string>
     <string name="login_pw">登錄密碼</string>
-    <string name="payment_pw">支付密碼</string>
-    <string name="set_payment_pw">設置支付密碼</string>
+    <string name="payment_pw">PIN密碼</string>
+    <string name="set_payment_pw">設置PIN密碼</string>
     <string name="et_google_code">输入谷歌验证码</string>
     <string name="toast_google_code">谷歌验证码不能为空</string>
     <string name="up_for_cancel">手指上滑，取消發送</string>
@@ -237,7 +237,7 @@
     <string name="selecotr_site">選擇地址</string>
     <string name="out_coin_hint">1.提幣手續費為0.5%，請仔細確認后再確認</string>
     <string name="out_coin_hint2">2.每筆轉出最小限額100個幣，最大限額100000個幣，每天轉出限額500000個幣</string>
-    <string name="payment_pw_hint">支付密碼為6位數</string>
+    <string name="payment_pw_hint">PIN密碼為6位數</string>
     <string name="payment_succeed">支付成功</string>
     <string name="payment_record">支付記錄</string>
     <string name="filtrate">篩選</string>
@@ -313,7 +313,7 @@
     <string name="huzhao_hint">上傳護照正面照片</string>
     <string name="huzhao_hint2">請保持照片中護照顯示完整</string>
     <string name="huzhao_shouchi_hint">上傳手持護照照片</string>
-    <string name="et_pay_pw">輸入支付密碼</string>
+    <string name="et_pay_pw">輸入PIN密碼</string>
     <string name="stop">暫停</string>
     <string name="user_safety">安全中心</string>
     <string name="fingerprint_lock">指紋密碼</string>
@@ -323,10 +323,10 @@
     <string name="delete_cache_hint">確定要清除所有緩存嗎?</string>
     <string name="delete_site_hint">確定要刪除地址嗎?</string>
     <string name="logout_hint">確認要退出當前賬號嗎?</string>
-    <string name="payment_pw_error_hint">支付密碼錯誤，請重試！</string>
+    <string name="payment_pw_error_hint">PIN密碼錯誤，請重試！</string>
     <string name="retry">重試</string>
     <string name="binding_google_hint">1.安裝“Google Authenticator”應用程序，選擇“手動輸入密鑰”; \n2.粘貼以上“密鑰”到“密鑰”輸入欄，並填寫您的TopperChat賬號，點擊完成; \n3.複製“谷歌驗證碼“，粘貼至上方輸入欄;\n4.請勿刪除此雙重驗證密碼賬戶，否則將導致您無法進行賬戶操作;如果誤刪，您可通過重置密鑰重新獲取。</string>
-    <string name="set_pay_pw_hint">尚未設置交易密碼</string>
+    <string name="set_pay_pw_hint">尚未設置PIN密碼</string>
     <string name="search_issue">搜索問題</string>
     <string name="no_receipt_transfer_record">沒有轉賬記錄</string>
     <string name="no_ad_publish">還沒有廣告發佈</string>
@@ -364,10 +364,10 @@
     <string name="download_failed">下載失敗</string>
     <string name="download_completes_open">下載完成點擊打開</string>
     <string name="binding_google_hint1">請先綁定谷歌驗證</string>
-    <string name="set_payment_pw_hint">尚未設置交易密碼</string>
+    <string name="set_payment_pw_hint">尚未設置PIN密碼</string>
     <string name="binding_bank_hint">請先綁定銀行卡</string>
     <string name="exchange_succeed">兌換成功</string>
-    <string name="payment_pw_error">交易密碼不正確</string>
+    <string name="payment_pw_error">PIN密碼不正確</string>
     <string name="loading_error">加載失敗</string>
     <string name="login_in">登錄中....</string>
     <string name="china_mainland">中國 - 大陸</string>
@@ -385,7 +385,7 @@
     <string name="bank_binding_unbinding">銀行卡綁定解綁</string>
     <string name="set_the_default_bank_card">設置默認銀行卡</string>
     <string name="no_binding_bank">您還沒綁定銀行卡</string>
-    <string name="verify_pay_pw">請輸入支付密碼，以驗證身份</string>
+    <string name="verify_pay_pw">請輸入PIN密碼，以驗證身份</string>
     <string name="verify_error">認證失敗</string>
     <string name="check_pending">待審核</string>
     <string name="verify_error_hint">實名認證失敗，請重新認證</string>
@@ -883,6 +883,7 @@
     <string name="destroy_service">銷毀服務</string>
     <string name="toast_uploading_dynamic">上傳動態中....</string>
     <string name="no_record">沒有交易記錄</string>
+    <string name="denied">已拒絕</string>
     <string name="exchange_underway">兌換中</string>
     <string name="official_email">topperchat@outlook.com</string>
     <string name="initial_hint">©2018 TopperChat 版權所有</string>
@@ -894,4 +895,5 @@
     <string name="dynamic_underway_uploading">已有動態正在上傳中</string>
     <string name="comment">評論</string>
     <string name="hide_keyboard">隱藏鍵盤</string>
+    <string name="remaining">餘額</string>
 </resources>

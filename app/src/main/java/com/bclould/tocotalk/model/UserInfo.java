@@ -3,6 +3,7 @@ package com.bclould.tocotalk.model;
 import android.support.annotation.NonNull;
 
 import com.bclould.tocotalk.utils.Cn2Spell;
+import com.bclould.tocotalk.utils.StringUtils;
 
 /**
  * Created by GA on 2017/12/26.
@@ -15,6 +16,15 @@ public class UserInfo implements Comparable<UserInfo> {
     private String remark;
     private String pinyin;
     private String firstLetter;
+    private String userName;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public String getPinyin() {
         return pinyin;
@@ -31,7 +41,10 @@ public class UserInfo implements Comparable<UserInfo> {
     public void setRemark(String remark) {
         this.remark = remark;
         pinyin = Cn2Spell.getPinYin(remark); // 根据姓名获取拼音
-        firstLetter = pinyin.substring(0, 1).toUpperCase(); // 获取拼音首字母并转成大写
+        firstLetter="";
+        if(!StringUtils.isEmpty(pinyin)) {
+            firstLetter = pinyin.substring(0, 1).toUpperCase(); // 获取拼音首字母并转成大写
+        }
         if (!firstLetter.matches("[A-Z]")) { // 如果不在A-Z中则默认为“#”
             firstLetter = "#";
         }

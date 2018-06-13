@@ -8,7 +8,6 @@ import android.widget.Toast;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.BaseInfo;
-import com.bclould.tocotalk.model.CoinInfo;
 import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.model.ExchangeOrderInfo;
 import com.bclould.tocotalk.model.StateInfo;
@@ -64,17 +63,17 @@ public class CoinPresenter {
                     .AssetName(UtilTool.getToken())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<CoinInfo>() {
+                    .subscribe(new Observer<CoinListInfo>() {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
 
                         }
 
                         @Override
-                        public void onNext(@NonNull CoinInfo coinInfo) {
-                            if (coinInfo.getStatus() == 1) {
+                        public void onNext(@NonNull CoinListInfo coinListInfo) {
+                            if (coinListInfo.getStatus() == 1) {
                                 MyApp.getInstance().mCoinList.clear();
-                                MyApp.getInstance().mCoinList.addAll(coinInfo.getData());
+                                MyApp.getInstance().mCoinList.addAll(coinListInfo.getData());
                             }
                         }
 

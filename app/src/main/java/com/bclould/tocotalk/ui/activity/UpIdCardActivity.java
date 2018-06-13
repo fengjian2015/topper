@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.view.View;
@@ -209,31 +207,6 @@ public class UpIdCardActivity extends BaseActivity {
         }
     }
 
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0:
-                    String key = (String) msg.obj;
-                    keyList += "," + key;
-                    count++;
-                    if (mType.equals("1")) {
-                        if (count == 3) {
-                            submit(keyList);
-                        }
-                    } else {
-                        if (count == 2) {
-                            submit(keyList);
-                        }
-                    }
-                    break;
-                case 1:
-                    Toast.makeText(UpIdCardActivity.this, getString(R.string.up_error), Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    };
-
     private void submit(String keyList) {
         String keyLists = keyList.substring(keyList.indexOf(",") + 1, keyList.length());
         UtilTool.Log("日志", keyLists);
@@ -252,6 +225,7 @@ public class UpIdCardActivity extends BaseActivity {
 
     private void upImage(final Map<Integer, String> map) {
         showDialog();
+        OSSClient ossClient = OSSupload.getInstance().visitOSS();
         for (Map.Entry<Integer, String> entry : map.entrySet()) {
             File file = new File(entry.getValue());
             String key = "";
@@ -272,23 +246,30 @@ public class UpIdCardActivity extends BaseActivity {
                     key = "" + 2 + UtilTool.getUserId() + UtilTool.createtFileName() + UtilTool.getPostfix2(file.getName());
                     break;
             }
-            OSSClient ossClient = OSSupload.getInstance().visitOSS();
             PutObjectRequest put = new PutObjectRequest(Constants.BUCKET_NAME, key, file.getPath());
             mTask = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                 @Override
                 public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
-                    String body = putObjectResult.getServerCallbackReturnBody();
                     String key = putObjectRequest.getObjectKey();
-                    UtilTool.Log("oss", body);
-                    Message message = new Message();
-                    message.obj = key;
-                    message.what = 0;
-                    handler.sendMessage(message);
+                    keyList += "," + key;
+                    count++;
+                    if (mType.equals("1")) {
+                        if (count == 3) {
+                            submit(keyList);
+                        }
+                    } else {
+                        if (count == 2) {
+                            submit(keyList);
+                        }
+                    }
                 }
 
                 @Override
                 public void onFailure(PutObjectRequest putObjectRequest, ClientException e, ServiceException e1) {
-                    handler.sendEmptyMessage(1);
+                    UtilTool.Log("oss", e.getMessage());
+                    UtilTool.Log("oss", e1.getMessage());
+                    hideDialog();
+                    Toast.makeText(UpIdCardActivity.this, getString(R.string.up_error), Toast.LENGTH_SHORT).show();
                 }
             });
         }

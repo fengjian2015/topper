@@ -53,6 +53,15 @@ public class AuatarListInfo {
         private String name;
         private String avatar;
         private String remark;
+        private String toco_id;
+
+        public String getToco_id() {
+            return toco_id;
+        }
+
+        public void setToco_id(String toco_id) {
+            this.toco_id = toco_id;
+        }
 
         public String getName() {
             return name;

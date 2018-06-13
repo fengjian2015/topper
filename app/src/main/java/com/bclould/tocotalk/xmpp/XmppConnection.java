@@ -138,17 +138,13 @@ public class XmppConnection {
 
     //退出登錄用
     public static void logoutService(Context context) {
-        if(XmppListener.xmppListener!=null)
-        XmppListener.get(context).remove();
         Intent intent = new Intent();
         intent.setAction(IMCoreService.ACTION_LOGOUT);
         context.sendBroadcast(intent);
-//		IMCoreService.startService = false;
         context.stopService(new Intent(context, IMService.class));
         LoginThread.isStartExReconnect = false;
         stopAllIMCoreService(context);
         UtilTool.Log("fengjina","退出");
-//		MyLogger.xuxLog().i("将静态startService变为了logout-"+IMCoreService.startService);
     }
 
     /***

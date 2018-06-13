@@ -21,10 +21,10 @@ import android.widget.Toast;
 import com.bclould.tocotalk.Presenter.LoginPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.topperchat.WsConnection;
+import com.bclould.tocotalk.topperchat.WsOfflineConnection;
 import com.bclould.tocotalk.utils.AnimatorTool;
 import com.bclould.tocotalk.utils.MySharedPreferences;
-import com.bclould.tocotalk.xmpp.XmppConnection;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -73,8 +73,6 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         MyApp.getInstance().addActivity(this);
-
-        XmppConnection.getInstance().logoutService(this);
 
     }
 

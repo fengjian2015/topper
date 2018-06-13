@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
@@ -67,7 +68,10 @@ public class CreateGroupRVAdapter extends RecyclerView.Adapter {
         ImageView mIvTouxiang;
         @Bind(R.id.tv_name)
         TextView mTvName;
+        @Bind(R.id.rl)
+        RelativeLayout rl;
         private String mUser;
+        private String mName;
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -76,12 +80,23 @@ public class CreateGroupRVAdapter extends RecyclerView.Adapter {
         public void setData(final UserInfo userInfo) {
             String remark = userInfo.getRemark();
             mUser = userInfo.getUser();
+            mName= userInfo.getUserName();
             if (!StringUtils.isEmpty(remark)) {
                 mTvName.setText(remark);
-            } else if (mUser.contains("@"))
-                mTvName.setText(mUser.substring(0, mUser.indexOf("@")));
+            } else
+                mTvName.setText(mName);
             UtilTool.getImage(mgr, userInfo.getUser(),mActivity , mIvTouxiang);
             mIvTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfo.getPath()));
+            rl.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mCheckBox.isChecked()){
+                        mCheckBox.setChecked(false);
+                    }else{
+                        mCheckBox.setChecked(true);
+                    }
+                }
+            });
             mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

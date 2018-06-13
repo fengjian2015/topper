@@ -97,9 +97,9 @@ public class SearchAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(UserInfo userInfo) {
-            mName = userInfo.getUser();
-            mUser = userInfo.getUser() + "@" + Constants.DOMAINNAME;
-            UtilTool.getImage(mMgr, userInfo.getUser() + "@" + Constants.DOMAINNAME, mContext, mIvTouxiang);
+            mName = userInfo.getUserName();
+            mUser = userInfo.getUser() ;
+            UtilTool.getImage(mMgr, userInfo.getUser(), mContext, mIvTouxiang);
             if (!userInfo.getRemark().isEmpty()) {
                 mTvName.setText(userInfo.getRemark());
             } else {

@@ -12,9 +12,14 @@ import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.CoinListInfo;
+import com.bclould.tocotalk.ui.activity.ChatTransferActivity;
 import com.bclould.tocotalk.ui.activity.CoinExchangeActivity;
 import com.bclould.tocotalk.ui.activity.OtcActivity;
+import com.bclould.tocotalk.ui.activity.PaymentActivity;
 import com.bclould.tocotalk.ui.activity.PushBuyingActivity;
+import com.bclould.tocotalk.ui.activity.RewardActivity;
+import com.bclould.tocotalk.ui.activity.SendQRCodeRedActivity;
+import com.bclould.tocotalk.ui.activity.SendRedPacketActivity;
 import com.bclould.tocotalk.ui.activity.StartGuessActivity;
 import com.bumptech.glide.Glide;
 
@@ -63,6 +68,8 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
         ImageView mTvCoinLogo;
         @Bind(R.id.tv_name)
         TextView mTvName;
+        @Bind(R.id.tv_remaining)
+        TextView mTvRemaining;
         private String mName;
         private int mId;
         private String mCoin_over;
@@ -89,6 +96,21 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
                     } else if (mContext instanceof StartGuessActivity) {
                         StartGuessActivity activity = (StartGuessActivity) mContext;
                         activity.hideDialog2(mData);
+                    } else if (mContext instanceof SendRedPacketActivity) {
+                        SendRedPacketActivity activity = (SendRedPacketActivity) mContext;
+                        activity.hideDialog(mName);
+                    } else if (mContext instanceof PaymentActivity) {
+                        PaymentActivity activity = (PaymentActivity) mContext;
+                        activity.hideDialog(mName, mId);
+                    } else if (mContext instanceof ChatTransferActivity) {
+                        ChatTransferActivity activity = (ChatTransferActivity) mContext;
+                        activity.hideDialog(mName, mId);
+                    } else if (mContext instanceof SendQRCodeRedActivity) {
+                        SendQRCodeRedActivity activity = (SendQRCodeRedActivity) mContext;
+                        activity.hideDialog(mName, mId);
+                    } else if (mContext instanceof RewardActivity) {
+                        RewardActivity activity = (RewardActivity) mContext;
+                        activity.hideDialog(mName, mId);
                     }
                 }
             });
@@ -102,6 +124,7 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
             mId = data.getId();
             mServiceCharge = data.getOut_exchange();
             mTvName.setText(mName);
+            mTvRemaining.setText(mContext.getString(R.string.remaining) + " : " + data.getCoin_over());
             Glide.with(mContext).load(data.getLogo()).into(mTvCoinLogo);
         }
     }

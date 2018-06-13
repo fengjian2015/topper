@@ -12,10 +12,13 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.keyboard.view.R;
 
@@ -34,7 +37,7 @@ import sj.keyboard.widget.FuncLayout;
 import sj.keyboard.widget.RecordIndicator;
 
 public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnClickListener, EmoticonsFuncView.OnEmoticonsPageViewListener,
-        EmoticonsToolBarView.OnToolBarItemClickListener, EmoticonsEditText.OnBackKeyClickListener, FuncLayout.OnFuncChangeListener {
+        EmoticonsToolBarView.OnToolBarItemClickListener, EmoticonsEditText.OnBackKeyClickListener, FuncLayout.OnFuncChangeListener{
 
     public static final int FUNC_TYPE_EMOTION = -1;
     public static final int FUNC_TYPE_APPPS = -2;
@@ -395,6 +398,10 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
 
     public Button getBtnSend() {
         return mBtnSend;
+    }
+
+    public EditText getEditText(){
+        return mEtChat;
     }
 
     public void setRecordIndicator(RecordIndicator recordIndicator) {

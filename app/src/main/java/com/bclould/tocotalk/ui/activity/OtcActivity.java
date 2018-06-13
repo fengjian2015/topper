@@ -128,7 +128,7 @@ public class OtcActivity extends BaseActivity {
     }
 
     private void init() {
-        initData();
+//        initData();
         if (MyApp.getInstance().mOtcCoinList.size() != 0) {
             mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();
             mTvCoinName.setText(mCoinName);

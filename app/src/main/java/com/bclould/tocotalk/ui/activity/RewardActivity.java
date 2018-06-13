@@ -29,7 +29,7 @@ import com.bclould.tocotalk.Presenter.DynamicPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
-import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
+import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
 import com.bclould.tocotalk.utils.MessageEvent;
@@ -322,7 +322,7 @@ public class RewardActivity extends BaseActivity {
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mCoinList));
+        recyclerView.setAdapter(new BottomDialogRVAdapter4(this, MyApp.getInstance().mPayCoinList));
         addCoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

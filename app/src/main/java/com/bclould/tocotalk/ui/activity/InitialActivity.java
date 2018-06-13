@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.topperchat.WsConnection;
+import com.bclould.tocotalk.topperchat.WsOfflineConnection;
 import com.bclould.tocotalk.utils.UtilTool;
 
 import butterknife.Bind;
@@ -41,6 +43,8 @@ public class InitialActivity extends AppCompatActivity {
     private void init() {
         String versionCode = UtilTool.getVersionCode(this);
         mTvVersion.setText("V" + versionCode);
+        WsConnection.getInstance().logoutService(this);
+        WsOfflineConnection.getInstance().closeConnection();
     }
 
     @OnClick({R.id.btn_login, R.id.btn_register})

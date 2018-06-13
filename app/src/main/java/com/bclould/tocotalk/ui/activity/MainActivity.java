@@ -23,22 +23,30 @@ import android.widget.Toast;
 
 import com.bclould.tocotalk.Presenter.CoinPresenter;
 import com.bclould.tocotalk.Presenter.DillDataPresenter;
+import com.bclould.tocotalk.Presenter.GroupPresenter;
+import com.bclould.tocotalk.Presenter.IndividualDetailsPresenter;
 import com.bclould.tocotalk.Presenter.PersonalDetailsPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.FragmentFactory;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.history.DBRoomManage;
+import com.bclould.tocotalk.history.DBRoomMember;
 import com.bclould.tocotalk.model.AuatarListInfo;
+import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.model.OSSInfo;
 import com.bclould.tocotalk.model.GitHubInfo;
+import com.bclould.tocotalk.model.GroupInfo;
+import com.bclould.tocotalk.model.IndividualInfo;
+import com.bclould.tocotalk.model.RoomManageInfo;
 import com.bclould.tocotalk.network.DownLoadApk;
 import com.bclould.tocotalk.network.RetrofitUtil;
+import com.bclould.tocotalk.topperchat.WsConnection;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bclould.tocotalk.xmpp.XmppConnection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,9 +61,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.bclould.tocotalk.ui.activity.ConversationActivity.ACCESSKEYID;
-import static com.bclould.tocotalk.ui.activity.ConversationActivity.SECRETACCESSKEY;
-import static com.bclould.tocotalk.ui.activity.ConversationActivity.SESSIONTOKEN;
 
 @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
 public class MainActivity extends BaseActivity {
@@ -69,6 +74,8 @@ public class MainActivity extends BaseActivity {
     private FragmentManager mSupportFragmentManager;
     private CoinPresenter mCoinPresenter;
     private DBManager mMgr;
+    private DBRoomManage mDBRoomManage;
+    private DBRoomMember mDBRoomMember;
 
     //单例
     public static MainActivity getInstance() {
@@ -93,9 +100,11 @@ public class MainActivity extends BaseActivity {
         mCoinPresenter = new CoinPresenter(this);
         ButterKnife.bind(this);
         mMgr = new DBManager(this);
+        mDBRoomManage = new DBRoomManage(this);
+        mDBRoomMember = new DBRoomMember(this);
         initInterface();
         MyApp.getInstance().addActivity(this);
-        XmppConnection.loginService(this);
+        WsConnection.loginService(this);
     }
 
     @Override
@@ -153,7 +162,9 @@ public class MainActivity extends BaseActivity {
 
     //初始化界面
     private void initInterface() {
+        getGroup();
         getMyImage();
+        getFriends();
         //开始选中聊天Fragment
         setSelector(0);
         //切换Fragment
@@ -177,30 +188,64 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    private void getGroup() {
+        new GroupPresenter(this).getGroup(new GroupPresenter.CallBack1() {
+            @Override
+            public void send(GroupInfo baseInfo) {
+                // TODO: 2018/6/11 獲取群聊房間塞入數據庫
+                for (GroupInfo.DataBean dataBean : baseInfo.getData()) {
+                    RoomManageInfo roomManageInfo = new RoomManageInfo();
+                    roomManageInfo.setRoomName(dataBean.getName());
+                    roomManageInfo.setRoomId(dataBean.getId() + "");
+//                    mDBRoomManage.addRoom();
+                }
+            }
+        });
+    }
+
     private void getMyImage() {
-        if (!mMgr.findUser(UtilTool.getJid())) {
-            PersonalDetailsPresenter personalDetailsPresenter = new PersonalDetailsPresenter(this);
-            personalDetailsPresenter.getFriendImageList(UtilTool.getJid(), new PersonalDetailsPresenter.CallBack2() {
+        if (!mMgr.findUser(UtilTool.getTocoId())) {
+            IndividualDetailsPresenter personalDetailsPresenter = new IndividualDetailsPresenter(this);
+            personalDetailsPresenter.getIndividual(UtilTool.getTocoId(), new IndividualDetailsPresenter.CallBack() {
                 @Override
-                public void send(List<AuatarListInfo.DataBean> data) {
-                    if (data != null && data.size() != 0) {
-                        mMgr.addUserList(data);
+                public void send(IndividualInfo.DataBean data) {
+                    if (data != null) {
+                        List<AuatarListInfo.DataBean> datas = new ArrayList<>();
+                        AuatarListInfo.DataBean dataBean = new AuatarListInfo.DataBean();
+                        dataBean.setAvatar(data.getAvatar());
+                        dataBean.setName(data.getName());
+                        dataBean.setRemark(data.getRemark());
+                        dataBean.setToco_id(UtilTool.getTocoId());
+                        datas.add(dataBean);
+                        mMgr.addUserList(datas);
                     }
                 }
             });
         }
     }
 
+    private void getFriends() {
+        new PersonalDetailsPresenter(this).getFriendList(new PersonalDetailsPresenter.CallBack2() {
+            @Override
+            public void send(List<AuatarListInfo.DataBean> data) {
+                mMgr.deleteAllFriend();
+                mMgr.addUserList(data);
+            }
+        });
+    }
+
     private void initAWS() {
-       /* DillDataPresenter dillDataPresenter = new DillDataPresenter(this);
+        DillDataPresenter dillDataPresenter = new DillDataPresenter(this);
         dillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
             @Override
             public void send(OSSInfo.DataBean data) {
-                MySharedPreferences.getInstance().setString(ACCESSKEYID, data.getAccessKeyId());
-                MySharedPreferences.getInstance().setString(SECRETACCESSKEY, data.getSecretAccessKey());
-                MySharedPreferences.getInstance().setString(SESSIONTOKEN, data.getSessionToken());
+                data.getEndpoint();
+                MySharedPreferences.getInstance().setString(Constants.OSS_ACCESSKEYID, data.getCredentials().getAccessKeyId());
+                MySharedPreferences.getInstance().setString(Constants.OSS_SECRETACCESSKEY, data.getCredentials().getAccessKeySecret());
+                MySharedPreferences.getInstance().setString(Constants.OSS_SESSIONTOKEN, data.getCredentials().getSecurityToken());
+                MySharedPreferences.getInstance().setString(Constants.OSS_ENDOPINT, data.getEndpoint());
             }
-        });*/
+        });
     }
 
 //    private void pingService() {
@@ -261,7 +306,18 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getCoinList() {
-        mCoinPresenter.getCoin();
+        mCoinPresenter.coinLists("trans", new CoinPresenter.CallBack() {
+            @Override
+            public void send(List<CoinListInfo.DataBean> data) {
+                MyApp.getInstance().mCoinList.addAll(data);
+            }
+        });
+        mCoinPresenter.coinLists("pay", new CoinPresenter.CallBack() {
+            @Override
+            public void send(List<CoinListInfo.DataBean> data) {
+                MyApp.getInstance().mPayCoinList.addAll(data);
+            }
+        });
     }
 
     //检测版本更新

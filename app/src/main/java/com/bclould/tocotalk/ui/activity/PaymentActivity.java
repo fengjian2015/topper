@@ -33,7 +33,7 @@ import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.ReceiptInfo;
-import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
+import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
@@ -262,6 +262,7 @@ public class PaymentActivity extends BaseActivity {
                 bundle.putString("name", data.getName());
                 bundle.putString("number", data.getNumber());
                 bundle.putString("type", Constants.MONEYIN);
+                bundle.putString("avatar",data.getAvatar());
                 intent.putExtras(bundle);
                 startActivity(intent);
                 Toast.makeText(PaymentActivity.this, getString(R.string.fk_succeed), Toast.LENGTH_SHORT).show();
@@ -393,7 +394,7 @@ public class PaymentActivity extends BaseActivity {
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mCoinList));
+        recyclerView.setAdapter(new BottomDialogRVAdapter4(this, MyApp.getInstance().mPayCoinList));
         addCoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -436,6 +437,7 @@ public class PaymentActivity extends BaseActivity {
                 bundle.putString("name", data.getName());
                 bundle.putString("number", data.getNumber());
                 bundle.putString("type", Constants.MONEYIN);
+                bundle.putString("avatar",data.getAvatar());
                 intent.putExtras(bundle);
                 startActivity(intent);
                 Toast.makeText(PaymentActivity.this, getString(R.string.fk_succeed), Toast.LENGTH_SHORT).show();

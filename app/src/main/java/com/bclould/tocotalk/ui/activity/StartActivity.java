@@ -2,6 +2,7 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +10,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
@@ -18,6 +20,8 @@ import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -33,11 +37,17 @@ import static com.bclould.tocotalk.Presenter.LoginPresenter.TOKEN;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class StartActivity extends AppCompatActivity {
+    @Bind(R.id.iv_start)
+    ImageView mIvStart;
+
     @SuppressLint("HandlerLeak")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        ButterKnife.bind(this);
+        AnimationDrawable animationDrawable = (AnimationDrawable) mIvStart.getBackground();
+        animationDrawable.start();
         new Handler() {
             public void handleMessage(Message msg) {
                 if (UtilTool.getToken().equals("bearer")) {
@@ -101,6 +111,5 @@ public class StartActivity extends AppCompatActivity {
             }
         }.sendEmptyMessageDelayed(0, 2000);
         MyApp.getInstance().addActivity(this);
-
     }
 }

@@ -40,6 +40,7 @@ import com.bclould.tocotalk.model.GroupInfo;
 import com.bclould.tocotalk.model.QrRedInfo;
 import com.bclould.tocotalk.model.RoomManageInfo;
 import com.bclould.tocotalk.service.IMCoreService;
+import com.bclould.tocotalk.topperchat.WsConnection;
 import com.bclould.tocotalk.ui.activity.AddFriendActivity;
 import com.bclould.tocotalk.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tocotalk.ui.activity.PublicshDynamicActivity;
@@ -52,14 +53,10 @@ import com.bclould.tocotalk.utils.ToastShow;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tocotalk.xmpp.IConnectStateChangeListener;
-import com.bclould.tocotalk.xmpp.XmppConnection;
-import com.bclould.tocotalk.xmpp.XmppListener;
 import com.google.gson.Gson;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -153,7 +150,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                    XmppListener.xmppListener = null;
                     initRecyclerView();
                     initData();
                     //发送登录失败通知
@@ -164,7 +160,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                     ToastShow.showToast2((Activity) getContext(), getString(R.string.toast_network_error));
                     break;
                 case 1:
-                    XmppListener.get(getContext());
                     initRecyclerView();
                     initData();
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
@@ -197,7 +192,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                         mAnim = (AnimationDrawable) mIvAnim.getBackground();
                         mAnim.start();
                     }
-                    XmppListener.xmppListener = null;
                     break;
             }
         }
@@ -209,8 +203,8 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         imState = -1;
         ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
         Intent intent = new Intent(getContext(), IMCoreService.class);
-        if (XmppConnection.isServiceWork(getContext(), "com.bclould.tocotalk.service.IMCoreService")) {
-            XmppConnection.stopAllIMCoreService(getContext());
+        if (WsConnection.isServiceWork(getContext(), "com.bclould.tocotalk.service.IMCoreService")) {
+            WsConnection.stopAllIMCoreService(getContext());
             getContext().stopService(intent);
         }
         getContext().startService(intent);

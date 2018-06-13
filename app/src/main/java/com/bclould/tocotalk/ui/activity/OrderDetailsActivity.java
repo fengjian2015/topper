@@ -136,7 +136,9 @@ public class OrderDetailsActivity extends BaseActivity {
     private String mType;
     private int mType1;
     private String mTo_user_name;
+    private String mTo_user_toco_id;
     private String mUser_name;
+    private String mUser_toco_id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -173,7 +175,9 @@ public class OrderDetailsActivity extends BaseActivity {
                 mTvPayType.setText(getString(R.string.dengdai_sk));
             }
             mTo_user_name = mData.getTo_user_name();
+            mTo_user_toco_id=mData.getToco_id();
             mUser_name = mData.getUser_name();
+            mUser_toco_id=mData.getToco_id();
             if (mData.getType() == 1) {
                 mTvTransferHint.setText(getString(R.string.shijidao_transfer));
                 mTvBuysell.setText(getString(R.string.seller) + ":" + mData.getTo_user_name());
@@ -287,6 +291,43 @@ public class OrderDetailsActivity extends BaseActivity {
                         mTvBankNumber.setText(data.getBank().getCard_number());
                         mTvBankSite.setText(data.getBank().getBank_name());
                     }
+                } else if (data.getStatus() == 3) {
+                    mLlBuyer.setVisibility(View.GONE);
+                    mLlSeller.setVisibility(View.GONE);
+                } else if (data.getStatus() == 4) {
+                    mLlBuyer.setVisibility(View.GONE);
+                    mLlSeller.setVisibility(View.GONE);
+                }
+                mTo_user_name = data.getTo_user_name();
+                mTo_user_toco_id=data.getToco_id();
+                mUser_name = data.getUser_name();
+                mUser_toco_id=data.getToco_id();
+                if (data.getType() == 1) {
+                    mTvTransferHint.setText(getString(R.string.shijidao_transfer));
+                    mTvBuysell.setText(getString(R.string.seller) + ":" + data.getTo_user_name());
+                    mTvBuysell2.setText(getString(R.string.buyer) + ":" + data.getUser_name());
+                } else {
+                    mBtnSellCancel.setVisibility(View.GONE);
+                    mTvTransferHint.setText(getString(R.string.shijikou_coin));
+                    mTvBuysell2.setText(getString(R.string.seller) + ":" + data.getTo_user_name());
+                    mTvBuysell.setText(getString(R.string.buyer) + ":" + data.getUser_name());
+                }
+                mTvCount.setText(data.getNumber());
+                mTvMoney.setText(data.getTrans_amount());
+                mTvPrice.setText(data.getPrice());
+                mTvPayType.setText(data.getStatus_name());
+                mTvEmail.setText(data.getEmail());
+                mTvPhone.setText(data.getMobile());
+                mTvDealNumber.setText(data.getPayment_no() + "");
+                mTvServiceCharge.setText(Double.parseDouble(data.getOtc_free()) * 100 + "%");
+                mTvShiji.setText(data.getActual_number());
+                if (data.getRemark() != null) {
+                    mTvRemark.setText(getString(R.string.remark) + ":" + data.getRemark());
+                }
+                if (data.getBank() != null) {
+                    mTvBankName.setText(data.getBank().getCard_name());
+                    mTvBankNumber.setText(data.getBank().getCard_number());
+                    mTvBankSite.setText(data.getBank().getBank_name());
                 }
             }
         });
@@ -304,14 +345,14 @@ public class OrderDetailsActivity extends BaseActivity {
                         Intent intent = new Intent(this, ConversationActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("name", mTo_user_name);
-                        bundle.putString("user", mTo_user_name + "@" + Constants.DOMAINNAME);
+                        bundle.putString("user", mTo_user_toco_id);
                         intent.putExtras(bundle);
                         startActivity(intent);
                     } else {
                         Intent intent = new Intent(this, ConversationActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("name", mUser_name);
-                        bundle.putString("user", mUser_name + "@" + Constants.DOMAINNAME);
+                        bundle.putString("user", mUser_toco_id );
                         intent.putExtras(bundle);
                         startActivity(intent);
                     }

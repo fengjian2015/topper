@@ -21,7 +21,7 @@ import java.util.HashMap;
 /**
  * Created by GIjia on 2018/5/7.
  */
-
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class OtrChatListenerManager {
     private final String protocolName="xmpp";
     public static OtrChatListenerManager mInstance;
@@ -51,16 +51,16 @@ public class OtrChatListenerManager {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void changeState(String mUser,Context context){
         try {
-            if (getIsAboutOpen(sessionID(UtilTool.getJid(),mUser))){
+            if (getIsAboutOpen(sessionID(UtilTool.getTocoId(),mUser))){
                 Toast.makeText(context,context.getString(R.string.is_open),Toast.LENGTH_SHORT).show();
                 return;
             }
             if("true".equals(getOTRState(mUser))){
-                endMessage(sessionID(UtilTool.getJid(),mUser));
+                endMessage(sessionID(UtilTool.getTocoId(),mUser));
             }else{
-                createOtrChatManager(sessionID(UtilTool.getJid(),mUser),context);
-                startMessage(sessionID(UtilTool.getJid(),mUser),context);
-                startSession(sessionID(UtilTool.getJid(),mUser));
+                createOtrChatManager(sessionID(UtilTool.getTocoId(),mUser),context);
+                startMessage(sessionID(UtilTool.getTocoId(),mUser),context);
+                startSession(sessionID(UtilTool.getTocoId(),mUser));
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -146,7 +146,8 @@ public class OtrChatListenerManager {
         hashMap.get(sessionID.toString()).startSession(sessionID);
     }
 
-    public void establish(SessionID sessionID,String lastInjectedMessage){
+
+    public void establish(SessionID sessionID, String lastInjectedMessage){
         try {
             hashMap.get(sessionID.toString()).establish(sessionID,lastInjectedMessage);
         } catch (OtrException e) {

@@ -2,9 +2,6 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,29 +30,19 @@ import com.bclould.tocotalk.Presenter.RedPacketPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
-import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
 import com.bclould.tocotalk.history.DBManager;
-import com.bclould.tocotalk.model.ConversationInfo;
-import com.bclould.tocotalk.model.MessageInfo;
-import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
+import com.bclould.tocotalk.history.DBRoomManage;
+import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
-import com.bclould.tocotalk.utils.Constants;
-import com.bclould.tocotalk.utils.MessageEvent;
+import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bclould.tocotalk.xmpp.RoomManage;
-import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
-
-import org.greenrobot.eventbus.EventBus;
-import org.jivesoftware.smack.chat.Chat;
-import org.jivesoftware.smack.chat.ChatManager;
-import org.jxmpp.jid.impl.JidCreate;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -63,7 +50,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.bclould.tocotalk.R.style.BottomDialog;
-import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_TRANSFER_MSG;
 
 /**
  * Created by GA on 2018/4/2.
@@ -102,6 +88,7 @@ public class ChatTransferActivity extends BaseActivity {
     private String mRemark;
     private String mName;
     private String mCoin;
+    private DBRoomManage mdbRoomManage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,6 +96,7 @@ public class ChatTransferActivity extends BaseActivity {
         setContentView(R.layout.activity_chat_transfer);
         ButterKnife.bind(this);
         mMgr = new DBManager(this);
+        mdbRoomManage=new DBRoomManage(this);
         mRedPacketPresenter = new RedPacketPresenter(this);
         initIntent();
     }
@@ -116,15 +104,17 @@ public class ChatTransferActivity extends BaseActivity {
     private void initIntent() {
         Intent intent = getIntent();
         mUser = intent.getStringExtra("user");
-        if (mUser.contains("@"))
-            mName = mUser.substring(0, mUser.indexOf("@"));
+        mName=mMgr.findUserName(mUser);
+        if(StringUtils.isEmpty(mName)){
+            mName=mdbRoomManage.findRoomName(mUser);
+        }
+        mTvName.setText(mName);
         String remark = mMgr.queryRemark(mUser);
         if (remark.isEmpty()) {
             mTvName.setText(mName);
         } else {
             mTvName.setText(remark);
         }
-//        String jid = mName + "@" + Constants.DOMAINNAME;
 //        mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, ChatTransferActivity.this));
         UtilTool.getImage(mMgr, mUser, ChatTransferActivity.this, mIvTouxiang);
     }
@@ -257,10 +247,10 @@ public class ChatTransferActivity extends BaseActivity {
         mCount = mEtCount.getText().toString();
         mRemark = mEtRemark.getText().toString();
         if (mRemark.isEmpty()) {
-            mRemark = getString(R.string.transfer) + getString(R.string.transfer_give) + mTvName.getText().toString();
+            mRemark = getString(R.string.transfer_give) + mTvName.getText().toString();
         }
         mCoin = mTvCoin.getText().toString();
-        mRedPacketPresenter.transgerfriend(mCoin, mName, Double.parseDouble(mCount), password, mRemark);
+        mRedPacketPresenter.transgerfriend(mCoin, mUser, Double.parseDouble(mCount), password, mRemark);
     }
 
     public void showHintDialog() {
@@ -364,7 +354,7 @@ public class ChatTransferActivity extends BaseActivity {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mCoinList));
+            recyclerView.setAdapter(new BottomDialogRVAdapter4(this, MyApp.getInstance().mCoinList));
         } else {
             recyclerView.setVisibility(View.GONE);
             addCoin.setVisibility(View.VISIBLE);

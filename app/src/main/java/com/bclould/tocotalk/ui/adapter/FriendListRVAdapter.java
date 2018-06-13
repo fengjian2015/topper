@@ -106,6 +106,7 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
         TextView mFriendChildName;
         UserInfo mUserInfo;
         private String mUser;
+        private String mName;
 
         ViewHolder(View view) {
             super(view);
@@ -116,7 +117,7 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, ConversationActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString("name", mUser.substring(0, mUser.indexOf("@")));
+                    bundle.putString("name", mName);
                     bundle.putString("user", mUser);
                     intent.putExtras(bundle);
                     mMgr.updateNumber(mUser, 0);
@@ -127,7 +128,7 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showRemarkDialog( mUser.substring(0, mUser.indexOf("@")),mFriendChildName.getText().toString(),mUser);
+                    showRemarkDialog( mName,mFriendChildName.getText().toString(),mUser);
                     return false;
                 }
             });
@@ -136,6 +137,7 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
         public void setData(UserInfo userInfo, int position) {
             mUserInfo = userInfo;
             mUser = userInfo.getUser();
+            mName= userInfo.getUserName();
             String remark = userInfo.getRemark();
             //根据position获取首字母作为目录catalog
             String catalog = userInfo.getFirstLetter();
@@ -152,8 +154,8 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
             UtilTool.Log("好友", mUser);
             if (!StringUtils.isEmpty(remark)) {
                 mFriendChildName.setText(remark);
-            } else if (mUser.contains("@"))
-                mFriendChildName.setText(mUser.substring(0, mUser.indexOf("@")));
+            } else
+                mFriendChildName.setText(mName);
         }
     }
 

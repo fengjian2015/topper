@@ -29,7 +29,7 @@ import android.widget.Toast;
 import com.bclould.tocotalk.Presenter.RedPacketPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
-import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter2;
+import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
@@ -275,7 +275,7 @@ public class SendQRCodeRedActivity extends AppCompatActivity {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(new BottomDialogRVAdapter2(this, MyApp.getInstance().mCoinList));
+            recyclerView.setAdapter(new BottomDialogRVAdapter4(this, MyApp.getInstance().mCoinList));
         } else {
             recyclerView.setVisibility(View.GONE);
             addCoin.setVisibility(View.VISIBLE);

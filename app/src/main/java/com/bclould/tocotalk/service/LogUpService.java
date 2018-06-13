@@ -7,16 +7,6 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 
-import com.amazonaws.Request;
-import com.amazonaws.Response;
-import com.amazonaws.auth.BasicSessionCredentials;
-import com.amazonaws.handlers.RequestHandler2;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.bclould.tocotalk.base.MyApp;
-import com.bclould.tocotalk.ui.activity.StartActivity;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.UtilTool;
 
@@ -43,7 +33,7 @@ public class LogUpService extends Service {
     }
 
     private void upLoadErrorFileToServer(final File logFile) {
-        new Thread(new Runnable() {
+        /*new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -84,7 +74,7 @@ public class LogUpService extends Service {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        }).start();*/
     }
 
     @Override

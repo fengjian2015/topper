@@ -7,9 +7,10 @@
                 android:orientation="vertical">
 
     <ImageView
-        android:layout_width="@dimen/x300"
-        android:layout_height="@dimen/x300"
+        android:id="@+id/iv_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@mipmap/logo2"/>
+        android:background="@drawable/anim_start"/>
 
 </RelativeLayout>

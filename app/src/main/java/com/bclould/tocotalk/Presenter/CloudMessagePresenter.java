@@ -9,13 +9,6 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bclould.tocotalk.xmpp.XmppConnection;
-
-import org.jivesoftware.smack.roster.Roster;
-import org.jivesoftware.smack.roster.RosterGroup;
-
-import java.util.Collection;
-
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -34,12 +27,6 @@ public class CloudMessagePresenter {
         mContext = context;
     }
 
-    public Collection<RosterGroup> getContact() {
-        Roster roster = Roster.getInstanceFor(XmppConnection.getInstance().getConnection());
-        Collection<RosterGroup> groups = roster.getGroups();
-        return groups;
-
-    }
 
     public void searchUser(final String user, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {

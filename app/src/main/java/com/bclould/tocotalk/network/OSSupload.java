@@ -3,13 +3,14 @@ package com.bclould.tocotalk.network;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import com.alibaba.sdk.android.oss.ClientConfiguration;
 import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
-import com.alibaba.sdk.android.oss.common.auth.OSSFederationCredentialProvider;
-import com.alibaba.sdk.android.oss.common.auth.OSSFederationToken;
-import com.bclould.tocotalk.Presenter.DillDataPresenter;
+import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider;
 import com.bclould.tocotalk.base.MyApp;
-import com.bclould.tocotalk.model.OSSInfo;
+import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.MySharedPreferences;
+import com.bclould.tocotalk.utils.UtilTool;
 
 
 /**
@@ -20,8 +21,6 @@ import com.bclould.tocotalk.model.OSSInfo;
 public class OSSupload {
 
     private static OSSupload instance;
-    private DillDataPresenter mDillDataPresenter;
-    private String mEndpoint;
 
     //单例
     public static OSSupload getInstance() {
@@ -32,28 +31,18 @@ public class OSSupload {
     }
 
     public OSSClient visitOSS() {
-        if (mDillDataPresenter == null) {
-            mDillDataPresenter = new DillDataPresenter(MyApp.getInstance().app());
-        }
-        OSSCredentialProvider credentialProvider = new OSSFederationCredentialProvider() {
-            private String mSecurityToken;
-            private String mAccessKeySecret;
-            private String mAccessKeyId;
-
-            @Override
-            public OSSFederationToken getFederationToken() {
-                mDillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
-                    @Override
-                    public void send(OSSInfo.DataBean data) {
-                        mAccessKeyId = data.getCredentials().getAccessKeyId();
-                        mAccessKeySecret = data.getCredentials().getAccessKeySecret();
-                        mSecurityToken = data.getCredentials().getSecurityToken();
-                        mEndpoint = data.getEndpoint();
-                    }
-                });
-                return new OSSFederationToken(mAccessKeyId, mAccessKeySecret, mSecurityToken, mEndpoint);
-            }
-        };
-        return new OSSClient(MyApp.getInstance().app(), mEndpoint, credentialProvider);
+        UtilTool.Log("oss", MySharedPreferences.getInstance().getString(Constants.OSS_SECRETACCESSKEY));
+        UtilTool.Log("oss", MySharedPreferences.getInstance().getString(Constants.OSS_ACCESSKEYID));
+        UtilTool.Log("oss", MySharedPreferences.getInstance().getString(Constants.OSS_SESSIONTOKEN));
+        OSSCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider(
+                MySharedPreferences.getInstance().getString(Constants.OSS_ACCESSKEYID),
+                MySharedPreferences.getInstance().getString(Constants.OSS_SECRETACCESSKEY),
+                MySharedPreferences.getInstance().getString(Constants.OSS_SESSIONTOKEN));
+        ClientConfiguration conf = new ClientConfiguration();
+        conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒
+        conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
+        conf.setMaxConcurrentRequest(20); // 最大并发请求书，默认5个
+        conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
+        return new OSSClient(MyApp.getInstance().app(), MySharedPreferences.getInstance().getString(Constants.OSS_ENDOPINT), credentialProvider);
     }
 }

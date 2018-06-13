@@ -21,17 +21,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.Request;
-import com.amazonaws.Response;
-import com.amazonaws.auth.BasicSessionCredentials;
-import com.amazonaws.handlers.RequestHandler2;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.alibaba.sdk.android.oss.ClientException;
+import com.alibaba.sdk.android.oss.OSSClient;
+import com.alibaba.sdk.android.oss.ServiceException;
+import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
+import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
+import com.alibaba.sdk.android.oss.model.PutObjectRequest;
+import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.bclould.tocotalk.Presenter.RealNamePresenter;
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.network.OSSupload;
 import com.bclould.tocotalk.ui.adapter.ProblemFeedBackRVAdapter;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.AnimatorTool;
@@ -46,7 +45,6 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.permissions.RxPermissions;
 import com.luck.picture.lib.tools.PictureFileUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,6 +80,7 @@ public class ProblemFeedBackFragment extends Fragment {
     private ProblemFeedBackRVAdapter adapter;
     private LoadingProgressDialog mProgressDialog;
     private RealNamePresenter mRealNamePresenter;
+    private OSSAsyncTask<PutObjectResult> mTask;
 
     public static ProblemFeedBackFragment getInstance() {
 
@@ -282,18 +281,8 @@ public class ProblemFeedBackFragment extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 0) {
-                String key = (String) msg.obj;
-                if (count == 1) {
-                    keyList = key;
-                } else {
-                    keyList += "," + key;
-                }
-                count++;
-                if (count == mSelectList.size()) {
-                    submit(keyList);
-                }
-            }else {
-                Toast.makeText(getContext(), getString(R.string.up_error), Toast.LENGTH_SHORT).show();
+
+            } else {
             }
         }
     };
@@ -311,51 +300,35 @@ public class ProblemFeedBackFragment extends Fragment {
 
     private void upImage() {
         showDialog();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    for (LocalMedia info : mSelectList) {
-                        File file = new File(info.getCompressPath());
-                        final String key = UtilTool.getUserId() + UtilTool.createtFileName() + UtilTool.getPostfix2(file.getName());
-                        BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
-                                Constants.ACCESS_KEY_ID,
-                                Constants.SECRET_ACCESS_KEY,
-                                Constants.SESSION_TOKEN);
-                        AmazonS3Client s3Client = new AmazonS3Client(
-                                sessionCredentials);
-                        Regions regions = Regions.fromName("ap-northeast-2");
-                        Region region = Region.getRegion(regions);
-                        s3Client.setRegion(region);
-                        s3Client.addRequestHandler(new RequestHandler2() {
-                            @Override
-                            public void beforeRequest(Request<?> request) {
+        OSSClient ossClient = OSSupload.getInstance().visitOSS();
+        for (LocalMedia info : mSelectList) {
+            final String key = UtilTool.getUserId() + UtilTool.createtFileName() + UtilTool.getPostfix2(info.getCompressPath());
 
-                            }
-
-                            @Override
-                            public void afterResponse(Request<?> request, Response<?> response) {
-                                Message message = new Message();
-                                message.obj = key;
-                                message.what = 0;
-                                handler.sendMessage(message);
-                            }
-
-                            @Override
-                            public void afterError(Request<?> request, Response<?> response, Exception e) {
-
-                            }
-                        });
-                        PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, key, file);
-                        s3Client.putObject(por);
+            PutObjectRequest put = new PutObjectRequest(Constants.BUCKET_NAME, key, info.getCompressPath());
+            mTask = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+                @Override
+                public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
+                    String key = putObjectRequest.getObjectKey();
+                    if (count == 1) {
+                        keyList = key;
+                    } else {
+                        keyList += "," + key;
                     }
-                } catch (AmazonClientException e) {
-                    hideDialog();
-                    handler.sendEmptyMessage(1);
-                    e.printStackTrace();
+                    count++;
+                    if (count == mSelectList.size()) {
+                        submit(keyList);
+                    }
                 }
-            }
-        }).start();
+
+                @Override
+                public void onFailure(PutObjectRequest putObjectRequest, ClientException e, ServiceException e1) {
+                    hideDialog();
+                    Toast.makeText(getContext(), getString(R.string.up_error), Toast.LENGTH_SHORT).show();
+                    UtilTool.Log("oss", e.getMessage());
+                    UtilTool.Log("oss", e1.getMessage());
+                }
+            });
+        }
     }
 
     private boolean checkEdit() {
@@ -384,5 +357,12 @@ public class ProblemFeedBackFragment extends Fragment {
                 hideDialog();
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mTask.cancel();
+        ButterKnife.unbind(this);
     }
 }

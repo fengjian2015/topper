@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.Presenter.IndividualDetailsPresenter;
+import com.bclould.tocotalk.Presenter.PersonalDetailsPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
@@ -20,19 +21,12 @@ import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.IndividualInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
-import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.ToastShow;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-
 import org.greenrobot.eventbus.EventBus;
-import org.jivesoftware.smack.roster.Roster;
-import org.jivesoftware.smack.roster.RosterEntry;
-import org.jxmpp.jid.impl.JidCreate;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -125,7 +119,7 @@ public class IndividualDetailsActivity extends BaseActivity {
         mName = intent.getStringExtra("name");
         roomId = intent.getStringExtra("roomId");
         if (mMgr.findUser(mUser)) {
-            if (mName.equals(UtilTool.getUser())) {
+            if (mUser.equals(UtilTool.getTocoId())) {
                 type = 3;
             } else {
                 type = 1;
@@ -154,7 +148,7 @@ public class IndividualDetailsActivity extends BaseActivity {
             rlRemark.setVisibility(View.GONE);
         }
         mPresenter = new IndividualDetailsPresenter(this);
-        mPresenter.getIndividual(mName, new IndividualDetailsPresenter.CallBack() {
+        mPresenter.getIndividual(mUser, new IndividualDetailsPresenter.CallBack() {
             @Override
             public void send(IndividualInfo.DataBean data) {
                 if (!IndividualDetailsActivity.this.isDestroyed()) {
@@ -196,6 +190,7 @@ public class IndividualDetailsActivity extends BaseActivity {
                 } else {
                     Intent intent = new Intent(this, PersonageDynamicActivity.class);
                     intent.putExtra("name", mName);
+                    intent.putExtra("user",mUser);
                     startActivity(intent);
                 }
                 break;
@@ -229,7 +224,7 @@ public class IndividualDetailsActivity extends BaseActivity {
 
     //不看Ta的動態
     private void noLookTaDy(final int type) {
-        mPresenter.noLookTaDy(mName, type, new IndividualDetailsPresenter.CallBack2() {
+        mPresenter.noLookTaDy(mUser, type, new IndividualDetailsPresenter.CallBack2() {
             @Override
             public void send() {
                 if (type == 2) {
@@ -281,14 +276,8 @@ public class IndividualDetailsActivity extends BaseActivity {
 
     private void addFriend() {
         try {
-            String name = "";
-            if (!mName.contains(Constants.DOMAINNAME)) {
-                name = mName + "@" + Constants.DOMAINNAME;
-            }
-
-            if (!mMgr.findUser(name)) {
-                Roster.getInstanceFor(XmppConnection.getInstance().getConnection()).createEntry(JidCreate.entityBareFrom(name), null, new String[]{"Friends"});
-                Toast.makeText(this, getString(R.string.send_request_succeed), Toast.LENGTH_SHORT).show();
+            if (!mMgr.findUser(mUser)) {
+                new PersonalDetailsPresenter(this).addFriend(mUser,mName);
             } else {
                 Toast.makeText(this, getString(R.string.have_friend), Toast.LENGTH_SHORT).show();
             }
@@ -296,7 +285,6 @@ public class IndividualDetailsActivity extends BaseActivity {
             Toast.makeText(this, getString(R.string.send_request_error), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-
     }
 
     private void showDeleteDialog() {
@@ -319,16 +307,17 @@ public class IndividualDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    Roster roster = Roster.getInstanceFor(XmppConnection.getInstance().getConnection());
-                    RosterEntry entry = roster.getEntry(JidCreate.entityBareFrom(mUser));
-                    roster.removeEntry(entry);
-                    Toast.makeText(IndividualDetailsActivity.this, getString(R.string.delete_succeed), Toast.LENGTH_SHORT).show();
-                    mMgr.deleteConversation(roomId);
-                    mMgr.deleteMessage(roomId);
-                    mMgr.deleteUser(mUser);
-                    EventBus.getDefault().post(new MessageEvent(getString(R.string.delete_friend)));
+                    new PersonalDetailsPresenter(IndividualDetailsActivity.this).deleteFriend(mUser, new PersonalDetailsPresenter.CallBack() {
+                        @Override
+                        public void send() {
+                            mMgr.deleteConversation(roomId);
+                            mMgr.deleteMessage(roomId);
+                            mMgr.deleteUser(mUser);
+                            EventBus.getDefault().post(new MessageEvent(getString(R.string.delete_friend)));
+                            finish();
+                        }
+                    });
                     deleteCacheDialog.dismiss();
-                    finish();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

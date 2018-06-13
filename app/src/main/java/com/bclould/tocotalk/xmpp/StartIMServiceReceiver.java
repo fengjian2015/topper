@@ -8,6 +8,7 @@ import android.support.annotation.RequiresApi;
 
 import com.bclould.tocotalk.service.IMCoreService;
 import com.bclould.tocotalk.service.IMService;
+import com.bclould.tocotalk.topperchat.WsConnection;
 import com.bclould.tocotalk.utils.UtilTool;
 
 /**
@@ -19,7 +20,7 @@ public class StartIMServiceReceiver extends BroadcastReceiver {
     public synchronized void onReceive(Context context, Intent intent) {
         if (IMCoreService.ACTION_START_IMSERVICE.equals(intent.getAction())) {
             UtilTool.Log("fengjian","---收到打开IMService的广播");
-            if (XmppConnection.getInstance().isServiceWork(context,
+            if (WsConnection.isServiceWork(context,
                     "com.bclould.tocotalk.service.IMService")) {
                 return;
             }

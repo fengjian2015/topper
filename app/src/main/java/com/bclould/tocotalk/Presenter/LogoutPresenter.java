@@ -11,14 +11,13 @@ import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
+import com.bclould.tocotalk.topperchat.WsConnection;
+import com.bclould.tocotalk.topperchat.WsOfflineConnection;
 import com.bclould.tocotalk.ui.activity.InitialActivity;
-import com.bclould.tocotalk.ui.activity.LoginActivity;
 import com.bclould.tocotalk.ui.activity.SystemSetActivity;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bclould.tocotalk.xmpp.XmppConnection;
-
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -104,7 +103,8 @@ public class LogoutPresenter {
             @Override
             public void run() {
                 try {
-                    XmppConnection.getInstance().closeConnection();
+                    WsConnection.getInstance().closeConnection();
+                    WsOfflineConnection.getInstance().closeConnection();
                     UtilTool.Log("fsdafa", "退出成功");
                     Message msg = new Message();
                     myHandler.sendMessage(msg);

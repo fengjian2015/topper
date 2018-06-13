@@ -104,7 +104,7 @@ public class EmitFragment extends Fragment {
                         mLlTotal.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
                     }
-                    UtilTool.getImage(mDbManager, UtilTool.getJid(), getContext(), mIvTouxiang);
+                    UtilTool.getImage(mDbManager, UtilTool.getTocoId(), getContext(), mIvTouxiang);
                     mTvName.setText(data.getName() + getString(R.string.sum_send));
                     mTvCount.setText(data.getTotal_money() + "");
                     mTvRedCount.setText(data.getRp_number() + "");

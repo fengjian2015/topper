@@ -25,15 +25,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.Request;
-import com.amazonaws.Response;
-import com.amazonaws.auth.BasicSessionCredentials;
-import com.amazonaws.handlers.RequestHandler2;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.bclould.tocotalk.Presenter.DynamicPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
@@ -42,9 +33,7 @@ import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.ui.activity.MainActivity;
 import com.bclould.tocotalk.ui.adapter.DynamicRVAdapter;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
-import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
-import com.bclould.tocotalk.utils.UtilTool;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.compress.Luban;
 import com.luck.picture.lib.config.PictureConfig;
@@ -58,7 +47,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -420,7 +408,7 @@ public class DynamicFragment extends Fragment {
     };
 
     private void upImg(String compressPath) {
-        File file = new File(compressPath);
+        /*File file = new File(compressPath);
         final String key = UtilTool.getUserId() + UtilTool.createtFileName() + "compress" + UtilTool.getPostfix2(file.getName());
         //缩略图储存路径
         final File newFile = new File(Constants.PUBLICDIR + key);
@@ -464,7 +452,7 @@ public class DynamicFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        }).start();*/
     }
 
     private void sendComment(final String id, final String reply_id, String key, int key_type) {

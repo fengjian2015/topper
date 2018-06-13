@@ -153,6 +153,7 @@ public class DillDataPresenter {
 
                         @Override
                         public void onError(@NonNull Throwable e) {
+                            UtilTool.Log("oss", e.getMessage());
                         }
 
                         @Override

@@ -59,6 +59,15 @@ public class GrabRedInfo implements Serializable {
         private String coin_name;
         private int rp_number;
         private List<LogBean> log;
+        private String avatar;
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
 
         public String getSend_rp_user_name() {
             return send_rp_user_name;
@@ -120,6 +129,15 @@ public class GrabRedInfo implements Serializable {
             private String money;
             private int id;
             private int is_good;
+            private String avatar;
+
+            public String getAvatar() {
+                return avatar;
+            }
+
+            public void setAvatar(String avatar) {
+                this.avatar = avatar;
+            }
 
             public int getIs_good() {
                 return is_good;

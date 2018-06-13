@@ -50,35 +50,21 @@ import com.bclould.tocotalk.ui.adapter.FriendListRVAdapter;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
+import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
-import com.bclould.tocotalk.xmpp.XmppConnection;
 import com.gjiazhe.wavesidebar.WaveSideBar;
 import com.google.gson.Gson;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.StanzaListener;
-import org.jivesoftware.smack.filter.AndFilter;
-import org.jivesoftware.smack.filter.StanzaTypeFilter;
-import org.jivesoftware.smack.packet.Presence;
-import org.jivesoftware.smack.packet.Stanza;
-import org.jivesoftware.smack.roster.Roster;
-import org.jivesoftware.smack.roster.RosterEntry;
-import org.jivesoftware.smack.roster.RosterGroup;
-import org.jxmpp.jid.impl.JidCreate;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -94,9 +80,9 @@ import static com.bclould.tocotalk.utils.MySharedPreferences.SETTING;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class FriendListFragment extends Fragment {
 
-    private static final String NEWFRIEND = "new_friend";
+    public static final String NEWFRIEND = "new_friend";
     public static FriendListFragment instance = null;
-    String response, acceptAdd, alertName, alertSubName;
+    String response, acceptAdd, tocoId, alertSubName;
     @Bind(R.id.iv_more)
     ImageView mIvMore;
     @Bind(R.id.rl_title)
@@ -115,6 +101,8 @@ public class FriendListFragment extends Fragment {
     RecyclerView mRecyclerView;
     @Bind(R.id.side_bar)
     WaveSideBar mSideBar;
+    @Bind(R.id.refresh_layout)
+    SmartRefreshLayout mRefreshLayout;
 
     private int QRCODE = 1;
     private DisplayMetrics mDm;
@@ -133,22 +121,20 @@ public class FriendListFragment extends Fragment {
                     updateData();
                     break;
                 case 1:
-                    String from = (String) msg.obj;
-                    mNewFriend += 1;
-                    MySharedPreferences.getInstance().setInteger(NEWFRIEND, mNewFriend);
+                    mNewFriend = MySharedPreferences.getInstance().getInteger(NEWFRIEND);
                     mNumber.setText(mNewFriend + "");
                     mNumber.setVisibility(View.VISIBLE);
-                    mId = mMgr.addRequest(from, 0);
+//                    mId = mMgr.addRequest(from, 0);
                     break;
-                case 2:
-                    String from2 = (String) msg.obj;
-                    mNewFriend += 1;
-                    MySharedPreferences.getInstance().setInteger(NEWFRIEND, mNewFriend);
-                    mNumber.setText(mNewFriend + "");
-                    mNumber.setVisibility(View.VISIBLE);
-                    int id = mMgr.queryRequest(from2).getId();
-                    mMgr.updateRequest(id, 0);
-                    break;
+//                case 2:
+//                    String from2 = (String) msg.obj;
+//                    mNewFriend += 1;
+//                    MySharedPreferences.getInstance().setInteger(NEWFRIEND, mNewFriend);
+//                    mNumber.setText(mNewFriend + "");
+//                    mNumber.setVisibility(View.VISIBLE);
+//                    int id = mMgr.queryRequest(from2).getId();
+//                    mMgr.updateRequest(id, 0);
+//                    break;
             }
         }
     };
@@ -158,7 +144,6 @@ public class FriendListFragment extends Fragment {
     private int mId;
     private int mNewFriend;
     private PersonalDetailsPresenter mPersonalDetailsPresenter;
-    private ExecutorService executorService = Executors.newFixedThreadPool(1);
 
     public static FriendListFragment getInstance() {
 
@@ -183,6 +168,7 @@ public class FriendListFragment extends Fragment {
         }
         mMgr = new DBManager(getContext());
         mPersonalDetailsPresenter = new PersonalDetailsPresenter(getContext());
+        initData();
         setListener();
         initRecylerView();
         if (!EventBus.getDefault().isRegistered(this))
@@ -218,7 +204,6 @@ public class FriendListFragment extends Fragment {
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.login_succeed))) {
-            addFriendListener();
             initData();
         } else if (msg.equals(getString(R.string.new_friend))) {
             initData();
@@ -226,42 +211,15 @@ public class FriendListFragment extends Fragment {
             updateData();
         } else if (msg.equals(getString(R.string.change_friend_remark))) {
             updateData();
+        }else if(msg.equals(getString(R.string.receive_add_request))){
+            sendHandler();
         }
     }
 
-    /***
-     * 异步刷新刷新某一条数据
-     */
-    private void refreshDataWithRoomIdInBackground() {
-        Runnable doInBackgroundrefreshDataWithRoomId = new Runnable() {
-            @Override
-            public void run() {
-                mUsers.clear();
-                List<UserInfo> userInfos = mMgr.queryAllUser();
-                UserInfo userInfo = null;
-                UserInfo userInfo2 = null;
-                for (UserInfo info : userInfos) {
-                    if (info.getUser().equals(UtilTool.getJid())) {
-                        userInfo = info;
-                    } else if (info.getUser().isEmpty()) {
-                        userInfo2 = info;
-                    }
-                }
-                userInfos.remove(userInfo);
-                if (userInfo2 != null)
-                    userInfos.remove(userInfo2);
-                mUsers.addAll(userInfos);
-                Collections.sort(mUsers);
-                ((Activity) getContext()).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mFriendListRVAdapter.notifyDataSetChanged();
-                    }
-                });
-
-            }
-        };
-        executorService.execute(doInBackgroundrefreshDataWithRoomId);
+    private void sendHandler() {
+        Message message=new Message();
+        message.what=1;
+        myHandler.sendMessage(message);
     }
 
     private void updateData() {
@@ -270,9 +228,9 @@ public class FriendListFragment extends Fragment {
         UserInfo userInfo = null;
         UserInfo userInfo2 = null;
         for (UserInfo info : userInfos) {
-            if (info.getUser().equals(UtilTool.getJid())) {
+            if (UtilTool.getTocoId().equals(info.getUser())) {
                 userInfo = info;
-            } else if (info.getUser().isEmpty()) {
+            } else if (StringUtils.isEmpty(info.getUser())) {
                 userInfo2 = info;
             }
         }
@@ -289,22 +247,17 @@ public class FriendListFragment extends Fragment {
 
     //广播接收器
     public class MyReceiver extends BroadcastReceiver {
-
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(final Context context, Intent intent) {
             //接收传递的字符串response
             Bundle bundle = intent.getExtras();
             response = bundle.getString("response");
             UtilTool.Log("fsdafa", "广播收到" + response);
-//            text_response.setText(response);
             if (response == null) {
                 //获取传递的字符串及发送方JID
                 acceptAdd = bundle.getString("acceptAdd");
-                alertName = bundle.getString("fromName");
-                if (alertName != null) {
-                    //裁剪JID得到对方用户名
-                    alertSubName = alertName.substring(0, alertName.indexOf("@"));
-                }
+                tocoId = bundle.getString("fromName");
+                alertSubName=bundle.getString("alertSubName");
                 if (acceptAdd.equals(getString(R.string.receive_add_request))) {
                     //弹出一个对话框，包含同意和拒绝按钮
                     SharedPreferences sp = getContext().getSharedPreferences(SETTING, 0);
@@ -322,13 +275,15 @@ public class FriendListFragment extends Fragment {
                         //同意按钮监听事件，发送同意Presence包及添加对方为好友的申请
                         @Override
                         public void onClick(DialogInterface dialog, int arg1) {
-                            Presence presenceRes = new Presence(Presence.Type.subscribed);
-                            presenceRes.setTo(alertName);
                             try {
-                                XmppConnection.getInstance().getConnection().sendStanza(presenceRes);
-                                Roster.getInstanceFor(XmppConnection.getInstance().getConnection()).createEntry(JidCreate.entityBareFrom(alertName), null, new String[]{"Friends"});
-                                initData();
-                                mMgr.updateRequest(mId, 1);
+                                new PersonalDetailsPresenter(context).confirmAddFriend(tocoId, 1, new PersonalDetailsPresenter.CallBack() {
+                                    @Override
+                                    public void send() {
+                                        mMgr.updateRequest(tocoId, 1);
+                                        //同意
+                                        initData();
+                                    }
+                                });
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -338,14 +293,15 @@ public class FriendListFragment extends Fragment {
                         //拒绝按钮监听事件，发送拒绝Presence包
                         @Override
                         public void onClick(DialogInterface dialog, int arg1) {
-                            Presence presenceRes = new Presence(Presence.Type.unsubscribe);
-                            presenceRes.setTo(alertName);
                             try {
-                                XmppConnection.getInstance().getConnection().sendStanza(presenceRes);
-                                Roster roster = Roster.getInstanceFor(XmppConnection.getInstance().getConnection());
-                                RosterEntry entry = roster.getEntry(JidCreate.entityBareFrom(alertName));
-                                roster.removeEntry(entry);
-                                updateData();
+                                //拒絕
+                                new PersonalDetailsPresenter(context).confirmAddFriend(tocoId, 2, new PersonalDetailsPresenter.CallBack() {
+                                    @Override
+                                    public void send() {
+                                        mMgr.updateRequest(tocoId, 2);
+                                        updateData();
+                                    }
+                                });
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -354,112 +310,11 @@ public class FriendListFragment extends Fragment {
                     builder.show();
                 }
             }
-
         }
-
     }
 
-    /**
-     * 添加好友请求信息监听
-     */
-    public void addFriendListener() {
-        //条件过滤器
-
-        AndFilter filter = new AndFilter(new StanzaTypeFilter(Presence.class));
-        //添加监听
-        if (XmppConnection.getInstance().getConnection().isConnected())
-            XmppConnection.getInstance().getConnection().addAsyncStanzaListener(packetListener, filter);
-
-
-    }
-
-    StanzaListener packetListener = new StanzaListener() {
-        @Override
-        public void processStanza(Stanza packet) throws SmackException.NotConnectedException, InterruptedException {
-            if (packet instanceof Presence) {
-                Presence presence = (Presence) packet;
-                String from = presence.getFrom().toString();//发送方
-                if (from.contains("/")) {
-                    from = from.substring(0, from.indexOf("/"));
-                }
-                String to = presence.getTo().toString();//接收方
-                if (presence.getType().equals(Presence.Type.subscribe)) {
-                    //发送广播传递发送方的JIDfrom及字符串
-                    UtilTool.Log("日志1", mMgr.findUser(from) + "");
-                    UtilTool.Log("发", from);
-                    if (!mMgr.findUser(from)) {
-                        if (!mMgr.findRequest(from)) {
-                            acceptAdd = getString(R.string.receive_add_request);
-                            Intent intent = new Intent();
-                            intent.putExtra("fromName", from);
-                            intent.putExtra("acceptAdd", acceptAdd);
-                            intent.setAction("com.example.eric_jqm_chat.SearchActivity");
-                            getContext().sendBroadcast(intent);
-                            Message message = new Message();
-                            message.what = 1;
-                            message.obj = from;
-                            myHandler.sendMessage(message);
-                        } else if (mMgr.queryRequest(from).getType() == 1) {
-                            acceptAdd = getString(R.string.receive_add_request);
-                            Intent intent = new Intent();
-                            intent.putExtra("fromName", from);
-                            intent.putExtra("acceptAdd", acceptAdd);
-                            intent.setAction("com.example.eric_jqm_chat.SearchActivity");
-                            getContext().sendBroadcast(intent);
-                            Message message = new Message();
-                            message.what = 2;
-                            message.obj = from;
-                            myHandler.sendMessage(message);
-                        } else {
-
-                        }
-                    }
-                } else if (presence.getType().equals(
-                        Presence.Type.subscribed)) {
-                    //发送广播传递response字符串
-                    response = getString(R.string.ta_consent_add_friend);
-                    Intent intent = new Intent();
-                    intent.putExtra("response", response);
-                    intent.setAction("com.example.eric_jqm_chat.SearchActivity");
-                    try {
-                        Roster.getInstanceFor(XmppConnection.getInstance().getConnection()).createEntry(JidCreate.entityBareFrom(from), null, new String[]{"Friends"});
-                        UtilTool.Log("fsdafa", "恭喜，对方同意添加好友！");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    getContext().sendBroadcast(intent);
-                } else if (presence.getType().equals(
-                        Presence.Type.unsubscribe)) {
-                    //发送广播传递response字符串
-                    response = getString(R.string.ta_reject_add_friend);
-                    try {
-                        Roster roster = Roster.getInstanceFor(XmppConnection.getInstance().getConnection());
-                        RosterEntry entry = roster.getEntry(JidCreate.entityBareFrom(from));
-                        roster.removeEntry(entry);
-                        UtilTool.Log("fsdafa", "删除成功！");
-                        mMgr.deleteUser(from);
-                        updateData();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        UtilTool.Log("fsdafa", e.getMessage());
-                    }
-                    Intent intent = new Intent();
-                    intent.putExtra("response", response);
-                    intent.setAction("com.example.eric_jqm_chat.SearchActivity");
-                    getContext().sendBroadcast(intent);
-                }
-            }
-        }
-    };
 
     private void setListener() {
-        /*mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                refreshlayout.finishRefresh(2000);
-                initData();
-            }
-        });*/
         mSideBar.bringToFront();
         mSideBar.setOnSelectIndexItemListener(new WaveSideBar.OnSelectIndexItemListener() {
             @Override
@@ -475,73 +330,16 @@ public class FriendListFragment extends Fragment {
     }
 
     private void initData() {
-        final CloudMessagePresenter cloudMessagePresenter = new CloudMessagePresenter(getContext() );
         try {
-            Collection<RosterGroup> rosterGroups = cloudMessagePresenter.getContact();
-            if (rosterGroups != null) {
-                UtilTool.Log("分組", rosterGroups.size() + "");
-                for (RosterGroup group : rosterGroups) {
-                    List<RosterEntry> entries = group.getEntries();
-                    String userList = "";
-                    for (final RosterEntry rosterEntry : entries) {
-                        if (userList.isEmpty()) {
-                            userList = rosterEntry.getUser();
-                        } else {
-                            userList += "," + rosterEntry.getUser();
-                        }
-                    }
-                    mPersonalDetailsPresenter.getFriendImageList(userList, new PersonalDetailsPresenter.CallBack2() {
-                        @Override
-                        public void send(final List<AuatarListInfo.DataBean> data) {
-                            if (data != null && data.size() != 0) {
-                                mMgr.addUserList(data);
-                                myHandler.sendEmptyMessage(0);
-                            }
-                        }
-                    });
-
-                    /*mPersonalDetailsPresenter.getFriendImageList(userList, new PersonalDetailsPresenter.CallBack2() {
-                        @Override
-                        public void send(final AuatarListInfo.DataBean dataBean) {
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (dataBean != null && !dataBean.getAvatar().isEmpty()) {
-                                        try {
-                                            UtilTool.Log("頭像", dataBean.getAvatar());
-                                            Drawable drawable = Glide.with(getContext())
-                                                    .load(dataBean.getAvatar())
-                                                    .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                                                    .get();
-                                            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-                                            Bitmap bitmap = bitmapDrawable.getBitmap();
-                                            UtilTool.saveImages(bitmap, dataBean.getName(), getContext(), mMgr);
-                                        } catch (Exception e) {
-                                        }
-                                    } else {
-                                        mMgr.addUser(rosterEntry.getUser(), "");
-                                    }
-                                    Message message = new Message();
-                                    myHandler.sendMessage(message);
-                                }
-                            }).start();
-                        }
-                    });
-
+            UtilTool.Log("fengjian","發送獲取好友列表請求");
+            mPersonalDetailsPresenter.getFriendList(new PersonalDetailsPresenter.CallBack2() {
+                @Override
+                public void send(List<AuatarListInfo.DataBean> data) {
+                    mMgr.deleteAllFriend();
+                    mMgr.addUserList(data);
+                    myHandler.sendEmptyMessage(0);
                 }
-                String user = mMgr.queryAllUserName().toString().replaceAll(" ", "");
-                if (StringUtils.isEmpty(user)) return;
-                mPersonalDetailsPresenter.getFriendRemark(user.substring(1, user.length() - 1), new PersonalDetailsPresenter.CallBack3() {
-                    @Override
-                    public void send(List<RemarkListInfo.DataBean> listdata) {
-                        if (listdata == null) return;
-                        mMgr.updateRemark(listdata);
-                        updateData();
-                    }
-                });*/
-                }
-            }
-
+            });
         } catch (Exception e) {
             UtilTool.Log("日志", e.getMessage());
         }
@@ -553,6 +351,24 @@ public class FriendListFragment extends Fragment {
         mFriendListRVAdapter = new FriendListRVAdapter(getContext(), mUsers, mMgr,mRlTitle);
         mRecyclerView.setAdapter(mFriendListRVAdapter);
         mRecyclerView.setNestedScrollingEnabled(false);
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh(1000);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        initData();
+                    }
+                }).start();
+
+            }
+        });
     }
 
     @Override

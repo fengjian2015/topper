@@ -30,7 +30,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
-import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bumptech.glide.Glide;
@@ -66,6 +65,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.TimeZone;
@@ -77,6 +77,7 @@ import io.reactivex.disposables.Disposable;
 
 import static com.bclould.tocotalk.Presenter.LoginPresenter.LOGINPW;
 import static com.bclould.tocotalk.Presenter.LoginPresenter.MYUSERNAME;
+import static com.bclould.tocotalk.Presenter.LoginPresenter.TOCOID;
 import static com.bclould.tocotalk.Presenter.LoginPresenter.TOKEN;
 import static com.bclould.tocotalk.Presenter.LoginPresenter.USERID;
 
@@ -171,6 +172,13 @@ public class UtilTool {
         SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         String fileName = fmt.format(dt);
         return fileName;
+    }
+
+    public static String createChatTime(){
+        //获取当前时间
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date curDate = new Date(System.currentTimeMillis());
+        return formatter.format(curDate);
     }
 
     public static void comp(Bitmap image, File file) {
@@ -511,6 +519,14 @@ public class UtilTool {
         return "bearer" + MySharedPreferences.getInstance().getString(TOKEN);
 
     }
+
+
+    public static String getTocoId() {
+
+        return MySharedPreferences.getInstance().getString(TOCOID);
+
+    }
+
 
     public static int getUserId() {
 

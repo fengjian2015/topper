@@ -62,6 +62,7 @@ public class RedPacketActivity extends AppCompatActivity {
     private String mCount;
     private String mRemark;
     private String mUser;
+    private String mName;
 //    private Bitmap mBitmap;
     private DBManager mMgr;
 
@@ -88,6 +89,7 @@ public class RedPacketActivity extends AppCompatActivity {
             Bundle bundle = intent.getExtras();
 //            byte[] bytes = bundle.getByteArray("image");
             mUser = bundle.getString("user");
+            mName=bundle.getString("name");
             GrabRedInfo grabRedInfo = (GrabRedInfo) bundle.getSerializable("grabRedInfo");
             int who = intent.getIntExtra("who", 0);
 
@@ -110,7 +112,7 @@ public class RedPacketActivity extends AppCompatActivity {
             mTvCount.setText(mCount);
             mTvCount.setSpacing(2);
             mTvRemark.setText(mRemark);
-            mTvName.setText(mUser.substring(0, mUser.indexOf("@")));
+            mTvName.setText(mName);
 //            mIvTouxiang.setImageBitmap(mBitmap);
             UtilTool.getImage(mMgr, mUser, this, mIvTouxiang);
         } else {
@@ -126,13 +128,7 @@ public class RedPacketActivity extends AppCompatActivity {
                     mTvCount.setSpacing(2);
                     mTvRemark.setText(data.getIntro());
                     mTvName.setText(data.getSend_rp_user_name());
-                    String jid;
-                    if(data.getSend_rp_user_name().equals(UtilTool.getUser())) {
-                        jid = data.getSend_rp_user_name() + "@" + Constants.DOMAINNAME2;
-                    }else {
-                        jid = data.getSend_rp_user_name() + "@" + Constants.DOMAINNAME;
-                    }
-                    UtilTool.getImage(mMgr, jid, RedPacketActivity.this, mIvTouxiang);
+                    UtilTool.setCircleImg(RedPacketActivity.this,data.getAvatar(), mIvTouxiang);
                     //                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, RedPacketActivity.this));
                 }
             });

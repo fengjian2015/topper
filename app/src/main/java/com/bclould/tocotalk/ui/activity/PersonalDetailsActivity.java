@@ -88,10 +88,10 @@ public class PersonalDetailsActivity extends BaseActivity {
     private void initInterface() {
         String state = MySharedPreferences.getInstance().getString(STATE);
         mTvLocation.setText(state);
-        /*Bitmap bitmap = UtilTool.getImage(mMgr, UtilTool.getJid(), PersonalDetailsActivity.this);
+        /*Bitmap bitmap = UtilTool.getImage(mMgr, UtilTool.getTocoId(), PersonalDetailsActivity.this);
         if (bitmap != null)
             mTouxiang.setImageBitmap(bitmap);*/
-        UtilTool.getImage(mMgr, UtilTool.getJid(), PersonalDetailsActivity.this, mTouxiang);
+        UtilTool.getImage(mMgr, UtilTool.getTocoId(), PersonalDetailsActivity.this, mTouxiang);
         mTvUsername.setText(UtilTool.getUser());
     }
 
@@ -130,16 +130,16 @@ public class PersonalDetailsActivity extends BaseActivity {
         mPersonalDetailsPresenter.upImage(Base64Image, new PersonalDetailsPresenter.CallBack() {
             @Override
             public void send() {
-                UtilTool.saveImages(bitmap, UtilTool.getJid(), PersonalDetailsActivity.this, mMgr);
+                UtilTool.saveImages(bitmap, UtilTool.getTocoId(), PersonalDetailsActivity.this, mMgr);
                 EventBus.getDefault().post(new MessageEvent(getString(R.string.xg_touxaing)));
-                UtilTool.getImage(mMgr, UtilTool.getJid(), PersonalDetailsActivity.this, mTouxiang);
+                UtilTool.getImage(mMgr, UtilTool.getTocoId(), PersonalDetailsActivity.this, mTouxiang);
 
-                //                mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, UtilTool.getJid(), PersonalDetailsActivity.this));
+                //                mTouxiang.setImageBitmap(UtilTool.getImage(mMgr, UtilTool.getTocoId(), PersonalDetailsActivity.this));
             }
         });
         /*boolean type = XmppConnection.getInstance().changeImage(bytes);
         if (type) {
-            List<UserInfo> userInfos = mMgr.queryUser(UtilTool.getJid());
+            List<UserInfo> userInfos = mMgr.queryUser(UtilTool.getTocoId());
             mTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfos.get(0).getPath()));
             EventBus.getDefault().post(new MessageEvent(getString(R.string.xg_touxaing)));
             Toast.makeText(this, getString(R.string.xg_succeed), Toast.LENGTH_SHORT).show();
@@ -188,7 +188,7 @@ public class PersonalDetailsActivity extends BaseActivity {
                 break;
             case R.id.rl_qr_card:
                 Intent intent = new Intent(this, QRCodeActivity.class);
-                intent.putExtra("user", UtilTool.getJid());
+                intent.putExtra("user", UtilTool.getTocoId());
                 startActivity(intent);
                 break;
         }

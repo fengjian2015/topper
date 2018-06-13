@@ -16,9 +16,21 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/x50"
+        android:layout_toRightOf="@+id/tv_coin_logo"
         android:gravity="center"
         android:textColor="@android:color/black"
+        android:textSize="@dimen/x30"/>
+
+    <TextView
+        android:id="@+id/tv_remaining"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/x50"
+        android:gravity="center"
         android:textSize="@dimen/x30"/>
 
     <TextView

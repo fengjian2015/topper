@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +28,6 @@ import butterknife.ButterKnife;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class BottomDialogRVAdapter extends RecyclerView.Adapter {
-
     private Context mContext;
     private List<String> mArr;
     private int mSign;
@@ -82,8 +82,12 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.tv_coin_logo)
+        ImageView mTvCoinLogo;
         @Bind(R.id.tv_name)
         TextView mTvName;
+        @Bind(R.id.tv_remaining)
+        TextView mTvRemaining;
         private String mName;
 
         ViewHolder(View view) {
@@ -96,7 +100,7 @@ public class BottomDialogRVAdapter extends RecyclerView.Adapter {
                     if (mContext instanceof PushBuyingActivity) {
                         PushBuyingActivity activity = (PushBuyingActivity) mContext;
                         activity.hideDialog(mName, mSign);
-                    }else  if (mContext instanceof StartGuessActivity) {
+                    } else if (mContext instanceof StartGuessActivity) {
                         StartGuessActivity activity = (StartGuessActivity) mContext;
                         activity.hideDialog(mName, mSign);
                     }

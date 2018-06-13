@@ -61,6 +61,15 @@ public class ReceiptInfo {
         private String date;
         private String name;
         private String number;
+        private String avatar;
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
 
         public String getNumber() {
             return number;

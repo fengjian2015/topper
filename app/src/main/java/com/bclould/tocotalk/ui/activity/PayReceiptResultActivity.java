@@ -57,6 +57,7 @@ public class PayReceiptResultActivity extends BaseActivity {
         String date = bundle.getString("date");
         String number = bundle.getString("number");
         String type = bundle.getString("type");
+        String avatar=bundle.getString("avatar");
         if (type.equals(Constants.MONEYIN)) {
             mTvWho.setText(getString(R.string.sk_person));
             mIvResult.setImageResource(R.mipmap.icon_pay_c1);
@@ -68,8 +69,7 @@ public class PayReceiptResultActivity extends BaseActivity {
         }
         mTvCoinCount.setText(number + coinName);
         mTvName.setText(name);
-        String jid = name + "@" + Constants.DOMAINNAME;
-        UtilTool.getImage(mMgr, jid, PayReceiptResultActivity.this, mTvTouxiang);
+        UtilTool.setCircleImg(PayReceiptResultActivity.this,avatar, mTvTouxiang);
 //        mTvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, PayReceiptResultActivity.this));
     }
 
