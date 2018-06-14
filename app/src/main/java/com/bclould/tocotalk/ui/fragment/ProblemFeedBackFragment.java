@@ -362,7 +362,9 @@ public class ProblemFeedBackFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mTask.cancel();
+        if (mTask != null) {
+            mTask.cancel();
+        }
         ButterKnife.unbind(this);
     }
 }

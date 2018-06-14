@@ -480,7 +480,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 public void onItemImageClick(Context context, ImageView imageView, int index, List<String> list) {
                     Intent intent = new Intent(mContext, PreviewImgActivity.class);
                     intent.putExtra("index", index);
-                    intent.putStringArrayListExtra("imgList", mCompressImgList);
+                    intent.putStringArrayListExtra("imgList", mImgList);
                     context.startActivity(intent);
 
                 }

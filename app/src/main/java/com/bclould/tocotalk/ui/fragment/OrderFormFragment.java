@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +25,7 @@ import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.OrderListInfo;
 import com.bclould.tocotalk.model.TransRecordInfo;
 import com.bclould.tocotalk.ui.adapter.OrderRVAdapter;
+import com.bclould.tocotalk.ui.widget.ClearEditText;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -52,22 +51,22 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class OrderFormFragment extends Fragment {
+    @Bind(R.id.iv_search)
+    ImageView mIvSearch;
+    @Bind(R.id.et_search)
+    ClearEditText mEtSearch;
+    @Bind(R.id.ll_search)
+    LinearLayout mLlSearch;
+    @Bind(R.id.iv)
+    ImageView mIv;
+    @Bind(R.id.tv_hint)
+    TextView mTvHint;
+    @Bind(R.id.ll_no_data)
+    LinearLayout mLlNoData;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
-    @Bind(R.id.iv)
-    ImageView mIv;
-    @Bind(R.id.ll_no_data)
-    LinearLayout mLlNoData;
-    @Bind(R.id.et_search)
-    EditText mEtSearch;
-    @Bind(R.id.iv_search)
-    ImageView mIvSearch;
-    @Bind(R.id.cb_search)
-    CardView mCbSearch;
-    @Bind(R.id.tv_hint)
-    TextView mTvHint;
     private String mCoinName = "";
     private String mFiltrate = "";
     private List<OrderListInfo.DataBean> mDataList = new ArrayList<>();
@@ -90,7 +89,7 @@ public class OrderFormFragment extends Fragment {
         mBuySellPresenter = new BuySellPresenter(getContext());
         ButterKnife.bind(this, view);
         mTvHint.setText(getString(R.string.no_order));
-        mCbSearch.setVisibility(View.VISIBLE);
+        mLlSearch.setVisibility(View.VISIBLE);
         mFiltrate = "2";
         mMgr = new DBManager(getContext());
         if (!EventBus.getDefault().isRegistered(this))

@@ -44,46 +44,6 @@
     <TextView
         style="@style/HCutOffRule"/>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="@dimen/x500"
-        android:layout_height="@dimen/y90"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y30"
-        app:cardBackgroundColor="#CCCFD2"
-        app:cardCornerRadius="@dimen/x40">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/et_coin_name"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="6"
-                android:background="@android:color/transparent"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                android:hint="@string/et_coin_name"
-                android:maxLength="8"
-                android:paddingLeft="@dimen/x30"
-                android:paddingRight="@dimen/x30"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x35"/>
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/x40"
-                android:layout_weight="1"
-                android:src="@mipmap/icon_seek"/>
-
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
-
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
@@ -97,6 +57,53 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cb_search"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y110"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_marginRight="@dimen/x20"
+                android:layout_marginTop="@dimen/y30"
+                android:visibility="visible"
+                app:cardCornerRadius="@dimen/x50">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_search"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/x20"
+                        android:layout_weight="1"
+                        android:padding="@dimen/x20"
+                        android:src="@mipmap/icon_seek"/>
+
+                    <com.bclould.tocotalk.ui.widget.ClearEditText
+                        android:id="@+id/et_coin_name"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:background="@android:color/transparent"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                        android:hint="@string/et_coin_name"
+                        android:maxLength="8"
+                        android:paddingLeft="@dimen/x30"
+                        android:paddingRight="@dimen/x30"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/x35"/>
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"

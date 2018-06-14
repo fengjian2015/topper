@@ -38,8 +38,8 @@ import com.bclould.tocotalk.service.IMCoreService;
 import com.bclould.tocotalk.topperchat.WsConnection;
 import com.bclould.tocotalk.ui.activity.AddFriendActivity;
 import com.bclould.tocotalk.ui.activity.GrabQRCodeRedActivity;
-import com.bclould.tocotalk.ui.activity.PublicshDynamicActivity;
 import com.bclould.tocotalk.ui.activity.ScanQRCodeActivity;
+import com.bclould.tocotalk.ui.activity.SearchActivity;
 import com.bclould.tocotalk.ui.activity.SendQRCodeRedActivity;
 import com.bclould.tocotalk.ui.adapter.ConversationAdapter;
 import com.bclould.tocotalk.utils.Constants;
@@ -180,8 +180,8 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         getContext().startService(intent);
     }
 
-    private void onChangeChatState(final int serviceState){
-        ((Activity)getContext()).runOnUiThread(new Runnable() {
+    private void onChangeChatState(final int serviceState) {
+        ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (serviceState == ConnectStateChangeListenerManager.CONNECTED) {// 已连接
@@ -233,9 +233,12 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         mHeightPixels = mDm.heightPixels;
     }
 
-    @OnClick({R.id.iv_more, R.id.rl_ununited})
+    @OnClick({R.id.iv_more, R.id.rl_ununited, R.id.iv_search})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.iv_search:
+                startActivity(new Intent(getActivity(), SearchActivity.class));
+                break;
             case R.id.iv_more:
                 initPopWindow();
                 break;
@@ -321,10 +324,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                             break;
                         case 2:
                             startActivity(new Intent(getActivity(), AddFriendActivity.class));
-                            mPopupWindow.dismiss();
-                            break;
-                        case 3:
-                            startActivity(new Intent(getActivity(), PublicshDynamicActivity.class));
                             mPopupWindow.dismiss();
                             break;
                     }

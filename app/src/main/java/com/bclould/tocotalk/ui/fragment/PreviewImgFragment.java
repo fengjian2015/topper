@@ -51,7 +51,7 @@ public class PreviewImgFragment extends Fragment {
     }
 
     public void loadImage(String imgUrl) {
-        if (imgUrl.startsWith("https://")) {
+        if (imgUrl.startsWith("https://") || imgUrl.startsWith("http://")) {
             mImageViewLoadingPb.setVisibility(View.VISIBLE);
             mImageViewLoadingPb.bringToFront();
             RequestOptions requestOptions = new RequestOptions()

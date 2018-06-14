@@ -21,9 +21,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.request.transition.Transition;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -100,7 +98,7 @@ public class ImageViewFragment extends Fragment {
     }
 
     public void loadImage(String url) {
-        if (url.startsWith("https://")) {
+        if (url.startsWith("https://") || url.startsWith("http://")) {
             Glide.with(ImageViewFragment.this).load(url).apply(requestOptions).listener(new RequestListener<Drawable>() {
                 @Override
                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {

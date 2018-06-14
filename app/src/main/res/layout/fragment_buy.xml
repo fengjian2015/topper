@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <com.scwang.smartrefresh.header.WaterDropHeader
         android:layout_width="match_parent"
@@ -13,57 +14,70 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/cb_search"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y90"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="@dimen/x40"
-            android:layout_marginRight="@dimen/x40"
-            android:layout_marginTop="@dimen/y30"
+        <LinearLayout
             android:visibility="gone"
-            app:cardCornerRadius="@dimen/x40">
+            android:id="@+id/ll_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="@dimen/y90"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/y20"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginRight="@dimen/x30"
+                android:layout_marginTop="@dimen/y20"
+                android:layout_toLeftOf="@+id/tv_cancel"
+                app:cardBackgroundColor="#10000000"
+                app:cardCornerRadius="@dimen/x40"
+                app:cardElevation="0dp">
 
-                <EditText
-                    android:id="@+id/et_search"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="6"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/et_order_who"
-                    android:imeOptions="actionSearch"
-                    android:maxLength="20"
-                    android:paddingLeft="@dimen/x30"
-                    android:paddingRight="@dimen/x30"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x28"/>
+                    android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/iv_search"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:padding="@dimen/x20"
-                    android:src="@mipmap/icon_seek"/>
+                    <ImageView
+                        android:id="@+id/iv_search"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/x20"
+                        android:layout_weight="1"
+                        android:padding="@dimen/x20"
+                        android:src="@mipmap/icon_seek"/>
 
-            </LinearLayout>
 
-        </android.support.v7.widget.CardView>
+                    <com.bclould.tocotalk.ui.widget.ClearEditText
+                        android:id="@+id/et_search"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/et_order_who"
+                        android:maxLength="20"
+                        android:paddingLeft="@dimen/x30"
+                        android:paddingRight="@dimen/x30"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/x28"/>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <TextView
+                style="@style/HCutOffRule"/>
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/ll_no_data"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/cb_search"
-            android:layout_marginTop="@dimen/y20"
+            android:layout_below="@+id/ll_search"
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="visible">
@@ -79,7 +93,7 @@
                 android:id="@+id/tv_hint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/no_ad_publish"
+                android:text= "@string/no_ad_publish"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/x30"/>
 
@@ -89,8 +103,7 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/cb_search"
-            android:layout_marginTop="@dimen/y20"
+            android:layout_below="@+id/ll_search"
             android:overScrollMode="never"/>
 
     </RelativeLayout>

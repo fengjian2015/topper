@@ -38,6 +38,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:padding="@dimen/x20"
+                    android:layout_marginLeft="@dimen/x20"
                     android:src="@mipmap/icon_seek"/>
 
 

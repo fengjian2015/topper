@@ -288,7 +288,7 @@ public class SingleManage implements Room {
         if (postfix.equals("Video")) {
             final MessageInfo messageInfo = sendFileMessage(path, postfix, key, newFile.getPath());
             OSSClient ossClient = OSSupload.getInstance().visitOSS();
-            PutObjectRequest put = new PutObjectRequest(Constants.BUCKET_NAME, key, file.getPath());
+            PutObjectRequest put = new PutObjectRequest(Constants.BUCKET_NAME2, key, file.getPath());
             OSSAsyncTask<PutObjectResult> task = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                 @Override
                 public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
@@ -305,7 +305,7 @@ public class SingleManage implements Room {
         } else {
             final MessageInfo messageInfo = sendFileMessage(path, postfix, key, newFile.getPath());
             OSSClient ossClient = OSSupload.getInstance().visitOSS();
-            PutObjectRequest put = new PutObjectRequest(Constants.BUCKET_NAME, key, file.getPath());
+            PutObjectRequest put = new PutObjectRequest(Constants.BUCKET_NAME2, key, file.getPath());
             OSSAsyncTask<PutObjectResult> task = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                 @Override
                 public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {

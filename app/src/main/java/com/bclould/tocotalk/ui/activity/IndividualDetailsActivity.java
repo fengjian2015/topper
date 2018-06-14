@@ -21,11 +21,13 @@ import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.IndividualInfo;
 import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
+import com.bclould.tocotalk.utils.ActivityUtil;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.ToastShow;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -138,14 +140,14 @@ public class IndividualDetailsActivity extends BaseActivity {
         } else {
             type = 2;
         }
-        if(type ==1){
+        if (type == 1) {
             imageQr.setVisibility(View.VISIBLE);
             rlRemark.setVisibility(View.VISIBLE);
             btnBrak.setText(getString(R.string.delete));
             rlCard.setVisibility(View.VISIBLE);
             mCvNoLookTaDy.setVisibility(View.VISIBLE);
             mCvNoLookTaDy2.setVisibility(View.VISIBLE);
-        }else if (type == 2) {
+        } else if (type == 2) {
             imageQr.setVisibility(View.INVISIBLE);
             rlRemark.setVisibility(View.GONE);
             btnBrak.setText(getString(R.string.add_friend));
@@ -160,7 +162,7 @@ public class IndividualDetailsActivity extends BaseActivity {
             rlRemark.setVisibility(View.GONE);
         }
         mPresenter = new IndividualDetailsPresenter(this);
-        mPresenter.getIndividual(mUser,true, new IndividualDetailsPresenter.CallBack() {
+        mPresenter.getIndividual(mUser, true, new IndividualDetailsPresenter.CallBack() {
             @Override
             public void send(IndividualInfo.DataBean data) {
                 if (!IndividualDetailsActivity.this.isDestroyed()) {
@@ -203,7 +205,7 @@ public class IndividualDetailsActivity extends BaseActivity {
                 } else {
                     Intent intent = new Intent(this, PersonageDynamicActivity.class);
                     intent.putExtra("name", mName);
-                    intent.putExtra("user",mUser);
+                    intent.putExtra("user", mUser);
                     startActivity(intent);
                 }
                 break;
@@ -290,7 +292,7 @@ public class IndividualDetailsActivity extends BaseActivity {
     private void addFriend() {
         try {
             if (!mMgr.findUser(mUser)) {
-                new PersonalDetailsPresenter(this).addFriend(mUser,mName);
+                new PersonalDetailsPresenter(this).addFriend(mUser, mName);
             } else {
                 Toast.makeText(this, getString(R.string.have_friend), Toast.LENGTH_SHORT).show();
             }
@@ -343,7 +345,9 @@ public class IndividualDetailsActivity extends BaseActivity {
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.new_friend))) {
-            init();
+            if (ActivityUtil.isActivityOnTop(IndividualDetailsActivity.this)) {
+                init();
+            }
         }
     }
 
