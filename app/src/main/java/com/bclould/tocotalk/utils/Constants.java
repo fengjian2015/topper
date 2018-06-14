@@ -34,7 +34,7 @@ public class Constants {
     public static String MONEYOUT = "moneyOut";
     public static String MYUSER = UtilTool.getJid();
     public static String BUSINESSCARD = "businessCard";
-    public static String BUCKET_NAME = "toco";
+    public static String BUCKET_NAME = isDebug ? "toco" : "topper";
     public static String BUCKET_NAME2 = "topper-chat";
     public static String PUBLICDIR = "/sdcard/tocotalk/tocotalk_images/";
     public static String LOG_DIR = "/sdcard/tocotalk/log/";

@@ -233,7 +233,8 @@ public class SocketListener {
 
     /**
      * 消息反饋
-     *@param content
+     *
+     * @param content
      * @param isPlayHint
      * @param roomType
      */
@@ -419,11 +420,7 @@ public class SocketListener {
     private String downFile(String key) throws ParseException {
         OSSClient ossClient = OSSupload.getInstance().visitOSS();
         String url = null;
-        try {
-            url = ossClient.presignConstrainedObjectURL(Constants.BUCKET_NAME2, key, 7 * 24 * 60 * 60);
-        } catch (ClientException e) {
-            e.printStackTrace();
-        }
+        url = ossClient.presignPublicObjectURL(Constants.BUCKET_NAME2, key);
         return url;
     }
 

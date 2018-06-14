@@ -72,7 +72,7 @@ public class VideoActivity extends AppCompatActivity {
         UtilTool.Log("日志", uri);
         //实现缓存加载
 
-        if (uri.startsWith("https:/")) {
+        if (uri.startsWith("https://") || uri.startsWith("http://")) {
             HttpProxyCacheServer proxy = MyApp.getInstance().getProxy(this);
             String proxyUrl = proxy.getProxyUrl(uri);
             mVideoPlayer.setVideoPath(proxyUrl);
