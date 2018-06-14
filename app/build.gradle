@@ -119,9 +119,7 @@ dependencies {
     implementation files('libs/TencentMapSearch_v1.1.7.1.3e04ee1.jar')
 
     //阿里雲
-//    implementation files('libs/okio-1.6.0.jar')
-//    implementation files('libs/okhttp-3.2.0.jar')
-    implementation files('libs/aliyun-oss-sdk-android-2.2.0.jar')
+    compile 'com.aliyun.dpa:oss-android-sdk:+'
 
     compile 'com.android.support:appcompat-v7:25.+'
 

@@ -1,96 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
+
+    <RelativeLayout
+        android:id="@+id/rl_itme"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y166"
-        android:layout_marginBottom="@dimen/y15"
-        android:layout_marginTop="@dimen/y10"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginRight="@dimen/x20"
-        app:cardCornerRadius="@dimen/x15">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/y20"
+        android:layout_marginTop="@dimen/y20"
+        android:paddingBottom="@dimen/y10"
+        android:paddingLeft="@dimen/x20"
+        android:paddingRight="@dimen/x20"
+        android:paddingTop="@dimen/y10">
 
-        <RelativeLayout
-            android:id="@+id/rl_itme"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="@dimen/y10"
-            android:paddingBottom="@dimen/y10"
+        <ImageView
+            android:id="@+id/iv_touxiang"
+            android:layout_width="@dimen/x100"
+            android:layout_height="@dimen/x100"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/img_nfriend_headshot1"/>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/iv_touxiang"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_toRightOf="@+id/iv_touxiang"
+            android:text="安子"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x28"/>
+
+        <TextView
+            android:id="@+id/tv_coin_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/iv_touxiang"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_toRightOf="@+id/iv_touxiang"
+            android:background="@drawable/bg_buysell_shape2"
+            android:paddingBottom="@dimen/y4"
             android:paddingLeft="@dimen/x20"
-            android:paddingRight="@dimen/x20">
+            android:paddingRight="@dimen/x20"
+            android:paddingTop="@dimen/y4"
+            android:text="出售BTC"
+            android:textColor="#52c7ca"
+            android:textSize="@dimen/x24"/>
 
-            <ImageView
-                android:src="@mipmap/img_nfriend_headshot1"
-                android:id="@+id/iv_touxiang"
-                android:layout_width="@dimen/x100"
-                android:layout_height="@dimen/x100"
-                android:layout_centerVertical="true"/>
+        <TextView
+            android:id="@+id/tv_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_coin_type"
+            android:layout_marginBottom="@dimen/y4"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_toRightOf="@+id/tv_coin_type"
+            android:text="交易金额 50000.00CNY"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x24"/>
 
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/iv_touxiang"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/iv_touxiang"
-                android:text="安子"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/tv_name"
+            android:text="订单号:1234564"
+            android:textSize="@dimen/x28"/>
 
-            <TextView
-                android:id="@+id/tv_coin_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/iv_touxiang"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/iv_touxiang"
-                android:background="@drawable/bg_buysell_shape2"
-                android:paddingBottom="@dimen/y4"
-                android:paddingLeft="@dimen/x20"
-                android:paddingRight="@dimen/x20"
-                android:paddingTop="@dimen/y4"
-                android:text="出售BTC"
-                android:textSize="@dimen/x24"
-                android:textColor="#52c7ca"/>
+        <TextView
+            android:id="@+id/tv_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_coin_type"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/y4"
+            android:text="交易完成"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x28"/>
 
-            <TextView
-                android:id="@+id/tv_money"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/x20"
-                android:textSize="@dimen/x24"
-                android:layout_marginBottom="@dimen/y4"
-                android:layout_alignBottom="@+id/tv_coin_type"
-                android:layout_toRightOf="@+id/tv_coin_type"
-                android:text="交易金额 50000.00CNY"
-                android:textColor="@color/black"/>
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/tv_name"
-                android:text="订单号:1234564"
-                android:textSize="@dimen/x28"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/tv_type"
-                android:layout_width="wrap_content"
-                android:text="交易完成"
-                android:layout_marginBottom="@dimen/y4"
-                android:textSize="@dimen/x28"
-                android:textColor="@color/black"
-                android:layout_alignParentRight="true"
-                android:layout_alignBottom="@+id/tv_coin_type"
-                android:layout_height="wrap_content"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
+    <TextView
+        style="@style/HCutOffRule"/>
 
 </LinearLayout>

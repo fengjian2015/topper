@@ -29,6 +29,14 @@
             android:textSize="@dimen/x32"/>
 
         <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/iv_more"
+            android:padding="@dimen/x25"
+            android:src="@mipmap/icon_seek"/>
+
+        <ImageView
             android:id="@+id/iv_more"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

@@ -424,7 +424,6 @@ public class SocketListener {
         } catch (ClientException e) {
             e.printStackTrace();
         }
-
         return url;
     }
 

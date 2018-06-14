@@ -1,6 +1,5 @@
 package com.bclould.tocotalk.ui.fragment;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,13 +24,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.bclould.tocotalk.Presenter.CloudMessagePresenter;
 import com.bclould.tocotalk.Presenter.PersonalDetailsPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.history.DBManager;
@@ -42,7 +38,6 @@ import com.bclould.tocotalk.ui.activity.AddFriendActivity;
 import com.bclould.tocotalk.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tocotalk.ui.activity.GroupListActivity;
 import com.bclould.tocotalk.ui.activity.NewFriendActivity;
-import com.bclould.tocotalk.ui.activity.PublicshDynamicActivity;
 import com.bclould.tocotalk.ui.activity.ScanQRCodeActivity;
 import com.bclould.tocotalk.ui.activity.SearchActivity;
 import com.bclould.tocotalk.ui.activity.SendQRCodeRedActivity;
@@ -61,10 +56,12 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -80,36 +77,41 @@ import static com.bclould.tocotalk.utils.MySharedPreferences.SETTING;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class FriendListFragment extends Fragment {
 
+
     public static final String NEWFRIEND = "new_friend";
     public static FriendListFragment instance = null;
     String response, acceptAdd, tocoId, alertSubName;
+    @Bind(R.id.iv_search)
+    ImageView mIvSearch;
     @Bind(R.id.iv_more)
     ImageView mIvMore;
     @Bind(R.id.rl_title)
     RelativeLayout mRlTitle;
     @Bind(R.id.xx)
     TextView mXx;
-    @Bind(R.id.ll_search)
-    LinearLayout mLlSearch;
     @Bind(R.id.iv)
     ImageView mIv;
     @Bind(R.id.number)
     TextView mNumber;
     @Bind(R.id.news_friend)
     RelativeLayout mNewsFriend;
+    @Bind(R.id.tv_group_line)
+    TextView mTvGroupLine;
+    @Bind(R.id.iv1)
+    ImageView mIv1;
+    @Bind(R.id.my_group)
+    RelativeLayout mMyGroup;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @Bind(R.id.side_bar)
-    WaveSideBar mSideBar;
     @Bind(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
-
+    @Bind(R.id.side_bar)
+    WaveSideBar mSideBar;
     private int QRCODE = 1;
     private DisplayMetrics mDm;
     private int mHeightPixels;
     private ViewGroup mView;
     private PopupWindow mPopupWindow;
-
 
     private TreeMap<String, Boolean> mFromMap = new TreeMap<>();
     private List<UserInfo> mUsers = new ArrayList<>();
@@ -125,7 +127,7 @@ public class FriendListFragment extends Fragment {
                     if (mNewFriend > 0) {
                         mNumber.setText(mNewFriend + "");
                         mNumber.setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         mNumber.setVisibility(View.GONE);
                     }
 //                    mId = mMgr.addRequest(from, 0);
@@ -215,14 +217,14 @@ public class FriendListFragment extends Fragment {
             updateData();
         } else if (msg.equals(getString(R.string.change_friend_remark))) {
             updateData();
-        }else if(msg.equals(getString(R.string.receive_add_request))){
+        } else if (msg.equals(getString(R.string.receive_add_request))) {
             sendHandler();
         }
     }
 
     private void sendHandler() {
-        Message message=new Message();
-        message.what=1;
+        Message message = new Message();
+        message.what = 1;
         myHandler.sendMessage(message);
     }
 
@@ -261,7 +263,7 @@ public class FriendListFragment extends Fragment {
                 //获取传递的字符串及发送方JID
                 acceptAdd = bundle.getString("acceptAdd");
                 tocoId = bundle.getString("fromName");
-                alertSubName=bundle.getString("alertSubName");
+                alertSubName = bundle.getString("alertSubName");
                 if (acceptAdd.equals(getString(R.string.receive_add_request))) {
                     //弹出一个对话框，包含同意和拒绝按钮
                     SharedPreferences sp = getContext().getSharedPreferences(SETTING, 0);
@@ -284,7 +286,7 @@ public class FriendListFragment extends Fragment {
                                     @Override
                                     public void send() {
                                         mMgr.updateRequest(tocoId, 1);
-                                        mNewFriend= MySharedPreferences.getInstance().getInteger(NEWFRIEND);
+                                        mNewFriend = MySharedPreferences.getInstance().getInteger(NEWFRIEND);
                                         mNewFriend--;
                                         MySharedPreferences.getInstance().setInteger(NEWFRIEND, mNewFriend);
                                         myHandler.sendEmptyMessage(1);
@@ -307,7 +309,7 @@ public class FriendListFragment extends Fragment {
                                     @Override
                                     public void send() {
                                         mMgr.updateRequest(tocoId, 2);
-                                        mNewFriend= MySharedPreferences.getInstance().getInteger(NEWFRIEND);
+                                        mNewFriend = MySharedPreferences.getInstance().getInteger(NEWFRIEND);
                                         mNewFriend--;
                                         MySharedPreferences.getInstance().setInteger(NEWFRIEND, mNewFriend);
                                         myHandler.sendEmptyMessage(1);
@@ -343,7 +345,7 @@ public class FriendListFragment extends Fragment {
 
     private void initData() {
         try {
-            UtilTool.Log("fengjian","發送獲取好友列表請求");
+            UtilTool.Log("fengjian", "發送獲取好友列表請求");
             mPersonalDetailsPresenter.getFriendList(new PersonalDetailsPresenter.CallBack2() {
                 @Override
                 public void send(List<AuatarListInfo.DataBean> data) {
@@ -360,7 +362,7 @@ public class FriendListFragment extends Fragment {
 
     private void initRecylerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mFriendListRVAdapter = new FriendListRVAdapter(getContext(), mUsers, mMgr,mRlTitle);
+        mFriendListRVAdapter = new FriendListRVAdapter(getContext(), mUsers, mMgr, mRlTitle);
         mRecyclerView.setAdapter(mFriendListRVAdapter);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -390,13 +392,13 @@ public class FriendListFragment extends Fragment {
     }
 
 
-    @OnClick({R.id.iv_more, R.id.ll_search, R.id.news_friend,R.id.my_group})
+    @OnClick({R.id.iv_more, R.id.iv_search, R.id.news_friend, R.id.my_group})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_more:
                 initPopWindow();
                 break;
-            case R.id.ll_search:
+            case R.id.iv_search:
                 startActivity(new Intent(getActivity(), SearchActivity.class));
                 break;
             case R.id.news_friend:
@@ -487,10 +489,6 @@ public class FriendListFragment extends Fragment {
                             break;
                         case 2:
                             startActivity(new Intent(getActivity(), AddFriendActivity.class));
-                            mPopupWindow.dismiss();
-                            break;
-                        case 3:
-                            startActivity(new Intent(getActivity(), PublicshDynamicActivity.class));
                             mPopupWindow.dismiss();
                             break;
                     }

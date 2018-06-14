@@ -251,7 +251,9 @@ public class ImageUpService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mTask.cancel();
+        if (mTask != null) {
+            mTask.cancel();
+        }
         mKeyList = "";
         mkeyCompressList = "";
         count = 0;

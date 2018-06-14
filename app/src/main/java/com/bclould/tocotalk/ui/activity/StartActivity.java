@@ -46,8 +46,8 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         ButterKnife.bind(this);
-        AnimationDrawable animationDrawable = (AnimationDrawable) mIvStart.getBackground();
-        animationDrawable.start();
+        /*AnimationDrawable animationDrawable = (AnimationDrawable) mIvStart.getBackground();
+        animationDrawable.start();*/
         new Handler() {
             public void handleMessage(Message msg) {
                 if (UtilTool.getToken().equals("bearer")) {

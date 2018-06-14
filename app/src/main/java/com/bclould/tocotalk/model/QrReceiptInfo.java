@@ -10,6 +10,15 @@ public class QrReceiptInfo {
     private String coin_name;
     private String number;
     private String mark;
+    private String user_name;
+
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
 
     public String getMark() {
         return mark;

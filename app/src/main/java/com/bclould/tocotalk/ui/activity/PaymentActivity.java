@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -31,6 +32,7 @@ import com.bclould.tocotalk.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.ReceiptInfo;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter4;
@@ -38,6 +40,7 @@ import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
 import com.bclould.tocotalk.utils.AnimatorTool;
 import com.bclould.tocotalk.utils.Constants;
+import com.bclould.tocotalk.utils.UtilTool;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;
@@ -75,6 +78,12 @@ public class PaymentActivity extends BaseActivity {
     LinearLayout mLlNoSteadfast;
     @Bind(R.id.btn_payment)
     Button mBtnPayment;
+    @Bind(R.id.tv_name)
+    TextView mTvName;
+    @Bind(R.id.iv_touxiang)
+    ImageView mIvTouxiang;
+    @Bind(R.id.cv_who)
+    CardView mCvWho;
     private String mUserId;
     private ReceiptPaymentPresenter mReceiptPaymentPresenter;
     private Dialog mBottomDialog;
@@ -103,26 +112,37 @@ public class PaymentActivity extends BaseActivity {
 
 
     private void initIntent() {
+        DBManager mgr = new DBManager(this);
         mType = getIntent().getStringExtra("type");
         if (mType.equals(Constants.MONEYIN)) {
+            mCvWho.setVisibility(View.VISIBLE);
             mUserId = getIntent().getStringExtra("userId");
+            String username = getIntent().getStringExtra("username");
+            UtilTool.getImage(mgr, username, MyApp.getInstance().app(), mIvTouxiang);
+            mTvName.setText(username);
         } else if (mType.equals(Constants.MONEYOUT)) {
+            mCvWho.setVisibility(View.GONE);
             mTvTitle.setText(getString(R.string.create_fk_code));
             mBtnPayment.setText(getString(R.string.confirm));
         } else if (mType.equals(Constants.QRMONEYIN)) {
+            mCvWho.setVisibility(View.GONE);
             mTvTitle.setText(getString(R.string.create_sk_code));
             mBtnPayment.setText(getString(R.string.confirm));
         } else {
+            mCvWho.setVisibility(View.VISIBLE);
             mUserId = getIntent().getStringExtra("userId");
             mCoinId = getIntent().getStringExtra("coinId");
             mCoinNames = getIntent().getStringExtra("coinName");
             mNumber = getIntent().getStringExtra("number");
             mMark = getIntent().getStringExtra("mark");
+            String username = getIntent().getStringExtra("username");
+            mTvName.setText(username);
             mTvCoin.setText(mCoinNames);
             mEtCount.setText(mNumber);
             mEtCount.setKeyListener(null);
             mEtRemark.setText(mMark);
             mEtRemark.setKeyListener(null);
+            UtilTool.getImage(mgr, username, MyApp.getInstance().app(), mIvTouxiang);
         }
     }
 
@@ -262,7 +282,7 @@ public class PaymentActivity extends BaseActivity {
                 bundle.putString("name", data.getName());
                 bundle.putString("number", data.getNumber());
                 bundle.putString("type", Constants.MONEYIN);
-                bundle.putString("avatar",data.getAvatar());
+                bundle.putString("avatar", data.getAvatar());
                 intent.putExtras(bundle);
                 startActivity(intent);
                 Toast.makeText(PaymentActivity.this, getString(R.string.fk_succeed), Toast.LENGTH_SHORT).show();
@@ -290,7 +310,7 @@ public class PaymentActivity extends BaseActivity {
     }
 
     public void showHintDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this,R.style.dialog);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setCanceledOnTouchOutside(false);
         TextView retry = (TextView) deleteCacheDialog.findViewById(R.id.tv_retry);
@@ -386,7 +406,8 @@ public class PaymentActivity extends BaseActivity {
         mBottomDialog.show();
         RecyclerView recyclerView = (RecyclerView) mBottomDialog.findViewById(R.id.recycler_view);
         TextView tvTitle = (TextView) mBottomDialog.findViewById(R.id.tv_title);
-        Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);Button cancel = (Button) mBottomDialog.findViewById(R.id.btn_cancel);
+        Button addCoin = (Button) mBottomDialog.findViewById(R.id.btn_add_coin);
+        Button cancel = (Button) mBottomDialog.findViewById(R.id.btn_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -437,7 +458,7 @@ public class PaymentActivity extends BaseActivity {
                 bundle.putString("name", data.getName());
                 bundle.putString("number", data.getNumber());
                 bundle.putString("type", Constants.MONEYIN);
-                bundle.putString("avatar",data.getAvatar());
+                bundle.putString("avatar", data.getAvatar());
                 intent.putExtras(bundle);
                 startActivity(intent);
                 Toast.makeText(PaymentActivity.this, getString(R.string.fk_succeed), Toast.LENGTH_SHORT).show();

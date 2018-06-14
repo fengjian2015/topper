@@ -21,6 +21,14 @@
             android:textSize="@dimen/x32"/>
 
         <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/iv_more"
+            android:padding="@dimen/x25"
+            android:src="@mipmap/icon_seek"/>
+
+        <ImageView
             android:id="@+id/iv_more"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -33,23 +41,6 @@
     <TextView
         android:id="@+id/xx"
         style="@style/HCutOffRule"/>
-    <!--
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout
-            android:id="@+id/refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
-
-            <com.scwang.smartrefresh.header.WaterDropHeader
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"/>-->
-
-    <!-- <ScrollView
-         android:id="@+id/scrollView"
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"
-         android:fillViewport="true">-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -57,48 +48,10 @@
         android:background="@color/white"
         android:orientation="vertical">
 
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y80"
-            android:layout_marginBottom="@dimen/y20"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginRight="@dimen/x20"
-            android:layout_marginTop="@dimen/y20">
-
-            <LinearLayout
-                android:id="@+id/ll_search"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/light"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/icon_friend_seek"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/x20"
-                    android:text="@string/search_friend"
-                    android:textColor="@color/gray"
-                    android:textSize="@dimen/x28"/>
-
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y20"
-                android:background="@color/light"/>
 
             <RelativeLayout
                 android:id="@+id/news_friend"
@@ -183,54 +136,21 @@
             <TextView
                 style="@style/HCutOffRule"/>
 
-            <!-- <LinearLayout
-                 android:id="@+id/my_group"
-                 android:layout_width="match_parent"
-                 android:layout_height="@dimen/y100"
-                 android:layout_marginLeft="@dimen/x20"
-                 android:gravity="center_vertical"
-                 android:orientation="horizontal">
-
-                 <ImageView
-                     android:layout_width="@dimen/x60"
-                     android:layout_height="@dimen/x60"
-                     android:src="@mipmap/icon_friend_groups"/>
-
-                 <TextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_marginLeft="@dimen/x20"
-                     android:text="@string/my_group"
-                     android:textColor="@color/black"
-                     android:textSize="@dimen/x32"/>
-
-             </LinearLayout>-->
-<!--
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y80"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:paddingLeft="@dimen/x20"
-                android:text="@string/my_friend"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
-
-            <TextView
-                style="@style/HCutOffRule"/>-->
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:descendantFocusability="blocksDescendants">
+
                 <com.scwang.smartrefresh.layout.SmartRefreshLayout
                     android:id="@+id/refresh_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <com.scwang.smartrefresh.header.WaterDropHeader
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/light"/>
+
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recycler_view"
                         android:layout_width="match_parent"
@@ -241,23 +161,19 @@
                     android:id="@+id/side_bar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
                     android:paddingRight="@dimen/x16"
                     app:sidebar_lazy_respond="false"
-                    android:layout_alignParentRight="true"
                     app:sidebar_max_offset="@dimen/x160"
                     app:sidebar_position="right"
                     app:sidebar_text_alignment="center"
                     app:sidebar_text_color="@color/black"
-                    app:sidebar_text_size="@dimen/y20"/>
+                    app:sidebar_text_size="@dimen/y26"/>
 
             </RelativeLayout>
 
         </LinearLayout>
 
     </LinearLayout>
-
-    <!--</ScrollView>-->
-
-    <!--</com.scwang.smartrefresh.layout.SmartRefreshLayout>-->
 
 </LinearLayout>
