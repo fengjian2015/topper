@@ -5,6 +5,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tocotalk.service.IMService;
+import com.bclould.tocotalk.topperchat.WsConnection;
 import com.bclould.tocotalk.utils.CheckClassIsWork;
 import com.bclould.tocotalk.utils.UtilTool;
 
@@ -20,7 +21,8 @@ public class LoginThread extends Thread {
 	@Override
 	public void run() {
 		while (true) {
-			if (CheckClassIsWork.isTopActivity(context, "InitialActivity")) {
+			if (WsConnection.getInstance().getOutConnection()) {
+				WsConnection.getInstance().logoutService(context);
 				break;
 			}
 			if (IMLogin.loginServer(context)) {

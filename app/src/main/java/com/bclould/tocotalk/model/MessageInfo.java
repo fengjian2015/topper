@@ -21,7 +21,7 @@ public class MessageInfo implements Serializable {
     private String voice;
     private int voiceStatus;
     private String voiceTime;
-    private int sendStatus;
+    private int sendStatus; //0發送中 1 成功  2失敗
     private int msgType;
     private int imageType;
     private String send;//2018-05-15增加字段，用於判斷是誰發送消息
@@ -45,6 +45,16 @@ public class MessageInfo implements Serializable {
     private String key;
     //2018-06-13新增創建消息時間
     private long createTime;
+    //  //2018-06-14新增消息唯一標示
+    private String msgId;
+
+    public String getMsgId() {
+        return msgId;
+    }
+
+    public void setMsgId(String msgId) {
+        this.msgId = msgId;
+    }
 
     public long getCreateTime() {
         return createTime;

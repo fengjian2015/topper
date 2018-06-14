@@ -5,6 +5,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tocotalk.utils.MySharedPreferences;
+import com.bclould.tocotalk.utils.UtilTool;
 
 /**
  * Created by GIjia on 2018/6/12.
@@ -22,6 +23,7 @@ public class PingThread extends Thread {
         MySharedPreferences.getInstance().setInteger("ping",0);
         while (WsConnection.getInstance().isLogin()) {
             try {
+                UtilTool.Log("fengjian","發送ping");
                 WsConnection.getInstance().senPing();
                 WsOfflineConnection.getInstance().senPing(context);
                 sleep(20 * 1000);

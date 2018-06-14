@@ -44,7 +44,7 @@ public class InitialActivity extends AppCompatActivity {
         String versionCode = UtilTool.getVersionCode(this);
         mTvVersion.setText("V" + versionCode);
         WsConnection.getInstance().logoutService(this);
-        WsOfflineConnection.getInstance().closeConnection();
+
     }
 
     @OnClick({R.id.btn_login, R.id.btn_register})

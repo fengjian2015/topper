@@ -18,6 +18,7 @@ import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.utils.MySharedPreferences;
+import com.bclould.tocotalk.utils.StringUtils;
 import com.bclould.tocotalk.utils.UtilTool;
 
 import butterknife.Bind;
@@ -28,6 +29,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.bclould.tocotalk.Presenter.LoginPresenter.TOCOID;
 import static com.bclould.tocotalk.Presenter.LoginPresenter.TOKEN;
 
 
@@ -46,8 +48,8 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         ButterKnife.bind(this);
-        AnimationDrawable animationDrawable = (AnimationDrawable) mIvStart.getBackground();
-        animationDrawable.start();
+//        AnimationDrawable animationDrawable = (AnimationDrawable) mIvStart.getBackground();
+//        animationDrawable.start();
         new Handler() {
             public void handleMessage(Message msg) {
                 if (UtilTool.getToken().equals("bearer")) {
@@ -69,9 +71,13 @@ public class StartActivity extends AppCompatActivity {
                                     @Override
                                     public void onNext(@NonNull BaseInfo baseInfo) {
                                         if (baseInfo.getStatus() == 1) {
-                                            MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
-                                            UtilTool.Log("日志", baseInfo.getMessage());
-                                            startActivity(new Intent(StartActivity.this, MainActivity.class));
+                                            if(StringUtils.isEmpty(MySharedPreferences.getInstance().getString(TOCOID))){
+                                                startActivity(new Intent(StartActivity.this, InitialActivity.class));
+                                            }else {
+                                                MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
+                                                UtilTool.Log("日志", baseInfo.getMessage());
+                                                startActivity(new Intent(StartActivity.this, MainActivity.class));
+                                            }
                                             finish();
                                         } else {
                                             finish();
@@ -88,7 +94,11 @@ public class StartActivity extends AppCompatActivity {
                                             startActivity(new Intent(StartActivity.this, InitialActivity.class));
                                         } else if (e.getMessage().equals("connect timed out")) {
                                             finish();
-                                            startActivity(new Intent(StartActivity.this, MainActivity.class));
+                                            if(StringUtils.isEmpty(MySharedPreferences.getInstance().getString(TOCOID))){
+                                                startActivity(new Intent(StartActivity.this, InitialActivity.class));
+                                            }else {
+                                                startActivity(new Intent(StartActivity.this, MainActivity.class));
+                                            }
                                         } else {
                                             finish();
                                             MySharedPreferences.getInstance().setString(TOKEN, "");
@@ -104,7 +114,11 @@ public class StartActivity extends AppCompatActivity {
                                     }
                                 });
                     } else {
-                        startActivity(new Intent(StartActivity.this, MainActivity.class));
+                        if(StringUtils.isEmpty(MySharedPreferences.getInstance().getString(TOCOID))){
+                            startActivity(new Intent(StartActivity.this, InitialActivity.class));
+                        }else {
+                            startActivity(new Intent(StartActivity.this, MainActivity.class));
+                        }
                         Toast.makeText(StartActivity.this, StartActivity.this.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                     }
                 }

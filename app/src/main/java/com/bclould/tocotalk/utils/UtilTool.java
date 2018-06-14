@@ -944,4 +944,17 @@ public class UtilTool {
         }
         return isRunning;
     }
+
+    public static String createMsgId(String from){
+        return UtilTool.getTocoId()+"to"+from+System.currentTimeMillis();
+    }
+
+    public static Long stringToLong(String time){
+        try {
+            return Long.parseLong(time);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return createChatCreatTime();
+    }
 }

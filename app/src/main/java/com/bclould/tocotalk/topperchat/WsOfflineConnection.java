@@ -51,7 +51,7 @@ public class WsOfflineConnection {
     public synchronized WebSocket get(Context context){
         mContext=context;
         try {
-            if((ws==null||!ws.isOpen())&&!isConnection){
+            if((ws==null||!ws.isOpen())&&!isConnection&&!WsConnection.getInstance().getOutConnection()){
                 isConnection=true;
                 AsyncHttpClient.getDefaultInstance().websocket(Constants.MSG_OFFLINE, "8443", new AsyncHttpClient.WebSocketConnectCallback() {
                     @Override
@@ -128,7 +128,7 @@ public class WsOfflineConnection {
 
     public synchronized void login() throws JsonProcessingException {
         if(isLogin)return;
-        if(ws==null||!ws.isOpen()){
+        if(ws==null||!ws.isOpen()||WsConnection.getInstance().getOutConnection()){
             return;
         }
         UtilTool.Log("fengjian","離線服務登錄中");
@@ -148,10 +148,12 @@ public class WsOfflineConnection {
     public void closeConnection() {
         setIsLogin(false);
         if (ws != null) {
-            if (ws.isOpen())
+            if (ws.isOpen()) {
                 ws.close();
+                ws.end();
+            }
         }
-        Log.i("fengjian", "離線关闭连接");
+        UtilTool.Log("fengjian", "離線关闭连接");
     }
 
     private void sendOfflineBack(Map<Object, Object> content) throws Exception {

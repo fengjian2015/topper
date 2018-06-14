@@ -510,8 +510,21 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         } else if (msg.equals(getString(R.string.start_otr))) {
             mEkbEmoticonsKeyboard.startOTR();
             UtilTool.Log("fengjian---", "开启加密");
+        } else if (msg.equals(getString(R.string.change_msg_state))) {
+            changeMsgState(event.getId());
+            UtilTool.Log("fengjian---", "改變消息狀態");
         }
 
+    }
+
+    private void changeMsgState(String id){
+       for(MessageInfo info : mMessageList){
+           if(id.equals(info.getMsgId())){
+               info.setSendStatus(1);
+               mChatAdapter.notifyDataSetChanged();
+               break;
+           }
+       }
     }
 
     //打開拍攝
@@ -920,10 +933,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 for (MessageInfo info : mMessageList) {
                     if (info.getVoice() != null) {
                         if (info.getVoice().equals(newFile2)) {
-                            if (isSuccess) {
-                                mMgr.updateMessageHint(info.getId(), 1);
-                                info.setSendStatus(1);
-                            } else {
+                            if (!isSuccess) {
                                 info.setSendStatus(2);
                                 mMgr.updateMessageHint(info.getId(), 2);
                             }

@@ -898,4 +898,5 @@
     <string name="remaining">餘額</string>
     <string name="in_link">鏈接中...</string>
     <string name="not_link">(未鏈接)</string>
+    <string name="change_msg_state">改變消息狀態</string>
 </resources>

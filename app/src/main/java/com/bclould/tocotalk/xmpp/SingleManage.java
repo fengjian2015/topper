@@ -78,7 +78,7 @@ public class SingleManage implements Room {
     }
 
 
-    private boolean send(String to, byte[] attachment, String body, int msgType) throws Exception {
+    private boolean send(String to, byte[] attachment, String body, int msgType,String msgId) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper(new MessagePackFactory());
         Map<Object, Object> messageMap = new HashMap<>();
         messageMap.put("body", OtrChatListenerManager.getInstance().sentMessagesChange(body,
@@ -95,15 +95,18 @@ public class SingleManage implements Room {
         }
         contentMap.put("message", objectMapper.writeValueAsBytes(messageMap));
         contentMap.put("type", msgType);
+        contentMap.put("id",msgId);
 
         Map<Object, Object> sendMap = new HashMap<>();
         sendMap.put("type", 3);
         sendMap.put("content", objectMapper.writeValueAsBytes(contentMap));
+        mMgr.addMessageMsgId(msgId);
         WsConnection.getInstance().sendMessage(objectMapper.writeValueAsBytes(sendMap));
         return true;
     }
 
     private boolean sendOTR(String to, byte[] attachment, String body, int msgType) throws Exception {
+        String msgId=UtilTool.createMsgId(to);
         ObjectMapper objectMapper = new ObjectMapper(new MessagePackFactory());
         Map<Object, Object> messageMap = new HashMap<>();
         messageMap.put("body", body);
@@ -115,10 +118,11 @@ public class SingleManage implements Room {
         contentMap.put("crypt", true);
         contentMap.put("message", objectMapper.writeValueAsBytes(messageMap));
         contentMap.put("type", msgType);
-
+        contentMap.put("id",UtilTool.createMsgId(to));
         Map<Object, Object> sendMap = new HashMap<>();
         sendMap.put("type", 3);
         sendMap.put("content", objectMapper.writeValueAsBytes(contentMap));
+        mMgr.addMessageMsgId(msgId);
         WsConnection.getInstance().sendMessage(objectMapper.writeValueAsBytes(sendMap));
         return true;
     }
@@ -185,7 +189,8 @@ public class SingleManage implements Room {
         try {
             MessageInfo sendMessage = new MessageInfo();
             sendMessage.setMessage(message);
-            send(mUser, null, JSON.toJSONString(sendMessage), WsContans.MSG_TEXT);
+            String msgId=UtilTool.createMsgId(mUser);
+            send(mUser, null, JSON.toJSONString(sendMessage), WsContans.MSG_TEXT,msgId);
 
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(mUser);
@@ -196,8 +201,11 @@ public class SingleManage implements Room {
             messageInfo.setTime(time);
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_TEXT_MSG);
+            messageInfo.setSendStatus(0);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(message);
+            messageInfo.setMsgId(msgId);
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
             if (mMgr.findConversation(mUser)) {
                 mMgr.updateConversation(mUser, 0, message, time);
@@ -225,9 +233,11 @@ public class SingleManage implements Room {
             messageInfo.setTime(time);
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_TEXT_MSG);
-            messageInfo.setSendStatus(1);
+            messageInfo.setSendStatus(2);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(message);
+            messageInfo.setMsgId(UtilTool.createMsgId(mUser));
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
 
             if (mMgr.findConversation(mUser)) {
@@ -276,37 +286,37 @@ public class SingleManage implements Room {
         }
         //上传视频到aws
         if (postfix.equals("Video")) {
-            final int id = sendFileMessage(path, postfix, key, newFile.getPath());
+            final MessageInfo messageInfo = sendFileMessage(path, postfix, key, newFile.getPath());
             OSSClient ossClient = OSSupload.getInstance().visitOSS();
             PutObjectRequest put = new PutObjectRequest(Constants.BUCKET_NAME, key, file.getPath());
             OSSAsyncTask<PutObjectResult> task = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                 @Override
                 public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
-                    sendFileAfterMessage(key, postfix, newFile.getPath(), id);
+                    sendFileAfterMessage(key, postfix, newFile.getPath(), messageInfo.getId(),messageInfo.getMsgId());
                 }
 
                 @Override
                 public void onFailure(PutObjectRequest putObjectRequest, ClientException e, ServiceException e1) {
                     UtilTool.Log("aws", "错误");
-                    mMgr.updateMessageHint(id, 2);
-                    sendError(id);
+                    mMgr.updateMessageHint(messageInfo.getId(), 2);
+                    sendError(messageInfo.getId());
                 }
             });
         } else {
-            final int id = sendFileMessage(path, postfix, key, newFile.getPath());
+            final MessageInfo messageInfo = sendFileMessage(path, postfix, key, newFile.getPath());
             OSSClient ossClient = OSSupload.getInstance().visitOSS();
             PutObjectRequest put = new PutObjectRequest(Constants.BUCKET_NAME, key, file.getPath());
             OSSAsyncTask<PutObjectResult> task = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                 @Override
                 public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
-                    sendFileAfterMessage(key, postfix, newFile.getPath(), id);
+                    sendFileAfterMessage(key, postfix, newFile.getPath(), messageInfo.getId(),messageInfo.getMsgId());
                 }
 
                 @Override
                 public void onFailure(PutObjectRequest putObjectRequest, ClientException e, ServiceException e1) {
                     UtilTool.Log("aws", "错误");
-                    mMgr.updateMessageHint(id, 2);
-                    sendError(id);
+                    mMgr.updateMessageHint(messageInfo.getId(), 2);
+                    sendError(messageInfo.getId());
                 }
             });
         }
@@ -315,11 +325,11 @@ public class SingleManage implements Room {
     //僅僅是url鏈接
     @Override
     public void transmitVideo(MessageInfo messageInfo) {
-        int mid = sendFileMessage(messageInfo.getMessage(), "Video", "", messageInfo.getVoice());
-        sendFileAfterMessage(messageInfo.getMessage(), "Video", messageInfo.getVoice(), mid);
+        MessageInfo messageInfo1 = sendFileMessage(messageInfo.getMessage(), "Video", "", messageInfo.getVoice());
+        sendFileAfterMessage(messageInfo.getMessage(), "Video", messageInfo.getVoice(), messageInfo1.getId(),messageInfo1.getMsgId());
     }
 
-    private void sendFileAfterMessage(String key, String postfix, String newFile, int mId) {
+    private void sendFileAfterMessage(String key, String postfix, String newFile, int mId ,String msgId) {
         try {
             byte[] bytes = UtilTool.readStream(newFile);
             MessageInfo sendMessage = new MessageInfo();
@@ -330,8 +340,7 @@ public class SingleManage implements Room {
             } else if (postfix.equals("Video")) {
                 type = WsContans.MSG_VIDEO;
             }
-            send(mUser, bytes, JSON.toJSONString(sendMessage), type);
-            mMgr.updateMessageHint(mId, 1);
+            send(mUser, bytes, JSON.toJSONString(sendMessage), type,msgId);
             sendFileResults(newFile, true);
             return;
         } catch (Exception e) {
@@ -341,8 +350,7 @@ public class SingleManage implements Room {
     }
 
     //发送文件消息
-    public int sendFileMessage(String path, String postfix, String key, String newFile) {
-        int mId;
+    public MessageInfo sendFileMessage(String path, String postfix, String key, String newFile) {
         MessageInfo messageInfo = new MessageInfo();
         try {
             messageInfo.setUsername(mUser);
@@ -390,8 +398,10 @@ public class SingleManage implements Room {
                 info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
                 mMgr.addConversation(info);
             }
-            mId = mMgr.addMessage(messageInfo);
-            messageInfo.setId(mId);
+            messageInfo.setMsgId(UtilTool.createMsgId(mUser));
+            messageInfo.setSendStatus(0);
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            messageInfo.setId(mMgr.addMessage(messageInfo));
             refreshAddData(messageInfo);
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
         } catch (Exception e) {
@@ -443,12 +453,13 @@ public class SingleManage implements Room {
                 info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
                 mMgr.addConversation(info);
             }
-            mId = mMgr.addMessage(messageInfo);
-            messageInfo.setId(mId);
+            messageInfo.setMsgId(UtilTool.createMsgId(mUser));
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            messageInfo.setId(mMgr.addMessage(messageInfo));
             refreshAddData(messageInfo);
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
         }
-        return mId;
+        return messageInfo;
     }
 
 
@@ -477,14 +488,15 @@ public class SingleManage implements Room {
             messageInfo.setAddress(address);
             messageInfo.setLat(lat);
             messageInfo.setLng(lng);
+            String msgId=UtilTool.createMsgId(mUser);
             byte[] bytes = UtilTool.readStream(newFile.getAbsolutePath());
-            send(mUser, bytes, JSON.toJSONString(messageInfo), WsContans.MSG_LOCATION);
+            send(mUser, bytes, JSON.toJSONString(messageInfo), WsContans.MSG_LOCATION,msgId);
 
             //把消息添加进数据库
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date curDate = new Date(System.currentTimeMillis());
             String time = formatter.format(curDate);
-
+            messageInfo.setSendStatus(0);
             messageInfo.setVoice(newFile.getAbsolutePath());
             messageInfo.setType(0);
             messageInfo.setUsername(mUser);
@@ -493,6 +505,8 @@ public class SingleManage implements Room {
             messageInfo.setMsgType(TO_LOCATION_MSG);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
+            messageInfo.setMsgId(msgId);
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             mId = mMgr.addMessage(messageInfo);
             messageInfo.setId(mId);
             refreshAddData(messageInfo);
@@ -510,7 +524,6 @@ public class SingleManage implements Room {
             }
             //发送消息通知
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
-            mMgr.updateMessageHint(mId, 1);
             sendFileResults(newFile.getAbsolutePath(), true);
             return;
         } catch (Exception e) {
@@ -531,6 +544,8 @@ public class SingleManage implements Room {
             messageInfo.setMsgType(TO_LOCATION_MSG);
             messageInfo.setSendStatus(2);
             messageInfo.setConverstaion(converstaion);
+            messageInfo.setMsgId(UtilTool.createMsgId(mUser));
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             mId = mMgr.addMessage(messageInfo);
             messageInfo.setId(mId);
             refreshAddData(messageInfo);
@@ -579,7 +594,8 @@ public class SingleManage implements Room {
     public boolean sendCaed(MessageInfo messageInfo) {
         String converstaion = "[" + context.getString(R.string.person_business_card) + "]";
         try {
-            send(mUser, null, JSON.toJSONString(messageInfo), WsContans.MSG_CARD);
+            String msgId=UtilTool.createMsgId(mUser);
+            send(mUser, null, JSON.toJSONString(messageInfo), WsContans.MSG_CARD,msgId);
             messageInfo.setUsername(mUser);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date curDate = new Date(System.currentTimeMillis());
@@ -588,8 +604,10 @@ public class SingleManage implements Room {
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_CARD_MSG);
             messageInfo.setSend(UtilTool.getTocoId());
-            messageInfo.setSendStatus(1);
+            messageInfo.setSendStatus(0);
             messageInfo.setConverstaion(converstaion);
+            messageInfo.setMsgId(msgId);
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
             if (mMgr.findConversation(mUser)) {
                 mMgr.updateConversation(mUser, 0, converstaion, time);
@@ -619,6 +637,8 @@ public class SingleManage implements Room {
             messageInfo.setSendStatus(2);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
+            messageInfo.setMsgId(UtilTool.createMsgId(mUser));
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
 
             if (mMgr.findConversation(mUser)) {
@@ -650,7 +670,8 @@ public class SingleManage implements Room {
     public boolean sendShareLink(MessageInfo messageInfo) {
         String converstaion = "[" + context.getString(R.string.share) + "]";
         try {
-            send(mUser, null, JSON.toJSONString(messageInfo), WsContans.MSG_SHARE_LINK);
+            String msgId=UtilTool.createMsgId(mUser);
+            send(mUser, null, JSON.toJSONString(messageInfo), WsContans.MSG_SHARE_LINK,msgId);
 
             messageInfo.setUsername(mUser);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -660,8 +681,10 @@ public class SingleManage implements Room {
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_LINK_MSG);
             messageInfo.setSend(UtilTool.getTocoId());
-            messageInfo.setSendStatus(1);
+            messageInfo.setSendStatus(0);
             messageInfo.setConverstaion(converstaion);
+            messageInfo.setMsgId(msgId);
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
             if (mMgr.findConversation(mUser)) {
                 mMgr.updateConversation(mUser, 0, converstaion, time);
@@ -691,6 +714,8 @@ public class SingleManage implements Room {
             messageInfo.setSendStatus(2);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
+            messageInfo.setMsgId(UtilTool.createMsgId(mUser));
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
             if (mMgr.findConversation(mUser)) {
                 mMgr.updateConversation(mUser, 0, converstaion, time);
@@ -720,7 +745,8 @@ public class SingleManage implements Room {
     public boolean sendShareGuess(MessageInfo messageInfo) {
         String converstaion = "[" + context.getString(R.string.share_guess) + "]";
         try {
-            send(mUser, null, JSON.toJSONString(messageInfo), WsContans.MSG_SHARE_GUESS);
+            String msgId=UtilTool.createMsgId(mUser);
+            send(mUser, null, JSON.toJSONString(messageInfo), WsContans.MSG_SHARE_GUESS,msgId);
             messageInfo.setUsername(mUser);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date curDate = new Date(System.currentTimeMillis());
@@ -729,8 +755,10 @@ public class SingleManage implements Room {
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_GUESS_MSG);
             messageInfo.setSend(UtilTool.getTocoId());
-            messageInfo.setSendStatus(1);
+            messageInfo.setSendStatus(0);
             messageInfo.setConverstaion(converstaion);
+            messageInfo.setMsgId(msgId);
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
             if (mMgr.findConversation(mUser)) {
                 mMgr.updateConversation(mUser, 0, converstaion, time);
@@ -760,6 +788,8 @@ public class SingleManage implements Room {
             messageInfo.setSendStatus(2);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
+            messageInfo.setMsgId(UtilTool.createMsgId(mUser));
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
             if (mMgr.findConversation(mUser)) {
                 mMgr.updateConversation(mUser, 0, converstaion, time);
@@ -796,9 +826,10 @@ public class SingleManage implements Room {
         String converstaion = "[" + context.getString(R.string.voice) + "]";
         try {
             byte[] bytes = UtilTool.readStream(fileName);//把语音文件转换成二进制
+            String msgId=UtilTool.createMsgId(mUser);
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setMessage(context.getString(R.string.voice));
-            send(mUser, bytes, JSON.toJSONString(messageInfo), WsContans.MSG_AUDIO);
+            send(mUser, bytes, JSON.toJSONString(messageInfo), WsContans.MSG_AUDIO,msgId);
 
             //把消息添加进数据库
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -812,8 +843,11 @@ public class SingleManage implements Room {
             messageInfo.setMsgType(TO_VOICE_MSG);
             messageInfo.setVoiceTime(duration + "");
             messageInfo.setVoiceStatus(1);
+            messageInfo.setSendStatus(0);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
+            messageInfo.setMsgId(msgId);
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
             refreshAddData(messageInfo);
 
@@ -847,8 +881,10 @@ public class SingleManage implements Room {
             messageInfo.setMsgType(TO_VOICE_MSG);
             messageInfo.setVoiceTime(duration + "");
             messageInfo.setVoiceStatus(1);
-            messageInfo.setSendStatus(1);
+            messageInfo.setSendStatus(2);
             messageInfo.setConverstaion(converstaion);
+            messageInfo.setMsgId(UtilTool.createMsgId(mUser));
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
             refreshAddData(messageInfo);
             if (mMgr.findConversation(mUser)) {
@@ -871,12 +907,13 @@ public class SingleManage implements Room {
         try {
             String converstaion = "[" + context.getString(R.string.transfer) + "]";
             String message = Constants.TRANSFER + Constants.CHUANCODE + mRemark + Constants.CHUANCODE + mCoin + Constants.CHUANCODE + mCount;
+            String msgId=UtilTool.createMsgId(mUser);
             MessageInfo sendMessage = new MessageInfo();
             sendMessage.setRemark(mRemark);
             sendMessage.setCoin(mCoin);
             sendMessage.setCount(mCount);
             sendMessage.setMessage(message);
-            send(mUser, null, JSON.toJSONString(sendMessage), WsContans.MSG_TRANSFER);
+            send(mUser, null, JSON.toJSONString(sendMessage), WsContans.MSG_TRANSFER,msgId);
 
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(mUser);
@@ -892,6 +929,8 @@ public class SingleManage implements Room {
             messageInfo.setStatus(0);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
+            messageInfo.setMsgId(msgId);
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             mMgr.addMessage(messageInfo);
             if (mMgr.findConversation(mUser)) {
                 mMgr.updateConversation(mUser, 0, converstaion, time);
@@ -916,13 +955,14 @@ public class SingleManage implements Room {
         String converstaion = "[" + context.getString(R.string.red_package) + "]";
         String message = Constants.REDBAG + Constants.CHUANCODE + mRemark + Constants.CHUANCODE + mCoin + Constants.CHUANCODE + mCount + Constants.CHUANCODE + id;
         try {
+            String msgId=UtilTool.createMsgId(mUser);
             MessageInfo sendMessage = new MessageInfo();
             sendMessage.setRemark(mRemark);
             sendMessage.setCoin(mCoin);
             sendMessage.setCount(mCount + "");
             sendMessage.setRedId(id);
             sendMessage.setMessage(message);
-            send(mUser, null, JSON.toJSONString(sendMessage), WsContans.MSG_REDBAG);
+            send(mUser, null, JSON.toJSONString(sendMessage), WsContans.MSG_REDBAG,msgId);
 
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(mUser);
@@ -940,6 +980,8 @@ public class SingleManage implements Room {
             messageInfo.setRedId(id);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
+            messageInfo.setMsgId(msgId);
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             mMgr.addMessage(messageInfo);
             if (mMgr.findConversation(mUser)) {
                 mMgr.updateConversation(mUser, 0, converstaion, time);

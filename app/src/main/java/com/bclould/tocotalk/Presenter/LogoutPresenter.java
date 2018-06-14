@@ -74,9 +74,8 @@ public class LogoutPresenter {
                         public void onNext(@NonNull BaseInfo baseInfo) {
                             hideDialog();
                             if (baseInfo.getStatus() == 1) {
-                                imLogout();
+                                imLogout(baseInfo.getMessage());
                             }
-                            Toast.makeText(mSystemSetActivity, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
 
                         }
 
@@ -98,19 +97,21 @@ public class LogoutPresenter {
         }
     }
 
-    public void imLogout() {
+    public void imLogout(final String message) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    WsConnection.getInstance().closeConnection();
-                    WsOfflineConnection.getInstance().closeConnection();
-                    UtilTool.Log("fsdafa", "退出成功");
+                    WsConnection.getInstance().senLogout();
+                    WsConnection.getInstance().logoutService(mSystemSetActivity);
+                    Thread.sleep(1000);
+                    UtilTool.Log("fengjian", "退出成功");
                     Message msg = new Message();
+                    msg.obj=message;
                     myHandler.sendMessage(msg);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    UtilTool.Log("fsdafa", "退出失败");
+                    UtilTool.Log("fengjian", "退出失败");
                 }
             }
         }).start();
@@ -119,6 +120,7 @@ public class LogoutPresenter {
     Handler myHandler = new Handler() {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            Toast.makeText(mSystemSetActivity, (String)msg.obj, Toast.LENGTH_SHORT).show();
             MyApp.getInstance().exit();
             mSystemSetActivity.finish();
             MySharedPreferences.getInstance().setString(TOKEN, "");

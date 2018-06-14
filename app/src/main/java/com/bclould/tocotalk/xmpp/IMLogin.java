@@ -40,10 +40,8 @@ public class IMLogin {
 
 	public static boolean loginAction() {
 		try {
-			UtilTool.Log("fengjian", "IMLOGIN START");
 			WsConnection.getInstance().login();
 			WsOfflineConnection.getInstance().login();
-			UtilTool.Log("fengjian", "IMLOGIN END");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}

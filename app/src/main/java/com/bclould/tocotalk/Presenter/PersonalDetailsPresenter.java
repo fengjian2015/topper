@@ -12,6 +12,7 @@ import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.RemarkListInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
+import com.bclould.tocotalk.utils.ActivityUtil;
 import com.bclould.tocotalk.utils.ToastShow;
 import com.bclould.tocotalk.utils.UtilTool;
 
@@ -248,6 +249,7 @@ public class PersonalDetailsPresenter {
     //確認添加
     public void confirmAddFriend(String toco_id, int confirm, final CallBack callBack){
         if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .confirmAddFriend(UtilTool.getToken(),toco_id,confirm)
@@ -261,6 +263,8 @@ public class PersonalDetailsPresenter {
 
                         @Override
                         public void onNext(BaseInfo baseInfo) {
+                            if (!ActivityUtil.isActivityOnTop((Activity) mContext))return;
+                            hideDialog();
                             if (baseInfo.getStatus() == 1) {
                                 callBack.send();
                             }
@@ -268,6 +272,7 @@ public class PersonalDetailsPresenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            if (!ActivityUtil.isActivityOnTop((Activity) mContext))return;
                             hideDialog();
                             ToastShow.showToast2((Activity) mContext, e.getMessage());
                         }
@@ -277,6 +282,7 @@ public class PersonalDetailsPresenter {
 
                         }
                     });
+
         } else {
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }

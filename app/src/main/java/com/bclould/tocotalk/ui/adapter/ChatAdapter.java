@@ -465,6 +465,21 @@ public class ChatAdapter extends RecyclerView.Adapter {
         menu.showAtLocation();
     }
 
+    private void setMsgState(int sendStatus,ImageView mIvWarning,ImageView mIvLoad){
+        if (sendStatus == 1) {
+            mIvWarning.setVisibility(View.GONE);
+            mIvLoad.setVisibility(View.GONE);
+        } else if (sendStatus == 2) {
+            mIvWarning.setVisibility(View.VISIBLE);
+            mIvLoad.setVisibility(View.GONE);
+        } else {
+            mIvLoad.setVisibility(View.VISIBLE);
+            mIvWarning.setVisibility(View.GONE);
+        }
+        AnimationDrawable animationDrawable = (AnimationDrawable) mIvLoad.getBackground();
+        animationDrawable.start();
+    }
+
     @Override
     public int getItemViewType(int position) {
         return mMessageList.get(position).getMsgType();
@@ -475,6 +490,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ImageView mIvTouxiang;
         @Bind(R.id.iv_warning)
         ImageView mIvWarning;
+        @Bind(R.id.iv_load)
+        ImageView mIvLoad;
         @Bind(R.id.tv_messamge)
         EmojiconTextView mTvMessamge;
 
@@ -502,11 +519,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 }
             }));
             mTvMessamge.setMovementMethod(new CustomLinkMovementMethod());
-            if (messageInfo.getSendStatus() == 1) {
-                mIvWarning.setVisibility(View.VISIBLE);
-            } else {
-                mIvWarning.setVisibility(View.GONE);
-            }
+            setMsgState(messageInfo.getSendStatus(),mIvWarning,mIvLoad);
             mIvWarning.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -781,7 +794,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ImageView mIvAnim;
         @Bind(R.id.rl_voice)
         RelativeLayout mRlVoice;
-
+        @Bind(R.id.iv_load)
+        ImageView mIvLoad;
         ToVoiceHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -798,11 +812,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 blank += " ";
             }
             mIvVoice.setText(blank);
-            if (messageInfo.getSendStatus() == 1) {
-                mIvWarning.setVisibility(View.VISIBLE);
-            } else {
-                mIvWarning.setVisibility(View.GONE);
-            }
+            setMsgState(messageInfo.getSendStatus(),mIvWarning,mIvLoad);
             mIvWarning.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -965,17 +975,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     return false;
                 }
             }).apply(requestOptions).into(mIvImg);
-
-            if (messageInfo.getSendStatus() == 1) {
-                mIvWarning.setVisibility(View.GONE);
-                mIvLoad.setVisibility(View.GONE);
-            } else if (messageInfo.getSendStatus() == 2) {
-                mIvWarning.setVisibility(View.VISIBLE);
-                mIvLoad.setVisibility(View.GONE);
-            } else {
-                mIvLoad.setVisibility(View.VISIBLE);
-                mIvWarning.setVisibility(View.GONE);
-            }
+            setMsgState(messageInfo.getSendStatus(),mIvWarning,mIvLoad);
             mIvWarning.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -983,8 +983,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     RoomManage.getInstance().getRoom(mRoomId).anewSendUpload(messageInfo);
                 }
             });
-            AnimationDrawable animationDrawable = (AnimationDrawable) mIvLoad.getBackground();
-            animationDrawable.start();
             mIvImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -1104,18 +1102,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             mIvVideo.setImageBitmap(BitmapFactory.decodeFile(messageInfo.getVoice()));
-            if (messageInfo.getSendStatus() == 0) {
-                mIvLoad.setVisibility(View.VISIBLE);
-                mIvWarning.setVisibility(View.GONE);
-            } else if (messageInfo.getSendStatus() == 2) {
-                mIvWarning.setVisibility(View.VISIBLE);
-                mIvLoad.setVisibility(View.GONE);
-            } else {
-                mIvWarning.setVisibility(View.GONE);
-                mIvLoad.setVisibility(View.GONE);
-            }
-            AnimationDrawable animationDrawable = (AnimationDrawable) mIvLoad.getBackground();
-            animationDrawable.start();
+            setMsgState(messageInfo.getSendStatus(),mIvWarning,mIvLoad);
             mIvWarning.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -1207,16 +1194,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         public void setData(final MessageInfo messageInfo) {
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
-            if (messageInfo.getSendStatus() == 0) {
-                mIvLoad.setVisibility(View.VISIBLE);
-                mIvWarning.setVisibility(View.GONE);
-            } else if (messageInfo.getSendStatus() == 2) {
-                mIvWarning.setVisibility(View.VISIBLE);
-                mIvLoad.setVisibility(View.GONE);
-            } else {
-                mIvWarning.setVisibility(View.GONE);
-                mIvLoad.setVisibility(View.GONE);
-            }
+            setMsgState(messageInfo.getSendStatus(),mIvWarning,mIvLoad);
             tvTitle.setText(messageInfo.getTitle());
             tvAddress.setText(messageInfo.getAddress());
             ivLocation.setImageBitmap(BitmapFactory.decodeFile(messageInfo.getVoice()));
@@ -1319,16 +1297,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         public void setData(final MessageInfo messageInfo) {
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
-            if (messageInfo.getSendStatus() == 0) {
-                mIvLoad.setVisibility(View.VISIBLE);
-                mIvWarning.setVisibility(View.GONE);
-            } else if (messageInfo.getSendStatus() == 2) {
-                mIvWarning.setVisibility(View.VISIBLE);
-                mIvLoad.setVisibility(View.GONE);
-            } else {
-                mIvWarning.setVisibility(View.GONE);
-                mIvLoad.setVisibility(View.GONE);
-            }
+            setMsgState(messageInfo.getSendStatus(),mIvWarning,mIvLoad);
             mIvWarning.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -1431,16 +1400,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         public void setData(final MessageInfo messageInfo) {
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
-            if (messageInfo.getSendStatus() == 0) {
-                mIvLoad.setVisibility(View.VISIBLE);
-                mIvWarning.setVisibility(View.GONE);
-            } else if (messageInfo.getSendStatus() == 2) {
-                mIvWarning.setVisibility(View.VISIBLE);
-                mIvLoad.setVisibility(View.GONE);
-            } else {
-                mIvWarning.setVisibility(View.GONE);
-                mIvLoad.setVisibility(View.GONE);
-            }
+            setMsgState(messageInfo.getSendStatus(),mIvWarning,mIvLoad);
             mIvWarning.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -1564,16 +1524,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         public void setData(final MessageInfo messageInfo) {
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
-            if (messageInfo.getSendStatus() == 0) {
-                mIvLoad.setVisibility(View.VISIBLE);
-                mIvWarning.setVisibility(View.GONE);
-            } else if (messageInfo.getSendStatus() == 2) {
-                mIvWarning.setVisibility(View.VISIBLE);
-                mIvLoad.setVisibility(View.GONE);
-            } else {
-                mIvWarning.setVisibility(View.GONE);
-                mIvLoad.setVisibility(View.GONE);
-            }
+            setMsgState(messageInfo.getSendStatus(),mIvWarning,mIvLoad);
             tvTitle.setText(messageInfo.getTitle());
             tvCoin.setText(messageInfo.getCoin() + mContext.getString(R.string.guess));
             tvWho.setText(mContext.getString(R.string.fa_qi_ren) + ":" + messageInfo.getInitiator());

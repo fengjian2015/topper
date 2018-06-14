@@ -120,7 +120,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                     QrCardInfo qrCardInfo = gson.fromJson(jsonresult, QrCardInfo.class);
                     String name = qrCardInfo.getName();
                     Intent intent = new Intent(ScanQRCodeActivity.this, IndividualDetailsActivity.class);
-                    intent.putExtra("name", name.split("@")[0]);
+                    intent.putExtra("name", name);
                     intent.putExtra("user", name);
                     intent.putExtra("roomId", name);
                     startActivity(intent);

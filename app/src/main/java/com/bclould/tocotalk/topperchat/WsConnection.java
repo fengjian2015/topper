@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
@@ -38,9 +39,13 @@ import static com.bclould.tocotalk.topperchat.WsContans.TYPE;
 public class WsConnection {
     private static WsConnection mInstance;
     private static Context mContext;
-    private WebSocket ws;
+    public WebSocket ws;
     private boolean isLogin=false;
     private boolean isConnection=false;
+    private boolean isOutConnection=false;//是否已經退出登錄，到登錄界面
+    private boolean isLoginConnection=false;//是否登錄鏈接中，避免重複登錄導致一直斷開
+
+    private Handler mHandler=new Handler();
     public static WsConnection getInstance(){
         if(mInstance == null){
             synchronized (WsConnection.class){
@@ -57,7 +62,7 @@ public class WsConnection {
     public synchronized WebSocket get(Context context){
         mContext=context;
         try {
-            if((ws==null||!ws.isOpen())&&!isConnection){
+            if((ws==null||!ws.isOpen())&&!isConnection&&!isOutConnection){
                 isConnection=true;
                 AsyncHttpClient.getDefaultInstance().websocket(Constants.DOMAINNAME3, "2087", new AsyncHttpClient.WebSocketConnectCallback() {
                     @Override
@@ -65,6 +70,7 @@ public class WsConnection {
                         isConnection=false;
                         if (ex != null) {
                             setIsLogin(false);
+                            setLoginConnection(false);
                             UtilTool.Log("fengjian","连接服務器失敗"+ex.getMessage());
                             ex.printStackTrace();
                             return;
@@ -83,6 +89,7 @@ public class WsConnection {
                             public void onCompleted(Exception ex) {
                                 UtilTool.Log("fengjian","断开连接");
                                 setIsLogin(false);
+                                setLoginConnection(false);
                             }
                         });
                         webSocket.setEndCallback(new CompletedCallback() {
@@ -90,6 +97,7 @@ public class WsConnection {
                             public void onCompleted(Exception ex) {
                                 UtilTool.Log("fengjian","断开连接");
                                 setIsLogin(false);
+                                setLoginConnection(false);
                             }
                         });
                     }
@@ -102,7 +110,14 @@ public class WsConnection {
     }
 
     public synchronized void login() throws Exception {
-        if(isLogin)return;
+        if(isLogin||isOutConnection||isLoginConnection){
+            UtilTool.Log("fengjian", "暫時不讓登錄：isLogin："+isLogin +"    isOutConnection："+isOutConnection+"    isLoginConnection："+isLoginConnection);
+            if(isOutConnection){
+                stopAllIMCoreService(mContext);
+            }
+            return;
+        }
+        setLoginConnection(true);
         UtilTool.Log("fengjian","TOCOID:"+UtilTool.getTocoId());
         ObjectMapper objectMapper =  new ObjectMapper(new  MessagePackFactory());
         Map<Object,Object> contentMap = new HashMap<>();
@@ -112,26 +127,12 @@ public class WsConnection {
         map.put(CONTENT,objectMapper.writeValueAsBytes(contentMap));
         map.put(TYPE,1);
         ws.send(objectMapper.writeValueAsBytes(map));
-    }
-
-    public synchronized void sendMessage(byte[] bytes) throws Exception{
-        if(ws==null||!ws.isOpen()||!isLogin){
-            get(mContext);
-            throw new NullPointerException();
-        }
-        ws.send(bytes);
-    }
-
-    public boolean isLogin(){
-        return isLogin;
-    }
-
-    public void setIsLogin(boolean isLogin){
-       this.isLogin=isLogin;
-    }
-
-    public void setContext(Context context) {
-        mContext = context;
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setLoginConnection(false);
+            }
+        },10*1000);
     }
 
     public void senPing(){
@@ -150,29 +151,87 @@ public class WsConnection {
         }
     }
 
+    public void senLogout(){
+        try {
+            ObjectMapper objectMapper =  new ObjectMapper(new MessagePackFactory());
+            Map<Object,Object> sendMap = new HashMap<>();
+            sendMap.put("type",33);
+            sendMap.put("content",new byte[]{});
+            try {
+                sendMessage(objectMapper.writeValueAsBytes(sendMap));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public synchronized void sendMessage(byte[] bytes) throws Exception{
+        if(ws==null||!ws.isOpen()||!isLogin){
+            get(mContext);
+            throw new NullPointerException();
+        }
+        ws.send(bytes);
+    }
+
+    public void setLoginConnection(boolean isLoginConnection){
+        this.isLoginConnection=isLoginConnection;
+    }
+
+    public boolean getLoginConnection(){
+        return isLoginConnection;
+    }
+
+    public boolean isLogin(){
+        return isLogin;
+    }
+
+    public void setIsLogin(boolean isLogin){
+       this.isLogin=isLogin;
+    }
+
+    public void setOutConnection(boolean isOutConnection){
+        this.isOutConnection=isOutConnection;
+    }
+    public boolean getOutConnection(){
+        return isOutConnection;
+    }
+
+    public void setContext(Context context) {
+        mContext = context;
+    }
+
+
+
 
     /**
      * 关闭连接
      */
-    public void closeConnection() {
+    private void closeConnection() {
         setIsLogin(false);
         LoginThread.isStartExReconnect = false;
         if (ws != null) {
             // 移除连接监听
-            if (ws.isOpen())
+            if (ws.isOpen()) {
                 ws.close();
+                ws.end();
+            }
         }
-        Log.i("fengjian", "关闭连接");
+
     }
 
     //退出登錄用
     public void logoutService(Context context) {
+        setOutConnection(true);
         setIsLogin(false);
         closeConnection();
         stopAllIMCoreService(context);
         context.stopService(new Intent(context, IMService.class));
         LoginThread.isStartExReconnect = false;
-        UtilTool.Log("fengjian","退出");
+        WsOfflineConnection.getInstance().closeConnection();
+        UtilTool.Log("fengjian", "关闭连接");
     }
 
     /***

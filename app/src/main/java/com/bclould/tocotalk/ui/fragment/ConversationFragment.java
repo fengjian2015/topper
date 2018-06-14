@@ -152,7 +152,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                     //发送登录失败通知
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.login_error)));
                     ToastShow.showToast2((Activity) getContext(), getString(R.string.toast_network_error));
-                    mTvTitle.setText(getString(R.string.not_link));
                     break;
                 case 1:
                     initRecyclerView();
@@ -161,7 +160,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                     if (mRlUnunited != null) {
                         mRlUnunited.setVisibility(View.GONE);
                     }
-                    mTvTitle.setText(getString(R.string.talk));
                     break;
 
             }
@@ -169,6 +167,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     };
 
     private void initRelogin() {
+        WsConnection.getInstance().setOutConnection(false);
         ConnectStateChangeListenerManager.get().registerStateChangeListener(this);
         ConnectStateChangeListenerManager.get().setCurrentState(ConnectStateChangeListenerManager.DISCONNECT);
         imState = -1;
@@ -193,7 +192,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                     mTvTitle.setText(getString(R.string.in_link));
                 } else if (serviceState == ConnectStateChangeListenerManager.DISCONNECT) {// 未连接
                     mTitleProgress.setVisibility(View.GONE);
-                    mTvTitle.setText(getString(R.string.in_link)+getString(R.string.not_link));
+                    mTvTitle.setText(getString(R.string.talk)+getString(R.string.not_link));
                 } else if (serviceState == ConnectStateChangeListenerManager.RECEIVING) {//收取中
                     mTitleProgress.setVisibility(View.GONE);
                     mTvTitle.setText(getString(R.string.talk));
@@ -369,6 +368,8 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         } else if (msg.equals(getString(R.string.message_top_change))) {
             initData();
         } else if (msg.equals(getString(R.string.change_friend_remark))) {
+            initData();
+        } else if (msg.equals(getString(R.string.delete_friend))) {
             initData();
         }
 

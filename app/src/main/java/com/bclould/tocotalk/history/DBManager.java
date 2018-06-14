@@ -28,8 +28,6 @@ public class DBManager {
     private final Context mContext;
     private DBHelper helper;
     public SQLiteDatabase db;
-    private String mUser = "";
-    private int mOffset = 1;
 
     public DBManager(Context context) {
         mContext = context;
@@ -74,6 +72,7 @@ public class DBManager {
         values.put("periodQty",messageInfo.getPeriodQty());
         values.put("filekey",messageInfo.getKey());
         values.put("createTime",messageInfo.getCreateTime());
+        values.put("msgId",messageInfo.getMsgId());
         int id = (int) db.insert("MessageRecord", null, values);
         UtilTool.Log("日志", "添加成功" + messageInfo.toString());
         return id;
@@ -106,6 +105,7 @@ public class DBManager {
     }
 
     private MessageInfo addMessage(Cursor c){
+        //MessageRecord
         MessageInfo messageInfo = new MessageInfo();
         messageInfo.setUsername(c.getString(c.getColumnIndex("user")));
         messageInfo.setMessage(c.getString(c.getColumnIndex("message")));
@@ -139,6 +139,7 @@ public class DBManager {
         messageInfo.setPeriodQty(c.getString(c.getColumnIndex("periodQty")));
         messageInfo.setKey(c.getString(c.getColumnIndex("filekey")));
         messageInfo.setCreateTime(c.getLong(c.getColumnIndex("createTime")));
+        messageInfo.setMsgId(c.getString(c.getColumnIndex("msgId")));
         return messageInfo;
     }
 
@@ -245,69 +246,6 @@ public class DBManager {
         }
         return messageInfos;
     }
-
-//    public List<MessageInfo> pagingQueryMessage(String user) {
-//        long count = queryMessageCount(user);
-//        db = helper.getReadableDatabase();
-//        ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
-//        String sql = "select * from MessageRecord where user=? and my_user=? limit ?,?";
-//        Cursor c = null;
-//        if (count > 10) {
-//            if (mUser.equals(user)) {
-//                Log.e("wgy", "再次查询" + mOffset);
-//                if (count - mOffset * 10 < 0) {
-//                    if (count - mOffset * 10 > -10) {
-//                        c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), 0 + "", count - (mOffset - 1) * 10 + ""});
-//                        mOffset++;
-//                    } else {
-//                        Toast.makeText(mContext, "没有更多记录了", Toast.LENGTH_SHORT).show();
-//                    }
-//                } else {
-//                    c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), count - mOffset * 10 + "", 10 + ""});
-//                    mOffset++;
-//                }
-//            } else {
-//                mOffset = 2;
-//                if (count - mOffset * 10 < 0) {
-//                    c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), 0 + "", count - (mOffset - 1) * 10 + ""});
-//                    mOffset++;
-//                } else {
-//                    Log.e("wgy", "一开始查询" + mOffset);
-//                    c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), count - 10 * mOffset + "", 10 + ""});
-//                    mOffset++;
-//                }
-//            }
-//        } else {
-//            Toast.makeText(mContext, "没有更多记录了", Toast.LENGTH_SHORT).show();
-//        }
-//        if (c != null) {
-//            while (c.moveToNext()) {
-//                MessageInfo messageInfo = new MessageInfo();
-//                messageInfo.setUsername(c.getString(c.getColumnIndex("user")));
-//                messageInfo.setMessage(c.getString(c.getColumnIndex("message")));
-//                messageInfo.setTime(c.getString(c.getColumnIndex("time")));
-//                messageInfo.setType(c.getInt(c.getColumnIndex("type")));
-//                messageInfo.setCount(c.getString(c.getColumnIndex("count")));
-//                messageInfo.setCoin(c.getString(c.getColumnIndex("coin")));
-//                messageInfo.setRemark(c.getString(c.getColumnIndex("remark")));
-//                messageInfo.setStatus(c.getInt(c.getColumnIndex("state")));
-//                messageInfo.setId(c.getInt(c.getColumnIndex("id")));
-//                messageInfo.setRedId(c.getInt(c.getColumnIndex("redId")));
-//                messageInfo.setVoiceStatus(c.getInt(c.getColumnIndex("voiceStatus")));
-//                messageInfo.setVoice(c.getString(c.getColumnIndex("voice")));
-//                messageInfo.setVoiceTime(c.getString(c.getColumnIndex("voiceTime")));
-//                messageInfo.setSendStatus(c.getInt(c.getColumnIndex("sendStatus")));
-//                messageInfo.setMsgType(c.getInt(c.getColumnIndex("msgType")));
-//                messageInfo.setImageType(c.getInt(c.getColumnIndex("imageType")));
-//                messageInfo.setSend(c.getString(c.getColumnIndex("send")));
-//                messageInfos.add(messageInfo);
-//            }
-//
-//            c.close();
-//        }
-//        mUser = user;
-//        return messageInfos;
-//    }
 
     public void deleteMessage(String user) {
         db = helper.getWritableDatabase();
@@ -734,11 +672,27 @@ public class DBManager {
         db.update("MessageRecord", values, "id=?", new String[]{id + ""});
     }
 
+
+
     public void updateMessageStatus(int id) {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("voiceStatus", 1);
         db.update("MessageRecord", values, "id=?", new String[]{id + ""});
+    }
+
+    public void updateMessageStatus(String msgId,int status) {
+        db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("sendStatus", status);
+        db.update("MessageRecord", values, "msgId=?", new String[]{msgId});
+    }
+
+    public void updateMessageCreateTime(String msgId,long createTime){
+        db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("createTime", createTime);
+        db.update("MessageRecord", values, "msgId=?", new String[]{msgId});
     }
 
     public void updateMessage(int id,String message) {
@@ -753,5 +707,63 @@ public class DBManager {
         ContentValues values = new ContentValues();
         values.put("message", url);
         db.update("MessageRecord", values, "id=?", new String[]{id + ""});
+    }
+
+    public void addMessageMsgId(String msgId) {
+        db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("my_user", UtilTool.getTocoId());
+        values.put("msgId", msgId);
+        db.insert("MessageState", null, values);
+    }
+
+    public void deleteSingleMsgId(String msgId) {
+        try {
+            db = helper.getWritableDatabase();
+            int type = db.delete("MessageState", "msgId=? ", new String[]{msgId});
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteAllMsgId() {
+        try {
+            db.execSQL("DELETE FROM MessageState");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public List<String> queryAllMsgId() {
+        List<String> userInfos = new ArrayList<>();
+        try {
+            db = helper.getWritableDatabase();
+            String sql = "select msgId from MessageState";
+            Cursor c = db.rawQuery(sql, new String[]{});
+            while (c.moveToNext()) {
+                String msgId = c.getString(c.getColumnIndex("msgId"));
+                userInfos.add(msgId);
+            }
+            c.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return userInfos;
+    }
+
+    public void versionCompatibility(){
+        db = helper.getReadableDatabase();
+        List<Integer> idList = new ArrayList<>();
+        String sql = "select id from MessageRecord where sendStatus = ? and my_user = ?";
+        Cursor c = db.rawQuery(sql, new String[]{0+"", UtilTool.getTocoId()});
+        if (c != null) {
+            while (c.moveToNext()) {
+                idList.add(c.getInt(c.getColumnIndex("id")));
+            }
+            c.close();
+        }
+        for(int id:idList){
+            updateMessageHint(id,1);
+        }
     }
 }

@@ -19,6 +19,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.OSSClient;
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.crypto.otr.OtrChatListenerManager;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.history.DBRoomManage;
@@ -28,6 +29,7 @@ import com.bclould.tocotalk.model.MessageInfo;
 import com.bclould.tocotalk.model.UserInfo;
 import com.bclould.tocotalk.network.OSSupload;
 import com.bclould.tocotalk.ui.activity.ConversationActivity;
+import com.bclould.tocotalk.ui.activity.InitialActivity;
 import com.bclould.tocotalk.ui.activity.OrderCloseActivity;
 import com.bclould.tocotalk.ui.activity.PayDetailsActivity;
 import com.bclould.tocotalk.utils.Constants;
@@ -58,6 +60,7 @@ import java.util.concurrent.Executors;
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.bclould.tocotalk.Presenter.LoginPresenter.CURRENCY;
 import static com.bclould.tocotalk.Presenter.LoginPresenter.STATE;
+import static com.bclould.tocotalk.Presenter.LoginPresenter.TOKEN;
 import static com.bclould.tocotalk.topperchat.WsContans.BC_AUTH_STATUS;
 import static com.bclould.tocotalk.topperchat.WsContans.BC_COIN_IN_BROAD;
 import static com.bclould.tocotalk.topperchat.WsContans.BC_FRIEND_COMMIT;
@@ -88,6 +91,16 @@ import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_TRANSFER_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_VIDEO_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.FROM_VOICE_MSG;
 import static com.bclould.tocotalk.ui.adapter.ChatAdapter.RED_GET_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_CARD_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_GUESS_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_IMG_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_LINK_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_LOCATION_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_RED_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_TEXT_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_TRANSFER_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_VIDEO_MSG;
+import static com.bclould.tocotalk.ui.adapter.ChatAdapter.TO_VOICE_MSG;
 import static com.bclould.tocotalk.ui.fragment.FriendListFragment.NEWFRIEND;
 import static com.bclould.tocotalk.utils.MySharedPreferences.SETTING;
 
@@ -146,7 +159,7 @@ public class SocketListener {
                     //消息
                     content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {
                     });
-                    UtilTool.Log("fengjian", "聊天消息message：to：" + content.get("to") + "   from:" + content.get("from") + "   crypt:" + content.get("crypt") + "   message：" + content.get("message") + "   type：" + content.get("type"));
+                    UtilTool.Log("fengjian", "聊天消息message：to：" + content.get("to") + "   from:" + content.get("from") + "   crypt:" + content.get("crypt") + "   message：" + content.get("message") + "   type：" + content.get("type")+"   id:"+content.get("id"));
                     messageFeedback(content, true, RoomManage.ROOM_TYPE_SINGLE);
                     break;
                 case 13:
@@ -161,8 +174,7 @@ public class SocketListener {
                     break;
                 case 19:
                     //創建群組反饋
-                    content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {
-                    });
+                    content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
                     UtilTool.Log("fengjian", "群組消息message：group_name：" + content.get("group_name") + "  group_id:" + content.get("group_id") + "    status:" + content.get("status"));
                     break;
                 case 4:
@@ -171,13 +183,40 @@ public class SocketListener {
                     break;
                 case 31:
                     //其他賬號登錄
-                    // TODO: 2018/6/13 暫時需要做不重連
-                    WsConnection.stopAllIMCoreService(context);
+                    logout();
+                    break;
+                case 32:
+                    content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
+                    //消息回執，改變消息狀態
+                    changeMsgState(content);
                     break;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    //其他賬號登錄
+    private void logout(){
+        WsConnection.getInstance().logoutService(context);
+        Intent intent= new Intent(context, InitialActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+        MyApp.getInstance().exit();
+        MySharedPreferences.getInstance().setString(TOKEN, "");
+        UtilTool.Log("fengjian","強制退出");
+    }
+
+    private void changeMsgState(Map<Object, Object> content){
+        UtilTool.Log("fengjian","接受到消息反饋"+content.toString());
+        MessageEvent messageEvent=new MessageEvent(context.getString(R.string.change_msg_state));
+        String id=(String) content.get("id");
+        String time=content.get("Time")+"";
+        messageEvent.setId(id);
+        mgr.updateMessageStatus(id,1);
+        mgr.updateMessageCreateTime(id, UtilTool.stringToLong(time));
+        mgr.deleteSingleMsgId(id);
+        EventBus.getDefault().post(messageEvent);
     }
 
     /**
@@ -186,9 +225,14 @@ public class SocketListener {
      * @param binary
      */
     private void LoginFeedback(byte[] binary) throws IOException {
+        if(WsConnection.getInstance().getOutConnection()){
+            UtilTool.Log("fengjian", "已經退出登錄，斷開鏈接");
+            WsConnection.getInstance().logoutService(context);
+        }
         WsConnection.getInstance().setIsLogin(true);
         UtilTool.Log("fengjian", "登錄成功");
         ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.RECEIVING);
+        WsConnection.getInstance(). setLoginConnection(false);
         new PingThread(context).start();
         new PingThreadRequest(context).start();
 
@@ -239,12 +283,22 @@ public class SocketListener {
      */
     public void messageFeedback(Map<Object, Object> content, boolean isPlayHint, String roomType) {
         try {
-            Map<Object, Object> messageMap = objectMapper.readValue((byte[]) content.get("message"), new TypeReference<Map<String, Object>>() {
-            });
-            //處理消息鈴聲
+            Map<Object, Object> messageMap = objectMapper.readValue((byte[]) content.get("message"), new TypeReference<Map<String, Object>>() {});
+            //處理多終端登錄，自己消息同步問題
             String from = (String) content.get("from");
+            boolean isMe=false;
+            if(UtilTool.getTocoId().equals(from)){
+                from= (String) content.get("to");
+                isMe=true;
+            }
+
             String message = (String) messageMap.get("body");
             boolean crypt = (boolean) content.get("crypt");
+            String msgId= (String) content.get("id");
+            if(StringUtils.isEmpty(msgId)){
+                msgId=UtilTool.createMsgId(UtilTool.getTocoId());
+            }
+            long createTime=UtilTool.stringToLong(content.get("time")+"");
             String otr = bellJudgment(from, message, crypt, isPlayHint);
             if (StringUtils.isEmpty(otr)) return;
             //默認文本類型
@@ -261,9 +315,12 @@ public class SocketListener {
                     messageInfo = JSONObject.parseObject(message, MessageInfo.class);
                 }
             }
-
-            int msgType = FROM_TEXT_MSG;
-
+            int msgType;
+            if(isMe){
+                msgType = TO_TEXT_MSG;
+            }else {
+                msgType = FROM_TEXT_MSG;
+            }
             String time = UtilTool.createChatTime();
             // TODO: 2018/6/6 sendFrom 群聊需要修改
             String sendFrom = from;
@@ -284,7 +341,11 @@ public class SocketListener {
                 case WsContans.MSG_AUDIO:
                     //語音
                     redpacket = "[" + context.getString(R.string.voice) + "]";
-                    msgType = FROM_VOICE_MSG;
+                    if(isMe){
+                        msgType = TO_VOICE_MSG;
+                    }else {
+                        msgType = FROM_VOICE_MSG;
+                    }
                     goChat(from, context.getString(R.string.voice), roomType);
                     String fileName = UtilTool.createtFileName() + ".amr";
                     String path = context.getFilesDir().getAbsolutePath() + File.separator + "RecordRemDir";
@@ -299,7 +360,11 @@ public class SocketListener {
                     String url = downFile(messageInfo.getKey());
                     messageInfo.setMessage(url);
                     redpacket = "[" + context.getString(R.string.image) + "]";
-                    msgType = FROM_IMG_MSG;
+                    if(isMe){
+                        msgType = TO_IMG_MSG;
+                    }else {
+                        msgType = FROM_IMG_MSG;
+                    }
                     fileName = UtilTool.createtFileName() + ".jpg";
                     path = context.getFilesDir().getAbsolutePath() + File.separator
                             + "images";
@@ -319,7 +384,11 @@ public class SocketListener {
                     }
                     messageInfo.setMessage(url);
                     redpacket = "[" + context.getString(R.string.video) + "]";
-                    msgType = FROM_VIDEO_MSG;
+                    if(isMe){
+                        msgType = TO_VIDEO_MSG;
+                    }else {
+                        msgType = FROM_VIDEO_MSG;
+                    }
                     fileName = UtilTool.createtFileName() + ".mp4";
                     path = context.getFilesDir().getAbsolutePath() + File.separator + "images";
                     file = saveFile((byte[]) messageMap.get("attachment"), fileName, path);
@@ -332,7 +401,11 @@ public class SocketListener {
                 case WsContans.MSG_LOCATION:
                     //定位
                     redpacket = "[" + context.getString(R.string.location) + "]";
-                    msgType = FROM_LOCATION_MSG;
+                    if(isMe){
+                        msgType = TO_LOCATION_MSG;
+                    }else {
+                        msgType = FROM_LOCATION_MSG;
+                    }
                     fileName = UtilTool.createtFileName() + ".jpg";
                     path = context.getFilesDir().getAbsolutePath() + File.separator + "images";
                     file = saveFile((byte[]) messageMap.get("attachment"), fileName, path);
@@ -346,31 +419,51 @@ public class SocketListener {
                 case WsContans.MSG_SHARE_GUESS:
                     //競猜分享
                     redpacket = "[" + context.getString(R.string.share_guess) + "]";
-                    msgType = FROM_GUESS_MSG;
+                    if(isMe){
+                        msgType = TO_GUESS_MSG;
+                    }else {
+                        msgType = FROM_GUESS_MSG;
+                    }
                     goChat(from, context.getString(R.string.share_guess), roomType);
                     break;
                 case WsContans.MSG_SHARE_LINK:
                     //鏈接分享
                     redpacket = "[" + context.getString(R.string.share) + "]";
-                    msgType = FROM_LINK_MSG;
+                    if(isMe){
+                        msgType = TO_LINK_MSG;
+                    }else {
+                        msgType = FROM_LINK_MSG;
+                    }
                     goChat(from, context.getString(R.string.share), roomType);
                     break;
                 case WsContans.MSG_CARD:
                     //個人名片
                     redpacket = "[" + context.getString(R.string.person_business_card) + "]";
-                    msgType = FROM_CARD_MSG;
+                    if(isMe){
+                        msgType = TO_CARD_MSG;
+                    }else {
+                        msgType = FROM_CARD_MSG;
+                    }
                     goChat(from, context.getString(R.string.person_business_card), roomType);
                     break;
                 case WsContans.MSG_REDBAG:
                     //紅包
                     redpacket = "[" + context.getString(R.string.red_package) + "]";
-                    msgType = FROM_RED_MSG;
+                    if(isMe){
+                        msgType = TO_RED_MSG;
+                    }else {
+                        msgType = FROM_RED_MSG;
+                    }
                     goChat(from, messageInfo.getRemark(), roomType);
                     break;
                 case WsContans.MSG_TRANSFER:
                     //轉賬
                     redpacket = "[" + context.getString(R.string.transfer) + "]";
-                    msgType = FROM_TRANSFER_MSG;
+                    if(isMe){
+                        msgType = TO_TRANSFER_MSG;
+                    }else {
+                        msgType = FROM_TRANSFER_MSG;
+                    }
                     goChat(from, messageInfo.getRemark(), roomType);
                     break;
                 default:
@@ -386,15 +479,20 @@ public class SocketListener {
             }
             messageInfo.setUsername(from);
             messageInfo.setTime(time);
-            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setType(type);
             messageInfo.setMsgType(msgType);
             messageInfo.setStatus(status);
             messageInfo.setConverstaion(redpacket);
+            messageInfo.setMsgId(msgId);
+            messageInfo.setSendStatus(1);
+            messageInfo.setCreateTime(createTime);
             mgr.addMessage(messageInfo);
             int number = mgr.queryNumber(from);
             if (mgr.findConversation(from)) {
-                mgr.updateConversation(from, number + 1, redpacket, time);
+                if (!isMe){
+                    number++;
+                }
+                mgr.updateConversation(from, number, redpacket, time);
             } else {
                 ConversationInfo info = new ConversationInfo();
                 info.setTime(time);
@@ -464,7 +562,6 @@ public class SocketListener {
             });
             Map<Object, Object> jsonMap = JSON.parseObject(new String((byte[]) contentMap.get("message")), HashMap.class);
             Map<Object, Object> messageMap = JSON.parseObject((String) jsonMap.get("message"), HashMap.class);
-            bellJudgment(Constants.ADMINISTRATOR_NAME, "", false, true);
             int type = (int) messageMap.get("type");
             switch (type) {
                 case BC_FRIEND_REQUEST:
@@ -816,6 +913,7 @@ public class SocketListener {
         mBuilder.setAutoCancel(true);
         Notification notification = mBuilder.build();
         mNotificationManager.notify(0, notification);
+        bellJudgment(Constants.ADMINISTRATOR_NAME, "", false, true);
     }
 
     private void goChat(String from, String message, String roomType) {

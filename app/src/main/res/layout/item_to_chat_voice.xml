@@ -23,7 +23,6 @@
         android:layout_toLeftOf="@+id/rl_voice"
         android:text="5''"
         android:textSize="@dimen/x24"/>
-
     <ImageView
         android:id="@+id/iv_warning"
         android:layout_width="@dimen/x60"
@@ -34,6 +33,17 @@
         android:layout_toLeftOf="@+id/tv_voice_time"
         android:src="@mipmap/icon_fail"
         android:visibility="visible"/>
+    <ImageView
+        android:id="@+id/iv_load"
+        android:layout_width="@dimen/x60"
+        android:layout_height="@dimen/x60"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_toLeftOf="@+id/tv_voice_time"
+        android:background="@drawable/anim_progress"
+        android:visibility="visible"/>
+
 
     <RelativeLayout
         android:id="@+id/rl_voice"

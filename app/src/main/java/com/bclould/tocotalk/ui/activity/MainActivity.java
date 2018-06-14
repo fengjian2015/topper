@@ -61,6 +61,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.bclould.tocotalk.Presenter.LoginPresenter.TOKEN;
+
 
 @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
 public class MainActivity extends BaseActivity {
@@ -185,7 +187,30 @@ public class MainActivity extends BaseActivity {
         getCoinList();
         //获取国家
         getStateList();
+        //改變發送中的狀態
+        changeMsgState();
+    }
 
+    private void changeMsgState() {
+        new Thread(){
+            @Override
+            public void run() {
+                //兼容以前的消息，全部狀態改為成功1.下個版本就刪除掉
+               boolean version= MySharedPreferences.getInstance().getBoolean("version_compatibility");
+               if(!version){
+                   MySharedPreferences.getInstance().setBoolean("version_compatibility",true);
+                    mMgr.versionCompatibility();
+               }
+
+                List<String> list= mMgr.queryAllMsgId();
+                if(list!=null&&list.size()<0){
+                    for(String string:list){
+                        mMgr.updateMessageStatus(string,2);
+                    }
+                }
+                mMgr.deleteAllMsgId();
+            }
+        }.start();
     }
 
     private void getGroup() {

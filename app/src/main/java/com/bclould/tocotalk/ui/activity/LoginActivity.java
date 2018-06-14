@@ -25,6 +25,8 @@ import com.bclould.tocotalk.topperchat.WsConnection;
 import com.bclould.tocotalk.topperchat.WsOfflineConnection;
 import com.bclould.tocotalk.utils.AnimatorTool;
 import com.bclould.tocotalk.utils.MySharedPreferences;
+import com.bclould.tocotalk.utils.UtilTool;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -73,7 +75,10 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         MyApp.getInstance().addActivity(this);
-
+        if(WsConnection.getInstance().ws!=null){
+            UtilTool.Log("fengjian",WsConnection.getInstance().ws.isOpen()+"   ");
+        }
+        UtilTool.Log("fengjian",WsConnection.getInstance().ws+"   ");
     }
 
     //监听返回键

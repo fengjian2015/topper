@@ -166,6 +166,7 @@ public class IndividualDetailsActivity extends BaseActivity {
                 if (!IndividualDetailsActivity.this.isDestroyed()) {
                     if (data == null) return;
                     individualInfo = data;
+                    mName=individualInfo.getName();
                     tvName.setText(individualInfo.getName());
                     tvRemark.setText(individualInfo.getRemark());
                     tvRegion.setText(individualInfo.getCountry());
