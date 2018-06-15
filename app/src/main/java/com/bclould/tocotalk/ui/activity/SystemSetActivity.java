@@ -20,10 +20,14 @@ import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
+import com.bclould.tocotalk.utils.ToastShow;
+import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.File;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -81,6 +85,7 @@ public class SystemSetActivity extends BaseActivity {
     TextView mTv;
     @Bind(R.id.tv_new_update)
     TextView mTvNewUpdate;
+    private long mFolderSize;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -127,6 +132,13 @@ public class SystemSetActivity extends BaseActivity {
             isOnOff = true;
         }
 
+        countCache();
+    }
+
+    private void countCache() {
+        mFolderSize = UtilTool.getFolderSize(new File(Constants.LOG_DIR));
+        String fileSize = UtilTool.FormetFileSize(mFolderSize);
+        mTvCacheCount.setText(fileSize);
     }
 
 
@@ -186,7 +198,11 @@ public class SystemSetActivity extends BaseActivity {
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));
                 break;
             case R.id.rl_cache:
-                showCacheDialog();
+                if (mFolderSize != 0) {
+                    showCacheDialog();
+                } else {
+                    ToastShow.showToast2(this, getString(R.string.no_cache));
+                }
                 break;
         }
     }
@@ -220,9 +236,10 @@ public class SystemSetActivity extends BaseActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mTvCacheCount.setText("0");
+                UtilTool.deleteFolderFile(Constants.LOG_DIR, false);
+                mTvCacheCount.setText("0M");
+                ToastShow.showToast2(SystemSetActivity.this, getString(R.string.delete_cache_succeed));
                 dialog.dismiss();
-
             }
         });
 

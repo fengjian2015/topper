@@ -62,6 +62,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -175,11 +176,11 @@ public class UtilTool {
     }
 
     //創建聊天時間
-    public static Long createChatCreatTime(){
+    public static Long createChatCreatTime() {
         return System.currentTimeMillis();
     }
 
-    public static String createChatTime(){
+    public static String createChatTime() {
         //获取当前时间
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date curDate = new Date(System.currentTimeMillis());
@@ -561,10 +562,10 @@ public class UtilTool {
 
     //打印日志
     public static void Log(String clazzName, String s) {
-        String name= getFunctionName();
-        if(name!=null){
-            Log.e(clazzName, name+" - "+s);
-        }else{
+        String name = getFunctionName();
+        if (name != null) {
+            Log.e(clazzName, name + " - " + s);
+        } else {
             Log.e(clazzName, s);
         }
     }
@@ -590,7 +591,7 @@ public class UtilTool {
             if (st.getClassName().equals("com.bclould.tocotalk.utils.UtilTool")) {
                 continue;
             }
-            return  "[ " + Thread.currentThread().getName() + ": "
+            return "[ " + Thread.currentThread().getName() + ": "
                     + st.getFileName() + ":" + st.getLineNumber() + " "
                     + st.getMethodName() + " ]";
         }
@@ -945,16 +946,80 @@ public class UtilTool {
         return isRunning;
     }
 
-    public static String createMsgId(String from){
-        return UtilTool.getTocoId()+"to"+from+System.currentTimeMillis();
+    public static String createMsgId(String from) {
+        return UtilTool.getTocoId() + "to" + from + System.currentTimeMillis();
     }
 
-    public static Long stringToLong(String time){
+    public static Long stringToLong(String time) {
         try {
             return Long.parseLong(time);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return createChatCreatTime();
+    }
+
+    public static long getFolderSize(File file) {
+        long size = 0;
+        if (file.exists()) {
+            size = 0;
+            File[] fileList = file.listFiles();
+            for (int i = 0; i < fileList.length; i++) {
+                if (fileList[i].isDirectory()) {
+                    size = size + getFolderSize(fileList[i]);
+                } else {
+                    size = size + fileList[i].length();
+                }
+            }
+        }
+        return size;
+    }
+
+    /**
+     * 删除指定目录下文件及目录
+     *
+     * @param filePath
+     * @param deleteThisPath
+     * @return
+     */
+    public static void deleteFolderFile(String filePath, boolean deleteThisPath) {
+        if (!TextUtils.isEmpty(filePath)) {
+            try {
+                File file = new File(filePath);
+                if (file.isDirectory()) {// 处理目录
+                    File files[] = file.listFiles();
+                    for (int i = 0; i < files.length; i++) {
+                        deleteFolderFile(files[i].getAbsolutePath(), true);
+                    }
+                }
+                if (deleteThisPath) {
+                    if (!file.isDirectory()) {// 如果是文件，删除
+                        file.delete();
+                    } else {// 目录
+                        if (file.listFiles().length == 0) {// 目录下没有文件或者目录，删除
+                            file.delete();
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static String FormetFileSize(long fileS) {// 转换文件大小
+        DecimalFormat df = new DecimalFormat("0.00");
+        String fileSizeString = "";
+        if (fileS < 1024) {
+            fileSizeString = UtilTool.removeZero(df.format((double) fileS)) + "B";
+        } else if (fileS < 1048576) {
+            fileSizeString = UtilTool.removeZero(df.format((double) fileS / 1024)) + "K";
+        } else if (fileS < 1073741824) {
+            fileSizeString = UtilTool.removeZero(df.format((double) fileS / 1048576)) + "M";
+        } else {
+            fileSizeString = UtilTool.removeZero(df.format((double) fileS / 1073741824)) + "G";
+        }
+        return fileSizeString;
     }
 }

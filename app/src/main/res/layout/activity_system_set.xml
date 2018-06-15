@@ -301,7 +301,6 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/x25"
-                android:text="335M"
                 android:textColor="@color/blue2"/>
 
         </RelativeLayout>

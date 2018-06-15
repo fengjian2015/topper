@@ -69,7 +69,6 @@ public class PayDetailsActivity extends BaseActivity {
         initData();
     }
 
-
     private void initData() {
         String id = getIntent().getStringExtra("id");
         String log_id = getIntent().getStringExtra("log_id");

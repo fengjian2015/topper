@@ -1,4 +1,3 @@
-/*
 package com.bclould.tocotalk.listener;
 
 import android.content.Context;
@@ -8,16 +7,8 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
-import com.amazonaws.auth.BasicSessionCredentials;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.bclould.tocotalk.Presenter.DillDataPresenter;
-import com.bclould.tocotalk.model.OSSInfo;
 import com.bclould.tocotalk.ui.activity.MainActivity;
 import com.bclould.tocotalk.utils.Constants;
-import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
 
 import java.io.File;
@@ -27,15 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static com.bclould.tocotalk.ui.activity.ConversationActivity.ACCESSKEYID;
-import static com.bclould.tocotalk.ui.activity.ConversationActivity.SECRETACCESSKEY;
-import static com.bclould.tocotalk.ui.activity.ConversationActivity.SESSIONTOKEN;
-
-*/
-/**
- * Created by GA on 2018/4/3.
- *//*
 
 
 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -50,20 +32,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         mContext = context;
         defaultUncaught = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(this); // 设置为当前线程默认的异常处理器
-        initAWS();
     }
 
-    private void initAWS() {
-        DillDataPresenter dillDataPresenter = new DillDataPresenter(mContext);
-        dillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
-            @Override
-            public void send(OSSInfo.DataBean data) {
-                MySharedPreferences.getInstance().setString(ACCESSKEYID, data.getAccessKeyId());
-                MySharedPreferences.getInstance().setString(SECRETACCESSKEY, data.getSecretAccessKey());
-                MySharedPreferences.getInstance().setString(SESSIONTOKEN, data.getSessionToken());
-            }
-        });
-    }
 
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
@@ -94,36 +64,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         }
     }
 
-    private void upLoadErrorFileToServer(final File logFile) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    //连接aws
-                    BasicSessionCredentials sessionCredentials = new BasicSessionCredentials(
-                            Constants.ACCESS_KEY_ID,
-                            Constants.SECRET_ACCESS_KEY,
-                            Constants.SESSION_TOKEN);
-                    AmazonS3Client s3Client = new AmazonS3Client(
-                            sessionCredentials);
-                    Regions regions = Regions.fromName("ap-northeast-2");
-                    Region region = Region.getRegion(regions);
-                    s3Client.setRegion(region);
-                    //实例化上传请求
-                    PutObjectRequest por = new PutObjectRequest(Constants.BUCKET_NAME, logFile.getName(), logFile);
-                    //开始上传
-                    s3Client.putObject(por);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-    */
-/**
-     * 记录异常信息
-     *//*
 
     private boolean handlelException(Throwable ex) {
         // TODO Auto-generated method stub
@@ -152,14 +92,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         return true;
     }
 
-    */
-/**
-     * 收集记录错误信息
-     *
-     * @throws PackageManager.NameNotFoundException
-     * @throws IllegalArgumentException
-     * @throws IllegalAccessException
-     *//*
 
     private void collectInfoToSDCard(PrintWriter pw, Throwable ex) throws PackageManager.NameNotFoundException, IllegalAccessException, IllegalArgumentException, PackageManager.NameNotFoundException {
         // TODO Auto-generated method stub
@@ -179,4 +111,3 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         ex.printStackTrace(pw);
     }
 }
-*/

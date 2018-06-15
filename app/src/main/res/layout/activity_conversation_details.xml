@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/light"
-    tools:context="com.bclould.tocotalk.ui.activity.ConversationDetailsActivity">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/light"
+              android:orientation="vertical"
+              tools:context="com.bclould.tocotalk.ui.activity.ConversationDetailsActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -28,44 +28,50 @@
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
     </RelativeLayout>
+
     <View style="@style/HCutOffRule"></View>
+
     <RelativeLayout
         android:id="@+id/rl_details"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y160"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/y30"
         android:paddingLeft="@dimen/x20"
         android:paddingRight="@dimen/x30"
-        android:paddingBottom="@dimen/y30"
         android:paddingTop="@dimen/y30"
-        android:background="@color/white"
         >
+
         <ImageView
             android:id="@+id/image_head"
             android:layout_width="@dimen/x100"
-            android:layout_height="@dimen/y100" />
+            android:layout_height="@dimen/y100"/>
+
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:textColor="@color/image_overlay_true"
-            android:textSize="@dimen/x32"
-            android:layout_alignParentRight="true"/>
+            android:textSize="@dimen/x32"/>
+
         <TextView
             android:id="@+id/tv_otr_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/x32"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:textColor="@color/image_overlay_true"
-            android:layout_alignParentBottom="true"/>
+            android:textSize="@dimen/x32"/>
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y160"
-        android:background="@color/white"
         android:layout_marginTop="@dimen/y20"
+        android:background="@color/white"
         android:paddingTop="@dimen/y40">
+
         <TextView
             android:id="@+id/tv1"
             android:layout_width="wrap_content"
@@ -81,9 +87,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x50"
+            android:layout_marginRight="@dimen/x90"
             android:layout_toRightOf="@+id/tv1"
             android:text=""
-            android:layout_marginRight="@dimen/x90"
             android:textSize="@dimen/x26"/>
 
         <ImageView
@@ -91,17 +97,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:paddingRight="@dimen/x25"
             android:paddingBottom="@dimen/x25"
             android:paddingLeft="@dimen/x25"
+            android:paddingRight="@dimen/x25"
             android:src="@drawable/set_disturb_seletor"/>
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y160"
-        android:background="@color/white"
         android:layout_marginTop="@dimen/y20"
+        android:background="@color/white"
         android:paddingTop="@dimen/y40">
+
         <TextView
             android:id="@+id/tv2"
             android:layout_width="wrap_content"
@@ -117,29 +125,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x50"
+            android:layout_marginRight="@dimen/x90"
             android:layout_toRightOf="@+id/tv2"
             android:text=""
-            android:layout_marginRight="@dimen/x90"
             android:textSize="@dimen/x26"/>
 
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/rl_looking_chat"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
-        android:background="@color/white"
         android:layout_marginTop="@dimen/y20"
+        android:background="@color/white"
         >
+
         <TextView
             android:id="@+id/tv3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x20"
             android:layout_toRightOf="@+id/iv_inform"
             android:text="@string/looking_for_chat"
-            android:layout_centerVertical="true"
             android:textColor="@color/black"
             android:textSize="@dimen/x30"/>
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -148,22 +159,25 @@
             android:layout_marginRight="@dimen/x30"
             android:src="@mipmap/iocn_person_turn"/>
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
-        android:background="@color/white"
         android:layout_marginTop="@dimen/y20"
+        android:background="@color/white"
         >
+
         <TextView
             android:id="@+id/tv4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x20"
             android:layout_toRightOf="@+id/iv_inform"
             android:text="@string/top_chat"
-            android:layout_centerVertical="true"
             android:textColor="@color/black"
             android:textSize="@dimen/x30"/>
+
         <ImageView
             android:id="@+id/on_off_top"
             android:layout_width="wrap_content"
@@ -180,6 +194,7 @@
 
         <View
             style="@style/HCutOffRule"
+            android:layout_marginRight="@dimen/x20"
             android:layout_marginLeft="@dimen/x20"></View>
 
         <TextView
@@ -191,7 +206,7 @@
             android:layout_toRightOf="@+id/iv_inform"
             android:text="@string/message_free"
             android:textColor="@color/black"
-            android:textSize="@dimen/x30" />
+            android:textSize="@dimen/x30"/>
 
         <ImageView
             android:id="@+id/on_off_message_free"
@@ -199,7 +214,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:padding="@dimen/x25"
-            android:src="@drawable/set_disturb_seletor" />
+            android:src="@drawable/set_disturb_seletor"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -208,23 +223,23 @@
         android:layout_height="@dimen/y100"
         android:background="@color/white"
         >
-        <View style="@style/HCutOffRule" android:layout_marginLeft="@dimen/x20"></View>
+
+        <View
+            style="@style/HCutOffRule"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_marginLeft="@dimen/x20"></View>
+
         <TextView
             android:id="@+id/tv6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x20"
             android:layout_toRightOf="@+id/iv_inform"
             android:text="@string/empty_talk"
-            android:layout_centerVertical="true"
             android:textColor="@color/black"
             android:textSize="@dimen/x30"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/x30"
-            android:src="@mipmap/iocn_person_turn"/>
+
     </RelativeLayout>
+
 </LinearLayout>

@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -100,7 +99,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     private DBManager mgr;
     public static ConversationFragment instance = null;
     private ConversationAdapter mConversationAdapter;
-    private MyReceiver receiver;
     private int imState = -1;
     private DisplayMetrics mDm;
     private int mHeightPixels;
@@ -121,11 +119,11 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         View view = inflater.inflate(R.layout.fragment_conversation_list, container, false);
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
-        if (receiver == null) {
+        /*if (receiver == null) {
             receiver = new MyReceiver();
             IntentFilter intentFilter = new IntentFilter("XMPPConnectionListener");
             getActivity().registerReceiver(receiver, intentFilter);
-        }
+        }*/
         ButterKnife.bind(this, view);
         mgr = new DBManager(getActivity());
         return view;
@@ -192,7 +190,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                     mTvTitle.setText(getString(R.string.in_link));
                 } else if (serviceState == ConnectStateChangeListenerManager.DISCONNECT) {// 未连接
                     mTitleProgress.setVisibility(View.GONE);
-                    mTvTitle.setText(getString(R.string.talk)+getString(R.string.not_link));
+                    mTvTitle.setText(getString(R.string.talk) + getString(R.string.not_link));
                 } else if (serviceState == ConnectStateChangeListenerManager.RECEIVING) {//收取中
                     mTitleProgress.setVisibility(View.GONE);
                     mTvTitle.setText(getString(R.string.talk));

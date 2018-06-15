@@ -46,6 +46,7 @@ import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.StringUtils;
+import com.bclould.tocotalk.utils.ToastShow;
 import com.bclould.tocotalk.utils.UtilTool;
 import com.gjiazhe.wavesidebar.WaveSideBar;
 import com.google.gson.Gson;
@@ -95,8 +96,6 @@ public class FriendListFragment extends Fragment {
     TextView mNumber;
     @Bind(R.id.news_friend)
     RelativeLayout mNewsFriend;
-    @Bind(R.id.tv_group_line)
-    TextView mTvGroupLine;
     @Bind(R.id.iv1)
     ImageView mIv1;
     @Bind(R.id.my_group)
@@ -107,6 +106,7 @@ public class FriendListFragment extends Fragment {
     SmartRefreshLayout mRefreshLayout;
     @Bind(R.id.side_bar)
     WaveSideBar mSideBar;
+
     private int QRCODE = 1;
     private DisplayMetrics mDm;
     private int mHeightPixels;
@@ -408,7 +408,8 @@ public class FriendListFragment extends Fragment {
                 mNewFriend = 0;
                 break;
             case R.id.my_group:
-                startActivity(new Intent(getActivity(), GroupListActivity.class));
+//                startActivity(new Intent(getActivity(), GroupListActivity.class));
+                ToastShow.showToast2(getActivity(), getString(R.string.hint_unfinished));
                 break;
         }
     }
