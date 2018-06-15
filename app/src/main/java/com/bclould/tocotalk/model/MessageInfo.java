@@ -47,6 +47,16 @@ public class MessageInfo implements Serializable {
     private long createTime;
     //  //2018-06-14新增消息唯一標示
     private String msgId;
+    //2018-06-15增加用於聊天界面時間顯示
+    private String showChatTime;
+
+    public String getShowChatTime() {
+        return showChatTime;
+    }
+
+    public void setShowChatTime(String showChatTime) {
+        this.showChatTime = showChatTime;
+    }
 
     public String getMsgId() {
         return msgId;

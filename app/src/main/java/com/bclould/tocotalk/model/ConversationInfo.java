@@ -12,6 +12,15 @@ public class ConversationInfo {
     private String friend;
     private String istop;
     private String chatType;
+    private long createTime;
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
+    }
 
     public String getChatType() {
         return chatType;

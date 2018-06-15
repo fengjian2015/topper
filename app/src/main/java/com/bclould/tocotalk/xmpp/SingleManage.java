@@ -78,7 +78,7 @@ public class SingleManage implements Room {
     }
 
 
-    private boolean send(String to, byte[] attachment, String body, int msgType,String msgId) throws Exception {
+    private boolean send(String to, byte[] attachment, String body, int msgType,String msgId,long time) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper(new MessagePackFactory());
         Map<Object, Object> messageMap = new HashMap<>();
         messageMap.put("body", OtrChatListenerManager.getInstance().sentMessagesChange(body,
@@ -96,6 +96,7 @@ public class SingleManage implements Room {
         contentMap.put("message", objectMapper.writeValueAsBytes(messageMap));
         contentMap.put("type", msgType);
         contentMap.put("id",msgId);
+        contentMap.put("time",time);
 
         Map<Object, Object> sendMap = new HashMap<>();
         sendMap.put("type", 3);
@@ -184,13 +185,33 @@ public class SingleManage implements Room {
         }
     }
 
+    private ConversationInfo createConversation(String time, String message, long createTime){
+        ConversationInfo info = new ConversationInfo();
+        info.setTime(time);
+        info.setFriend(mName);
+        info.setUser(mUser);
+        info.setMessage(message);
+        info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
+        info.setCreateTime(createTime);
+        return info;
+    }
+
+    private void changeConversationInfo(String time,String message,long createTime){
+        if (mMgr.findConversation(mUser)) {
+            mMgr.updateConversation(mUser, 0, message, time,createTime);
+        } else {
+            mMgr.addConversation(createConversation(time,message,createTime));
+        }
+    }
+
     //发送文本消息
     public MessageInfo sendMessage(String message) {
         try {
             MessageInfo sendMessage = new MessageInfo();
             sendMessage.setMessage(message);
             String msgId=UtilTool.createMsgId(mUser);
-            send(mUser, null, JSON.toJSONString(sendMessage), WsContans.MSG_TEXT,msgId);
+            long createTime=UtilTool.createChatCreatTime();
+            send(mUser, null, JSON.toJSONString(sendMessage), WsContans.MSG_TEXT,msgId,createTime);
 
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(mUser);
@@ -205,19 +226,9 @@ public class SingleManage implements Room {
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(message);
             messageInfo.setMsgId(msgId);
-            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            messageInfo.setCreateTime(createTime);
             messageInfo.setId(mMgr.addMessage(messageInfo));
-            if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, message, time);
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                info.setMessage(message);
-                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-                mMgr.addConversation(info);
-            }
+            changeConversationInfo(time,message,createTime);
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
             refreshAddData(messageInfo);
             return messageInfo;
@@ -239,18 +250,7 @@ public class SingleManage implements Room {
             messageInfo.setMsgId(UtilTool.createMsgId(mUser));
             messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
-
-            if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, message, time);
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                info.setMessage(message);
-                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-                mMgr.addConversation(info);
-            }
+            changeConversationInfo(time,message,UtilTool.createChatCreatTime());
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
             refreshAddData(messageInfo);
             return messageInfo;
@@ -292,7 +292,7 @@ public class SingleManage implements Room {
             OSSAsyncTask<PutObjectResult> task = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                 @Override
                 public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
-                    sendFileAfterMessage(key, postfix, newFile.getPath(), messageInfo.getId(),messageInfo.getMsgId());
+                    sendFileAfterMessage(key, postfix, newFile.getPath(), messageInfo.getId(),messageInfo.getMsgId(),messageInfo.getCreateTime());
                 }
 
                 @Override
@@ -309,7 +309,7 @@ public class SingleManage implements Room {
             OSSAsyncTask<PutObjectResult> task = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                 @Override
                 public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
-                    sendFileAfterMessage(key, postfix, newFile.getPath(), messageInfo.getId(),messageInfo.getMsgId());
+                    sendFileAfterMessage(key, postfix, newFile.getPath(), messageInfo.getId(),messageInfo.getMsgId(),messageInfo.getCreateTime());
                 }
 
                 @Override
@@ -326,10 +326,10 @@ public class SingleManage implements Room {
     @Override
     public void transmitVideo(MessageInfo messageInfo) {
         MessageInfo messageInfo1 = sendFileMessage(messageInfo.getMessage(), "Video", "", messageInfo.getVoice());
-        sendFileAfterMessage(messageInfo.getMessage(), "Video", messageInfo.getVoice(), messageInfo1.getId(),messageInfo1.getMsgId());
+        sendFileAfterMessage(messageInfo.getMessage(), "Video", messageInfo.getVoice(), messageInfo1.getId(),messageInfo1.getMsgId(),messageInfo1.getCreateTime());
     }
 
-    private void sendFileAfterMessage(String key, String postfix, String newFile, int mId ,String msgId) {
+    private void sendFileAfterMessage(String key, String postfix, String newFile, int mId ,String msgId,long createTime) {
         try {
             byte[] bytes = UtilTool.readStream(newFile);
             MessageInfo sendMessage = new MessageInfo();
@@ -340,7 +340,7 @@ public class SingleManage implements Room {
             } else if (postfix.equals("Video")) {
                 type = WsContans.MSG_VIDEO;
             }
-            send(mUser, bytes, JSON.toJSONString(sendMessage), type,msgId);
+            send(mUser, bytes, JSON.toJSONString(sendMessage), type,msgId,createTime);
             sendFileResults(newFile, true);
             return;
         } catch (Exception e) {
@@ -369,38 +369,21 @@ public class SingleManage implements Room {
                 messageInfo.setMsgType(TO_FILE_MSG);
             }
             messageInfo.setSend(UtilTool.getTocoId());
-            if (mMgr.findConversation(mUser)) {
-                if (postfix.equals("Image")) {
-                    mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.image) + "]", time);
-                    messageInfo.setConverstaion("[" + context.getString(R.string.image) + "]");
-                } else if (postfix.equals("Video")) {
-                    mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.video) + "]", time);
-                    messageInfo.setConverstaion("[" + context.getString(R.string.video) + "]");
-                } else {
-                    mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.file) + "]", time);
-                    messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
-                }
+            String message;
+            if (postfix.equals("Image")) {
+                message="[" + context.getString(R.string.image) + "]";
+                messageInfo.setConverstaion("[" + context.getString(R.string.image) + "]");
+            } else if (postfix.equals("Video")) {
+                message="[" + context.getString(R.string.video) + "]";
+                messageInfo.setConverstaion("[" + context.getString(R.string.video) + "]");
             } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                if (postfix.equals("Image")) {
-                    info.setMessage("[" + context.getString(R.string.image) + "]");
-                    messageInfo.setConverstaion("[" + context.getString(R.string.image) + "]");
-                } else if (postfix.equals("Video")) {
-                    info.setMessage("[" + context.getString(R.string.video) + "]");
-                    messageInfo.setConverstaion("[" + context.getString(R.string.video) + "]");
-                } else {
-                    info.setMessage("[" + context.getString(R.string.file) + "]");
-                    messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
-                }
-                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-                mMgr.addConversation(info);
+                message="[" + context.getString(R.string.file) + "]";
+                messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
             }
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            changeConversationInfo(time,message,messageInfo.getCreateTime());
             messageInfo.setMsgId(UtilTool.createMsgId(mUser));
             messageInfo.setSendStatus(0);
-            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
             refreshAddData(messageInfo);
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
@@ -424,37 +407,20 @@ public class SingleManage implements Room {
                 messageInfo.setMsgType(TO_FILE_MSG);
             }
             messageInfo.setSend(UtilTool.getTocoId());
-            if (mMgr.findConversation(mUser)) {
-                if (postfix.equals("Image")) {
-                    mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.image) + "]", time);
-                    messageInfo.setConverstaion("[" + context.getString(R.string.image) + "]");
-                } else if (postfix.equals("Video")) {
-                    mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.video) + "]", time);
-                    messageInfo.setConverstaion("[" + context.getString(R.string.video) + "]");
-                } else {
-                    mMgr.updateConversation(mUser, 0, "[" + context.getString(R.string.file) + "]", time);
-                    messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
-                }
+            String message;
+            if (postfix.equals("Image")) {
+                message="[" + context.getString(R.string.image) + "]";
+                messageInfo.setConverstaion("[" + context.getString(R.string.image) + "]");
+            } else if (postfix.equals("Video")) {
+                message="[" + context.getString(R.string.video) + "]";
+                messageInfo.setConverstaion("[" + context.getString(R.string.video) + "]");
             } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                if (postfix.equals("Image")) {
-                    info.setMessage("[" + context.getString(R.string.image) + "]");
-                    messageInfo.setConverstaion("[" + context.getString(R.string.image) + "]");
-                } else if (postfix.equals("Video")) {
-                    info.setMessage("[" + context.getString(R.string.video) + "]");
-                    messageInfo.setConverstaion("[" + context.getString(R.string.video) + "]");
-                } else {
-                    info.setMessage("[" + context.getString(R.string.file) + "]");
-                    messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
-                }
-                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-                mMgr.addConversation(info);
+                message="[" + context.getString(R.string.file) + "]";
+                messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
             }
-            messageInfo.setMsgId(UtilTool.createMsgId(mUser));
             messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            changeConversationInfo(time,message,messageInfo.getCreateTime());
+            messageInfo.setMsgId(UtilTool.createMsgId(mUser));
             messageInfo.setId(mMgr.addMessage(messageInfo));
             refreshAddData(messageInfo);
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
@@ -489,8 +455,9 @@ public class SingleManage implements Room {
             messageInfo.setLat(lat);
             messageInfo.setLng(lng);
             String msgId=UtilTool.createMsgId(mUser);
+            long createTime=UtilTool.createChatCreatTime();
             byte[] bytes = UtilTool.readStream(newFile.getAbsolutePath());
-            send(mUser, bytes, JSON.toJSONString(messageInfo), WsContans.MSG_LOCATION,msgId);
+            send(mUser, bytes, JSON.toJSONString(messageInfo), WsContans.MSG_LOCATION,msgId,createTime);
 
             //把消息添加进数据库
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -506,22 +473,12 @@ public class SingleManage implements Room {
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
             messageInfo.setMsgId(msgId);
-            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            messageInfo.setCreateTime(createTime);
             mId = mMgr.addMessage(messageInfo);
             messageInfo.setId(mId);
             refreshAddData(messageInfo);
             //给聊天列表更新消息
-            if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, converstaion, time);
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                info.setMessage(converstaion);
-                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-                mMgr.addConversation(info);
-            }
+            changeConversationInfo(time,converstaion,createTime);
             //发送消息通知
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
             sendFileResults(newFile.getAbsolutePath(), true);
@@ -549,18 +506,7 @@ public class SingleManage implements Room {
             mId = mMgr.addMessage(messageInfo);
             messageInfo.setId(mId);
             refreshAddData(messageInfo);
-
-            if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, converstaion, time);
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                info.setMessage(converstaion);
-                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-                mMgr.addConversation(info);
-            }
+            changeConversationInfo(time,converstaion,UtilTool.createChatCreatTime());
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
 
             mMgr.updateMessageHint(mId, 2);
@@ -594,8 +540,9 @@ public class SingleManage implements Room {
     public boolean sendCaed(MessageInfo messageInfo) {
         String converstaion = "[" + context.getString(R.string.person_business_card) + "]";
         try {
+            long createTime=UtilTool.createChatCreatTime();
             String msgId=UtilTool.createMsgId(mUser);
-            send(mUser, null, JSON.toJSONString(messageInfo), WsContans.MSG_CARD,msgId);
+            send(mUser, null, JSON.toJSONString(messageInfo), WsContans.MSG_CARD,msgId,createTime);
             messageInfo.setUsername(mUser);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date curDate = new Date(System.currentTimeMillis());
@@ -607,19 +554,9 @@ public class SingleManage implements Room {
             messageInfo.setSendStatus(0);
             messageInfo.setConverstaion(converstaion);
             messageInfo.setMsgId(msgId);
-            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            messageInfo.setCreateTime(createTime);
             messageInfo.setId(mMgr.addMessage(messageInfo));
-            if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, converstaion, time);
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                info.setMessage(converstaion);
-                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-                mMgr.addConversation(info);
-            }
+            changeConversationInfo(time,converstaion,createTime);
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
             refreshAddData(messageInfo);
 
@@ -641,17 +578,7 @@ public class SingleManage implements Room {
             messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
 
-            if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, converstaion, time);
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                info.setMessage(converstaion);
-                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-                mMgr.addConversation(info);
-            }
+            changeConversationInfo(time,converstaion,UtilTool.createChatCreatTime());
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
             refreshAddData(messageInfo);
             return false;
@@ -671,7 +598,8 @@ public class SingleManage implements Room {
         String converstaion = "[" + context.getString(R.string.share) + "]";
         try {
             String msgId=UtilTool.createMsgId(mUser);
-            send(mUser, null, JSON.toJSONString(messageInfo), WsContans.MSG_SHARE_LINK,msgId);
+            long createTime=UtilTool.createChatCreatTime();
+            send(mUser, null, JSON.toJSONString(messageInfo), WsContans.MSG_SHARE_LINK,msgId,createTime);
 
             messageInfo.setUsername(mUser);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -684,19 +612,9 @@ public class SingleManage implements Room {
             messageInfo.setSendStatus(0);
             messageInfo.setConverstaion(converstaion);
             messageInfo.setMsgId(msgId);
-            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            messageInfo.setCreateTime(createTime);
             messageInfo.setId(mMgr.addMessage(messageInfo));
-            if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, converstaion, time);
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                info.setMessage(converstaion);
-                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-                mMgr.addConversation(info);
-            }
+            changeConversationInfo(time,converstaion,createTime);
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
             refreshAddData(messageInfo);
 
@@ -717,17 +635,7 @@ public class SingleManage implements Room {
             messageInfo.setMsgId(UtilTool.createMsgId(mUser));
             messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
-            if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, converstaion, time);
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                info.setMessage(converstaion);
-                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-                mMgr.addConversation(info);
-            }
+            changeConversationInfo(time,converstaion,UtilTool.createChatCreatTime());
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
             refreshAddData(messageInfo);
             return false;
@@ -746,7 +654,8 @@ public class SingleManage implements Room {
         String converstaion = "[" + context.getString(R.string.share_guess) + "]";
         try {
             String msgId=UtilTool.createMsgId(mUser);
-            send(mUser, null, JSON.toJSONString(messageInfo), WsContans.MSG_SHARE_GUESS,msgId);
+            long createTime=UtilTool.createChatCreatTime();
+            send(mUser, null, JSON.toJSONString(messageInfo), WsContans.MSG_SHARE_GUESS,msgId,createTime);
             messageInfo.setUsername(mUser);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date curDate = new Date(System.currentTimeMillis());
@@ -758,19 +667,9 @@ public class SingleManage implements Room {
             messageInfo.setSendStatus(0);
             messageInfo.setConverstaion(converstaion);
             messageInfo.setMsgId(msgId);
-            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            messageInfo.setCreateTime(createTime);
             messageInfo.setId(mMgr.addMessage(messageInfo));
-            if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, converstaion, time);
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                info.setMessage(converstaion);
-                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-                mMgr.addConversation(info);
-            }
+            changeConversationInfo(time,converstaion,createTime);
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
             refreshAddData(messageInfo);
 
@@ -791,17 +690,7 @@ public class SingleManage implements Room {
             messageInfo.setMsgId(UtilTool.createMsgId(mUser));
             messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
-            if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, converstaion, time);
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                info.setMessage(converstaion);
-                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-                mMgr.addConversation(info);
-            }
+            changeConversationInfo(time,converstaion,UtilTool.createChatCreatTime());
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
             refreshAddData(messageInfo);
             return false;
@@ -827,9 +716,10 @@ public class SingleManage implements Room {
         try {
             byte[] bytes = UtilTool.readStream(fileName);//把语音文件转换成二进制
             String msgId=UtilTool.createMsgId(mUser);
+            long createTime=UtilTool.createChatCreatTime();
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setMessage(context.getString(R.string.voice));
-            send(mUser, bytes, JSON.toJSONString(messageInfo), WsContans.MSG_AUDIO,msgId);
+            send(mUser, bytes, JSON.toJSONString(messageInfo), WsContans.MSG_AUDIO,msgId,createTime);
 
             //把消息添加进数据库
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -847,22 +737,12 @@ public class SingleManage implements Room {
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
             messageInfo.setMsgId(msgId);
-            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            messageInfo.setCreateTime(createTime);
             messageInfo.setId(mMgr.addMessage(messageInfo));
             refreshAddData(messageInfo);
 
             //给聊天列表更新消息
-            if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, converstaion, time);
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                info.setMessage(converstaion);
-                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-                mMgr.addConversation(info);
-            }
+            changeConversationInfo(time,converstaion,createTime);
             //发送消息通知
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
         } catch (Exception e) {
@@ -887,17 +767,7 @@ public class SingleManage implements Room {
             messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
             refreshAddData(messageInfo);
-            if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, converstaion, time);
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                info.setMessage(converstaion);
-                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-                mMgr.addConversation(info);
-            }
+            changeConversationInfo(time,converstaion,UtilTool.createChatCreatTime());
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
         }
 
@@ -908,12 +778,13 @@ public class SingleManage implements Room {
             String converstaion = "[" + context.getString(R.string.transfer) + "]";
             String message = Constants.TRANSFER + Constants.CHUANCODE + mRemark + Constants.CHUANCODE + mCoin + Constants.CHUANCODE + mCount;
             String msgId=UtilTool.createMsgId(mUser);
+            long createTime=UtilTool.createChatCreatTime();
             MessageInfo sendMessage = new MessageInfo();
             sendMessage.setRemark(mRemark);
             sendMessage.setCoin(mCoin);
             sendMessage.setCount(mCount);
             sendMessage.setMessage(message);
-            send(mUser, null, JSON.toJSONString(sendMessage), WsContans.MSG_TRANSFER,msgId);
+            send(mUser, null, JSON.toJSONString(sendMessage), WsContans.MSG_TRANSFER,msgId,createTime);
 
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(mUser);
@@ -930,19 +801,9 @@ public class SingleManage implements Room {
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
             messageInfo.setMsgId(msgId);
-            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            messageInfo.setCreateTime(createTime);
             mMgr.addMessage(messageInfo);
-            if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, converstaion, time);
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                info.setMessage(converstaion);
-                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-                mMgr.addConversation(info);
-            }
+            changeConversationInfo(time,converstaion,createTime);
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.transfer)));
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
         } catch (Exception e) {
@@ -956,13 +817,14 @@ public class SingleManage implements Room {
         String message = Constants.REDBAG + Constants.CHUANCODE + mRemark + Constants.CHUANCODE + mCoin + Constants.CHUANCODE + mCount + Constants.CHUANCODE + id;
         try {
             String msgId=UtilTool.createMsgId(mUser);
+            long createTime=UtilTool.createChatCreatTime();
             MessageInfo sendMessage = new MessageInfo();
             sendMessage.setRemark(mRemark);
             sendMessage.setCoin(mCoin);
             sendMessage.setCount(mCount + "");
             sendMessage.setRedId(id);
             sendMessage.setMessage(message);
-            send(mUser, null, JSON.toJSONString(sendMessage), WsContans.MSG_REDBAG,msgId);
+            send(mUser, null, JSON.toJSONString(sendMessage), WsContans.MSG_REDBAG,msgId,createTime);
 
             MessageInfo messageInfo = new MessageInfo();
             messageInfo.setUsername(mUser);
@@ -981,19 +843,9 @@ public class SingleManage implements Room {
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
             messageInfo.setMsgId(msgId);
-            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            messageInfo.setCreateTime(createTime);
             mMgr.addMessage(messageInfo);
-            if (mMgr.findConversation(mUser)) {
-                mMgr.updateConversation(mUser, 0, converstaion, time);
-            } else {
-                ConversationInfo info = new ConversationInfo();
-                info.setTime(time);
-                info.setFriend(mName);
-                info.setUser(mUser);
-                info.setMessage(converstaion);
-                info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-                mMgr.addConversation(info);
-            }
+            changeConversationInfo(time,converstaion,createTime);
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.send_red_packet_le)));
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
         } catch (Exception e) {

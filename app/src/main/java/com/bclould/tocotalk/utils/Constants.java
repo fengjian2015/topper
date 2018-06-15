@@ -3,7 +3,6 @@ package com.bclould.tocotalk.utils;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
-import static com.bclould.tocotalk.Presenter.LoginPresenter.XMPP_SERVER;
 
 /**
  * Created by GA on 2017/10/27.
@@ -22,7 +21,7 @@ public class Constants {
     public static String MSG_OFFLINE = isDebug ? "wss://socket.bclould.com:8180/users_offline_msg" : "wss://offline.cnblocklink.com:8443/users_offline_msg";
     //        public static String DOMAINNAME = "xmpp.bclould.com";//测试
     public static String DOMAINNAME = "xmpp.coingbank.com";
-    public static String DOMAINNAME2 = MySharedPreferences.getInstance().getString(XMPP_SERVER);
+    public static String DOMAINNAME2 = "";
     public static String CHUANCODE = "爨^(&";
     public static String CARD = "[card]";
     public static String SHARE_LINK = "[share_link]";

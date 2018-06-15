@@ -291,6 +291,7 @@ public class SocketListener {
             if(UtilTool.getTocoId().equals(from)){
                 from= (String) content.get("to");
                 isMe=true;
+                isPlayHint=false;
             }
 
             String message = (String) messageMap.get("body");
@@ -493,7 +494,7 @@ public class SocketListener {
                 if (!isMe){
                     number++;
                 }
-                mgr.updateConversation(from, number, redpacket, time);
+                mgr.updateConversation(from, number, redpacket, time,createTime);
             } else {
                 ConversationInfo info = new ConversationInfo();
                 info.setTime(time);
@@ -506,6 +507,7 @@ public class SocketListener {
                 info.setUser(from);
                 info.setNumber(1);
                 info.setMessage(redpacket);
+                info.setCreateTime(UtilTool.createChatCreatTime());
                 mgr.addConversation(info);
             }
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.msg_database_update)));
@@ -877,7 +879,7 @@ public class SocketListener {
         mgr.addMessage(messageInfo);
         int number = mgr.queryNumber(from);
         if (mgr.findConversation(from)) {
-            mgr.updateConversation(from, number + 1, redpacket, time);
+            mgr.updateConversation(from, number + 1, redpacket, time,messageInfo.getCreateTime());
         } else {
             ConversationInfo info = new ConversationInfo();
             info.setTime(time);
@@ -886,6 +888,7 @@ public class SocketListener {
             info.setUser(from);
             info.setNumber(1);
             info.setMessage(redpacket);
+            info.setCreateTime(messageInfo.getCreateTime());
             mgr.addConversation(info);
         }
         EventBus.getDefault().post(new MessageEvent(context.getString(R.string.msg_database_update)));

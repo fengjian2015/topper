@@ -38,6 +38,8 @@ public class DBManager {
 
 
     public int addMessage(MessageInfo messageInfo) {
+
+//        String currentShowTime = getCurrentShowTime(messageInfo);
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("count", messageInfo.getCount());
@@ -73,9 +75,29 @@ public class DBManager {
         values.put("filekey",messageInfo.getKey());
         values.put("createTime",messageInfo.getCreateTime());
         values.put("msgId",messageInfo.getMsgId());
+//        values.put("showChatTime",currentShowTime);
         int id = (int) db.insert("MessageRecord", null, values);
         UtilTool.Log("日志", "添加成功" + messageInfo.toString());
         return id;
+    }
+
+    private synchronized String getCurrentShowTime(MessageInfo message) {
+        db = helper.getReadableDatabase();
+        long currTime = message.getCreateTime();
+        Cursor c = db.rawQuery(
+                "SELECT showChatTime from MessageRecord where user = ? and my_user=?" +
+                        " and (showChatTime is NOT NULL and showChatTime != '') order by createTime desc limit 1",
+                new String[]{message.getUsername(), UtilTool.getTocoId()});
+        if (c.moveToNext()) {
+            long lastTime = c.getLong(c.getColumnIndex("createTime"));
+            if (UtilTool.compareTime(lastTime,currTime)) {
+                return currTime+"";
+            } else {
+                return "";
+            }
+        }
+        c.close();
+        return currTime+"";
     }
 
     public long queryMessageCount(String user) {
@@ -93,7 +115,7 @@ public class DBManager {
     public List<MessageInfo> queryTypeMessage(String user, int fromtype, int sentype, int sendred, int fromred, int limit) {
         db = helper.getReadableDatabase();
         ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
-        String sql = "select * from MessageRecord where user=? and my_user=? and (msgType=? or msgType=? or msgType=? or msgType=?) ORDER BY id desc limit ?";
+        String sql = "select * from MessageRecord where user=? and my_user=? and (msgType=? or msgType=? or msgType=? or msgType=?) ORDER BY createTime desc limit ?";
         Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), fromtype + "", sentype + "", sendred + "", fromred + "", limit * 10 + ""});
         if (c != null) {
             while (c.moveToNext()) {
@@ -140,6 +162,7 @@ public class DBManager {
         messageInfo.setKey(c.getString(c.getColumnIndex("filekey")));
         messageInfo.setCreateTime(c.getLong(c.getColumnIndex("createTime")));
         messageInfo.setMsgId(c.getString(c.getColumnIndex("msgId")));
+        messageInfo.setShowChatTime(c.getString(c.getColumnIndex("showChatTime")));
         return messageInfo;
     }
 
@@ -147,7 +170,7 @@ public class DBManager {
     public List<MessageInfo> queryTextMessage(String user, String content, int limit) {
         db = helper.getReadableDatabase();
         ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
-        String sql = "select * from MessageRecord where user=? and my_user=? and message like ? ORDER BY id desc limit ?";
+        String sql = "select * from MessageRecord where user=? and my_user=? and message like ? ORDER BY createTime desc limit ?";
         Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), "%" + content + "%", limit * 10 + ""});
         if (c != null) {
             while (c.moveToNext()) {
@@ -162,7 +185,7 @@ public class DBManager {
     public List<MessageInfo> queryTypeMessage(String user, int fromtype, int sentype, int limit) {
         db = helper.getReadableDatabase();
         ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
-        String sql = "select * from MessageRecord where user=? and my_user=? and (msgType=? or msgType=?) ORDER BY id desc limit ?";
+        String sql = "select * from MessageRecord where user=? and my_user=? and (msgType=? or msgType=?) ORDER BY createTime desc limit ?";
         Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), fromtype + "", sentype + "", limit * 20 + ""});
         if (c != null) {
             while (c.moveToNext()) {
@@ -177,7 +200,7 @@ public class DBManager {
         long count = queryMessageCount(user);
         db = helper.getReadableDatabase();
         ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
-        String sql = "select * from MessageRecord where user=? and my_user=? limit ?,?";
+        String sql = "select * from MessageRecord where user=? and my_user=? ORDER BY createTime asc limit ?,?";
         Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), count - 10 + "", 10 + ""});
         if (c != null) {
             while (c.moveToNext()) {
@@ -195,11 +218,11 @@ public class DBManager {
      * @param id
      * @return
      */
-    public List<MessageInfo> queryRefreshMessage(String user, int id) {
+    public List<MessageInfo> queryRefreshMessage(String user, long createTime) {
         db = helper.getReadableDatabase();
         ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
-        String sql = "select * from MessageRecord where user=? and my_user=? and id < ? ORDER BY id desc limit ?";
-        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), id + "", 10 + ""});
+        String sql = "select * from MessageRecord where user=? and my_user=? and createTime < ? limit ?";
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), createTime + "", 10 + ""});
         if (c != null) {
             while (c.moveToNext()) {
                 messageInfos.add(addMessage(c));
@@ -220,21 +243,17 @@ public class DBManager {
      * @param id
      * @return
      */
-    public List<MessageInfo> queryLoadMessage(String user, int id, boolean isFist) {
+    public List<MessageInfo> queryLoadMessage(String user, long createTime, boolean isFist) {
 
         ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
-        if(id<=0){
-            Toast.makeText(mContext, "没有更多记录了", Toast.LENGTH_SHORT).show();
-            return messageInfos;
-        }
         String sql;
         db = helper.getReadableDatabase();
         if (isFist) {
-            sql = "select * from MessageRecord where user=? and my_user=? and id >= ? limit ?";
+            sql = "select * from MessageRecord where user=? and my_user=? and createTime >= ? limit ?";
         } else {
-            sql = "select * from MessageRecord where user=? and my_user=? and id > ? limit ?";
+            sql = "select * from MessageRecord where user=? and my_user=? and createTime > ? limit ?";
         }
-        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), id + "", 10 + ""});
+        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), createTime + "", 10 + ""});
         if (c != null) {
             while (c.moveToNext()) {
                 messageInfos.add(addMessage(c));
@@ -260,7 +279,7 @@ public class DBManager {
     public String findLastMessageConversation(String roomid) {
         db = helper.getReadableDatabase();
         String conversation = null;
-        Cursor cursor = db.rawQuery("select converstaion from MessageRecord where user=? and my_user=?",
+        Cursor cursor = db.rawQuery("select converstaion from MessageRecord where user=? and my_user=? ORDER BY createTime asc",
                 new String[]{roomid, UtilTool.getTocoId()});
 
         if (cursor.moveToLast()) {
@@ -372,6 +391,7 @@ public class DBManager {
         values.put("friend", conversationInfo.getFriend());
         values.put("istop", conversationInfo.getIstop());
         values.put("chatType",conversationInfo.getChatType());
+        values.put("createTime",conversationInfo.getCreateTime());
         db.insert("ConversationRecord", null, values);
     }
 
@@ -384,12 +404,13 @@ public class DBManager {
         return result;
     }
 
-    public void updateConversation(String user, int number, String chat, String time) {
+    public void updateConversation(String user, int number, String chat, String time,long createTime) {
         db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("number", number);
         cv.put("time", time);
         cv.put("message", chat);
+        cv.put("createTime",createTime);
         db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
     }
 
@@ -445,6 +466,7 @@ public class DBManager {
             conversationInfo.setFriend(c.getString(c.getColumnIndex("friend")));
             conversationInfo.setIstop(c.getString(c.getColumnIndex("istop")));
             conversationInfo.setChatType(c.getString(c.getColumnIndex("chatType")));
+            conversationInfo.setCreateTime(c.getInt(c.getColumnIndex("createTime")));
             conversationList.add(conversationInfo);
         }
         c.close();
@@ -712,18 +734,19 @@ public class DBManager {
     public void addMessageMsgId(String msgId) {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("my_user", UtilTool.getTocoId());
         values.put("msgId", msgId);
         db.insert("MessageState", null, values);
     }
 
-    public void deleteSingleMsgId(String msgId) {
+    public int deleteSingleMsgId(String msgId) {
+        int type=-1;
         try {
             db = helper.getWritableDatabase();
-            int type = db.delete("MessageState", "msgId=? ", new String[]{msgId});
+            type = db.delete("MessageState", "msgId=? ", new String[]{msgId});
         }catch (Exception e){
             e.printStackTrace();
         }
+        return type;
     }
 
     public void deleteAllMsgId() {
@@ -738,8 +761,7 @@ public class DBManager {
         List<String> userInfos = new ArrayList<>();
         try {
             db = helper.getWritableDatabase();
-            String sql = "select msgId from MessageState";
-            Cursor c = db.rawQuery(sql, new String[]{});
+            Cursor c = db.rawQuery("select * from MessageState", null);
             while (c.moveToNext()) {
                 String msgId = c.getString(c.getColumnIndex("msgId"));
                 userInfos.add(msgId);
@@ -751,19 +773,19 @@ public class DBManager {
         return userInfos;
     }
 
-    public void versionCompatibility(){
-        db = helper.getReadableDatabase();
-        List<Integer> idList = new ArrayList<>();
-        String sql = "select id from MessageRecord where sendStatus = ? and my_user = ?";
-        Cursor c = db.rawQuery(sql, new String[]{0+"", UtilTool.getTocoId()});
-        if (c != null) {
-            while (c.moveToNext()) {
-                idList.add(c.getInt(c.getColumnIndex("id")));
-            }
-            c.close();
-        }
-        for(int id:idList){
-            updateMessageHint(id,1);
-        }
-    }
+//    public void versionCompatibility(){
+//        db = helper.getReadableDatabase();
+//        List<Integer> idList = new ArrayList<>();
+//        String sql = "select id from MessageRecord where sendStatus = ? and my_user = ?";
+//        Cursor c = db.rawQuery(sql, new String[]{0+"", UtilTool.getTocoId()});
+//        if (c != null) {
+//            while (c.moveToNext()) {
+//                idList.add(c.getInt(c.getColumnIndex("id")));
+//            }
+//            c.close();
+//        }
+//        for(int id:idList){
+//            updateMessageHint(id,1);
+//        }
+//    }
 }

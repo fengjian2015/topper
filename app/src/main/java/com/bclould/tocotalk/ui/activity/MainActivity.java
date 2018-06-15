@@ -195,15 +195,8 @@ public class MainActivity extends BaseActivity {
         new Thread(){
             @Override
             public void run() {
-                //兼容以前的消息，全部狀態改為成功1.下個版本就刪除掉
-               boolean version= MySharedPreferences.getInstance().getBoolean("version_compatibility");
-               if(!version){
-                   MySharedPreferences.getInstance().setBoolean("version_compatibility",true);
-                    mMgr.versionCompatibility();
-               }
-
                 List<String> list= mMgr.queryAllMsgId();
-                if(list!=null&&list.size()<0){
+                if(list!=null&&list.size()>0){
                     for(String string:list){
                         mMgr.updateMessageStatus(string,2);
                     }

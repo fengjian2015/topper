@@ -1,71 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="@dimen/x20">
-
-    <ImageView
-        android:id="@+id/iv_touxiang"
-        android:layout_width="@dimen/x80"
-        android:layout_height="@dimen/x80"
-        android:scaleType="fitXY"
-        android:src="@mipmap/img_nfriend_headshot1"/>
-
     <TextView
-        android:id="@+id/tv_name"
+        android:id="@+id/chat_createtime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"
-        android:layout_toRightOf="@+id/iv_touxiang"
-        android:layout_marginLeft="@dimen/x20"
-        android:paddingBottom="@dimen/y15"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/x20"
+        android:background="@drawable/bg_black4_shape"
+        android:gravity="center"
+        android:padding="5dip"
+        android:singleLine="true"
+        android:text="06月05日  08:30"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:layout_centerHorizontal="true"
         android:visibility="gone"
         />
-
     <RelativeLayout
-        android:id="@+id/rl_card"
-        android:layout_width="@dimen/x400"
-        android:layout_marginLeft="@dimen/x20"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/iv_touxiang"
-        android:layout_below="@+id/tv_name"
-        android:background="@color/white"
-        android:paddingBottom="@dimen/y20"
-        >
+        android:layout_below="@+id/chat_createtime">
         <ImageView
-            android:id="@+id/iv_head"
+            android:id="@+id/iv_touxiang"
             android:layout_width="@dimen/x80"
-            android:layout_height="@dimen/y80"
+            android:layout_height="@dimen/x80"
             android:scaleType="fitXY"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginTop="@dimen/y20"/>
-        <TextView
-            android:id="@+id/tv_username"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/y50"
-            android:layout_toRightOf="@+id/iv_head"
-            android:textColor="@color/black"
-            android:gravity="bottom"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginTop="@dimen/y20"
-            android:layout_marginRight="@dimen/x20"
-            android:singleLine="true"
-            android:textSize="@dimen/x32"/>
-        <TextView
-            android:id="@+id/tv1"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/y30"
-            android:layout_toRightOf="@+id/iv_head"
-            android:layout_below="@+id/tv_username"
-            android:textColor="@color/gray3"
-            android:gravity="top"
-            android:layout_marginLeft="@dimen/x20"
-            android:text="@string/person_business_card"
-            android:layout_marginRight="@dimen/x20"
-            android:singleLine="true"
-            android:textSize="@dimen/x22"/>
-    </RelativeLayout>
+            android:src="@mipmap/img_nfriend_headshot1"/>
 
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x28"
+            android:layout_toRightOf="@+id/iv_touxiang"
+            android:layout_marginLeft="@dimen/x20"
+            android:paddingBottom="@dimen/y15"
+            android:visibility="gone"
+            />
+
+        <RelativeLayout
+            android:id="@+id/rl_card"
+            android:layout_width="@dimen/x400"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/iv_touxiang"
+            android:layout_below="@+id/tv_name"
+            android:background="@color/white"
+            android:paddingBottom="@dimen/y20"
+            >
+            <ImageView
+                android:id="@+id/iv_head"
+                android:layout_width="@dimen/x80"
+                android:layout_height="@dimen/y80"
+                android:scaleType="fitXY"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_marginTop="@dimen/y20"/>
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/y50"
+                android:layout_toRightOf="@+id/iv_head"
+                android:textColor="@color/black"
+                android:gravity="bottom"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_marginTop="@dimen/y20"
+                android:layout_marginRight="@dimen/x20"
+                android:singleLine="true"
+                android:textSize="@dimen/x32"/>
+            <TextView
+                android:id="@+id/tv1"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/y30"
+                android:layout_toRightOf="@+id/iv_head"
+                android:layout_below="@+id/tv_username"
+                android:textColor="@color/gray3"
+                android:gravity="top"
+                android:layout_marginLeft="@dimen/x20"
+                android:text="@string/person_business_card"
+                android:layout_marginRight="@dimen/x20"
+                android:singleLine="true"
+                android:textSize="@dimen/x22"/>
+        </RelativeLayout>
+    </RelativeLayout>
 </RelativeLayout>

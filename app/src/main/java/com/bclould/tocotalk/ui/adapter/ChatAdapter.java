@@ -480,6 +480,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
         animationDrawable.start();
     }
 
+    private void setCreatetime(TextView createtime, String currentShowTime) {
+        if (StringUtils.isEmpty(currentShowTime)) {
+            createtime.setVisibility(View.GONE);
+        } else {
+            createtime.setText(currentShowTime);
+            createtime.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public int getItemViewType(int position) {
         return mMessageList.get(position).getMsgType();
@@ -494,7 +503,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ImageView mIvLoad;
         @Bind(R.id.tv_messamge)
         EmojiconTextView mTvMessamge;
-
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
         ToTextHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -502,6 +512,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mToBitmap);
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             HyperLinkUtil hyperLinkUtil = new HyperLinkUtil();
@@ -542,7 +553,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ImageView mIvTouxiang;
         @Bind(R.id.tv_messamge)
         EmojiconTextView mTvMessamge;
-
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
         FromTextHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -550,6 +562,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
                 UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             } else {
@@ -594,6 +607,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         TextView mTvCoinRedpacket;
         @Bind(R.id.cv_redpacket)
         CardView mCvRedpacket;
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
 
         ToRedHolder(View view) {
             super(view);
@@ -602,6 +617,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mToBitmap);
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             final String mName=mMgr.findUserName(UtilTool.getTocoId());
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
@@ -670,6 +686,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         TextView mTvCoinRedpacket;
         @Bind(R.id.cv_redpacket)
         CardView mCvRedpacket;
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
 
         FromRedHolder(View view) {
             super(view);
@@ -681,6 +699,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             if (StringUtils.isEmpty(mUser))
                 mUser = mRoomId;
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             final String mName=mMgr.findUserName(mUser);
             UtilTool.getImage(mMgr, mUser, mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, mUser, mName, messageInfo);
@@ -796,6 +815,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
         RelativeLayout mRlVoice;
         @Bind(R.id.iv_load)
         ImageView mIvLoad;
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
+
         ToVoiceHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -803,6 +825,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mToBitmap);
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             mTvVoiceTime.setText(messageInfo.getVoiceTime() + "''");
@@ -892,6 +915,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ImageView mIvAnim;
         @Bind(R.id.rl_voice)
         RelativeLayout mRlVoice;
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
 
         FromVoiceHolder(View view) {
             super(view);
@@ -900,6 +925,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             if (messageInfo.getSend() != null) {
                 UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             } else {
@@ -953,6 +979,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ImageView mIvWarning;
         @Bind(R.id.iv_load)
         ImageView mIvLoad;
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
 
         ToImgHolder(View view) {
             super(view);
@@ -961,6 +989,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mToBitmap);
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             Glide.with(mContext).load(new File(messageInfo.getVoice())).listener(new RequestListener<Drawable>() {
@@ -1017,6 +1046,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ImageView mIvTouxiang;
         @Bind(R.id.iv_img)
         ImageView mIvImg;
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
 
         FromImgHolder(View view) {
             super(view);
@@ -1025,6 +1056,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             if (messageInfo.getSend() != null) {
                 UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             } else {
@@ -1091,6 +1123,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ImageView mIvWarning;
         @Bind(R.id.iv_load)
         ImageView mIvLoad;
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
 
         ToVideoHolder(View view) {
             super(view);
@@ -1099,6 +1133,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mToBitmap);
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             mIvVideo.setImageBitmap(BitmapFactory.decodeFile(messageInfo.getVoice()));
@@ -1137,6 +1172,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         RelativeLayout mRlVideo;
         @Bind(R.id.iv_video_play)
         ImageView mIvVideoPlay;
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
 
         FromVideoHolder(View view) {
             super(view);
@@ -1145,6 +1182,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             if (messageInfo.getSend() != null) {
                 UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             } else {
@@ -1185,6 +1223,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ImageView mIvWarning;
         @Bind(R.id.iv_load)
         ImageView mIvLoad;
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
 
         ToLocationHolder(View view) {
             super(view);
@@ -1192,6 +1232,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             setMsgState(messageInfo.getSendStatus(),mIvWarning,mIvLoad);
@@ -1238,6 +1279,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ImageView ivLocation;
         @Bind(R.id.rl_location)
         RelativeLayout rlLocation;
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
 
         FromLocationHolder(View view) {
             super(view);
@@ -1245,6 +1288,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             if (messageInfo.getSend() != null) {
                 UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             } else {
@@ -1288,6 +1332,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ImageView mIvWarning;
         @Bind(R.id.iv_load)
         ImageView mIvLoad;
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
 
         ToCardHolder(View view) {
             super(view);
@@ -1295,6 +1341,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             setMsgState(messageInfo.getSendStatus(),mIvWarning,mIvLoad);
@@ -1338,6 +1385,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         TextView tvUsername;
         @Bind(R.id.rl_card)
         RelativeLayout rlCard;
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
 
         FromCardHolder(View view) {
             super(view);
@@ -1346,7 +1395,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
             // TODO: 2018/5/28 所有的from需要增加一個名字
-
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             if (messageInfo.getSend() != null) {
                 UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             } else {
@@ -1391,6 +1440,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ImageView mIvWarning;
         @Bind(R.id.iv_load)
         ImageView mIvLoad;
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
 
         ToLinkHolder(View view) {
             super(view);
@@ -1398,6 +1449,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             setMsgState(messageInfo.getSendStatus(),mIvWarning,mIvLoad);
@@ -1453,6 +1505,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         TextView tvContent;
         @Bind(R.id.rl_link)
         RelativeLayout rlLink;
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
 
         FromLinkHolder(View view) {
             super(view);
@@ -1461,7 +1515,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
             // TODO: 2018/5/28 所有的from需要增加一個名字
-
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             if (messageInfo.getSend() != null) {
                 UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             } else {
@@ -1515,6 +1569,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ImageView mIvWarning;
         @Bind(R.id.iv_load)
         ImageView mIvLoad;
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
 
         ToGuessHolder(View view) {
             super(view);
@@ -1522,6 +1578,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             setMsgState(messageInfo.getSendStatus(),mIvWarning,mIvLoad);
@@ -1581,6 +1638,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         TextView tvTitle;
         @Bind(R.id.rl_guess)
         RelativeLayout rlGuess;
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
 
         FromGuessHolder(View view) {
             super(view);
@@ -1589,7 +1648,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
             // TODO: 2018/5/28 所有的from需要增加一個名字
-
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             if (messageInfo.getSend() != null) {
                 UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             } else {
@@ -1640,6 +1699,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ImageView mIvTransfer;
         @Bind(R.id.cv_redpacket)
         CardView mCvRedpacket;
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
 
         ToTransferHolder(View view) {
             super(view);
@@ -1647,6 +1708,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             mTvRemark.setText(messageInfo.getRemark());
@@ -1692,6 +1754,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ImageView mIvTransfer;
         @Bind(R.id.cv_redpacket)
         CardView mCvRedpacket;
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
 
         FromTransferHolder(View view) {
             super(view);
@@ -1700,6 +1764,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             if (messageInfo.getSend() != null) {
                 UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             } else {
@@ -1744,6 +1809,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         TextView tvContent;
         @Bind(R.id.tv_go)
         TextView tvGo;
+        @Bind(R.id.chat_createtime)
+        TextView tvCreateTime;
 
         ReadGetHolder(View view) {
             super(view);
@@ -1751,6 +1818,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             tvContent.setText(messageInfo.getMessage());
             tvGo.setOnClickListener(new View.OnClickListener() {
                 @Override

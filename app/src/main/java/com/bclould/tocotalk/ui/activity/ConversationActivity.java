@@ -601,7 +601,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                     for (int i = 0; i < selectList.size(); i++) {
                         String postfix = UtilTool.getPostfix(selectList.get(i).getPath());
                         if (!postfix.equals("Video")) {
-                            roomManage.Upload(selectList.get(i).getCompressPath());
+                            roomManage.Upload(selectList.get(i).getPath());
                         } else {
                             roomManage.Upload(selectList.get(i).getPath());
                         }
@@ -649,7 +649,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 case 0:
                     //下拉查询历史消息
                     if (mMessageList.size() == 0) return;
-                    List<MessageInfo> messageInfos = mMgr.queryRefreshMessage(roomId, mMessageList.get(0).getId());
+                    List<MessageInfo> messageInfos = mMgr.queryRefreshMessage(roomId, mMessageList.get(0).getCreateTime());
                     List<MessageInfo> MessageList2 = new ArrayList<MessageInfo>();
                     MessageList2.addAll(messageInfos);
                     MessageList2.addAll(mMessageList);
@@ -669,12 +669,12 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                     List<MessageInfo> messageInfos1 = null;
                     if (isFist) {
                         MessageInfo messageInfo = (MessageInfo) bundle3.getSerializable("MessageInfo");
-                        messageInfos1 = mMgr.queryLoadMessage(roomId, messageInfo.getId(), isFist);
+                        messageInfos1 = mMgr.queryLoadMessage(roomId, messageInfo.getCreateTime(), isFist);
                     } else {
                         if (mMessageList.size() == 0) {
-                            messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(0).getId(), isFist);
+                            messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(0).getCreateTime(), isFist);
                         } else {
-                            messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(mMessageList.size() - 1).getId(), isFist);
+                            messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(mMessageList.size() - 1).getCreateTime(), isFist);
                         }
 
                     }
@@ -700,9 +700,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     //设置title
     private void initIntent() {
-        if (StringUtils.isEmpty(UtilTool.getJid())) {
-            MySharedPreferences.getInstance().setString(MYUSERNAME, UtilTool.getUser() + "@" + Constants.DOMAINNAME2);
-        }
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         if (bundle == null) {

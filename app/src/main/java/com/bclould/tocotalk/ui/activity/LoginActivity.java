@@ -2,6 +2,7 @@ package com.bclould.tocotalk.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,8 +10,10 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,11 +24,17 @@ import android.widget.Toast;
 import com.bclould.tocotalk.Presenter.LoginPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.history.DBUserCode;
+import com.bclould.tocotalk.model.UserCodeInfo;
 import com.bclould.tocotalk.topperchat.WsConnection;
-import com.bclould.tocotalk.topperchat.WsOfflineConnection;
+import com.bclould.tocotalk.ui.adapter.EmailCodeAdapter;
+import com.bclould.tocotalk.ui.widget.MyAutoCompleteTextView;
 import com.bclould.tocotalk.utils.AnimatorTool;
+import com.bclould.tocotalk.utils.DensityUtil;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -48,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.tv_login)
     TextView mTvLogin;
     @Bind(R.id.et_emily)
-    EditText mEtEmily;
+    MyAutoCompleteTextView mEtEmily;
     @Bind(R.id.et_password)
     EditText mEtPassword;
     @Bind(R.id.eye)
@@ -58,6 +67,9 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.btn_login)
     Button mBtnLogin;
 
+    private DBUserCode mDBUserCode;
+    private List<String> userCodeList = new ArrayList<>();
+    private EmailCodeAdapter mAdapter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -66,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         ButterKnife.bind(this);
-
+        initUserCodeList();
         if (MySharedPreferences.getInstance().getBoolean(PRIVATE)) {
             String email = MySharedPreferences.getInstance().getString(EMAIL);
             String logPW = MySharedPreferences.getInstance().getString(LOGINPW);
@@ -79,6 +91,45 @@ public class LoginActivity extends AppCompatActivity {
             UtilTool.Log("fengjian",WsConnection.getInstance().ws.isOpen()+"   ");
         }
         UtilTool.Log("fengjian",WsConnection.getInstance().ws+"   ");
+    }
+
+    private void initUserCodeList() {
+        mDBUserCode=new DBUserCode(this);
+        userCodeList=mDBUserCode.selectAllEmily();
+        setloginUserNameEditHeight();
+
+        mAdapter = new EmailCodeAdapter(userCodeList,this,mDBUserCode);
+        mEtEmily.setAdapter(mAdapter);
+        mEtEmily.setDropDownBackgroundResource(R.drawable.emily_listitem);// 下拉框的背景
+        updateEditAdapter(userCodeList.size());
+        mEtEmily.setDropDownVerticalOffset(1);
+        mAdapter.notifyDataSetChanged();
+    }
+
+
+    private void setloginUserNameEditHeight() {
+        if (userCodeList != null && userCodeList.size() > 1) {
+            setloginUserNameEditText();
+        } else if (userCodeList != null && userCodeList.size() == 1) {
+            mEtEmily.setText(userCodeList.get(userCodeList.size()-1));
+            mEtEmily.setSelection(mEtEmily.getText().length());
+        }
+    }
+
+    private void setloginUserNameEditText() {
+        UserCodeInfo userCodeInfo= mDBUserCode.queryLastUser();
+        mEtEmily.setText(userCodeInfo.getEmail());// 这个是设置帐号，最后一个
+        mEtEmily.setSelection(mEtEmily.getText().length());
+    }
+
+    public void updateEditAdapter(int number) {
+        if(number<=0){
+            mEtEmily.setDropDownHeight(0);
+        }else if(number>0 && number<4){
+            mEtEmily.setDropDownHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        }else if(userCodeList.size()>=4){
+            mEtEmily.setDropDownHeight(getResources().getDimensionPixelOffset(R.dimen.y84)*4);
+        }
     }
 
     //监听返回键
@@ -164,7 +215,7 @@ public class LoginActivity extends AppCompatActivity {
         String email = mEtEmily.getText().toString();
         String password = mEtPassword.getText().toString();
         LoginPresenter loginPresenter = new LoginPresenter(this);
-        loginPresenter.Login(email, password, "");
+        loginPresenter.Login(email, password, "",mDBUserCode);
     }
 
     //验证手机号和密码
@@ -183,4 +234,5 @@ public class LoginActivity extends AppCompatActivity {
         }
         return false;
     }
+
 }

@@ -28,6 +28,7 @@ public class PingThreadRequest extends Thread {
                     UtilTool.Log("fengjian","未收到ping反饋，需要重新登錄");
                     WsConnection.getInstance().setIsLogin(false);
                     WsOfflineConnection.getInstance().setIsLogin(false);
+                    break;
                 }
             }catch (Exception e){
                 e.printStackTrace();

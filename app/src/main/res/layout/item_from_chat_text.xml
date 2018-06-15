@@ -1,32 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:emojicon="http://schemas.android.com/apk/res-auto"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:padding="@dimen/x20"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-    <ImageView
-        android:id="@+id/iv_touxiang"
-        android:layout_width="@dimen/x80"
-        android:layout_height="@dimen/x80"
-        android:scaleType="fitXY"
-        android:src="@mipmap/img_nfriend_headshot1"/>
-
-    <io.github.rockerhieu.emojicon.EmojiconTextView
-        android:id="@+id/tv_messamge"
+    <TextView
+        android:id="@+id/chat_createtime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_toRightOf="@+id/iv_touxiang"
-        android:background="@drawable/img_chat2_bg"
-        android:lineSpacingExtra="@dimen/y10"
-        android:maxWidth="@dimen/x500"
-        android:text="哈喽！"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x32"
-        android:visibility="visible"
-        emojicon:emojiconSize="@dimen/x50"/>
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/x20"
+        android:background="@drawable/bg_black4_shape"
+        android:gravity="center"
+        android:padding="5dip"
+        android:singleLine="true"
+        android:text="06月05日  08:30"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chat_createtime">
+        <ImageView
+            android:id="@+id/iv_touxiang"
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/x80"
+            android:scaleType="fitXY"
+            android:src="@mipmap/img_nfriend_headshot1"/>
+
+        <io.github.rockerhieu.emojicon.EmojiconTextView
+            android:id="@+id/tv_messamge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_toRightOf="@+id/iv_touxiang"
+            android:background="@drawable/img_chat2_bg"
+            android:lineSpacingExtra="@dimen/y10"
+            android:maxWidth="@dimen/x500"
+            android:text="哈喽！"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"
+            android:visibility="visible"
+            emojicon:emojiconSize="@dimen/x50"/>
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -64,6 +64,7 @@ public class WsConnection {
         try {
             if((ws==null||!ws.isOpen())&&!isConnection&&!isOutConnection){
                 isConnection=true;
+                AsyncHttpClient.getDefaultInstance().getSocketMiddleware().setIdleTimeoutMs(20000);
                 AsyncHttpClient.getDefaultInstance().websocket(Constants.DOMAINNAME3, "2087", new AsyncHttpClient.WebSocketConnectCallback() {
                     @Override
                     public void onCompleted(Exception ex, com.koushikdutta.async.http.WebSocket webSocket) {
@@ -98,6 +99,12 @@ public class WsConnection {
                                 UtilTool.Log("fengjian","断开连接");
                                 setIsLogin(false);
                                 setLoginConnection(false);
+                            }
+                        });
+                        webSocket.setPongCallback(new WebSocket.PongCallback() {
+                            @Override
+                            public void onPongReceived(String s) {
+                                UtilTool.Log("fengjian","pong回調："+s);
                             }
                         });
                     }
@@ -137,6 +144,7 @@ public class WsConnection {
 
     public void senPing(){
         try {
+            ws.ping("發送ping");
             ObjectMapper objectMapper =  new ObjectMapper(new MessagePackFactory());
             Map<Object,Object> sendMap = new HashMap<>();
             sendMap.put("type",4);

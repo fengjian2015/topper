@@ -12,9 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bclould.tocotalk.R;
+import com.bclould.tocotalk.history.DBUserCode;
 import com.bclould.tocotalk.model.BaseInfo;
 import com.bclould.tocotalk.model.LoginInfo;
 import com.bclould.tocotalk.model.LoginRecordInfo;
+import com.bclould.tocotalk.model.UserCodeInfo;
 import com.bclould.tocotalk.network.RetrofitUtil;
 import com.bclould.tocotalk.ui.activity.LoginActivity;
 import com.bclould.tocotalk.ui.activity.LoginSetActivity;
@@ -46,7 +48,6 @@ public class LoginPresenter {
     public static final String LOGINSET = "login_set";
     public static final String STATE = "state";
     public static final String CURRENCY = "currency";
-    public static final String XMPP_SERVER = "xmpp_server";
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
     public static final String MYUSERNAME = "my_username";
@@ -72,7 +73,7 @@ public class LoginPresenter {
         }
     }
 
-    public void Login(final String email, final String password, final String code) {
+    public void Login(final String email, final String password, final String code, final DBUserCode dbUserCode) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
             RetrofitUtil.getInstance(mContext)
@@ -93,9 +94,9 @@ public class LoginPresenter {
                                 if (baseInfo.getData() != null) {
                                     if (baseInfo.getData().getValidate_type() == 1) {
                                         sendVcode(email);
-                                        showEmailDialog(email, password);
+                                        showEmailDialog(email, password,dbUserCode);
                                     } else {
-                                        showGoogleDialog(email, password);
+                                        showGoogleDialog(email, password,dbUserCode);
                                     }
                                 } else {
                                     if (baseInfo.getType() == 7) {
@@ -109,18 +110,19 @@ public class LoginPresenter {
                                 MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
                                 MySharedPreferences.getInstance().setString(TOCOID, baseInfo.getData().getToco_id());
                                 MySharedPreferences.getInstance().setInteger(USERID, baseInfo.getData().getUser_id());
-                                MySharedPreferences.getInstance().setString(MYUSERNAME, baseInfo.getData().getName() + "@" + baseInfo.getData().getXmpp());
+                                MySharedPreferences.getInstance().setString(MYUSERNAME, baseInfo.getData().getName());
                                 MySharedPreferences.getInstance().setString(EMAIL, email);
                                 MySharedPreferences.getInstance().setString(LOGINPW, password);
                                 MySharedPreferences.getInstance().setString(CURRENCY, baseInfo.getData().getCurrency());
-                                MySharedPreferences.getInstance().setString(XMPP_SERVER, baseInfo.getData().getXmpp());
-                                Constants.DOMAINNAME2 = baseInfo.getData().getXmpp();
-                                UtilTool.Log("服務器", Constants.DOMAINNAME2);
                                 if (baseInfo.getData().getCountry() == null) {
                                     MySharedPreferences.getInstance().setString(STATE, mContext.getString(R.string.default_state));
                                 } else {
                                     MySharedPreferences.getInstance().setString(STATE, baseInfo.getData().getCountry());
                                 }
+                                UserCodeInfo userCodeInfo=new UserCodeInfo();
+                                userCodeInfo.setEmail(email);
+                                userCodeInfo.setPassword(password);
+                                dbUserCode.addUserCode(userCodeInfo);
                                 hideDialog();
                                 mContext.startActivity(new Intent(mContext, MainActivity.class));
                                 LoginActivity activity = (LoginActivity) mContext;
@@ -199,7 +201,7 @@ public class LoginPresenter {
         }
     }
 
-    private void showGoogleDialog(final String email, final String password) {
+    private void showGoogleDialog(final String email, final String password, final DBUserCode dbUserCode) {
         DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_google_code, mContext, R.style.dialog);
         deleteCacheDialog.show();
         final EditText etGoogle = (EditText) deleteCacheDialog.findViewById(R.id.et_google_code);
@@ -211,13 +213,13 @@ public class LoginPresenter {
                 if (googleCode.isEmpty()) {
                     Toast.makeText(mContext, mContext.getString(R.string.toast_vcode), Toast.LENGTH_SHORT).show();
                 } else {
-                    Login(email, password, googleCode);
+                    Login(email, password, googleCode,dbUserCode);
                 }
             }
         });
     }
 
-    private void showEmailDialog(final String email, final String password) {
+    private void showEmailDialog(final String email, final String password, final DBUserCode dbUserCode) {
         DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_google_code, mContext, R.style.dialog);
         deleteCacheDialog.show();
         final EditText etGoogle = (EditText) deleteCacheDialog.findViewById(R.id.et_google_code);
@@ -232,7 +234,7 @@ public class LoginPresenter {
                 if (googleCode.isEmpty()) {
                     Toast.makeText(mContext, mContext.getString(R.string.toast_vcode), Toast.LENGTH_SHORT).show();
                 } else {
-                    Login(email, password, googleCode);
+                    Login(email, password, googleCode,dbUserCode);
                 }
             }
         });

@@ -712,7 +712,7 @@ public class XmppListener {
                         mgr.addMessage(messageInfo);
                         int number = mgr.queryNumber(from);
                         if (mgr.findConversation(from)) {
-                            mgr.updateConversation(from, number + 1, redpacket, time);
+//                            mgr.updateConversation(from, number + 1, redpacket, time,);
                         } else {
                             ConversationInfo info = new ConversationInfo();
                             info.setTime(time);

@@ -547,7 +547,7 @@ public class UtilTool {
 
     public static String getUser() {
         if (!getJid().isEmpty()) {
-            return getJid().substring(0, getJid().indexOf("@"));
+            return getJid();
         }
         return "";
     }
@@ -957,4 +957,12 @@ public class UtilTool {
         }
         return createChatCreatTime();
     }
+    public static boolean compareTime(long oldtime,long newtime){
+        if((newtime - oldtime)/(60*1000) >=3) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }

@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 16;
+    private static final int DATABASE_VERSION = 17;
 
     public DBHelper(Context context) {
         //CursorFactory设置为null,使用默认值
@@ -21,16 +21,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table ConversationRecord(id integer primary key autoincrement, my_user varchar, number integer, message varchar, time varchar, user varchar, friend varchar, istop varchar,chatType varchar)");
+        db.execSQL("create table ConversationRecord(id integer primary key autoincrement, my_user varchar, number integer, message varchar, time varchar, user varchar, friend varchar, istop varchar,chatType varchar" +
+                ",createTime integer)");
         db.execSQL("create table MessageRecord(id integer primary key autoincrement, my_user varchar, user varchar, message varchar, time varchar, type integer, coin varchar, count varchar, remark varchar" +
                 ", state integer, redId integer, voice varchar, voiceStatus integer, voiceTime varchar, sendStatus integer, msgType integer" +
                 ", imageType integer,send varchar,lat float,lng float,address varchar,title varchar,headUrl varchar,cardUser varchar,linkUrl varchar" +
-                ",content varchar,converstaion varchar,guessPw varchar,initiator varchar,betId varchr,periodQty varchar,filekey varchar,createTime integer,msgId varchar)");
+                ",content varchar,converstaion varchar,guessPw varchar,initiator varchar,betId varchr,periodQty varchar,filekey varchar,createTime integer,msgId varchar" +
+                ",showChatTime varchar)");
         db.execSQL("create table AddRequest(id integer primary key autoincrement, my_user varchar, user varchar, type integer,userName varchar)");
         db.execSQL("create table UserImage(id integer primary key autoincrement, my_user varchar, user varchar, status integer, path varchar, remark varchar,userName varchar)");
         db.execSQL("create table RoomManage(id integer primary key autoincrement, roomImage varchar, roomId varchar, roomName varchar, roomNumber integer,my_user varchar)");
         db.execSQL("create table RoomMember(id integer primary key autoincrement, name varchar, jid varchar, image_url varchar, remark varchar,my_user varchar)");
         db.execSQL("create table MessageState(id integer primary key autoincrement, msgId varchar)");
+        db.execSQL("create table UserCodeDB(id integer primary key autoincrement, email varchar,password varchar)");
     }
 
     /**
@@ -47,9 +50,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE MessageRecord ADD headUrl TEXT");
                 db.execSQL("ALTER TABLE MessageRecord ADD cardUser TEXT");
                 //创建房间表和成员表
-                String roomManage = "create table if not exists RoomManage"  + "(roomImage text,roomId text,roomName text,roomNumber integer,my_user text)";
+                String roomManage = "create table if not exists RoomManage"  + "(id integer primary key autoincrement,roomImage text,roomId text,roomName text,roomNumber integer,my_user text)";
                 db.execSQL( roomManage );
-                String roomMember = "create table if not exists RoomMember"  + "(name text,jid text,image_url text,remark text,my_user text)";
+                String roomMember = "create table if not exists RoomMember"  + "(id integer primary key autoincrement,name text,jid text,image_url text,remark text,my_user text)";
                 db.execSQL( roomMember );
             case 9:
                 //2018-05-29增加新聞分享和用於會話列表顯示（刪除最後一條消息后，列表還是不變）
@@ -75,7 +78,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE MessageRecord ADD msgId TEXT");
                 String messageState = "create table if not exists MessageState"  + "(msgId text)";
                 db.execSQL( messageState );
-
+            case 16:
+                //2018-06-15增加UserCodeDB用於保存登錄的賬號 ,會話列表新增時間,增加用於顯示聊天時間的
+                String userCodeDB = "create table if not exists UserCodeDB"  + "(id integer primary key autoincrement,email text,password text)";
+                db.execSQL( userCodeDB );
+                db.execSQL("ALTER TABLE ConversationRecord ADD createTime INTEGER");
+                db.execSQL("ALTER TABLE MessageRecord ADD showChatTime INTEGER");
+                break;
         }
 
             //20180523增加房间类型，用于新增群聊判断

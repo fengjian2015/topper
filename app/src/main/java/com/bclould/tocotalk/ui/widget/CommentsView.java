@@ -167,21 +167,15 @@ public class CommentsView extends LinearLayout {
      * @param toco_id
      * @return
      */
-    public SpannableString setClickableSpan(final String item, String toco_id) {
+    public SpannableString setClickableSpan(final String item, final String toco_id) {
         final SpannableString string = new SpannableString(item);
         ClickableSpan span = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                String jid;
-                if (item.equals(UtilTool.getUser())) {
-                    jid = item + "@" + Constants.DOMAINNAME2;
-                } else {
-                    jid = item + "@" + Constants.DOMAINNAME;
-                }
                 Intent intent = new Intent(mContext, IndividualDetailsActivity.class);
-                intent.putExtra("roomId", jid);
+                intent.putExtra("roomId", toco_id);
                 intent.putExtra("name", item);
-                intent.putExtra("user", jid);
+                intent.putExtra("user", toco_id);
                 mContext.startActivity(intent);
             }
 
