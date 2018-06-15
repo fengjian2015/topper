@@ -297,6 +297,7 @@ public class BuySellPresenter {
 
     public void transRecordInfo(String log_id, String id, String type_number, final CallBack3 callBack3) {
         if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .transRecord(UtilTool.getToken(), log_id, type_number, id)
@@ -310,6 +311,7 @@ public class BuySellPresenter {
 
                         @Override
                         public void onNext(TransRecordInfo transRecordInfo) {
+                            hideDialog();
                             if (transRecordInfo.getStatus() == 1) {
                                 callBack3.send2(transRecordInfo.getData());
                             }
@@ -317,6 +319,7 @@ public class BuySellPresenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            hideDialog();
                             UtilTool.Log("错误", e.getMessage());
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
@@ -469,7 +472,6 @@ public class BuySellPresenter {
 
     //定义接口
     public interface CallBack6 {
-
         void send(OrderStatisticsInfo.DataBean data);
     }
 }

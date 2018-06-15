@@ -23,7 +23,6 @@ public class ClearEditText extends AppCompatEditText {
     private Drawable mClearDrawable;
 
 
-
     public ClearEditText(Context context) {
         super(context);
         init();
@@ -40,9 +39,8 @@ public class ClearEditText extends AppCompatEditText {
     }
 
 
-
     private void init() {
-        mClearDrawable = getResources().getDrawable(R.mipmap.icon_delete);
+        mClearDrawable = getResources().getDrawable(R.mipmap.icon_sh_cancel);
     }
 
 
@@ -77,6 +75,6 @@ public class ClearEditText extends AppCompatEditText {
 
     public void setClearIconVisible(boolean visible) {
         setCompoundDrawablesWithIntrinsicBounds(getCompoundDrawables()[DRAWABLE_LEFT], getCompoundDrawables()[DRAWABLE_TOP]
-                ,visible ? mClearDrawable : null, getCompoundDrawables()[DRAWABLE_BOTTOM]);
+                , visible ? mClearDrawable : null, getCompoundDrawables()[DRAWABLE_BOTTOM]);
     }
 }

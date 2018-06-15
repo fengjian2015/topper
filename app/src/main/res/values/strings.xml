@@ -901,4 +901,7 @@
     <string name="change_msg_state">改變消息狀態</string>
     <string name="et_number">輸入紅包個數</string>
     <string name="payment_give">付款給</string>
+    <string name="connect_oss_error">連接oss失敗</string>
+    <string name="no_cache">沒有緩存清理</string>
+    <string name="delete_cache_succeed">清除緩存成功</string>
 </resources>

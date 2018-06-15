@@ -159,6 +159,7 @@ public class DynamicFragment extends Fragment {
                 mIvSelectorImg.setVisibility(View.GONE);
                 mCommentEt.setHint(getString(R.string.reply) + event.getCoinName());
             } else {
+                mCommentEt.setHint(getString(R.string.et_comment));
                 mIvSelectorImg.setVisibility(View.GONE);
             }
             mRlEdit.setVisibility(View.VISIBLE);

@@ -8,15 +8,13 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.listener.CrashHandler;
 import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.model.StateInfo;
 import com.bclould.tocotalk.service.ImageUpService;
-import com.bclould.tocotalk.topperchat.WsConnection;
-import com.bclould.tocotalk.topperchat.WsOfflineConnection;
 import com.bclould.tocotalk.utils.Constants;
 import com.bclould.tocotalk.utils.GlideImgLoader;
 import com.bclould.tocotalk.utils.MySharedPreferences;
-import com.bclould.tocotalk.xmpp.RoomManage;
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.previewlibrary.ZoomMediaLoader;
 
@@ -60,7 +58,7 @@ public class MyApp extends Application {
         //初始化sp
         MySharedPreferences.getInstance().init(this);
 
-//        new CrashHandler(this);
+        new CrashHandler(this);
         //初始化
         ZoomMediaLoader.getInstance().init(GlideImgLoader.getInstance());
 

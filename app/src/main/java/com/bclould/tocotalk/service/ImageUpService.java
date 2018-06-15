@@ -31,6 +31,8 @@ import com.bclould.tocotalk.utils.MessageEvent;
 import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -60,9 +62,21 @@ public class ImageUpService extends Service {
         super.onCreate();
     }
 
+    //接受通知
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(getString(R.string.connect_oss_error))) {
+            stopSelf();
+        }
+    }
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         UtilTool.Log("發佈動態", "啟動服務");
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         EventBus.getDefault().post(new MessageEvent(getString(R.string.start_service)));
         mPathList.clear();
         mDynamicPresenter = new DynamicPresenter(this);
@@ -261,6 +275,7 @@ public class ImageUpService extends Service {
         keyCompress = 0;
         EventBus.getDefault().post(new MessageEvent(getString(R.string.destroy_service)));
         UtilTool.Log("發佈動態", "銷毀掉服務");
+        EventBus.getDefault().unregister(this);
         stopSelf();
     }
 }

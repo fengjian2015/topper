@@ -61,7 +61,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
     private final List<DynamicListInfo.DataBean> mDataList;
     private final DynamicPresenter mDynamicPresenter;
 
-    public DynamicRVAdapter(Context context, List<DynamicListInfo.DataBean> dataList,  DynamicPresenter dynamicPresenter) {
+    public DynamicRVAdapter(Context context, List<DynamicListInfo.DataBean> dataList, DynamicPresenter dynamicPresenter) {
         mContext = context;
         mDataList = dataList;
         mDynamicPresenter = dynamicPresenter;
@@ -329,14 +329,16 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
                 }
             });
-            mRlVideo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, VideoActivity.class);
-                    intent.putExtra("url", mImgList.get(0));
-                    mContext.startActivity(intent);
-                }
-            });
+            if (mImgList.size() != 0) {
+                mRlVideo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(mContext, VideoActivity.class);
+                        intent.putExtra("url", mImgList.get(0));
+                        mContext.startActivity(intent);
+                    }
+                });
+            }
             mTvZan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -406,10 +408,12 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             } else {
                 mCommentView.setVisibility(View.GONE);
             }
-            Glide.with(mContext)
-                    .load((dataBean.getKey_compress_urls()).get(0))
-                    .apply(new RequestOptions().error(R.mipmap.ic_empty_photo).centerCrop().placeholder(R.mipmap.ic_empty_photo))
-                    .into(mIvVideo);
+            if (dataBean.getKey_compress_urls().size() != 0) {
+                Glide.with(mContext)
+                        .load((dataBean.getKey_compress_urls()).get(0))
+                        .apply(new RequestOptions().error(R.mipmap.ic_empty_photo).centerCrop().placeholder(R.mipmap.ic_empty_photo))
+                        .into(mIvVideo);
+            }
             mTvReward.setText(dataBean.getRewardCount() + "");
             mTime.setText(dataBean.getCreated_at());
             mName.setText(dataBean.getUser_name());
