@@ -314,7 +314,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         CommentsView mCommentView;
         private DynamicListInfo.DataBean mDataBean;
         private ArrayList<String> mCompressImgList;
-        private ArrayList<String> mImgList;
+        private ArrayList<String> mImgList = new ArrayList<>();
 
         VideoHolder(View view) {
             super(view);
@@ -329,16 +329,15 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
                 }
             });
-            if (mImgList.size() != 0) {
-                mRlVideo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(mContext, VideoActivity.class);
-                        intent.putExtra("url", mImgList.get(0));
-                        mContext.startActivity(intent);
-                    }
-                });
-            }
+            mRlVideo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, VideoActivity.class);
+                    intent.putExtra("url", mImgList.get(0));
+                    mContext.startActivity(intent);
+                }
+            });
+
             mTvZan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -369,7 +368,8 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         public void setData(final DynamicListInfo.DataBean dataBean) {
             mDataBean = dataBean;
             mCompressImgList = (ArrayList<String>) dataBean.getKey_compress_urls();
-            mImgList = (ArrayList<String>) dataBean.getKey_urls();
+            mImgList.clear();
+            mImgList.addAll((ArrayList<String>) dataBean.getKey_urls());
             if (dataBean.getPosition() != null && !dataBean.getPosition().isEmpty()) {
                 mTvLocation.setVisibility(View.VISIBLE);
                 mIvLocation.setVisibility(View.VISIBLE);
@@ -408,11 +408,13 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             } else {
                 mCommentView.setVisibility(View.GONE);
             }
-            if (dataBean.getKey_compress_urls().size() != 0) {
-                Glide.with(mContext)
-                        .load((dataBean.getKey_compress_urls()).get(0))
-                        .apply(new RequestOptions().error(R.mipmap.ic_empty_photo).centerCrop().placeholder(R.mipmap.ic_empty_photo))
-                        .into(mIvVideo);
+            if (dataBean.getKey_compress_urls() != null) {
+                if (dataBean.getKey_compress_urls().size() != 0) {
+                    Glide.with(mContext)
+                            .load((dataBean.getKey_compress_urls()).get(0))
+                            .apply(new RequestOptions().error(R.mipmap.ic_empty_photo).centerCrop().placeholder(R.mipmap.ic_empty_photo))
+                            .into(mIvVideo);
+                }
             }
             mTvReward.setText(dataBean.getRewardCount() + "");
             mTime.setText(dataBean.getCreated_at());

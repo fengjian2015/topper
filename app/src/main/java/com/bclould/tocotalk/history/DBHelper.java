@@ -83,7 +83,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 String userCodeDB = "create table if not exists UserCodeDB"  + "(id integer primary key autoincrement,email text,password text)";
                 db.execSQL( userCodeDB );
                 db.execSQL("ALTER TABLE ConversationRecord ADD createTime INTEGER");
-                db.execSQL("ALTER TABLE MessageRecord ADD showChatTime INTEGER");
+                db.execSQL("ALTER TABLE MessageRecord ADD showChatTime TEXT");
                 break;
         }
 

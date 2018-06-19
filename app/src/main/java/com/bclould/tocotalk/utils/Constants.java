@@ -67,10 +67,7 @@ public class Constants {
     public static String UPDATE_LOG_URL = "api/updateLogInfo/";
     public static String GUESS_DYNAMIC_SEPARATOR = "__";
     public static String QUES_WEB_URL = "api/question/";
-    public static final String OSS_ACCESSKEYID = "access_key_id";
-    public static final String OSS_SECRETACCESSKEY = "secret_access_key";
-    public static final String OSS_SESSIONTOKEN = "session_token";
-    //    public static final String OSS_ENDOPINT = "endopint";
     public static final String OSS_ENDOPINT = "oss-cn-shenzhen.aliyuncs.com";
     public static final String STS_SERVER = "api/oss/getSessionTokenV2";
+    public static final String VERSION_URL = "https://gitee.com/api/v5/repos/iwtxi/234/releases/latest?access_token=8ed3d93b9fa9150a883bbaf38159c230";
 }

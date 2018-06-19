@@ -118,6 +118,7 @@ public class StartGuessActivity extends BaseActivity {
     }
 
     private void initData() {
+        MyApp.getInstance().mBetCoinList.clear();
         if (MyApp.getInstance().mBetCoinList.size() == 0) {
             CoinPresenter coinPresenter = new CoinPresenter(this);
             coinPresenter.coinLists("bet", new CoinPresenter.CallBack() {

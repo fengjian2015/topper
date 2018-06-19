@@ -164,6 +164,7 @@ public class MainActivity extends BaseActivity {
 
     //初始化界面
     private void initInterface() {
+        getStateList();
         getGroup();
         getMyImage();
         getFriends();
@@ -177,28 +178,21 @@ public class MainActivity extends BaseActivity {
         UtilTool.getPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, getString(R.string.jurisdiction_store_hint));
         UtilTool.getPermissions(this, Manifest.permission.CAMERA, "", getString(R.string.jurisdiction_camera_hint));
         UtilTool.getPermissions(this, Manifest.permission.RECORD_AUDIO, "", getString(R.string.jurisdiction_voice_hint));
-        //儲存自己信息
-        //自动登录即时通讯
-//        loginIM();
-        initAWS();
         //检测版本更新
         checkVersion();
-        //获取币种
-        getCoinList();
         //获取国家
-        getStateList();
         //改變發送中的狀態
         changeMsgState();
     }
 
     private void changeMsgState() {
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
-                List<String> list= mMgr.queryAllMsgId();
-                if(list!=null&&list.size()>0){
-                    for(String string:list){
-                        mMgr.updateMessageStatus(string,2);
+                List<String> list = mMgr.queryAllMsgId();
+                if (list != null && list.size() > 0) {
+                    for (String string : list) {
+                        mMgr.updateMessageStatus(string, 2);
                     }
                 }
                 mMgr.deleteAllMsgId();
@@ -224,7 +218,7 @@ public class MainActivity extends BaseActivity {
     private void getMyImage() {
         if (!mMgr.findUser(UtilTool.getTocoId())) {
             IndividualDetailsPresenter personalDetailsPresenter = new IndividualDetailsPresenter(this);
-            personalDetailsPresenter.getIndividual(UtilTool.getTocoId(),false, new IndividualDetailsPresenter.CallBack() {
+            personalDetailsPresenter.getIndividual(UtilTool.getTocoId(), false, new IndividualDetailsPresenter.CallBack() {
                 @Override
                 public void send(IndividualInfo.DataBean data) {
                     if (data != null) {
@@ -252,90 +246,8 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private void initAWS() {
-        DillDataPresenter dillDataPresenter = new DillDataPresenter(this);
-        dillDataPresenter.getSessionToken(new DillDataPresenter.CallBack3() {
-            @Override
-            public void send(OSSInfo.DataBean data) {
-                data.getEndpoint();
-                MySharedPreferences.getInstance().setString(Constants.OSS_ACCESSKEYID, data.getCredentials().getAccessKeyId());
-                MySharedPreferences.getInstance().setString(Constants.OSS_SECRETACCESSKEY, data.getCredentials().getAccessKeySecret());
-                MySharedPreferences.getInstance().setString(Constants.OSS_SESSIONTOKEN, data.getCredentials().getSecurityToken());
-                MySharedPreferences.getInstance().setString(Constants.OSS_ENDOPINT, data.getEndpoint());
-            }
-        });
-    }
-
-//    private void pingService() {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                PingManager pingManager = PingManager.getInstanceFor(XmppConnection.getInstance().getConnection());
-//                pingManager.setPingInterval(60);
-//                try {
-//                    pingManager.pingMyServer();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                pingManager.registerPingFailedListener(new PingFailedListener() {
-//                    @Override
-//                    public void pingFailed() {
-//                        if (tExit == null) {
-//                            tExit = new Timer();
-//                            tExit.schedule(new TimeTask(), 1000);
-//                        }
-//                    }
-//                });
-//            }
-//        }).start();
-//    }
-//
-//    private class TimeTask extends TimerTask {
-//        @Override
-//        public void run() {
-//
-//            if (UtilTool.getUser() != null && UtilTool.getpw() != null) {
-//                Log.i("XMConnectionListener", "尝试登录");
-//                // 连接服务器
-//                try {
-//                    if (!XmppConnection.getInstance().isAuthenticated()) {// 用户未登录
-//                        if (XmppConnection.getInstance().login(UtilTool.getUser(), UtilTool.getpw())) {
-//                            Log.i("XMConnectionListener", "登录成功");
-//                            EventBus.getDefault().post(new MessageEvent(getString(R.string.login_succeed)));
-//                            Intent intent = new Intent();
-//                            intent.setAction("XMPPConnectionListener");
-//                            intent.putExtra("type", true);
-//                            sendBroadcast(intent);
-//                        } else {
-//                            Log.i("XMConnectionListener", "重新登录");
-//                            tExit.schedule(new TimeTask(), 1000);
-//                        }
-//                    }
-//                } catch (Exception e) {
-//                    Log.i("XMConnectionListener", "尝试登录,出现异常!");
-//                    Log.i("XMConnectionListener", e.getMessage());
-//                }
-//            }
-//        }
-//    }
-
     private void getStateList() {
         mCoinPresenter.getState();
-    }
-
-    private void getCoinList() {
-        mCoinPresenter.coinLists("trans", new CoinPresenter.CallBack() {
-            @Override
-            public void send(List<CoinListInfo.DataBean> data) {
-                MyApp.getInstance().mCoinList.addAll(data);
-            }
-        });
-        mCoinPresenter.coinLists("pay", new CoinPresenter.CallBack() {
-            @Override
-            public void send(List<CoinListInfo.DataBean> data) {
-                MyApp.getInstance().mPayCoinList.addAll(data);
-            }
-        });
     }
 
     //检测版本更新
@@ -344,7 +256,7 @@ public class MainActivity extends BaseActivity {
         if (UtilTool.isNetworkAvailable(this)) {
             RetrofitUtil.getInstance(this)
                     .getServer()
-                    .checkVersion("https://api.github.com/repos/bclould/tocotalk/releases/latest")//githua获取版本更新
+                    .checkVersion(Constants.VERSION_URL)//githua获取版本更新
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<GitHubInfo>() {
@@ -398,6 +310,7 @@ public class MainActivity extends BaseActivity {
         //更新描述
         final String body = gitHubInfo.getBody();
         MySharedPreferences.getInstance().setString(Constants.NEW_APK_URL, url);
+        UtilTool.Log("版本更新", url);
         MySharedPreferences.getInstance().setString(Constants.NEW_APK_NAME, appName);
         MySharedPreferences.getInstance().setString(Constants.NEW_APK_BODY, body);
         //显示更新dialog

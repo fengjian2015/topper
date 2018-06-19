@@ -26,12 +26,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bclould.tocotalk.Presenter.CoinPresenter;
 import com.bclould.tocotalk.Presenter.RedPacketPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.history.DBRoomManage;
+import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
@@ -43,6 +45,7 @@ import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -96,17 +99,32 @@ public class ChatTransferActivity extends BaseActivity {
         setContentView(R.layout.activity_chat_transfer);
         ButterKnife.bind(this);
         mMgr = new DBManager(this);
-        mdbRoomManage=new DBRoomManage(this);
+        mdbRoomManage = new DBRoomManage(this);
         mRedPacketPresenter = new RedPacketPresenter(this);
+        initData();
         initIntent();
+    }
+
+    private void initData() {
+        MyApp.getInstance().mCoinList.clear();
+        if (MyApp.getInstance().mCoinList.size() == 0) {
+            CoinPresenter coinPresenter = new CoinPresenter(this);
+            coinPresenter.coinLists("trans", new CoinPresenter.CallBack() {
+                @Override
+                public void send(List<CoinListInfo.DataBean> data) {
+                    if (MyApp.getInstance().mCoinList.size() == 0)
+                        MyApp.getInstance().mCoinList.addAll(data);
+                }
+            });
+        }
     }
 
     private void initIntent() {
         Intent intent = getIntent();
         mUser = intent.getStringExtra("user");
-        mName=mMgr.findUserName(mUser);
-        if(StringUtils.isEmpty(mName)){
-            mName=mdbRoomManage.findRoomName(mUser);
+        mName = mMgr.findUserName(mUser);
+        if (StringUtils.isEmpty(mName)) {
+            mName = mdbRoomManage.findRoomName(mUser);
         }
         mTvName.setText(mName);
         String remark = mMgr.queryRemark(mUser);

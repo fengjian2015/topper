@@ -26,9 +26,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bclould.tocotalk.Presenter.CoinPresenter;
 import com.bclould.tocotalk.Presenter.RedPacketPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
+import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
@@ -39,6 +41,7 @@ import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -86,6 +89,21 @@ public class SendQRCodeRedActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket4));
         mRedPacketPresenter = new RedPacketPresenter(this);
+        initData();
+    }
+
+    private void initData() {
+        MyApp.getInstance().mCoinList.clear();
+        if (MyApp.getInstance().mCoinList.size() == 0) {
+            CoinPresenter coinPresenter = new CoinPresenter(this);
+            coinPresenter.coinLists("trans", new CoinPresenter.CallBack() {
+                @Override
+                public void send(List<CoinListInfo.DataBean> data) {
+                    if (MyApp.getInstance().mCoinList.size() == 0)
+                        MyApp.getInstance().mCoinList.addAll(data);
+                }
+            });
+        }
     }
 
 

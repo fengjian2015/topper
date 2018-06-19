@@ -27,10 +27,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bclould.tocotalk.Presenter.CoinPresenter;
 import com.bclould.tocotalk.Presenter.RedPacketPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
+import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
 import com.bclould.tocotalk.ui.widget.VirtualKeyboardView;
@@ -40,6 +42,7 @@ import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -95,6 +98,21 @@ public class SendRedPacketActivity extends AppCompatActivity {
         setContentView(R.layout.activity_send_red_packet);
         mUser = getIntent().getStringExtra("user");
         ButterKnife.bind(this);
+        initData();
+    }
+
+    private void initData() {
+        MyApp.getInstance().mCoinList.clear();
+        if (MyApp.getInstance().mCoinList.size() == 0) {
+            CoinPresenter coinPresenter = new CoinPresenter(this);
+            coinPresenter.coinLists("trans", new CoinPresenter.CallBack() {
+                @Override
+                public void send(List<CoinListInfo.DataBean> data) {
+                    if (MyApp.getInstance().mCoinList.size() == 0)
+                        MyApp.getInstance().mCoinList.addAll(data);
+                }
+            });
+        }
     }
 
     @OnClick({R.id.bark, R.id.rl_selector_currency, R.id.btn_send})
@@ -207,7 +225,7 @@ public class SendRedPacketActivity extends AppCompatActivity {
     }
 
     public void showHintDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this,R.style.dialog);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setCanceledOnTouchOutside(false);
         TextView retry = (TextView) deleteCacheDialog.findViewById(R.id.tv_retry);
@@ -342,7 +360,7 @@ public class SendRedPacketActivity extends AppCompatActivity {
     };
 
     public void setData(int id) {
-        RoomManage.getInstance().addSingleMessageManage(mUser,mMgr.findConversationName(mUser)).sendRed(mRemark,mCoin,mCount,id);
+        RoomManage.getInstance().addSingleMessageManage(mUser, mMgr.findConversationName(mUser)).sendRed(mRemark, mCoin, mCount, id);
         finish();
     }
 }

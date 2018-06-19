@@ -28,12 +28,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bclould.tocotalk.Presenter.CoinPresenter;
 import com.bclould.tocotalk.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tocotalk.R;
 import com.bclould.tocotalk.base.BaseActivity;
 import com.bclould.tocotalk.base.MyApp;
 import com.bclould.tocotalk.history.DBManager;
 import com.bclould.tocotalk.model.BaseInfo;
+import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.model.ReceiptInfo;
 import com.bclould.tocotalk.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tocotalk.ui.widget.DeleteCacheDialog;
@@ -45,6 +47,7 @@ import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -106,8 +109,23 @@ public class PaymentActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
         ButterKnife.bind(this);
+        initData();
         initIntent();
         mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);
+    }
+
+    private void initData() {
+        MyApp.getInstance().mPayCoinList.clear();
+        if (MyApp.getInstance().mPayCoinList.size() == 0) {
+            CoinPresenter coinPresenter = new CoinPresenter(this);
+            coinPresenter.coinLists("pay", new CoinPresenter.CallBack() {
+                @Override
+                public void send(List<CoinListInfo.DataBean> data) {
+                    if (MyApp.getInstance().mPayCoinList.size() == 0)
+                        MyApp.getInstance().mPayCoinList.addAll(data);
+                }
+            });
+        }
     }
 
 

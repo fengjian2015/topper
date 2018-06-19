@@ -128,19 +128,7 @@ public class OtcActivity extends BaseActivity {
     }
 
     private void init() {
-//        initData();
-        if (MyApp.getInstance().mOtcCoinList.size() != 0) {
-            mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();
-            mTvCoinName.setText(mCoinName);
-            mServiceCharge = MyApp.getInstance().mOtcCoinList.get(0).getOut_otc();
-            mServiceCharge2 = MyApp.getInstance().mOtcCoinList.get(0).getIn_otc();
-        }
-        mCloudCircleVp.setCurrentItem(0);
-        mLlMenu.getChildAt(0).setSelected(true);
-        mTvXx.setVisibility(View.VISIBLE);
-        initFragment();
-        initViewPager();
-        initTopMenu();
+        initData();
         mMap.put(getString(R.string.filtrate), 0);
         boolean aBoolean = MySharedPreferences.getInstance().getBoolean(Constants.OTC_DISCLAIMER);
         if (!aBoolean)
@@ -172,13 +160,27 @@ public class OtcActivity extends BaseActivity {
     }
 
     private void initData() {
+        MyApp.getInstance().mOtcCoinList.clear();
         if (MyApp.getInstance().mOtcCoinList.size() == 0) {
+            UtilTool.Log("幣種", "幣種列表");
             CoinPresenter coinPresenter = new CoinPresenter(this);
             coinPresenter.coinLists("otc", new CoinPresenter.CallBack() {
                 @Override
                 public void send(List<CoinListInfo.DataBean> data) {
                     UtilTool.Log(getString(R.string.coins), data.size() + "");
-                    MyApp.getInstance().mOtcCoinList.addAll(data);
+                    if (MyApp.getInstance().mOtcCoinList.size() == 0) {
+                        MyApp.getInstance().mOtcCoinList.addAll(data);
+                        mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();
+                        mTvCoinName.setText(mCoinName);
+                        mServiceCharge = MyApp.getInstance().mOtcCoinList.get(0).getOut_otc();
+                        mServiceCharge2 = MyApp.getInstance().mOtcCoinList.get(0).getIn_otc();
+                        mCloudCircleVp.setCurrentItem(0);
+                        mLlMenu.getChildAt(0).setSelected(true);
+                        mTvXx.setVisibility(View.VISIBLE);
+                        initFragment();
+                        initViewPager();
+                        initTopMenu();
+                    }
                 }
             });
         }
@@ -416,6 +418,13 @@ public class OtcActivity extends BaseActivity {
         RecyclerView recyclerView = (RecyclerView) mStateDialog.findViewById(R.id.recycler_view);
         TextView tvTitle = (TextView) mStateDialog.findViewById(R.id.tv_title);
         Button addCoin = (Button) mStateDialog.findViewById(R.id.btn_add_coin);
+        Button cancel = (Button) mStateDialog.findViewById(R.id.btn_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mStateDialog.dismiss();
+            }
+        });
         addCoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -424,7 +433,7 @@ public class OtcActivity extends BaseActivity {
             }
         });
         tvTitle.setText(getString(R.string.selecotr_state));
-        if (MyApp.getInstance().mCoinList.size() != 0) {
+        if (MyApp.getInstance().mStateList.size() != 0) {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -456,10 +465,4 @@ public class OtcActivity extends BaseActivity {
         EventBus.getDefault().post(messageEvent);
     }
 
-
-    /*@Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        EventBus.getDefault().unregister(this);
-    }*/
 }

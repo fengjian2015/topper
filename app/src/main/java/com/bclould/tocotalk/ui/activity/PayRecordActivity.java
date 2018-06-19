@@ -110,6 +110,7 @@ public class PayRecordActivity extends BaseActivity {
                 }
             }
         });
+        mRefreshLayout.setDisableContentWhenLoading(false);
     }
 
     private void initIntent() {
@@ -150,12 +151,10 @@ public class PayRecordActivity extends BaseActivity {
                             if (data.size() == mPageSize) {
                                 mPage++;
                                 mDataList.addAll(data);
-                                mPayRecordRVAdapter.notifyDataSetChanged();
                             } else {
                                 if (end == 0) {
                                     end++;
                                     mDataList.addAll(data);
-                                    mPayRecordRVAdapter.notifyDataSetChanged();
                                 }
                             }
                         } else {
@@ -168,9 +167,9 @@ public class PayRecordActivity extends BaseActivity {
                                 }
                                 mDataList.clear();
                                 mDataList.addAll(data);
-                                mPayRecordRVAdapter.notifyDataSetChanged();
                             }
                         }
+                        mPayRecordRVAdapter.notifyDataSetChanged();
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);

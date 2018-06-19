@@ -18,6 +18,7 @@ import com.bclould.tocotalk.ui.activity.SystemSetActivity;
 import com.bclould.tocotalk.ui.widget.LoadingProgressDialog;
 import com.bclould.tocotalk.utils.MySharedPreferences;
 import com.bclould.tocotalk.utils.UtilTool;
+
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -107,7 +108,7 @@ public class LogoutPresenter {
                     Thread.sleep(1000);
                     UtilTool.Log("fengjian", "退出成功");
                     Message msg = new Message();
-                    msg.obj=message;
+                    msg.obj = message;
                     myHandler.sendMessage(msg);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -120,10 +121,14 @@ public class LogoutPresenter {
     Handler myHandler = new Handler() {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Toast.makeText(mSystemSetActivity, (String)msg.obj, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mSystemSetActivity, (String) msg.obj, Toast.LENGTH_SHORT).show();
             MyApp.getInstance().exit();
             mSystemSetActivity.finish();
             MySharedPreferences.getInstance().setString(TOKEN, "");
+            MyApp.getInstance().mCoinList.clear();
+            MyApp.getInstance().mPayCoinList.clear();
+            MyApp.getInstance().mOtcCoinList.clear();
+            MyApp.getInstance().mBetCoinList.clear();
             mSystemSetActivity.startActivity(new Intent(mSystemSetActivity, InitialActivity.class));
         }
     };

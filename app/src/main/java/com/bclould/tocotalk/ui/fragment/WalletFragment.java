@@ -13,11 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bclould.tocotalk.Presenter.CoinPresenter;
 import com.bclould.tocotalk.Presenter.SubscribeCoinPresenter;
 import com.bclould.tocotalk.R;
-import com.bclould.tocotalk.base.MyApp;
-import com.bclould.tocotalk.model.CoinListInfo;
 import com.bclould.tocotalk.ui.activity.BankCardActivity;
 import com.bclould.tocotalk.ui.activity.BlockchainGambleActivity;
 import com.bclould.tocotalk.ui.activity.CoinExchangeActivity;
@@ -29,13 +26,10 @@ import com.bclould.tocotalk.ui.activity.PayRecordActivity;
 import com.bclould.tocotalk.ui.activity.ReceiptPaymentActivity;
 import com.bclould.tocotalk.ui.activity.SafeActivity;
 import com.bclould.tocotalk.utils.MessageEvent;
-import com.bclould.tocotalk.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -115,23 +109,11 @@ public class WalletFragment extends Fragment {
             subscribeCoinPresenter.getUSDT(new SubscribeCoinPresenter.CallBack3() {
                 @Override
                 public void send(String data) {
-                    if (data != null) {
+                    if (data != null && mTvTotal != null) {
                         mTvTotal.setText(data);
                     }
                 }
             });
-            if (MyApp.getInstance().mOtcCoinList.size() == 0) {
-                UtilTool.Log("幣種", "幣種列表");
-                CoinPresenter coinPresenter = new CoinPresenter(getContext());
-                coinPresenter.coinLists("otc", new CoinPresenter.CallBack() {
-                    @Override
-                    public void send(List<CoinListInfo.DataBean> data) {
-                        UtilTool.Log(getString(R.string.coins), data.size() + "");
-                        if (MyApp.getInstance().mOtcCoinList.size() == 0)
-                            MyApp.getInstance().mOtcCoinList.addAll(data);
-                    }
-                });
-            }
         }
     }
 

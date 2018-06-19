@@ -67,7 +67,7 @@ public class OrderFormFragment extends Fragment {
     RecyclerView mRecyclerView;
     @Bind(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
-    private String mCoinName = "";
+    private String mCoinName = "TPC";
     private String mFiltrate = "";
     private List<OrderListInfo.DataBean> mDataList = new ArrayList<>();
     private OrderRVAdapter mOrderRVAdapter;
