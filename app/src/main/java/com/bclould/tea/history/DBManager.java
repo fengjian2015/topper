@@ -15,6 +15,7 @@ import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.RemarkListInfo;
 import com.bclould.tea.model.UserInfo;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 
 import java.util.ArrayList;
@@ -286,9 +287,36 @@ public class DBManager {
         db.delete("MessageRecord", "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
     }
 
-    public void deleteSingleMessage(String mUser,String id){
+    public MessageInfo deleteSingleMessage(String mUser,String id){
+        MessageInfo messageInfo = null;
         db = helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from MessageRecord where user=? and id=? and my_user=?", new String[]{mUser,id, UtilTool.getTocoId()});
+        if (cursor.moveToLast()) {
+           String showChatTime = cursor.getString(cursor.getColumnIndex("showChatTime"));
+           long createTime=cursor.getLong(cursor.getColumnIndex("createTime"));
+           String msgId=cursor.getString(cursor.getColumnIndex("msgId"));
+           cursor.close();
+           if(!StringUtils.isEmpty(showChatTime)){
+               Cursor cursor1 = db.rawQuery("select * from MessageRecord where createTime > ? and my_user=? ORDER BY createTime asc", new String[]{createTime+"", UtilTool.getTocoId()});
+               if (cursor1.moveToFirst()) {
+                   String msgId1=cursor1.getString(cursor1.getColumnIndex("msgId"));
+                   long showTime=cursor1.getLong(cursor1.getColumnIndex("createTime"));
+                   messageInfo=addMessage(cursor1);
+                   messageInfo.setShowChatTime(showTime+"");
+                   updateShowTimeMessage(msgId1,showTime+"");
+               }
+               cursor1.close();
+           }
+        }
         db.delete("MessageRecord", "user=? and my_user=? and id=?", new String[]{mUser, UtilTool.getTocoId(),id});
+        return messageInfo;
+    }
+
+    public void updateShowTimeMessage(String id,String showChatTime) {
+        db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("showChatTime", showChatTime);
+        db.update("MessageRecord", values, "msgId=?", new String[]{id + ""});
     }
 
     public String findLastMessageConversation(String roomid) {

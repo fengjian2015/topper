@@ -424,10 +424,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
                         break;
                     case 1:
                         menu.dismiss();
-                        mMgr.deleteSingleMessage(mRoomId, messageInfo.getId() + "");
+                        MessageInfo messageInfoNext=mMgr.deleteSingleMessage(mRoomId, messageInfo.getId() + "");
                         String conversation = mMgr.findLastMessageConversation(mRoomId);
                         if (!StringUtils.isEmpty(conversation)) {
                             mMgr.updateConversationMessage(mRoomId, conversation);
+                        }
+                        if(messageInfoNext!=null){
+                            mMessageList.get(mMessageList.indexOf(messageInfo)+1).setShowChatTime(messageInfoNext.getShowChatTime());
                         }
                         mMessageList.remove(messageInfo);
                         notifyDataSetChanged();

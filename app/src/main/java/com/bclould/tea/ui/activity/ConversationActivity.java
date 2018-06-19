@@ -699,8 +699,11 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             mLayoutManager.scrollToPositionWithOffset(mChatAdapter.getItemCount() - 1, 0);
         }else{
             MessageInfo messageInfo=mMgr.queryMessageMsg(msgId);
-            mMessageList.add(messageInfo);
-            mChatAdapter.notifyItemInserted(mMessageList.indexOf(messageInfo));
+            if(roomId.equals(messageInfo.getUsername())) {
+                mMessageList.add(messageInfo);
+                mChatAdapter.notifyItemInserted(mMessageList.indexOf(messageInfo));
+                mLayoutManager.scrollToPositionWithOffset(mChatAdapter.getItemCount() - 1, 0);
+            }
         }
     }
 

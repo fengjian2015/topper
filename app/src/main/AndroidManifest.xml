@@ -748,7 +748,8 @@
             android:enabled="true"/>
         <service
             android:name=".service.IMCoreService"
-            android:process=":msgPush"/>
+            android:process=":msgPush"
+            />
 
         <receiver
             android:name=".xmpp.StartIMServiceReceiver"
@@ -830,6 +831,27 @@
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <!--監聽開機廣播-->
+        <receiver android:name=".topperchat.StartBootBroadcast">
+            <intent-filter >
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <!--監聽屏幕打開-->
+        <receiver android:name=".topperchat.ScreenOnBootBroadcast">
+            <intent-filter >
+                <action android:name="android.intent.action.ACTION_SCREEN_ON"/>
+            </intent-filter>
+        </receiver>
+
+        <!--監聽屏幕關閉-->
+        <receiver android:name=".topperchat.ScreenOffBootBroadcast">
+            <intent-filter >
+                <action android:name="android.intent.action.ACTION_SCREEN_ON"/>
+            </intent-filter>
+        </receiver>
 
     </application>
 

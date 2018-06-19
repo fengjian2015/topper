@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.Presenter.SubscribeCoinPresenter;
 import com.bclould.tea.R;
+
 import com.bclould.tea.ui.activity.BankCardActivity;
 import com.bclould.tea.ui.activity.BlockchainGambleActivity;
 import com.bclould.tea.ui.activity.CoinExchangeActivity;
