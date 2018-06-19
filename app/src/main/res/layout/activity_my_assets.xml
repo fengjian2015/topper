@@ -85,7 +85,7 @@
                         android:padding="@dimen/x20"
                         android:src="@mipmap/icon_seek"/>
 
-                    <com.bclould.tocotalk.ui.widget.ClearEditText
+                    <com.bclould.tea.ui.widget.ClearEditText
                         android:id="@+id/et_coin_name"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"

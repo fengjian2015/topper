@@ -6,7 +6,7 @@
               android:layout_height="match_parent"
               android:background="@color/light"
               android:orientation="vertical"
-              tools:context="com.bclould.tocotalk.ui.activity.IndividualDetailsActivity">
+              tools:context="com.bclould.tea.ui.activity.IndividualDetailsActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

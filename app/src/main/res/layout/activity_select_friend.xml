@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/light"
     android:orientation="vertical"
-    tools:context="com.bclould.tocotalk.ui.activity.SelectFriendActivity">
+    tools:context="com.bclould.tea.ui.activity.SelectFriendActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <!--<com.bclould.tocotalk.ui.widget.SideBar
+        <!--<com.bclould.tea.ui.widget.SideBar
             android:id="@+id/side_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

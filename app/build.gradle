@@ -28,7 +28,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.bclould.tocotalk"
+        applicationId "com.bclould.tea"
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 49

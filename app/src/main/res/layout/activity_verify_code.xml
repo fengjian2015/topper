@@ -50,7 +50,7 @@
         android:textSize="@dimen/x28"/>
 
 
-    <com.bclould.tocotalk.ui.widget.InputCodeLayout
+    <com.bclould.tea.ui.widget.InputCodeLayout
         android:id="@+id/inputCodeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

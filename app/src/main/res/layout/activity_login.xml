@@ -46,7 +46,7 @@
             android:paddingTop="@dimen/y100">
 
 
-            <com.bclould.tocotalk.ui.widget.MyAutoCompleteTextView
+            <com.bclould.tea.ui.widget.MyAutoCompleteTextView
                 android:id="@+id/et_emily"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y120"
