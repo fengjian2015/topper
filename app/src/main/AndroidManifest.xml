@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.bclould.tocotalk">
+          package="com.bclould.tea">
 
     <!-- 通过GPS得到精确位置 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -63,7 +63,7 @@
         android:name=".service.LogUpService"
         tools:ignore="WrongManifestParent">
         <intent-filter>
-            <action android:name="com.bclould.tocotalk.service"/>
+            <action android:name="com.bclould.tea.service"/>
         </intent-filter>
     </service>
 
@@ -82,7 +82,7 @@
 
         <provider
             android:name=".utils.MyFileProvider"
-            android:authorities="com.bclould.tocotalk.provider"
+            android:authorities="com.bclould.tea.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -754,7 +754,7 @@
             android:name=".xmpp.StartIMServiceReceiver"
             android:enabled="true">
             <intent-filter android:priority="1000">
-                <action android:name="com.bclould.tocotalk.action.ACTION_START_IMSERVICE"/>
+                <action android:name="com.bclould.tea.action.ACTION_START_IMSERVICE"/>
             </intent-filter>
         </receiver>
 
@@ -764,7 +764,7 @@
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
         <meta-data
-            android:name="com.bclould.tocotalk.network.okhttp3.OkHttpGlideModule"
+            android:name="com.bclould.tea.network.okhttp3.OkHttpGlideModule"
             android:value="GlideModule"/>
 
         <activity

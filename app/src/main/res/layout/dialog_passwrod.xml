@@ -123,7 +123,7 @@
 
     </android.support.v7.widget.CardView>
 
-    <com.bclould.tocotalk.ui.widget.VirtualKeyboardView
+    <com.bclould.tea.ui.widget.VirtualKeyboardView
         android:id="@+id/virtualKeyboardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

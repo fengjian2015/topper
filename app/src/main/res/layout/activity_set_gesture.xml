@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.bclould.tocotalk.ui.widget.GestureLockViewGroup
+    <com.bclould.tea.ui.widget.GestureLockViewGroup
         android:id="@+id/id_gestureLockViewGroup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

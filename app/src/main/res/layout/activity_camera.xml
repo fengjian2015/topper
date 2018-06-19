@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.bclould.tocotalk.ui.activity.CameraActivity">
+    tools:context="com.bclould.tea.ui.activity.CameraActivity">
     <com.cjt2325.cameralibrary.JCameraView
         android:id="@+id/jcameraview"
         android:layout_width="match_parent"

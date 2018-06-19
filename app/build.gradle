@@ -28,11 +28,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.bclould.tocotalk"
+        applicationId "com.bclould.tea"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 48
-        versionName "0.48"
+        versionCode 49
+        versionName "0.49"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {

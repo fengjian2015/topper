@@ -4,21 +4,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/x20">
-    <TextView
-        android:id="@+id/chat_createtime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/x20"
-        android:background="@drawable/bg_black4_shape"
-        android:gravity="center"
-        android:padding="5dip"
-        android:singleLine="true"
-        android:text="06月05日  08:30"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone"
+    <include android:id="@+id/chat_createtime"
+        layout="@layout/item_chat_time"
         />
     <RelativeLayout
         android:layout_width="wrap_content"
