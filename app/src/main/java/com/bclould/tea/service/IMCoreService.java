@@ -15,10 +15,12 @@ import android.support.annotation.RequiresApi;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.utils.CheckClassIsWork;
 import com.bclould.tea.utils.UtilTool;
+import com.yyh.fork.NativeRuntime;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class IMCoreService extends Service {
     private final static int time = 15 * 1000;
+    public final static String CORE_SERVICE_NAME="com.bclould.tea.service.IMCoreService";
     private final static String SERVICE_NAME = "com.bclould.tea.service.IMService";
     public final static String ACTION_LOGIN = "com.bclould.tea.action.ACTION_LOGIN";
     public final static String ACTION_LOGOUT = "com.bclould.tea.action.ACTION_LOGOUT";
@@ -51,26 +53,6 @@ public class IMCoreService extends Service {
         catch(IllegalArgumentException e) {
             e.printStackTrace();
         }
-
-//        NativeRuntime.getInstance().stringFromJNI();
-//        (new Thread(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                try {
-//                    String executable = "libhelper.so";
-//                    String aliasfile = "helper";
-//                    NativeRuntime.getInstance().RunExecutable(IMCoreService.this.getPackageName(),
-//                            executable, aliasfile, IMCoreService.this.getPackageName() +
-//                                    "/com.ysepay.mobileportal.im.IMCoreService");
-//                    NativeRuntime.getInstance().startService(IMCoreService.this.getPackageName()
-//                                    + "/com.ysepay.mobileportal.im.IMCoreService",
-//                            FileUtils.createRootPath(IMCoreService.this));
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        })).start();
     }
 
     @Override
@@ -104,7 +86,7 @@ public class IMCoreService extends Service {
             switch (msg.what) {
                 case 0:
                     if (!startService) {
-                        UtilTool.Log("--------","service-- 没登录");
+                        UtilTool.Log("fengjian","service-- 没登录");
                         if (WsConnection.isServiceWork(IMCoreService.this, SERVICE_NAME)) {
                             IMCoreService.this.stopService(new Intent(IMCoreService.this, IMService.class));
                         }
@@ -112,16 +94,16 @@ public class IMCoreService extends Service {
                         return;
                     }
                     if (WsConnection.isServiceWork(IMCoreService.this, SERVICE_NAME)) {
-                        UtilTool.Log("--------","service-- 打开了！");
+                        UtilTool.Log("fengjian","service-- 打开了！");
                         if (CheckClassIsWork.isTopActivity(IMCoreService.this, "LoginActivity")) {
                             startService = false;
-                            UtilTool.Log("--------","關閉服務");
+                            UtilTool.Log("fengjian","關閉服務");
                             IMCoreService.this.stopService(new Intent(IMCoreService.this, IMService.class));
                         }
                         this.sendEmptyMessageDelayed(0, time);
                         return;
                     }
-                    UtilTool.Log("--------","service-- 没打开");
+                    UtilTool.Log("fengjian","service-- 没打开服務");
                     Intent intent = new Intent();
                     intent.setAction(IMCoreService.ACTION_START_IMSERVICE);
                     IMCoreService.this.sendBroadcast(intent);
@@ -131,7 +113,7 @@ public class IMCoreService extends Service {
                 case 1:
 //                    if(!hasStartChildProcess){
 //                        hasStartChildProcess = true;
-//                        UtilTool.Log("---------","調用JNI");
+//                        UtilTool.Log("fengjian","調用JNI"+IMCoreService.this.getPackageName());
 //                        NativeRuntime.getInstance().stringFromJNI();
 //                        (new Thread(new Runnable() {
 //
@@ -140,12 +122,8 @@ public class IMCoreService extends Service {
 //                                try {
 //                                    String executable = "libhelper.so";
 //                                    String aliasfile = "helper";
-//                                    NativeRuntime.getInstance().RunExecutable(IMCoreService.this.getPackageName(),
-//                                            executable, aliasfile, IMCoreService.this.getPackageName() +
-//                                                    "/com.bclould.tea.service.IMCoreService");
-//                                    NativeRuntime.getInstance().startService(IMCoreService.this.getPackageName()
-//                                                    + "/com.bclould.tea.service.IMCoreService",
-//                                            UtilTool.createRootPath(IMCoreService.this));
+//                                    NativeRuntime.getInstance().RunExecutable(getPackageName(), executable, aliasfile, getPackageName()+"/com.bclould.tea.service.IMCoreService");
+//                                    NativeRuntime.getInstance().startService(getPackageName()+"/com.bclould.tea.service.IMCoreService",UtilTool.createRootPath(IMCoreService.this));
 //                                } catch (Exception e) {
 //                                    e.printStackTrace();
 //                                }

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.bclould.tea.Presenter.CoinPresenter;
 import com.bclould.tea.Presenter.SubscribeCoinPresenter;
 
+import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.ui.activity.BankCardActivity;

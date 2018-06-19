@@ -43,13 +43,21 @@
             <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:layout_height="@dimen/y60"
+                android:layout_alignTop="@+id/iv_touxiang"
+                android:layout_toRightOf="@+id/iv_touxiang"
+                android:layout_marginLeft="@dimen/x30"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x35" />
+            <TextView
+                android:id="@+id/tv_tocoid"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/y60"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_toRightOf="@+id/iv_touxiang"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x35"/>
-
+                android:layout_below="@+id/tv_name"
+                android:textColor="@color/gray3"
+                android:textSize="@dimen/x32"/>
             <ImageView
                 android:layout_width="@dimen/x70"
                 android:layout_height="@dimen/x70"

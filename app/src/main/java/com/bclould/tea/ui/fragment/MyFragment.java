@@ -62,6 +62,8 @@ public class MyFragment extends Fragment {
     TextView mTv;
     @Bind(R.id.tv_new_update)
     TextView mTvNewUpdate;
+    @Bind(R.id.tv_tocoid)
+    TextView mTvTocoid;
 
     private DBManager mMgr;
 
@@ -110,11 +112,12 @@ public class MyFragment extends Fragment {
 
     private void init() {
         mTvName.setText(UtilTool.getUser());
+        mTvTocoid.setText(getString(R.string.id)+UtilTool.getTocoId());
         mMgr = new DBManager(getContext());
         /*Bitmap bitmap = UtilTool.getImage(mMgr, UtilTool.getTocoId(), getContext());
         if (bitmap != null)
             mIvTouxiang.setImageBitmap(bitmap);*/
-        UtilTool.getImage(mMgr, UtilTool.getTocoId(),getContext(), mIvTouxiang);
+        UtilTool.getImage(mMgr, UtilTool.getTocoId(), getContext(), mIvTouxiang);
     }
 
     @Override

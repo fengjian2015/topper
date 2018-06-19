@@ -171,7 +171,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         imState = -1;
         ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
         Intent intent = new Intent(getContext(), IMCoreService.class);
-        if (WsConnection.isServiceWork(getContext(), "com.bclould.tea.service.IMCoreService")) {
+        if (WsConnection.isServiceWork(getContext(), IMCoreService.CORE_SERVICE_NAME)) {
             WsConnection.stopAllIMCoreService(getContext());
             getContext().stopService(intent);
         }
