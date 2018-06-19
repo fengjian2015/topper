@@ -71,7 +71,7 @@ public class OrderDetailsPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -112,7 +112,7 @@ public class OrderDetailsPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -153,7 +153,7 @@ public class OrderDetailsPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -193,7 +193,7 @@ public class OrderDetailsPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

@@ -158,7 +158,7 @@ public class RegisterPresenter {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
 
                         }
 

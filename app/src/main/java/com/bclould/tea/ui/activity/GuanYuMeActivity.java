@@ -100,7 +100,7 @@ public class GuanYuMeActivity extends BaseActivity {
         if (UtilTool.isNetworkAvailable(this)) {
             RetrofitUtil.getInstance(this)
                     .getServer()
-                    .checkVersion(Constants.VERSION_URL)//githua获取版本更新
+                    .checkVersion(Constants.VERSION_UPDATE_URL)//githua获取版本更新
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<GitHubInfo>() {
@@ -121,7 +121,7 @@ public class GuanYuMeActivity extends BaseActivity {
                             }
                             float tag = Float.parseFloat(tag_version);
                             if (version < tag) {
-                                MySharedPreferences.getInstance().setString(Constants.NEW_APK_URL, baseInfo.getAssets().get(0).getBrowser_download_url());
+                                MySharedPreferences.getInstance().setString(Constants.NEW_APK_URL, Constants.DOWNLOAD_APK_URL);
                                 MySharedPreferences.getInstance().setString(Constants.NEW_APK_NAME, baseInfo.getName());
                                 MySharedPreferences.getInstance().setString(Constants.NEW_APK_BODY, baseInfo.getBody());
                                 showDialog(baseInfo.getAssets().get(0).getBrowser_download_url(), baseInfo.getName(), baseInfo.getBody());

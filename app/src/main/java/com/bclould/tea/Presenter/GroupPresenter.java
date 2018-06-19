@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.widget.Toast;
 
 import com.bclould.tea.R;
 import com.bclould.tea.model.GroupCreateInfo;
@@ -78,7 +79,7 @@ public class GroupPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            ToastShow.showToast2((Activity) mContext, e.getMessage());
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -117,7 +118,7 @@ public class GroupPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            ToastShow.showToast2((Activity) mContext, e.getMessage());
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

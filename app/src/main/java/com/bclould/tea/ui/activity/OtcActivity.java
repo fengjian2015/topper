@@ -43,6 +43,8 @@ import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -107,6 +109,9 @@ public class OtcActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otc);
         ButterKnife.bind(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         mType = "2";
         mTvState.setText(MySharedPreferences.getInstance().getString(STATE));
         mFiltrateList.add(getString(R.string.all));
@@ -115,6 +120,14 @@ public class OtcActivity extends BaseActivity {
         mFiltrateList.add(getString(R.string.off_the_stocks));
         mFiltrateList.add(getString(R.string.exception));
         init();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(getString(R.string.create_order)) || msg.equals(getString(R.string.publish_deal))) {
+            initData();
+        }
     }
 
     List<Fragment> mFragmentList = new ArrayList<>();
@@ -193,6 +206,7 @@ public class OtcActivity extends BaseActivity {
             getSupportFragmentManager().beginTransaction().remove(fragment);
             getSupportFragmentManager().beginTransaction().hide(fragment);
         }
+        EventBus.getDefault().unregister(this);
     }
 
     //初始化ViewPager

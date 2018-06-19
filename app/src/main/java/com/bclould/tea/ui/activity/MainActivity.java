@@ -22,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bclould.tea.Presenter.CoinPresenter;
-import com.bclould.tea.Presenter.DillDataPresenter;
 import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.Presenter.IndividualDetailsPresenter;
 import com.bclould.tea.Presenter.PersonalDetailsPresenter;
@@ -34,8 +33,6 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.AuatarListInfo;
-import com.bclould.tea.model.CoinListInfo;
-import com.bclould.tea.model.OSSInfo;
 import com.bclould.tea.model.GitHubInfo;
 import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.IndividualInfo;
@@ -254,7 +251,7 @@ public class MainActivity extends BaseActivity {
         if (UtilTool.isNetworkAvailable(this)) {
             RetrofitUtil.getInstance(this)
                     .getServer()
-                    .checkVersion(Constants.VERSION_URL)//githua获取版本更新
+                    .checkVersion(Constants.VERSION_UPDATE_URL)//githua获取版本更新
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<GitHubInfo>() {
@@ -302,7 +299,7 @@ public class MainActivity extends BaseActivity {
     //显示Dialog
     private void showUpdateDialog(GitHubInfo gitHubInfo) {
         //获取download连接
-        final String url = gitHubInfo.getAssets().get(0).getBrowser_download_url();
+        final String url = Constants.DOWNLOAD_APK_URL;
         //获取apk名字
         final String appName = gitHubInfo.getName();
         //更新描述

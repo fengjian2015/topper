@@ -80,7 +80,7 @@ public class PersonalDetailsPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -118,7 +118,7 @@ public class PersonalDetailsPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -154,7 +154,7 @@ public class PersonalDetailsPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            ToastShow.showToast2((Activity) mContext, e.getMessage());
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -194,7 +194,7 @@ public class PersonalDetailsPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            ToastShow.showToast2((Activity) mContext, e.getMessage());
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -233,7 +233,7 @@ public class PersonalDetailsPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            ToastShow.showToast2((Activity) mContext, e.getMessage());
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -274,7 +274,7 @@ public class PersonalDetailsPresenter {
                         public void onError(Throwable e) {
                             if (!ActivityUtil.isActivityOnTop((Activity) mContext))return;
                             hideDialog();
-                            ToastShow.showToast2((Activity) mContext, e.getMessage());
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -313,7 +313,7 @@ public class PersonalDetailsPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            ToastShow.showToast2((Activity) mContext, e.getMessage());
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

@@ -154,6 +154,7 @@ public class DillDataPresenter {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             UtilTool.Log("oss", e.getMessage());
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

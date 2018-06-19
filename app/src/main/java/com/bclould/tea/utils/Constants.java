@@ -33,8 +33,8 @@ public class Constants {
     public static String MONEYOUT = "moneyOut";
     public static String MYUSER = UtilTool.getJid();
     public static String BUSINESSCARD = "businessCard";
-    public static String BUCKET_NAME = isDebug ? "toco" : "topper";
-    public static String BUCKET_NAME2 = "topper-chat";
+    public static String BUCKET_NAME = isDebug ? "toco--bucket" : "topper-bucket";
+    public static String BUCKET_NAME2 = "topper-chat-bucket";
     public static String PUBLICDIR = "/sdcard/tocotalk/tocotalk_images/";
     public static String LOG_DIR = "/sdcard/tocotalk/log/";
     public static String QRMONEYIN = "qrMoneyIn";
@@ -69,5 +69,6 @@ public class Constants {
     public static String QUES_WEB_URL = "api/question/";
     public static final String OSS_ENDOPINT = "oss-cn-shenzhen.aliyuncs.com";
     public static final String STS_SERVER = "api/oss/getSessionTokenV2";
-    public static final String VERSION_URL = "https://gitee.com/api/v5/repos/iwtxi/234/releases/latest?access_token=8ed3d93b9fa9150a883bbaf38159c230";
+    public static final String VERSION_UPDATE_URL = "https://api.github.com/repos/bclould/tocotalk/releases/latest";
+    public static final String DOWNLOAD_APK_URL = "https://toco--bucket.oss-cn-shenzhen.aliyuncs.com/topperchat.apk";
 }

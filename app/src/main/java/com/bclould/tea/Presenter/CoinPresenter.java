@@ -79,7 +79,7 @@ public class CoinPresenter {
 
                         @Override
                         public void onError(@NonNull Throwable e) {
-                            UtilTool.Log("日志1", e.getMessage());
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -115,7 +115,7 @@ public class CoinPresenter {
 
                         @Override
                         public void onError(Throwable e) {
-                            Toast.makeText(mContext, "网络连接失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -152,7 +152,7 @@ public class CoinPresenter {
 
                         @Override
                         public void onError(@NonNull Throwable e) {
-                            UtilTool.Log("日志1", e.getMessage());
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -193,6 +193,7 @@ public class CoinPresenter {
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
                             UtilTool.Log("日志1", e.getMessage());
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -236,6 +237,7 @@ public class CoinPresenter {
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
                             UtilTool.Log("日志1", e.getMessage());
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -273,6 +275,7 @@ public class CoinPresenter {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             UtilTool.Log("日志1", e.getMessage());
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -312,6 +315,7 @@ public class CoinPresenter {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             UtilTool.Log("日志1", e.getMessage());
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

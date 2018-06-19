@@ -55,39 +55,41 @@ public class SubscribeCoinPresenter {
     }
 
     public void getMyAssets(final CallBack callBack) {
-        showDialog();
-        RetrofitUtil.getInstance(mContext)
-                .getServer()
-                .getMyAssets(UtilTool.getToken())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                .subscribe(new Observer<MyAssetsInfo>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .getMyAssets(UtilTool.getToken())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<MyAssetsInfo>() {
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {
 
-                    }
-
-                    @Override
-                    public void onNext(@NonNull MyAssetsInfo myAssetsInfo) {
-                        if (myAssetsInfo.getStatus() == 1) {
-                            callBack.send(myAssetsInfo.getData());
                         }
-                        hideDialog();
-                    }
 
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        hideDialog();
-                        Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                    }
+                        @Override
+                        public void onNext(@NonNull MyAssetsInfo myAssetsInfo) {
+                            if (myAssetsInfo.getStatus() == 1) {
+                                callBack.send(myAssetsInfo.getData());
+                            }
+                            hideDialog();
+                        }
 
-                    @Override
-                    public void onComplete() {
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+                            hideDialog();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
 
-                    }
-                });
+                        @Override
+                        public void onComplete() {
 
-
+                        }
+                    });
+        }else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void unSubscribeAsset(int id) {
@@ -157,7 +159,7 @@ public class SubscribeCoinPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
-                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -196,7 +198,7 @@ public class SubscribeCoinPresenter {
 
                         @Override
                         public void onError(Throwable e) {
-                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -235,7 +237,7 @@ public class SubscribeCoinPresenter {
 
                         @Override
                         public void onError(Throwable e) {
-                            Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

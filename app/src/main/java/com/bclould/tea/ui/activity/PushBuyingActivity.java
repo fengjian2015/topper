@@ -609,7 +609,6 @@ public class PushBuyingActivity extends BaseActivity {
         } else {
             mType = 2;
         }
-
         mPushBuyingPresenter.pushing(mType, coin, state, price, count, paymentTime, payment, minLimit, maxLimit, remark, password, phoneNumber);
     }
 

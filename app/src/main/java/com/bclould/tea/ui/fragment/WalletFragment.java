@@ -13,11 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bclould.tea.Presenter.CoinPresenter;
 import com.bclould.tea.Presenter.SubscribeCoinPresenter;
-
-import com.bclould.tea.base.MyApp;
-import com.bclould.tea.model.CoinListInfo;
+import com.bclould.tea.R;
 import com.bclould.tea.ui.activity.BankCardActivity;
 import com.bclould.tea.ui.activity.BlockchainGambleActivity;
 import com.bclould.tea.ui.activity.CoinExchangeActivity;
@@ -29,7 +26,6 @@ import com.bclould.tea.ui.activity.PayRecordActivity;
 import com.bclould.tea.ui.activity.ReceiptPaymentActivity;
 import com.bclould.tea.ui.activity.SafeActivity;
 import com.bclould.tea.utils.MessageEvent;
-import com.bclould.tea.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
