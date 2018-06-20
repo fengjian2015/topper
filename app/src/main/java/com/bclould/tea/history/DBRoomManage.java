@@ -81,6 +81,11 @@ public class DBRoomManage {
         db.execSQL("DELETE FROM RoomManage");
     }
 
+    public void deleteRoom(String roomId) {
+        db = helper.getWritableDatabase();
+        db.delete("RoomManage", "roomId=? and my_user=?", new String[]{roomId, UtilTool.getTocoId()});
+    }
+
     public ArrayList<RoomManageInfo> queryAllRequest() {
         db = helper.getReadableDatabase();
         ArrayList<RoomManageInfo> addRequestInfos = new ArrayList<>();

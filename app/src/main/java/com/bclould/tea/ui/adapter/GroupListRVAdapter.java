@@ -36,11 +36,13 @@ public class GroupListRVAdapter extends RecyclerView.Adapter {
     private final Context mContext;
     private final List<RoomManageInfo> mJoinChatRoom;
     private DBManager mDBManager;
+    private ArrayList<Boolean> roomList;
 
-    public GroupListRVAdapter(Context context, ArrayList<RoomManageInfo> joinChatRoom, DBManager mDBManager) {
+    public GroupListRVAdapter(Context context, ArrayList<RoomManageInfo> joinChatRoom, DBManager mDBManager, ArrayList<Boolean> roomList) {
         mContext = context;
         this.mDBManager=mDBManager;
         mJoinChatRoom = joinChatRoom;
+        this.roomList=roomList;
     }
 
     @Override

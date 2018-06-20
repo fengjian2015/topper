@@ -515,16 +515,6 @@ public class SingleManage implements Room {
         }
     }
 
-
-    @Override
-    public void createRoom(String roomJid, String roomName, List<UserInfo> users) {
-
-    }
-
-    @Override
-    public void joinMultiUserChat(String user, String roomJid) {
-    }
-
     @Override
     public void changeName(String name) {
 

@@ -83,53 +83,9 @@ public class MultiManage implements Room{
         this.dbRoomMember=dbRoomMember;
     }
 
-
-    private void sendCreateGroup(String group_name,String toco_id,String json_toco_id) throws Exception {
-        ObjectMapper objectMapper =  new ObjectMapper(new MessagePackFactory());
-        Map<Object,Object> contentMap = new HashMap<>();
-        contentMap.put("group_name",group_name);
-        contentMap.put("toco_id",UtilTool.getTocoId());
-        contentMap.put("toco_ids",json_toco_id);
-
-        Map<Object,Object> sendMap = new HashMap<>();
-        sendMap.put("type",8);
-        sendMap.put("content",objectMapper.writeValueAsBytes(contentMap));
-        WsConnection.getInstance().sendMessage(objectMapper.writeValueAsBytes(sendMap));
-    }
-
-
     @Override
     public void changeName(String name) {
         this.roomName=name;
-    }
-
-
-    @Override
-    public void createRoom(String roomJid,String roomName, List<UserInfo> users) {
-        this.roomId=roomJid;
-        this.roomName=roomName;
-        try {
-            sendCreateGroup(roomName,UtilTool.getTocoId(), JSONArray.toJSONString(users));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * 加入会议室
-     *
-     * @param user      昵称
-     * @param roomJid 会议室名
-     */
-    public void joinMultiUserChat(String user, String roomJid) {
-
-    }
-
-    private RoomManageInfo createRoomInfo(String roomId,String roomName){
-        RoomManageInfo roomManageInfo=new RoomManageInfo();
-        roomManageInfo.setRoomId(roomId);
-        roomManageInfo.setRoomName(roomName);
-        return roomManageInfo;
     }
 
 
@@ -142,6 +98,7 @@ public class MultiManage implements Room{
 
         Map<Object, Object> contentMap = new HashMap<>();
         contentMap.put("group_id", Integer.parseInt(roomId));
+        contentMap.put("toco_id",UtilTool.getTocoId());
         if ("true".equals(OtrChatListenerManager.getInstance().getOTRState(roomId.toString()))) {
             contentMap.put("crypt", true);
         } else {

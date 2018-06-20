@@ -30,9 +30,15 @@
             android:text="好友昵称"
             android:textColor="@color/black"
             android:textSize="@dimen/x30"/>
-
+        <ImageView
+            android:id="@+id/iv_tick"
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/y40"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x30"
+            android:visibility="gone"
+            android:src="@mipmap/tick"/>
     </RelativeLayout>
-
-
 
 </LinearLayout>

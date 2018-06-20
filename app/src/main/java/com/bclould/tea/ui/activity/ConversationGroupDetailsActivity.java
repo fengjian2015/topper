@@ -10,13 +10,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.crypto.otr.OtrChatListenerManager;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.ConversationInfo;
+import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.ui.adapter.GroupDetailsMemberAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
@@ -28,6 +31,8 @@ import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.RoomManage;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -72,8 +77,15 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_conversation_group_details);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
+        EventBus.getDefault().register(this);//初始化EventBus
         initIntent();
         init();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void initIntent() {
@@ -95,8 +107,8 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     private void setGroupMember(boolean isFirst) {
         mList.clear();
         mList.addAll(mDBRoomMember.queryAllRequest(roomId));
-        mList.add(new RoomMemberInfo());
         mTvMemberNumber.setText(mList.size()+"人");
+        mList.add(new RoomMemberInfo());
         if(isFirst){
             mAdapter=new GroupDetailsMemberAdapter(this,mList);
             mPartnerDetialGridview.setAdapter(mAdapter);
@@ -139,12 +151,38 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                 clearMessage();
                 break;
             case R.id.btn_brak:
-                // TODO: 2018/6/20 刪除退出 
+                deleteGroup();
                 break;
             case R.id.rl_group_qr:
                 // TODO: 2018/6/20 跳轉二維碼 
                 break;
         }
+    }
+
+    //接受通知
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(getString(R.string.quit_group))) {
+            if(roomId.equals(event.getId())){
+                finish();
+            }
+        }
+    }
+
+    private void deleteGroup(){
+        new GroupPresenter(this).deleteGroup(Integer.parseInt(roomId), UtilTool.getTocoId(), new GroupPresenter.CallBack() {
+            @Override
+            public void send() {
+                mDBRoomManage.deleteRoom(roomId);
+                mDBRoomMember.deleteRoom(roomId);
+                mMgr.deleteConversation(roomId);
+                mMgr.deleteMessage(roomId);
+                MessageEvent messageEvent=new MessageEvent(getString(R.string.quit_group));
+                messageEvent.setId(roomId);
+                EventBus.getDefault().post(messageEvent);
+            }
+        });
     }
 
     private void messageFree() {

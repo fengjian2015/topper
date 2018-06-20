@@ -128,7 +128,6 @@ public class CreateGroupRoomActivity extends BaseActivity {
                 new GroupPresenter(context).createGroup(roomName, stringBuffer.toString(), "", new GroupPresenter.CallBack2() {
                     @Override
                     public void send(String group_id) {
-                        RoomManage.getInstance().addMultiMessageManage(group_id,roomName).createRoom(group_id,roomName,mUserInfoList);
                         createConversation(group_id,roomName);
                         saveRoom(group_id,mUserInfoList);
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.oneself_send_msg)));

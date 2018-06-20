@@ -226,8 +226,6 @@ public class XmppListener {
                 }
                 if (message.getType() == Message.Type.normal) {
                     UtilTool.Log("fengjian群日志", "暂时表示收到邀请群聊" + message.getSubject() + "\n" + message.toXML());
-                    RoomManage.getInstance().addMultiMessageManage(from, from.split("@")[0])
-                            .joinMultiUserChat(UtilTool.getUser(), from);
                     return;
                 } else if (message.getType() == Message.Type.groupchat) {
                     if (message.getSubject() != null) {

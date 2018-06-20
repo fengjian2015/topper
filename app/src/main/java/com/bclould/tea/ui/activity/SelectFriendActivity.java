@@ -257,7 +257,7 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
                 singleManage.Upload(messageInfo.getVoice());
             }else if(msgType==FROM_VIDEO_MSG||msgType==TO_VIDEO_MSG){
                 showDialog();
-                if (messageInfo.getMessage().startsWith("https://")) {
+                if (messageInfo.getMessage().startsWith("http")) {
                     singleManage.transmitVideo(messageInfo);
                 }else{
                     singleManage.Upload(messageInfo.getMessage());

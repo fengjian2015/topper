@@ -43,6 +43,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.crypto.otr.OtrChatListenerManager;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.adapter.ChatAdapter;
 import com.bclould.tea.ui.widget.SimpleAppsGridView;
@@ -130,6 +131,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private String mName;
     private List<MessageInfo> mMessageList = new ArrayList<>();
     private DBManager mMgr;
+    private DBRoomMember mDBRoomMember;
     private Dialog mBottomDialog;
     private Bitmap mUserImage;
     private List<LocalMedia> selectList = new ArrayList<>();
@@ -152,6 +154,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         }
         ButterKnife.bind(this);
         mMgr = new DBManager(this);//初始化数据库管理类
+        mDBRoomMember=new DBRoomMember(this);
         EventBus.getDefault().register(this);//初始化EventBus
         initIntent();//初始化intent事件
         initEmoticonsKeyboard();//初始化功能盘
@@ -510,6 +513,10 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         } else if (msg.equals(getString(R.string.change_msg_state))) {
             changeMsgState(event.getId());
             UtilTool.Log("fengjian---", "改變消息狀態");
+        }else if (msg.equals(getString(R.string.quit_group))) {
+            if(roomId.equals(event.getId())){
+                finish();
+            }
         }
 
     }
@@ -759,7 +766,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private void initAdapter() {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mChatAdapter = new ChatAdapter(this, mMessageList, roomId, mMgr, mediaPlayer, mName, roomType, mRlTitle);
+        mChatAdapter = new ChatAdapter(this, mMessageList, roomId, mMgr, mediaPlayer, mName, roomType, mRlTitle, mDBRoomMember);
         mRecyclerView.setAdapter(mChatAdapter);
         mRefreshLayout.setEnableLoadMore(false);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {

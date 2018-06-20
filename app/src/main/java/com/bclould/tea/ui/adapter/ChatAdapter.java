@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.bclould.tea.Presenter.GrabRedPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.GrabRedInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.SerMap;
@@ -139,8 +140,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private String mRoomType;
     private String mName;
     private RelativeLayout mrlTitle;
+    private DBRoomMember mDBRoomMember;
 
-    public ChatAdapter(Context context, List<MessageInfo> messageList, String roomId, DBManager mgr, MediaPlayer mediaPlayer, String name, String roomType, RelativeLayout rlTitle) {
+    public ChatAdapter(Context context, List<MessageInfo> messageList, String roomId, DBManager mgr, MediaPlayer mediaPlayer, String name, String roomType, RelativeLayout rlTitle, DBRoomMember mDBRoomMember) {
         mContext = context;
         mMessageList = messageList;
         mRoomId = roomId;
@@ -151,6 +153,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         //繼續保留這兩個字段是用於之前版本有的消息沒有send字段
         mName = name;
         mrlTitle = rlTitle;
+        this.mDBRoomMember=mDBRoomMember;
     }
 
     @Override
@@ -569,9 +572,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
             setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
+                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
             } else {
-                UtilTool.getImage(mMgr, mRoomId, mContext, mIvTouxiang);
+                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             }
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             HyperLinkUtil hyperLinkUtil = new HyperLinkUtil();
@@ -706,7 +709,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
             setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
             final String mName=mMgr.findUserName(mUser);
-            UtilTool.getImage(mMgr, mUser, mContext, mIvTouxiang);
+            if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
+                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
+            } else {
+                UtilTool.getImage(mMgr, mUser, mContext, mIvTouxiang);
+            }
             goIndividualDetails(mIvTouxiang, mUser, mName, messageInfo);
             mTvCoinRedpacket.setText(messageInfo.getCoin() + mContext.getString(R.string.red_package));
             mTvRemark.setText(messageInfo.getRemark());
@@ -931,11 +938,12 @@ public class ChatAdapter extends RecyclerView.Adapter {
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
             setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
-            if (messageInfo.getSend() != null) {
-                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
+            if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
+                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
             } else {
-                UtilTool.getImage(mMgr, mRoomId, mContext, mIvTouxiang);
+                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             }
+
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             mTvVoiceTime.setText(messageInfo.getVoiceTime() + "''");
             int wide = Integer.parseInt(messageInfo.getVoiceTime()) * 2;
@@ -1015,6 +1023,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     mMessageList.remove(messageInfo);
                     RoomManage.getInstance().getRoom(mRoomId).anewSendUpload(messageInfo);
+                    notifyDataSetChanged();
                 }
             });
             mIvImg.setOnClickListener(new View.OnClickListener() {
@@ -1062,10 +1071,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
             setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
-            if (messageInfo.getSend() != null) {
-                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
+            if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
+                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
             } else {
-                UtilTool.getImage(mMgr, mRoomId, mContext, mIvTouxiang);
+                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             }
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             Glide.with(mContext).load(new File(messageInfo.getVoice())).listener(new RequestListener<Drawable>() {
@@ -1148,6 +1157,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     mMessageList.remove(messageInfo);
                     RoomManage.getInstance().getRoom(mRoomId).anewSendUpload(messageInfo);
+                    notifyDataSetChanged();
                 }
             });
             mRlVideo.setOnClickListener(new View.OnClickListener() {
@@ -1188,10 +1198,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
             setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
-            if (messageInfo.getSend() != null) {
-                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
+            if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
+                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
             } else {
-                UtilTool.getImage(mMgr, mRoomId, mContext, mIvTouxiang);
+                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             }
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             mIvVideo.setImageBitmap(BitmapFactory.decodeFile(messageInfo.getVoice()));
@@ -1294,10 +1304,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
             setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
-            if (messageInfo.getSend() != null) {
-                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
+            if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
+                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
             } else {
-                UtilTool.getImage(mMgr, mRoomId, mContext, mIvTouxiang);
+                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             }
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             tvTitle.setText(messageInfo.getTitle());
@@ -1401,10 +1411,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
         public void setData(final MessageInfo messageInfo) {
             // TODO: 2018/5/28 所有的from需要增加一個名字
             setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
-            if (messageInfo.getSend() != null) {
-                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
+            if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
+                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
             } else {
-                UtilTool.getImage(mMgr, mRoomId, mContext, mIvTouxiang);
+                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             }
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             tvUsername.setText(messageInfo.getMessage());
@@ -1521,10 +1531,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
         public void setData(final MessageInfo messageInfo) {
             // TODO: 2018/5/28 所有的from需要增加一個名字
             setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
-            if (messageInfo.getSend() != null) {
-                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
+            if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
+                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
             } else {
-                UtilTool.getImage(mMgr, mRoomId, mContext, mIvTouxiang);
+                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             }
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             tvTitle.setText(messageInfo.getTitle());
@@ -1654,10 +1664,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
         public void setData(final MessageInfo messageInfo) {
             // TODO: 2018/5/28 所有的from需要增加一個名字
             setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
-            if (messageInfo.getSend() != null) {
-                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
+            if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
+                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
             } else {
-                UtilTool.getImage(mMgr, mRoomId, mContext, mIvTouxiang);
+                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             }
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             tvTitle.setText(messageInfo.getTitle());
@@ -1770,10 +1780,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
             setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
-            if (messageInfo.getSend() != null) {
-                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
+            if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
+                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
             } else {
-                UtilTool.getImage(mMgr, mRoomId, mContext, mIvTouxiang);
+                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             }
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             mTvRemark.setText(messageInfo.getRemark());

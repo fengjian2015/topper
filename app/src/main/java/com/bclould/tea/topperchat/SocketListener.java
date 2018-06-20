@@ -186,8 +186,12 @@ public class SocketListener {
                     logout();
                     break;
                 case 32:
-                    content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {
-                    });
+                    content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
+                    //消息回執，改變消息狀態
+                    changeMsgState(content);
+                    break;
+                case 34:
+                    content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
                     //消息回執，改變消息狀態
                     changeMsgState(content);
                     break;
@@ -287,14 +291,26 @@ public class SocketListener {
         try {
             Map<Object, Object> messageMap = objectMapper.readValue((byte[]) content.get("message"), new TypeReference<Map<String, Object>>() {
             });
-            //處理多終端登錄，自己消息同步問題
-            String from = (String) content.get("from");
+            String from;
+            String sendFrom;
             boolean isMe = false;
-            if (UtilTool.getTocoId().equals(from)) {
-                from = (String) content.get("to");
-                isMe = true;
-                isPlayHint = false;
+            if(RoomManage.ROOM_TYPE_MULTI.equals(roomType)){
+                from = content.get("group_id")+"";
+                sendFrom=(String) content.get("toco_id");
+                if (UtilTool.getTocoId().equals(sendFrom)) {
+                    isMe = true;
+                    isPlayHint = false;
+                }
+            }else{
+                from = (String) content.get("from");
+                if (UtilTool.getTocoId().equals(from)) {
+                    from = (String) content.get("to");
+                    isMe = true;
+                    isPlayHint = false;
+                }
+                sendFrom=from;
             }
+            //處理多終端登錄，自己消息同步問題
 
             String message = (String) messageMap.get("body");
             boolean crypt = (boolean) content.get("crypt");
@@ -326,9 +342,6 @@ public class SocketListener {
                 msgType = FROM_TEXT_MSG;
             }
             String time = UtilTool.createChatTime();
-            // TODO: 2018/6/6 sendFrom 群聊需要修改
-            String sendFrom = from;
-            // TODO: 2018/6/6 friend發送者名字 群聊通過群成員獲取，單聊通過好友獲取
             String friend;
             if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
                 friend = mdbRoomManage.findRoomName(from);
@@ -381,7 +394,7 @@ public class SocketListener {
                 case WsContans.MSG_VIDEO:
                     //視頻
                     String key = messageInfo.getKey();
-                    if (key.startsWith("https://")) {
+                    if (key.startsWith("http")) {
                         url = key;
                     } else {
                         url = downFile(key);

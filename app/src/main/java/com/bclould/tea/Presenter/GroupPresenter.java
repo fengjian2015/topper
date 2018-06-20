@@ -130,7 +130,7 @@ public class GroupPresenter {
         }
     }
 
-    public void deleteGroup(int group_id,String toco_id) {
+    public void deleteGroup(int group_id, String toco_id, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
             RetrofitUtil.getInstance(mContext)
@@ -149,6 +149,7 @@ public class GroupPresenter {
                             if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
                             hideDialog();
                             if (baseInfo.getStatus() == 2) {
+                                callBack.send();
                                 ToastShow.showToast2((Activity) mContext,mContext.getString(R.string.out_group_success));
                             }
                         }

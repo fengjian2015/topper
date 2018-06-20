@@ -67,4 +67,21 @@ public class DBRoomMember {
         c.close();
         return addRequestInfos;
     }
+
+    public String findMemberUrl(String roomId,String toco_id) {
+        db = helper.getReadableDatabase();
+        String image_url = null;
+        Cursor cursor = db.rawQuery("select image_url from RoomMember where roomId=? and jid=? and my_user=?",
+                new String[]{roomId,toco_id, UtilTool.getTocoId()});
+        while (cursor.moveToNext()) {
+            image_url = cursor.getString(cursor.getColumnIndex("image_url"));
+        }
+        cursor.close();
+        return image_url;
+    }
+
+    public void deleteRoom(String roomId) {
+        db = helper.getWritableDatabase();
+        db.delete("RoomMember", "roomId=? and my_user=?", new String[]{roomId, UtilTool.getTocoId()});
+    }
 }
