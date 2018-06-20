@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.adapter.NewsManagerPVAdapter;
 import com.bclould.tea.ui.adapter.PayManageGVAdapter;
 import com.bclould.tea.utils.MessageEvent;
@@ -67,6 +68,7 @@ public class NewsManagerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_manager);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         initFiltrate();
         mViewPager.setCurrentItem(0);
         mTvFiltrate.setVisibility(View.VISIBLE);

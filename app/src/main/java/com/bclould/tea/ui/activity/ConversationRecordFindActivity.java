@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bclould.tea.R;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.adapter.MessageRecordAdapter;
@@ -87,6 +88,7 @@ public class ConversationRecordFindActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation_record_find);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         init();
         pullToRefresh();
     }

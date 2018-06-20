@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.bclould.tea.Presenter.CoinPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.model.ExchangeOrderInfo;
@@ -109,6 +110,7 @@ public class CoinExchangeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin_exchange);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         initListener();
         initRecylerView();
         initData();

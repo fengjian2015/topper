@@ -21,6 +21,7 @@ import com.previewlibrary.ZoomMediaLoader;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 
 /**
@@ -34,8 +35,9 @@ public class MyApp extends Application {
 
 
     public static MyApp instance = null;
-    private List<Activity> mActivityList = new ArrayList<>();//储存打开的Activity
+    public Stack mActivityList = new Stack<Activity>();//储存打开的Activity
     public List<CoinListInfo.DataBean> mCoinList = new ArrayList<>();
+    public List<CoinListInfo.DataBean> mRedCoinList = new ArrayList<>();
     public List<StateInfo.DataBean> mStateList = new ArrayList<>();
     public List<CoinListInfo.DataBean> mOtcCoinList = new ArrayList<>();
     public List<CoinListInfo.DataBean> mBetCoinList = new ArrayList<>();
@@ -97,7 +99,8 @@ public class MyApp extends Application {
 
     // 遍历所有Activity并finish
     public void exit() {
-        for (Activity activity : mActivityList) {
+        for (int i = 0; i < mActivityList.size(); i++) {
+            Activity activity = (Activity) mActivityList.get(i);
             activity.finish();
         }
     }

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bclould.tea.R;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.UtilTool;
 import com.cjt2325.cameralibrary.JCameraView;
 import com.cjt2325.cameralibrary.listener.JCameraListener;
@@ -32,6 +33,7 @@ public class CameraActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+        MyApp.getInstance().addActivity(this);
         jCameraView = (JCameraView) findViewById(R.id.jcameraview);
 
         //设置视频保存路径

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.bclould.tea.Presenter.CoinPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.AnimatorTool;
 
 import butterknife.Bind;
@@ -43,6 +44,7 @@ public class ExpectCoinActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expect_coin);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         mTvEmail.setText(getString(R.string.email) + " : " + getString(R.string.official_email));
         mCoinPresenter = new CoinPresenter(this);
     }

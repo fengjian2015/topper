@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.bclould.tea.Presenter.CurrencyInOutPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.utils.UtilTool;
 
@@ -63,6 +64,7 @@ public class InCoinActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_in_coin);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         initIntent();
         initData();
 

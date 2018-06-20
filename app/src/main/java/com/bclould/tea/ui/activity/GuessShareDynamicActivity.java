@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bclould.tea.Presenter.DynamicPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.ToastShow;
@@ -59,6 +60,7 @@ public class GuessShareDynamicActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guess_share_dynamic);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         mDynamicPresenter = new DynamicPresenter(this);
         initIntent();
     }

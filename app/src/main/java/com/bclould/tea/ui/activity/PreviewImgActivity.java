@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bclould.tea.R;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.fragment.PreviewImgFragment;
 
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class PreviewImgActivity extends FragmentActivity {
         setContentView(R.layout.activity_images_view);
         ButterKnife.bind(this);
         mTvNumber.setVisibility(View.VISIBLE);
+        MyApp.getInstance().addActivity(this);
         initIntent();
         init();
     }

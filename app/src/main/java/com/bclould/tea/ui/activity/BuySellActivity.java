@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.bclould.tea.Presenter.BuySellPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.DealListInfo;
 import com.bclould.tea.model.OrderInfo;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
@@ -113,6 +114,7 @@ public class BuySellActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy_sell);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         initInterface();
         setListener();
     }

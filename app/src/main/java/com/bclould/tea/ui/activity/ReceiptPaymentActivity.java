@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.bclould.tea.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.UtilTool;
@@ -83,6 +84,7 @@ public class ReceiptPaymentActivity extends BaseActivity {
         setContentView(R.layout.activity_receipt_payment);
         mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         getPhoneSize();
         moneyIn();
     }

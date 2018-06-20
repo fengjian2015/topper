@@ -113,6 +113,7 @@ public class StartGuessActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_guess);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         setData();
         initData();
     }

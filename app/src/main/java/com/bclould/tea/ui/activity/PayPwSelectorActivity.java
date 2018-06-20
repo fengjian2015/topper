@@ -31,6 +31,7 @@ import com.bclould.tea.Presenter.BankCardPresenter;
 import com.bclould.tea.Presenter.CurrencyInOutPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.VirtualKeyboardView;
 import com.bclould.tea.utils.FingerprintUtil;
@@ -90,6 +91,7 @@ public class PayPwSelectorActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_pw_selector);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         initSp();
     }
 

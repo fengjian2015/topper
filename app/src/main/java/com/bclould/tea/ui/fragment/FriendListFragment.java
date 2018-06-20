@@ -1,11 +1,6 @@
 package com.bclould.tea.ui.fragment;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,7 +9,6 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
@@ -67,8 +61,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static android.app.Activity.RESULT_OK;
-import static com.bclould.tea.ui.activity.SystemSetActivity.INFORM;
-import static com.bclould.tea.utils.MySharedPreferences.SETTING;
 
 /**
  * Created by GA on 2017/9/19.
@@ -80,7 +72,6 @@ public class FriendListFragment extends Fragment {
 
     public static final String NEWFRIEND = "new_friend";
     public static FriendListFragment instance = null;
-    String response, acceptAdd, tocoId, alertSubName;
     @Bind(R.id.iv_search)
     ImageView mIvSearch;
     @Bind(R.id.iv_more)
@@ -129,21 +120,10 @@ public class FriendListFragment extends Fragment {
                     } else {
                         mNumber.setVisibility(View.GONE);
                     }
-//                    mId = mMgr.addRequest(from, 0);
                     break;
-//                case 2:
-//                    String from2 = (String) msg.obj;
-//                    mNewFriend += 1;
-//                    MySharedPreferences.getInstance().setInteger(NEWFRIEND, mNewFriend);
-//                    mNumber.setText(mNewFriend + "");
-//                    mNumber.setVisibility(View.VISIBLE);
-//                    int id = mMgr.queryRequest(from2).getId();
-//                    mMgr.updateRequest(id, 0);
-//                    break;
             }
         }
     };
-    private MyReceiver receiver;
     private FriendListRVAdapter mFriendListRVAdapter;
     private DBManager mMgr;
     private int mId;
@@ -178,11 +158,11 @@ public class FriendListFragment extends Fragment {
         initRecylerView();
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
-        if (receiver == null) {
-            receiver = new MyReceiver();
-            IntentFilter intentFilter = new IntentFilter("com.example.eric_jqm_chat.SearchActivity");
+        /*if (receiver == null) {
+            receiver = new AddFriendReceiver();
+            IntentFilter intentFilter = new IntentFilter("com.bclould.tea.addfriend");
             getActivity().registerReceiver(receiver, intentFilter);
-        }
+        }*/
         updateData();
         getPhoneSize();
         return view;
@@ -248,82 +228,6 @@ public class FriendListFragment extends Fragment {
         /*synchronized (mUsers) {
             refreshDataWithRoomIdInBackground();
         }*/
-    }
-
-    //广播接收器
-    public class MyReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(final Context context, Intent intent) {
-            //接收传递的字符串response
-            Bundle bundle = intent.getExtras();
-            response = bundle.getString("response");
-            UtilTool.Log("fsdafa", "广播收到" + response);
-            if (response == null) {
-                //获取传递的字符串及发送方JID
-                acceptAdd = bundle.getString("acceptAdd");
-                tocoId = bundle.getString("fromName");
-                alertSubName = bundle.getString("alertSubName");
-                if (acceptAdd.equals(getString(R.string.receive_add_request))) {
-                    //弹出一个对话框，包含同意和拒绝按钮
-                    SharedPreferences sp = getContext().getSharedPreferences(SETTING, 0);
-                    if (sp.contains(INFORM)) {
-                        if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
-                            UtilTool.playHint(getContext());
-                        }
-                    } else {
-                        UtilTool.playHint(getContext());
-                    }
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setTitle(getString(R.string.add_request));
-                    builder.setMessage(getString(R.string.user) + alertSubName + getString(R.string.request_add));
-                    builder.setPositiveButton(getString(R.string.consent), new DialogInterface.OnClickListener() {
-                        //同意按钮监听事件，发送同意Presence包及添加对方为好友的申请
-                        @Override
-                        public void onClick(DialogInterface dialog, int arg1) {
-                            try {
-                                new PersonalDetailsPresenter(context).confirmAddFriend(tocoId, 1, new PersonalDetailsPresenter.CallBack() {
-                                    @Override
-                                    public void send() {
-                                        mMgr.updateRequest(tocoId, 1);
-                                        mNewFriend = MySharedPreferences.getInstance().getInteger(NEWFRIEND);
-                                        mNewFriend--;
-                                        MySharedPreferences.getInstance().setInteger(NEWFRIEND, mNewFriend);
-                                        myHandler.sendEmptyMessage(1);
-                                        //同意
-                                        EventBus.getDefault().post(new MessageEvent(context.getString(R.string.new_friend)));
-                                    }
-                                });
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    builder.setNegativeButton(getString(R.string.reject), new DialogInterface.OnClickListener() {
-                        //拒绝按钮监听事件，发送拒绝Presence包
-                        @Override
-                        public void onClick(DialogInterface dialog, int arg1) {
-                            try {
-                                //拒絕
-                                new PersonalDetailsPresenter(context).confirmAddFriend(tocoId, 2, new PersonalDetailsPresenter.CallBack() {
-                                    @Override
-                                    public void send() {
-                                        mMgr.updateRequest(tocoId, 2);
-                                        mNewFriend = MySharedPreferences.getInstance().getInteger(NEWFRIEND);
-                                        mNewFriend--;
-                                        MySharedPreferences.getInstance().setInteger(NEWFRIEND, mNewFriend);
-                                        myHandler.sendEmptyMessage(1);
-                                        updateData();
-                                    }
-                                });
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                    builder.show();
-                }
-            }
-        }
     }
 
 

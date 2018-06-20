@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -39,6 +40,7 @@ import com.bclould.tea.model.IndividualInfo;
 import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.network.DownLoadApk;
 import com.bclould.tea.network.RetrofitUtil;
+import com.bclould.tea.topperchat.AddFriendReceiver;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.Constants;
@@ -73,6 +75,7 @@ public class MainActivity extends BaseActivity {
     private DBManager mMgr;
     private DBRoomManage mDBRoomManage;
     private DBRoomMember mDBRoomMember;
+    private AddFriendReceiver mReceiver;
 
     //单例
     public static MainActivity getInstance() {
@@ -102,6 +105,16 @@ public class MainActivity extends BaseActivity {
         initInterface();
         MyApp.getInstance().addActivity(this);
         WsConnection.loginService(this);
+        initAddFriendReceiver();
+    }
+
+    private void initAddFriendReceiver() {
+        if (mReceiver == null) {
+            IntentFilter filter = new IntentFilter();
+            filter.addAction("com.bclould.tea.addfriend");
+            mReceiver = new AddFriendReceiver();
+            registerReceiver(mReceiver, filter);
+        }
     }
 
     @Override

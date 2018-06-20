@@ -115,10 +115,10 @@ public class DiscoverFragment extends Fragment {
     //初始化界面
     private void initInterface() {
         mLlGonggao.setVisibility(View.VISIBLE);
-        setSelector(0);
-        mCloudCircleVp.setCurrentItem(0);
         initTopMenu();
         initViewPager();
+        setSelector(1);
+        mCloudCircleVp.setCurrentItem(1);
         mTouchListener = new MainActivity.MyOnTouchListener() {
             private float mDownY;
 
@@ -281,7 +281,7 @@ public class DiscoverFragment extends Fragment {
             case R.id.iv_my_dynamic:
                 Intent intent = new Intent(getActivity(), PersonageDynamicActivity.class);
                 intent.putExtra("name", UtilTool.getUser());
-                intent.putExtra("user",UtilTool.getTocoId());
+                intent.putExtra("user", UtilTool.getTocoId());
                 startActivity(intent);
                 break;
         }

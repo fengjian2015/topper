@@ -186,7 +186,7 @@ public class ImageUpService extends Service {
 
             @Override
             public void onFailure(PutObjectRequest putObjectRequest, ClientException e, ServiceException e1) {
-                Toast.makeText(ImageUpService.this, getString(R.string.up_error), Toast.LENGTH_SHORT).show();
+                handler.sendEmptyMessage(2);
                 onDestroy();
             }
         });
@@ -213,7 +213,7 @@ public class ImageUpService extends Service {
 
             @Override
             public void onFailure(PutObjectRequest putObjectRequest, ClientException e, ServiceException e1) {
-                Toast.makeText(ImageUpService.this, getString(R.string.up_error), Toast.LENGTH_SHORT).show();
+                handler.sendEmptyMessage(2);
                 onDestroy();
             }
         });
@@ -257,6 +257,7 @@ public class ImageUpService extends Service {
                     }
                     break;
                 case 2:
+                    Toast.makeText(ImageUpService.this, getString(R.string.up_error), Toast.LENGTH_SHORT).show();
                     break;
             }
         }

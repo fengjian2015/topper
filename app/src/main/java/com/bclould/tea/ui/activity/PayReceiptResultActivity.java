@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.UtilTool;
@@ -47,6 +48,7 @@ public class PayReceiptResultActivity extends BaseActivity {
         setContentView(R.layout.activity_pay_receipt_result);
         ButterKnife.bind(this);
         mMgr = new DBManager(this);
+        MyApp.getInstance().addActivity(this);
         initIntent();
     }
 

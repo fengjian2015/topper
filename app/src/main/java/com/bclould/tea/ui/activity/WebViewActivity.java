@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.UtilTool;
 
 import butterknife.Bind;
@@ -57,6 +58,7 @@ public class WebViewActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         initIntent();
         initWebView();
     }

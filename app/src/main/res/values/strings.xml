@@ -489,7 +489,7 @@
     <string name="xg_error">修改失敗</string>
     <string name="selecotr_video_hint">只能選擇一個視頻</string>
     <string name="uploading">上傳中....</string>
-    <string name="no_null">不能為空</string>
+    <string name="no_null">內容不能為空</string>
     <string name="up_error">上傳失敗</string>
     <string name="mai">買</string>
     <string name="mai2">賣</string>
@@ -905,4 +905,5 @@
     <string name="no_cache">沒有緩存清理</string>
     <string name="delete_cache_succeed">清除緩存成功</string>
     <string name="id">id:</string>
+    <string name="loading_error_hint">加載失敗，點擊任意地方或者下拉重新加載</string>
 </resources>

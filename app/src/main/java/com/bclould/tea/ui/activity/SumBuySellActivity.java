@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bclould.tea.Presenter.BuySellPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.OrderListInfo;
 import com.bclould.tea.model.TransRecordInfo;
@@ -62,6 +63,7 @@ public class SumBuySellActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sum_buysell);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);
         mBuySellPresenter = new BuySellPresenter(this);
         initIntent();

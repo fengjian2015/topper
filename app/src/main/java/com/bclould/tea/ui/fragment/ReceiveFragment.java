@@ -34,7 +34,6 @@ import butterknife.ButterKnife;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class ReceiveFragment extends Fragment {
 
-    public static ReceiveFragment instance = null;
     @Bind(R.id.iv_touxiang)
     ImageView mIvTouxiang;
     @Bind(R.id.tv_name)
@@ -59,17 +58,6 @@ public class ReceiveFragment extends Fragment {
     LinearLayout mLlNoData;
     private DBManager mDbManager;
 
-    public static ReceiveFragment getInstance() {
-
-        if (instance == null) {
-
-            instance = new ReceiveFragment();
-
-        }
-
-        return instance;
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -91,8 +79,8 @@ public class ReceiveFragment extends Fragment {
                 if (!getActivity().isDestroyed()) {
                     if (data.getLog().size() == 0) {
                         mLlTotal.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.VISIBLE);
                     } else {
-
                         mLlTotal.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
                     }

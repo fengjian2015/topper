@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.bclould.tea.Presenter.OrderDetailsPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.OrderInfo2;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.MessageEvent;
@@ -89,6 +90,7 @@ public class OrderCloseActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_close);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         mOrderDetailsPresenter = new OrderDetailsPresenter(this);
         initIntent();
         initData();

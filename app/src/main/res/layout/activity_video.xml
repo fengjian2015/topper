@@ -2,27 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
                 android:background="@color/black"
                 android:orientation="vertical">
 
-    <!--<VideoView
-        android:id="@+id/video_player"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"/>-->
 
     <com.bclould.tea.ui.widget.VideoPlayer
         android:id="@+id/videoPlayer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"/>
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"/>
 
     <LinearLayout
         android:id="@+id/linear_controll"
