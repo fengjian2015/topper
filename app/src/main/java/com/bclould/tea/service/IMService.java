@@ -59,7 +59,7 @@ public class IMService extends Service{
     }
 
     private void fistlogIm() {
-        if (CheckClassIsWork.isTopActivity(this, "InitialActivity")) {
+        if (WsConnection.getInstance().getOutConnection()) {
             this.stopService(new Intent(this, IMService.class));
             return;
         }
@@ -104,7 +104,7 @@ public class IMService extends Service{
                         break;
                     case EXLOGIN: {
                         synchronized (this) {
-                            if (CheckClassIsWork.isTopActivity(IMService.this, "InitialActivity")) {
+                            if (WsConnection.getInstance().getOutConnection()) {
                                 WsConnection.getInstance().get(IMService.this).close();
                                 WsOfflineConnection.getInstance().closeConnection();
                                 break;
@@ -179,7 +179,7 @@ public class IMService extends Service{
 
     private void exloginIM() {
         synchronized (this) {
-            if (CheckClassIsWork.isTopActivity(this, "LoginActivity")) {
+            if (WsConnection.getInstance().getOutConnection()) {
                 this.stopService(new Intent(this, IMService.class));
                 return;
             }

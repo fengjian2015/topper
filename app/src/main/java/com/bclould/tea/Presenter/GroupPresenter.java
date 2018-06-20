@@ -7,6 +7,7 @@ import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.bclould.tea.R;
+import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.GroupCreateInfo;
 import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.network.RetrofitUtil;
@@ -107,16 +108,54 @@ public class GroupPresenter {
 
                         @Override
                         public void onNext(GroupInfo baseInfo) {
+                            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
                             hideDialog();
                             if (baseInfo.getStatus() == 1) {
                                 callBack.send(baseInfo);
-                            } else {
-                                ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.create_failure));
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.toast_network_error));
+        }
+    }
+
+    public void deleteGroup(int group_id,String toco_id) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .deleteGroup(UtilTool.getToken(),toco_id,group_id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(BaseInfo baseInfo) {
+                            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
+                            hideDialog();
+                            if (baseInfo.getStatus() == 2) {
+                                ToastShow.showToast2((Activity) mContext,mContext.getString(R.string.out_group_success));
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
                             hideDialog();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }

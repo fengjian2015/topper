@@ -141,8 +141,7 @@ public class MultiManage implements Room{
         messageMap.put("attachment", attachment);
 
         Map<Object, Object> contentMap = new HashMap<>();
-        contentMap.put("to", to);
-        contentMap.put("from", UtilTool.getTocoId());
+        contentMap.put("group_id", Integer.parseInt(roomId));
         if ("true".equals(OtrChatListenerManager.getInstance().getOTRState(roomId.toString()))) {
             contentMap.put("crypt", true);
         } else {
@@ -154,7 +153,7 @@ public class MultiManage implements Room{
         contentMap.put("time",time);
 
         Map<Object, Object> sendMap = new HashMap<>();
-        sendMap.put("type", 3);
+        sendMap.put("type", 13);
         sendMap.put("content", objectMapper.writeValueAsBytes(contentMap));
         mMgr.addMessageMsgId(msgId);
         WsConnection.getInstance().sendMessage(objectMapper.writeValueAsBytes(sendMap));

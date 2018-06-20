@@ -1123,4 +1123,13 @@ public interface MyService {
             @Field("status") int status
     );
 
+    //退出群房間
+    @FormUrlEncoded
+    @POST("chat/room/quit")
+    Observable<BaseInfo> deleteGroup(
+            @Header("Authorization") String token,
+            @Field("toco_id") String toco_id,
+            @Field("group_id") int group_id
+    );
+
 }

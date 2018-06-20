@@ -30,6 +30,7 @@ import com.bclould.tea.model.QrRedInfo;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.activity.AddFriendActivity;
 import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
+import com.bclould.tea.ui.activity.GroupListActivity;
 import com.bclould.tea.ui.activity.NewFriendActivity;
 import com.bclould.tea.ui.activity.ScanQRCodeActivity;
 import com.bclould.tea.ui.activity.SearchActivity;

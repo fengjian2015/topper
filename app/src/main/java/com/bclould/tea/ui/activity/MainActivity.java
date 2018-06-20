@@ -38,6 +38,7 @@ import com.bclould.tea.model.GitHubInfo;
 import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.IndividualInfo;
 import com.bclould.tea.model.RoomManageInfo;
+import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.network.DownLoadApk;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.topperchat.AddFriendReceiver;
@@ -213,11 +214,20 @@ public class MainActivity extends BaseActivity {
             @Override
             public void send(GroupInfo baseInfo) {
                 // TODO: 2018/6/11 獲取群聊房間塞入數據庫
+                mDBRoomManage.deleteAllRoom();
+                mDBRoomMember.deleteAllRoomMember();
                 for (GroupInfo.DataBean dataBean : baseInfo.getData()) {
                     RoomManageInfo roomManageInfo = new RoomManageInfo();
                     roomManageInfo.setRoomName(dataBean.getName());
                     roomManageInfo.setRoomId(dataBean.getId() + "");
-//                    mDBRoomManage.addRoom();
+                    mDBRoomManage.addRoom(roomManageInfo);
+                    for (GroupInfo.DataBean.UsersBean usersBean: dataBean.getUsers()){
+                        RoomMemberInfo roomMemberInfo=new RoomMemberInfo();
+                        roomMemberInfo.setRoomId(dataBean.getId()+"");
+                        roomMemberInfo.setJid(usersBean.getToco_id());
+                        roomMemberInfo.setImage_url(usersBean.getAvatar());
+                        mDBRoomMember.addRoomMember(roomMemberInfo);
+                    }
                 }
             }
         });

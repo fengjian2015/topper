@@ -11,8 +11,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.history.DBManager;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.model.RoomManageInfo;
@@ -39,6 +41,7 @@ public class GroupListActivity extends BaseActivity {
     EditText etCreate;
     private ArrayList<RoomManageInfo> roomManagesList;
     private DBRoomManage dbRoomManage;
+    private DBManager mDBManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,12 +56,13 @@ public class GroupListActivity extends BaseActivity {
 
     private void initData() {
         dbRoomManage = new DBRoomManage(this);
+        mDBManager=new DBManager(this);
         roomManagesList = dbRoomManage.queryAllRequest();
     }
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        GroupListRVAdapter groupListRVAdapter = new GroupListRVAdapter(this, roomManagesList);
+        GroupListRVAdapter groupListRVAdapter = new GroupListRVAdapter(this, roomManagesList,mDBManager);
         mRecyclerView.setAdapter(groupListRVAdapter);
     }
 
@@ -75,7 +79,12 @@ public class GroupListActivity extends BaseActivity {
                 break;
             case R.id.tv_delete:
                 // TODO: 2018/5/30 刪除群
+                deleteGroup();
                 break;
         }
+    }
+
+    private void deleteGroup() {
+//        new GroupPresenter(GroupListActivity.this).deleteGroup(Integer.parseInt(roomid));
     }
 }

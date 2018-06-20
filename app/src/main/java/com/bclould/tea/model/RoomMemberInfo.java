@@ -5,11 +5,29 @@ package com.bclould.tea.model;
  */
 
 public class RoomMemberInfo {
+    private int id;
     private String name;
     private String jid;
     private String image_url;
     private String remark;
     private String my_user;
+    private String roomId;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
+    }
 
     public String getMy_user() {
         return my_user;
