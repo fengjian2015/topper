@@ -15,6 +15,7 @@ import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.ui.adapter.GroupListRVAdapter;
@@ -47,6 +48,7 @@ public class GroupListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_list);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         initData();
         initRecyclerView();
     }

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.MySharedPreferences;
 
@@ -68,6 +69,7 @@ public class LoginSetActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_set);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         mLoginPresenter = new LoginPresenter(this);
         init();
     }

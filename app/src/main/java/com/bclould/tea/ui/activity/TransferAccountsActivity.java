@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.bclould.tea.Presenter.CurrencyInOutPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.VirtualKeyboardView;
 import com.bclould.tea.utils.AnimatorTool;
@@ -84,6 +85,7 @@ public class TransferAccountsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transfer_accounts);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         initIntent();
     }
 

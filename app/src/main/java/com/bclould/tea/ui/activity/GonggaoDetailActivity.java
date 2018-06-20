@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.Constants;
 
 import butterknife.Bind;
@@ -56,6 +57,7 @@ public class GonggaoDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_details);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         initIntent();
     }
 

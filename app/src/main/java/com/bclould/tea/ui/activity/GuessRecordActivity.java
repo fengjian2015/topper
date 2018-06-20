@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bclould.tea.Presenter.BlockchainGuessPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.GuessListInfo;
 import com.bclould.tea.ui.adapter.GuessListRVAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -59,6 +60,7 @@ public class GuessRecordActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guess_record);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         mBlockchainGuessPresenter = new BlockchainGuessPresenter(this);
         initRecylerView();
         initData(PULL_DOWN);

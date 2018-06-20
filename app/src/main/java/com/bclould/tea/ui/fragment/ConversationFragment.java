@@ -120,7 +120,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         /*if (receiver == null) {
-            receiver = new MyReceiver();
+            receiver = new AddFriendReceiver();
             IntentFilter intentFilter = new IntentFilter("XMPPConnectionListener");
             getActivity().registerReceiver(receiver, intentFilter);
         }*/

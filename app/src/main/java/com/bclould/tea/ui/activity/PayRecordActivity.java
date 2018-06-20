@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.bclould.tea.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.ProvinceBean;
 import com.bclould.tea.model.TransferListInfo;
 import com.bclould.tea.ui.adapter.PayManageGVAdapter;
@@ -90,6 +91,7 @@ public class PayRecordActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_record);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         getOptionData();
         initIntent();
         initRecycler();

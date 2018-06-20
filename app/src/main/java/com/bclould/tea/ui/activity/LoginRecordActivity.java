@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.LoginRecordInfo;
 import com.bclould.tea.ui.adapter.LoginRecordRVAdapter;
 
@@ -39,6 +40,7 @@ public class LoginRecordActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_record);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         initRecyler();
         initData();
     }

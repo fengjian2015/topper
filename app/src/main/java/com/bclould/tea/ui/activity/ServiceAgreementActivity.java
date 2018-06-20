@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.Presenter.RegisterPresenter;
 import com.bclould.tea.R;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.Constants;
 
 import butterknife.Bind;
@@ -45,6 +46,7 @@ public class ServiceAgreementActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_agreement);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         initWebView();
         initIntent();
     }

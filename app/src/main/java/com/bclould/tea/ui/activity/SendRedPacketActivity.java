@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -30,6 +29,7 @@ import android.widget.Toast;
 import com.bclould.tea.Presenter.CoinPresenter;
 import com.bclould.tea.Presenter.RedPacketPresenter;
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.CoinListInfo;
@@ -56,7 +56,7 @@ import static com.bclould.tea.R.style.BottomDialog;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class SendRedPacketActivity extends AppCompatActivity {
+public class SendRedPacketActivity extends BaseActivity {
 
     @Bind(R.id.bark)
     ImageView mBark;
@@ -98,18 +98,19 @@ public class SendRedPacketActivity extends AppCompatActivity {
         setContentView(R.layout.activity_send_red_packet);
         mUser = getIntent().getStringExtra("user");
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         initData();
     }
 
     private void initData() {
-        MyApp.getInstance().mCoinList.clear();
-        if (MyApp.getInstance().mCoinList.size() == 0) {
+        MyApp.getInstance().mRedCoinList.clear();
+        if (MyApp.getInstance().mRedCoinList.size() == 0) {
             CoinPresenter coinPresenter = new CoinPresenter(this);
-            coinPresenter.coinLists("trans", new CoinPresenter.CallBack() {
+            coinPresenter.coinLists("red_packet", new CoinPresenter.CallBack() {
                 @Override
                 public void send(List<CoinListInfo.DataBean> data) {
-                    if (MyApp.getInstance().mCoinList.size() == 0)
-                        MyApp.getInstance().mCoinList.addAll(data);
+                    if (MyApp.getInstance().mRedCoinList.size() == 0)
+                        MyApp.getInstance().mRedCoinList.addAll(data);
                 }
             });
         }
@@ -304,7 +305,7 @@ public class SendRedPacketActivity extends AppCompatActivity {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(new BottomDialogRVAdapter4(this, MyApp.getInstance().mCoinList));
+            recyclerView.setAdapter(new BottomDialogRVAdapter4(this, MyApp.getInstance().mRedCoinList));
         } else {
             recyclerView.setVisibility(View.GONE);
             addCoin.setVisibility(View.VISIBLE);

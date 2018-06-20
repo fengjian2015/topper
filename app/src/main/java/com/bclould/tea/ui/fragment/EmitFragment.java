@@ -35,7 +35,6 @@ import butterknife.ButterKnife;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class EmitFragment extends Fragment {
 
-    public static EmitFragment instance = null;
     @Bind(R.id.iv_touxiang)
     ImageView mIvTouxiang;
     @Bind(R.id.tv_name)
@@ -62,17 +61,6 @@ public class EmitFragment extends Fragment {
     List<RedRecordInfo.DataBean.LogBean> mLogBeanList = new ArrayList<>();
     private ReceiveRVAdapter mReceiveRVAdapter;
 
-
-    public static EmitFragment getInstance() {
-
-        if (instance == null) {
-
-            instance = new EmitFragment();
-
-        }
-
-        return instance;
-    }
 
     @Nullable
     @Override

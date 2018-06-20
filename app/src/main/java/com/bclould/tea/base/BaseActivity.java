@@ -67,4 +67,10 @@ public class BaseActivity extends AppCompatActivity {
         return false;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.finish();
+        MyApp.getInstance().mActivityList.remove(this);
+    }
 }

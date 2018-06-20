@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bclould.tea.Presenter.UpdateLogPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.UpdateLogInfo;
 import com.bclould.tea.ui.adapter.UpdateLogRVAdapter;
 
@@ -48,6 +49,7 @@ public class UpdateLogActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_log);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         initRecyclerView();
         initData();
     }

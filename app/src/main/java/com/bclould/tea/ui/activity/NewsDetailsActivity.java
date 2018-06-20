@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.StringUtils;
@@ -82,6 +83,7 @@ public class NewsDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_details);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         initIntent();
         initWebView();
         initView();

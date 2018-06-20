@@ -50,6 +50,4 @@ public class VideoPlayer extends VideoView {
 
         void onPause();
     }
-
-
 }

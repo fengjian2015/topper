@@ -245,7 +245,7 @@ public class PublicshDynamicActivity extends BaseActivity {
                 startActivityForResult(intent, LOCATION);
                 break;
             case R.id.publish:
-                String text = mTextEt.getText().toString();
+                String text = mTextEt.getText().toString().trim();
                 if (selectList.size() != 0 || !text.isEmpty()) {
                     try {
                         checkFile();
@@ -266,18 +266,20 @@ public class PublicshDynamicActivity extends BaseActivity {
         String location = mTvLocation.getText().toString();
         Intent intent = new Intent(this, ImageUpService.class);
         Bundle bundle = new Bundle();
-        for (LocalMedia localMedia : selectList) {
-            if (UtilTool.getPostfix(selectList.get(0).getPath()).equals("Image")) {
-                mType = false;
-                int degree = UtilTool.readPictureDegree(localMedia.getCompressPath());
-                UtilTool.Log("圖片信息", degree + "");
-                if (degree != 0) {
-                    UtilTool.toturn(localMedia.getCompressPath(), BitmapFactory.decodeFile(localMedia.getCompressPath()), degree);
+        if (selectList.size() != 0) {
+            for (LocalMedia localMedia : selectList) {
+                if (UtilTool.getPostfix(selectList.get(0).getPath()).equals("Image")) {
+                    mType = false;
+                    int degree = UtilTool.readPictureDegree(localMedia.getCompressPath());
+                    UtilTool.Log("圖片信息", degree + "");
+                    if (degree != 0) {
+                        UtilTool.toturn(localMedia.getCompressPath(), BitmapFactory.decodeFile(localMedia.getCompressPath()), degree);
+                    }
+                    mPathList.add(localMedia.getCompressPath());
+                } else {
+                    mType = true;
+                    mPathList.add(localMedia.getPath());
                 }
-                mPathList.add(localMedia.getCompressPath());
-            } else {
-                mType = true;
-                mPathList.add(localMedia.getPath());
             }
         }
         if (!UtilTool.isServiceRunning(this, "com.bclould.tea.service.ImageUpService")) {

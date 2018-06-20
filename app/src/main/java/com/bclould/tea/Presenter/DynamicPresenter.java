@@ -70,13 +70,17 @@ public class DynamicPresenter {
                         public void onNext(BaseInfo baseInfo) {
                             if (baseInfo.getStatus() == 1) {
                                 callBack.send();
+                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                            } else {
+                                EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.connect_oss_error)));
+                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             }
-                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
+                            EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.connect_oss_error)));
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 

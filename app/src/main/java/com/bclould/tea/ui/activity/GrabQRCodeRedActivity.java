@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -13,6 +12,8 @@ import android.widget.TextView;
 
 import com.bclould.tea.Presenter.RedPacketPresenter;
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.GrabRedInfo;
 import com.bclould.tea.ui.widget.ChangeTextSpaceView;
@@ -27,7 +28,7 @@ import butterknife.OnClick;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class GrabQRCodeRedActivity extends AppCompatActivity {
+public class GrabQRCodeRedActivity extends BaseActivity {
 
     @Bind(R.id.bark)
     ImageView mBark;
@@ -54,6 +55,7 @@ public class GrabQRCodeRedActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket4));
         setContentView(R.layout.activity_grab_qr_red);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);
         Intent intent = getIntent();
         mId = intent.getStringExtra("id");

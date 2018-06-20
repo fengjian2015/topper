@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,6 +37,7 @@ public class SetMoneyActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_money);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
     }
 
     @OnClick({R.id.bark, R.id.btn_finish})

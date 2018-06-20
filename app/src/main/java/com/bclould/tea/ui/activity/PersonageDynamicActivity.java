@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bclould.tea.Presenter.DynamicPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.DynamicListInfo;
 import com.bclould.tea.ui.adapter.DynamicRVAdapter;
 import com.bclould.tea.utils.MessageEvent;
@@ -69,6 +70,7 @@ public class PersonageDynamicActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_dynamic);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         initIntent();

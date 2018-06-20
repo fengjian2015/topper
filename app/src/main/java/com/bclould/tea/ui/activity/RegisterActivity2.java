@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.bclould.tea.Presenter.RegisterPresenter;
 import com.bclould.tea.R;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.AnimatorTool;
 
 import butterknife.Bind;
@@ -52,6 +53,7 @@ public class RegisterActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register2);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         mRegisterPresenter = new RegisterPresenter(this);
         initIntent();
     }

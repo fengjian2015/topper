@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.adapter.BlockchainGambleVPAdapter;
 import com.bclould.tea.utils.Constants;
 
@@ -63,6 +64,7 @@ public class BlockchainGambleActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blockchain_gamble);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         getPhoneSize();
         mViewPager.setCurrentItem(0);
         setSelector(0);

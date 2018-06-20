@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.bclould.tea.Presenter.NewsNoticePresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
@@ -100,6 +101,7 @@ public class NewsEditActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_edit2);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         initData();
         initIntent();
         initWebView();

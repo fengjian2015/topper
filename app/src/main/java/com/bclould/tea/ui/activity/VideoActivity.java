@@ -67,7 +67,7 @@ public class VideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
         ButterKnife.bind(this);
-
+        setDimension();
         String uri = getIntent().getStringExtra("url");
         UtilTool.Log("日志", uri);
         //实现缓存加载
@@ -194,5 +194,28 @@ public class VideoActivity extends AppCompatActivity {
         super.onPause();
         currentTime = mVideoPlayer.getCurrentPosition();
         mVideoPlayer.pause();
+    }
+
+    private void setDimension() {
+        // Adjust the size of the video
+        // so it fits on the screen
+        float videoProportion = getVideoProportion();
+        int screenWidth = getResources().getDisplayMetrics().widthPixels;
+        int screenHeight = getResources().getDisplayMetrics().heightPixels;
+        float screenProportion = (float) screenHeight / (float) screenWidth;
+        android.view.ViewGroup.LayoutParams lp = mVideoPlayer.getLayoutParams();
+
+        if (videoProportion < screenProportion) {
+            lp.height = screenHeight;
+            lp.width = (int) ((float) screenHeight / videoProportion);
+        } else {
+            lp.width = screenWidth;
+            lp.height = (int) ((float) screenWidth * videoProportion);
+        }
+        mVideoPlayer.setLayoutParams(lp);
+    }
+
+    private float getVideoProportion() {
+        return 1.5f;
     }
 }

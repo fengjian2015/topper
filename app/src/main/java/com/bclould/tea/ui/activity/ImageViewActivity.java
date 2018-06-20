@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 
 import com.bclould.tea.R;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.SerMap;
 import com.bclould.tea.ui.fragment.ImageViewFragment;
@@ -38,6 +39,7 @@ public class ImageViewActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mMgr = new DBManager(this);
+        MyApp.getInstance().addActivity(this);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         if (bundle != null) {

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.bclould.tea.Presenter.BuySellPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.OrderStatisticsInfo;
 import com.bclould.tea.ui.adapter.CloudCircleVPAdapter;
 import com.bclould.tea.ui.adapter.PayManageGVAdapter;
@@ -112,6 +113,7 @@ public class MyPushAdActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_push_ad);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         mMap.put(getString(R.string.filtrate), 0);
         mFiltrateList.add(getString(R.string.all));
         mFiltrateList.add(getString(R.string.yi_sold_out));

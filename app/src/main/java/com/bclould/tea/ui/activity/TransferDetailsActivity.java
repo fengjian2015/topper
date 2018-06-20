@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.UtilTool;
 
 import java.text.DecimalFormat;
@@ -50,6 +51,7 @@ public class TransferDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transfer_details);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         initIntent();
     }
 

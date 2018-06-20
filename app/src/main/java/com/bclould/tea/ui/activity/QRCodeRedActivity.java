@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.UtilTool;
 
 import butterknife.Bind;
@@ -26,7 +27,7 @@ import butterknife.OnClick;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class QRCodeRedActivity extends AppCompatActivity {
+public class QRCodeRedActivity extends BaseActivity {
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.tv_redpacket_record)
@@ -48,6 +49,7 @@ public class QRCodeRedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_qr_code_red);
         getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket4));
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         init();
     }
 

@@ -22,6 +22,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 
 import com.bclould.tea.R;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.adapter.LocationListAdapter;
 import com.bclould.tea.ui.widget.AppTitle;
 import com.bclould.tea.ui.widget.CenterIcon;
@@ -94,6 +95,7 @@ public class LocationActivity extends AppCompatActivity implements
         x.Ext.init(this.getApplication());
         x.Ext.setDebug(true);
         x.view().inject(this);
+        MyApp.getInstance().addActivity(this);
 
         context = this;
         checkSelf();

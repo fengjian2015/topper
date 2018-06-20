@@ -20,8 +20,8 @@ public class RedRecordVPAdapter extends FragmentPagerAdapter {
 
     public RedRecordVPAdapter(FragmentManager fm) {
         super(fm);
-        mFragmentList.add(ReceiveFragment.getInstance());
-        mFragmentList.add(EmitFragment.getInstance());
+        mFragmentList.add(new ReceiveFragment());
+        mFragmentList.add(new EmitFragment());
     }
 
     @Override

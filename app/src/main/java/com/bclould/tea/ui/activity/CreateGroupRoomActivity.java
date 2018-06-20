@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
@@ -27,7 +28,6 @@ import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.RoomManage;
-
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -66,6 +66,7 @@ public class CreateGroupRoomActivity extends BaseActivity {
         setContentView(R.layout.activity_create_group_room);
         context=this;
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         initData();
         initRecylerView();
     }

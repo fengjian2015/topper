@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.adapter.SearchAdapter;
@@ -56,6 +57,7 @@ public class SearchActivity extends BaseActivity {
         setContentView(R.layout.activity_search);
         mMgr = new DBManager(this);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         initListener();
         initRecyclerView();
         initData();

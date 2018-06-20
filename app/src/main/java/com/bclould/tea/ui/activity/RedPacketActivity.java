@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -16,6 +15,8 @@ import android.widget.TextView;
 
 import com.bclould.tea.Presenter.RedRecordPresenter;
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.GrabRedInfo;
 import com.bclould.tea.ui.adapter.RedPacketRVAdapter;
@@ -33,7 +34,7 @@ import butterknife.OnClick;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class RedPacketActivity extends AppCompatActivity {
+public class RedPacketActivity extends BaseActivity {
 
     @Bind(R.id.bark)
     ImageView mBark;
@@ -72,6 +73,7 @@ public class RedPacketActivity extends AppCompatActivity {
         setContentView(R.layout.activity_red_packet);
         mMgr = new DBManager(this);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         initData();
     }
 
