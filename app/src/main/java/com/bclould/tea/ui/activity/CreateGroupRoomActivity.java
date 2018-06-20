@@ -16,7 +16,11 @@ import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBRoomManage;
+import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.ConversationInfo;
+import com.bclould.tea.model.RoomManageInfo;
+import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.adapter.CreateGroupRVAdapter;
 import com.bclould.tea.utils.MessageEvent;
@@ -52,6 +56,8 @@ public class CreateGroupRoomActivity extends BaseActivity {
     private List<UserInfo> mUserInfos=new ArrayList<>();
     private List<UserInfo> mUserInfoList = new ArrayList<>();
     DBManager mgr;
+    DBRoomManage mDBRoomManage;
+    DBRoomMember mDBRoomMember;
     private String roomName;
     private Context context;
     @Override
@@ -67,6 +73,8 @@ public class CreateGroupRoomActivity extends BaseActivity {
     private void initData() {
         roomName=getIntent().getStringExtra("roomName");
         mgr = new DBManager(this);
+        mDBRoomMember=new DBRoomMember(this);
+        mDBRoomManage=new DBRoomManage(this);
         List<UserInfo> userInfos = mgr.queryAllUser();
         UserInfo userInfo = null;
         UserInfo userInfo2 = null;
@@ -109,7 +117,8 @@ public class CreateGroupRoomActivity extends BaseActivity {
                     roomName="群聊";
                 }
                 StringBuffer stringBuffer=new StringBuffer();
-                for (int i = 0; i < mUserInfoList.size(); i++) {  //添加群成员,用户jid格式和之前一样 用户名@openfire服务器名称
+                stringBuffer.append(UtilTool.getTocoId()+",");
+                for (int i = 0; i < mUserInfoList.size(); i++) {  //添加群成员
                     stringBuffer.append(mUserInfoList.get(i).getUser());
                     if(i!=mUserInfoList.size()-1){
                         stringBuffer.append(",");
@@ -120,6 +129,7 @@ public class CreateGroupRoomActivity extends BaseActivity {
                     public void send(String group_id) {
                         RoomManage.getInstance().addMultiMessageManage(group_id,roomName).createRoom(group_id,roomName,mUserInfoList);
                         createConversation(group_id,roomName);
+                        saveRoom(group_id,mUserInfoList);
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.oneself_send_msg)));
                         finish();
                     }
@@ -129,6 +139,20 @@ public class CreateGroupRoomActivity extends BaseActivity {
             }
         else
             Toast.makeText(this, "请选择好友", Toast.LENGTH_SHORT).show();
+    }
+
+    private void saveRoom(String group_id, List<UserInfo> userInfoList){
+        RoomManageInfo roomManageInfo = new RoomManageInfo();
+        roomManageInfo.setRoomName(roomName);
+        roomManageInfo.setRoomId(group_id);
+        mDBRoomManage.addRoom(roomManageInfo);
+        for (UserInfo userInfo:userInfoList) {
+            RoomMemberInfo roomMemberInfo = new RoomMemberInfo();
+            roomMemberInfo.setRoomId(group_id);
+            roomMemberInfo.setJid(userInfo.getUser());
+            roomMemberInfo.setImage_url(userInfo.getPath());
+            mDBRoomMember.addRoomMember(roomMemberInfo);
+        }
     }
 
     private void createConversation(String room,String roomName){

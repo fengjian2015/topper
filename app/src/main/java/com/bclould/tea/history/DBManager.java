@@ -457,6 +457,13 @@ public class DBManager {
         db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
     }
 
+    public void updateConversationNumber(String user, int number) {
+        db = helper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("number", number);
+        db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
+    }
+
     public void updateConversationMessage(String user, String chat) {
         db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();

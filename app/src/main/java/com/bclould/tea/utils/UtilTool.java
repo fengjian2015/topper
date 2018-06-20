@@ -725,6 +725,22 @@ public class UtilTool {
         return bitmap;
     }
 
+    public static Bitmap getImage(Context context, ImageView imageView,String url) {
+        Bitmap bitmap = null;
+        if (!StringUtils.isEmpty(url)) {
+            if (Util.isOnMainThread() && context != null) {
+                Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1)).into(imageView);
+            }
+        } else {
+            if (Util.isOnMainThread() && context != null) {
+                Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop()).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
+            }
+        }
+
+
+        return bitmap;
+    }
+
     public static void playHint(Context context) {
         try {
             AssetManager assetManager = context.getAssets();   ////获得该应用的AssetManager

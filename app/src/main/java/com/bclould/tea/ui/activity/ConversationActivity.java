@@ -726,6 +726,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         roomType = bundle.getString("chatType");
         if (RoomManage.getInstance().getRoom(roomId) == null) {
             if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
+                UtilTool.Log("fengjian", "添加群聊---" + roomId);
                 roomManage = RoomManage.getInstance().addMultiMessageManage(roomId, mName);
             } else {
 //               if (RoomManage.ROOM_TYPE_SINGLE.equals(roomType)) {
@@ -733,7 +734,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 roomManage = RoomManage.getInstance().addSingleMessageManage(roomId, mName);
             }
         } else {
-            UtilTool.Log("fengjian", "房间存在---" + roomId);
+            UtilTool.Log("fengjian", "房间存在---"+roomType+"   " + roomId);
             roomManage = RoomManage.getInstance().getRoom(roomId);
         }
         roomManage.addMessageManageListener(this);
@@ -858,9 +859,10 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     }
 
     private void goDetails() {
-        // TODO: 2018/5/28 區分群聊和單聊
         if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
-
+            Intent intent = new Intent(this, ConversationGroupDetailsActivity.class);
+            intent.putExtra("roomId", roomId);
+            startActivity(intent);
         } else {
             Intent intent = new Intent(this, ConversationDetailsActivity.class);
             intent.putExtra("user", roomId);

@@ -77,6 +77,7 @@ public class DBRoomManage {
     }
 
     public void deleteAllRoom(){
+        db = helper.getWritableDatabase();
         db.execSQL("DELETE FROM RoomManage");
     }
 

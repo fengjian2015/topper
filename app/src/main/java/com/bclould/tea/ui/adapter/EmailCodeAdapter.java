@@ -99,7 +99,9 @@ public class EmailCodeAdapter extends BaseAdapter implements Filterable {
         @Override
         protected FilterResults performFiltering(CharSequence prefix) {
             FilterResults results = new FilterResults();
-            mUnfilteredData = (ArrayList<String>) mList;
+            if (mUnfilteredData == null) {
+                mUnfilteredData = new ArrayList<String>(mList);
+            }
             if (prefix == null || prefix.length() == 0) {
                 ArrayList<String> list = mUnfilteredData;
                 results.values = list;

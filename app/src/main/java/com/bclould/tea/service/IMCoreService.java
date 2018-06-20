@@ -3,6 +3,7 @@ package com.bclould.tea.service;
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -13,9 +14,7 @@ import android.os.Message;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.topperchat.WsConnection;
-import com.bclould.tea.utils.CheckClassIsWork;
 import com.bclould.tea.utils.UtilTool;
-import com.yyh.fork.NativeRuntime;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class IMCoreService extends Service {
@@ -46,6 +45,7 @@ public class IMCoreService extends Service {
         filter.addAction(ACTION_LOGIN);
         filter.addAction(ACTION_LOGOUT);
         filter.addAction(ACTION_STOP);
+        filter.addAction(ACTION_START_IMSERVICE);
         broadcast = new StaticBroadcastReceiver();
         try {
             this.registerReceiver(broadcast, filter);
@@ -59,7 +59,8 @@ public class IMCoreService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         flags = START_STICKY;
         UtilTool.Log("fengjian","service core onStartCommand");
-        return super.onStartCommand(intent, flags, startId);
+//        return super.onStartCommand(intent, flags, startId);
+        return Service.START_REDELIVER_INTENT;
     }
 
     @Override
@@ -70,9 +71,16 @@ public class IMCoreService extends Service {
             handler.removeMessages(0);
             handler = null;
             UtilTool.Log("fengjian","core service destory");
+            gcEnv();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void gcEnv() {
+        Intent serviceTo = new Intent();
+        serviceTo.setClass(this, IMCoreService.class);
+        this.startService(serviceTo);
     }
 
     @Override
@@ -95,7 +103,7 @@ public class IMCoreService extends Service {
                     }
                     if (WsConnection.isServiceWork(IMCoreService.this, SERVICE_NAME)) {
                         UtilTool.Log("fengjian","service-- 打开了！");
-                        if (CheckClassIsWork.isTopActivity(IMCoreService.this, "LoginActivity")) {
+                        if (WsConnection.getInstance().getOutConnection()) {
                             startService = false;
                             UtilTool.Log("fengjian","關閉服務");
                             IMCoreService.this.stopService(new Intent(IMCoreService.this, IMService.class));
@@ -106,7 +114,7 @@ public class IMCoreService extends Service {
                     UtilTool.Log("fengjian","service-- 没打开服務");
                     Intent intent = new Intent();
                     intent.setAction(IMCoreService.ACTION_START_IMSERVICE);
-                    IMCoreService.this.sendBroadcast(intent);
+                    sendBroadcast(intent);
                     this.sendEmptyMessageDelayed(0, time);
                     this.sendEmptyMessageDelayed(1,time);
                     break;
@@ -160,6 +168,13 @@ public class IMCoreService extends Service {
                     handler.removeMessages(0);
                 }
                 startService = false;
+            }else if(intent.getAction().equals(ACTION_START_IMSERVICE)){
+                UtilTool.Log("fengjian","---收到打开IMService的广播");
+                if (WsConnection.isServiceWork(context, "com.bclould.tea.service.IMService")) {
+                    return;
+                }
+                Intent startIntent = new Intent(context, IMService.class);
+                context.startService(startIntent);
             }
         }
 	}

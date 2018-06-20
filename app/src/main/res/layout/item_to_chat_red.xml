@@ -44,6 +44,7 @@
                     android:gravity="center_vertical"
                     android:text="恭喜发财，大吉大利"
                     android:textColor="@color/white"
+                    android:singleLine="true"
                     android:textSize="@dimen/x30"/>
 
                 <TextView

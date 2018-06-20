@@ -904,5 +904,12 @@
     <string name="connect_oss_error">連接oss失敗</string>
     <string name="no_cache">沒有緩存清理</string>
     <string name="delete_cache_succeed">清除緩存成功</string>
-    <string name="id">id:</string>
+    <string name="id">ID:</string>
+    <string name="group_member">群成員</string>
+    <string name="group_nickname">群組暱稱</string>
+    <string name="group_qr">群二維碼</string>
+    <string name="group_announcement">群公告</string>
+    <string name="delete_out">刪除退出</string>
+    <string name="my_nickname_group">我在本群的暱稱</string>
+    <string name="out_group_success">退出成功</string>
 </resources>
