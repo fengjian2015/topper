@@ -15,6 +15,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -39,7 +41,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.util.Util;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
-import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
@@ -725,7 +726,7 @@ public class UtilTool {
         return bitmap;
     }
 
-    public static Bitmap getImage(Context context, ImageView imageView,String url) {
+    public static Bitmap getImage(Context context, ImageView imageView, String url) {
         Bitmap bitmap = null;
         if (!StringUtils.isEmpty(url)) {
             if (Util.isOnMainThread() && context != null) {
@@ -742,22 +743,11 @@ public class UtilTool {
     }
 
     public static void playHint(Context context) {
-        try {
-            AssetManager assetManager = context.getAssets();   ////获得该应用的AssetManager
-            AssetFileDescriptor afd = assetManager.openFd("hint.mp3");   //根据文件名找到文件
-            //对mediaPlayer进行实例化
-            mediaPlayer = new MediaPlayer();
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.reset();    //如果正在播放，则重置为初始状态
-            }
-            mediaPlayer.setDataSource(afd.getFileDescriptor(),
-                    afd.getStartOffset(), afd.getLength());     //设置资源目录
-            mediaPlayer.prepare();//缓冲
-            mediaPlayer.start();//开始或恢复播放
-        } catch (IOException e) {
-            Log("日志", "没有找到这个文件");
-            e.printStackTrace();
-        }
+        String uri = "android.resource://" + context.getPackageName() + "/" + R.raw.hint;
+        Uri notification = Uri.parse(uri);
+        if (notification == null) return;
+        Ringtone r = RingtoneManager.getRingtone(context, notification);
+        r.play();
     }
 
     public static String getPostfix(String fileName) {
@@ -977,10 +967,10 @@ public class UtilTool {
         return createChatCreatTime();
     }
 
-    public static boolean compareTime(long oldtime,long newtime){
-        if((newtime - oldtime)/(60*1000) >=3) {
+    public static boolean compareTime(long oldtime, long newtime) {
+        if ((newtime - oldtime) / (60 * 1000) >= 3) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

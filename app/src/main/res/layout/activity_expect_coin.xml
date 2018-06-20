@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginTop="@dimen/y30"
-        android:text="如您有任何期望TT添加的币种，欢迎联系我们！"
+        android:text="如您有任何期望添加的幣種，歡迎聯繫我們！"
         android:textColor="@color/black"
         android:textSize="@dimen/x28"/>
 
