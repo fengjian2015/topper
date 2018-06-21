@@ -2,6 +2,7 @@ package com.bclould.tea.network;
 
 
 import com.bclould.tea.model.AuatarListInfo;
+import com.bclould.tea.model.GroupMemberInfo;
 import com.bclould.tea.model.OSSInfo;
 import com.bclould.tea.model.BankCardInfo;
 import com.bclould.tea.model.BaseInfo;
@@ -1140,4 +1141,11 @@ public interface MyService {
             @Field("review_id") int review_id
     );
 
+    //根据群组ID查询所有成员
+    @FormUrlEncoded
+    @POST("chat/room/query/id")
+    Observable<GroupMemberInfo> selectGroupMember(
+            @Header("Authorization") String token,
+            @Field("group_id") int group_id
+    );
 }

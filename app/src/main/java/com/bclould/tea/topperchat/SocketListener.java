@@ -17,6 +17,7 @@ import android.util.Base64;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.sdk.android.oss.OSSClient;
+import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.crypto.otr.OtrChatListenerManager;
@@ -25,6 +26,8 @@ import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.MessageInfo;
+import com.bclould.tea.model.RoomManageInfo;
+import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.network.OSSupload;
 import com.bclould.tea.ui.activity.ConversationActivity;
@@ -50,6 +53,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,15 +65,18 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.bclould.tea.Presenter.LoginPresenter.CURRENCY;
 import static com.bclould.tea.Presenter.LoginPresenter.STATE;
 import static com.bclould.tea.Presenter.LoginPresenter.TOKEN;
+import static com.bclould.tea.topperchat.WsContans.BC_ADD_GROUP;
 import static com.bclould.tea.topperchat.WsContans.BC_AUTH_STATUS;
 import static com.bclould.tea.topperchat.WsContans.BC_COIN_IN_BROAD;
 import static com.bclould.tea.topperchat.WsContans.BC_FRIEND_COMMIT;
 import static com.bclould.tea.topperchat.WsContans.BC_FRIEND_REJECT;
 import static com.bclould.tea.topperchat.WsContans.BC_FRIEND_REQUEST;
 import static com.bclould.tea.topperchat.WsContans.BC_INOUT_COIN_INFORM;
+import static com.bclould.tea.topperchat.WsContans.BC_MEMBER_GROUP;
 import static com.bclould.tea.topperchat.WsContans.BC_OFFLINE;
 import static com.bclould.tea.topperchat.WsContans.BC_OTC_ORDER;
 import static com.bclould.tea.topperchat.WsContans.BC_QRCODE_RECEIPT_PAYMENT;
+import static com.bclould.tea.topperchat.WsContans.BC_QUIT_GROUP;
 import static com.bclould.tea.topperchat.WsContans.BC_RED_GET;
 import static com.bclould.tea.topperchat.WsContans.BC_RED_PACKET_EXPIRED;
 import static com.bclould.tea.topperchat.WsContans.BC_TRANSFER_INFORM;
@@ -620,12 +628,84 @@ public class SocketListener {
                     //紅包領取通知
                     redGet(messageMap);
                     break;
+                case BC_MEMBER_GROUP:
+                    //加入群組
+                    addGroup(messageMap);
+                    break;
+                case BC_QUIT_GROUP:
+                    //退出群組
+                    qiutGroup(messageMap);
+                    break;
+                case BC_ADD_GROUP:
+                    //創建群組通知
+                    createGroup(messageMap, (String) jsonMap.get("toco_id"));
+                    break;
 
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void createConversation(String group_id,String roomName){
+        ConversationInfo info=new ConversationInfo();
+        info.setChatType(RoomManage.ROOM_TYPE_MULTI);
+        info.setIstop("false");
+        info.setFriend(roomName);
+        info.setUser(group_id);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date curDate = new Date(System.currentTimeMillis());
+        String time = formatter.format(curDate);
+        info.setTime(time);
+        info.setMessage("加入群聊");
+        info.setCreateTime(UtilTool.createChatCreatTime());
+        mgr.addConversation(info);
+
+        RoomManageInfo roomManageInfo = new RoomManageInfo();
+        roomManageInfo.setRoomName(roomName);
+        roomManageInfo.setRoomId(group_id);
+        mdbRoomManage.addRoom(roomManageInfo);
+        new GroupPresenter(context).selectGroupMember(Integer.parseInt(group_id),mdbRoomMember);
+        EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+    }
+
+    /**
+     * 創建群組通知
+     * @param messageMap
+     * @param toco_id
+     */
+    private void createGroup(Map<Object, Object> messageMap, String toco_id) {
+        if(UtilTool.getTocoId().equals(toco_id))return;
+        String roomId=messageMap.get("group_id")+"";
+        String roomName= (String) messageMap.get("name");
+        createConversation(roomId,roomName);
+    }
+
+    /**
+     * 退出群組通知
+     * @param messageMap
+     */
+    private void qiutGroup(Map<Object, Object> messageMap) {
+        String roomId=messageMap.get("group_id")+"";
+        String roomName= (String) messageMap.get("name");
+        mdbRoomManage.deleteRoom(roomId);
+        mdbRoomMember.deleteRoom(roomId);
+        mgr.deleteConversation(roomId);
+        mgr.deleteMessage(roomId);
+        MessageEvent messageEvent=new MessageEvent(context.getString(R.string.quit_group));
+        messageEvent.setId(roomId);
+        EventBus.getDefault().post(messageEvent);
+    }
+
+    /**
+     * 加入群組通知
+     * @param messageMap
+     */
+    private void addGroup(Map<Object, Object> messageMap) {
+        String roomId=messageMap.get("group_id")+"";
+        String roomName= (String) messageMap.get("name");
+        createConversation(roomId,roomName);
     }
 
     /**

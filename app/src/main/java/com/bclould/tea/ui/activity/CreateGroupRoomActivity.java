@@ -165,6 +165,7 @@ public class CreateGroupRoomActivity extends BaseActivity {
         Date curDate = new Date(System.currentTimeMillis());
         String time = formatter.format(curDate);
         info.setTime(time);
+        info.setCreateTime(UtilTool.createChatCreatTime());
         info.setMessage("加入群聊");
         mgr.addConversation(info);
     }

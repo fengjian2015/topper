@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bclould.tea.Presenter.GroupPresenter;
+import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
@@ -43,6 +44,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tea.Presenter.GroupPresenter.*;
 import static com.bclould.tea.utils.MySharedPreferences.SETTING;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -171,18 +173,40 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     }
 
     private void deleteGroup(){
-        new GroupPresenter(this).deleteGroup(Integer.parseInt(roomId), UtilTool.getTocoId(), new GroupPresenter.CallBack() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(getString(R.string.determine_exit) + " " + roomName + " " + getString(R.string.what));
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void send() {
-                mDBRoomManage.deleteRoom(roomId);
-                mDBRoomMember.deleteRoom(roomId);
-                mMgr.deleteConversation(roomId);
-                mMgr.deleteMessage(roomId);
-                MessageEvent messageEvent=new MessageEvent(getString(R.string.quit_group));
-                messageEvent.setId(roomId);
-                EventBus.getDefault().post(messageEvent);
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
             }
         });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    new GroupPresenter(ConversationGroupDetailsActivity.this).deleteGroup(Integer.parseInt(roomId), UtilTool.getTocoId(), new CallBack() {
+                        @Override
+                        public void send() {
+                            mDBRoomManage.deleteRoom(roomId);
+                            mDBRoomMember.deleteRoom(roomId);
+                            mMgr.deleteConversation(roomId);
+                            mMgr.deleteMessage(roomId);
+                            MessageEvent messageEvent=new MessageEvent(getString(R.string.quit_group));
+                            messageEvent.setId(roomId);
+                            EventBus.getDefault().post(messageEvent);
+                        }
+                    });
+                    deleteCacheDialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     private void messageFree() {

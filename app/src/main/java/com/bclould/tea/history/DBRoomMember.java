@@ -7,11 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import com.bclould.tea.model.GroupMemberInfo;
 import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.utils.UtilTool;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by GIjia on 2018/5/24.
@@ -41,6 +43,20 @@ public class DBRoomMember {
         int id = (int) db.insert("RoomMember", null, values);
         UtilTool.Log("fengjian", "添加成員到数据库成功" + roomMemberInfo.toString());
         return id;
+    }
+
+    public synchronized void addRoomMember(List<GroupMemberInfo.DataBean> groupMemberInfoList,String roomId) {
+        db = helper.getWritableDatabase();
+        for(GroupMemberInfo.DataBean dataBean:groupMemberInfoList){
+            ContentValues values = new ContentValues();
+            values.put("name", "");
+            values.put("my_user", UtilTool.getTocoId());
+            values.put("jid", dataBean.getToco_id());
+            values.put("image_url", dataBean.getAvatar());
+            values.put("remark", "");
+            values.put("roomId",roomId);
+            UtilTool.Log("fengjian", "添加成員到数据库成功" + dataBean.toString());
+        }
     }
 
     public void deleteAllRoomMember(){

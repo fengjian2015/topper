@@ -357,6 +357,8 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
             initData();
         } else if (msg.equals(getString(R.string.delete_friend))) {
             initData();
+        }else if(msg.equals(getString(R.string.out_group_success))){
+            initData();
         }
 
     }
