@@ -1148,4 +1148,13 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("group_id") int group_id
     );
+
+    //邀請加入群聊
+    @FormUrlEncoded
+    @POST("chat/room/join")
+    Observable<BaseInfo> inviteGroup(
+            @Header("Authorization") String token,
+            @Field("group_id") String group_id,
+            @Field("toco_ids") String toco_ids
+    );
 }

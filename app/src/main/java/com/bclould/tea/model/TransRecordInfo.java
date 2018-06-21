@@ -53,14 +53,14 @@ public class TransRecordInfo {
         private String number;
         private String coin_name;
         private String created_at;
-        private String tx_id;
+        private String txid;
 
-        public String getTx_id() {
-            return tx_id;
+        public String getTxid() {
+            return txid;
         }
 
-        public void setTx_id(String tx_id) {
-            this.tx_id = tx_id;
+        public void setTxid(String txid) {
+            this.txid = txid;
         }
 
         public String getType_name() {

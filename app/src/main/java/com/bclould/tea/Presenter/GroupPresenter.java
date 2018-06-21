@@ -96,6 +96,47 @@ public class GroupPresenter {
         }
     }
 
+    public void inviteGroup(String roomid,String toco_ids, final CallBack callBack) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .inviteGroup(UtilTool.getToken(), roomid,toco_ids)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(BaseInfo baseInfo) {
+                            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
+                            hideDialog();
+                            if (baseInfo.getStatus()== 1) {
+                                callBack.send();
+                            } else {
+                                ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.invite_failure));
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            hideDialog();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.toast_network_error));
+        }
+    }
+
     public void getGroup(final CallBack1 callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
@@ -174,8 +215,11 @@ public class GroupPresenter {
         }
     }
 
-    public void selectGroupMember(final int group_id, final DBRoomMember dbRoomMember) {
+    public void selectGroupMember(final int group_id, final DBRoomMember dbRoomMember, boolean isShow, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
+            if(isShow){
+                showDialog();
+            }
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .selectGroupMember(UtilTool.getToken(),group_id)
@@ -192,8 +236,10 @@ public class GroupPresenter {
                             if(mContext instanceof Activity&&!ActivityUtil.isActivityOnTop((Activity) mContext)){
                                 return;
                             }
+                            hideDialog();
                             if (baseInfo.getStatus() == 1) {
                                 dbRoomMember.addRoomMember(baseInfo.getData(),group_id+"");
+                                callBack.send();
                             }
                         }
 
@@ -202,6 +248,7 @@ public class GroupPresenter {
                             if(mContext instanceof Activity&&!ActivityUtil.isActivityOnTop((Activity) mContext)){
                                 return;
                             }
+                            hideDialog();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 

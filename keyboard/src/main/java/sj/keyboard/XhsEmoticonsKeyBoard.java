@@ -291,6 +291,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     }
 
     public void changeOTR(String isopen) {
+        if(ROOM_TYPE_MULTI.equals(roomType))return;
         if("true".equals(isopen)){
             mbtnOtrText.setImageResource(R.drawable.icon_encrypt_ch);
             mEtChat.setHint(R.string.intput_otr_ch);

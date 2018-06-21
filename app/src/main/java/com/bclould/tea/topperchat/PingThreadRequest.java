@@ -29,6 +29,8 @@ public class PingThreadRequest extends Thread {
                     WsConnection.getInstance().setIsLogin(false);
                     WsOfflineConnection.getInstance().setIsLogin(false);
                     break;
+                }else{
+                    MySharedPreferences.getInstance().setInteger("ping",0);
                 }
             }catch (Exception e){
                 e.printStackTrace();

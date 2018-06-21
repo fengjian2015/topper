@@ -64,15 +64,12 @@ public class IMService extends Service{
             return;
         }
         WsOfflineConnection.getInstance().get(IMService.this);
-        if (WsConnection.getInstance().get(IMService.this)!=null&&WsConnection.getInstance().get(IMService.this).isOpen()||
-                WsConnection.getInstance().isLogin()) {
-            ConnectStateChangeListenerManager.get().notifyListener(
-                    ConnectStateChangeListenerManager.CONNECTED);
+        if (WsConnection.getInstance().get(IMService.this)!=null&&WsConnection.getInstance().get(IMService.this).isOpen()|| WsConnection.getInstance().isLogin()) {
+            ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTED);
             handler.removeMessages(EXLOGIN);
             exReconnect(1000);
         }else {
-            ConnectStateChangeListenerManager.get().notifyListener(
-                    ConnectStateChangeListenerManager.CONNECTING);
+            ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
             IMLogin.login(this);
         }
     }

@@ -12,6 +12,16 @@ public class WsContans {
     public static final int DEVICE_ID=1;
     public static final String TYPE="type";
 
+    //文檔定義消息類型
+    public static final int MSG_LOGIN=16;//登錄反饋
+    public static final int MSG_SINGLER=3;//單聊消息
+    public static final int MSG_GROUP=13;//群聊消息
+    public static final int MSG_BROADCAST=18;//廣播消息
+    public static final int MSG_PING=4;//ping
+    public static final int MSG_LOGINOUT=31;//其他賬號登錄
+    public static final int MSG_SINGLER_RESULT=32;//單聊消息回執
+    public static final int MSG_GROUP_RESULT=34;//群消息回執
+
     //消息類型
     public static final int MSG_TEXT=1;//文本
     public static final int MSG_AUDIO=2;//語音

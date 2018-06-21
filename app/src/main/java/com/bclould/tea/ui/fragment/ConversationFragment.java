@@ -33,6 +33,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.QrRedInfo;
+import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.AddFriendActivity;
 import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tea.ui.activity.ScanQRCodeActivity;
@@ -164,7 +165,11 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
     private void initRelogin() {
         ConnectStateChangeListenerManager.get().registerStateChangeListener(this);
-
+        if ((WsConnection.getInstance().get(getContext())!=null&&WsConnection.getInstance().get(getContext()).isOpen())|| WsConnection.getInstance().isLogin()) {
+            ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTED);
+        }else {
+            ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
+        }
     }
 
     private void onChangeChatState(final int serviceState) {
@@ -357,7 +362,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
             initData();
         } else if (msg.equals(getString(R.string.delete_friend))) {
             initData();
-        }else if(msg.equals(getString(R.string.out_group_success))){
+        }else if(msg.equals(getString(R.string.quit_group))){
             initData();
         }
 

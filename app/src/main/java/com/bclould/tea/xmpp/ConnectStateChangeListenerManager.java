@@ -95,14 +95,12 @@ public class ConnectStateChangeListenerManager {
 	public void notifyListener(int state) {
 		synchronized (lock) {
 			if(StringUtils.isEmpty(state+""))return;
-			if (state != currentState) {
-				currentState = state;
-				if (state == ConnectStateChangeListenerManager.RECEIVING) {
-					ConnectStateChangeListenerManager.get().changeToCennectedAtTime(-1);
-				}
-				for (IConnectStateChangeListener lis : listeners) {
-					lis.onStateChange(state);
-				}
+			currentState = state;
+			if (state == ConnectStateChangeListenerManager.RECEIVING) {
+				ConnectStateChangeListenerManager.get().changeToCennectedAtTime(-1);
+			}
+			for (IConnectStateChangeListener lis : listeners) {
+				lis.onStateChange(state);
 			}
 		}
 	}

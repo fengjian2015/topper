@@ -115,7 +115,6 @@ public class MainActivity extends BaseActivity {
 
     private void initRelogin() {
         if (!WsConnection.getInstance().getOutConnection()) {
-            ConnectStateChangeListenerManager.get().setCurrentState(ConnectStateChangeListenerManager.DISCONNECT);
             ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
             Intent intent = new Intent(this, IMCoreService.class);
             if (WsConnection.isServiceWork(this, IMCoreService.CORE_SERVICE_NAME)) {

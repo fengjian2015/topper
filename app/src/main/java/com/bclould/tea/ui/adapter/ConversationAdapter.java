@@ -25,6 +25,7 @@ import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.xmpp.RoomManage;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -124,9 +125,14 @@ public class ConversationAdapter extends RecyclerView.Adapter {
                 mRlItem.setBackgroundColor(mContext.getResources().getColor(R.color.white));
             }
             mConversationInfo = conversationInfo;
-            UtilTool.getImage(mMgr, conversationInfo.getUser(), mContext, mTab1ItemImg);
+
            /* Bitmap bitmap = UtilTool.getImage(mMgr, conversationInfo.getUser(), mContext);
             mTab1ItemImg.setImageBitmap(bitmap);*/
+           if(RoomManage.ROOM_TYPE_MULTI.equals(conversationInfo.getChatType())){
+               mTab1ItemImg.setImageResource(R.mipmap.img_group_head);
+           }else {
+               UtilTool.getImage(mMgr, conversationInfo.getUser(), mContext, mTab1ItemImg);
+           }
             String remark = mMgr.queryRemark(conversationInfo.getUser());
             if (!StringUtils.isEmpty(remark)) {
                 mTab1ItemName.setText(remark);

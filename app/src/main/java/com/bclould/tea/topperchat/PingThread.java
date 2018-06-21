@@ -20,7 +20,7 @@ public class PingThread extends Thread {
 
     @Override
     public void run() {
-        MySharedPreferences.getInstance().setInteger("ping",0);
+
         while (WsConnection.getInstance().isLogin()) {
             try {
                 UtilTool.Log("fengjian","發送ping");

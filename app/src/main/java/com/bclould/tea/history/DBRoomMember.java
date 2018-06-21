@@ -10,6 +10,7 @@ import android.support.annotation.RequiresApi;
 import com.bclould.tea.model.GroupMemberInfo;
 import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.model.RoomMemberInfo;
+import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.utils.UtilTool;
 
 import java.util.ArrayList;
@@ -56,6 +57,20 @@ public class DBRoomMember {
             values.put("remark", "");
             values.put("roomId",roomId);
             UtilTool.Log("fengjian", "添加成員到数据库成功" + dataBean.toString());
+        }
+    }
+
+    public synchronized void addRoomMemberUserInfo(List<UserInfo> infoList, String roomId) {
+        db = helper.getWritableDatabase();
+        for(UserInfo userInfo:infoList){
+            ContentValues values = new ContentValues();
+            values.put("name", "");
+            values.put("my_user", UtilTool.getTocoId());
+            values.put("jid", userInfo.getUser());
+            values.put("image_url", userInfo.getPath());
+            values.put("remark", "");
+            values.put("roomId",roomId);
+            UtilTool.Log("fengjian", "添加成員到数据库成功" + userInfo.toString());
         }
     }
 

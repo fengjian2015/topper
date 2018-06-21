@@ -18,6 +18,7 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.OrderListInfo;
 import com.bclould.tea.model.TransRecordInfo;
+import com.bclould.tea.utils.StringUtils;
 
 import java.util.List;
 
@@ -96,6 +97,9 @@ public class PayDetailsActivity extends BaseActivity {
                 mTvMoney.setText(data.getNumber());
                 mTvCount.setText(data.getCoin_name());
                 mTvPrice.setText(data.getCreated_at());
+                if(!StringUtils.isEmpty(data.getTxid())){
+                    mTvTxId.setText("Txid: "+data.getTxid());
+                }
             }
         });
         mTvCopy.setOnClickListener(new View.OnClickListener() {

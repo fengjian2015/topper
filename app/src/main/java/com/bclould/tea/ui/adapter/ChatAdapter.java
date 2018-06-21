@@ -122,7 +122,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public static final int ADMINISTRATOR_AUTH_STATUS_MSG = 16;//管理員實名認證消息
     public static final int ADMINISTRATOR_RECEIPT_PAY_MSG = 17;//管理員收付款消息
     public static final int ADMINISTRATOR_TRANSFER_MSG = 18;//管理員轉賬消息
-    public static final int ADMINISTRATOR_IN_OUT_COIN_MSG = 19;//管理員充提幣消息
+    public static final int ADMINISTRATOR_IN_OUT_COIN_MSG = 19;//管理員提幣消息
+    public static final int ADMINISTRATOR_IN_COIN_MSG = 29;//管理員充幣消息
 
     private final Context mContext;
     private final List<MessageInfo> mMessageList;
@@ -247,6 +248,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } else if (viewType == ADMINISTRATOR_IN_OUT_COIN_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_inout_coin, parent, false);
             holder = new InoutCoinInformHolder(view);
+        }else if(viewType==ADMINISTRATOR_IN_COIN_MSG){
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_in_coin, parent, false);
+            holder = new InCoinInformHolder(view);
         } else {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_chat_text, parent, false);
             holder = new TextChatHolder(view);
@@ -393,6 +397,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
             case ADMINISTRATOR_IN_OUT_COIN_MSG:
                 InoutCoinInformHolder inoutCoinInformHolder = (InoutCoinInformHolder) holder;
                 inoutCoinInformHolder.setData(mMessageList.get(position));
+                break;
+            case ADMINISTRATOR_IN_COIN_MSG:
+                InCoinInformHolder inCoinInformHolder= (InCoinInformHolder) holder;
+                inCoinInformHolder.setData(mMessageList.get(position));
                 break;
             default:
                 TextChatHolder textChatHolder = (TextChatHolder) holder;
@@ -2143,6 +2151,45 @@ public class ChatAdapter extends RecyclerView.Adapter {
             });
         }
     }
+
+    class InCoinInformHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.tv_type_msg)
+        TextView mTvTypeMsg;
+        @Bind(R.id.tv_coin)
+        TextView mTvCoin;
+        @Bind(R.id.tv_status_hint)
+        TextView mTvStatusHint;
+        @Bind(R.id.tv_count)
+        TextView mTvCount;
+        @Bind(R.id.tv_time_hint)
+        TextView mTvTimeHint;
+        @Bind(R.id.tv_time)
+        TextView mTvTime;
+        @Bind(R.id.ll_red_expried_msg)
+        LinearLayout mLlRedExpriedMsg;
+
+        InCoinInformHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final MessageInfo messageInfo) {
+            mTvCoin.setText(messageInfo.getCoin());
+            mTvCount.setText(messageInfo.getCount());
+            mTvTime.setText(messageInfo.getTime());
+            mLlRedExpriedMsg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, PayDetailsActivity.class);
+                    intent.putExtra("id", messageInfo.getRedId() + "");
+                    intent.putExtra("log_id", messageInfo.getBetId());
+                    intent.putExtra("type_number", messageInfo.getType() + "");
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+    }
+
 
     private void goIndividualDetails(View view, String user, String name, final MessageInfo messageInfo) {
         //兼容之前沒有send字段問題

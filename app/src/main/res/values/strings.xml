@@ -631,11 +631,16 @@
     <string name="bet">投注</string>
     <string name="present_periods">當前期數</string>
     <string name="join_time">參與時間</string>
+    <string name="out_coin_broad">充幣通知</string>
+    <string name="in_coin_coins">充幣幣種</string>
+    <string name="in_coin_count">充幣數量</string>
+    <string name="in_coin_time">充幣時間</string>
     <string name="out_coin_inform">提幣通知</string>
     <string name="out_coin_coins">提幣幣種</string>
     <string name="out_coin_count">提幣數量</string>
     <string name="out_coin_time">提幣時間</string>
     <string name="out_coin_inform_hint">您有一個新提幣消息,點擊查看詳情</string>
+    <string name="out_coin_borad_hint">您有一個新充幣消息,點擊查看詳情</string>
     <string name="start_guess_service_hint">個人發起投幣競猜，需支付</string>
     <string name="et_guess_title">輸入競猜標題(1到20個字)</string>
     <string name="guess_deadline">競猜期限</string>
@@ -919,4 +924,6 @@
     <string name="qr_scan_result">掃描結果</string>
     <string name="determine_exit">確定退出</string>
     <string name="no_group">暫無群聊,點擊重新加載</string>
+    <string name="invite_failure">邀請失敗</string>
+    <string name="refresh_group_members">刷新群成員</string>
 </resources>

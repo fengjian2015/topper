@@ -59,7 +59,10 @@ public class CreateGroupRoomActivity extends BaseActivity {
     DBRoomManage mDBRoomManage;
     DBRoomMember mDBRoomMember;
     private String roomName;
+    private String roomId;
     private Context context;
+
+    private int type=0;//0表示創建群，1表示邀請人加入
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,12 +70,18 @@ public class CreateGroupRoomActivity extends BaseActivity {
         context=this;
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
+        initIntent();
         initData();
         initRecylerView();
     }
 
-    private void initData() {
+    private void initIntent() {
+        type=getIntent().getIntExtra("type",0);
         roomName=getIntent().getStringExtra("roomName");
+        roomId=getIntent().getStringExtra("roomId");
+    }
+
+    private void initData() {
         mgr = new DBManager(this);
         mDBRoomMember=new DBRoomMember(this);
         mDBRoomManage=new DBRoomManage(this);
@@ -106,9 +115,30 @@ public class CreateGroupRoomActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_create:
-                createGroup();
+                if(type==0){
+                    createGroup();
+                }else if(type==1){
+                    inviteGroup();
+                }
                 break;
         }
+    }
+
+    private void inviteGroup(){
+        StringBuffer stringBuffer=new StringBuffer();
+        for (int i = 0; i < mUserInfoList.size(); i++) {  //添加群成员
+            stringBuffer.append(mUserInfoList.get(i).getUser());
+            if(i!=mUserInfoList.size()-1){
+                stringBuffer.append(",");
+            }
+        }
+        new GroupPresenter(context).inviteGroup(roomId, stringBuffer.toString(), new GroupPresenter.CallBack() {
+            @Override
+            public void send() {
+                mDBRoomMember.addRoomMemberUserInfo(mUserInfoList,roomId);
+                finish();
+            }
+        });
     }
 
     private void createGroup(){
@@ -142,6 +172,7 @@ public class CreateGroupRoomActivity extends BaseActivity {
     }
 
     private void saveRoom(String group_id, List<UserInfo> userInfoList){
+        userInfoList.add(mgr.queryUser(UtilTool.getTocoId()));
         RoomManageInfo roomManageInfo = new RoomManageInfo();
         roomManageInfo.setRoomName(roomName);
         roomManageInfo.setRoomId(group_id);

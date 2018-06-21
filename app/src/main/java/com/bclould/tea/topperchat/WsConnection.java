@@ -147,7 +147,7 @@ public class WsConnection {
 
     public void senPing(){
         try {
-            ws.ping("發送ping");
+            ws.ping("Android");
             ObjectMapper objectMapper =  new ObjectMapper(new MessagePackFactory());
             Map<Object,Object> sendMap = new HashMap<>();
             sendMap.put("type",4);

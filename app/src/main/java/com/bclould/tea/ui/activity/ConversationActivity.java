@@ -204,6 +204,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     //初始化表情盘
     private void initEmoticonsKeyboard() {
+        //设置房间类型
+        mEkbEmoticonsKeyboard.setRoomType(roomType);
         SimpleAppsGridView simpleAppsGridView = new SimpleAppsGridView(this);
         simpleAppsGridView.setData(roomId, roomType);
         mEkbEmoticonsKeyboard.addFuncView(simpleAppsGridView);
@@ -414,8 +416,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         }
         //初始化OTR
         mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(roomId.toString()));
-        //设置房间类型
-        mEkbEmoticonsKeyboard.setRoomType(roomType);
     }
 
     private void sendMessage(String message) {

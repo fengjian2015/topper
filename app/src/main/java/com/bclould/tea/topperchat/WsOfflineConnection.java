@@ -178,7 +178,10 @@ public class WsOfflineConnection {
         // TODO: 2018/6/12 這裡是獲取到的消息 type=3的content
         if((int)messageMap3.get("type")==3){
             Map<Object, Object>  messageMap4 = objectMapper.readValue((byte[]) messageMap3.get("content"), new TypeReference<Map<String, Object>>() {});
-            com.bclould.tea.topperchat.SocketListener.getInstance(mContext).messageFeedback(messageMap4,false,RoomManage.ROOM_TYPE_SINGLE);
+            SocketListener.getInstance(mContext).messageFeedback(messageMap4,false,RoomManage.ROOM_TYPE_SINGLE);
+        }else if((int)messageMap3.get("type")==13){
+            Map<Object, Object>  messageMap4 = objectMapper.readValue((byte[]) messageMap3.get("content"), new TypeReference<Map<String, Object>>() {});
+            SocketListener.getInstance(mContext).messageFeedback(messageMap4,false,RoomManage.ROOM_TYPE_MULTI);
         }
     }
 

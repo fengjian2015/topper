@@ -82,6 +82,7 @@ import static com.bclould.tea.topperchat.WsContans.BC_RED_PACKET_EXPIRED;
 import static com.bclould.tea.topperchat.WsContans.BC_TRANSFER_INFORM;
 import static com.bclould.tea.ui.activity.SystemSetActivity.INFORM;
 import static com.bclould.tea.ui.adapter.ChatAdapter.ADMINISTRATOR_AUTH_STATUS_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.ADMINISTRATOR_IN_COIN_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.ADMINISTRATOR_IN_OUT_COIN_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.ADMINISTRATOR_OTC_ORDER_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.ADMINISTRATOR_RECEIPT_PAY_MSG;
@@ -178,12 +179,6 @@ public class SocketListener {
                 case 18:
                     //廣播消息
                     friendRequest((byte[]) deserialized.get("content"));
-                    break;
-                case 19:
-                    //創建群組反饋
-                    content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {
-                    });
-                    UtilTool.Log("fengjian", "群組消息message：group_name：" + content.get("group_name") + "  group_id:" + content.get("group_id") + "    status:" + content.get("status"));
                     break;
                 case 4:
                     //ping反饋
@@ -615,6 +610,7 @@ public class SocketListener {
                     break;
                 case BC_COIN_IN_BROAD:
                     //充幣通知
+                    inoutCoinBroad(messageMap);
                     break;
                 case BC_INOUT_COIN_INFORM:
                     //提筆通知
@@ -666,8 +662,12 @@ public class SocketListener {
         roomManageInfo.setRoomName(roomName);
         roomManageInfo.setRoomId(group_id);
         mdbRoomManage.addRoom(roomManageInfo);
-        new GroupPresenter(context).selectGroupMember(Integer.parseInt(group_id),mdbRoomMember);
+        new GroupPresenter(context).selectGroupMember(Integer.parseInt(group_id), mdbRoomMember, false, new GroupPresenter.CallBack() {
+            @Override
+            public void send() {}
+        });
         EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+        EventBus.getDefault().post(new MessageEvent(context.getString(R.string.refresh_group_members)));
     }
 
     /**
@@ -688,14 +688,12 @@ public class SocketListener {
      */
     private void qiutGroup(Map<Object, Object> messageMap) {
         String roomId=messageMap.get("group_id")+"";
-        String roomName= (String) messageMap.get("name");
-        mdbRoomManage.deleteRoom(roomId);
-        mdbRoomMember.deleteRoom(roomId);
-        mgr.deleteConversation(roomId);
-        mgr.deleteMessage(roomId);
-        MessageEvent messageEvent=new MessageEvent(context.getString(R.string.quit_group));
-        messageEvent.setId(roomId);
-        EventBus.getDefault().post(messageEvent);
+        new GroupPresenter(context).selectGroupMember(Integer.parseInt(roomId), mdbRoomMember, false, new GroupPresenter.CallBack() {
+            @Override
+            public void send() {
+                EventBus.getDefault().post(new MessageEvent(context.getString(R.string.refresh_group_members)));
+            }
+        });
     }
 
     /**
@@ -745,6 +743,33 @@ public class SocketListener {
 
         messageInfo.setTime((String) messageMap.get("created_at"));
         messageInfo.setRedId((Integer) messageMap.get("id"));
+        messageInfo.setBetId(messageMap.get("log_id") + "");
+        messageInfo.setCount((String) messageMap.get("number"));
+        messageInfo.setCoin((String) messageMap.get("coin_name"));
+        messageInfo.setType((Integer) messageMap.get("type_number"));
+        addMessage(messageInfo);
+    }
+
+    /**
+     * 充幣通知
+     *
+     * @param messageMap
+     */
+    private void inoutCoinBroad(Map<Object, Object> messageMap) {
+        Intent intent = new Intent(context, PayDetailsActivity.class);
+        intent.putExtra("id", messageMap.get("id") + "");
+        intent.putExtra("type_number", messageMap.get("type_number") + "");
+        goActivity(intent, context.getString(R.string.out_coin_broad), context.getString(R.string.out_coin_borad_hint));
+
+        MessageInfo messageInfo = new MessageInfo();
+        messageInfo.setSend(Constants.ADMINISTRATOR_NAME);
+        messageInfo.setUsername(Constants.ADMINISTRATOR_NAME);
+        messageInfo.setMsgType(ADMINISTRATOR_IN_COIN_MSG);
+        messageInfo.setConverstaion("[" + context.getString(R.string.out_coin_broad) + "]");
+
+        messageInfo.setTime((String) messageMap.get("created_at"));
+        messageInfo.setRedId((Integer) messageMap.get("id"));
+        messageInfo.setBetId(messageMap.get("log_id") + "");
         messageInfo.setCount((String) messageMap.get("number"));
         messageInfo.setCoin((String) messageMap.get("coin_name"));
         messageInfo.setType((Integer) messageMap.get("type_number"));

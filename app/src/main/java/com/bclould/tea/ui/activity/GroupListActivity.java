@@ -179,6 +179,7 @@ public class GroupListActivity extends BaseActivity {
             case R.id.tv_create:
                 Intent intent = new Intent(this, CreateGroupRoomActivity.class);
                 intent.putExtra("roomName", etCreate.getText().toString());
+                intent.putExtra("type",0);
                 startActivity(intent);
                 break;
             case R.id.ll_no_data:

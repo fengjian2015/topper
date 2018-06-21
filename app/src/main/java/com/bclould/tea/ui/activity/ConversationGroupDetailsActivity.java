@@ -112,10 +112,22 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         mTvMemberNumber.setText(mList.size()+"人");
         mList.add(new RoomMemberInfo());
         if(isFirst){
-            mAdapter=new GroupDetailsMemberAdapter(this,mList);
+            mAdapter=new GroupDetailsMemberAdapter(this,mList,roomId);
             mPartnerDetialGridview.setAdapter(mAdapter);
         }else{
             mAdapter.notifyDataSetChanged();
+        }
+        if(mList.size()<=1){
+            new GroupPresenter(this).selectGroupMember(Integer.parseInt(roomId), mDBRoomMember, true, new GroupPresenter.CallBack() {
+                @Override
+                public void send() {
+                    mList.clear();
+                    mList.addAll(mDBRoomMember.queryAllRequest(roomId));
+                    mTvMemberNumber.setText(mList.size()+"人");
+                    mList.add(new RoomMemberInfo());
+                    mAdapter.notifyDataSetChanged();
+                }
+            });
         }
     }
 
@@ -169,6 +181,8 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
             if(roomId.equals(event.getId())){
                 finish();
             }
+        }else if(msg.equals(getString(R.string.refresh_group_members))){
+            setGroupMember(false);
         }
     }
 
