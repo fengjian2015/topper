@@ -458,15 +458,16 @@ public class MainActivity extends BaseActivity {
             childAt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    int index = mMainBottomMenu.indexOfChild(childAt);
                     if (!WsConnection.getInstance().getOutConnection()) {
-                        int index = mMainBottomMenu.indexOfChild(childAt);
 
                         changeFragment(index);
 
                         setSelector(index);
                     } else {
-                        startActivity(new Intent(MainActivity.this, InitialActivity.class));
+                        if (index != 2) {
+                            startActivity(new Intent(MainActivity.this, InitialActivity.class));
+                        }
                     }
                 }
             });

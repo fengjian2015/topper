@@ -1,6 +1,7 @@
 package com.bclould.tea.xmpp;
 
-import org.jivesoftware.smack.util.StringUtils;
+
+import com.bclould.tea.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -29,6 +29,7 @@ import butterknife.ButterKnife;
  * Created by GA on 2018/3/21.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class NewsRVAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;
@@ -105,6 +106,7 @@ public class NewsRVAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, NewsDetailsActivity.class);
                     intent.putExtra("id", mId);
+                    intent.putExtra("type", Constants.NEWS_MAIN_TYPE);
                     mContext.startActivity(intent);
                 }
             });
@@ -137,7 +139,6 @@ public class NewsRVAdapter extends RecyclerView.Adapter {
             super(view);
             ButterKnife.bind(this, view);
             view.setOnClickListener(new View.OnClickListener() {
-                @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, NewsDetailsActivity.class);

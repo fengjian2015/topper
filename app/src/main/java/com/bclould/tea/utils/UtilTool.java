@@ -48,13 +48,8 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.luck.picture.lib.permissions.RxPermissions;
 import com.luck.picture.lib.tools.PictureFileUtils;
 
-import org.jivesoftware.smack.XMPPConnection;
-import org.jivesoftware.smack.provider.ProviderManager;
-import org.jivesoftware.smackx.vcardtemp.packet.VCard;
-import org.jivesoftware.smackx.vcardtemp.provider.VCardProvider;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jxmpp.jid.impl.JidCreate;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -480,31 +475,6 @@ public class UtilTool {
             e.printStackTrace();
         }
         return null;
-    }
-
-    /**
-     * 获取用户头像信息
-     *
-     * @param connection
-     * @param user
-     * @return
-     */
-    public static byte[] getUserImage(XMPPConnection connection, String user) {
-        VCard vcard = null;
-        try {
-            vcard = new VCard();
-            ProviderManager.addIQProvider("vCard", "vcard-temp",
-                    new VCardProvider());
-
-            vcard.load(connection, JidCreate.entityBareFrom(user));
-
-            if (vcard == null || vcard.getAvatar() == null)
-                return null;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return vcard.getAvatar();
     }
 
     public static String exChange(String str) {

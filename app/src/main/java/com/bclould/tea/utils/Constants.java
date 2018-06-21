@@ -12,25 +12,17 @@ import android.support.annotation.RequiresApi;
 public class Constants {
     public static final String ADMINISTRATOR_NAME = "TOPPERCHAT";
     public static int BET_ARR_COUNT = 4;
-    private static final boolean isDebug = true;
-    //    public static final int OPENFIRE_PORT = 5288;
-    public static final int OPENFIRE_PORT = 2018;
+    private static final boolean isDebug = false;
     public static final String BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "https://api.cnblocklink.com/";
     public static String DOMAINNAME3 = isDebug ? "wss://socket.bclould.com:8179/toco_server" : "wss://socket.cnblocklink.com:2087/toco_server";
     public static String MSG_OFFLINE = isDebug ? "wss://socket.bclould.com:8180/users_offline_msg" : "wss://offline.cnblocklink.com:8443/users_offline_msg";
-    //        public static String DOMAINNAME = "xmpp.bclould.com";//测试
-    public static String DOMAINNAME = "xmpp.coingbank.com";
-    public static String DOMAINNAME2 = "";
+
     public static String CHUANCODE = "爨^(&";
-    public static String CARD = "[card]";
-    public static String SHARE_LINK = "[share_link]";
-    public static String SHARE_GUESS = "[share_guess]";
     public static String REDBAG = "[redBag]";
     public static String TRANSFER = "[transfer]";
     public static String REDPACKAGE = "redPackage";
     public static String MONEYIN = "moneyIn";
     public static String MONEYOUT = "moneyOut";
-    public static String MYUSER = UtilTool.getJid();
     public static String BUSINESSCARD = "businessCard";
     public static String BUCKET_NAME = isDebug ? "toco--bucket" : "topper-bucket";
     public static String BUCKET_NAME2 = "topper-chat-bucket";
@@ -38,14 +30,7 @@ public class Constants {
     public static String LOG_DIR = "/sdcard/tocotalk/log/";
     public static String QRMONEYIN = "qrMoneyIn";
     public static String DATAMONEYIN = "dataMoneyIn";
-    public static String HINT_TYPE = "hint_type";
     public static String OTC_DISCLAIMER = "otc_disclaimer";
-    public static String OTC_ORDER = "[OtcOrder]:";
-    public static String RED_PACKET_EXPIRED = "[RedPacketExpired]:";
-    public static String AUTH_STATUS = "[AuthStatus]:";
-    public static String QRCODE_RECEIPT_PAYMENT = "[QrcodeReceiptPayment]:";
-    public static String TRANSFER_INFORM = "[Transfer]:";
-    public static String INOUT_COIN_INFORM = "[CoinOut]:";
     public static String EXCHANGE_DISCLAIMER = "exchange_disclaimer";
     public static String NEW_APK_URL = "new_apk_url";
     public static String NEW_APK_NAME = "new_apk_name";

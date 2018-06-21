@@ -11,6 +11,7 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.listener.CrashHandler;
 import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.model.StateInfo;
+import com.bclould.tea.network.MyHostnameVerifier;
 import com.bclould.tea.service.ImageUpService;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.GlideImgLoader;
@@ -56,6 +57,9 @@ public class MyApp extends Application {
         super.onCreate();
 
         context = this;
+
+        new MyHostnameVerifier();
+
         //初始化sp
         MySharedPreferences.getInstance().init(this);
 

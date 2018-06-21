@@ -830,6 +830,11 @@
         <activity android:name=".ui.activity.ScanQRResultActivty"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
+
+        <meta-data
+            android:name="com.bclould.tea.network.https.OkHttpGlideModule"
+            android:value="GlideModule"/>
+
     </application>
 
 </manifest>
