@@ -1,6 +1,7 @@
 package com.bclould.tea.service;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -11,6 +12,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.topperchat.WsConnection;
@@ -26,6 +28,7 @@ public class IMCoreService extends Service {
     public final static String ACTION_STOP = "com.bclould.tea.action.ACTION_STOP";
     public final static String ACTION_START_IMSERVICE = "com.bclould.tea.action.ACTION_START_IMSERVICE";
     private BroadcastReceiver broadcast;
+    private final static int GRAY_SERVICE_ID = 1001;
     public boolean startService = true;// 用于判断是否需要打开消息监听service
 
     public boolean hasStartChildProcess = false;
@@ -60,8 +63,35 @@ public class IMCoreService extends Service {
         flags = START_STICKY;
         UtilTool.Log("fengjian","service core onStartCommand");
 //        return super.onStartCommand(intent, flags, startId);
+        if (Build.VERSION.SDK_INT < 18) {
+            startForeground(GRAY_SERVICE_ID, new Notification());//API < 18 ，此方法能有效隐藏Notification上的图标
+        } else {
+            Intent innerIntent = new Intent(this, GrayInnerService.class);
+            startService(innerIntent);
+            startForeground(GRAY_SERVICE_ID, new Notification());
+        }
         return Service.START_REDELIVER_INTENT;
     }
+
+    public static class GrayInnerService extends Service {
+
+        @Override
+        public int onStartCommand(Intent intent, int flags, int startId) {
+            startForeground(GRAY_SERVICE_ID, new Notification());
+            stopForeground(true);
+            stopSelf();
+            return super.onStartCommand(intent, flags, startId);
+        }
+
+        @Nullable
+        @Override
+        public IBinder onBind(Intent intent) {
+            return null;
+        }
+
+    }
+
+
 
     @Override
     public void onDestroy() {

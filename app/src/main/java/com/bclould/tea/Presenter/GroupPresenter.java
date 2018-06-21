@@ -7,9 +7,12 @@ import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.bclould.tea.R;
+import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.GroupCreateInfo;
 import com.bclould.tea.model.GroupInfo;
+import com.bclould.tea.model.GroupMemberInfo;
+import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.ActivityUtil;
@@ -148,7 +151,7 @@ public class GroupPresenter {
                         public void onNext(BaseInfo baseInfo) {
                             if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
                             hideDialog();
-                            if (baseInfo.getStatus() == 2) {
+                            if (baseInfo.getStatus() == 1) {
                                 callBack.send();
                                 ToastShow.showToast2((Activity) mContext,mContext.getString(R.string.out_group_success));
                             }
@@ -158,6 +161,47 @@ public class GroupPresenter {
                         public void onError(Throwable e) {
                             if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
                             hideDialog();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.toast_network_error));
+        }
+    }
+
+    public void selectGroupMember(final int group_id, final DBRoomMember dbRoomMember) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .selectGroupMember(UtilTool.getToken(),group_id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<GroupMemberInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(GroupMemberInfo baseInfo) {
+                            if(mContext instanceof Activity&&!ActivityUtil.isActivityOnTop((Activity) mContext)){
+                                return;
+                            }
+                            if (baseInfo.getStatus() == 1) {
+                                dbRoomMember.addRoomMember(baseInfo.getData(),group_id+"");
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            if(mContext instanceof Activity&&!ActivityUtil.isActivityOnTop((Activity) mContext)){
+                                return;
+                            }
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 

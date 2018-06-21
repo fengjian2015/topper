@@ -9,22 +9,28 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.history.DBManager;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.ui.adapter.GroupListRVAdapter;
+import com.bclould.tea.utils.MessageEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -41,18 +47,18 @@ public class GroupListActivity extends BaseActivity {
 
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @Bind(R.id.tv_delete)
-    TextView tvDelete;
     @Bind(R.id.et_create)
     EditText etCreate;
     @Bind(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.ll_no_data)
+    LinearLayout mLlNoData;
 
     private ArrayList<RoomManageInfo> roomManagesList;
-    private ArrayList<Boolean> roomList=new ArrayList<>();
+    private ArrayList<Boolean> roomList = new ArrayList<>();
     private DBRoomManage dbRoomManage;
     private DBManager mDBManager;
-    private  GroupListRVAdapter groupListRVAdapter;
+    private GroupListRVAdapter groupListRVAdapter;
     private DBRoomMember mDBRoomMember;
 
 
@@ -61,25 +67,52 @@ public class GroupListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_list);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);//初始化EventBus
         MyApp.getInstance().addActivity(this);
         initData();
         initRecyclerView();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
 
     private void initData() {
         dbRoomManage = new DBRoomManage(this);
-        mDBRoomMember=new DBRoomMember(this);
-        mDBManager=new DBManager(this);
+        mDBRoomMember = new DBRoomMember(this);
+        mDBManager = new DBManager(this);
         roomManagesList = dbRoomManage.queryAllRequest();
-        for (int i=0;i<roomManagesList.size();i++){
+        for (int i = 0; i < roomManagesList.size(); i++) {
             roomList.add(false);
+        }
+        changeShowView(roomManagesList.size());
+    }
+
+    //接受通知
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(getString(R.string.quit_group))) {
+            updataRecyclerView();
+        }
+    }
+
+    private void changeShowView(int size){
+        if(size<=0){
+            mLlNoData.setVisibility(View.VISIBLE);
+            mRefreshLayout.setVisibility(View.GONE);
+        }else{
+            mLlNoData.setVisibility(View.GONE);
+            mRefreshLayout.setVisibility(View.VISIBLE);
         }
     }
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        groupListRVAdapter = new GroupListRVAdapter(this, roomManagesList,mDBManager,roomList);
+        groupListRVAdapter = new GroupListRVAdapter(this, roomManagesList, mDBManager, roomList);
         mRecyclerView.setAdapter(groupListRVAdapter);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -101,6 +134,17 @@ public class GroupListActivity extends BaseActivity {
         });
     }
 
+    private void updataRecyclerView(){
+        roomManagesList.clear();
+        roomList.clear();
+        roomManagesList.addAll(dbRoomManage.queryAllRequest());
+        for (int i = 0; i < roomManagesList.size(); i++) {
+            roomList.add(false);
+        }
+        changeShowView(roomManagesList.size());
+        groupListRVAdapter.notifyDataSetChanged();
+    }
+
     private void getGroup() {
         new GroupPresenter(this).getGroup(new GroupPresenter.CallBack1() {
             @Override
@@ -113,37 +157,34 @@ public class GroupListActivity extends BaseActivity {
                     roomManageInfo.setRoomName(dataBean.getName());
                     roomManageInfo.setRoomId(dataBean.getId() + "");
                     dbRoomManage.addRoom(roomManageInfo);
-                    for (GroupInfo.DataBean.UsersBean usersBean: dataBean.getUsers()){
-                        RoomMemberInfo roomMemberInfo=new RoomMemberInfo();
-                        roomMemberInfo.setRoomId(dataBean.getId()+"");
+                    for (GroupInfo.DataBean.UsersBean usersBean : dataBean.getUsers()) {
+                        RoomMemberInfo roomMemberInfo = new RoomMemberInfo();
+                        roomMemberInfo.setRoomId(dataBean.getId() + "");
                         roomMemberInfo.setJid(usersBean.getToco_id());
                         roomMemberInfo.setImage_url(usersBean.getAvatar());
                         mDBRoomMember.addRoomMember(roomMemberInfo);
                     }
                 }
+                updataRecyclerView();
             }
         });
     }
 
-    @OnClick({R.id.bark, R.id.tv_create,R.id.tv_delete})
+    @OnClick({R.id.bark, R.id.tv_create,R.id.ll_no_data})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
             case R.id.tv_create:
-                Intent intent=new Intent(this,CreateGroupRoomActivity.class);
-                intent.putExtra("roomName",etCreate.getText().toString());
+                Intent intent = new Intent(this, CreateGroupRoomActivity.class);
+                intent.putExtra("roomName", etCreate.getText().toString());
                 startActivity(intent);
                 break;
-            case R.id.tv_delete:
-                // TODO: 2018/5/30 刪除群
-                deleteGroup();
+            case R.id.ll_no_data:
+                getGroup();
                 break;
         }
     }
 
-    private void deleteGroup() {
-//        new GroupPresenter(GroupListActivity.this).deleteGroup(Integer.parseInt(roomid));
-    }
 }

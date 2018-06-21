@@ -25,11 +25,6 @@ public class WsContans {
     public static final int MSG_LOCATION=10;//定位
 
     //廣播類型
-    public static final int BC_FRIEND_REQUEST=9;//好友請求
-    public static final int BC_FRIEND_COMMIT=10;//好友請求確認
-    public static final int BC_FRIEND_REJECT=25;//轉賬
-    public static final int BC_OFFLINE=26;//離線消息
-
     public static final int BC_OTC_ORDER=1;//OTC訂單信息
     public static final int BC_RED_PACKET_EXPIRED=2;//紅包過期
     public static final int BC_TRANSFER_INFORM=3;//轉賬通知
@@ -38,6 +33,16 @@ public class WsContans {
     public static final int BC_INOUT_COIN_INFORM=6;//提筆通知
     public static final int BC_AUTH_STATUS=7;//實名認證
     public static final int BC_RED_GET=8;//紅包領取
+
+    public static final int BC_FRIEND_REQUEST=9;//好友請求
+    public static final int BC_FRIEND_COMMIT=10;//好友請求確認
+    public static final int BC_FRIEND_REJECT=25;//轉賬
+    public static final int BC_OFFLINE=26;//離線消息
+    public static final int BC_MEMBER_GROUP=31;//加入群組通知
+    public static final int BC_QUIT_GROUP=32;//退出群組通知
+    public static final int BC_ADD_GROUP=33;//創建群組通知
+
+
 
 
 }

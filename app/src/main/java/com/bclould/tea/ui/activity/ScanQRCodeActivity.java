@@ -32,6 +32,8 @@ import butterknife.OnClick;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
+import static com.bclould.tea.utils.Constants.REDPACKAGE;
+
 
 /**
  * Created by GA on 2017/9/15.
@@ -191,10 +193,15 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
                         Toast.makeText(this, getString(R.string.scan_qr_code_error), Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
-                } else {
+                } else if(result.contains(REDPACKAGE)){
                     Intent intent = new Intent(ScanQRCodeActivity.this, ConversationFragment.class);
                     intent.putExtra("result", result);
                     setResult(RESULT_OK, intent);
+                    finish();
+                }else{
+                    Intent intent = new Intent(ScanQRCodeActivity.this, ScanQRResultActivty.class);
+                    intent.putExtra("result", result);
+                    startActivity(intent);
                     finish();
                 }
             }

@@ -914,4 +914,7 @@
     <string name="out_group_success">退出成功</string>
     <string name="loading_error_hint">加載失敗，點擊任意地方或者下拉重新加載</string>
     <string name="quit_group">退出群聊</string>
+    <string name="qr_scan_result">掃描結果</string>
+    <string name="determine_exit">確定退出</string>
+    <string name="no_group">暫無群聊,點擊重新加載</string>
 </resources>
