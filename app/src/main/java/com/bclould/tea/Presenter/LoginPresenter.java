@@ -18,6 +18,7 @@ import com.bclould.tea.model.LoginInfo;
 import com.bclould.tea.model.LoginRecordInfo;
 import com.bclould.tea.model.UserCodeInfo;
 import com.bclould.tea.network.RetrofitUtil;
+import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.LoginActivity;
 import com.bclould.tea.ui.activity.LoginSetActivity;
 import com.bclould.tea.ui.activity.MainActivity;
@@ -40,7 +41,7 @@ import io.reactivex.schedulers.Schedulers;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class LoginPresenter {
 
-    public static final String TOCOID="toco_id";
+    public static final String TOCOID = "toco_id";
     public static final String TOKEN = "token";
     public static final String USERID = "user_id";
     public static final String LOGINPW = "login_pw";
@@ -93,9 +94,9 @@ public class LoginPresenter {
                                 if (baseInfo.getData() != null) {
                                     if (baseInfo.getData().getValidate_type() == 1) {
                                         sendVcode(email);
-                                        showEmailDialog(email, password,dbUserCode);
+                                        showEmailDialog(email, password, dbUserCode);
                                     } else {
-                                        showGoogleDialog(email, password,dbUserCode);
+                                        showGoogleDialog(email, password, dbUserCode);
                                     }
                                 } else {
                                     if (baseInfo.getType() == 7) {
@@ -105,6 +106,7 @@ public class LoginPresenter {
                                     }
                                 }
                             } else if (baseInfo.getStatus() == 1) {
+                                WsConnection.getInstance().setOutConnection(false);
                                 UtilTool.Log("日志", baseInfo.getData().getName());
                                 MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
                                 MySharedPreferences.getInstance().setString(TOCOID, baseInfo.getData().getToco_id());
@@ -118,12 +120,14 @@ public class LoginPresenter {
                                 } else {
                                     MySharedPreferences.getInstance().setString(STATE, baseInfo.getData().getCountry());
                                 }
-                                UserCodeInfo userCodeInfo=new UserCodeInfo();
+                                UserCodeInfo userCodeInfo = new UserCodeInfo();
                                 userCodeInfo.setEmail(email);
                                 userCodeInfo.setPassword(password);
                                 dbUserCode.addUserCode(userCodeInfo);
                                 hideDialog();
-                                mContext.startActivity(new Intent(mContext, MainActivity.class));
+                                Intent intent = new Intent(mContext, MainActivity.class);
+                                intent.putExtra("whence", true);
+                                mContext.startActivity(intent);
                                 LoginActivity activity = (LoginActivity) mContext;
                                 activity.finish();
                                 Toast.makeText(mContext, mContext.getString(R.string.toast_succeed), Toast.LENGTH_SHORT).show();
@@ -212,7 +216,7 @@ public class LoginPresenter {
                 if (googleCode.isEmpty()) {
                     Toast.makeText(mContext, mContext.getString(R.string.toast_vcode), Toast.LENGTH_SHORT).show();
                 } else {
-                    Login(email, password, googleCode,dbUserCode);
+                    Login(email, password, googleCode, dbUserCode);
                 }
             }
         });
@@ -233,7 +237,7 @@ public class LoginPresenter {
                 if (googleCode.isEmpty()) {
                     Toast.makeText(mContext, mContext.getString(R.string.toast_vcode), Toast.LENGTH_SHORT).show();
                 } else {
-                    Login(email, password, googleCode,dbUserCode);
+                    Login(email, password, googleCode, dbUserCode);
                 }
             }
         });

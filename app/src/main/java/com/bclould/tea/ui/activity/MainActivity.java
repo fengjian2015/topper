@@ -41,12 +41,15 @@ import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.network.DownLoadApk;
 import com.bclould.tea.network.RetrofitUtil;
+import com.bclould.tea.service.IMCoreService;
 import com.bclould.tea.topperchat.AddFriendReceiver;
 import com.bclould.tea.topperchat.WsConnection;
+import com.bclould.tea.ui.fragment.DiscoverFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,10 +106,44 @@ public class MainActivity extends BaseActivity {
         mMgr = new DBManager(this);
         mDBRoomManage = new DBRoomManage(this);
         mDBRoomMember = new DBRoomMember(this);
+        initRelogin();
         initInterface();
         MyApp.getInstance().addActivity(this);
         WsConnection.loginService(this);
         initAddFriendReceiver();
+    }
+
+    private void initRelogin() {
+        if (!WsConnection.getInstance().getOutConnection()) {
+            ConnectStateChangeListenerManager.get().setCurrentState(ConnectStateChangeListenerManager.DISCONNECT);
+            ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
+            Intent intent = new Intent(this, IMCoreService.class);
+            if (WsConnection.isServiceWork(this, IMCoreService.CORE_SERVICE_NAME)) {
+                WsConnection.stopAllIMCoreService(this);
+                stopService(intent);
+            }
+            startService(intent);
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        boolean whence = intent.getBooleanExtra("whence", false);
+        initRelogin();
+        if (whence) {
+            DiscoverFragment discoverFragment = DiscoverFragment.getInstance();
+            FragmentFactory.mMainMap.remove(discoverFragment);
+            mSupportFragmentManager.beginTransaction().remove(discoverFragment).commit();
+            discoverFragment = null;
+            setSelector(0);
+            //切换Fragment
+            changeFragment(0);
+            getStateList();
+            getGroup();
+            getMyImage();
+            getFriends();
+        }
     }
 
     private void initAddFriendReceiver() {
@@ -173,14 +210,23 @@ public class MainActivity extends BaseActivity {
 
     //初始化界面
     private void initInterface() {
-        getStateList();
-        getGroup();
-        getMyImage();
-        getFriends();
+
         //开始选中聊天Fragment
-        setSelector(0);
-        //切换Fragment
-        changeFragment(0);
+        if (WsConnection.getInstance().getOutConnection()) {
+            setSelector(2);
+            //切换Fragment
+            changeFragment(2);
+        } else {
+            setSelector(0);
+            //切换Fragment
+            changeFragment(0);
+            getStateList();
+            getGroup();
+            getMyImage();
+            getFriends();
+            //改變發送中的狀態
+            changeMsgState();
+        }
         //初始化底部菜单
         initBottomMenu();
         //获取权限
@@ -189,9 +235,6 @@ public class MainActivity extends BaseActivity {
         UtilTool.getPermissions(this, Manifest.permission.RECORD_AUDIO, "", getString(R.string.jurisdiction_voice_hint));
         //检测版本更新
         checkVersion();
-        //获取国家
-        //改變發送中的狀態
-        changeMsgState();
     }
 
     private void changeMsgState() {
@@ -221,9 +264,9 @@ public class MainActivity extends BaseActivity {
                     roomManageInfo.setRoomName(dataBean.getName());
                     roomManageInfo.setRoomId(dataBean.getId() + "");
                     mDBRoomManage.addRoom(roomManageInfo);
-                    for (GroupInfo.DataBean.UsersBean usersBean: dataBean.getUsers()){
-                        RoomMemberInfo roomMemberInfo=new RoomMemberInfo();
-                        roomMemberInfo.setRoomId(dataBean.getId()+"");
+                    for (GroupInfo.DataBean.UsersBean usersBean : dataBean.getUsers()) {
+                        RoomMemberInfo roomMemberInfo = new RoomMemberInfo();
+                        roomMemberInfo.setRoomId(dataBean.getId() + "");
                         roomMemberInfo.setJid(usersBean.getToco_id());
                         roomMemberInfo.setImage_url(usersBean.getAvatar());
                         mDBRoomMember.addRoomMember(roomMemberInfo);
@@ -417,11 +460,15 @@ public class MainActivity extends BaseActivity {
                 @Override
                 public void onClick(View view) {
 
-                    int index = mMainBottomMenu.indexOfChild(childAt);
+                    if (!WsConnection.getInstance().getOutConnection()) {
+                        int index = mMainBottomMenu.indexOfChild(childAt);
 
-                    changeFragment(index);
+                        changeFragment(index);
 
-                    setSelector(index);
+                        setSelector(index);
+                    } else {
+                        startActivity(new Intent(MainActivity.this, InitialActivity.class));
+                    }
                 }
             });
 
@@ -435,7 +482,6 @@ public class MainActivity extends BaseActivity {
 
     @SuppressLint("RestrictedApi")
     private void changeFragment(int index) {
-
         if (mSupportFragmentManager == null) {
 
             mSupportFragmentManager = getSupportFragmentManager();
@@ -465,9 +511,7 @@ public class MainActivity extends BaseActivity {
 
             ft.commit();
         }
-
         lastIndex = index;
-
     }
 
 

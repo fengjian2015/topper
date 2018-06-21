@@ -35,7 +35,6 @@ import butterknife.ButterKnife;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class GonggaoFragment extends Fragment {
-    private static GonggaoFragment instance;
     @Bind(R.id.tv_kaifa)
     TextView mTvKaifa;
     @Bind(R.id.iv)
@@ -52,13 +51,6 @@ public class GonggaoFragment extends Fragment {
     private int mStatus = 1;
     private int mPageSize = 1000;
     public LinearLayoutManager mLinearLayoutManager;
-
-    public static GonggaoFragment getInstance() {
-        if (instance == null) {
-            instance = new GonggaoFragment();
-        }
-        return instance;
-    }
 
     @Nullable
     @Override

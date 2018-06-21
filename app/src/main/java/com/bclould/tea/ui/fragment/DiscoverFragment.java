@@ -18,7 +18,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tea.R;
+import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.GonggaoManagerActivity;
+import com.bclould.tea.ui.activity.InitialActivity;
 import com.bclould.tea.ui.activity.MainActivity;
 import com.bclould.tea.ui.activity.NewsEditActivity;
 import com.bclould.tea.ui.activity.NewsManagerActivity;
@@ -32,6 +34,9 @@ import com.bclould.tea.utils.UtilTool;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -82,6 +87,7 @@ public class DiscoverFragment extends Fragment {
     @Bind(R.id.rl_title)
     RelativeLayout mRlTitle;
     private MainActivity.MyOnTouchListener mTouchListener;
+    private List<Fragment> mFragmentList = new ArrayList<>();
 
 
     public static DiscoverFragment getInstance() {
@@ -116,9 +122,14 @@ public class DiscoverFragment extends Fragment {
     private void initInterface() {
         mLlGonggao.setVisibility(View.VISIBLE);
         initTopMenu();
+        initFragmentList();
         initViewPager();
         setSelector(1);
-        mCloudCircleVp.setCurrentItem(1);
+        if (mFragmentList.size() > 1) {
+            mCloudCircleVp.setCurrentItem(1);
+        } else {
+            mCloudCircleVp.setCurrentItem(1);
+        }
         mTouchListener = new MainActivity.MyOnTouchListener() {
             private float mDownY;
 
@@ -153,15 +164,26 @@ public class DiscoverFragment extends Fragment {
         ((MainActivity) this.getActivity()).registerMyOnTouchListener(mTouchListener);
     }
 
+    private void initFragmentList() {
+        mFragmentList.clear();
+        if (WsConnection.getInstance().getOutConnection()) {
+            mFragmentList.add(new GonggaoFragment());
+            mFragmentList.add(new NewsFragment());
+        } else {
+            mFragmentList.add(new GonggaoFragment());
+            mFragmentList.add(new NewsFragment());
+            mFragmentList.add(new DynamicFragment());
+        }
+    }
+
 
     //初始化ViewPager
     private void initViewPager() {
 
-        CloudMessageVPAdapter cloudMessageVPAdapter = new CloudMessageVPAdapter(getChildFragmentManager(), this);
+        CloudMessageVPAdapter cloudMessageVPAdapter = new CloudMessageVPAdapter(getChildFragmentManager(), mFragmentList);
 
         mCloudCircleVp.setAdapter(cloudMessageVPAdapter);
-        mCloudCircleVp.setOffscreenPageLimit(3);
-
+        mCloudCircleVp.setOffscreenPageLimit(mFragmentList.size());
         mCloudCircleVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -192,7 +214,6 @@ public class DiscoverFragment extends Fragment {
 
             }
         });
-
     }
 
     //初始化顶部菜单栏
@@ -239,9 +260,13 @@ public class DiscoverFragment extends Fragment {
                         mNewXx.setVisibility(View.VISIBLE);
                         break;
                     case 2:
-                        mGonggaoXx.setVisibility(View.INVISIBLE);
-                        mDongtaiXx.setVisibility(View.VISIBLE);
-                        mNewXx.setVisibility(View.INVISIBLE);
+                        if (mFragmentList.size() > 2) {
+                            mGonggaoXx.setVisibility(View.INVISIBLE);
+                            mDongtaiXx.setVisibility(View.VISIBLE);
+                            mNewXx.setVisibility(View.INVISIBLE);
+                        } else {
+                            startActivity(new Intent(getActivity(), InitialActivity.class));
+                        }
                         break;
                 }
 
@@ -264,16 +289,28 @@ public class DiscoverFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_gonggao_manager:
-                startActivity(new Intent(getActivity(), GonggaoManagerActivity.class));
+                if (mFragmentList.size() > 2) {
+                    startActivity(new Intent(getActivity(), GonggaoManagerActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), InitialActivity.class));
+                }
                 break;
             case R.id.rl_push_dynamic_status:
                 ToastShow.showToast2(getActivity(), getString(R.string.toast_uploading_dynamic));
                 break;
             case R.id.iv_news_manager:
-                startActivity(new Intent(getActivity(), NewsManagerActivity.class));
+                if (mFragmentList.size() > 2) {
+                    startActivity(new Intent(getActivity(), NewsManagerActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), InitialActivity.class));
+                }
                 break;
             case R.id.iv_news_push:
-                startActivity(new Intent(getActivity(), NewsEditActivity.class));
+                if (mFragmentList.size() > 2) {
+                    startActivity(new Intent(getActivity(), NewsEditActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), InitialActivity.class));
+                }
                 break;
             case R.id.iv_push_dynamic:
                 startActivity(new Intent(getActivity(), PublicshDynamicActivity.class));

@@ -73,7 +73,7 @@ public class AddFriendReceiver extends BroadcastReceiver {
                     deleteCacheDialog.show();
                     deleteCacheDialog.setTitle(context.getString(R.string.user) + alertSubName + context.getString(R.string.request_add));
                     Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
-                    cancel.setTextColor(context.getColor(R.color.red));
+                    cancel.setTextColor(context.getResources().getColor(R.color.red));
                     cancel.setText(context.getString(R.string.reject));
                     Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
                     confirm.setText(context.getString(R.string.consent));

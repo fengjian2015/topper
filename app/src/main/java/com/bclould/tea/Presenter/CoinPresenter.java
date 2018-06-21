@@ -37,12 +37,12 @@ public class CoinPresenter {
         mContext = context;
     }
 
-    private void showDialog() {
+    private void showDialog(String message) {
         if (mProgressDialog == null) {
             mProgressDialog = LoadingProgressDialog.createDialog(mContext);
             mProgressDialog.setCanceledOnTouchOutside(false);
             mProgressDialog.setCancelable(false);
-            mProgressDialog.setMessage(mContext.getString(R.string.exchange_underway));
+            mProgressDialog.setMessage(message);
         }
 
         mProgressDialog.show();
@@ -169,6 +169,7 @@ public class CoinPresenter {
 
     public void coinLists(String type, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog(mContext.getString(R.string.loading));
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .coinLists(UtilTool.getToken(), type)
@@ -210,7 +211,7 @@ public class CoinPresenter {
 
     public void exchange(String price, String number, String market_coin_nam, String trade_coin_name, String password, final CallBack4 callBack4) {
         if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
+            showDialog(mContext.getString(R.string.exchange_underway));
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .exchangeSale(UtilTool.getToken(), price, number, market_coin_nam, trade_coin_name, password)

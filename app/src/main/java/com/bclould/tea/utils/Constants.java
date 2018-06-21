@@ -12,8 +12,7 @@ import android.support.annotation.RequiresApi;
 public class Constants {
     public static final String ADMINISTRATOR_NAME = "TOPPERCHAT";
     public static int BET_ARR_COUNT = 4;
-    private static final boolean isDebug = false;
-
+    private static final boolean isDebug = true;
     //    public static final int OPENFIRE_PORT = 5288;
     public static final int OPENFIRE_PORT = 2018;
     public static final String BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "https://api.cnblocklink.com/";

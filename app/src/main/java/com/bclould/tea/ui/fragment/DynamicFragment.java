@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,6 +35,7 @@ import com.bclould.tea.ui.activity.MainActivity;
 import com.bclould.tea.ui.adapter.DynamicRVAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.UtilTool;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.compress.Luban;
 import com.luck.picture.lib.config.PictureConfig;
@@ -63,7 +65,6 @@ import static com.luck.picture.lib.config.PictureMimeType.ofImage;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class DynamicFragment extends Fragment {
-    public static DynamicFragment instance = null;
     @Bind(R.id.iv)
     ImageView mIv;
     @Bind(R.id.ll_no_data)
@@ -97,16 +98,6 @@ public class DynamicFragment extends Fragment {
     private String mDynamicId;
     private boolean mType;
 
-    public static DynamicFragment getInstance() {
-
-        if (instance == null) {
-
-            instance = new DynamicFragment();
-
-        }
-
-        return instance;
-    }
 
     @Nullable
     @Override
@@ -156,22 +147,74 @@ public class DynamicFragment extends Fragment {
             mDynamicId = event.getState();
             mType = event.isType();
             if (mType) {
-                mIvSelectorImg.setVisibility(View.GONE);
-                mCommentEt.setHint(getString(R.string.reply) + event.getCoinName());
+                if (!event.getCoinName().equals(UtilTool.getUser())) {
+                    mIvSelectorImg.setVisibility(View.GONE);
+                    mCommentEt.setHint(getString(R.string.reply) + event.getCoinName());
+                    mRlEdit.setVisibility(View.VISIBLE);
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    boolean isOpen = imm.isActive(mCommentEt);//isOpen若返回true，则表示输入法打开
+                    if (!isOpen) {
+                        mCommentEt.requestFocus();
+                        imm.showSoftInput(mCommentEt, 0);
+                    }
+                } else {
+                    showDeleteCommentDialog();
+                }
             } else {
                 mCommentEt.setHint(getString(R.string.et_comment));
                 mIvSelectorImg.setVisibility(View.GONE);
-            }
-            mRlEdit.setVisibility(View.VISIBLE);
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            boolean isOpen = imm.isActive(mCommentEt);//isOpen若返回true，则表示输入法打开
-            if (!isOpen) {
-                mCommentEt.requestFocus();
-                imm.showSoftInput(mCommentEt, 0);
+                mRlEdit.setVisibility(View.VISIBLE);
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                boolean isOpen = imm.isActive(mCommentEt);//isOpen若返回true，则表示输入法打开
+                if (!isOpen) {
+                    mCommentEt.requestFocus();
+                    imm.showSoftInput(mCommentEt, 0);
+                }
             }
         } else if (msg.equals(getString(R.string.hide_keyboard))) {
             mRlEdit.setVisibility(View.GONE);
         }
+    }
+
+    private void showDeleteCommentDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, getContext(), R.style.dialog);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(getString(R.string.whether_delete_comment));
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        confirm.setText(getString(R.string.delete));
+        confirm.setTextColor(getResources().getColor(R.color.red));
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDynamicPresenter.deleteComment(Integer.parseInt(mCommentId), new DynamicPresenter.CallBack() {
+                    @Override
+                    public void send() {
+                        for (int i = 0; i < mDataList.size(); i++) {
+                            if (mDataList.get(i).getReviewList().size() != 0 && mDataList.get(i).getReview_count() != 0) {
+                                if (mDataList.get(i).getId() == Integer.parseInt(mDynamicId)) {
+                                    for (int j = 0; j < mDataList.get(i).getReviewList().size(); j++) {
+                                        if (mDataList.get(i).getReviewList().get(j).getId() == Integer.parseInt(mCommentId)) {
+                                            mDataList.get(i).getReviewList().remove(j);
+                                            mDataList.get(i).setReview_count(mDataList.get(i).getReview_count() - 1);
+                                            mDynamicRVAdapter.notifyItemChanged(i);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        deleteCacheDialog.dismiss();
+                    }
+                });
+            }
+        });
     }
 
     @SuppressLint("HandlerLeak")
@@ -336,23 +379,6 @@ public class DynamicFragment extends Fragment {
                 selectorImg();
                 break;
             case R.id.send:
-                /*if (selectList.size() == 0) {
-                    if (mCommentEt.getText().toString().isEmpty()) {
-                        Toast.makeText(getContext(), getString(R.string.toast_comment), Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (mType) {
-                            sendComment(mDynamicId, mCommentId, "", 0);
-                        } else {
-                            sendComment(mDynamicId, "0", "", 0);
-                        }
-                    }
-                } else {
-                    if (mCommentEt.getText().toString().isEmpty()) {
-                        Toast.makeText(getContext(), getString(R.string.toast_comment), Toast.LENGTH_SHORT).show();
-                    } else {
-                        upImg(selectList.get(0).getCompressPath());
-                    }
-                }*/
                 if (mCommentEt.getText().toString().isEmpty()) {
                     Toast.makeText(getContext(), getString(R.string.toast_comment), Toast.LENGTH_SHORT).show();
                 } else {
@@ -466,8 +492,9 @@ public class DynamicFragment extends Fragment {
                 for (int i = 0; i < mDataList.size(); i++) {
                     if (mDataList.get(i).getId() == Integer.parseInt(mDynamicId)) {
                         mDataList.get(i).getReviewList().add(data.get(0));
-                        mDataList.get(i).setLike_count(mDataList.get(i).getReview_count() + 1);
+                        mDataList.get(i).setReview_count(mDataList.get(i).getReview_count() + 1);
                         mDynamicRVAdapter.notifyItemChanged(i);
+                        break;
                     }
                 }
             }

@@ -33,8 +33,6 @@ import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.QrRedInfo;
-import com.bclould.tea.service.IMCoreService;
-import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.AddFriendActivity;
 import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tea.ui.activity.ScanQRCodeActivity;
@@ -165,17 +163,8 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     };
 
     private void initRelogin() {
-        WsConnection.getInstance().setOutConnection(false);
         ConnectStateChangeListenerManager.get().registerStateChangeListener(this);
-        ConnectStateChangeListenerManager.get().setCurrentState(ConnectStateChangeListenerManager.DISCONNECT);
-        imState = -1;
-        ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
-        Intent intent = new Intent(getContext(), IMCoreService.class);
-        if (WsConnection.isServiceWork(getContext(), IMCoreService.CORE_SERVICE_NAME)) {
-            WsConnection.stopAllIMCoreService(getContext());
-            getContext().stopService(intent);
-        }
-        getContext().startService(intent);
+
     }
 
     private void onChangeChatState(final int serviceState) {

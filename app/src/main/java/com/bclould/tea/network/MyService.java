@@ -233,7 +233,7 @@ public interface MyService {
     );
 
     //获取秘钥
-    @GET("security/getGoogleKey")
+    @GET("api/security/getGoogleKey")
     Observable<GoogleInfo> getGoogleKey(
             @Header("Authorization") String token
     );
@@ -1130,6 +1130,14 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("toco_id") String toco_id,
             @Field("group_id") int group_id
+    );
+
+    //刪除自己的評論
+    @FormUrlEncoded
+    @POST("api/review/del")
+    Observable<BaseInfo> deleteComment(
+            @Header("Authorization") String token,
+            @Field("review_id") int review_id
     );
 
 }

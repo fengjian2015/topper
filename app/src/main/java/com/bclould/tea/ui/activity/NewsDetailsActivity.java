@@ -28,6 +28,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.MessageInfo;
+import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
@@ -253,10 +254,22 @@ public class NewsDetailsActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.send:
-                review();
+                if (WsConnection.getInstance().getOutConnection()) {
+                    Intent intent = new Intent(this, InitialActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                } else {
+                    review();
+                }
                 break;
             case R.id.iv_share:
-                goShare();
+                if (WsConnection.getInstance().getOutConnection()) {
+                    Intent intent = new Intent(this, InitialActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                } else {
+                    goShare();
+                }
                 break;
         }
     }

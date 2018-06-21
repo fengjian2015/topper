@@ -6,11 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.bclould.tea.ui.fragment.DynamicFragment;
-import com.bclould.tea.ui.fragment.GonggaoFragment;
-import com.bclould.tea.ui.fragment.NewsFragment;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,13 +15,11 @@ import java.util.List;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CloudMessageVPAdapter extends FragmentPagerAdapter {
 
-    List<Fragment> mFragmentList = new ArrayList<>();
+    private final List<Fragment> mFragmentList;
 
-    public CloudMessageVPAdapter(FragmentManager fm, Fragment fragment) {
+    public CloudMessageVPAdapter(FragmentManager fm, List<Fragment> fragmentList) {
         super(fm);
-        mFragmentList.add(GonggaoFragment.getInstance());
-        mFragmentList.add(NewsFragment.getInstance());
-        mFragmentList.add(DynamicFragment.getInstance());
+        mFragmentList = fragmentList;
     }
 
     @Override

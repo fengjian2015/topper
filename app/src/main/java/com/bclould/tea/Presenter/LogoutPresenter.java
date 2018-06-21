@@ -23,6 +23,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.bclould.tea.Presenter.LoginPresenter.TOCOID;
 import static com.bclould.tea.Presenter.LoginPresenter.TOKEN;
 
 /**
@@ -123,6 +124,7 @@ public class LogoutPresenter {
             MyApp.getInstance().exit();
             mSystemSetActivity.finish();
             MySharedPreferences.getInstance().setString(TOKEN, "");
+            MySharedPreferences.getInstance().setString(TOCOID, "");
             MyApp.getInstance().mCoinList.clear();
             MyApp.getInstance().mPayCoinList.clear();
             MyApp.getInstance().mOtcCoinList.clear();

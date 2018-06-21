@@ -16,8 +16,8 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.network.RetrofitUtil;
+import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.utils.MySharedPreferences;
-import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 
 import butterknife.Bind;
@@ -28,7 +28,6 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.bclould.tea.Presenter.LoginPresenter.TOCOID;
 import static com.bclould.tea.Presenter.LoginPresenter.TOKEN;
 
 
@@ -47,11 +46,11 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         ButterKnife.bind(this);
-
+        WsConnection.getInstance().setOutConnection(true);
         new Handler() {
             public void handleMessage(Message msg) {
                 if (UtilTool.getToken().equals("bearer")) {
-                    startActivity(new Intent(StartActivity.this, InitialActivity.class));
+                    startActivity(new Intent(StartActivity.this, MainActivity.class));
                     finish();
                 } else {
                     if (UtilTool.isNetworkAvailable(StartActivity.this)) {
@@ -69,41 +68,37 @@ public class StartActivity extends AppCompatActivity {
                                     @Override
                                     public void onNext(@NonNull BaseInfo baseInfo) {
                                         if (baseInfo.getStatus() == 1) {
-                                            if(StringUtils.isEmpty(MySharedPreferences.getInstance().getString(TOCOID))){
-                                                startActivity(new Intent(StartActivity.this, InitialActivity.class));
-                                            }else {
-                                                MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
-                                                UtilTool.Log("日志", baseInfo.getMessage());
-                                                startActivity(new Intent(StartActivity.this, MainActivity.class));
-                                            }
+                                            WsConnection.getInstance().setOutConnection(false);
+                                            MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
+                                            UtilTool.Log("日志", baseInfo.getMessage());
+                                            startActivity(new Intent(StartActivity.this, MainActivity.class));
                                             finish();
                                         } else {
-                                            finish();
                                             MySharedPreferences.getInstance().setString(TOKEN, "");
-                                            startActivity(new Intent(StartActivity.this, InitialActivity.class));
+                                            startActivity(new Intent(StartActivity.this, MainActivity.class));
+                                            finish();
                                         }
                                     }
 
                                     @Override
                                     public void onError(@NonNull Throwable e) {
-                                        if (e.getMessage().equals("HTTP 401 Unauthorized")) {
+                                        MySharedPreferences.getInstance().setString(TOKEN, "");
+                                        startActivity(new Intent(StartActivity.this, MainActivity.class));
+                                        /*if (e.getMessage().equals("HTTP 401 Unauthorized")) {
                                             finish();
                                             MySharedPreferences.getInstance().setString(TOKEN, "");
-                                            startActivity(new Intent(StartActivity.this, InitialActivity.class));
+                                            startActivity(new Intent(StartActivity.this, MainActivity.class));
                                         } else if (e.getMessage().equals("connect timed out")) {
                                             finish();
-                                            if(StringUtils.isEmpty(MySharedPreferences.getInstance().getString(TOCOID))){
-                                                startActivity(new Intent(StartActivity.this, InitialActivity.class));
-                                            }else {
-                                                startActivity(new Intent(StartActivity.this, MainActivity.class));
-                                            }
+                                            startActivity(new Intent(StartActivity.this, MainActivity.class));
                                         } else {
                                             finish();
                                             MySharedPreferences.getInstance().setString(TOKEN, "");
                                             startActivity(new Intent(StartActivity.this, InitialActivity.class));
-                                        }
+                                        }*/
                                         Toast.makeText(StartActivity.this, getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                                         UtilTool.Log("日志", e.getMessage());
+                                        finish();
                                     }
 
                                     @Override
@@ -112,12 +107,15 @@ public class StartActivity extends AppCompatActivity {
                                     }
                                 });
                     } else {
-                        if(StringUtils.isEmpty(MySharedPreferences.getInstance().getString(TOCOID))){
+                        /*if (StringUtils.isEmpty(MySharedPreferences.getInstance().getString(TOCOID))) {
                             startActivity(new Intent(StartActivity.this, InitialActivity.class));
-                        }else {
+                        } else {
                             startActivity(new Intent(StartActivity.this, MainActivity.class));
-                        }
+                        }*/
+                        MySharedPreferences.getInstance().setString(TOKEN, "");
+                        startActivity(new Intent(StartActivity.this, MainActivity.class));
                         Toast.makeText(StartActivity.this, StartActivity.this.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 }
             }

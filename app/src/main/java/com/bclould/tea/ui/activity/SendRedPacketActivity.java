@@ -301,7 +301,7 @@ public class SendRedPacketActivity extends BaseActivity {
             }
         });
         tvTitle.setText(getString(R.string.selector_coin));
-        if (MyApp.getInstance().mCoinList.size() != 0) {
+        if (MyApp.getInstance().mRedCoinList.size() != 0) {
             recyclerView.setVisibility(View.VISIBLE);
             addCoin.setVisibility(View.GONE);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
