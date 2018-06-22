@@ -7,6 +7,7 @@ import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.bclould.tea.R;
+import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.BaseInfo;
@@ -139,7 +140,7 @@ public class GroupPresenter {
         }
     }
 
-    public void getGroup(final DBRoomMember mDBRoomMember, final DBRoomManage mDBRoomManage, boolean isShow, final CallBack1 callBack) {
+    public void getGroup(final DBRoomMember mDBRoomMember, final DBRoomManage mDBRoomManage, final DBManager dbManager, boolean isShow, final CallBack1 callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             if(isShow)showDialog();
             RetrofitUtil.getInstance(mContext)
@@ -173,6 +174,7 @@ public class GroupPresenter {
                                         mDBRoomMember.addRoomMember(roomMemberInfo);
                                     }
                                 }
+//                                dbManager.deleteConversation(baseInfo.getData());
                                 callBack.send(baseInfo);
 
                             }

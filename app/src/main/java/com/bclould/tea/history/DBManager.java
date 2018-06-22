@@ -12,11 +12,13 @@ import android.widget.Toast;
 import com.bclould.tea.model.AddRequestInfo;
 import com.bclould.tea.model.AuatarListInfo;
 import com.bclould.tea.model.ConversationInfo;
+import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.RemarkListInfo;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.xmpp.RoomManage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -560,6 +562,25 @@ public class DBManager {
     public void deleteConversation(String user) {
         db = helper.getWritableDatabase();
         db.delete("ConversationRecord", "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
+    }
+    public void deleteConversation(List<GroupInfo.DataBean> dataBeans) {
+        db = helper.getWritableDatabase();
+        List<ConversationInfo> conversationInfos=queryConversation();
+        if(conversationInfos!=null&&conversationInfos.size()>0){
+            for(ConversationInfo conversationInfo:conversationInfos){
+                if(RoomManage.ROOM_TYPE_MULTI.equals(conversationInfo.getChatType())){
+                   A:for(int i=0;i<dataBeans.size();i++){
+                        if (conversationInfo.getUser().equals(dataBeans.get(i).getId()+"")){
+                            break A;
+                        }
+                        if(i==dataBeans.size()-1){
+                            deleteConversation(conversationInfo.getUser());
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     public void addUser(String user, String path) {

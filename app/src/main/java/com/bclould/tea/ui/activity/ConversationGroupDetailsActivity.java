@@ -117,7 +117,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
             new GroupPresenter(this).selectGroupMember(Integer.parseInt(roomId), mDBRoomMember, true, new GroupPresenter.CallBack() {
                 @Override
                 public void send() {
-                    EventBus.getDefault().post(new MessageEvent(getString(R.string.create_group_chat)));
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.refresh_group_members)));
                 }
             });
         }else{

@@ -137,7 +137,7 @@ public class CreateGroupRoomActivity extends BaseActivity {
             @Override
             public void send() {
                 mDBRoomMember.addRoomMemberUserInfo(mUserInfoList,roomId);
-                EventBus.getDefault().post(new MessageEvent(getString(R.string.create_group_chat)));
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.refresh_group_members)));
                 finish();
             }
         });

@@ -284,7 +284,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getGroup() {
-        new GroupPresenter(this).getGroup(mDBRoomMember, mDBRoomManage, false,new GroupPresenter.CallBack1() {
+        new GroupPresenter(this).getGroup(mDBRoomMember, mDBRoomManage,mMgr, false,new GroupPresenter.CallBack1() {
             @Override
             public void send(GroupInfo baseInfo) {
                 // TODO: 2018/6/11 獲取群聊房間塞入數據庫
