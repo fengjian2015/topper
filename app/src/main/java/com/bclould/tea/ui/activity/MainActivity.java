@@ -132,11 +132,9 @@ public class MainActivity extends BaseActivity {
         //whence =1 登錄   2 退出登錄  3強制退出
         int whence = intent.getIntExtra("whence", 0);
         initRelogin();
-        if (1==whence) {
+        if (1 == whence) {
             DiscoverFragment discoverFragment = DiscoverFragment.getInstance();
-            FragmentFactory.mMainMap.remove(discoverFragment);
-            mSupportFragmentManager.beginTransaction().remove(discoverFragment).commit();
-            discoverFragment = null;
+            discoverFragment.initInterface();
             setSelector(0);
             //切换Fragment
             changeFragment(0);
@@ -144,13 +142,13 @@ public class MainActivity extends BaseActivity {
             getGroup();
             getMyImage();
             getFriends();
-        }else if(2==whence||3==whence){
+        } else if (2 == whence || 3 == whence) {
             DiscoverFragment discoverFragment = DiscoverFragment.getInstance();
             discoverFragment.initInterface();
             setSelector(2);
             //切换Fragment
             changeFragment(2);
-            if(3==whence){
+            if (3 == whence) {
                 showLoginOut();
             }
         }
@@ -159,7 +157,7 @@ public class MainActivity extends BaseActivity {
     public void showLoginOut() {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, MainActivity.this, R.style.dialog);
         deleteCacheDialog.show();
-        deleteCacheDialog.setTitle(this.getString(R.string.force_quit_login_again) );
+        deleteCacheDialog.setTitle(this.getString(R.string.force_quit_login_again));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -284,7 +282,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getGroup() {
-        new GroupPresenter(this).getGroup(mDBRoomMember, mDBRoomManage,mMgr, false,new GroupPresenter.CallBack1() {
+        new GroupPresenter(this).getGroup(mDBRoomMember, mDBRoomManage, mMgr, false, new GroupPresenter.CallBack1() {
             @Override
             public void send(GroupInfo baseInfo) {
                 // TODO: 2018/6/11 獲取群聊房間塞入數據庫
