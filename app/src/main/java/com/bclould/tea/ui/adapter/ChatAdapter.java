@@ -124,6 +124,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public static final int ADMINISTRATOR_TRANSFER_MSG = 18;//管理員轉賬消息
     public static final int ADMINISTRATOR_IN_OUT_COIN_MSG = 19;//管理員提幣消息
     public static final int ADMINISTRATOR_IN_COIN_MSG = 29;//管理員充幣消息
+    public static final int ADMINISTRATOR_EXCEPTIONAL_MSG = 30;//打賞
 
     private final Context mContext;
     private final List<MessageInfo> mMessageList;
@@ -251,6 +252,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } else if (viewType == ADMINISTRATOR_IN_COIN_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_in_coin, parent, false);
             holder = new InCoinInformHolder(view);
+        }else if(viewType==ADMINISTRATOR_EXCEPTIONAL_MSG){
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_exceptional, parent, false);
+            holder = new ExceptionalHolder(view);
         } else {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_chat_text, parent, false);
             holder = new TextChatHolder(view);
@@ -401,6 +405,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
             case ADMINISTRATOR_IN_COIN_MSG:
                 InCoinInformHolder inCoinInformHolder = (InCoinInformHolder) holder;
                 inCoinInformHolder.setData(mMessageList.get(position));
+                break;
+            case ADMINISTRATOR_EXCEPTIONAL_MSG:
+                ExceptionalHolder exceptionalHolder= (ExceptionalHolder) holder;
+                exceptionalHolder.setData(mMessageList.get(position));
                 break;
             default:
                 TextChatHolder textChatHolder = (TextChatHolder) holder;
@@ -553,6 +561,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     mMessageList.remove(messageInfo);
                     RoomManage.getInstance().getRoom(mRoomId).anewSendText(messageInfo.getMessage(), messageInfo.getId());
+                    notifyDataSetChanged();
                 }
             });
             mTvMessamge.setOnLongClickListener(new View.OnLongClickListener() {
@@ -863,6 +872,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     mMessageList.remove(messageInfo);
                     RoomManage.getInstance().getRoom(mRoomId).anewSendVoice(messageInfo);
+                    notifyDataSetChanged();
                 }
             });
             final AnimationDrawable anim = (AnimationDrawable) mIvAnim.getBackground();
@@ -1269,6 +1279,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     mMessageList.remove(messageInfo);
                     RoomManage.getInstance().getRoom(mRoomId).anewSendLocation(messageInfo);
+                    notifyDataSetChanged();
                 }
             });
             rlLocation.setOnClickListener(new View.OnClickListener() {
@@ -1375,6 +1386,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     mMessageList.remove(messageInfo);
                     RoomManage.getInstance().getRoom(mRoomId).anewSendCard(messageInfo);
+                    notifyDataSetChanged();
                 }
             });
             tvUsername.setText(messageInfo.getMessage());
@@ -1483,6 +1495,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     mMessageList.remove(messageInfo);
                     RoomManage.getInstance().getRoom(mRoomId).anewSendShareLink(messageInfo);
+                    notifyDataSetChanged();
                 }
             });
             Glide.with(mContext).load(messageInfo.getHeadUrl()).apply(requestOptions).into(ivHead);
@@ -1618,6 +1631,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     mMessageList.remove(messageInfo);
                     RoomManage.getInstance().getRoom(mRoomId).anewSendShareGuess(messageInfo);
+                    notifyDataSetChanged();
                 }
             });
             rlGuess.setOnLongClickListener(new View.OnLongClickListener() {
@@ -2177,6 +2191,46 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mTvCoin.setText(messageInfo.getCoin());
             mTvCount.setText(messageInfo.getCount());
             mTvTime.setText(messageInfo.getTime());
+            mLlRedExpriedMsg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, PayDetailsActivity.class);
+                    intent.putExtra("id", messageInfo.getRedId() + "");
+                    intent.putExtra("log_id", messageInfo.getBetId());
+                    intent.putExtra("type_number", messageInfo.getType() + "");
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+    }
+
+    //打賞
+    class ExceptionalHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.tv_type_msg)
+        TextView mTvTypeMsg;
+        @Bind(R.id.tv_coin)
+        TextView mTvCoin;
+        @Bind(R.id.tv_count)
+        TextView mTvCount;
+        @Bind(R.id.tv_time)
+        TextView mTvTime;
+        @Bind(R.id.ll_red_expried_msg)
+        LinearLayout mLlRedExpriedMsg;
+
+        ExceptionalHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final MessageInfo messageInfo) {
+            mTvCoin.setText(messageInfo.getCoin());
+            mTvCount.setText(messageInfo.getCount());
+            mTvTime.setText(messageInfo.getTime());
+            if (messageInfo.getType() == 13) {
+                mTvTypeMsg.setText(mContext.getString(R.string.exceptional_spending));
+            } else {
+                mTvTypeMsg.setText(mContext.getString(R.string.exceptional_income));
+            }
             mLlRedExpriedMsg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

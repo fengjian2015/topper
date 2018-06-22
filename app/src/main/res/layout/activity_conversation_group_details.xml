@@ -105,6 +105,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:paddingLeft="@dimen/x20"
+            android:visibility="gone"
             >
             <View
                 style="@style/HCutOffRule"
@@ -134,6 +135,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:paddingLeft="@dimen/x20"
+            android:visibility="gone"
             >
             <View
                 style="@style/HCutOffRule"
@@ -211,7 +213,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/y100"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:visibility="gone">
 
             <View
                 style="@style/HCutOffRule"

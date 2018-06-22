@@ -10,9 +10,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.NotificationCompat;
 import android.util.Base64;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -32,12 +35,14 @@ import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.network.OSSupload;
 import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.activity.InitialActivity;
+import com.bclould.tea.ui.activity.MainActivity;
 import com.bclould.tea.ui.activity.OrderCloseActivity;
 import com.bclould.tea.ui.activity.PayDetailsActivity;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
+import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tea.xmpp.RoomManage;
@@ -64,10 +69,12 @@ import java.util.concurrent.Executors;
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.bclould.tea.Presenter.LoginPresenter.CURRENCY;
 import static com.bclould.tea.Presenter.LoginPresenter.STATE;
+import static com.bclould.tea.Presenter.LoginPresenter.TOCOID;
 import static com.bclould.tea.Presenter.LoginPresenter.TOKEN;
 import static com.bclould.tea.topperchat.WsContans.BC_ADD_GROUP;
 import static com.bclould.tea.topperchat.WsContans.BC_AUTH_STATUS;
 import static com.bclould.tea.topperchat.WsContans.BC_COIN_IN_BROAD;
+import static com.bclould.tea.topperchat.WsContans.BC_ENJOY_PLAYING;
 import static com.bclould.tea.topperchat.WsContans.BC_FRIEND_COMMIT;
 import static com.bclould.tea.topperchat.WsContans.BC_FRIEND_REJECT;
 import static com.bclould.tea.topperchat.WsContans.BC_FRIEND_REQUEST;
@@ -80,8 +87,19 @@ import static com.bclould.tea.topperchat.WsContans.BC_QUIT_GROUP;
 import static com.bclould.tea.topperchat.WsContans.BC_RED_GET;
 import static com.bclould.tea.topperchat.WsContans.BC_RED_PACKET_EXPIRED;
 import static com.bclould.tea.topperchat.WsContans.BC_TRANSFER_INFORM;
+import static com.bclould.tea.topperchat.WsContans.CONTENT;
+import static com.bclould.tea.topperchat.WsContans.MSG_BROADCAST;
+import static com.bclould.tea.topperchat.WsContans.MSG_GROUP;
+import static com.bclould.tea.topperchat.WsContans.MSG_GROUP_RESULT;
+import static com.bclould.tea.topperchat.WsContans.MSG_LOGIN;
+import static com.bclould.tea.topperchat.WsContans.MSG_LOGINOUT;
+import static com.bclould.tea.topperchat.WsContans.MSG_PING;
+import static com.bclould.tea.topperchat.WsContans.MSG_SINGLER;
+import static com.bclould.tea.topperchat.WsContans.MSG_SINGLER_RESULT;
+import static com.bclould.tea.topperchat.WsContans.TYPE;
 import static com.bclould.tea.ui.activity.SystemSetActivity.INFORM;
 import static com.bclould.tea.ui.adapter.ChatAdapter.ADMINISTRATOR_AUTH_STATUS_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.ADMINISTRATOR_EXCEPTIONAL_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.ADMINISTRATOR_IN_COIN_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.ADMINISTRATOR_IN_OUT_COIN_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.ADMINISTRATOR_OTC_ORDER_MSG;
@@ -157,44 +175,44 @@ public class SocketListener {
             Map<Object, Object> deserialized = objectMapper.readValue(binary, new TypeReference<Map<String, Object>>() {
             });
             Map<Object, Object> content;
-            UtilTool.Log("fengjian", "接受到消息：type=" + deserialized.get("type"));
-            switch ((int) deserialized.get("type")) {
-                case 16:
+            UtilTool.Log("fengjian", "接受到消息：type=" + deserialized.get(TYPE));
+            switch ((int) deserialized.get(TYPE)) {
+                case MSG_LOGIN:
                     //登錄反饋
                     LoginFeedback(binary);
                     break;
-                case 3:
+                case MSG_SINGLER:
                     //消息
-                    content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {
+                    content = objectMapper.readValue((byte[]) deserialized.get(CONTENT), new TypeReference<Map<String, Object>>() {
                     });
-                    UtilTool.Log("fengjian", "聊天消息message：to：" + content.get("to") + "   from:" + content.get("from") + "   crypt:" + content.get("crypt") + "   message：" + content.get("message") + "   type：" + content.get("type") + "   id:" + content.get("id"));
+                    UtilTool.Log("fengjian", "聊天消息message：to：" + content.get("to") + "   from:" + content.get("from") + "   crypt:" + content.get("crypt") + "   message：" + content.get("message") + "   type：" + content.get(TYPE) + "   id:" + content.get("id"));
                     messageFeedback(content, true, RoomManage.ROOM_TYPE_SINGLE);
                     break;
-                case 13:
+                case MSG_GROUP:
                     //群組消息
-                    content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {
+                    content = objectMapper.readValue((byte[]) deserialized.get(CONTENT), new TypeReference<Map<String, Object>>() {
                     });
                     messageFeedback(content, true, RoomManage.ROOM_TYPE_MULTI);
                     break;
-                case 18:
+                case MSG_BROADCAST:
                     //廣播消息
-                    friendRequest((byte[]) deserialized.get("content"));
+                    friendRequest((byte[]) deserialized.get(CONTENT));
                     break;
-                case 4:
+                case MSG_PING:
                     //ping反饋
                     MySharedPreferences.getInstance().setInteger("ping", 1);
                     break;
-                case 31:
+                case MSG_LOGINOUT:
                     //其他賬號登錄
                     logout();
                     break;
-                case 32:
-                    content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
+                case MSG_SINGLER_RESULT:
+                    content = objectMapper.readValue((byte[]) deserialized.get(CONTENT), new TypeReference<Map<String, Object>>() {});
                     //消息回執，改變消息狀態
                     changeMsgState(content);
                     break;
-                case 34:
-                    content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
+                case MSG_GROUP_RESULT:
+                    content = objectMapper.readValue((byte[]) deserialized.get(CONTENT), new TypeReference<Map<String, Object>>() {});
                     //消息回執，改變消息狀態
                     changeMsgState(content);
                     break;
@@ -207,11 +225,12 @@ public class SocketListener {
     //其他賬號登錄
     private void logout() {
         WsConnection.getInstance().logoutService(context);
-        Intent intent = new Intent(context, InitialActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("whence",3);
         context.startActivity(intent);
-        MyApp.getInstance().exit();
         MySharedPreferences.getInstance().setString(TOKEN, "");
+        MySharedPreferences.getInstance().setString(TOCOID, "");
         UtilTool.Log("fengjian", "強制退出");
     }
 
@@ -329,7 +348,7 @@ public class SocketListener {
             if (crypt) {
                 if (context.getString(R.string.otr_error).equals(otr)) {
                     messageInfo.setMessage(otr);
-                    content.put("type", WsContans.MSG_TEXT);
+                    content.put(TYPE, WsContans.MSG_TEXT);
                 } else {
                     messageInfo = JSONObject.parseObject(otr, MessageInfo.class);
                 }
@@ -357,7 +376,7 @@ public class SocketListener {
             String redpacket = messageInfo.getMessage();
             File file = null;
             //根據消息類型處理對應的消息
-            switch ((int) content.get("type")) {
+            switch ((int) content.get(TYPE)) {
                 case WsContans.MSG_AUDIO:
                     //語音
                     redpacket = "[" + context.getString(R.string.voice) + "]";
@@ -580,7 +599,7 @@ public class SocketListener {
             });
             Map<Object, Object> jsonMap = JSON.parseObject(new String((byte[]) contentMap.get("message")), HashMap.class);
             Map<Object, Object> messageMap = JSON.parseObject((String) jsonMap.get("message"), HashMap.class);
-            int type = (int) messageMap.get("type");
+            int type = (int) messageMap.get(TYPE);
             switch (type) {
                 case BC_FRIEND_REQUEST:
                 case BC_FRIEND_COMMIT:
@@ -636,12 +655,45 @@ public class SocketListener {
                     //創建群組通知
                     createGroup(messageMap, (String) jsonMap.get("toco_id"));
                     break;
+                case BC_ENJOY_PLAYING:
+                    //打賞
+                    enjoyPlaying(messageMap);
+                    break;
 
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 打賞支出和收入
+     * @param messageMap
+     */
+    private void enjoyPlaying(Map<Object, Object> messageMap) {
+        Intent intent = new Intent(context, PayDetailsActivity.class);
+        intent.putExtra("id", messageMap.get("id") + "");
+        intent.putExtra("type_number", messageMap.get("type_number") + "");
+        goActivity(intent, context.getString(R.string.exceptional_inform), context.getString(R.string.exceptional_inform_hint));
+
+        MessageInfo messageInfo = new MessageInfo();
+        messageInfo.setSend(Constants.ADMINISTRATOR_NAME);
+        messageInfo.setUsername(Constants.ADMINISTRATOR_NAME);
+        messageInfo.setMsgType(ADMINISTRATOR_EXCEPTIONAL_MSG);
+
+        if((int)messageMap.get("type_number")==13) {
+            messageInfo.setConverstaion("[" + context.getString(R.string.exceptional_spending) + "]");
+        }else{
+            messageInfo.setConverstaion("[" + context.getString(R.string.exceptional_income) + "]");
+        }
+        messageInfo.setTime((String) messageMap.get("created_at"));
+        messageInfo.setCount((String) messageMap.get("number"));
+        messageInfo.setRedId((Integer) messageMap.get("id"));
+        messageInfo.setBetId(messageMap.get("log_id") + "");
+        messageInfo.setType((Integer) messageMap.get("type_number"));
+        messageInfo.setCoin((String) messageMap.get("coin_name"));
+        addMessage(messageInfo);
     }
 
     private void createConversation(String group_id,String roomName){
@@ -786,7 +838,7 @@ public class SocketListener {
         messageInfo.setSend(Constants.ADMINISTRATOR_NAME);
         messageInfo.setUsername(Constants.ADMINISTRATOR_NAME);
         messageInfo.setMsgType(ADMINISTRATOR_TRANSFER_MSG);
-        if ((int) messageMap.get("type") == 1) {
+        if ((int) messageMap.get(TYPE) == 1) {
             messageInfo.setConverstaion("[" + context.getString(R.string.in_account_inform) + "]");
             Intent intent = new Intent(context, PayDetailsActivity.class);
             intent.putExtra("id", messageMap.get("id") + "");
@@ -799,7 +851,7 @@ public class SocketListener {
         messageInfo.setRedId((Integer) messageMap.get("id"));
         messageInfo.setCount((String) messageMap.get("number"));
         messageInfo.setCoin((String) messageMap.get("coin_name"));
-        messageInfo.setStatus((Integer) messageMap.get("type"));
+        messageInfo.setStatus((Integer) messageMap.get(TYPE));
         messageInfo.setRemark((String) messageMap.get("name"));
         messageInfo.setBetId(messageMap.get("log_id") + "");
         messageInfo.setType((Integer) messageMap.get("type_number"));
@@ -825,7 +877,7 @@ public class SocketListener {
         messageInfo.setRedId((Integer) messageMap.get("id"));
         messageInfo.setCount((String) messageMap.get("number"));
         messageInfo.setCoin((String) messageMap.get("coin_name"));
-        messageInfo.setStatus((Integer) messageMap.get("type"));
+        messageInfo.setStatus((Integer) messageMap.get(TYPE));
         messageInfo.setRemark((String) messageMap.get("name"));
         messageInfo.setBetId(messageMap.get("log_id") + "");
         messageInfo.setType((Integer) messageMap.get("type_number"));
@@ -889,16 +941,17 @@ public class SocketListener {
         messageInfo.setCount((String) messageMap.get("order_no"));
         messageInfo.setCoin((String) messageMap.get("coin_name"));
         messageInfo.setStatus((Integer) messageMap.get("status"));
-        messageInfo.setType((Integer) messageMap.get("type"));
+        messageInfo.setType((Integer) messageMap.get(TYPE));
         Intent intent;
         if ((int) messageMap.get("status") == 1) {
             intent = new Intent(context, PayDetailsActivity.class);
-            intent.putExtra("id", messageMap.get("id") + "");
             intent.putExtra("type", context.getString(R.string.order));
+            intent.putExtra("id", messageMap.get("id")+"");
+            intent.putExtra(TYPE, context.getString(R.string.order));
         } else {
             intent = new Intent(context, OrderCloseActivity.class);
             intent.putExtra("id", messageMap.get("id") + "");
-            intent.putExtra("status", messageMap.get("type") + "");
+            intent.putExtra("status", messageMap.get(TYPE) + "");
         }
         goActivity(intent, context.getString(R.string.order_inform), context.getString(R.string.order_inform_hint));
         addMessage(messageInfo);
@@ -914,7 +967,7 @@ public class SocketListener {
         UtilTool.Log("fengjian", "接受到離線消息" + messageMap.toString());
         List<Map> mapList = JSON.parseArray(messageMap.get("data").toString(), Map.class);
         for (Map<Object, Object> map : mapList) {
-            Map<Object, Object> contentmap = JSON.parseObject((String) map.get("content"), Map.class);
+            Map<Object, Object> contentmap = JSON.parseObject((String) map.get(CONTENT), Map.class);
             byte[] bytes = Base64.decode((String) contentmap.get("message"), Base64.DEFAULT);
             contentmap.put("message", bytes);
             messageFeedback(contentmap, false, "");

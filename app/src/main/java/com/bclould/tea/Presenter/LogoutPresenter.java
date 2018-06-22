@@ -13,6 +13,7 @@ import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.InitialActivity;
+import com.bclould.tea.ui.activity.MainActivity;
 import com.bclould.tea.ui.activity.SystemSetActivity;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -121,7 +122,7 @@ public class LogoutPresenter {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             Toast.makeText(mSystemSetActivity, (String) msg.obj, Toast.LENGTH_SHORT).show();
-            MyApp.getInstance().exit();
+//            MyApp.getInstance().exit();
             mSystemSetActivity.finish();
             MySharedPreferences.getInstance().setString(TOKEN, "");
             MySharedPreferences.getInstance().setString(TOCOID, "");
@@ -129,7 +130,11 @@ public class LogoutPresenter {
             MyApp.getInstance().mPayCoinList.clear();
             MyApp.getInstance().mOtcCoinList.clear();
             MyApp.getInstance().mBetCoinList.clear();
-            mSystemSetActivity.startActivity(new Intent(mSystemSetActivity, InitialActivity.class));
+            Intent intent = new Intent(mSystemSetActivity, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("whence",2);
+            mSystemSetActivity.startActivity(intent);
+//            mSystemSetActivity.startActivity(new Intent(mSystemSetActivity, InitialActivity.class));
         }
     };
 }

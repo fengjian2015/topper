@@ -37,8 +37,6 @@ import com.bclould.tea.model.AuatarListInfo;
 import com.bclould.tea.model.GitHubInfo;
 import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.IndividualInfo;
-import com.bclould.tea.model.RoomManageInfo;
-import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.network.DownLoadApk;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.service.IMCoreService;
@@ -47,9 +45,12 @@ import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.fragment.DiscoverFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,9 +129,10 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        boolean whence = intent.getBooleanExtra("whence", false);
+        //whence =1 登錄   2 退出登錄  3強制退出
+        int whence = intent.getIntExtra("whence", 0);
         initRelogin();
-        if (whence) {
+        if (1==whence) {
             DiscoverFragment discoverFragment = DiscoverFragment.getInstance();
             FragmentFactory.mMainMap.remove(discoverFragment);
             mSupportFragmentManager.beginTransaction().remove(discoverFragment).commit();
@@ -142,7 +144,37 @@ public class MainActivity extends BaseActivity {
             getGroup();
             getMyImage();
             getFriends();
+        }else if(2==whence||3==whence){
+            DiscoverFragment discoverFragment = DiscoverFragment.getInstance();
+            discoverFragment.initInterface();
+            setSelector(2);
+            //切换Fragment
+            changeFragment(2);
+            if(3==whence){
+                showLoginOut();
+            }
         }
+    }
+
+    public void showLoginOut() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, MainActivity.this, R.style.dialog);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(this.getString(R.string.force_quit_login_again) );
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                startActivity(new Intent(MainActivity.this, InitialActivity.class));
+            }
+        });
     }
 
     private void initAddFriendReceiver() {
@@ -252,25 +284,11 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getGroup() {
-        new GroupPresenter(this).getGroup(new GroupPresenter.CallBack1() {
+        new GroupPresenter(this).getGroup(mDBRoomMember, mDBRoomManage,mMgr, false,new GroupPresenter.CallBack1() {
             @Override
             public void send(GroupInfo baseInfo) {
                 // TODO: 2018/6/11 獲取群聊房間塞入數據庫
-                mDBRoomManage.deleteAllRoom();
-                mDBRoomMember.deleteAllRoomMember();
-                for (GroupInfo.DataBean dataBean : baseInfo.getData()) {
-                    RoomManageInfo roomManageInfo = new RoomManageInfo();
-                    roomManageInfo.setRoomName(dataBean.getName());
-                    roomManageInfo.setRoomId(dataBean.getId() + "");
-                    mDBRoomManage.addRoom(roomManageInfo);
-                    for (GroupInfo.DataBean.UsersBean usersBean : dataBean.getUsers()) {
-                        RoomMemberInfo roomMemberInfo = new RoomMemberInfo();
-                        roomMemberInfo.setRoomId(dataBean.getId() + "");
-                        roomMemberInfo.setJid(usersBean.getToco_id());
-                        roomMemberInfo.setImage_url(usersBean.getAvatar());
-                        mDBRoomMember.addRoomMember(roomMemberInfo);
-                    }
-                }
+
             }
         });
     }
@@ -290,6 +308,7 @@ public class MainActivity extends BaseActivity {
                         dataBean.setToco_id(UtilTool.getTocoId());
                         datas.add(dataBean);
                         mMgr.addUserList(datas);
+                        EventBus.getDefault().post(new MessageEvent(getString(R.string.xg_touxaing)));
                     }
                 }
             });

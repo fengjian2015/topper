@@ -56,6 +56,7 @@ public class DBRoomMember {
             values.put("image_url", dataBean.getAvatar());
             values.put("remark", "");
             values.put("roomId",roomId);
+            db.insert("RoomMember", null, values);
             UtilTool.Log("fengjian", "添加成員到数据库成功" + dataBean.toString());
         }
     }
@@ -70,6 +71,7 @@ public class DBRoomMember {
             values.put("image_url", userInfo.getPath());
             values.put("remark", "");
             values.put("roomId",roomId);
+            db.insert("RoomMember", null, values);
             UtilTool.Log("fengjian", "添加成員到数据库成功" + userInfo.toString());
         }
     }
@@ -109,6 +111,24 @@ public class DBRoomMember {
         }
         cursor.close();
         return image_url;
+    }
+
+    public boolean findMember(String roomId,String toco_id) {
+        Cursor cursor=null;
+        try {
+            db = helper.getReadableDatabase();
+            String image_url = null;
+            cursor = db.rawQuery("select * from RoomMember where roomId=? and jid=? and my_user=?",
+                    new String[]{roomId,toco_id, UtilTool.getTocoId()});
+            boolean result = cursor.moveToNext();
+            return result;
+        }catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return false;
     }
 
     public void deleteRoom(String roomId) {

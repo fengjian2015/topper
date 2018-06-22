@@ -101,6 +101,8 @@ public class MyFragment extends Fragment {
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), getContext(), mIvTouxiang);
         } else if (msg.equals(getString(R.string.check_new_version))) {
             mTvNewUpdate.setVisibility(View.VISIBLE);
+        }else if(msg.equals(getString(R.string.refresh_the_interface))){
+            init();
         }
     }
 

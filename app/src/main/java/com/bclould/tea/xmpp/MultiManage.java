@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 
 
+import static com.bclould.tea.topperchat.WsContans.MSG_GROUP;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_CARD_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_FILE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_GUESS_MSG;
@@ -110,7 +111,7 @@ public class MultiManage implements Room{
         contentMap.put("time",time);
 
         Map<Object, Object> sendMap = new HashMap<>();
-        sendMap.put("type", 13);
+        sendMap.put("type", MSG_GROUP);
         sendMap.put("content", objectMapper.writeValueAsBytes(contentMap));
         mMgr.addMessageMsgId(msgId);
         WsConnection.getInstance().sendMessage(objectMapper.writeValueAsBytes(sendMap));
@@ -132,7 +133,7 @@ public class MultiManage implements Room{
         contentMap.put("type", msgType);
         contentMap.put("id",UtilTool.createMsgId(to));
         Map<Object, Object> sendMap = new HashMap<>();
-        sendMap.put("type", 3);
+        sendMap.put("type", MSG_GROUP);
         sendMap.put("content", objectMapper.writeValueAsBytes(contentMap));
         mMgr.addMessageMsgId(msgId);
         WsConnection.getInstance().sendMessage(objectMapper.writeValueAsBytes(sendMap));

@@ -16,8 +16,10 @@ import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.activity.ConversationActivity;
+import com.bclould.tea.ui.activity.ConversationServerActivity;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.xmpp.RoomManage;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -25,6 +27,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.bclould.tea.utils.Constants.ADMINISTRATOR_NAME;
 
 /**
  * Created by GA on 2018/1/27.
@@ -70,7 +74,6 @@ public class SearchAdapter extends RecyclerView.Adapter {
         TextView mTvName;
         private String mName;
         private String mUser;
-
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -83,14 +86,27 @@ public class SearchAdapter extends RecyclerView.Adapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, ConversationActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("name", mName);
-                    bundle.putString("user", mUser);
-                    intent.putExtras(bundle);
+                    if(ADMINISTRATOR_NAME.equals(mUser)){
+                        Intent intent = new Intent();
+                        intent.setClass(mContext, ConversationServerActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("name",mName);
+                        bundle.putString("roomId", mUser);
+                        intent.putExtras(bundle);
+                        mContext.startActivity(intent);
+                    }else {
+                        Intent intent = new Intent();
+                        intent.setClass(mContext, ConversationActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("name", mName);
+                        bundle.putString("user", mUser);
+                        bundle.putString("chatType", RoomManage.ROOM_TYPE_SINGLE );
+                        intent.putExtras(bundle);
+                        mContext.startActivity(intent);
+                    }
                     mMgr.updateNumber(mUser, 0);
                     EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
-                    mContext.startActivity(intent);
+
                 }
             });
         }

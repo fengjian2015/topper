@@ -11,6 +11,7 @@ import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.IndividualInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 
@@ -68,12 +69,14 @@ public class IndividualDetailsPresenter {
 
                         @Override
                         public void onNext(IndividualInfo individualInfo) {
+                            if(context instanceof Activity&&!ActivityUtil.isActivityOnTop((Activity) context)) return;
                             callBack.send(individualInfo.getData());
                             hideDialog();
                         }
 
                         @Override
                         public void onError(Throwable e) {
+                            if(context instanceof Activity&&!ActivityUtil.isActivityOnTop((Activity) context)) return;
                             hideDialog();
                             UtilTool.Log("信息", e.getMessage());
                             Toast.makeText(context, context.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();

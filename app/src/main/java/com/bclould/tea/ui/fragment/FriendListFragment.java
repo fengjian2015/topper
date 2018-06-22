@@ -334,8 +334,8 @@ public class FriendListFragment extends Fragment {
                 mNewFriend = 0;
                 break;
             case R.id.my_group:
-//                startActivity(new Intent(getActivity(), GroupListActivity.class));
-                ToastShow.showToast2(getActivity(), getString(R.string.hint_unfinished));
+                startActivity(new Intent(getActivity(), GroupListActivity.class));
+//                ToastShow.showToast2(getActivity(), getString(R.string.hint_unfinished));
                 break;
         }
     }

@@ -108,7 +108,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+            android:windowSoftInputMode="stateHidden|adjustPan|adjustResize" />
 
         <!-- 主页面 -->
         <activity
@@ -828,14 +828,16 @@
             android:name=".ui.activity.ConversationGroupDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.activity.ScanQRResultActivty"
+        <activity
+            android:name=".ui.activity.ScanQRResultActivty"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <meta-data
             android:name="com.bclould.tea.network.https.OkHttpGlideModule"
-            android:value="GlideModule"/>
+            android:value="GlideModule" />
 
+        <activity android:name=".ui.activity.ConversationServerActivity"></activity>
     </application>
 
 </manifest>

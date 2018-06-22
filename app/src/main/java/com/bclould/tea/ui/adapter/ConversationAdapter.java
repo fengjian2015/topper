@@ -19,6 +19,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.ui.activity.ConversationActivity;
+import com.bclould.tea.ui.activity.ConversationServerActivity;
 import com.bclould.tea.ui.fragment.ConversationFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
@@ -34,6 +35,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.bclould.tea.utils.Constants.ADMINISTRATOR_NAME;
 
 /**
  * Created by GA on 2017/12/20.
@@ -96,14 +99,24 @@ public class ConversationAdapter extends RecyclerView.Adapter {
             mRlItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent();
-                    intent.setClass(mContext, ConversationActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("name", mConversationInfo.getFriend());
-                    bundle.putString("user", mConversationInfo.getUser());
-                    bundle.putString("chatType", mConversationInfo.getChatType());
-                    intent.putExtras(bundle);
-                    mContext.startActivity(intent);
+                    if(ADMINISTRATOR_NAME.equals(mConversationInfo.getUser())){
+                        Intent intent = new Intent();
+                        intent.setClass(mContext, ConversationServerActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("name", mConversationInfo.getFriend());
+                        bundle.putString("roomId", mConversationInfo.getUser());
+                        intent.putExtras(bundle);
+                        mContext.startActivity(intent);
+                    }else {
+                        Intent intent = new Intent();
+                        intent.setClass(mContext, ConversationActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("name", mConversationInfo.getFriend());
+                        bundle.putString("user", mConversationInfo.getUser());
+                        bundle.putString("chatType", mConversationInfo.getChatType());
+                        intent.putExtras(bundle);
+                        mContext.startActivity(intent);
+                    }
                     mNumber.setVisibility(View.GONE);
                     mMgr.updateConversation(mConversationInfo.getUser(), 0, mConversationInfo.getMessage(), mConversationInfo.getTime(),mConversationInfo.getCreateTime());
                     EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));

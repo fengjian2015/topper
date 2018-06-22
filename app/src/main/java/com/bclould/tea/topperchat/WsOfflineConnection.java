@@ -24,6 +24,11 @@ import java.util.Map;
 import static com.bclould.tea.topperchat.WsContans.CONTENT;
 import static com.bclould.tea.topperchat.WsContans.DEVICE;
 import static com.bclould.tea.topperchat.WsContans.DEVICE_ID;
+import static com.bclould.tea.topperchat.WsContans.INDEX;
+import static com.bclould.tea.topperchat.WsContans.MSG_GROUP;
+import static com.bclould.tea.topperchat.WsContans.MSG_OFFINE;
+import static com.bclould.tea.topperchat.WsContans.MSG_OFFINE_RESULT;
+import static com.bclould.tea.topperchat.WsContans.MSG_SINGLER;
 import static com.bclould.tea.topperchat.WsContans.PASSWORD;
 import static com.bclould.tea.topperchat.WsContans.TOCOID;
 import static com.bclould.tea.topperchat.WsContans.TYPE;
@@ -80,11 +85,11 @@ public class WsOfflineConnection {
                                     ObjectMapper objectMapper =  new ObjectMapper(new MessagePackFactory());
                                     Map<Object, Object> deserialized = objectMapper.readValue(bytes, new TypeReference<Map<String, Object>>() {});
                                     Map<Object, Object> content;
-                                    UtilTool.Log("fengjian","接受到 離線 消息：type="+deserialized.get("type"));
+                                    UtilTool.Log("fengjian","接受到 離線 消息：type="+deserialized.get(TYPE));
                                     isLogin=true;
-                                    switch ((int)deserialized.get("type")) {
-                                        case 15:
-                                            content = objectMapper.readValue((byte[]) deserialized.get("content"), new TypeReference<Map<String, Object>>() {});
+                                    switch ((int)deserialized.get(TYPE)) {
+                                        case MSG_OFFINE:
+                                            content = objectMapper.readValue((byte[]) deserialized.get(CONTENT), new TypeReference<Map<String, Object>>() {});
                                             // TODO: 2018/6/12 這裡是 index   需要發送反饋
                                             sendOfflineBack(content);
                                             savaOffline(content);
@@ -140,7 +145,7 @@ public class WsOfflineConnection {
         contentMap.put(DEVICE,DEVICE_ID);
         Map<Object,Object> map = new HashMap<>();
         map.put(CONTENT,objectMapper.writeValueAsBytes(contentMap));
-        map.put(TYPE,15);
+        map.put(TYPE,MSG_OFFINE);
         ws.send(objectMapper.writeValueAsBytes(map));
     }
 
@@ -161,26 +166,26 @@ public class WsOfflineConnection {
     private void sendOfflineBack(Map<Object, Object> content) throws Exception {
         ObjectMapper objectMapper =  new ObjectMapper(new MessagePackFactory());
         Map<Object,Object> map=new HashMap<>();
-        map.put("index", Long.parseLong(content.get("index")+""));
+        map.put(INDEX, Long.parseLong(content.get(INDEX)+""));
 
         Map<Object,Object> sendMap = new HashMap<>();
-        sendMap.put("type",25);
-        sendMap.put("content",objectMapper.writeValueAsBytes(map));
+        sendMap.put(TYPE,MSG_OFFINE_RESULT);
+        sendMap.put(CONTENT,objectMapper.writeValueAsBytes(map));
         ws.send(objectMapper.writeValueAsBytes(sendMap));
     }
 
     private void savaOffline(Map<Object, Object> content) throws Exception{
 
         ObjectMapper objectMapper =  new ObjectMapper(new MessagePackFactory());
-        Map<Object, Object>  messageMap1 = objectMapper.readValue((byte[]) content.get("content"), new TypeReference<Map<String, Object>>() {});
-        Map<Object, Object>  messageMap2 = objectMapper.readValue((byte[]) messageMap1.get("content"), new TypeReference<Map<String, Object>>() {});
-        Map<Object, Object>  messageMap3 = objectMapper.readValue((byte[]) messageMap2.get("content"), new TypeReference<Map<String, Object>>() {});
+        Map<Object, Object>  messageMap1 = objectMapper.readValue((byte[]) content.get(CONTENT), new TypeReference<Map<String, Object>>() {});
+        Map<Object, Object>  messageMap2 = objectMapper.readValue((byte[]) messageMap1.get(CONTENT), new TypeReference<Map<String, Object>>() {});
+        Map<Object, Object>  messageMap3 = objectMapper.readValue((byte[]) messageMap2.get(CONTENT), new TypeReference<Map<String, Object>>() {});
         // TODO: 2018/6/12 這裡是獲取到的消息 type=3的content
-        if((int)messageMap3.get("type")==3){
-            Map<Object, Object>  messageMap4 = objectMapper.readValue((byte[]) messageMap3.get("content"), new TypeReference<Map<String, Object>>() {});
+        if((int)messageMap3.get(TYPE)==MSG_SINGLER){
+            Map<Object, Object>  messageMap4 = objectMapper.readValue((byte[]) messageMap3.get(CONTENT), new TypeReference<Map<String, Object>>() {});
             SocketListener.getInstance(mContext).messageFeedback(messageMap4,false,RoomManage.ROOM_TYPE_SINGLE);
-        }else if((int)messageMap3.get("type")==13){
-            Map<Object, Object>  messageMap4 = objectMapper.readValue((byte[]) messageMap3.get("content"), new TypeReference<Map<String, Object>>() {});
+        }else if((int)messageMap3.get(TYPE)==MSG_GROUP){
+            Map<Object, Object>  messageMap4 = objectMapper.readValue((byte[]) messageMap3.get(CONTENT), new TypeReference<Map<String, Object>>() {});
             SocketListener.getInstance(mContext).messageFeedback(messageMap4,false,RoomManage.ROOM_TYPE_MULTI);
         }
     }
@@ -195,8 +200,8 @@ public class WsOfflineConnection {
             if(!isLogin){login();}
             ObjectMapper objectMapper =  new ObjectMapper(new MessagePackFactory());
             Map<Object,Object> sendMap = new HashMap<>();
-            sendMap.put("type",4);
-            sendMap.put("content",new byte[]{});
+            sendMap.put(TYPE,4);
+            sendMap.put(CONTENT,new byte[]{});
             try {
                 ws.send(objectMapper.writeValueAsBytes(sendMap));
             } catch (JsonProcessingException e) {

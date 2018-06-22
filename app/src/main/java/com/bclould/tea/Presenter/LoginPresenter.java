@@ -24,8 +24,11 @@ import com.bclould.tea.ui.activity.LoginSetActivity;
 import com.bclould.tea.ui.activity.MainActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -126,9 +129,10 @@ public class LoginPresenter {
                                 dbUserCode.addUserCode(userCodeInfo);
                                 hideDialog();
                                 Intent intent = new Intent(mContext, MainActivity.class);
-                                intent.putExtra("whence", true);
+                                intent.putExtra("whence", 1);
                                 mContext.startActivity(intent);
                                 LoginActivity activity = (LoginActivity) mContext;
+                                EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.refresh_the_interface)));
                                 activity.finish();
                                 Toast.makeText(mContext, mContext.getString(R.string.toast_succeed), Toast.LENGTH_SHORT).show();
                             }

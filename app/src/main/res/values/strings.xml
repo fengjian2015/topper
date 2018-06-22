@@ -928,4 +928,13 @@
     <string name="refresh_group_members">刷新群成員</string>
     <string name="please">請</string>
     <string name="service_fee_hint">需支付</string>
+    <string name="force_quit_login_again">此賬號已在其他地方登錄，是否重新登錄？</string>
+    <string name="refresh_the_interface">刷新界面</string>
+    <string name="exceptional_spending">打賞支出</string>
+    <string name="exceptional_income">打賞收入</string>
+    <string name="exceptional_coin_coins">打賞幣種</string>
+    <string name="exceptional_coin_count">打賞數量</string>
+    <string name="exceptional_coin_time">打賞時間</string>
+    <string name="exceptional_inform">打賞通知</string>
+    <string name="exceptional_inform_hint">您有一個新打賞消息,點擊查看詳情</string>
 </resources>
