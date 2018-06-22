@@ -1898,9 +1898,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 mTvTypeMsg.setText(mContext.getString(R.string.order_finish_hint));
             } else if (messageInfo.getStatus() == 2) {
                 if (messageInfo.getType() == 1) {
-                    mTvStatus.setText(mContext.getString(R.string.relative_pay_dengdai_fb));
-                } else {
                     mTvStatus.setText(mContext.getString(R.string.pay_succeed_dengdai_fb));
+                } else {
+                    mTvStatus.setText(mContext.getString(R.string.relative_pay_dengdai_fb));
                 }
             } else if (messageInfo.getStatus() == 1) {
                 mTvStatus.setText(mContext.getString(R.string.pending));
