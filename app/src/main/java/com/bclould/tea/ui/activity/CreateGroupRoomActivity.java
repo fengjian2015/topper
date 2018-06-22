@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -104,7 +105,7 @@ public class CreateGroupRoomActivity extends BaseActivity {
 
     private void initRecylerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        CreateGroupRVAdapter createGroupRVAdapter = new CreateGroupRVAdapter(this, mUserInfos,mgr);
+        CreateGroupRVAdapter createGroupRVAdapter = new CreateGroupRVAdapter(this, mUserInfos,mgr,roomId,mDBRoomMember,mUserInfoList);
         mRecyclerView.setAdapter(createGroupRVAdapter);
     }
 
@@ -136,6 +137,7 @@ public class CreateGroupRoomActivity extends BaseActivity {
             @Override
             public void send() {
                 mDBRoomMember.addRoomMemberUserInfo(mUserInfoList,roomId);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.create_group_chat)));
                 finish();
             }
         });
@@ -160,7 +162,16 @@ public class CreateGroupRoomActivity extends BaseActivity {
                     public void send(String group_id) {
                         createConversation(group_id,roomName);
                         saveRoom(group_id,mUserInfoList);
+
+                        Intent intent = new Intent(context, ConversationActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("name", roomName);
+                        bundle.putString("user", group_id);
+                        bundle.putString("chatType",RoomManage.ROOM_TYPE_MULTI);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.oneself_send_msg)));
+                        EventBus.getDefault().post(new MessageEvent(getString(R.string.create_group_chat)));
                         finish();
                     }
                 });

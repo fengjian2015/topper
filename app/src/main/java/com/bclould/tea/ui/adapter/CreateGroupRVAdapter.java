@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.activity.CreateGroupRoomActivity;
 import com.bclould.tea.utils.StringUtils;
@@ -34,11 +35,17 @@ public class CreateGroupRVAdapter extends RecyclerView.Adapter {
     private final List<UserInfo> mUserInfos;
     private final CreateGroupRoomActivity mActivity;
     private DBManager mgr;
+    private String roomId;
+    private DBRoomMember mDBRoomMember;
+    private List<UserInfo> userInfoList;
 
-    public CreateGroupRVAdapter(CreateGroupRoomActivity activity, List<UserInfo> userInfos, DBManager mgr) {
+    public CreateGroupRVAdapter(CreateGroupRoomActivity activity, List<UserInfo> userInfos, DBManager mgr, String roomId, DBRoomMember mDBRoomMember, List<UserInfo> userInfoList) {
         mUserInfos = userInfos;
         mActivity = activity;
         this.mgr=mgr;
+        this.roomId=roomId;
+        this.mDBRoomMember=mDBRoomMember;
+        this.userInfoList=userInfoList;
     }
 
     @Override
@@ -87,26 +94,35 @@ public class CreateGroupRVAdapter extends RecyclerView.Adapter {
                 mTvName.setText(mName);
             UtilTool.getImage(mgr, userInfo.getUser(),mActivity , mIvTouxiang);
             mIvTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfo.getPath()));
-            rl.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(mCheckBox.isChecked()){
-                        mCheckBox.setChecked(false);
-                    }else{
-                        mCheckBox.setChecked(true);
-                    }
+            if(roomId!=null&&mDBRoomMember.findMember(roomId,mUser)){
+                rl.setOnClickListener(null);
+                mCheckBox.setOnClickListener(null);
+                mCheckBox.setChecked(true);
+                mCheckBox.setEnabled(false);
+            }else {
+                if(userInfoList.contains(userInfo)) {
+                    mCheckBox.setChecked(true);
+                }else{
+                    mCheckBox.setChecked(false);
                 }
-            });
-            mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if (b) {
-                        mActivity.setData(userInfo, b);
-                    } else {
-                        mActivity.setData(userInfo, !b);
+                mCheckBox.setEnabled(true);
+                rl.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mCheckBox.isChecked()) {
+                            mCheckBox.setChecked(false);
+                        } else {
+                            mCheckBox.setChecked(true);
+                        }
                     }
-                }
-            });
+                });
+                mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                            mActivity.setData(userInfo, b);
+                    }
+                });
+            }
         }
     }
 }

@@ -97,6 +97,8 @@ public class GroupListActivity extends BaseActivity {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.quit_group))) {
             updataRecyclerView();
+        }else if(msg.equals(getString(R.string.create_group_chat))){
+            finish();
         }
     }
 
@@ -126,7 +128,7 @@ public class GroupListActivity extends BaseActivity {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        getGroup();
+                        getGroup(false);
                     }
                 }).start();
 
@@ -145,26 +147,11 @@ public class GroupListActivity extends BaseActivity {
         groupListRVAdapter.notifyDataSetChanged();
     }
 
-    private void getGroup() {
-        new GroupPresenter(this).getGroup(new GroupPresenter.CallBack1() {
+    private void getGroup(boolean isShow) {
+        new GroupPresenter(this).getGroup(mDBRoomMember,dbRoomManage,isShow,new GroupPresenter.CallBack1() {
             @Override
             public void send(GroupInfo baseInfo) {
                 // TODO: 2018/6/11 獲取群聊房間塞入數據庫
-                dbRoomManage.deleteAllRoom();
-                mDBRoomMember.deleteAllRoomMember();
-                for (GroupInfo.DataBean dataBean : baseInfo.getData()) {
-                    RoomManageInfo roomManageInfo = new RoomManageInfo();
-                    roomManageInfo.setRoomName(dataBean.getName());
-                    roomManageInfo.setRoomId(dataBean.getId() + "");
-                    dbRoomManage.addRoom(roomManageInfo);
-                    for (GroupInfo.DataBean.UsersBean usersBean : dataBean.getUsers()) {
-                        RoomMemberInfo roomMemberInfo = new RoomMemberInfo();
-                        roomMemberInfo.setRoomId(dataBean.getId() + "");
-                        roomMemberInfo.setJid(usersBean.getToco_id());
-                        roomMemberInfo.setImage_url(usersBean.getAvatar());
-                        mDBRoomMember.addRoomMember(roomMemberInfo);
-                    }
-                }
                 updataRecyclerView();
             }
         });
@@ -183,7 +170,7 @@ public class GroupListActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.ll_no_data:
-                getGroup();
+                getGroup(true);
                 break;
         }
     }

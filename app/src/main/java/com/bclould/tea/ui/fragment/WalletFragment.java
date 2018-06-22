@@ -100,6 +100,8 @@ public class WalletFragment extends Fragment {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.transfer))) {
             initData();
+        }else if(msg.equals(getString(R.string.refresh_the_interface))){
+            initData();
         }
     }
 

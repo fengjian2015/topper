@@ -422,6 +422,7 @@ public class DBManager {
 
     public synchronized void addConversation(ConversationInfo conversationInfo) {
         if (findConversation(conversationInfo.getUser())) {
+            updateConversation(conversationInfo);
             return;
         }
         db = helper.getWritableDatabase();
@@ -445,6 +446,20 @@ public class DBManager {
         boolean result = cursor.moveToNext();
         cursor.close();
         return result;
+    }
+
+    public void updateConversation(ConversationInfo conversationInfo) {
+        db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("number", conversationInfo.getNumber());
+        values.put("my_user", UtilTool.getTocoId());
+        values.put("message", conversationInfo.getMessage());
+        values.put("time", conversationInfo.getTime());
+        values.put("friend", conversationInfo.getFriend());
+        values.put("istop", conversationInfo.getIstop());
+        values.put("chatType",conversationInfo.getChatType());
+        values.put("createTime",conversationInfo.getCreateTime());
+        db.update("ConversationRecord", values, "user=? and my_user=?", new String[]{conversationInfo.getUser(), UtilTool.getTocoId()});
     }
 
     public void updateConversation(String user, int number, String chat, String time,long createTime) {
@@ -733,6 +748,13 @@ public class DBManager {
         //不刪除自己的頭像
         UserInfo userInfo= queryUser(UtilTool.getTocoId());
         db.execSQL("DELETE FROM UserImage");
+        if(StringUtils.isEmpty(userInfo.getUser())){
+            userInfo.setPath("");
+            userInfo.setRemark(UtilTool.getUser());
+            userInfo.setStatus(0);
+            userInfo.setUser(UtilTool.getTocoId());
+            userInfo.setUserName(UtilTool.getTocoId());
+        }
         addUser(userInfo);
 
     }

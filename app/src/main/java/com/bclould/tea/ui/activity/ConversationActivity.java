@@ -517,6 +517,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             if(roomId.equals(event.getId())){
                 finish();
             }
+        }else if(msg.equals(getString(R.string.refresh_group_members))){
+            setTitleName();
         }
 
     }
@@ -754,11 +756,15 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     }
 
     private void setTitleName() {
-        String remark = mMgr.queryRemark(roomId);
-        if (!com.bclould.tea.utils.StringUtils.isEmpty(remark)) {
-            mTitleName.setText(remark);
-        } else {
-            mTitleName.setText(mName);
+        if(RoomManage.ROOM_TYPE_MULTI.equals(roomType)){
+            mTitleName.setText(mName+"("+mDBRoomMember.queryAllRequest(roomId).size()+")");
+        }else {
+            String remark = mMgr.queryRemark(roomId);
+            if (!StringUtils.isEmpty(remark)) {
+                mTitleName.setText(remark);
+            } else {
+                mTitleName.setText(mName);
+            }
         }
     }
 

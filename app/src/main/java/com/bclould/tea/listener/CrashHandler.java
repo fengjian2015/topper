@@ -39,28 +39,30 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     public void uncaughtException(Thread thread, Throwable ex) {
 // 打印当前的异常信息
         ex.printStackTrace();
+        try {
+            // 如果我们没处理异常，并且系统默认的异常处理器不为空，则交给系统来处理
+            if (!handlelException(ex) && defaultUncaught != null) {
+                defaultUncaught.uncaughtException(thread, ex);
+            } else {
 
-        // 如果我们没处理异常，并且系统默认的异常处理器不为空，则交给系统来处理
-        if (!handlelException(ex) && defaultUncaught != null) {
-            defaultUncaught.uncaughtException(thread, ex);
-        } else {
-
-            // 已经记录完log, 提交服务器
+                // 已经记录完log, 提交服务器
 //            upLoadErrorFileToServer(logFile);
 
-            Intent in = new Intent(mContext, MainActivity.class);
-            in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // 如果设置了此标志，这个activity将成为一个新task的历史堆栈中的第一个activity
-            mContext.startActivity(in);
+                Intent in = new Intent(mContext, MainActivity.class);
+                in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // 如果设置了此标志，这个activity将成为一个新task的历史堆栈中的第一个activity
+                mContext.startActivity(in);
 
-            // 杀死我们的进程
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-
-                @Override
-                public void run() {
-                    android.os.Process.killProcess(android.os.Process.myPid()); // 杀死线程
-                }
-            }, 2 * 1000);
+                // 杀死我们的进程
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        android.os.Process.killProcess(android.os.Process.myPid()); // 杀死线程
+                    }
+                }, 2 * 1000);
+            }
+        }catch (InternalError error){
+            error.printStackTrace();
         }
     }
 

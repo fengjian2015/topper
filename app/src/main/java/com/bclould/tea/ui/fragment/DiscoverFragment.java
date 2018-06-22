@@ -119,7 +119,8 @@ public class DiscoverFragment extends Fragment {
     }
 
     //初始化界面
-    private void initInterface() {
+    public void initInterface() {
+        if(mLlGonggao==null)return;
         mLlGonggao.setVisibility(View.VISIBLE);
         initTopMenu();
         initFragmentList();

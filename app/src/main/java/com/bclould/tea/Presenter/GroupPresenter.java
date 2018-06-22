@@ -7,11 +7,13 @@ import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 import com.bclould.tea.R;
+import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.GroupCreateInfo;
 import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.GroupMemberInfo;
+import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
@@ -137,8 +139,9 @@ public class GroupPresenter {
         }
     }
 
-    public void getGroup(final CallBack1 callBack) {
+    public void getGroup(final DBRoomMember mDBRoomMember, final DBRoomManage mDBRoomManage, boolean isShow, final CallBack1 callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
+            if(isShow)showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .getGroup(UtilTool.getToken())
@@ -155,12 +158,30 @@ public class GroupPresenter {
                             if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
                             hideDialog();
                             if (baseInfo.getStatus() == 1) {
+                                mDBRoomManage.deleteAllRoom();
+                                mDBRoomMember.deleteAllRoomMember();
+                                for (GroupInfo.DataBean dataBean : baseInfo.getData()) {
+                                    RoomManageInfo roomManageInfo = new RoomManageInfo();
+                                    roomManageInfo.setRoomName(dataBean.getName());
+                                    roomManageInfo.setRoomId(dataBean.getId() + "");
+                                    mDBRoomManage.addRoom(roomManageInfo);
+                                    for (GroupInfo.DataBean.UsersBean usersBean : dataBean.getUsers()) {
+                                        RoomMemberInfo roomMemberInfo = new RoomMemberInfo();
+                                        roomMemberInfo.setRoomId(dataBean.getId() + "");
+                                        roomMemberInfo.setJid(usersBean.getToco_id());
+                                        roomMemberInfo.setImage_url(usersBean.getAvatar());
+                                        mDBRoomMember.addRoomMember(roomMemberInfo);
+                                    }
+                                }
                                 callBack.send(baseInfo);
+
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
+                            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
+                            hideDialog();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -195,6 +216,8 @@ public class GroupPresenter {
                             if (baseInfo.getStatus() == 1) {
                                 callBack.send();
                                 ToastShow.showToast2((Activity) mContext,mContext.getString(R.string.out_group_success));
+                            }else{
+                                ToastShow.showToast2((Activity) mContext,baseInfo.getMessage());
                             }
                         }
 
@@ -238,6 +261,7 @@ public class GroupPresenter {
                             }
                             hideDialog();
                             if (baseInfo.getStatus() == 1) {
+                                dbRoomMember.deleteRoom(group_id+"");
                                 dbRoomMember.addRoomMember(baseInfo.getData(),group_id+"");
                                 callBack.send();
                             }

@@ -3,18 +3,19 @@
 	android:layout_width="match_parent"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:layout_height="wrap_content">
-	<android.support.v7.widget.CardView
-		android:layout_width="match_parent"
-		android:layout_height="@dimen/y64"
-		android:layout_marginLeft="@dimen/x20"
-		android:layout_marginRight="@dimen/x20"
-		android:layout_marginBottom="@dimen/y20"
-		app:cardCornerRadius="@dimen/x15">
+
 		<LinearLayout
 			android:layout_width="fill_parent"
 			android:layout_height="@dimen/y64"
 			android:orientation="horizontal"
+			android:background="@color/white"
 			>
+			<ImageView
+				android:layout_width="@dimen/x40"
+				android:layout_height="@dimen/y40"
+				android:layout_gravity="center_vertical"
+				android:layout_marginLeft="@dimen/x20"
+				android:src="@mipmap/ico_login_record"/>
 			<TextView
 				android:id="@+id/tv_name"
 				android:layout_weight="9"
@@ -22,20 +23,19 @@
 				android:layout_height="fill_parent"
 				android:textColor="@color/black"
 				android:gravity="center_vertical"
-				android:paddingLeft="@dimen/x15"
-				android:paddingRight="@dimen/x15"
+				android:paddingLeft="@dimen/x20"
+				android:paddingRight="@dimen/x20"
+				android:singleLine="true"
 				android:textSize="@dimen/x32" />
 			<TextView
 				android:id="@+id/btnClick"
 				android:layout_width="@dimen/x40"
 				android:layout_height="@dimen/y40"
 				android:layout_marginRight="@dimen/x20"
-				android:background="@mipmap/delet_zhaopian_1x"
+				android:background="@mipmap/ico_login_delete"
 				android:focusable="false"
 				android:layout_gravity="center_vertical"
 				android:textColor="@color/black"
 				android:textSize="@dimen/x32" />
 		</LinearLayout>
-
-	</android.support.v7.widget.CardView>
 </RelativeLayout>

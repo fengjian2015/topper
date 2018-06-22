@@ -11,13 +11,16 @@ public class WsContans {
     public static final String DEVICE="device";
     public static final int DEVICE_ID=1;
     public static final String TYPE="type";
+    public static final String INDEX="index";
 
     //文檔定義消息類型
-    public static final int MSG_LOGIN=16;//登錄反饋
     public static final int MSG_SINGLER=3;//單聊消息
-    public static final int MSG_GROUP=13;//群聊消息
-    public static final int MSG_BROADCAST=18;//廣播消息
     public static final int MSG_PING=4;//ping
+    public static final int MSG_GROUP=13;//群聊消息
+    public static final int MSG_OFFINE=15;//離線消息
+    public static final int MSG_LOGIN=16;//登錄反饋
+    public static final int MSG_BROADCAST=18;//廣播消息
+    public static final int MSG_OFFINE_RESULT=25;//離線消息反饋
     public static final int MSG_LOGINOUT=31;//其他賬號登錄
     public static final int MSG_SINGLER_RESULT=32;//單聊消息回執
     public static final int MSG_GROUP_RESULT=34;//群消息回執
@@ -51,6 +54,7 @@ public class WsContans {
     public static final int BC_MEMBER_GROUP=31;//加入群組通知
     public static final int BC_QUIT_GROUP=32;//退出群組通知
     public static final int BC_ADD_GROUP=33;//創建群組通知
+    public static final int BC_ENJOY_PLAYING=35;//打賞
 
 
 

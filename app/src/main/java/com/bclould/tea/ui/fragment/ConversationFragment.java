@@ -364,6 +364,8 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
             initData();
         }else if(msg.equals(getString(R.string.quit_group))){
             initData();
+        }else if(msg.equals(getString(R.string.refresh_the_interface))){
+            initData();
         }
 
     }

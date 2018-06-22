@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -88,6 +89,7 @@ public class GroupListRVAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
                     mDBManager.updateConversationNumber(mRoomManageInfo.getRoomId(), 0);
                     EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
+                    ((Activity)mContext).finish();
                 }
             });
         }
