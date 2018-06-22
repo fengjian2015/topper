@@ -194,7 +194,7 @@ public class TransferAccountsActivity extends BaseActivity {
         });
         valueList = virtualKeyboardView.getValueList();
         countCoin.setText(count + mCoinName);
-        coin.setText(mCoinName + getString(R.string.out_coin));
+        coin.setText(mCoinName + getString(R.string.transfer));
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

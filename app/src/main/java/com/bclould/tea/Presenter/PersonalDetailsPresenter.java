@@ -15,6 +15,7 @@ import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tocotalk.model.UserDataInfo;
 
 import java.util.List;
 
@@ -326,6 +327,43 @@ public class PersonalDetailsPresenter {
         }
     }
 
+    //刪除好友
+    public void getUserData(int user_id, final CallBack4 callBack4){
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .getUserData(UtilTool.getToken(),user_id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<UserDataInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(UserDataInfo userDataInfo) {
+                            if (userDataInfo.getStatus() == 1) {
+                                callBack4.send(userDataInfo.getData());
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            hideDialog();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     //定义接口
     public interface CallBack {
         void send();
@@ -338,5 +376,9 @@ public class PersonalDetailsPresenter {
 
     public interface CallBack3{
         void send(List<RemarkListInfo.DataBean> listdata);
+    }
+
+    public interface CallBack4{
+        void send(UserDataInfo.DataBean listdata);
     }
 }

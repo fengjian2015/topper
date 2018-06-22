@@ -893,7 +893,7 @@ public class SocketListener {
         Intent intent;
         if ((int) messageMap.get("status") == 1) {
             intent = new Intent(context, PayDetailsActivity.class);
-            intent.putExtra("id", (String) messageMap.get("id"));
+            intent.putExtra("id", messageMap.get("id") + "");
             intent.putExtra("type", context.getString(R.string.order));
         } else {
             intent = new Intent(context, OrderCloseActivity.class);

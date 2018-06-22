@@ -176,7 +176,7 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     private void initRecylerView() {
         mLinearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mNewsRVAdapter = new NewsRVAdapter(getContext(), mNewsList);
+        mNewsRVAdapter = new NewsRVAdapter(getActivity(), mNewsList);
         mRecyclerView.setAdapter(mNewsRVAdapter);
         mRecyclerView.setNestedScrollingEnabled(false);
     }

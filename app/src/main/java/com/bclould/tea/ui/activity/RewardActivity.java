@@ -25,10 +25,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bclould.tea.Presenter.CoinPresenter;
 import com.bclould.tea.Presenter.DynamicPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tea.ui.widget.VirtualKeyboardView;
 import com.bclould.tea.utils.AnimatorTool;
@@ -41,6 +43,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -102,7 +105,22 @@ public class RewardActivity extends BaseActivity {
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
         mDynamicPresenter = new DynamicPresenter(this);
+        initData();
         initIntent();
+    }
+
+    private void initData() {
+        MyApp.getInstance().mPayCoinList.clear();
+        if (MyApp.getInstance().mPayCoinList.size() == 0) {
+            CoinPresenter coinPresenter = new CoinPresenter(this);
+            coinPresenter.coinLists("pay", new CoinPresenter.CallBack() {
+                @Override
+                public void send(List<CoinListInfo.DataBean> data) {
+                    if (MyApp.getInstance().mPayCoinList.size() == 0)
+                        MyApp.getInstance().mPayCoinList.addAll(data);
+                }
+            });
+        }
     }
 
     private void initIntent() {

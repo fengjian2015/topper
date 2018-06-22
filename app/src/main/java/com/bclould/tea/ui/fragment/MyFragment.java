@@ -112,7 +112,7 @@ public class MyFragment extends Fragment {
 
     private void init() {
         mTvName.setText(UtilTool.getUser());
-        mTvTocoid.setText(getString(R.string.id)+UtilTool.getTocoId());
+        mTvTocoid.setText(getString(R.string.id) + UtilTool.getTocoId());
         mMgr = new DBManager(getContext());
         /*Bitmap bitmap = UtilTool.getImage(mMgr, UtilTool.getTocoId(), getContext());
         if (bitmap != null)

@@ -33,6 +33,7 @@ import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.VirtualKeyboardView;
 import com.bclould.tea.utils.AnimatorTool;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;
@@ -328,11 +329,20 @@ public class OutCoinActivity extends BaseActivity {
                 mSite = data.getStringExtra("address");
                 mTvOutCoinSite.setText(mSite);
             } else if (requestCode == SCANOUTSITE) {
-                String result = data.getStringExtra("address");
-                Gson gson = new Gson();
-                InCoinInfo inCoinInfo = gson.fromJson(result, InCoinInfo.class);
-                mSite = inCoinInfo.getAddress();
-                mTvOutCoinSite.setText(mSite);
+                try {
+                    String result = data.getStringExtra("address");
+                    Gson gson = new Gson();
+                    InCoinInfo inCoinInfo = gson.fromJson(result, InCoinInfo.class);
+                    if (inCoinInfo.getCoin().equals(mCoinName)) {
+                        mSite = inCoinInfo.getAddress();
+                        mTvOutCoinSite.setText(mSite);
+                    } else {
+                        Toast.makeText(this, getString(R.string.scan_no) + mCoinName + getString(R.string.address), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, getString(R.string.qr_code_error), Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

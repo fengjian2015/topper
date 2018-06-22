@@ -576,7 +576,7 @@ public class UtilTool {
 
     public synchronized static boolean isFastClick() {
         long time = System.currentTimeMillis();
-        if (time - lastClickTime < 60000) {
+        if (time - lastClickTime < 10000) {
             return true;
         }
         lastClickTime = time;

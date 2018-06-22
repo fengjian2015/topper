@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">TopperChat</string>
     <string name="toast_network_error">服務器繁忙，請稍後重試</string>
-    <string name="email">郵箱</string>
+    <string name="email">電郵</string>
     <string name="password">密碼</string>
-    <string name="et_emily">請輸入郵箱</string>
+    <string name="et_emily">請輸入電郵</string>
     <string name="et_password">請輸入密碼</string>
     <string name="find_password">忘記密碼</string>
     <string name="et_captcha">輸入圖形驗證碼</string>
@@ -12,14 +12,14 @@
     <string name="username">用戶名</string>
     <string name="send_regcode">發送驗證碼</string>
     <string name="et_username">請輸入用戶名</string>
-    <string name="et_vcode">輸入郵箱驗證碼</string>
+    <string name="et_vcode">輸入電郵驗證碼</string>
     <string name="agreement">同意服務協議</string>
     <string name="submit">提交</string>
     <string name="add">添加</string>
-    <string name="toast_email">郵箱不能為空</string>
+    <string name="toast_email">電郵不能為空</string>
     <string name="toast_password">密碼不能為空</string>
     <string name="toast_captcha">圖形驗證碼不能為空</string>
-    <string name="toast_vcode">郵箱驗證碼不能為空</string>
+    <string name="toast_vcode">電郵驗證碼不能為空</string>
     <string name="toast_agreement">請同意服務協議</string>
     <string name="toast_succeed">登錄成功</string>
     <string name="toast_pay_password">PIN密碼不能為空</string>
@@ -68,7 +68,7 @@
     <string name="id_card_number">身份證號碼</string>
     <string name="bank_card_number">銀行卡卡號</string>
     <string name="get_verification_code">獲取驗證碼</string>
-    <string name="bank_reserved_email">郵箱號碼</string>
+    <string name="bank_reserved_email">電郵號碼</string>
     <string name="next_step">下一步</string>
     <string name="finish_binding">完成綁定</string>
     <string name="binding_finish">綁定完成</string>
@@ -115,8 +115,8 @@
     <string name="login_pw">登錄密碼</string>
     <string name="payment_pw">PIN密碼</string>
     <string name="set_payment_pw">設置PIN密碼</string>
-    <string name="et_google_code">输入谷歌验证码</string>
-    <string name="toast_google_code">谷歌验证码不能为空</string>
+    <string name="et_google_code">輸入谷歌驗證碼</string>
+    <string name="toast_google_code">谷歌驗證碼不能为空</string>
     <string name="up_for_cancel">手指上滑，取消發送</string>
     <string name="want_to_cancle">鬆開手指，取消發送</string>
     <string name="time_too_short">錄音時間過短</string>
@@ -182,7 +182,7 @@
     <string name="et_expect_coin">請輸入期望添加的幣種</string>
     <string name="contact_information">聯繫方式</string>
     <string name="hint_unfinished">開發當中，敬請期待</string>
-    <string name="vcode">郵箱驗證碼</string>
+    <string name="vcode">電郵驗證碼</string>
     <string name="last_step">上一步</string>
     <string name="google_Authenticator">谷歌身份驗證器</string>
     <string name="download">下載</string>
@@ -199,13 +199,13 @@
     <string name="guanwang">官網</string>
     <string name="check_update">檢查更新</string>
     <string name="in_coin">充幣</string>
-    <string name="in_coin_hint">這是您的BTC充值地址，請將您的BTC轉入此地址，務必備註您的註冊郵箱賬號，填寫錯誤將無法到賬成功！</string>
-    <string name="in_coin_hint2">1.BTC轉賬需要BTC網絡進行確認，每筆轉賬至少需要預0.05個BTC在原地址，達到3個確認後您的BTC會自動充值至您的賬戶之中;\n2.禁止任何非BTC資產充值該地址，否則將無法到賬為TPX資產，丟失將無法找回;\n3.您在操作BTC錢包向此地址轉賬時，請務必填寫備註信息：！您的郵箱賬號，否則將無法到賬\n4.請勿使用本地址做為挖礦地址，否則不能到賬。</string>
+    <string name="in_coin_hint">這是您的BTC充值地址，請將您的BTC轉入此地址，務必備註您的註冊電郵賬號，填寫錯誤將無法到賬成功！</string>
+    <string name="in_coin_hint2">1.BTC轉賬需要BTC網絡進行確認，每筆轉賬至少需要預0.05個BTC在原地址，達到3個確認後您的BTC會自動充值至您的賬戶之中;\n2.禁止任何非BTC資產充值該地址，否則將無法到賬為TPX資產，丟失將無法找回;\n3.您在操作BTC錢包向此地址轉賬時，請務必填寫備註信息：！您的電郵賬號，否則將無法到賬\n4.請勿使用本地址做為挖礦地址，否則不能到賬。</string>
     <string name="login_record">登錄記錄</string>
     <string name="login_set">登錄設置</string>
     <string name="login_set_hint">為了您的資金安全，請選擇一種安全的登錄驗證模式</string>
     <string name="login_set1">每次登錄都不需要驗證</string>
-    <string name="login_set2">每次登錄進行郵箱驗證</string>
+    <string name="login_set2">每次登錄進行電郵驗證</string>
     <string name="login_set3">每次登錄進行谷歌驗證</string>
     <string name="required">必填</string>
     <string name="discover">發現</string>
@@ -221,13 +221,13 @@
     <string name="trading_price">交易價格</string>
     <string name="order_number">訂單號</string>
     <string name="order_time">訂單時間</string>
-    <string name="order_close_hint">系統正在處理中....請耐心等待賣家放幣</string>
-    <string name="confirm_send_coin">確認放幣</string>
+    <string name="order_close_hint">系統正在處理中....請耐心等待賣家放行</string>
+    <string name="confirm_send_coin">確認放行</string>
     <string name="surplus">剩餘</string>
     <string name="cancel_order">取消訂單</string>
     <string name="confirm_payment">確認付款</string>
     <string name="trading_hint">交易提示</string>
-    <string name="trading_hint2">1.場外交易中，買家的匯款將直接進入賣家賬號，交易過程中賣家出售的數字資產將由平台託管。\n2.請在規定時間內完成付款，並務必點擊“確認付款”，賣家確認收款後，系統會將數字資產劃轉至您的賬戶。\n3.請勿頻繁取消訂單，否則將導致限制交易。\n4.打款前請務必根據對方提供的郵箱、手機號或者TopperChat聯繫賣家，以免出現賣家一直未放幣訂單超時情況\n5.打款的時候可以把參考號發給賣家以便參看是哪筆交易</string>
+    <string name="trading_hint2">1.場外交易中，買家的匯款將直接進入賣家賬號，交易過程中賣家出售的數字資產將由平台託管。\n2.請在規定時間內完成付款，並務必點擊“確認付款”，賣家確認收款後，系統會將數字資產劃轉至您的賬戶。\n3.請勿頻繁取消訂單，否則將導致限制交易。\n4.打款前請務必根據對方提供的電郵、手機號或者TopperChat聯繫賣家，以免出現賣家一直未放行訂單超時情況\n5.打款的時候可以把參考號發給賣家以便參看是哪筆交易</string>
     <string name="order">訂單</string>
     <string name="selector_coin">選擇幣種</string>
     <string name="push_ad">發佈廣告</string>
@@ -429,7 +429,7 @@
     <string name="toast_contact_information">聯繫方式不能為空</string>
     <string name="toast_expect_coin">期望幣種不能為空</string>
     <string name="copy_succeed">複製成功</string>
-    <string name="toast_after_time">請60之後再發送</string>
+    <string name="toast_after_time">不能快速點擊</string>
     <string name="send_succeed">發送成功</string>
     <string name="download_google_verify">確定下載谷歌驗證器？</string>
     <string name="location">位置</string>
@@ -449,7 +449,7 @@
     <string name="order_finish">訂單已完成</string>
     <string name="order_exception">訂單異常</string>
     <string name="deal_count">交易數量</string>
-    <string name="out_coin_hint3">是否確認放幣？</string>
+    <string name="out_coin_hint3">是否確認放行？</string>
     <string name="confirm_fb">確認放行</string>
     <string name="deal_finish">交易完成</string>
     <string name="fen">分</string>
@@ -459,7 +459,7 @@
     <string name="shoukuan_fs">收款方式</string>
     <string name="dengdai_sk">等待收款</string>
     <string name="no_time">0分鐘</string>
-    <string name="fb">放幣</string>
+    <string name="fb">放行</string>
     <string name="cancel_order_hint">是否取消訂單?</string>
     <string name="fb_hint">為了避免發生錯誤，請務必確認收到款後再進一步操作。</string>
     <string name="confirm_fk">確認付款</string>
@@ -674,11 +674,11 @@
     <string name="toast_array">數組不能為空</string>
     <string name="bet_array">投注數組</string>
     <string name="contact_opposite">聯繫對方</string>
-    <string name="opposite_email">對方郵箱</string>
+    <string name="opposite_email">對方電郵</string>
     <string name="seller_phone">賣家手機</string>
     <string name="phone_number2">手機號碼</string>
-    <string name="relative_pay_dengdai_fb">對方已匯款，等待您放幣</string>
-    <string name="pay_succeed_dengdai_fb">付款成功，等待對方放幣</string>
+    <string name="relative_pay_dengdai_fb">對方已匯款，等待您放行</string>
+    <string name="pay_succeed_dengdai_fb">付款成功，等待對方放行</string>
     <string name="guess_timeout">競猜超時</string>
     <string name="zhong_jiang_le">中獎了</string>
     <string name="dengdai_kj">等待開獎</string>
@@ -892,7 +892,7 @@
     <string name="exchange_underway">兌換中</string>
     <string name="official_email">topperchat@outlook.com</string>
     <string name="initial_hint">©2018 TopperChat 版權所有</string>
-    <string name="toast_email_format">郵箱格式不正確</string>
+    <string name="toast_email_format">電郵格式不正確</string>
     <string name="tag">標籤</string>
     <string name="et_tag">輸入標籤</string>
     <string name="toast_tag">標籤不能為空</string>
@@ -926,4 +926,6 @@
     <string name="no_group">暫無群聊,點擊重新加載</string>
     <string name="invite_failure">邀請失敗</string>
     <string name="refresh_group_members">刷新群成員</string>
+    <string name="please">請</string>
+    <string name="service_fee_hint">需支付</string>
 </resources>

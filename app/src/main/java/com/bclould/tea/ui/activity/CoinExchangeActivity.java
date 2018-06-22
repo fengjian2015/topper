@@ -373,7 +373,7 @@ public class CoinExchangeActivity extends BaseActivity {
         valueList = virtualKeyboardView.getValueList();
         countCoin.setText(count + coins);
         coin.setText(coins + getString(R.string.exchange) + getString(R.string.usdt));
-        hint.setText(getString(R.string.start_guess_service_hint) + Double.parseDouble(mServiceCharge) * 100 + "%" + getString(R.string.sxf));
+        hint.setText(getString(R.string.service_fee_hint) + Double.parseDouble(mServiceCharge) * 100 + "%" + getString(R.string.sxf));
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

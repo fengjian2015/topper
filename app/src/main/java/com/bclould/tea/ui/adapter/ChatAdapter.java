@@ -154,7 +154,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         //繼續保留這兩個字段是用於之前版本有的消息沒有send字段
         mName = name;
         mrlTitle = rlTitle;
-        this.mDBRoomMember=mDBRoomMember;
+        this.mDBRoomMember = mDBRoomMember;
     }
 
     @Override
@@ -248,7 +248,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } else if (viewType == ADMINISTRATOR_IN_OUT_COIN_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_inout_coin, parent, false);
             holder = new InoutCoinInformHolder(view);
-        }else if(viewType==ADMINISTRATOR_IN_COIN_MSG){
+        } else if (viewType == ADMINISTRATOR_IN_COIN_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_in_coin, parent, false);
             holder = new InCoinInformHolder(view);
         } else {
@@ -399,7 +399,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 inoutCoinInformHolder.setData(mMessageList.get(position));
                 break;
             case ADMINISTRATOR_IN_COIN_MSG:
-                InCoinInformHolder inCoinInformHolder= (InCoinInformHolder) holder;
+                InCoinInformHolder inCoinInformHolder = (InCoinInformHolder) holder;
                 inCoinInformHolder.setData(mMessageList.get(position));
                 break;
             default:
@@ -582,7 +582,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
+                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
             } else {
                 UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             }
@@ -717,10 +717,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
             if (StringUtils.isEmpty(mUser))
                 mUser = mRoomId;
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
-            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
-            final String mName=mMgr.findUserName(mUser);
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
+            final String mName = mMgr.findUserName(mUser);
             if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
+                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
             } else {
                 UtilTool.getImage(mMgr, mUser, mContext, mIvTouxiang);
             }
@@ -947,9 +947,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
-            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
+                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
             } else {
                 UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             }
@@ -1080,9 +1080,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
-            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
+                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
             } else {
                 UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             }
@@ -1207,9 +1207,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
-            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
+                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
             } else {
                 UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             }
@@ -1313,9 +1313,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
-            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
+                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
             } else {
                 UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             }
@@ -1420,9 +1420,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
             // TODO: 2018/5/28 所有的from需要增加一個名字
-            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
+                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
             } else {
                 UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             }
@@ -1540,9 +1540,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
             // TODO: 2018/5/28 所有的from需要增加一個名字
-            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
+                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
             } else {
                 UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             }
@@ -1673,9 +1673,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
             // TODO: 2018/5/28 所有的from需要增加一個名字
-            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
+                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
             } else {
                 UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             }
@@ -1789,9 +1789,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
-            setCreatetime(tvCreateTime,messageInfo.getShowChatTime());
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext,mIvTouxiang,mDBRoomMember.findMemberUrl(mRoomId,messageInfo.getSend()));
+                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
             } else {
                 UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
             }
@@ -1898,9 +1898,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 mTvTypeMsg.setText(mContext.getString(R.string.order_finish_hint));
             } else if (messageInfo.getStatus() == 2) {
                 if (messageInfo.getType() == 1) {
-                    mTvStatus.setText(mContext.getString(R.string.pay_succeed_dengdai_fb));
-                } else {
                     mTvStatus.setText(mContext.getString(R.string.relative_pay_dengdai_fb));
+                } else {
+                    mTvStatus.setText(mContext.getString(R.string.pay_succeed_dengdai_fb));
                 }
             } else if (messageInfo.getStatus() == 1) {
                 mTvStatus.setText(mContext.getString(R.string.pending));

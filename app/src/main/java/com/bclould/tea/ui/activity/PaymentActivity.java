@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bclould.tea.Presenter.CoinPresenter;
+import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
@@ -40,9 +41,11 @@ import com.bclould.tea.model.ReceiptInfo;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.VirtualKeyboardView;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tocotalk.model.UserDataInfo;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;
@@ -103,6 +106,7 @@ public class PaymentActivity extends BaseActivity {
     private String mCoinNames;
     private String mNumber;
     private String mMark;
+    private PersonalDetailsPresenter mPersonalDetailsPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,6 +114,7 @@ public class PaymentActivity extends BaseActivity {
         setContentView(R.layout.activity_payment);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
+        mPersonalDetailsPresenter = new PersonalDetailsPresenter(this);
         initData();
         initIntent();
         mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);
@@ -131,14 +136,21 @@ public class PaymentActivity extends BaseActivity {
 
 
     private void initIntent() {
-        DBManager mgr = new DBManager(this);
+        final DBManager mgr = new DBManager(this);
         mType = getIntent().getStringExtra("type");
         if (mType.equals(Constants.MONEYIN)) {
             mCvWho.setVisibility(View.VISIBLE);
             mUserId = getIntent().getStringExtra("userId");
-            String username = getIntent().getStringExtra("username");
-            UtilTool.getImage(mgr, username, MyApp.getInstance().app(), mIvTouxiang);
-            mTvName.setText(username);
+            final String username = getIntent().getStringExtra("username");
+            mPersonalDetailsPresenter.getUserData(Integer.parseInt(mUserId), new PersonalDetailsPresenter.CallBack4() {
+                @Override
+                public void send(UserDataInfo.DataBean dataBean) {
+                    if (ActivityUtil.isActivityOnTop(PaymentActivity.this)) {
+                        UtilTool.setCircleImg(PaymentActivity.this, dataBean.getAvatar(), mIvTouxiang);
+                        mTvName.setText(username);
+                    }
+                }
+            });
         } else if (mType.equals(Constants.MONEYOUT)) {
             mCvWho.setVisibility(View.GONE);
             mTvTitle.setText(getString(R.string.create_fk_code));
@@ -154,14 +166,21 @@ public class PaymentActivity extends BaseActivity {
             mCoinNames = getIntent().getStringExtra("coinName");
             mNumber = getIntent().getStringExtra("number");
             mMark = getIntent().getStringExtra("mark");
-            String username = getIntent().getStringExtra("username");
-            mTvName.setText(username);
+            final String username = getIntent().getStringExtra("username");
+            mPersonalDetailsPresenter.getUserData(Integer.parseInt(mUserId), new PersonalDetailsPresenter.CallBack4() {
+                @Override
+                public void send(UserDataInfo.DataBean dataBean) {
+                    if (ActivityUtil.isActivityOnTop(PaymentActivity.this)) {
+                        UtilTool.setCircleImg(PaymentActivity.this, dataBean.getAvatar(), mIvTouxiang);
+                        mTvName.setText(username);
+                    }
+                }
+            });
             mTvCoin.setText(mCoinNames);
             mEtCount.setText(mNumber);
             mEtCount.setKeyListener(null);
             mEtRemark.setText(mMark);
             mEtRemark.setKeyListener(null);
-            UtilTool.getImage(mgr, username, MyApp.getInstance().app(), mIvTouxiang);
         }
     }
 

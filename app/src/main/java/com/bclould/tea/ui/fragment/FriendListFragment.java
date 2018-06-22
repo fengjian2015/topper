@@ -30,7 +30,6 @@ import com.bclould.tea.model.QrRedInfo;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.activity.AddFriendActivity;
 import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
-import com.bclould.tea.ui.activity.GroupListActivity;
 import com.bclould.tea.ui.activity.NewFriendActivity;
 import com.bclould.tea.ui.activity.ScanQRCodeActivity;
 import com.bclould.tea.ui.activity.SearchActivity;
@@ -53,8 +52,11 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import butterknife.Bind;
@@ -171,7 +173,7 @@ public class FriendListFragment extends Fragment {
 
     //获取屏幕高度
     private void getPhoneSize() {
-
+        mSideBar.setIndexItems();
         mDm = new DisplayMetrics();
 
         if (getActivity() != null)
@@ -208,8 +210,11 @@ public class FriendListFragment extends Fragment {
         myHandler.sendMessage(message);
     }
 
+    Map<String, Integer> mMap = new HashMap<>();
+
     private void updateData() {
         mUsers.clear();
+        mMap.clear();
         List<UserInfo> userInfos = mMgr.queryAllUser();
         UserInfo userInfo = null;
         UserInfo userInfo2 = null;
@@ -225,10 +230,27 @@ public class FriendListFragment extends Fragment {
             userInfos.remove(userInfo2);
         mUsers.addAll(userInfos);
         Collections.sort(mUsers);
+        try {
+            for (int i = 0; i < mUsers.size(); i++) {
+                if (!mUsers.get(i).getFirstLetter().equals("#")) {
+                    mMap.put(mUsers.get(i).getFirstLetter(), i);
+                }
+            }
+            String[] arr = mMap.keySet().toArray(new String[mMap.keySet().size() + 1]);
+            arr[arr.length - 1] = "#";
+            Arrays.sort(arr, String.CASE_INSENSITIVE_ORDER);
+            for (int i = 0; i < arr.length; i++) {
+                if (i < arr.length - 1)
+                    arr[i] = arr[i + 1];
+                if (i == arr.length - 1) {
+                    arr[i] = "#";
+                }
+            }
+            mSideBar.setIndexItems(arr);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         mFriendListRVAdapter.notifyDataSetChanged();
-        /*synchronized (mUsers) {
-            refreshDataWithRoomIdInBackground();
-        }*/
     }
 
 

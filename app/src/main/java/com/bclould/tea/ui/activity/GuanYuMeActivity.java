@@ -88,7 +88,11 @@ public class GuanYuMeActivity extends BaseActivity {
                 if (!url.isEmpty()) {
                     showDialog(url, apkName, body);
                 } else {
-                    checkVersion();
+                    if(!UtilTool.isFastClick()) {
+                        checkVersion();
+                    }else {
+                        Toast.makeText(this, getString(R.string.toast_after_time), Toast.LENGTH_SHORT).show();
+                    }
                 }
                 break;
         }

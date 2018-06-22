@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-//        release {
-//            keyAlias 'key'
-//            keyPassword '123456'
-//            storeFile file('D:/AndroidStudio/Project/TocoTalk/app/src/main/assets/KeyStore.jks')
-//            storePassword '123456'
-//        }
+        release {
+            keyAlias 'key'
+            keyPassword '123456'
+            storeFile file('D:/AndroidStudio/Project/TocoTalk/app/src/main/assets/KeyStore.jks')
+            storePassword '123456'
+        }
     }
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
@@ -31,8 +31,8 @@ android {
         applicationId "com.bclould.tea"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 52
-        versionName "0.52"
+        versionCode 51
+        versionName "0.51"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {

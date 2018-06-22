@@ -2,8 +2,6 @@ package com.bclould.tea.network;
 
 
 import com.bclould.tea.model.AuatarListInfo;
-import com.bclould.tea.model.GroupMemberInfo;
-import com.bclould.tea.model.OSSInfo;
 import com.bclould.tea.model.BankCardInfo;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.BetInfo;
@@ -18,6 +16,7 @@ import com.bclould.tea.model.GoogleInfo;
 import com.bclould.tea.model.GrabRedInfo;
 import com.bclould.tea.model.GroupCreateInfo;
 import com.bclould.tea.model.GroupInfo;
+import com.bclould.tea.model.GroupMemberInfo;
 import com.bclould.tea.model.GuessInfo;
 import com.bclould.tea.model.GuessListInfo;
 import com.bclould.tea.model.InOutInfo;
@@ -29,6 +28,7 @@ import com.bclould.tea.model.ModeOfPaymentInfo;
 import com.bclould.tea.model.MyAdListInfo;
 import com.bclould.tea.model.MyAssetsInfo;
 import com.bclould.tea.model.NewsListInfo;
+import com.bclould.tea.model.OSSInfo;
 import com.bclould.tea.model.OrderInfo;
 import com.bclould.tea.model.OrderInfo2;
 import com.bclould.tea.model.OrderListInfo;
@@ -44,6 +44,7 @@ import com.bclould.tea.model.TransRecordInfo;
 import com.bclould.tea.model.TransferInfo;
 import com.bclould.tea.model.TransferListInfo;
 import com.bclould.tea.model.UpdateLogInfo;
+import com.bclould.tocotalk.model.UserDataInfo;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -1156,5 +1157,13 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("group_id") String group_id,
             @Field("toco_ids") String toco_ids
+    );
+
+    //邀請加入群聊
+    @FormUrlEncoded
+    @POST("api/user/profile/by_id")
+    Observable<UserDataInfo> getUserData(
+            @Header("Authorization") String token,
+            @Field("user_id") int group_id
     );
 }
