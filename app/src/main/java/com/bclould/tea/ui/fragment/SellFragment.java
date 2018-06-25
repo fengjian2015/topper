@@ -55,7 +55,7 @@ public class SellFragment extends BaseFragment {
     LinearLayout mLlNoData;
     private View mView;
     private String mCoinName = "TPC";
-    private String mState = MySharedPreferences.getInstance().getString(STATE);
+    private String mState;
     private List<DealListInfo.DataBean> mDataList = new ArrayList<>();
     private BuySellRVAdapter mBuySellRVAdapter;
     private BuySellPresenter mBuySellPresenter;
@@ -73,6 +73,11 @@ public class SellFragment extends BaseFragment {
             mView = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_buy, container, false);
         if (MyApp.getInstance().mOtcCoinList.size() != 0) {
             mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();
+        }
+        if (MySharedPreferences.getInstance().getSp().contains(STATE)) {
+            mState = MySharedPreferences.getInstance().getString(STATE);
+        }else {
+            mState = getString(R.string.china_mainland);
         }
         ButterKnife.bind(this, mView);
         mBuySellPresenter = new BuySellPresenter(getContext());

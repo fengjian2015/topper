@@ -1,6 +1,7 @@
 package com.bclould.tea.Presenter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.widget.Toast;
@@ -13,7 +14,9 @@ import com.bclould.tea.model.ReviewListInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -30,6 +33,7 @@ import io.reactivex.schedulers.Schedulers;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class DynamicPresenter {
+    private static final String DYNAMIC_JSON = "dynamic_json";
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
 
@@ -94,7 +98,7 @@ public class DynamicPresenter {
         }
     }
 
-    public void dynamicList(int page, int pageSize, String userList, final CallBack2 callBack2) {
+    public void dynamicList(final int page, int pageSize, String userList, final CallBack2 callBack2) {
         UtilTool.Log("动态", userList);
         if (UtilTool.isNetworkAvailable(mContext)) {
 //            showDialog();
@@ -112,6 +116,11 @@ public class DynamicPresenter {
                         public void onNext(DynamicListInfo dynamicListInfo) {
 //                            hideDialog();
                             if (dynamicListInfo.getStatus() == 1) {
+                                if (page == 1) {
+                                    Gson gson = new Gson();
+                                    UtilTool.Log("動態", gson.toJson(dynamicListInfo));
+                                    MySharedPreferences.getInstance().setString(DYNAMIC_JSON, gson.toJson(dynamicListInfo));
+                                }
                                 callBack2.send(dynamicListInfo.getData());
                             } else {
                                 Toast.makeText(mContext, mContext.getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
@@ -120,7 +129,14 @@ public class DynamicPresenter {
 
                         @Override
                         public void onError(Throwable e) {
-//                            hideDialog();
+                            if (page == 1) {
+                                SharedPreferences sp = MySharedPreferences.getInstance().getSp();
+                                if (sp.contains(DYNAMIC_JSON)) {
+                                    Gson gson = new Gson();
+                                    DynamicListInfo dynamicListInfo = gson.fromJson(MySharedPreferences.getInstance().getString(DYNAMIC_JSON), DynamicListInfo.class);
+                                    callBack2.send(dynamicListInfo.getData());
+                                }
+                            }
                             UtilTool.Log("动态", e.getMessage());
                             Toast.makeText(mContext, mContext.getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
                         }
@@ -131,6 +147,14 @@ public class DynamicPresenter {
                         }
                     });
         } else {
+            if (page == 1) {
+                SharedPreferences sp = MySharedPreferences.getInstance().getSp();
+                if (sp.contains(DYNAMIC_JSON)) {
+                    Gson gson = new Gson();
+                    DynamicListInfo dynamicListInfo = gson.fromJson(MySharedPreferences.getInstance().getString(DYNAMIC_JSON), DynamicListInfo.class);
+                    callBack2.send(dynamicListInfo.getData());
+                }
+            }
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -437,6 +461,7 @@ public class DynamicPresenter {
 
                         @Override
                         public void onError(Throwable e) {
+
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 

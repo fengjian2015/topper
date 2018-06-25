@@ -1,6 +1,7 @@
 package com.bclould.tea.Presenter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.widget.Toast;
@@ -12,7 +13,9 @@ import com.bclould.tea.model.NewsListInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -30,13 +33,14 @@ import io.reactivex.schedulers.Schedulers;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class NewsNoticePresenter {
 
+    private static final String NEWS_JSON = "news_json";
     private final Context mContext;
 
     public NewsNoticePresenter(Context context) {
         mContext = context;
     }
 
-    public void getNewsList(int page, int pageSize, final CallBack callBack) {
+    public void getNewsList(final int page, int pageSize, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             RetrofitUtil.getInstance(mContext)
                     .getServer()
@@ -52,12 +56,25 @@ public class NewsNoticePresenter {
                         @Override
                         public void onNext(NewsListInfo newsListInfo) {
                             if (newsListInfo.getStatus() == 1) {
+                                if (page == 1) {
+                                    Gson gson = new Gson();
+                                    UtilTool.Log("動態", gson.toJson(newsListInfo));
+                                    MySharedPreferences.getInstance().setString(NEWS_JSON, gson.toJson(newsListInfo));
+                                }
                                 callBack.send(newsListInfo.getLists(), newsListInfo.getTop());
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
+                            if (page == 1) {
+                                SharedPreferences sp = MySharedPreferences.getInstance().getSp();
+                                if (sp.contains(NEWS_JSON)) {
+                                    Gson gson = new Gson();
+                                    NewsListInfo newsListInfo = gson.fromJson(MySharedPreferences.getInstance().getString(NEWS_JSON), NewsListInfo.class);
+                                    callBack.send(newsListInfo.getLists(), newsListInfo.getTop());
+                                }
+                            }
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -67,6 +84,14 @@ public class NewsNoticePresenter {
                         }
                     });
         } else {
+            if (page == 1) {
+                SharedPreferences sp = MySharedPreferences.getInstance().getSp();
+                if (sp.contains(NEWS_JSON)) {
+                    Gson gson = new Gson();
+                    NewsListInfo newsListInfo = gson.fromJson(MySharedPreferences.getInstance().getString(NEWS_JSON), NewsListInfo.class);
+                    callBack.send(newsListInfo.getLists(), newsListInfo.getTop());
+                }
+            }
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -194,9 +219,9 @@ public class NewsNoticePresenter {
                         @Override
                         public void onNext(BaseInfo baseInfo) {
                             if (baseInfo.getStatus() == 1) {
-                                if(type == Constants.NEW_DRAFTS_TYPE){
+                                if (type == Constants.NEW_DRAFTS_TYPE) {
                                     EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.delete_news_drafts)));
-                                }else if(type == Constants.NEW_MY_TYPE){
+                                } else if (type == Constants.NEW_MY_TYPE) {
                                     EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.delete_news_my)));
                                 }
                                 Toast.makeText(mContext, mContext.getString(R.string.delete_succeed), Toast.LENGTH_SHORT).show();

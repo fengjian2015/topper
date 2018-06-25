@@ -44,6 +44,7 @@ import com.bclould.tea.ui.widget.VirtualKeyboardView;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
@@ -162,7 +163,7 @@ public class CoinExchangeActivity extends BaseActivity {
                     double price = Double.parseDouble(mPrice);
                     DecimalFormat df = new DecimalFormat("0.000000");
                     String sum = df.format(count * price);
-                    mTvPrice.setText(sum + "");
+                    mTvPrice.setText(UtilTool.removeZero(sum));
                 } else {
                     mTvPrice.setText(mPrice);
                 }
@@ -472,6 +473,12 @@ public class CoinExchangeActivity extends BaseActivity {
         if (mEtCount.getText().toString().isEmpty()) {
             AnimatorTool.getInstance().editTextAnimator(mEtCount);
             Toast.makeText(this, getString(R.string.toast_count), Toast.LENGTH_SHORT).show();
+        } else if (mTvPrice.getText().toString().isEmpty()) {
+            AnimatorTool.getInstance().editTextAnimator(mTvPrice);
+            Toast.makeText(this, getString(R.string.toast_price), Toast.LENGTH_SHORT).show();
+        } else if (mTvCoin.getText().toString().isEmpty()) {
+            AnimatorTool.getInstance().editTextAnimator(mTvCoin);
+            Toast.makeText(this, getString(R.string.toast_coin), Toast.LENGTH_SHORT).show();
         } else {
             return true;
         }

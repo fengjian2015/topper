@@ -84,8 +84,9 @@ public class PersonalDetailsActivity extends BaseActivity {
 
     //初始化界面
     private void initInterface() {
-        String state = MySharedPreferences.getInstance().getString(STATE);
-        mTvLocation.setText(state);
+        if (MySharedPreferences.getInstance().getSp().contains(STATE)) {
+            mTvLocation.setText(MySharedPreferences.getInstance().getString(STATE));
+        }
         /*Bitmap bitmap = UtilTool.getImage(mMgr, UtilTool.getTocoId(), PersonalDetailsActivity.this);
         if (bitmap != null)
             mTouxiang.setImageBitmap(bitmap);*/

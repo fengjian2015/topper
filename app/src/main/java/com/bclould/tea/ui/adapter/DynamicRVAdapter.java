@@ -22,6 +22,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.model.DynamicListInfo;
 import com.bclould.tea.model.LikeInfo;
 import com.bclould.tea.ui.activity.GuessDetailsActivity;
+import com.bclould.tea.ui.activity.IndividualDetailsActivity;
 import com.bclould.tea.ui.activity.PreviewImgActivity;
 import com.bclould.tea.ui.activity.RewardActivity;
 import com.bclould.tea.ui.activity.VideoActivity;
@@ -230,6 +231,16 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                     messageEvent.setType(false);
                 }
             });
+            mTouxiang.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, IndividualDetailsActivity.class);
+                    intent.putExtra("roomId", mDataBean.getToco_id());
+                    intent.putExtra("name", mDataBean.getUser_name());
+                    intent.putExtra("user", mDataBean.getToco_id());
+                    mContext.startActivity(intent);
+                }
+            });
         }
 
         public void setData(final DynamicListInfo.DataBean dataBean) {
@@ -361,6 +372,16 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                     messageEvent.setState(mDataBean.getId() + "");
                     messageEvent.setType(false);
                     EventBus.getDefault().post(messageEvent);
+                }
+            });
+            mTouxiang.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, IndividualDetailsActivity.class);
+                    intent.putExtra("roomId", mDataBean.getToco_id());
+                    intent.putExtra("name", mDataBean.getUser_name());
+                    intent.putExtra("user", mDataBean.getToco_id());
+                    mContext.startActivity(intent);
                 }
             });
         }
@@ -529,6 +550,16 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                     messageEvent.setState(mDataBean.getId() + "");
                     messageEvent.setType(false);
                     EventBus.getDefault().post(messageEvent);
+                }
+            });
+            mIvTouxiang.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, IndividualDetailsActivity.class);
+                    intent.putExtra("roomId", mDataBean.getToco_id());
+                    intent.putExtra("name", mDataBean.getUser_name());
+                    intent.putExtra("user", mDataBean.getToco_id());
+                    mContext.startActivity(intent);
                 }
             });
         }
@@ -702,6 +733,16 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                             }
                         }
                     });
+                }
+            });
+            mIvTouxiang.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, IndividualDetailsActivity.class);
+                    intent.putExtra("roomId", mDataBean.getToco_id());
+                    intent.putExtra("name", mDataBean.getUser_name());
+                    intent.putExtra("user", mDataBean.getToco_id());
+                    mContext.startActivity(intent);
                 }
             });
         }

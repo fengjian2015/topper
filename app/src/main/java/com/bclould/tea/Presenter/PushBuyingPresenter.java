@@ -20,6 +20,7 @@ import com.bclould.tea.ui.activity.RealNameC1Activity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -28,6 +29,8 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.bclould.tea.Presenter.LoginPresenter.CURRENCY;
 
 /**
  * Created by GA on 2018/1/19.
@@ -70,7 +73,7 @@ public class PushBuyingPresenter {
             showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .publishDeal(UtilTool.getToken(), type, coin, state, "CNY", priced, countd, time, payment, mind, maxd, remark, password, phoneNumber)
+                    .publishDeal(UtilTool.getToken(), type, coin, state, MySharedPreferences.getInstance().getString(CURRENCY), priced, countd, time, payment, mind, maxd, remark, password, phoneNumber)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<BaseInfo>() {

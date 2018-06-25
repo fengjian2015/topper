@@ -61,6 +61,7 @@ public class DynamicListInfo {
          */
 
         private int id;
+        private String toco_id;
         private String user_name;
         private String content;
         private int key_type;
@@ -73,6 +74,14 @@ public class DynamicListInfo {
         private String avatar;
         private int is_self;
         private int rewardCount;
+
+        public String getToco_id() {
+            return toco_id;
+        }
+
+        public void setToco_id(String toco_id) {
+            this.toco_id = toco_id;
+        }
 
         public int getRewardCount() {
             return rewardCount;
@@ -319,6 +328,52 @@ public class DynamicListInfo {
                     this.toco_id = toco_id;
                 }
             }
+
+            @Override
+            public String toString() {
+                return "reviewlist{" +
+                        "id=" + id +
+                        ", replyUser=" + replyUser +
+                        ", commentsUser=" + commentsUser +
+                        ", content='" + content + '\'' +
+                        ", url='" + url + '\'' +
+                        ", key_type='" + key_type + '\'' +
+                        ", created_at='" + created_at + '\'' +
+                        ", like_count=" + like_count +
+                        '}';
+            }
         }
+
+        @Override
+        public String toString() {
+            return "data{" +
+                    "id=" + id +
+                    ", user_name='" + user_name + '\'' +
+                    ", content='" + content + '\'' +
+                    ", key_type=" + key_type +
+                    ", key='" + key + '\'' +
+                    ", key_compress='" + key_compress + '\'' +
+                    ", position='" + position + '\'' +
+                    ", review_count=" + review_count +
+                    ", like_count=" + like_count +
+                    ", created_at='" + created_at + '\'' +
+                    ", avatar='" + avatar + '\'' +
+                    ", is_self=" + is_self +
+                    ", rewardCount=" + rewardCount +
+                    ", is_like=" + is_like +
+                    ", key_compress_urls=" + key_compress_urls +
+                    ", key_urls=" + key_urls +
+                    ", reviewList=" + reviewList +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "status=" + status +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

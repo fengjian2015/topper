@@ -24,7 +24,7 @@ public class AddFriendSetActivity extends BaseActivity {
     private static final String PHONENUMBER = "phone_number";
     private static final String DYNAMIC = "dynamic";
     private static final String DYNAMIC2 = "dynamic2";
-    private static final String QRCODE = "qr_code";
+    public static final String QRCODE = "qr_code";
     private static final String GROUPCHAT = "group_chat";
     @Bind(R.id.bark)
     ImageView mBark;

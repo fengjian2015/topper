@@ -86,6 +86,16 @@ public class NewsListInfo {
         public void setIndex_pic(String index_pic) {
             this.index_pic = index_pic;
         }
+
+        @Override
+        public String toString() {
+            return "'" + "top{" + "'" +
+                    "id=" + id +
+                    ", title='" + title + '\'' +
+                    ", created_at='" + created_at + '\'' +
+                    ", index_pic='" + index_pic + '\'' +
+                    '}';
+        }
     }
 
     public static class ListsBean {
@@ -151,5 +161,26 @@ public class NewsListInfo {
         public void setIs_important(int is_important) {
             this.is_important = is_important;
         }
+
+        @Override
+        public String toString() {
+            return "list{" +
+                    "id=" + id +
+                    ", title='" + title + '\'' +
+                    ", created_at='" + created_at + '\'' +
+                    ", index_pic='" + index_pic + '\'' +
+                    ", is_important=" + is_important +
+                    ", is_ad=" + is_ad +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "status=" + status +
+                ", top=" + top +
+                ", lists=" + lists +
+                '}';
     }
 }

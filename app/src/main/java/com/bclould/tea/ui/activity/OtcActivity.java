@@ -114,7 +114,11 @@ public class OtcActivity extends BaseActivity {
             EventBus.getDefault().register(this);
         }
         mType = "2";
-        mTvState.setText(MySharedPreferences.getInstance().getString(STATE));
+        if (MySharedPreferences.getInstance().getSp().contains(STATE)) {
+            mTvState.setText(MySharedPreferences.getInstance().getString(STATE));
+        } else {
+            mTvState.setText(getString(R.string.china_mainland));
+        }
         mFiltrateList.add(getString(R.string.all));
         mFiltrateList.add(getString(R.string.canceled_canc));
         mFiltrateList.add(getString(R.string.underway));

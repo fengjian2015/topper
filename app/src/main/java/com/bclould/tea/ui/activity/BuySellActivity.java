@@ -324,8 +324,9 @@ public class BuySellActivity extends BaseActivity {
 //        mTvId.setText("ID：" + mData.getUser_id() + "");
         mTvQuota.setText(mData.getMin_amount() + "-" + mData.getMax_amount() + " " + mData.getCurrency());
         mTv4.setText(mData.getCurrency());
+        mTv.setText(mData.getCurrency());
         mTvRemark.setText(mData.getRemark());
-        mTvPrice.setText(mPrice + "");
+        mTvPrice.setText(mData.getPrice());
         mEtCny.setHint(mData.getMin_amount() + "-" + mData.getMax_amount() + mData.getCurrency());
         mTvReputation.setText(getString(R.string.deal) + " " + mData.getCount_trans_number() + " | " + getString(R.string.count) + mData.getNumber() + " " + mData.getCoin_name());
         mTvTitle.setText(getString(R.string.buy) + mData.getCoin_name());

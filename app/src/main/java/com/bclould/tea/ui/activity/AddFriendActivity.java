@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -30,6 +32,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.bclould.tea.ui.activity.AddFriendSetActivity.QRCODE;
 
 /**
  * Created by GA on 2017/9/25.
@@ -105,8 +109,17 @@ public class AddFriendActivity extends BaseActivity {
         });
     }
 
-    @OnClick(R.id.tv_cancel)
-    public void onViewClicked() {
-        finish();
+    @OnClick({R.id.iv_qr_code, R.id.tv_cancel})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_qr_code:
+                Intent intent = new Intent(this, ScanQRCodeActivity.class);
+                intent.putExtra("code", QRCODE);
+                startActivity(intent);
+                break;
+            case R.id.tv_cancel:
+                finish();
+                break;
+        }
     }
 }

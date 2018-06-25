@@ -246,7 +246,9 @@ public class PushBuyingActivity extends BaseActivity {
         mServiceCharge = getIntent().getStringExtra("serviceCharge");
         mServiceCharge2 = getIntent().getStringExtra("serviceCharge2");
         mTvCurrency.setText(mCoinName);
-        mTvState.setText(MySharedPreferences.getInstance().getString(STATE));
+        if (MySharedPreferences.getInstance().getSp().contains(STATE)) {
+            mTvState.setText(MySharedPreferences.getInstance().getString(STATE));
+        }
         mTvUnits.setText(MySharedPreferences.getInstance().getString(CURRENCY));
         mTvUnits2.setText(MySharedPreferences.getInstance().getString(CURRENCY));
         mTvUnits3.setText(MySharedPreferences.getInstance().getString(CURRENCY));
@@ -678,9 +680,9 @@ public class PushBuyingActivity extends BaseActivity {
                 break;
             case BUYSELL:
                 mTvBuySell.setText(name);
-                if(name.equals(getString(R.string.mai2))) {
+                if (name.equals(getString(R.string.mai2))) {
                     mTvHint.setText(getString(R.string.push_ad_hint) + Double.parseDouble(mServiceCharge) * 100 + "%" + getString(R.string.sxf));
-                }else {
+                } else {
                     mTvHint.setText(getString(R.string.push_ad_hint2) + Double.parseDouble(mServiceCharge2) * 100 + "%" + getString(R.string.sxf));
                 }
                 /*mTvPayment.setText("");
@@ -696,7 +698,7 @@ public class PushBuyingActivity extends BaseActivity {
     }
 
     public void showHintDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this,R.style.dialog);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setCanceledOnTouchOutside(false);
         TextView retry = (TextView) deleteCacheDialog.findViewById(R.id.tv_retry);

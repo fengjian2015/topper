@@ -118,9 +118,7 @@ public class LoginPresenter {
                                 MySharedPreferences.getInstance().setString(EMAIL, email);
                                 MySharedPreferences.getInstance().setString(LOGINPW, password);
                                 MySharedPreferences.getInstance().setString(CURRENCY, baseInfo.getData().getCurrency());
-                                if (baseInfo.getData().getCountry() == null) {
-                                    MySharedPreferences.getInstance().setString(STATE, mContext.getString(R.string.default_state));
-                                } else {
+                                if (!baseInfo.getData().getCountry().isEmpty()) {
                                     MySharedPreferences.getInstance().setString(STATE, baseInfo.getData().getCountry());
                                 }
                                 UserCodeInfo userCodeInfo = new UserCodeInfo();

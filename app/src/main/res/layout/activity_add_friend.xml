@@ -23,13 +23,30 @@
             android:layout_marginRight="@dimen/x10"
             android:layout_toLeftOf="@+id/tv_cancel"
             app:cardBackgroundColor="#10000000"
-            app:cardElevation="0dp"
-            app:cardCornerRadius="@dimen/x40">
+            app:cardCornerRadius="@dimen/x40"
+            app:cardElevation="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_qr_code"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_weight="1"
+                    android:padding="@dimen/x20"
+                    android:src="@mipmap/icon_talk_scrode"/>
+
+                <TextView
+                    android:layout_width="@dimen/y2"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/y20"
+                    android:layout_marginTop="@dimen/y20"
+                    android:background="@color/black"/>
 
                 <ImageView
                     android:id="@+id/iv_search"
@@ -38,7 +55,6 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:padding="@dimen/x20"
-                    android:layout_marginLeft="@dimen/x20"
                     android:src="@mipmap/icon_seek"/>
 
 
@@ -51,9 +67,9 @@
                     android:hint="@string/et_order_who"
                     android:imeOptions="actionSearch"
                     android:maxLength="20"
-                    android:paddingLeft="@dimen/x30"
                     android:paddingRight="@dimen/x30"
                     android:singleLine="true"
+
                     android:textColor="@color/black"
                     android:textSize="@dimen/x28"/>
             </LinearLayout>

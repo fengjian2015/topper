@@ -202,7 +202,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/x30"
                         android:gravity="center_vertical"
-                        android:text="@string/state"
+                        android:text="@string/state_district"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x26"/>
 
@@ -214,6 +214,7 @@
                         android:background="@color/light"/>
 
                     <TextView
+                        android:hint="@string/unverified"
                         android:id="@+id/tv_state"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

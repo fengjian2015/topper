@@ -76,7 +76,6 @@ public class RetrofitUtil {
                         .build();
             }
         }
-
     }
 
     private RetrofitUtil(Context Context) {
