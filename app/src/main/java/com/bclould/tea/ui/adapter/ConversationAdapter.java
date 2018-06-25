@@ -50,7 +50,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
     private final DBManager mMgr;
     private RelativeLayout mRlTitle;
 
-    public ConversationAdapter(ConversationFragment conversationFragment, Context context, List<ConversationInfo> ConversationList, DBManager mgr, RelativeLayout mRlTitle) {
+    public ConversationAdapter( Context context, List<ConversationInfo> ConversationList, DBManager mgr, RelativeLayout mRlTitle) {
         mContext = context;
         mConversationList = ConversationList;
         mMgr = mgr;

@@ -24,6 +24,7 @@ import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.network.OSSupload;
+import com.bclould.tea.topperchat.MessageManage;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.topperchat.WsContans;
 import com.bclould.tea.utils.Constants;
@@ -42,6 +43,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static com.bclould.tea.topperchat.WsContans.MSG_SINGLER;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_CARD_MSG;
@@ -68,6 +71,7 @@ public class SingleManage implements Room {
     private String mName;
     private ArrayList<MessageManageListener> listeners = new ArrayList<>();
 
+
     public SingleManage(DBManager mMgr, String mUser, Context context, String name) {
         this.mMgr = mMgr;
         this.mUser = mUser;
@@ -78,32 +82,8 @@ public class SingleManage implements Room {
         }
     }
 
-
-    private boolean send(String to, byte[] attachment, String body, int msgType, String msgId, long time) throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper(new MessagePackFactory());
-        Map<Object, Object> messageMap = new HashMap<>();
-        messageMap.put("body", OtrChatListenerManager.getInstance().sentMessagesChange(body,
-                OtrChatListenerManager.getInstance().sessionID(UtilTool.getTocoId(), String.valueOf(mUser))));
-        messageMap.put("attachment", attachment);
-
-        Map<Object, Object> contentMap = new HashMap<>();
-        contentMap.put("to", to);
-        contentMap.put("from", UtilTool.getTocoId());
-        if ("true".equals(OtrChatListenerManager.getInstance().getOTRState(mUser.toString()))) {
-            contentMap.put("crypt", true);
-        } else {
-            contentMap.put("crypt", false);
-        }
-        contentMap.put("message", objectMapper.writeValueAsBytes(messageMap));
-        contentMap.put("type", msgType);
-        contentMap.put("id", msgId);
-        contentMap.put("time", time);
-
-        Map<Object, Object> sendMap = new HashMap<>();
-        sendMap.put("type", MSG_SINGLER);
-        sendMap.put("content", objectMapper.writeValueAsBytes(contentMap));
-        mMgr.addMessageMsgId(msgId);
-        WsConnection.getInstance().sendMessage(objectMapper.writeValueAsBytes(sendMap));
+    private synchronized boolean send(String to, byte[] attachment, String body, int msgType, String msgId, long time) throws Exception {
+        MessageManage.getInstance().sendSingLe(to,attachment,body,msgType,msgId,time,mUser,mMgr);
         return true;
     }
 

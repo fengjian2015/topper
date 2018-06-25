@@ -25,7 +25,6 @@ public class LoginThread extends Thread {
 				break;
 			}
 			if (IMLogin.loginServer(context)) {
-				UtilTool.Log("fengjian","login------登陆成功");
 				ConnectStateChangeListenerManager.get().notifyListener(
 						ConnectStateChangeListenerManager.RECEIVING);
 				if (!isStartExReconnect) {
@@ -41,7 +40,7 @@ public class LoginThread extends Thread {
 					ConnectStateChangeListenerManager.get().notifyListener(
 							ConnectStateChangeListenerManager.CONNECTING);
 				}
-				UtilTool.Log("fengjian","login------登陆失败");
+				UtilTool.Log("fengjian","login------未登陆上");
 				try {
 					sleep(5 * 1000);
 				} catch (InterruptedException e) {

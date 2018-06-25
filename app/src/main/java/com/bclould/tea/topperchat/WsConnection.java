@@ -8,9 +8,12 @@ import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
 
+import com.bclould.tea.R;
+import com.bclould.tea.history.DBManager;
 import com.bclould.tea.service.IMCoreService;
 import com.bclould.tea.service.IMService;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.LoginThread;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,10 +25,14 @@ import com.koushikdutta.async.callback.DataCallback;
 import com.koushikdutta.async.http.AsyncHttpClient;
 import com.koushikdutta.async.http.WebSocket;
 
+import org.greenrobot.eventbus.EventBus;
 import org.msgpack.jackson.dataformat.MessagePackFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import static com.bclould.tea.topperchat.WsContans.CONTENT;
 import static com.bclould.tea.topperchat.WsContans.DEVICE;
 import static com.bclould.tea.topperchat.WsContans.DEVICE_ID;
@@ -46,6 +53,7 @@ public class WsConnection {
     private boolean isOutConnection=false;//是否已經退出登錄，到登錄界面
     private boolean isLoginConnection=false;//是否登錄鏈接中，避免重複登錄導致一直斷開
 
+    private DBManager mManager;
     private Handler mHandler=new Handler();
     public static WsConnection getInstance(){
         if(mInstance == null){
@@ -79,6 +87,11 @@ public class WsConnection {
                         }
                         ws=webSocket;
                         UtilTool.Log("fengjian","连接服務器成功");
+                        try {
+                            login();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         webSocket.setDataCallback(new DataCallback() {
                             public void onDataAvailable(DataEmitter emitter, ByteBufferList byteBufferList) {
                                 byte[] bytes=byteBufferList.getAllByteArray();
@@ -125,8 +138,11 @@ public class WsConnection {
             }
             return;
         }
+        changeMsgState();
         setLoginConnection(true);
-        UtilTool.Log("fengjian","TOCOID:"+UtilTool.getTocoId());
+        senLogout();
+        Thread.sleep(2000);
+        UtilTool.Log("fengjian","發送登錄消息：TOCOID:"+UtilTool.getTocoId());
         ObjectMapper objectMapper =  new ObjectMapper(new  MessagePackFactory());
         Map<Object,Object> contentMap = new HashMap<>();
         contentMap.put(PASSWORD,UtilTool.getToken());
@@ -141,8 +157,11 @@ public class WsConnection {
             @Override
             public void run() {
                 setLoginConnection(false);
+                if(!isLogin){
+                    closeConnection();
+                }
             }
-        },10*1000);
+        },20*1000);
     }
 
     public void senPing(){
@@ -164,15 +183,12 @@ public class WsConnection {
 
     public void senLogout(){
         try {
+            UtilTool.Log("fengjian","主動發送登出消息33");
             ObjectMapper objectMapper =  new ObjectMapper(new MessagePackFactory());
             Map<Object,Object> sendMap = new HashMap<>();
             sendMap.put("type",33);
             sendMap.put("content",new byte[]{});
-            try {
-                sendMessage(objectMapper.writeValueAsBytes(sendMap));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
+            sendMessage(objectMapper.writeValueAsBytes(sendMap));
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -215,12 +231,26 @@ public class WsConnection {
     }
 
 
+    private void changeMsgState() {
+        if(mManager==null){
+            mManager=new DBManager(mContext);
+        }
+        List<String> list = mManager.queryAllMsgId();
+        if (list != null && list.size() > 0) {
+            for (String string : list) {
+                mManager.updateMessageStatus(string, 2);
+            }
+            EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.msg_database_update)));
+        }
+        mManager.deleteAllMsgId();
+    }
 
 
     /**
      * 关闭连接
      */
-    private void closeConnection() {
+    public void closeConnection() {
+        senLogout();
         setIsLogin(false);
         LoginThread.isStartExReconnect = false;
         if (ws != null) {

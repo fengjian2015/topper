@@ -24,11 +24,14 @@ import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.adapter.SelectFriendAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.MessageManageListener;
 import com.bclould.tea.xmpp.Room;
 import com.bclould.tea.xmpp.RoomManage;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -237,7 +240,7 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
                 messageInfo= singleManage.sendMessage(shareText);
                 if(messageInfo!=null){
                     ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.share_complete));
-                    SelectFriendActivity.this.finish();
+                    close();
                 }else{
                     ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.share_failure));
                 }
@@ -248,7 +251,7 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
                 messageInfo= singleManage.sendMessage(message);
                 if(messageInfo!=null){
                     ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.forward_success));
-                    SelectFriendActivity.this.finish();
+                    close();
                 }else{
                     ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.forward_failure));
                 }
@@ -267,21 +270,21 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
             if(TO_CARD_MSG==msgType||msgType==FROM_CARD_MSG){
                if(singleManage.sendCaed(messageInfo)){
                     ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.send_succeed));
-                    SelectFriendActivity.this.finish();
+                   close();
                }else{
                    ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.send_error));
                 }
             }else if(TO_LINK_MSG==msgType||msgType==FROM_LINK_MSG){
                 if(singleManage.sendShareLink(messageInfo)){
                     ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.send_succeed));
-                    SelectFriendActivity.this.finish();
+                    close();
                 }else{
                     ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.send_error));
                 }
             }else if(TO_GUESS_MSG==msgType||msgType==FROM_GUESS_MSG){
                 if(singleManage.sendShareGuess(messageInfo)){
                     ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.send_succeed));
-                    SelectFriendActivity.this.finish();
+                    close();
                 }else{
                     ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.send_error));
                 }
@@ -327,10 +330,15 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
         hideDialog();
         if(isSuccess){
             ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.forward_success));
-            SelectFriendActivity.this.finish();
+            close();
         }else{
             ToastShow.showToast2(SelectFriendActivity.this,getString(R.string.forward_failure));
         }
+    }
+
+    private void close(){
+        EventBus.getDefault().post(new MessageEvent(getString(R.string.close_activity)));
+        SelectFriendActivity.this.finish();
     }
 
     @Override

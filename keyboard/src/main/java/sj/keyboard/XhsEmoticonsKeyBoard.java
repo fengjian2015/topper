@@ -2,32 +2,32 @@ package sj.keyboard;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.keyboard.view.R;
 
 import java.util.ArrayList;
-import java.util.logging.Handler;
+import java.util.List;
 
 import sj.keyboard.adpater.PageSetAdapter;
 import sj.keyboard.data.PageSetEntity;
 import sj.keyboard.utils.EmoticonsKeyboardUtils;
+import sj.keyboard.utils.MenuListPopWindow;
 import sj.keyboard.widget.AutoHeightLayout;
 import sj.keyboard.widget.EmoticonsEditText;
 import sj.keyboard.widget.EmoticonsFuncView;
@@ -65,6 +65,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     private boolean initRecordIndicator = false;
     private OnResultOTR onResultOTR;
     private String roomType;//房间类型
+    private  MenuListPopWindow menu;
 
     public XhsEmoticonsKeyBoard(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -103,7 +104,6 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
             initRecordIndicator = true;
             recordIndicator.setRecordButton(mBtnVoice);
         }
-
     }
 
     protected void initFuncView() {
@@ -175,11 +175,18 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
 
     public void setRoomType(String roomType){
         this.roomType=roomType;
-        if (ROOM_TYPE_MULTI.equals(roomType)) {
+//        if (ROOM_TYPE_MULTI.equals(roomType)) {
             mbtnOtrText.setVisibility(View.GONE);
-        }else{
-            mbtnOtrText.setVisibility(View.VISIBLE);
-        }
+//        }else{
+//            mbtnOtrText.setVisibility(View.VISIBLE);
+//        }
+    }
+
+    public MenuListPopWindow setListMenu(Context context){
+        this.mContext=context;
+        menu = new MenuListPopWindow(mContext,mEtChat,roomType);
+        menu.setColor(Color.BLACK);
+        return menu;
     }
 
     public void reset() {
@@ -208,8 +215,17 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     }
 
     protected void toggleFuncView(int key) {
+        if(FUNC_TYPE_APPPS==key){
+            showVoice();
+            show();
+        }else {
+            mLyKvml.toggleFuncView(key, isSoftKeyboardPop(), mEtChat);
+        }
         showText();
-        mLyKvml.toggleFuncView(key, isSoftKeyboardPop(), mEtChat);
+    }
+
+    private void show(){
+         menu.showAtLocation();
     }
 
     @Override
@@ -291,17 +307,17 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     }
 
     public void changeOTR(String isopen) {
-        if(ROOM_TYPE_MULTI.equals(roomType))return;
-        if("true".equals(isopen)){
-            mbtnOtrText.setImageResource(R.drawable.icon_encrypt_ch);
-            mEtChat.setHint(R.string.intput_otr_ch);
-        }else {
-            if(mContext.getString(R.string.start_otr).equals(mEtChat.getHint())){
-                return;
-            }
-            mbtnOtrText.setImageResource(R.drawable.icon_encrypt_no);
-            mEtChat.setHint(R.string.intput_otr_no);
-        }
+//        if(ROOM_TYPE_MULTI.equals(roomType))return;
+//        if("true".equals(isopen)){
+//            mbtnOtrText.setImageResource(R.drawable.icon_encrypt_ch);
+//            mEtChat.setHint(R.string.intput_otr_ch);
+//        }else {
+//            if(mContext.getString(R.string.start_otr).equals(mEtChat.getHint())){
+//                return;
+//            }
+//            mbtnOtrText.setImageResource(R.drawable.icon_encrypt_no);
+//            mEtChat.setHint(R.string.intput_otr_no);
+//        }
     }
 
     public void timeoutOTR(){

@@ -92,6 +92,7 @@ import sj.keyboard.interfaces.EmoticonDisplayListener;
 import sj.keyboard.interfaces.EmoticonFilter;
 import sj.keyboard.interfaces.PageViewInstantiateListener;
 import sj.keyboard.utils.EmoticonsKeyboardUtils;
+import sj.keyboard.utils.MenuListPopWindow;
 import sj.keyboard.widget.EmoticonPageView;
 import sj.keyboard.widget.EmoticonsEditText;
 import sj.keyboard.widget.FuncLayout;
@@ -208,6 +209,32 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         mEkbEmoticonsKeyboard.setRoomType(roomType);
         SimpleAppsGridView simpleAppsGridView = new SimpleAppsGridView(this);
         simpleAppsGridView.setData(roomId, roomType);
+
+        mEkbEmoticonsKeyboard.setListMenu(ConversationActivity.this).setListOnClick(new MenuListPopWindow.ListOnClick() {
+            @Override
+            public void onclickitem(String name) {
+                if (getString(R.string.red_package).equals(name)) {
+                    Intent intent = new Intent(ConversationActivity.this, SendRedPacketActivity.class);
+                    intent.putExtra("user", roomId);
+                    startActivity(intent);
+                } else if (getString(R.string.image).equals(name)) {
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.open_photo_album)));
+                } else if (getString(R.string.file).equals(name)) {
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.open_file_manage)));
+                } else if (getString(R.string.location).equals(name)) {
+                    Intent intent = new Intent(ConversationActivity.this,LocationActivity.class);
+                    intent.putExtra("user", roomId);
+                    intent.putExtra("type", 1);
+                    startActivity(intent);
+                }else if (getString(R.string.transfer).equals(name)) {
+                    Intent intent = new Intent(ConversationActivity.this, ChatTransferActivity.class);
+                    intent.putExtra("user", roomId);
+                    startActivity(intent);
+                }else if(getString(R.string.shooting).equals(name)){
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.open_shooting)));
+                }
+            }
+        });
         mEkbEmoticonsKeyboard.addFuncView(simpleAppsGridView);
         mEkbEmoticonsKeyboard.addOnFuncKeyBoardListener(this);
         mEkbEmoticonsKeyboard.getEtChat().setOnSizeChangedListener(new EmoticonsEditText.OnSizeChangedListener() {
@@ -364,7 +391,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                     sendMessage(mEkbEmoticonsKeyboard.getEtChat().getText().toString());
                     mEkbEmoticonsKeyboard.getEtChat().setText("");
                 }
-                return false;
+                return true;
             }
         });
 
@@ -519,6 +546,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             }
         }else if(msg.equals(getString(R.string.refresh_group_members))){
             setTitleName();
+            mChatAdapter.notifyDataSetChanged();
         }
 
     }

@@ -35,6 +35,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.UserInfo;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;

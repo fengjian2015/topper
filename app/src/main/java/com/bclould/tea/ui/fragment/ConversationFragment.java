@@ -395,7 +395,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     }
 
     private void initRecyclerView() {
-        mConversationAdapter = new ConversationAdapter(this, getActivity(), getSimpleData(), mgr, mRlTitle);
+        mConversationAdapter = new ConversationAdapter( getActivity(), getSimpleData(), mgr, mRlTitle);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mConversationAdapter);
     }

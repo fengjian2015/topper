@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light"
+    android:orientation="vertical"
+    tools:context="com.bclould.tea.ui.activity.SelectFriendActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/choose_a_chat"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_select_friend"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y80"
+        android:background="@color/white"
+        android:text="選擇好友"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/y20"
+        android:layout_marginBottom="@dimen/y20"
+        android:paddingLeft="@dimen/x20"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x32"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <!--<com.bclould.tea.ui.widget.SideBar
+            android:id="@+id/side_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:paddingRight="@dimen/x20"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/x30"/>-->
+
+    </RelativeLayout>
+</LinearLayout>

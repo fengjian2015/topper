@@ -55,6 +55,7 @@
             android:paddingLeft="@dimen/x20"
             android:paddingRight="@dimen/x20"
             android:layout_marginTop="@dimen/y20"
+            android:singleLine="true"
             android:layout_toLeftOf="@+id/tv_create"
             />
         <TextView

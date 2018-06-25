@@ -159,7 +159,7 @@ public class IMService extends Service{
         new Thread(){
             @Override
             public void run() {
-                WsConnection.getInstance().get(IMService.this).close();
+                WsConnection.getInstance().closeConnection();
             }
         }.start();
     }

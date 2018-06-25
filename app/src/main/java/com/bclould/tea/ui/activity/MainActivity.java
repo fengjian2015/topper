@@ -253,8 +253,6 @@ public class MainActivity extends BaseActivity {
             getGroup();
             getMyImage();
             getFriends();
-            //改變發送中的狀態
-            changeMsgState();
         }
         //初始化底部菜单
         initBottomMenu();
@@ -266,20 +264,6 @@ public class MainActivity extends BaseActivity {
         checkVersion();
     }
 
-    private void changeMsgState() {
-        new Thread() {
-            @Override
-            public void run() {
-                List<String> list = mMgr.queryAllMsgId();
-                if (list != null && list.size() > 0) {
-                    for (String string : list) {
-                        mMgr.updateMessageStatus(string, 2);
-                    }
-                }
-                mMgr.deleteAllMsgId();
-            }
-        }.start();
-    }
 
     private void getGroup() {
         new GroupPresenter(this).getGroup(mDBRoomMember, mDBRoomManage, mMgr, false, new GroupPresenter.CallBack1() {
