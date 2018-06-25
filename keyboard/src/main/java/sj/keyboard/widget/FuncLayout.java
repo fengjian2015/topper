@@ -91,6 +91,10 @@ public class FuncLayout extends LinearLayout {
         }
     }
 
+    public void setHint(int keyTemp){
+        mFuncViewArrayMap.get(keyTemp).setVisibility(GONE);
+    }
+
     public int getCurrentFuncKey() {
         return mCurrentFuncKey;
     }

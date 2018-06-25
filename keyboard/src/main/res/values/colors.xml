@@ -15,4 +15,6 @@
 
     <color name="colorRedBg">#fa5148</color>
     <color name="qq_bg">#ecedf1</color>
+    <color name="gray2">#F4F4F4</color>
+    <color name="black">#000000</color>
 </resources>

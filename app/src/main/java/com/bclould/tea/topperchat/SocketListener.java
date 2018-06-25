@@ -599,7 +599,7 @@ public class SocketListener {
             });
             Map<Object, Object> jsonMap = JSON.parseObject(new String((byte[]) contentMap.get("message")), HashMap.class);
             Map<Object, Object> messageMap = JSON.parseObject((String) jsonMap.get("message"), HashMap.class);
-            int type = (int) messageMap.get(TYPE);
+            int type = (int) jsonMap.get(TYPE);
             switch (type) {
                 case BC_FRIEND_REQUEST:
                 case BC_FRIEND_COMMIT:

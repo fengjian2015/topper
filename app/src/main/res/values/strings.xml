@@ -938,4 +938,6 @@
     <string name="exceptional_inform">打賞通知</string>
     <string name="exceptional_inform_hint">您有一個新打賞消息,點擊查看詳情</string>
     <string name="state_district">國家或地區</string>
+    <string name="choose_a_chat">選擇一個聊天</string>
+    <string name="close_activity">關閉界面</string>
 </resources>

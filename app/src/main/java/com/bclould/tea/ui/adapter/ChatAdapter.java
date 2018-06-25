@@ -47,6 +47,7 @@ import com.bclould.tea.ui.activity.OrderDetailsActivity;
 import com.bclould.tea.ui.activity.PayDetailsActivity;
 import com.bclould.tea.ui.activity.RealNameC1Activity;
 import com.bclould.tea.ui.activity.RedPacketActivity;
+import com.bclould.tea.ui.activity.SelectConversationActivity;
 import com.bclould.tea.ui.activity.SelectFriendActivity;
 import com.bclould.tea.ui.activity.TransferDetailsActivity;
 import com.bclould.tea.ui.activity.VideoActivity;
@@ -466,7 +467,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                             cm.setPrimaryClip(mClipData);
                             ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.copy_succeed));
                         } else {
-                            Intent intent = new Intent(mContext, SelectFriendActivity.class);
+                            Intent intent = new Intent(mContext, SelectConversationActivity.class);
                             intent.putExtra("type", 1);
                             intent.putExtra("msgType", msgtype);
                             intent.putExtra("messageInfo", messageInfo);
@@ -475,7 +476,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                         break;
                     case 3:
                         menu.dismiss();
-                        Intent intent = new Intent(mContext, SelectFriendActivity.class);
+                        Intent intent = new Intent(mContext, SelectConversationActivity.class);
                         intent.putExtra("type", 1);
                         intent.putExtra("msgType", msgtype);
                         intent.putExtra("messageInfo", messageInfo);
@@ -663,7 +664,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                             messageInfo.setStatus(1);
                             notifyDataSetChanged();
 //                            skip(info, mToBitmap, UtilTool.getTocoId(), 0);
-                            skip(info, UtilTool.getTocoId(), 0, mName);
+                            skip(info, UtilTool.getTocoId(), 0, info.getData().getSend_rp_user_name());
                         }
                     });
                 }
@@ -753,7 +754,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                                     Toast.makeText(mContext, info.getMessage(), Toast.LENGTH_SHORT).show();
                                 } else {
 //                                    skip(info, mFromBitmap, mUser, 1);
-                                    skip(info, finalMUser, 1, mName);
+                                    skip(info, finalMUser, 1, info.getData().getSend_rp_user_name());
                                 }
                             }
                         });
