@@ -952,12 +952,16 @@ public class UtilTool {
         if (file.exists()) {
             size = 0;
             File[] fileList = file.listFiles();
-            for (int i = 0; i < fileList.length; i++) {
-                if (fileList[i].isDirectory()) {
-                    size = size + getFolderSize(fileList[i]);
-                } else {
-                    size = size + fileList[i].length();
+            if (fileList != null) {
+                for (int i = 0; i < fileList.length; i++) {
+                    if (fileList[i].isDirectory()) {
+                        size = size + getFolderSize(fileList[i]);
+                    } else {
+                        size = size + fileList[i].length();
+                    }
                 }
+            }else {
+                size = file.length();
             }
         }
         return size;

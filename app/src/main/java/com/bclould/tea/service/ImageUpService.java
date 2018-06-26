@@ -29,12 +29,14 @@ import com.bclould.tea.network.OSSupload;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.UtilTool;
+import com.iceteck.silicompressorr.SiliCompressor;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +52,7 @@ public class ImageUpService extends Service {
     private boolean mType;
     private String mLocation;
     private OSSAsyncTask<PutObjectResult> mTask;
+    private OSSClient mOssClient;
 
     @Nullable
     @Override
@@ -110,18 +113,39 @@ public class ImageUpService extends Service {
     private void checkFile() {
         try {
             if (mPathList.size() != 0) {
-                OSSClient ossClient = OSSupload.getInstance().visitOSS();
+                mOssClient = OSSupload.getInstance().visitOSS();
                 if (mType) {
-                    File file = new File(mPathList.get(0));
+                    final File file = new File(mPathList.get(0));
                     Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(mPathList.get(0)
                             , MediaStore.Video.Thumbnails.MINI_KIND);
                     //缩略图储存路径
-                    final String key = UtilTool.getUserId() + UtilTool.createtFileName() + UtilTool.getPostfix2(file.getName());
                     final String keyCompress = UtilTool.getUserId() + UtilTool.createtFileName() + "compress.jpg";
-                    final File newFile = new File(Constants.PUBLICDIR + keyCompress);
-                    UtilTool.comp(bitmap, newFile);//压缩图片
-                    upVoide(key, file, true, ossClient);
-                    upVoide(keyCompress, newFile, false, ossClient);
+                    final File newCompressImg = new File(Constants.PUBLICDIR + keyCompress);
+                    UtilTool.comp(bitmap, newCompressImg);//压缩图片
+                    upVoide(keyCompress, newCompressImg, false, mOssClient);
+                    final String key = UtilTool.getUserId() + UtilTool.createtFileName() + UtilTool.getPostfix2(file.getName());
+                    if (UtilTool.getFolderSize(file) > (1048576 * 5) && UtilTool.getFolderSize(file) < (1048576 * 20)) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    String filePath = SiliCompressor.with(ImageUpService.this).compressVideo(file.getPath(), Constants.PUBLICDIR);
+                                    Message message = new Message();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("key", key);
+                                    bundle.putString("file", filePath);
+                                    message.obj = bundle;
+                                    message.what = 0;
+                                    handler.sendMessage(message);
+                                } catch (URISyntaxException e) {
+                                }
+                            }
+                        }).start();
+                    } else if (UtilTool.getFolderSize(file) > (1048576 * 20)) {
+                        Toast.makeText(this, getString(R.string.video_big_hint), Toast.LENGTH_SHORT).show();
+                    } else {
+                        upVoide(key, file, true, mOssClient);
+                    }
                 } else {
                     for (int i = 0; i < mPathList.size(); i++) {
                         File file = new File(mPathList.get(i));
@@ -130,8 +154,8 @@ public class ImageUpService extends Service {
                         //缩略图储存路径
                         final File newFile = new File(Constants.PUBLICDIR + keyCompress);
                         UtilTool.comp(BitmapFactory.decodeFile(mPathList.get(i)), newFile);//压缩图片
-                        upImage(key, file, true, ossClient);
-                        upImage(keyCompress, newFile, false, ossClient);
+                        upImage(key, file, true, mOssClient);
+                        upImage(keyCompress, newFile, false, mOssClient);
                     }
                 }
             } else {
@@ -230,31 +254,10 @@ public class ImageUpService extends Service {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    count++;
-                    if (count == 2) {
-                        publicshDynamic("3");
-                    }
-                    break;
-                case 1:
-                    count++;
-                    if (msg.arg1 == 0) {
-                        keyCount++;
-                        String key = (String) msg.obj;
-                        if (keyCount >= 2)
-                            mKeyList += "," + key;
-                        else
-                            mKeyList = key;
-                    } else {
-                        keyCompress++;
-                        String key = (String) msg.obj;
-                        if (keyCompress >= 2)
-                            mkeyCompressList += "," + key;
-                        else
-                            mkeyCompressList = key;
-                    }
-                    if (count == mPathList.size() * 2) {
-                        publicshDynamic("1");
-                    }
+                    Bundle bundle = (Bundle) msg.obj;
+                    String key = bundle.getString("key");
+                    String file = bundle.getString("file");
+                    upVoide(key, new File(file), true, mOssClient);
                     break;
                 case 2:
                     Toast.makeText(ImageUpService.this, getString(R.string.up_error), Toast.LENGTH_SHORT).show();

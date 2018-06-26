@@ -28,6 +28,7 @@ import com.bclould.tea.model.ProvinceBean;
 import com.bclould.tea.model.TransferListInfo;
 import com.bclould.tea.ui.adapter.PayManageGVAdapter;
 import com.bclould.tea.ui.adapter.PayRecordRVAdapter;
+import com.bclould.tea.utils.UtilTool;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
@@ -85,6 +86,7 @@ public class PayRecordActivity extends BaseActivity {
     private Map<String, Integer> mMap = new HashMap<>();
     private ReceiptPaymentPresenter mReceiptPaymentPresenter;
     private List<String> mFiltrateList = new ArrayList<>();
+    private SimpleDateFormat mSimpleDateFormat;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -145,18 +147,18 @@ public class PayRecordActivity extends BaseActivity {
             @Override
             public void send(List<TransferListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
-                    if (mDataList.size() != 0 || data.size() != 0) {
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        mLlNoData.setVisibility(View.GONE);
+                    if (data.size() != 0 || mDataList.size() != 0) {
                         isFinish = true;
                         if (type == PULL_UP) {
                             if (data.size() == mPageSize) {
                                 mPage++;
                                 mDataList.addAll(data);
-                            } else {
+                                mPayRecordRVAdapter.notifyDataSetChanged();
+                            } else if (data.size() != 0) {
                                 if (end == 0) {
                                     end++;
                                     mDataList.addAll(data);
+                                    mPayRecordRVAdapter.notifyDataSetChanged();
                                 }
                             }
                         } else {
@@ -164,19 +166,22 @@ public class PayRecordActivity extends BaseActivity {
                                 mRecyclerView.setVisibility(View.GONE);
                                 mLlNoData.setVisibility(View.VISIBLE);
                             } else {
+                                mRecyclerView.setVisibility(View.VISIBLE);
+                                mLlNoData.setVisibility(View.GONE);
                                 if (mPage == 1) {
                                     mPage++;
                                 }
                                 mDataList.clear();
                                 mDataList.addAll(data);
+                                mPayRecordRVAdapter.notifyDataSetChanged();
                             }
                         }
-                        mPayRecordRVAdapter.notifyDataSetChanged();
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);
                     }
                 }
+
             }
         });
     }
@@ -213,10 +218,12 @@ public class PayRecordActivity extends BaseActivity {
                 @Override
                 public void onOptionsSelect(int options1, int options2, int options3, View v) {
                     //返回的分别是三个级别的选中位置
-                    mDate = options1Items.get(options1).getPickerViewText()
-                            + "-" + options2Items.get(options1).get(options2);
-                    mTvDate.setText(mDate);
-                    initData(PULL_DOWN);
+                    if (options2 >= 0) {
+                        mDate = options1Items.get(options1).getPickerViewText()
+                                + "-" + options2Items.get(options1).get(options2);
+                        mTvDate.setText(mDate);
+                        initData(PULL_DOWN);
+                    }
                 }
             })
                     .setContentTextSize(20)//设置滚轮文字大小
@@ -232,15 +239,15 @@ public class PayRecordActivity extends BaseActivity {
                     .setLabels(getString(R.string.year), getString(R.string.month), getString(R.string.day))
                     .setBackgroundId(0x00000000) //设置外部遮罩颜色
                     .build();
+            pvOptions.setPicker(options1Items, options2Items);//二级选择器
         }
         pvOptions.show();
-        pvOptions.setPicker(options1Items, options2Items);//二级选择器
     }
 
     private void getOptionData() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
+        mSimpleDateFormat = new SimpleDateFormat("yyyy-MM");
         Date date = new Date(System.currentTimeMillis());
-        mDate = simpleDateFormat.format(date);
+        mDate = mSimpleDateFormat.format(date);
         SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("MM");
         Date date2 = new Date(System.currentTimeMillis());
         int month = Integer.parseInt(simpleDateFormat2.format(date2));
@@ -256,6 +263,7 @@ public class PayRecordActivity extends BaseActivity {
             }
         }
         Collections.reverse(options2Items_01);
+        UtilTool.Log("時間", options2Items_01.size() + "");
         ArrayList<String> options2Items_02 = new ArrayList<>();
         options2Items_02.add("12");
         options2Items_02.add("11");
@@ -284,7 +292,7 @@ public class PayRecordActivity extends BaseActivity {
         options2Items_02.add("01");
         options2Items.add(options2Items_01);
         options2Items.add(options2Items_02);
-        options2Items.add(options2Items_03);
+//        options2Items.add(options2Items_03);
 
         /*--------数据源添加完毕---------*/
     }
@@ -342,5 +350,14 @@ public class PayRecordActivity extends BaseActivity {
                 mBottomDialog.dismiss();
             }
         }));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mBottomDialog != null)
+            mBottomDialog.dismiss();
+        if (pvOptions != null)
+            pvOptions.dismiss();
     }
 }

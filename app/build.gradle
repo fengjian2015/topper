@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        release {
+        /*release {
             keyAlias 'key'
             keyPassword '123456'
             storeFile file('D:/AndroidStudio/Project/TocoTalk/app/src/main/assets/KeyStore.jks')
             storePassword '123456'
-        }
+        }*/
     }
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
@@ -25,6 +25,11 @@ android {
         preDexLibraries = false
         incremental true
         additionalParameters = ['--core-library']  //核心语句
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
     }
 
     defaultConfig {
@@ -170,4 +175,12 @@ dependencies {
     compile project(path: ':camera')
     compile 'org.msgpack:jackson-dataformat-msgpack:0.8.16'
     compile 'com.koushikdutta.async:androidasync:2.+'
+    compile 'com.iceteck.silicompressorr:silicompressor:2.1'
+
+    //PushSDK必须依赖基础组件库，所以需要加入对应依赖
+    compile 'com.umeng.sdk:common:1.5.3'
+    //PushSDK必须依赖utdid库，所以需要加入对应依赖
+    compile 'com.umeng.sdk:utdid:1.1.5.3'
+    //友盟PushSDK
+    compile 'com.umeng.sdk:push:4.2.0'
 }

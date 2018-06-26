@@ -77,10 +77,12 @@ public class PayDetailsActivity extends BaseActivity {
         String log_id = getIntent().getStringExtra("log_id");
         String type_number = getIntent().getStringExtra("type_number");
         BuySellPresenter buySellPresenter = new BuySellPresenter(this);
-        if (Integer.parseInt(type_number) == 7 || Integer.parseInt(type_number) == 8) {
-            mRlTxId.setVisibility(View.VISIBLE);
-        } else {
-            mRlTxId.setVisibility(View.GONE);
+        if (type_number != null) {
+            if (Integer.parseInt(type_number) == 7 || Integer.parseInt(type_number) == 8) {
+                mRlTxId.setVisibility(View.VISIBLE);
+            } else {
+                mRlTxId.setVisibility(View.GONE);
+            }
         }
         buySellPresenter.transRecordInfo(log_id, id, type_number, new BuySellPresenter.CallBack3() {
 
@@ -97,8 +99,8 @@ public class PayDetailsActivity extends BaseActivity {
                 mTvMoney.setText(data.getNumber());
                 mTvCount.setText(data.getCoin_name());
                 mTvPrice.setText(data.getCreated_at());
-                if(!StringUtils.isEmpty(data.getTxid())){
-                    mTvTxId.setText("Txid: "+data.getTxid());
+                if (!StringUtils.isEmpty(data.getTxid())) {
+                    mTvTxId.setText("Txid: " + data.getTxid());
                 }
             }
         });
