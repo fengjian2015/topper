@@ -8,11 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bclould.tea.R;
+import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.ui.activity.CreateGroupRoomActivity;
 import com.bclould.tea.ui.activity.IndividualDetailsActivity;
+import com.bclould.tea.ui.activity.SelectGroupMemberActivity;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 
 import java.util.List;
@@ -25,10 +29,18 @@ public class GroupDetailsMemberAdapter extends BaseAdapter{
     private Context context;
     private List<RoomMemberInfo> list;
     private  String roomId;
-    public GroupDetailsMemberAdapter(Context context, List<RoomMemberInfo> list, String roomId) {
+    private DBManager mgr;
+    private boolean isOwner;
+    public GroupDetailsMemberAdapter(Context context, List<RoomMemberInfo> list, String roomId, DBManager mgr) {
         this.context=context;
         this.list=list;
         this.roomId=roomId;
+        this.mgr=mgr;
+    }
+
+    public void setIsOwner(boolean isOwner){
+        this.isOwner=isOwner;
+        this.isOwner=false;
     }
 
     @Override
@@ -53,32 +65,78 @@ public class GroupDetailsMemberAdapter extends BaseAdapter{
             view=View.inflate(context, R.layout.group_member_item,null);
             viewHolder=new ViewHolder();
             viewHolder.group_touxiang= (ImageView) view.findViewById(R.id.group_touxiang);
+            viewHolder.tvName=view.findViewById(R.id.tv_name);
             view.setTag(viewHolder);
         }else{
             viewHolder= (ViewHolder) view.getTag();
         }
-        if(i==list.size()-1){
-            viewHolder.group_touxiang.setImageResource(R.mipmap.add_member);
-        }else{
-            UtilTool.getImage(context,viewHolder.group_touxiang,list.get(i).getImage_url());
+        if(isOwner){
+            if (i == list.size() - 1) {
+                viewHolder.group_touxiang.setImageResource(R.mipmap.delete_member);
+            } else if(i == list.size() - 2){
+                viewHolder.group_touxiang.setImageResource(R.mipmap.add_member);
+            }else {
+                UtilTool.getImage(context, viewHolder.group_touxiang, list.get(i).getImage_url());
+                String remark = mgr.queryRemark(list.get(i).getJid());
+                if (!StringUtils.isEmpty(remark)) {
+                    viewHolder.tvName.setText(remark);
+                } else {
+                    viewHolder.tvName.setText(list.get(i).getName());
+                }
+            }
+        }else {
+            if (i == list.size() - 1) {
+                viewHolder.group_touxiang.setImageResource(R.mipmap.add_member);
+            } else {
+                UtilTool.getImage(context, viewHolder.group_touxiang, list.get(i).getImage_url());
+                String remark = mgr.queryRemark(list.get(i).getJid());
+                if (!StringUtils.isEmpty(remark)) {
+                    viewHolder.tvName.setText(remark);
+                } else {
+                    viewHolder.tvName.setText(list.get(i).getName());
+                }
+            }
         }
 
         viewHolder.group_touxiang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(i==list.size()-1){
-                    //添加
-                    Intent intent = new Intent(context, CreateGroupRoomActivity.class);
-                    intent.putExtra("type",1);
-                    intent.putExtra("roomId",roomId);
-                    context.startActivity(intent);
+                if(isOwner){
+                    if(i==list.size()-1){
+                        //刪除
+                        Intent intent = new Intent(context, SelectGroupMemberActivity.class);
+                        intent.putExtra("type",2);
+                        intent.putExtra("roomId",roomId);
+                        context.startActivity(intent);
+                    }else if(i==list.size()-2){
+                        //添加
+                        Intent intent = new Intent(context, CreateGroupRoomActivity.class);
+                        intent.putExtra("type",1);
+                        intent.putExtra("roomId",roomId);
+                        context.startActivity(intent);
+                    }else{
+                        //查看好友詳情
+                        Intent intent = new Intent(context, IndividualDetailsActivity.class);
+                        intent.putExtra("user", list.get(i).getJid());
+                        intent.putExtra("name", list.get(i).getName());
+                        intent.putExtra("roomId", list.get(i).getJid());
+                        context.startActivity(intent);
+                    }
                 }else{
-                    //查看好友詳情
-                    Intent intent = new Intent(context, IndividualDetailsActivity.class);
-                    intent.putExtra("user", list.get(i).getJid());
-                    intent.putExtra("name", list.get(i).getName());
-                    intent.putExtra("roomId", list.get(i).getJid());
-                    context.startActivity(intent);
+                    if(i==list.size()-1){
+                        //添加
+                        Intent intent = new Intent(context, CreateGroupRoomActivity.class);
+                        intent.putExtra("type",1);
+                        intent.putExtra("roomId",roomId);
+                        context.startActivity(intent);
+                    }else{
+                        //查看好友詳情
+                        Intent intent = new Intent(context, IndividualDetailsActivity.class);
+                        intent.putExtra("user", list.get(i).getJid());
+                        intent.putExtra("name", list.get(i).getName());
+                        intent.putExtra("roomId", list.get(i).getJid());
+                        context.startActivity(intent);
+                    }
                 }
             }
         });
@@ -87,5 +145,6 @@ public class GroupDetailsMemberAdapter extends BaseAdapter{
 
     class ViewHolder{
         ImageView group_touxiang;
+        TextView tvName;
     }
 }

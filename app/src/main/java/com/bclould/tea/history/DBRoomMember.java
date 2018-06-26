@@ -46,11 +46,11 @@ public class DBRoomMember {
         return id;
     }
 
-    public synchronized void addRoomMember(List<GroupMemberInfo.DataBean> groupMemberInfoList,String roomId) {
+    public synchronized void addRoomMember(List<GroupMemberInfo.DataBean.UsersBean> groupMemberInfoList,String roomId) {
         db = helper.getWritableDatabase();
-        for(GroupMemberInfo.DataBean dataBean:groupMemberInfoList){
+        for(GroupMemberInfo.DataBean.UsersBean dataBean:groupMemberInfoList){
             ContentValues values = new ContentValues();
-            values.put("name", "");
+            values.put("name", dataBean.getName());
             values.put("my_user", UtilTool.getTocoId());
             values.put("jid", dataBean.getToco_id());
             values.put("image_url", dataBean.getAvatar());
@@ -65,7 +65,7 @@ public class DBRoomMember {
         db = helper.getWritableDatabase();
         for(UserInfo userInfo:infoList){
             ContentValues values = new ContentValues();
-            values.put("name", "");
+            values.put("name", userInfo.getUserName());
             values.put("my_user", UtilTool.getTocoId());
             values.put("jid", userInfo.getUser());
             values.put("image_url", userInfo.getPath());
@@ -101,11 +101,36 @@ public class DBRoomMember {
         return addRequestInfos;
     }
 
+    public String findMemberName(String roomId,String toco_id) {
+        db = helper.getReadableDatabase();
+        String name = null;
+        Cursor cursor = db.rawQuery("select name from RoomMember where roomId=? and jid=? and my_user=?",
+                new String[]{roomId,toco_id, UtilTool.getTocoId()});
+        while (cursor.moveToNext()) {
+            name = cursor.getString(cursor.getColumnIndex("name"));
+        }
+        cursor.close();
+        return name;
+    }
+
     public String findMemberUrl(String roomId,String toco_id) {
         db = helper.getReadableDatabase();
         String image_url = null;
         Cursor cursor = db.rawQuery("select image_url from RoomMember where roomId=? and jid=? and my_user=?",
                 new String[]{roomId,toco_id, UtilTool.getTocoId()});
+        while (cursor.moveToNext()) {
+            image_url = cursor.getString(cursor.getColumnIndex("image_url"));
+        }
+        cursor.close();
+        return image_url;
+    }
+
+
+    public String findMemberUrl(String toco_id) {
+        db = helper.getReadableDatabase();
+        String image_url = null;
+        Cursor cursor = db.rawQuery("select image_url from RoomMember where jid=? and my_user=?",
+                new String[]{toco_id, UtilTool.getTocoId()});
         while (cursor.moveToNext()) {
             image_url = cursor.getString(cursor.getColumnIndex("image_url"));
         }
@@ -130,6 +155,14 @@ public class DBRoomMember {
         }
         return false;
     }
+
+    public void updateRoom(String roomId,String jid, String name) {
+        db = helper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("name", name);
+        db.update("RoomMember", cv, "roomId=? and jid=? and my_user=?", new String[]{roomId,jid, UtilTool.getTocoId()});
+    }
+
 
     public void deleteRoom(String roomId) {
         db = helper.getWritableDatabase();

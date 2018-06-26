@@ -32,7 +32,7 @@ public class DBRoomManage {
     public synchronized int addRoom(RoomManageInfo roomManageInfo) {
         db = helper.getWritableDatabase();
         if(findRoom(roomManageInfo.getRoomId())){
-            updateRoom(roomManageInfo.getRoomId(),roomManageInfo.getRoomName());
+            updateRoom(roomManageInfo);
             return 0;
         }else {
             ContentValues values = new ContentValues();
@@ -41,16 +41,34 @@ public class DBRoomManage {
             values.put("roomId", roomManageInfo.getRoomId());
             values.put("roomName", roomManageInfo.getRoomName());
             values.put("roomNumber", roomManageInfo.getRoomNumber());
+            values.put("owner",roomManageInfo.getOwner());
             int id = (int) db.insert("RoomManage", null, values);
             UtilTool.Log("fengjian", "添加房间到数据库成功" + roomManageInfo.toString());
             return id;
         }
     }
 
+    private void updateRoom(RoomManageInfo roomManageInfo) {
+        db = helper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("roomImage", roomManageInfo.getRoomImage());
+        cv.put("roomName", roomManageInfo.getRoomName());
+        cv.put("roomNumber", roomManageInfo.getRoomNumber());
+        cv.put("owner",roomManageInfo.getOwner());
+        db.update("RoomManage", cv, "roomId=? and my_user=?", new String[]{roomManageInfo.getRoomId(), UtilTool.getTocoId()});
+    }
+
     public void updateRoom(String roomId, String roomName) {
         db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("roomName", roomName);
+        db.update("RoomManage", cv, "roomId=? and my_user=?", new String[]{roomId, UtilTool.getTocoId()});
+    }
+
+    public void updateOwner(String roomId, String owner) {
+        db = helper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("owner", owner);
         db.update("RoomManage", cv, "roomId=? and my_user=?", new String[]{roomId, UtilTool.getTocoId()});
     }
 
@@ -62,6 +80,18 @@ public class DBRoomManage {
         UtilTool.Log("fengjian----","房间id："+roomJid+"   是否创建过："+result);
         cursor.close();
         return result;
+    }
+
+    public String findRoomOwner(String roomJid){
+        db = helper.getReadableDatabase();
+        String owner=null;
+        Cursor cursor = db.rawQuery("select owner from RoomManage where roomId=? and my_user=?",
+                new String[]{roomJid, UtilTool.getTocoId()});
+        while (cursor.moveToNext()){
+            owner=cursor.getString(cursor.getColumnIndex("owner"));
+        }
+        cursor.close();
+        return owner;
     }
 
     public String findRoomName(String roomJid) {
@@ -98,6 +128,7 @@ public class DBRoomManage {
             addRequestInfo.setRoomImage(c.getString(c.getColumnIndex("roomImage")));
             addRequestInfo.setRoomNumber(c.getInt(c.getColumnIndex("roomNumber")));
             addRequestInfo.setMy_user(c.getString(c.getColumnIndex("my_user")));
+            addRequestInfo.setOwner(c.getString(c.getColumnIndex("owner")));
             addRequestInfos.add(addRequestInfo);
         }
         c.close();

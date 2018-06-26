@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 18;
+    private static final int DATABASE_VERSION = 19;
 
     public DBHelper(Context context) {
         //CursorFactory设置为null,使用默认值
@@ -30,7 +30,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 ",showChatTime varchar)");
         db.execSQL("create table AddRequest(id integer primary key autoincrement, my_user varchar, user varchar, type integer,userName varchar)");
         db.execSQL("create table UserImage(id integer primary key autoincrement, my_user varchar, user varchar, status integer, path varchar, remark varchar,userName varchar)");
-        db.execSQL("create table RoomManage(id integer primary key autoincrement, roomImage varchar, roomId varchar, roomName varchar, roomNumber integer,my_user varchar)");
+        db.execSQL("create table RoomManage(id integer primary key autoincrement, roomImage varchar, roomId varchar, roomName varchar, roomNumber integer,my_user varchar,owner varchar)");
         db.execSQL("create table RoomMember(id integer primary key autoincrement, name varchar, jid varchar, image_url varchar, remark varchar,my_user varchar,roomId varchar)");
         db.execSQL("create table MessageState(id integer primary key autoincrement, msgId varchar)");
         db.execSQL("create table UserCodeDB(id integer primary key autoincrement, email varchar,password varchar)");
@@ -86,6 +86,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE MessageRecord ADD showChatTime TEXT");
             case 17:
                 db.execSQL("ALTER TABLE RoomMember ADD roomId TEXT");
+            case 18:
+                //2018-06-26新增群主id owner
+                db.execSQL("ALTER TABLE RoomManage ADD owner TEXT");
                 break;
         }
 

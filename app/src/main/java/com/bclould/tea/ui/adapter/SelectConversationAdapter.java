@@ -17,7 +17,9 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.ConversationInfo;
+import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.activity.ConversationServerActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
@@ -48,11 +50,13 @@ public class SelectConversationAdapter extends RecyclerView.Adapter {
     private final List<ConversationInfo> mConversationList;
     private final DBManager mMgr;
     private OnItemListener onItemListener;
+    private DBRoomMember mDBRoomMember;
 
-    public SelectConversationAdapter(Context context, List<ConversationInfo> ConversationList, DBManager mgr) {
+    public SelectConversationAdapter(Context context, List<ConversationInfo> ConversationList, DBManager mgr,DBRoomMember mDBRoomMember) {
         mContext = context;
         mConversationList = ConversationList;
         mMgr = mgr;
+        this.mDBRoomMember=mDBRoomMember;
     }
 
     public void addOnItemListener(OnItemListener onItemListener){
@@ -104,18 +108,29 @@ public class SelectConversationAdapter extends RecyclerView.Adapter {
             mRlItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onItemListener.onItemClick(mConversationInfo.getFriend(),mConversationInfo.getFriend(),mConversationInfo.getUser(),mConversationInfo.getChatType());
+                    onItemListener.onItemClick(mTab1ItemName.getText().toString(),mConversationInfo.getFriend(),mConversationInfo.getUser(),mConversationInfo.getChatType());
                 }
             });
 
         }
+        private void setNameAndUrl(ImageView mIvTouxiang, String user){
+            String url=mDBRoomMember.findMemberUrl(user);
+            if(StringUtils.isEmpty(url)&&mMgr.findUser(user)){
+                UserInfo info = mMgr.queryUser(user);
+                if (!info.getPath().isEmpty()) {
+                    url=info.getPath();
+                }
+            }
+            UtilTool.getImage(mContext, mIvTouxiang,url);
+        }
+
 
         public void setData(ConversationInfo conversationInfo) {
             mConversationInfo = conversationInfo;
            if(RoomManage.ROOM_TYPE_MULTI.equals(conversationInfo.getChatType())){
                mTab1ItemImg.setImageResource(R.mipmap.img_group_head);
            }else {
-               UtilTool.getImage(mMgr, conversationInfo.getUser(), mContext, mTab1ItemImg);
+               setNameAndUrl(mTab1ItemImg,conversationInfo.getUser());
            }
             String remark = mMgr.queryRemark(conversationInfo.getUser());
             if (!StringUtils.isEmpty(remark)) {

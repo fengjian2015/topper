@@ -66,6 +66,7 @@
                 android:background="@color/white"
                 android:gravity="center_horizontal|top"
                 android:listSelector="@android:color/transparent"
+                android:verticalSpacing="@dimen/y15"
                 android:layout_marginTop="@dimen/y10"
                 android:numColumns="6"
                 >
@@ -73,6 +74,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_group_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -90,15 +92,57 @@
                 android:text="@string/group_nickname"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
+
             <TextView
                 android:id="@+id/tvgroupr_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_toLeftOf="@+id/iv1"
+                android:layout_marginRight="@dimen/x10"
                 android:textColor="@color/gray3"
-                android:textSize="@dimen/x26"
-                />
+                android:singleLine="true"
+                android:maxEms="10"
+                android:textSize="@dimen/x26" />
+            <ImageView
+                android:id="@+id/iv1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/iocn_person_turn"/>
         </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_group_management"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingLeft="@dimen/x20"
+            android:visibility="gone"
+            >
+            <View
+                style="@style/HCutOffRule"
+                android:layout_marginRight="@dimen/x20"
+                ></View>
+            <TextView
+                android:id="@+id/tv9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/iv_inform"
+                android:text="@string/group_management"
+                android:paddingTop="@dimen/x25"
+                android:paddingBottom="@dimen/x25"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x30"
+                android:src="@mipmap/iocn_person_turn"/>
+        </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/rl_group_qr"
             android:layout_width="match_parent"
@@ -211,10 +255,11 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_member_name"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y100"
             android:background="@color/white"
-            android:visibility="gone">
+            >
 
             <View
                 style="@style/HCutOffRule"
@@ -235,14 +280,22 @@
                 android:id="@+id/tv_member_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x30"
+                android:layout_marginRight="@dimen/x10"
                 android:singleLine="true"
                 android:textColor="@color/gray3"
                 android:textSize="@dimen/x26"
+                android:layout_toLeftOf="@+id/iv2"
                 />
 
+            <ImageView
+                android:id="@+id/iv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x30"
+                android:src="@mipmap/iocn_person_turn"/>
         </RelativeLayout>
 
         <RelativeLayout

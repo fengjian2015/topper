@@ -86,7 +86,11 @@ import static com.bclould.tea.topperchat.WsContans.BC_QRCODE_RECEIPT_PAYMENT;
 import static com.bclould.tea.topperchat.WsContans.BC_QUIT_GROUP;
 import static com.bclould.tea.topperchat.WsContans.BC_RED_GET;
 import static com.bclould.tea.topperchat.WsContans.BC_RED_PACKET_EXPIRED;
+import static com.bclould.tea.topperchat.WsContans.BC_TRANSFER_GROUP_BROAD;
 import static com.bclould.tea.topperchat.WsContans.BC_TRANSFER_INFORM;
+import static com.bclould.tea.topperchat.WsContans.BC_UPDATE_GROUP_LOGO;
+import static com.bclould.tea.topperchat.WsContans.BC_UPDATE_GROUP_NAME;
+import static com.bclould.tea.topperchat.WsContans.BC_UPDATE_GROUP_REMARK;
 import static com.bclould.tea.topperchat.WsContans.CONTENT;
 import static com.bclould.tea.topperchat.WsContans.MSG_BROADCAST;
 import static com.bclould.tea.topperchat.WsContans.MSG_GROUP;
@@ -98,14 +102,6 @@ import static com.bclould.tea.topperchat.WsContans.MSG_SINGLER;
 import static com.bclould.tea.topperchat.WsContans.MSG_SINGLER_RESULT;
 import static com.bclould.tea.topperchat.WsContans.TYPE;
 import static com.bclould.tea.ui.activity.SystemSetActivity.INFORM;
-import static com.bclould.tea.ui.adapter.ChatAdapter.ADMINISTRATOR_AUTH_STATUS_MSG;
-import static com.bclould.tea.ui.adapter.ChatAdapter.ADMINISTRATOR_EXCEPTIONAL_MSG;
-import static com.bclould.tea.ui.adapter.ChatAdapter.ADMINISTRATOR_IN_COIN_MSG;
-import static com.bclould.tea.ui.adapter.ChatAdapter.ADMINISTRATOR_IN_OUT_COIN_MSG;
-import static com.bclould.tea.ui.adapter.ChatAdapter.ADMINISTRATOR_OTC_ORDER_MSG;
-import static com.bclould.tea.ui.adapter.ChatAdapter.ADMINISTRATOR_RECEIPT_PAY_MSG;
-import static com.bclould.tea.ui.adapter.ChatAdapter.ADMINISTRATOR_RED_PACKET_EXPIRED_MSG;
-import static com.bclould.tea.ui.adapter.ChatAdapter.ADMINISTRATOR_TRANSFER_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_CARD_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_GUESS_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_IMG_MSG;
@@ -127,6 +123,14 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_TEXT_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_TRANSFER_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_VIDEO_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_VOICE_MSG;
+import static com.bclould.tea.ui.adapter.ChatServerAdapter.ADMINISTRATOR_AUTH_STATUS_MSG;
+import static com.bclould.tea.ui.adapter.ChatServerAdapter.ADMINISTRATOR_EXCEPTIONAL_MSG;
+import static com.bclould.tea.ui.adapter.ChatServerAdapter.ADMINISTRATOR_IN_COIN_MSG;
+import static com.bclould.tea.ui.adapter.ChatServerAdapter.ADMINISTRATOR_IN_OUT_COIN_MSG;
+import static com.bclould.tea.ui.adapter.ChatServerAdapter.ADMINISTRATOR_OTC_ORDER_MSG;
+import static com.bclould.tea.ui.adapter.ChatServerAdapter.ADMINISTRATOR_RECEIPT_PAY_MSG;
+import static com.bclould.tea.ui.adapter.ChatServerAdapter.ADMINISTRATOR_RED_PACKET_EXPIRED_MSG;
+import static com.bclould.tea.ui.adapter.ChatServerAdapter.ADMINISTRATOR_TRANSFER_MSG;
 import static com.bclould.tea.ui.fragment.FriendListFragment.NEWFRIEND;
 import static com.bclould.tea.utils.MySharedPreferences.SETTING;
 
@@ -659,12 +663,37 @@ public class SocketListener {
                     //打賞
                     enjoyPlaying(messageMap);
                     break;
-
+                case BC_UPDATE_GROUP_LOGO:
+                    //更新群头像
+                case BC_UPDATE_GROUP_REMARK:
+                    //更新群昵称
+                case BC_TRANSFER_GROUP_BROAD:
+                    //转让群组管理员
+                case BC_UPDATE_GROUP_NAME:
+                    //更新群名字
+                    updataGroupRoom(messageMap);
+                    break;
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     *
+     * @param messageMap
+     */
+    private void updataGroupRoom(Map<Object, Object> messageMap) {
+        final String roomId=messageMap.get("group_id")+"";
+        new GroupPresenter(context).selectGroupMember(Integer.parseInt(roomId), mdbRoomMember, false,mdbRoomManage,mgr, new GroupPresenter.CallBack() {
+            @Override
+            public void send() {
+                MessageEvent messageEvent= new MessageEvent(context.getString(R.string.refresh_group_room));
+                messageEvent.setId(roomId);
+                EventBus.getDefault().post(messageEvent);
+            }
+        });
     }
 
     /**
@@ -714,7 +743,7 @@ public class SocketListener {
         roomManageInfo.setRoomName(roomName);
         roomManageInfo.setRoomId(group_id);
         mdbRoomManage.addRoom(roomManageInfo);
-        new GroupPresenter(context).selectGroupMember(Integer.parseInt(group_id), mdbRoomMember, false, new GroupPresenter.CallBack() {
+        new GroupPresenter(context).selectGroupMember(Integer.parseInt(group_id), mdbRoomMember, false,mdbRoomManage,mgr, new GroupPresenter.CallBack() {
             @Override
             public void send() {}
         });
@@ -740,7 +769,7 @@ public class SocketListener {
      */
     private void qiutGroup(Map<Object, Object> messageMap) {
         String roomId=messageMap.get("group_id")+"";
-        new GroupPresenter(context).selectGroupMember(Integer.parseInt(roomId), mdbRoomMember, false, new GroupPresenter.CallBack() {
+        new GroupPresenter(context).selectGroupMember(Integer.parseInt(roomId), mdbRoomMember, false,mdbRoomManage,mgr, new GroupPresenter.CallBack() {
             @Override
             public void send() {
                 EventBus.getDefault().post(new MessageEvent(context.getString(R.string.refresh_group_members)));

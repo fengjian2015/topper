@@ -20,6 +20,15 @@ public class MessageEvent {
     private boolean type;
     private String filtrate;
     private int number;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getNumber() {
         return number;

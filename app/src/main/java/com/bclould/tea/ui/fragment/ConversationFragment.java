@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.QrRedInfo;
 import com.bclould.tea.topperchat.WsConnection;
@@ -96,6 +97,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     private List<Map<String, Object>> list = new ArrayList<>();
     private List<ConversationInfo> showlist = new ArrayList<>();
     private DBManager mgr;
+    private DBRoomMember mDBRoomMember;
     public static ConversationFragment instance = null;
     private ConversationAdapter mConversationAdapter;
     private int imState = -1;
@@ -125,6 +127,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         }*/
         ButterKnife.bind(this, view);
         mgr = new DBManager(getActivity());
+        mDBRoomMember=new DBRoomMember(getActivity());
         return view;
     }
 
@@ -366,8 +369,11 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
             initData();
         }else if(msg.equals(getString(R.string.refresh_the_interface))){
             initData();
+        }else if(msg.equals(getString(R.string.modify_group_name))){
+            initData();
+        }else if(msg.equals(getString(R.string.refresh_group_room))){
+            initData();
         }
-
     }
 
     @Override
@@ -395,7 +401,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     }
 
     private void initRecyclerView() {
-        mConversationAdapter = new ConversationAdapter( getActivity(), getSimpleData(), mgr, mRlTitle);
+        mConversationAdapter = new ConversationAdapter( getActivity(), getSimpleData(), mgr, mRlTitle, mDBRoomMember);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(mConversationAdapter);
     }

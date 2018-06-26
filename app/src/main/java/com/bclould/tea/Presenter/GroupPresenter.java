@@ -165,12 +165,15 @@ public class GroupPresenter {
                                     RoomManageInfo roomManageInfo = new RoomManageInfo();
                                     roomManageInfo.setRoomName(dataBean.getName());
                                     roomManageInfo.setRoomId(dataBean.getId() + "");
+                                    roomManageInfo.setOwner(dataBean.getToco_id());
+                                    roomManageInfo.setRoomImage(dataBean.getLogo());
                                     mDBRoomManage.addRoom(roomManageInfo);
                                     for (GroupInfo.DataBean.UsersBean usersBean : dataBean.getUsers()) {
                                         RoomMemberInfo roomMemberInfo = new RoomMemberInfo();
                                         roomMemberInfo.setRoomId(dataBean.getId() + "");
                                         roomMemberInfo.setJid(usersBean.getToco_id());
                                         roomMemberInfo.setImage_url(usersBean.getAvatar());
+                                        roomMemberInfo.setName(usersBean.getName());
                                         mDBRoomMember.addRoomMember(roomMemberInfo);
                                     }
                                 }
@@ -240,7 +243,7 @@ public class GroupPresenter {
         }
     }
 
-    public void selectGroupMember(final int group_id, final DBRoomMember dbRoomMember, boolean isShow, final CallBack callBack) {
+    public void selectGroupMember(final int group_id, final DBRoomMember dbRoomMember, boolean isShow,final DBRoomManage mdbRoomManage,final DBManager manager, final CallBack callBack) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             if(isShow){
                 showDialog();
@@ -263,8 +266,17 @@ public class GroupPresenter {
                             }
                             hideDialog();
                             if (baseInfo.getStatus() == 1) {
+                                RoomManageInfo roomManageInfo = new RoomManageInfo();
+                                roomManageInfo.setRoomName(baseInfo.getData().getName());
+                                roomManageInfo.setRoomId(baseInfo.getData().getId()+"");
+                                roomManageInfo.setOwner(baseInfo.getData().getToco_id());
+                                roomManageInfo.setRoomImage(baseInfo.getData().getLogo());
+                                mdbRoomManage.addRoom(roomManageInfo);
                                 dbRoomMember.deleteRoom(group_id+"");
-                                dbRoomMember.addRoomMember(baseInfo.getData(),group_id+"");
+                                dbRoomMember.addRoomMember(baseInfo.getData().getUsers(),group_id+"");
+                                if(manager.findConversation(group_id+"")){
+                                    manager.updateConversationFriend(group_id+"",baseInfo.getData().getName());
+                                }
                                 callBack.send();
                             }
                         }
@@ -274,6 +286,135 @@ public class GroupPresenter {
                             if(mContext instanceof Activity&&!ActivityUtil.isActivityOnTop((Activity) mContext)){
                                 return;
                             }
+                            hideDialog();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.toast_network_error));
+        }
+    }
+
+    public void updataGroupName(int group_id, String name, final CallBack callBack) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .updataGroupName(UtilTool.getToken(),name,group_id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(BaseInfo baseInfo) {
+                            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
+                            hideDialog();
+                            if (baseInfo.getStatus() == 1) {
+                                callBack.send();
+                                ToastShow.showToast2((Activity) mContext,mContext.getString(R.string.xg_succeed));
+                            }else{
+                                ToastShow.showToast2((Activity) mContext,baseInfo.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
+                            hideDialog();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.toast_network_error));
+        }
+    }
+
+    public void updataGroupMemberName(int group_id, String name, final CallBack callBack) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .updataGroupMemberName(UtilTool.getToken(),name,group_id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(BaseInfo baseInfo) {
+                            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
+                            hideDialog();
+                            if (baseInfo.getStatus() == 1) {
+                                callBack.send();
+                                ToastShow.showToast2((Activity) mContext,mContext.getString(R.string.xg_succeed));
+                            }else{
+                                ToastShow.showToast2((Activity) mContext,baseInfo.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
+                            hideDialog();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.toast_network_error));
+        }
+    }
+
+    public void transferGroup(int group_id, String toco_id, final CallBack callBack) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .transferGroup(UtilTool.getToken(),toco_id,group_id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(BaseInfo baseInfo) {
+                            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
+                            hideDialog();
+                            if (baseInfo.getStatus() == 1) {
+                                callBack.send();
+                                ToastShow.showToast2((Activity) mContext,mContext.getString(R.string.transfer_success));
+                            }else{
+                                ToastShow.showToast2((Activity) mContext,baseInfo.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
                             hideDialog();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }

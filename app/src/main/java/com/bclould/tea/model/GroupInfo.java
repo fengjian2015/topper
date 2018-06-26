@@ -57,7 +57,25 @@ public class GroupInfo {
         private String name;
         private String description;
         private String created_at;
+        private String toco_id;
+        private String logo;
         private List<UsersBean> users;
+
+        public String getLogo() {
+            return logo;
+        }
+
+        public void setLogo(String logo) {
+            this.logo = logo;
+        }
+
+        public String getToco_id() {
+            return toco_id;
+        }
+
+        public void setToco_id(String toco_id) {
+            this.toco_id = toco_id;
+        }
 
         public int getId() {
             return id;
@@ -115,6 +133,15 @@ public class GroupInfo {
 
             private String toco_id;
             private String avatar;
+            private String name;
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
 
             public String getToco_id() {
                 return toco_id;

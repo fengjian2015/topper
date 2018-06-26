@@ -191,6 +191,7 @@ public class CreateGroupRoomActivity extends BaseActivity {
         for (UserInfo userInfo:userInfoList) {
             RoomMemberInfo roomMemberInfo = new RoomMemberInfo();
             roomMemberInfo.setRoomId(group_id);
+            roomMemberInfo.setName(userInfo.getUserName());
             roomMemberInfo.setJid(userInfo.getUser());
             roomMemberInfo.setImage_url(userInfo.getPath());
             mDBRoomMember.addRoomMember(roomMemberInfo);

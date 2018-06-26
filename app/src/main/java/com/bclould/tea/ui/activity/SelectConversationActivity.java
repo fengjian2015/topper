@@ -20,6 +20,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.adapter.SelectConversationAdapter;
@@ -75,6 +76,7 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
     private List<ConversationInfo> showlist = new ArrayList<>();
     private SelectConversationAdapter mSelectConversationAdapter;
     private DBManager mMgr;
+    private DBRoomMember mDBRoomMember;
     private String shareType;
     private Intent shareIntent;
     //    private Uri uri;
@@ -93,6 +95,7 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
         MyApp.getInstance().addActivity(this);
         EventBus.getDefault().register(this);//初始化EventBus
         mMgr = new DBManager(this);
+        mDBRoomMember=new DBRoomMember(this);
         initRecylerView();
         type = getIntent().getIntExtra("type", 0);
         if (type == 0) {
@@ -180,7 +183,7 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
 
     private void initRecylerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mSelectConversationAdapter = new SelectConversationAdapter(this, showlist, mMgr);
+        mSelectConversationAdapter = new SelectConversationAdapter(this, showlist, mMgr,mDBRoomMember);
         mRecyclerView.setAdapter(mSelectConversationAdapter);
         mSelectConversationAdapter.addOnItemListener(this);
         updateData();

@@ -17,12 +17,24 @@
             android:layout_height="@dimen/x80"
             android:scaleType="fitXY"
             android:src="@mipmap/img_nfriend_headshot1"/>
-
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x28"
+            android:layout_toRightOf="@+id/iv_touxiang"
+            android:layout_marginLeft="@dimen/x20"
+            android:paddingBottom="@dimen/y15"
+            android:singleLine="true"
+            android:visibility="gone"
+            />
         <RelativeLayout
             android:id="@+id/rl_video"
             android:layout_width="wrap_content"
             android:layout_marginLeft="@dimen/x20"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_name"
             android:layout_toRightOf="@+id/iv_touxiang">
 
             <ImageView

@@ -481,6 +481,13 @@ public class DBManager {
         db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
     }
 
+    public void updateConversationFriend(String user, String friend) {
+        db = helper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("friend", friend);
+        db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
+    }
+
     public void updateConversationMessage(String user, String chat) {
         db = helper.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -688,14 +695,18 @@ public class DBManager {
     }
 
     public String queryRemark(String user) {
-        db = helper.getWritableDatabase();
         String remark = "";
-        String sql = "select remark from UserImage where user=? and my_user=?";
-        Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId()});
-        while (c.moveToNext()) {
-            remark = c.getString(c.getColumnIndex("remark"));
+        try {
+            db = helper.getWritableDatabase();
+            String sql = "select remark from UserImage where user=? and my_user=?";
+            Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId()});
+            while (c.moveToNext()) {
+                remark = c.getString(c.getColumnIndex("remark"));
+            }
+            c.close();
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        c.close();
         return remark;
     }
 

@@ -17,7 +17,10 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.ConversationInfo;
+import com.bclould.tea.model.MessageInfo;
+import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.activity.ConversationServerActivity;
 import com.bclould.tea.ui.fragment.ConversationFragment;
@@ -49,12 +52,14 @@ public class ConversationAdapter extends RecyclerView.Adapter {
     private final List<ConversationInfo> mConversationList;
     private final DBManager mMgr;
     private RelativeLayout mRlTitle;
+    private DBRoomMember mDBRoomMember;
 
-    public ConversationAdapter( Context context, List<ConversationInfo> ConversationList, DBManager mgr, RelativeLayout mRlTitle) {
+    public ConversationAdapter(Context context, List<ConversationInfo> ConversationList, DBManager mgr, RelativeLayout mRlTitle, DBRoomMember mDBRoomMember) {
         mContext = context;
         mConversationList = ConversationList;
         mMgr = mgr;
         this.mRlTitle=mRlTitle;
+        this.mDBRoomMember=mDBRoomMember;
     }
 
     @Override
@@ -131,6 +136,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
             });
         }
 
+
         public void setData(ConversationInfo conversationInfo) {
             if ("true".equals(conversationInfo.getIstop())) {
                 mRlItem.setBackgroundColor(mContext.getResources().getColor(R.color.gray2));
@@ -144,6 +150,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
            if(RoomManage.ROOM_TYPE_MULTI.equals(conversationInfo.getChatType())){
                mTab1ItemImg.setImageResource(R.mipmap.img_group_head);
            }else {
+               setNameAndUrl(mTab1ItemImg,conversationInfo.getUser());
                UtilTool.getImage(mMgr, conversationInfo.getUser(), mContext, mTab1ItemImg);
            }
             String remark = mMgr.queryRemark(conversationInfo.getUser());
@@ -161,6 +168,17 @@ public class ConversationAdapter extends RecyclerView.Adapter {
                 mNumber.setVisibility(View.GONE);
             }
         }
+    }
+
+    private void setNameAndUrl(ImageView mIvTouxiang, String user){
+        String url=mDBRoomMember.findMemberUrl(user);
+        if(StringUtils.isEmpty(url)&&mMgr.findUser(user)){
+            UserInfo info = mMgr.queryUser(user);
+            if (!info.getPath().isEmpty()) {
+                url=info.getPath();
+            }
+        }
+        UtilTool.getImage(mContext, mIvTouxiang,url);
     }
 
     private void showDeleteDialog(final String user) {

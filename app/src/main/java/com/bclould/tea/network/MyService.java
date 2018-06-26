@@ -1166,4 +1166,31 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("user_id") int group_id
     );
+
+    //修改群名稱
+    @FormUrlEncoded
+    @POST("chat/room/update/name")
+    Observable<BaseInfo> updataGroupName(
+            @Header("Authorization") String token,
+            @Field("name") String name,
+            @Field("group_id") int group_id
+    );
+
+    //修改自己在群的昵称
+    @FormUrlEncoded
+    @POST("chat/room/update/remark")
+    Observable<BaseInfo> updataGroupMemberName(
+            @Header("Authorization") String token,
+            @Field("remark") String remark,
+            @Field("group_id") int group_id
+    );
+
+    //轉讓群主
+    @FormUrlEncoded
+    @POST("chat/room/transfer/group")
+    Observable<BaseInfo> transferGroup(
+            @Header("Authorization") String token,
+            @Field("toco_id") String toco_id,
+            @Field("group_id") int group_id
+    );
 }

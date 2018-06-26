@@ -24,6 +24,7 @@ public class WsContans {
     public static final int MSG_LOGINOUT=31;//其他賬號登錄
     public static final int MSG_SINGLER_RESULT=32;//單聊消息回執
     public static final int MSG_GROUP_RESULT=34;//群消息回執
+    public static final int MSG_STEANGER=35;//不是好友單聊發送消息
 
     //消息類型
     public static final int MSG_TEXT=1;//文本
@@ -55,6 +56,10 @@ public class WsContans {
     public static final int BC_QUIT_GROUP=32;//退出群組通知
     public static final int BC_ADD_GROUP=33;//創建群組通知
     public static final int BC_ENJOY_PLAYING=35;//打賞
+    public static final int BC_UPDATE_GROUP_LOGO=36;//更新群头像
+    public static final int BC_UPDATE_GROUP_REMARK=37;//更新群昵称
+    public static final int BC_TRANSFER_GROUP_BROAD=39;//转让群组管理员
+    public static final int BC_UPDATE_GROUP_NAME=40;//更新群名字
 
 
 

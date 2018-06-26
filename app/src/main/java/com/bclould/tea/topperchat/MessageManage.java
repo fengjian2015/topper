@@ -17,6 +17,7 @@ import java.util.concurrent.Executors;
 
 import static com.bclould.tea.topperchat.WsContans.MSG_GROUP;
 import static com.bclould.tea.topperchat.WsContans.MSG_SINGLER;
+import static com.bclould.tea.topperchat.WsContans.MSG_STEANGER;
 
 /**
  * Created by GIjia on 2018/6/25.
@@ -63,7 +64,11 @@ public class MessageManage {
                     contentMap.put("time", time);
 
                     Map<Object, Object> sendMap = new HashMap<>();
-                    sendMap.put("type", MSG_SINGLER);
+                    if(mMgr.findUser(to)){
+                        sendMap.put("type", MSG_SINGLER);
+                    }else{
+                        sendMap.put("type", MSG_STEANGER);
+                    }
                     sendMap.put("content", objectMapper.writeValueAsBytes(contentMap));
                     mMgr.addMessageMsgId(msgId);
                     WsConnection.getInstance().sendMessage(objectMapper.writeValueAsBytes(sendMap));

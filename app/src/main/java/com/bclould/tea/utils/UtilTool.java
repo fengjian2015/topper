@@ -686,12 +686,12 @@ public class UtilTool {
                 }
             } else {
                 if (Util.isOnMainThread() && context != null) {
-                    Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop()).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
+                    Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
                 }
             }
         } else {
             if (Util.isOnMainThread() && context != null) {
-                Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop()).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
+                Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
             }
         }
         return bitmap;
@@ -705,7 +705,7 @@ public class UtilTool {
             }
         } else {
             if (Util.isOnMainThread() && context != null) {
-                Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop()).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
+                Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
             }
         }
 

@@ -18,49 +18,67 @@
             android:scaleType="fitXY"
             android:src="@mipmap/img_nfriend_headshot1"/>
 
-
         <TextView
-            android:id="@+id/tv_voice_time"
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_toRightOf="@+id/rl_voice"
-            android:text="5''"
-            android:textSize="@dimen/x24"/>
-
-        <ImageView
-            android:id="@+id/iv_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_toRightOf="@+id/tv_voice_time"
-            android:src="@mipmap/yuyin_tixing_red"/>
-
-        <RelativeLayout
-            android:id="@+id/rl_voice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/x20"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x28"
             android:layout_toRightOf="@+id/iv_touxiang"
-            android:background="@drawable/img_chat2_bg">
-
+            android:layout_marginLeft="@dimen/x20"
+            android:paddingBottom="@dimen/y15"
+            android:singleLine="true"
+            android:visibility="gone"
+            />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/iv_touxiang"
+            android:layout_below="@+id/tv_name">
             <TextView
-                android:id="@+id/iv_voice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/iv_anim"
-                android:maxLength="60"
-                android:text=""/>
-
-            <ImageView
-                android:id="@+id/iv_anim"
+                android:id="@+id/tv_voice_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:background="@drawable/yuyin_left"/>
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/rl_voice"
+                android:text="5''"
+                android:textSize="@dimen/x24"/>
 
+            <ImageView
+                android:id="@+id/iv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/tv_voice_time"
+                android:src="@mipmap/yuyin_tixing_red"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_voice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x20"
+
+                android:background="@drawable/img_chat2_bg">
+
+                <TextView
+                    android:id="@+id/iv_voice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/iv_anim"
+                    android:maxLength="60"
+                    android:text=""/>
+
+                <ImageView
+                    android:id="@+id/iv_anim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/yuyin_left"/>
+
+            </RelativeLayout>
         </RelativeLayout>
+
     </RelativeLayout>
 </RelativeLayout>

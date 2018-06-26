@@ -911,7 +911,7 @@
     <string name="delete_cache_succeed">清除緩存成功</string>
     <string name="id">ID:</string>
     <string name="group_member">群成員</string>
-    <string name="group_nickname">群組暱稱</string>
+    <string name="group_nickname">群組名稱</string>
     <string name="group_qr">群二維碼</string>
     <string name="group_announcement">群公告</string>
     <string name="delete_out">刪除退出</string>
@@ -940,4 +940,11 @@
     <string name="state_district">國家或地區</string>
     <string name="choose_a_chat">選擇一個聊天</string>
     <string name="close_activity">關閉界面</string>
+    <string name="group_management">群主管理權轉讓</string>
+    <string name="modify_group_name">修改群名稱</string>
+    <string name="only_owner_change_group_name">只有群主才能修改群名稱</string>
+    <string name="refresh_group_room">刷新群房間配置</string>
+    <string name="new_group_manager">選擇新群主</string>
+    <string name="assign_to">確定轉讓給</string>
+    <string name="transfer_success">轉讓成功</string>
 </resources>

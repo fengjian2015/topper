@@ -28,6 +28,7 @@
             android:layout_marginLeft="@dimen/x20"
             android:paddingBottom="@dimen/y15"
             android:visibility="gone"
+            android:singleLine="true"
             />
 
         <RelativeLayout

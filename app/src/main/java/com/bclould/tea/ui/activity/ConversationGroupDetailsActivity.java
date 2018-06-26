@@ -7,20 +7,18 @@ import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bclould.tea.Presenter.GroupPresenter;
-import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
-import com.bclould.tea.crypto.otr.OtrChatListenerManager;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.ConversationInfo;
-import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.ui.adapter.GroupDetailsMemberAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
@@ -28,6 +26,7 @@ import com.bclould.tea.ui.widget.MyGridView;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
+import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.RoomManage;
 
@@ -44,7 +43,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.bclould.tea.Presenter.GroupPresenter.*;
+import static com.bclould.tea.Presenter.GroupPresenter.CallBack;
 import static com.bclould.tea.utils.MySharedPreferences.SETTING;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -64,9 +63,11 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     ImageView mOnOffMessageFree;
     @Bind(R.id.tv_member_name)
     TextView mTvMemberName;
+    @Bind(R.id.rl_group_management)
+    RelativeLayout mRlGroupManagement;
 
     private GroupDetailsMemberAdapter mAdapter;
-    private List<RoomMemberInfo> mList=new ArrayList<>();
+    private List<RoomMemberInfo> mList = new ArrayList<>();
     private String roomId;
     private String roomName;
     private DBRoomMember mDBRoomMember;
@@ -99,28 +100,61 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         mDBRoomMember = new DBRoomMember(this);
         mMgr = new DBManager(this);
         mDBRoomManage = new DBRoomManage(this);
+        setGroupMember(true);
+        initView();
+    }
+
+    private void initView() {
         roomName = mDBRoomManage.findRoomName(roomId);
         changeTop();
         changeFree();
         setGroupName();
-        setGroupMember(true);
+        setMemberName();
+        setGroupManager();
+    }
+
+    private void setGroupManager() {
+        if(isOwner()){
+            mRlGroupManagement.setVisibility(View.VISIBLE);
+        }else{
+            mRlGroupManagement.setVisibility(View.GONE);
+        }
+    }
+
+    private boolean isOwner(){
+        if(UtilTool.getTocoId().equals(mDBRoomManage.findRoomOwner(roomId))){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private void setMemberName() {
+        mTvMemberName.setText(mDBRoomMember.findMemberName(roomId, UtilTool.getTocoId()) + "");
     }
 
     private void setGroupMember(boolean isFirst) {
         mList.clear();
         mList.addAll(mDBRoomMember.queryAllRequest(roomId));
-        mTvMemberNumber.setText(mList.size()+"人");
+        mTvMemberNumber.setText(mList.size() + "人");
+        //是群主添加兩個
+//        if(isOwner()){
+//            mList.add(new RoomMemberInfo());
+//        }
         mList.add(new RoomMemberInfo());
-        if(isFirst){
-            mAdapter=new GroupDetailsMemberAdapter(this,mList,roomId);
+        if (isFirst) {
+            mAdapter = new GroupDetailsMemberAdapter(this, mList, roomId, mMgr);
+            mAdapter.setIsOwner(isOwner());
             mPartnerDetialGridview.setAdapter(mAdapter);
-            new GroupPresenter(this).selectGroupMember(Integer.parseInt(roomId), mDBRoomMember, true, new GroupPresenter.CallBack() {
+            new GroupPresenter(this).selectGroupMember(Integer.parseInt(roomId), mDBRoomMember, true,mDBRoomManage,mMgr, new CallBack() {
                 @Override
                 public void send() {
+                    initView();
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.refresh_group_members)));
                 }
             });
-        }else{
+        } else {
+            mAdapter.setIsOwner(isOwner());
             mAdapter.notifyDataSetChanged();
         }
 
@@ -144,7 +178,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         mOnOffMessageFree.setSelected(free);
     }
 
-    @OnClick({R.id.bark, R.id.on_off_message_free, R.id.on_off_top, R.id.rl_empty_talk,R.id.btn_brak,R.id.rl_group_qr})
+    @OnClick({R.id.bark, R.id.on_off_message_free, R.id.on_off_top, R.id.rl_empty_talk, R.id.btn_brak, R.id.rl_group_qr,R.id.rl_group_name,R.id.rl_member_name,R.id.rl_group_management})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -165,7 +199,36 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
             case R.id.rl_group_qr:
                 // TODO: 2018/6/20 跳轉二維碼 
                 break;
+            case R.id.rl_group_name:
+                if(isOwner()){
+                    goModificationName(2,mTvgrouprName.getText().toString());
+                }else{
+                    ToastShow.showToast2(ConversationGroupDetailsActivity.this,getString(R.string.only_owner_change_group_name));
+                }
+                break;
+            case R.id.rl_member_name:
+                goModificationName(1,mTvMemberName.getText().toString());
+                break;
+            case R.id.rl_group_management:
+                goSelectMember();
+                break;
         }
+    }
+
+    private void goSelectMember() {
+        Intent intent=new Intent(this,SelectGroupMemberActivity.class);
+        intent.putExtra("roomId",roomId);
+        intent.putExtra("type",1);
+        startActivity(intent);
+    }
+
+    private void goModificationName(int type,String content) {
+        Intent intent=new Intent(this,ModificationNameActivity.class);
+        intent.putExtra("type",type);
+        intent.putExtra("content",content);
+        intent.putExtra("roomId",roomId);
+        intent.putExtra("tocoId",UtilTool.getTocoId());
+        startActivity(intent);
     }
 
     //接受通知
@@ -173,15 +236,24 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.quit_group))) {
-            if(roomId.equals(event.getId())){
+            if (roomId.equals(event.getId())) {
                 finish();
             }
-        }else if(msg.equals(getString(R.string.refresh_group_members))){
+        } else if (msg.equals(getString(R.string.refresh_group_members))) {
             setGroupMember(false);
+        }else if(msg.equals(getString(R.string.my_nickname_group))){
+            setMemberName();
+        }else if(msg.equals(getString(R.string.modify_group_name))){
+            setGroupName();
+        }else if(msg.equals(getString(R.string.refresh_group_room))){
+            if (roomId.equals(event.getId())){
+                initView();
+                setGroupMember(false);
+            }
         }
     }
 
-    private void deleteGroup(){
+    private void deleteGroup() {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.determine_exit) + " " + roomName + " " + getString(R.string.what));
@@ -204,7 +276,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                             mDBRoomMember.deleteRoom(roomId);
                             mMgr.deleteConversation(roomId);
                             mMgr.deleteMessage(roomId);
-                            MessageEvent messageEvent=new MessageEvent(getString(R.string.quit_group));
+                            MessageEvent messageEvent = new MessageEvent(getString(R.string.quit_group));
                             messageEvent.setId(roomId);
                             EventBus.getDefault().post(messageEvent);
                         }

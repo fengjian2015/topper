@@ -24,7 +24,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,19 +35,14 @@ import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.GrabRedInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.SerMap;
+import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.activity.ChatLookLocationActivity;
-import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tea.ui.activity.GuessDetailsActivity;
 import com.bclould.tea.ui.activity.ImageViewActivity;
 import com.bclould.tea.ui.activity.IndividualDetailsActivity;
 import com.bclould.tea.ui.activity.NewsDetailsActivity;
-import com.bclould.tea.ui.activity.OrderCloseActivity;
-import com.bclould.tea.ui.activity.OrderDetailsActivity;
-import com.bclould.tea.ui.activity.PayDetailsActivity;
-import com.bclould.tea.ui.activity.RealNameC1Activity;
 import com.bclould.tea.ui.activity.RedPacketActivity;
 import com.bclould.tea.ui.activity.SelectConversationActivity;
-import com.bclould.tea.ui.activity.SelectFriendActivity;
 import com.bclould.tea.ui.activity.TransferDetailsActivity;
 import com.bclould.tea.ui.activity.VideoActivity;
 import com.bclould.tea.ui.widget.CurrencyDialog;
@@ -117,15 +111,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public static final int FROM_GUESS_MSG = 26;//接受竞猜分享
     public static final int TO_GUESS_MSG = 27;//發送竞猜分享
     public static final int RED_GET_MSG = 28;//紅包被領取
-
-    public static final int ADMINISTRATOR_OTC_ORDER_MSG = 14;//管理員otc訂單消息
-    public static final int ADMINISTRATOR_RED_PACKET_EXPIRED_MSG = 15;//管理員紅包過期消息
-    public static final int ADMINISTRATOR_AUTH_STATUS_MSG = 16;//管理員實名認證消息
-    public static final int ADMINISTRATOR_RECEIPT_PAY_MSG = 17;//管理員收付款消息
-    public static final int ADMINISTRATOR_TRANSFER_MSG = 18;//管理員轉賬消息
-    public static final int ADMINISTRATOR_IN_OUT_COIN_MSG = 19;//管理員提幣消息
-    public static final int ADMINISTRATOR_IN_COIN_MSG = 29;//管理員充幣消息
-    public static final int ADMINISTRATOR_EXCEPTIONAL_MSG = 30;//打賞
 
     private final Context mContext;
     private final List<MessageInfo> mMessageList;
@@ -232,30 +217,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } else if (viewType == RED_GET_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_chat_red_get, parent, false);
             holder = new ReadGetHolder(view);
-        } else if (viewType == ADMINISTRATOR_OTC_ORDER_MSG) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_otc_order, parent, false);
-            holder = new OtcOrderStatusHolder(view);
-        } else if (viewType == ADMINISTRATOR_RED_PACKET_EXPIRED_MSG) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_red_expired, parent, false);
-            holder = new RedExpiredHolder(view);
-        } else if (viewType == ADMINISTRATOR_AUTH_STATUS_MSG) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_auth_status, parent, false);
-            holder = new AuthStatusHolder(view);
-        } else if (viewType == ADMINISTRATOR_RECEIPT_PAY_MSG) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_receipt_pay, parent, false);
-            holder = new ReceiptPayHolder(view);
-        } else if (viewType == ADMINISTRATOR_TRANSFER_MSG) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_transfer, parent, false);
-            holder = new TransferInformHolder(view);
-        } else if (viewType == ADMINISTRATOR_IN_OUT_COIN_MSG) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_inout_coin, parent, false);
-            holder = new InoutCoinInformHolder(view);
-        } else if (viewType == ADMINISTRATOR_IN_COIN_MSG) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_in_coin, parent, false);
-            holder = new InCoinInformHolder(view);
-        }else if(viewType==ADMINISTRATOR_EXCEPTIONAL_MSG){
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_administrator_chat_exceptional, parent, false);
-            holder = new ExceptionalHolder(view);
         } else {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_chat_text, parent, false);
             holder = new TextChatHolder(view);
@@ -291,7 +252,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        UtilTool.Log("肉质", "刷新走了onBindViewHolder");
         upDateImage();
         int itemViewType = getItemViewType(position);
         switch (itemViewType) {
@@ -378,38 +338,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
             case RED_GET_MSG:
                 ReadGetHolder readGetHolder = (ReadGetHolder) holder;
                 readGetHolder.setData(mMessageList.get(position));
-                break;
-            case ADMINISTRATOR_OTC_ORDER_MSG:
-                OtcOrderStatusHolder orderStatusHolder = (OtcOrderStatusHolder) holder;
-                orderStatusHolder.setData(mMessageList.get(position));
-                break;
-            case ADMINISTRATOR_RED_PACKET_EXPIRED_MSG:
-                RedExpiredHolder redExpiredHolder = (RedExpiredHolder) holder;
-                redExpiredHolder.setData(mMessageList.get(position));
-                break;
-            case ADMINISTRATOR_AUTH_STATUS_MSG:
-                AuthStatusHolder authStatusHolder = (AuthStatusHolder) holder;
-                authStatusHolder.setData(mMessageList.get(position));
-                break;
-            case ADMINISTRATOR_RECEIPT_PAY_MSG:
-                ReceiptPayHolder receiptPayHolder = (ReceiptPayHolder) holder;
-                receiptPayHolder.setData(mMessageList.get(position));
-                break;
-            case ADMINISTRATOR_TRANSFER_MSG:
-                TransferInformHolder transferInformHolder = (TransferInformHolder) holder;
-                transferInformHolder.setData(mMessageList.get(position));
-                break;
-            case ADMINISTRATOR_IN_OUT_COIN_MSG:
-                InoutCoinInformHolder inoutCoinInformHolder = (InoutCoinInformHolder) holder;
-                inoutCoinInformHolder.setData(mMessageList.get(position));
-                break;
-            case ADMINISTRATOR_IN_COIN_MSG:
-                InCoinInformHolder inCoinInformHolder = (InCoinInformHolder) holder;
-                inCoinInformHolder.setData(mMessageList.get(position));
-                break;
-            case ADMINISTRATOR_EXCEPTIONAL_MSG:
-                ExceptionalHolder exceptionalHolder= (ExceptionalHolder) holder;
-                exceptionalHolder.setData(mMessageList.get(position));
                 break;
             default:
                 TextChatHolder textChatHolder = (TextChatHolder) holder;
@@ -514,6 +442,32 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
     }
 
+    private void setNameAndUrl(ImageView mIvTouxiang, MessageInfo messageInfo, TextView tvName){
+        String url=mDBRoomMember.findMemberUrl(messageInfo.getSend());
+        if(StringUtils.isEmpty(url)&&mMgr.findUser(messageInfo.getSend())){
+            UserInfo info = mMgr.queryUser(messageInfo.getSend());
+            if (!info.getPath().isEmpty()) {
+                url=info.getPath();
+            }
+        }
+        UtilTool.getImage(mContext, mIvTouxiang,url);
+
+        if(RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)){
+            String name=mMgr.queryRemark(messageInfo.getSend());
+            if(StringUtils.isEmpty(name)){
+                name=mDBRoomMember.findMemberName(mRoomId,messageInfo.getSend());
+            }
+            if(StringUtils.isEmpty(name)){
+                name=messageInfo.getSend();
+            }
+            tvName.setText(name);
+            tvName.setVisibility(View.VISIBLE);
+        }else{
+            tvName.setVisibility(View.GONE);
+        }
+
+    }
+
     @Override
     public int getItemViewType(int position) {
         return mMessageList.get(position).getMsgType();
@@ -537,7 +491,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
-//            mIvTouxiang.setImageBitmap(mToBitmap);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
@@ -582,6 +535,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         EmojiconTextView mTvMessamge;
         @Bind(R.id.chat_createtime)
         View tvCreateTime;
+        @Bind(R.id.tv_name)
+        TextView tvName;
 
         FromTextHolder(View view) {
             super(view);
@@ -590,12 +545,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
+            setNameAndUrl(mIvTouxiang,messageInfo,tvName);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
-            if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
-            } else {
-                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
-            }
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             HyperLinkUtil hyperLinkUtil = new HyperLinkUtil();
             mTvMessamge.setText(hyperLinkUtil.getHyperClickableSpan(mContext, new SpannableStringBuilder(messageInfo.getMessage()), true, messageInfo.getId(), mMgr, new HyperLinkUtil.OnChangeLinkListener() {
@@ -716,6 +667,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         CardView mCvRedpacket;
         @Bind(R.id.chat_createtime)
         View tvCreateTime;
+        @Bind(R.id.tv_name)
+        TextView tvName;
 
         FromRedHolder(View view) {
             super(view);
@@ -724,16 +677,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
             String mUser = messageInfo.getSend();
-            if (StringUtils.isEmpty(mUser))
-                mUser = mRoomId;
-//            mIvTouxiang.setImageBitmap(mFromBitmap);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             final String mName = mMgr.findUserName(mUser);
-            if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
-            } else {
-                UtilTool.getImage(mMgr, mUser, mContext, mIvTouxiang);
-            }
+            setNameAndUrl(mIvTouxiang,messageInfo, tvName);
             goIndividualDetails(mIvTouxiang, mUser, mName, messageInfo);
             mTvCoinRedpacket.setText(messageInfo.getCoin() + mContext.getString(R.string.red_package));
             mTvRemark.setText(messageInfo.getRemark());
@@ -950,6 +896,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         RelativeLayout mRlVoice;
         @Bind(R.id.chat_createtime)
         View tvCreateTime;
+        @Bind(R.id.tv_name)
+        TextView tvName;
 
         FromVoiceHolder(View view) {
             super(view);
@@ -957,14 +905,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
-//            mIvTouxiang.setImageBitmap(mFromBitmap);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
-            if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
-            } else {
-                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
-            }
-
+            setNameAndUrl(mIvTouxiang,messageInfo, tvName);
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             mTvVoiceTime.setText(messageInfo.getVoiceTime() + "''");
             int wide = Integer.parseInt(messageInfo.getVoiceTime()) * 2;
@@ -1022,7 +964,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
-//            mIvTouxiang.setImageBitmap(mToBitmap);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
@@ -1083,6 +1024,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ImageView mIvImg;
         @Bind(R.id.chat_createtime)
         View tvCreateTime;
+        @Bind(R.id.tv_name)
+        TextView tvName;
 
         FromImgHolder(View view) {
             super(view);
@@ -1090,13 +1033,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
-//            mIvTouxiang.setImageBitmap(mFromBitmap);
+            setNameAndUrl(mIvTouxiang,messageInfo, tvName);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
-            if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
-            } else {
-                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
-            }
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             Glide.with(mContext).load(new File(messageInfo.getVoice())).listener(new RequestListener<Drawable>() {
                 @Override
@@ -1210,6 +1148,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ImageView mIvVideoPlay;
         @Bind(R.id.chat_createtime)
         View tvCreateTime;
+        @Bind(R.id.tv_name)
+        TextView tvName;
 
         FromVideoHolder(View view) {
             super(view);
@@ -1217,13 +1157,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
-//            mIvTouxiang.setImageBitmap(mFromBitmap);
+            setNameAndUrl(mIvTouxiang,messageInfo, tvName);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
-            if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
-            } else {
-                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
-            }
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             mIvVideo.setImageBitmap(BitmapFactory.decodeFile(messageInfo.getVoice()));
             mRlVideo.setOnClickListener(new View.OnClickListener() {
@@ -1318,6 +1253,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         RelativeLayout rlLocation;
         @Bind(R.id.chat_createtime)
         View tvCreateTime;
+        @Bind(R.id.tv_name)
+        TextView tvName;
 
         FromLocationHolder(View view) {
             super(view);
@@ -1326,11 +1263,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
-            if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
-            } else {
-                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
-            }
+            setNameAndUrl(mIvTouxiang,messageInfo, tvName);
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             tvTitle.setText(messageInfo.getTitle());
             tvAddress.setText(messageInfo.getAddress());
@@ -1432,13 +1365,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
-            // TODO: 2018/5/28 所有的from需要增加一個名字
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
-            if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
-            } else {
-                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
-            }
+            setNameAndUrl(mIvTouxiang,messageInfo, tvName);
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             tvUsername.setText(messageInfo.getMessage());
             Glide.with(mContext).load(messageInfo.getHeadUrl()).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1)).into(ivHead);
@@ -1555,11 +1483,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         public void setData(final MessageInfo messageInfo) {
             // TODO: 2018/5/28 所有的from需要增加一個名字
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
-            if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
-            } else {
-                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
-            }
+            setNameAndUrl(mIvTouxiang,messageInfo, tvName);
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             tvTitle.setText(messageInfo.getTitle());
             tvContent.setText(messageInfo.getContent());
@@ -1689,11 +1613,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         public void setData(final MessageInfo messageInfo) {
             // TODO: 2018/5/28 所有的from需要增加一個名字
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
-            if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
-            } else {
-                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
-            }
+            setNameAndUrl(mIvTouxiang,messageInfo, tvName);
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             tvTitle.setText(messageInfo.getTitle());
             tvCoin.setText(messageInfo.getCoin() + mContext.getString(R.string.guess));
@@ -1796,6 +1716,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         CardView mCvRedpacket;
         @Bind(R.id.chat_createtime)
         View tvCreateTime;
+        @Bind(R.id.tv_name)
+        TextView tvName;
 
         FromTransferHolder(View view) {
             super(view);
@@ -1803,13 +1725,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
-//            mIvTouxiang.setImageBitmap(mFromBitmap);
+            setNameAndUrl(mIvTouxiang,messageInfo, tvName);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
-            if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
-                UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember.findMemberUrl(mRoomId, messageInfo.getSend()));
-            } else {
-                UtilTool.getImage(mMgr, messageInfo.getSend(), mContext, mIvTouxiang);
-            }
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             mTvRemark.setText(messageInfo.getRemark());
             mTvCoinCount.setText(messageInfo.getCount() + messageInfo.getCoin());
@@ -1872,379 +1789,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
             });
         }
     }
-
-    class OtcOrderStatusHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_type_msg)
-        TextView mTvTypeMsg;
-        @Bind(R.id.tv_coin)
-        TextView mTvCoin;
-        @Bind(R.id.tv_number_hint)
-        TextView mTvNumberHint;
-        @Bind(R.id.tv_order_number)
-        TextView mTvOrderNumber;
-        @Bind(R.id.tv_status_hint)
-        TextView mTvStatusHint;
-        @Bind(R.id.tv_status)
-        TextView mTvStatus;
-        @Bind(R.id.tv_time_hint)
-        TextView mTvTimeHint;
-        @Bind(R.id.tv_time)
-        TextView mTvTime;
-        @Bind(R.id.ll_order_msg)
-        LinearLayout mLlOrderMsg;
-
-        OtcOrderStatusHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
-
-        public void setData(final MessageInfo messageInfo) {
-            mTvCoin.setText(messageInfo.getCoin());
-            mTvOrderNumber.setText(messageInfo.getCount());
-            mTvTime.setText(messageInfo.getTime());
-            if (messageInfo.getStatus() == 0) {
-                mTvStatus.setText(mContext.getString(R.string.canceled_canc));
-                mTvTypeMsg.setText(mContext.getString(R.string.order_cancel_hint));
-            } else if (messageInfo.getStatus() == 4) {
-                mTvStatus.setText(mContext.getString(R.string.order_timeout));
-                mTvTypeMsg.setText(mContext.getString(R.string.order_timeout_hint));
-            } else if (messageInfo.getStatus() == 3) {
-                mTvStatus.setText(mContext.getString(R.string.finish));
-                mTvTypeMsg.setText(mContext.getString(R.string.order_finish_hint));
-            } else if (messageInfo.getStatus() == 2) {
-                if (messageInfo.getType() == 1) {
-                    mTvStatus.setText(mContext.getString(R.string.pay_succeed_dengdai_fb));
-                } else {
-                    mTvStatus.setText(mContext.getString(R.string.relative_pay_dengdai_fb));
-                }
-            } else if (messageInfo.getStatus() == 1) {
-                mTvStatus.setText(mContext.getString(R.string.pending));
-            }
-            mLlOrderMsg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (messageInfo.getStatus() == 1 || messageInfo.getStatus() == 2) {
-                        Intent intent = new Intent(mContext, OrderDetailsActivity.class);
-                        intent.putExtra("type", mContext.getString(R.string.order));
-                        intent.putExtra("id", messageInfo.getRedId() + "");
-                        mContext.startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(mContext, OrderCloseActivity.class);
-                        intent.putExtra("status", messageInfo.getStatus());
-                        intent.putExtra("id", messageInfo.getRedId() + "");
-                        mContext.startActivity(intent);
-                    }
-                }
-            });
-        }
-    }
-
-    class RedExpiredHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_type_msg)
-        TextView mTvTypeMsg;
-        @Bind(R.id.tv_coin)
-        TextView mTvCoin;
-        @Bind(R.id.tv_red_type_hint)
-        TextView mTvRedTypeHint;
-        @Bind(R.id.tv_red_type)
-        TextView mTvRedType;
-        @Bind(R.id.tv_status_hint)
-        TextView mTvStatusHint;
-        @Bind(R.id.tv_count)
-        TextView mTvCount;
-        @Bind(R.id.tv_time_hint)
-        TextView mTvTimeHint;
-        @Bind(R.id.tv_time)
-        TextView mTvTime;
-        @Bind(R.id.ll_red_expried_msg)
-        LinearLayout mLlRedExpriedMsg;
-
-        RedExpiredHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
-
-        public void setData(final MessageInfo messageInfo) {
-            mTvCoin.setText(messageInfo.getCoin());
-            mTvCount.setText(messageInfo.getCount());
-            mTvTime.setText(messageInfo.getTime());
-            if (messageInfo.getStatus() == 1) {
-                mTvRedType.setText(mContext.getString(R.string.ordinary_red_packet));
-            } else if (messageInfo.getStatus() == 2) {
-                mTvRedType.setText(mContext.getString(R.string.qr_code_red_packet));
-            }
-            mLlRedExpriedMsg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (messageInfo.getStatus() == 1) {
-                        Intent intent = new Intent(mContext, RedPacketActivity.class);
-                        intent.putExtra("type", true);
-                        intent.putExtra("from", false);
-                        intent.putExtra("id", messageInfo.getRedId() + "");
-                        mContext.startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(mContext, GrabQRCodeRedActivity.class);
-                        intent.putExtra("id", messageInfo.getRedId() + "");
-                        mContext.startActivity(intent);
-                    }
-                }
-            });
-        }
-    }
-
-    class AuthStatusHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_status_hint)
-        TextView mTvStatusHint;
-        @Bind(R.id.tv_status)
-        TextView mTvStatus;
-        @Bind(R.id.tv_time_hint)
-        TextView mTvTimeHint;
-        @Bind(R.id.tv_time)
-        TextView mTvTime;
-        @Bind(R.id.ll_auth_status_msg)
-        LinearLayout mLlAuthStatusMsg;
-
-        AuthStatusHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
-
-        public void setData(MessageInfo messageInfo) {
-            mTvTime.setText(messageInfo.getTime());
-            if (messageInfo.getStatus() == 3) {
-                mTvStatus.setText(mContext.getString(R.string.auth_succeed));
-            } else if (messageInfo.getStatus() == 4) {
-                mTvStatus.setText(mContext.getString(R.string.auth_error_hint));
-            }
-            mLlAuthStatusMsg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mContext.startActivity(new Intent(mContext, RealNameC1Activity.class));
-                }
-            });
-        }
-    }
-
-    class ReceiptPayHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_type_msg)
-        TextView mTvTypeMsg;
-        @Bind(R.id.tv_coin)
-        TextView mTvCoin;
-        @Bind(R.id.tv_who_hint)
-        TextView mTvWhoHint;
-        @Bind(R.id.tv_who)
-        TextView mTvWho;
-        @Bind(R.id.tv_status_hint)
-        TextView mTvStatusHint;
-        @Bind(R.id.tv_count)
-        TextView mTvCount;
-        @Bind(R.id.tv_time_hint)
-        TextView mTvTimeHint;
-        @Bind(R.id.tv_time)
-        TextView mTvTime;
-        @Bind(R.id.ll_red_expried_msg)
-        LinearLayout mLlRedExpriedMsg;
-
-        ReceiptPayHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
-
-        public void setData(final MessageInfo messageInfo) {
-            mTvCoin.setText(messageInfo.getCoin());
-            mTvCount.setText(messageInfo.getCount());
-            mTvWho.setText(messageInfo.getRemark());
-            mTvTime.setText(messageInfo.getTime());
-            if (messageInfo.getStatus() == 1) {
-                mTvWhoHint.setText(mContext.getString(R.string.payer));
-                mTvTypeMsg.setText(mContext.getString(R.string.receipt_inform));
-                mTvStatusHint.setText(mContext.getString(R.string.receipt_count));
-            } else {
-                mTvWhoHint.setText(mContext.getString(R.string.payee));
-                mTvTypeMsg.setText(mContext.getString(R.string.pay_inform));
-                mTvStatusHint.setText(mContext.getString(R.string.pay_count));
-            }
-            mLlRedExpriedMsg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, PayDetailsActivity.class);
-                    intent.putExtra("id", messageInfo.getRedId() + "");
-                    intent.putExtra("log_id", messageInfo.getBetId());
-                    intent.putExtra("type_number", messageInfo.getType() + "");
-                    mContext.startActivity(intent);
-                }
-            });
-        }
-    }
-
-    class TransferInformHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_type_msg)
-        TextView mTvTypeMsg;
-        @Bind(R.id.tv_coin)
-        TextView mTvCoin;
-        @Bind(R.id.tv_who_hint)
-        TextView mTvWhoHint;
-        @Bind(R.id.tv_who)
-        TextView mTvWho;
-        @Bind(R.id.tv_status_hint)
-        TextView mTvStatusHint;
-        @Bind(R.id.tv_count)
-        TextView mTvCount;
-        @Bind(R.id.tv_time_hint)
-        TextView mTvTimeHint;
-        @Bind(R.id.tv_time)
-        TextView mTvTime;
-        @Bind(R.id.ll_red_expried_msg)
-        LinearLayout mLlRedExpriedMsg;
-
-        TransferInformHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
-
-        public void setData(final MessageInfo messageInfo) {
-            mTvCoin.setText(messageInfo.getCoin());
-            mTvCount.setText(messageInfo.getCount());
-            mTvWho.setText(messageInfo.getRemark());
-            mTvTime.setText(messageInfo.getTime());
-            if (messageInfo.getStatus() == 1) {
-                mTvWhoHint.setText(mContext.getString(R.string.payer));
-                mTvTypeMsg.setText(mContext.getString(R.string.in_account_inform));
-                mTvStatusHint.setText(mContext.getString(R.string.in_account_count));
-            } else {
-                mTvWhoHint.setText(mContext.getString(R.string.payee));
-                mTvTypeMsg.setText(mContext.getString(R.string.transfer_inform));
-                mTvStatusHint.setText(mContext.getString(R.string.transfer_count));
-            }
-            mLlRedExpriedMsg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, PayDetailsActivity.class);
-                    intent.putExtra("id", messageInfo.getRedId() + "");
-                    intent.putExtra("log_id", messageInfo.getBetId());
-                    intent.putExtra("type_number", messageInfo.getType() + "");
-                    mContext.startActivity(intent);
-                }
-            });
-        }
-    }
-
-    class InoutCoinInformHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_type_msg)
-        TextView mTvTypeMsg;
-        @Bind(R.id.tv_coin)
-        TextView mTvCoin;
-        @Bind(R.id.tv_status_hint)
-        TextView mTvStatusHint;
-        @Bind(R.id.tv_count)
-        TextView mTvCount;
-        @Bind(R.id.tv_time_hint)
-        TextView mTvTimeHint;
-        @Bind(R.id.tv_time)
-        TextView mTvTime;
-        @Bind(R.id.ll_red_expried_msg)
-        LinearLayout mLlRedExpriedMsg;
-
-        InoutCoinInformHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
-
-        public void setData(final MessageInfo messageInfo) {
-            mTvCoin.setText(messageInfo.getCoin());
-            mTvCount.setText(messageInfo.getCount());
-            mTvTime.setText(messageInfo.getTime());
-            mLlRedExpriedMsg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, PayDetailsActivity.class);
-                    intent.putExtra("id", messageInfo.getRedId() + "");
-                    intent.putExtra("log_id", messageInfo.getBetId());
-                    intent.putExtra("type_number", messageInfo.getType() + "");
-                    mContext.startActivity(intent);
-                }
-            });
-        }
-    }
-
-    class InCoinInformHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_type_msg)
-        TextView mTvTypeMsg;
-        @Bind(R.id.tv_coin)
-        TextView mTvCoin;
-        @Bind(R.id.tv_status_hint)
-        TextView mTvStatusHint;
-        @Bind(R.id.tv_count)
-        TextView mTvCount;
-        @Bind(R.id.tv_time_hint)
-        TextView mTvTimeHint;
-        @Bind(R.id.tv_time)
-        TextView mTvTime;
-        @Bind(R.id.ll_red_expried_msg)
-        LinearLayout mLlRedExpriedMsg;
-
-        InCoinInformHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
-
-        public void setData(final MessageInfo messageInfo) {
-            mTvCoin.setText(messageInfo.getCoin());
-            mTvCount.setText(messageInfo.getCount());
-            mTvTime.setText(messageInfo.getTime());
-            mLlRedExpriedMsg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, PayDetailsActivity.class);
-                    intent.putExtra("id", messageInfo.getRedId() + "");
-                    intent.putExtra("log_id", messageInfo.getBetId());
-                    intent.putExtra("type_number", messageInfo.getType() + "");
-                    mContext.startActivity(intent);
-                }
-            });
-        }
-    }
-
-    //打賞
-    class ExceptionalHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_type_msg)
-        TextView mTvTypeMsg;
-        @Bind(R.id.tv_coin)
-        TextView mTvCoin;
-        @Bind(R.id.tv_count)
-        TextView mTvCount;
-        @Bind(R.id.tv_time)
-        TextView mTvTime;
-        @Bind(R.id.ll_red_expried_msg)
-        LinearLayout mLlRedExpriedMsg;
-
-        ExceptionalHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
-
-        public void setData(final MessageInfo messageInfo) {
-            mTvCoin.setText(messageInfo.getCoin());
-            mTvCount.setText(messageInfo.getCount());
-            mTvTime.setText(messageInfo.getTime());
-            if (messageInfo.getType() == 13) {
-                mTvTypeMsg.setText(mContext.getString(R.string.exceptional_spending));
-            } else {
-                mTvTypeMsg.setText(mContext.getString(R.string.exceptional_income));
-            }
-            mLlRedExpriedMsg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, PayDetailsActivity.class);
-                    intent.putExtra("id", messageInfo.getRedId() + "");
-                    intent.putExtra("log_id", messageInfo.getBetId());
-                    intent.putExtra("type_number", messageInfo.getType() + "");
-                    mContext.startActivity(intent);
-                }
-            });
-        }
-    }
-
 
     private void goIndividualDetails(View view, String user, String name, final MessageInfo messageInfo) {
         //兼容之前沒有send字段問題

@@ -22,6 +22,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Spannable;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -43,6 +44,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.crypto.otr.OtrChatListenerManager;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.adapter.ChatAdapter;
@@ -133,6 +135,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private List<MessageInfo> mMessageList = new ArrayList<>();
     private DBManager mMgr;
     private DBRoomMember mDBRoomMember;
+    private DBRoomManage mDBRoomManage;
     private Dialog mBottomDialog;
     private Bitmap mUserImage;
     private List<LocalMedia> selectList = new ArrayList<>();
@@ -145,6 +148,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private Room roomManage;
     private String roomType;//房间类型
     private int currentPosition;//記錄刷新位置
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,6 +160,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         ButterKnife.bind(this);
         mMgr = new DBManager(this);//初始化数据库管理类
         mDBRoomMember=new DBRoomMember(this);
+        mDBRoomManage=new DBRoomManage(this);
         EventBus.getDefault().register(this);//初始化EventBus
         initIntent();//初始化intent事件
         initEmoticonsKeyboard();//初始化功能盘
@@ -164,23 +169,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         initData(null);//初始化数据
         mMgr.updateNumber(roomId, 0);//更新未读消息条数
         EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));//发送更新未读消息通知
-        //监听touch事件隐藏软键盘
-        mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                FuncLayout funcView = mEkbEmoticonsKeyboard.getFuncView();
-                if (funcView.isShown()) {
-                    funcView.hideAllFuncView();
-                }
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                boolean isOpen = imm.isActive();//isOpen若返回true，则表示输入法打开
-                if (isOpen) {
-                    imm.hideSoftInputFromWindow(mEkbEmoticonsKeyboard.getEtChat().getWindowToken(), 0);
-                }
-                return false;
-            }
-        });
-        mEkbEmoticonsKeyboard.addOnResultOTR(this);
+        setOnClick();
     }
 
 
@@ -547,6 +536,15 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         }else if(msg.equals(getString(R.string.refresh_group_members))){
             setTitleName();
             mChatAdapter.notifyDataSetChanged();
+        }else if(msg.equals(getString(R.string.modify_group_name))){
+            mName=event.getName();
+            setTitleName();
+            mChatAdapter.notifyDataSetChanged();
+        }else if(msg.equals(getString(R.string.refresh_group_room))){
+            if (roomId.equals(event.getId())){
+                mName=mDBRoomManage.findRoomName(roomId);
+                setTitleName();
+            }
         }
 
     }
@@ -742,6 +740,26 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 mLayoutManager.scrollToPositionWithOffset(mChatAdapter.getItemCount() - 1, 0);
             }
         }
+    }
+
+    private void setOnClick() {
+        mEkbEmoticonsKeyboard.addOnResultOTR(this);
+        //监听touch事件隐藏软键盘
+        mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                FuncLayout funcView = mEkbEmoticonsKeyboard.getFuncView();
+                if (funcView.isShown()) {
+                    funcView.hideAllFuncView();
+                }
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                boolean isOpen = imm.isActive();//isOpen若返回true，则表示输入法打开
+                if (isOpen) {
+                    imm.hideSoftInputFromWindow(mEkbEmoticonsKeyboard.getEtChat().getWindowToken(), 0);
+                }
+                return false;
+            }
+        });
     }
 
     //设置title
