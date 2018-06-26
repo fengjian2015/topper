@@ -940,4 +940,5 @@
     <string name="state_district">國家或地區</string>
     <string name="choose_a_chat">選擇一個聊天</string>
     <string name="close_activity">關閉界面</string>
+    <string name="video_big_hint">發佈的視頻大小不能超過20M</string>
 </resources>

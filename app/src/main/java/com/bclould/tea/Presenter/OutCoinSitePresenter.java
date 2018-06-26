@@ -81,7 +81,6 @@ public class OutCoinSitePresenter {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
-
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -111,11 +110,11 @@ public class OutCoinSitePresenter {
 
                         @Override
                         public void onNext(@NonNull BaseInfo baseInfo) {
-                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             hideDialog();
                             if (baseInfo.getStatus() == 1) {
                                 callBack2.send();
                             }
+                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

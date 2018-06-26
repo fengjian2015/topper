@@ -166,7 +166,7 @@ public class PublicshDynamicActivity extends BaseActivity {
                     .previewVideo(true)// 是否可预览视频
                     .enablePreviewAudio(true) // 是否可播放音频
                     .compressGrade(Luban.THIRD_GEAR)// luban压缩档次，默认3档 Luban.FIRST_GEAR、Luban.CUSTOM_GEAR
-                    .isCamera(true)// 是否显示拍照按钮
+                    .isCamera(false)// 是否显示拍照按钮
                     .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                     //.setOutputCameraPath("/CustomPath")// 自定义拍照保存路径
                     .enableCrop(false)// 是否裁剪
