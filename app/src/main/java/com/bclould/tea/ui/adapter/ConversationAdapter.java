@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.MessageInfo;
@@ -53,13 +54,15 @@ public class ConversationAdapter extends RecyclerView.Adapter {
     private final DBManager mMgr;
     private RelativeLayout mRlTitle;
     private DBRoomMember mDBRoomMember;
+    private DBRoomManage mDBRoomManage;
 
-    public ConversationAdapter(Context context, List<ConversationInfo> ConversationList, DBManager mgr, RelativeLayout mRlTitle, DBRoomMember mDBRoomMember) {
+    public ConversationAdapter(Context context, List<ConversationInfo> ConversationList, DBManager mgr, RelativeLayout mRlTitle, DBRoomMember mDBRoomMember, DBRoomManage mDBRoomManage) {
         mContext = context;
         mConversationList = ConversationList;
         mMgr = mgr;
         this.mRlTitle=mRlTitle;
         this.mDBRoomMember=mDBRoomMember;
+        this.mDBRoomManage=mDBRoomManage;
     }
 
     @Override
@@ -148,7 +151,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
            /* Bitmap bitmap = UtilTool.getImage(mMgr, conversationInfo.getUser(), mContext);
             mTab1ItemImg.setImageBitmap(bitmap);*/
            if(RoomManage.ROOM_TYPE_MULTI.equals(conversationInfo.getChatType())){
-               mTab1ItemImg.setImageResource(R.mipmap.img_group_head);
+               UtilTool.getGroupImage(mDBRoomManage,conversationInfo.getUser(),mContext,mTab1ItemImg);
            }else {
                setNameAndUrl(mTab1ItemImg,conversationInfo.getUser());
                UtilTool.getImage(mMgr, conversationInfo.getUser(), mContext, mTab1ItemImg);

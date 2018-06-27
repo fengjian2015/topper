@@ -16,6 +16,7 @@ import com.bclould.tea.ui.activity.ChatTransferActivity;
 import com.bclould.tea.ui.activity.PayPasswordActivity;
 import com.bclould.tea.ui.activity.RealNameC1Activity;
 import com.bclould.tea.ui.activity.SendQRCodeRedActivity;
+import com.bclould.tea.ui.activity.SendRedGroupActivity;
 import com.bclould.tea.ui.activity.SendRedPacketActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
@@ -79,7 +80,10 @@ public class RedPacketPresenter {
                                 if (mContext instanceof SendRedPacketActivity) {
                                     SendRedPacketActivity activity = (SendRedPacketActivity) mContext;
                                     activity.showHintDialog();
-                                } else {
+                                } else if(mContext instanceof SendRedGroupActivity){
+                                    SendRedGroupActivity activity = (SendRedGroupActivity) mContext;
+                                    activity.showHintDialog();
+                                }else {
                                     SendQRCodeRedActivity activity = (SendQRCodeRedActivity) mContext;
                                     activity.showHintDialog();
                                 }

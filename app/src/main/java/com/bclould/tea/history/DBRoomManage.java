@@ -21,6 +21,7 @@ public class DBRoomManage {
     private final Context mContext;
     private DBHelper helper;
     public SQLiteDatabase db;
+    private static Object lock = new Object();
 
     public DBRoomManage(Context context) {
         mContext = context;
@@ -72,6 +73,13 @@ public class DBRoomManage {
         db.update("RoomManage", cv, "roomId=? and my_user=?", new String[]{roomId, UtilTool.getTocoId()});
     }
 
+    public void updateUrl(String roomId, String roomImage) {
+        db = helper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("roomImage", roomImage);
+        db.update("RoomManage", cv, "roomId=? and my_user=?", new String[]{roomId, UtilTool.getTocoId()});
+    }
+
     public boolean findRoom(String roomJid){
         db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from RoomManage where roomId=? and my_user=?",
@@ -93,6 +101,32 @@ public class DBRoomManage {
         cursor.close();
         return owner;
     }
+
+
+    public int findRoomNumber(String roomJid){
+        db = helper.getReadableDatabase();
+        int roomNumber=200;
+        Cursor cursor = db.rawQuery("select roomNumber from RoomManage where roomId=? and my_user=?",
+                new String[]{roomJid, UtilTool.getTocoId()});
+        while (cursor.moveToNext()){
+            roomNumber=cursor.getInt(cursor.getColumnIndex("roomNumber"));
+        }
+        cursor.close();
+        return roomNumber;
+    }
+
+    public String findRoomUrl(String roomJid){
+        db = helper.getReadableDatabase();
+        String roomImage=null;
+        Cursor cursor = db.rawQuery("select roomImage from RoomManage where roomId=? and my_user=?",
+                new String[]{roomJid, UtilTool.getTocoId()});
+        while (cursor.moveToNext()){
+            roomImage=cursor.getString(cursor.getColumnIndex("roomImage"));
+        }
+        cursor.close();
+        return roomImage;
+    }
+
 
     public String findRoomName(String roomJid) {
         db = helper.getReadableDatabase();

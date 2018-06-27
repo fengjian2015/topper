@@ -2,6 +2,7 @@ package com.bclould.tea.topperchat;
 
 import android.app.ActivityManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -79,6 +80,7 @@ import static com.bclould.tea.topperchat.WsContans.BC_FRIEND_COMMIT;
 import static com.bclould.tea.topperchat.WsContans.BC_FRIEND_REJECT;
 import static com.bclould.tea.topperchat.WsContans.BC_FRIEND_REQUEST;
 import static com.bclould.tea.topperchat.WsContans.BC_INOUT_COIN_INFORM;
+import static com.bclould.tea.topperchat.WsContans.BC_KICK_OUT_GROUP;
 import static com.bclould.tea.topperchat.WsContans.BC_MEMBER_GROUP;
 import static com.bclould.tea.topperchat.WsContans.BC_OFFLINE;
 import static com.bclould.tea.topperchat.WsContans.BC_OTC_ORDER;
@@ -86,6 +88,7 @@ import static com.bclould.tea.topperchat.WsContans.BC_QRCODE_RECEIPT_PAYMENT;
 import static com.bclould.tea.topperchat.WsContans.BC_QUIT_GROUP;
 import static com.bclould.tea.topperchat.WsContans.BC_RED_GET;
 import static com.bclould.tea.topperchat.WsContans.BC_RED_PACKET_EXPIRED;
+import static com.bclould.tea.topperchat.WsContans.BC_REFRESH_GROUP;
 import static com.bclould.tea.topperchat.WsContans.BC_TRANSFER_GROUP_BROAD;
 import static com.bclould.tea.topperchat.WsContans.BC_TRANSFER_INFORM;
 import static com.bclould.tea.topperchat.WsContans.BC_UPDATE_GROUP_LOGO;
@@ -144,7 +147,7 @@ public class SocketListener {
     private Context context;
     private NotificationManager mNotificationManager;
     private PendingIntent mResultIntent;
-    private NotificationCompat.Builder mBuilder;
+    private Notification.Builder mBuilder;
     private DBManager mgr;
     private DBRoomManage mdbRoomManage;
     private DBRoomMember mdbRoomMember;
@@ -170,7 +173,15 @@ public class SocketListener {
         mdbRoomManage = new DBRoomManage(context);
         mdbRoomMember = new DBRoomMember(context);
         mNotificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-        mBuilder = new NotificationCompat.Builder(context);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("1", "channelName", NotificationManager.IMPORTANCE_HIGH);
+            mNotificationManager.createNotificationChannel(channel);
+            mBuilder= new Notification.Builder(context,"1");
+        }else{
+            mBuilder= new Notification.Builder(context);
+        }
+
     }
 
     public void onBinaryMessage(byte[] binary) {
@@ -669,9 +680,14 @@ public class SocketListener {
                     //更新群昵称
                 case BC_TRANSFER_GROUP_BROAD:
                     //转让群组管理员
+                case BC_REFRESH_GROUP:
+                    //刷新群成員
                 case BC_UPDATE_GROUP_NAME:
                     //更新群名字
                     updataGroupRoom(messageMap);
+                    break;
+                case BC_KICK_OUT_GROUP:
+                    kickOut(messageMap);
                     break;
             }
 
@@ -680,8 +696,19 @@ public class SocketListener {
         }
     }
 
+    private void kickOut(Map<Object, Object> messageMap){
+        final String roomId=messageMap.get("group_id")+"";
+        mdbRoomManage.deleteRoom(roomId);
+        mgr.deleteConversation(roomId);
+        mgr.deleteMessage(roomId);
+        mdbRoomMember.deleteRoom(roomId);
+        MessageEvent messageEvent= new MessageEvent(context.getString(R.string.kick_out_success));
+        messageEvent.setId(roomId);
+        EventBus.getDefault().post(messageEvent);
+    }
+
     /**
-     *
+     * 刷新某個房間信息
      * @param messageMap
      */
     private void updataGroupRoom(Map<Object, Object> messageMap) {
@@ -784,6 +811,15 @@ public class SocketListener {
     private void addGroup(Map<Object, Object> messageMap) {
         String roomId=messageMap.get("group_id")+"";
         String roomName= (String) messageMap.get("name");
+        if (mdbRoomManage.findRoom(roomId)){
+            new GroupPresenter(context).selectGroupMember(Integer.parseInt(roomId), mdbRoomMember, false,mdbRoomManage,mgr, new GroupPresenter.CallBack() {
+                @Override
+                public void send() {}
+            });
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.refresh_group_members)));
+            return;
+        }
         createConversation(roomId,roomName);
     }
 
@@ -795,8 +831,14 @@ public class SocketListener {
     private void redGet(Map<Object, Object> messageMap) {
         mgr.updateMessageRedState(messageMap.get("rp_id") + "", 1);
         MessageInfo messageInfo = new MessageInfo();
-        messageInfo.setSend((String) messageMap.get("toco_id"));
-        messageInfo.setUsername((String) messageMap.get("toco_id"));
+        String groupid= messageMap.get("group_id")+"";
+        if(!StringUtils.isEmpty(groupid)){
+            messageInfo.setSend(groupid);
+            messageInfo.setUsername(groupid);
+        }else{
+            messageInfo.setSend((String) messageMap.get("toco_id"));
+            messageInfo.setUsername((String) messageMap.get("toco_id"));
+        }
         messageInfo.setMsgType(RED_GET_MSG);
         messageInfo.setConverstaion((String) messageMap.get("desc"));
         messageInfo.setTime(UtilTool.createChatTime());

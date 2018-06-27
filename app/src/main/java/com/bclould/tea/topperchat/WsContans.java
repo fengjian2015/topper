@@ -60,6 +60,8 @@ public class WsContans {
     public static final int BC_UPDATE_GROUP_REMARK=37;//更新群昵称
     public static final int BC_TRANSFER_GROUP_BROAD=39;//转让群组管理员
     public static final int BC_UPDATE_GROUP_NAME=40;//更新群名字
+    public static final int BC_REFRESH_GROUP=41;//刷新房間成員
+    public static final int BC_KICK_OUT_GROUP=42;//踢人
 
 
 

@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -12,11 +13,13 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.ui.activity.CreateGroupRoomActivity;
 import com.bclould.tea.ui.activity.IndividualDetailsActivity;
 import com.bclould.tea.ui.activity.SelectGroupMemberActivity;
 import com.bclould.tea.utils.StringUtils;
+import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 
 import java.util.List;
@@ -30,17 +33,13 @@ public class GroupDetailsMemberAdapter extends BaseAdapter{
     private List<RoomMemberInfo> list;
     private  String roomId;
     private DBManager mgr;
-    private boolean isOwner;
-    public GroupDetailsMemberAdapter(Context context, List<RoomMemberInfo> list, String roomId, DBManager mgr) {
+    private DBRoomManage mDBRoomManage;
+    public GroupDetailsMemberAdapter(Context context, List<RoomMemberInfo> list, String roomId, DBManager mgr, DBRoomManage mDBRoomManage) {
         this.context=context;
         this.list=list;
         this.roomId=roomId;
         this.mgr=mgr;
-    }
-
-    public void setIsOwner(boolean isOwner){
-        this.isOwner=isOwner;
-        this.isOwner=false;
+        this.mDBRoomManage=mDBRoomManage;
     }
 
     @Override
@@ -70,11 +69,13 @@ public class GroupDetailsMemberAdapter extends BaseAdapter{
         }else{
             viewHolder= (ViewHolder) view.getTag();
         }
-        if(isOwner){
-            if (i == list.size() - 1) {
+        if(isOwner()){
+            if (i ==1) {
                 viewHolder.group_touxiang.setImageResource(R.mipmap.delete_member);
-            } else if(i == list.size() - 2){
+                viewHolder.tvName.setText(context.getString(R.string.delete_group_member));
+            } else if(i ==0){
                 viewHolder.group_touxiang.setImageResource(R.mipmap.add_member);
+                viewHolder.tvName.setText(context.getString(R.string.add_group_member));
             }else {
                 UtilTool.getImage(context, viewHolder.group_touxiang, list.get(i).getImage_url());
                 String remark = mgr.queryRemark(list.get(i).getJid());
@@ -85,11 +86,15 @@ public class GroupDetailsMemberAdapter extends BaseAdapter{
                 }
             }
         }else {
-            if (i == list.size() - 1) {
+            if (i == 0) {
                 viewHolder.group_touxiang.setImageResource(R.mipmap.add_member);
+                viewHolder.tvName.setText(context.getString(R.string.add_group_member));
             } else {
                 UtilTool.getImage(context, viewHolder.group_touxiang, list.get(i).getImage_url());
                 String remark = mgr.queryRemark(list.get(i).getJid());
+                if(list.get(i).getJid().equals(UtilTool.getTocoId())){
+                    remark="";
+                }
                 if (!StringUtils.isEmpty(remark)) {
                     viewHolder.tvName.setText(remark);
                 } else {
@@ -101,46 +106,61 @@ public class GroupDetailsMemberAdapter extends BaseAdapter{
         viewHolder.group_touxiang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isOwner){
-                    if(i==list.size()-1){
+                if(isOwner()){
+                    if(i==1){
                         //刪除
-                        Intent intent = new Intent(context, SelectGroupMemberActivity.class);
-                        intent.putExtra("type",2);
-                        intent.putExtra("roomId",roomId);
-                        context.startActivity(intent);
-                    }else if(i==list.size()-2){
-                        //添加
-                        Intent intent = new Intent(context, CreateGroupRoomActivity.class);
-                        intent.putExtra("type",1);
-                        intent.putExtra("roomId",roomId);
-                        context.startActivity(intent);
+                        deleteIntent();
+                    }else if(i==0){
+                        addIntent();
                     }else{
-                        //查看好友詳情
-                        Intent intent = new Intent(context, IndividualDetailsActivity.class);
-                        intent.putExtra("user", list.get(i).getJid());
-                        intent.putExtra("name", list.get(i).getName());
-                        intent.putExtra("roomId", list.get(i).getJid());
-                        context.startActivity(intent);
+                        goIndividual(i);
                     }
                 }else{
-                    if(i==list.size()-1){
-                        //添加
-                        Intent intent = new Intent(context, CreateGroupRoomActivity.class);
-                        intent.putExtra("type",1);
-                        intent.putExtra("roomId",roomId);
-                        context.startActivity(intent);
+                    if(i==0){
+                        addIntent();
                     }else{
-                        //查看好友詳情
-                        Intent intent = new Intent(context, IndividualDetailsActivity.class);
-                        intent.putExtra("user", list.get(i).getJid());
-                        intent.putExtra("name", list.get(i).getName());
-                        intent.putExtra("roomId", list.get(i).getJid());
-                        context.startActivity(intent);
+                        goIndividual(i);
                     }
                 }
             }
         });
         return view;
+    }
+
+    private void deleteIntent(){
+        Intent intent = new Intent(context, SelectGroupMemberActivity.class);
+        intent.putExtra("type",2);
+        intent.putExtra("roomId",roomId);
+        context.startActivity(intent);
+    }
+
+    private void addIntent(){
+        if(list.size()-1>=mDBRoomManage.findRoomNumber(roomId)){
+            ToastShow.showToast2((Activity) context,context.getString(R.string.group_member_maxuser));
+            return;
+        }
+        //添加
+        Intent intent = new Intent(context, CreateGroupRoomActivity.class);
+        intent.putExtra("type",1);
+        intent.putExtra("roomId",roomId);
+        context.startActivity(intent);
+    }
+
+    private void goIndividual(int i){
+        //查看好友詳情
+        Intent intent = new Intent(context, IndividualDetailsActivity.class);
+        intent.putExtra("user", list.get(i).getJid());
+        intent.putExtra("name", list.get(i).getName());
+        intent.putExtra("roomId", list.get(i).getJid());
+        context.startActivity(intent);
+    }
+
+    private boolean isOwner(){
+        if(UtilTool.getTocoId().equals(mDBRoomManage.findRoomOwner(roomId))){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     class ViewHolder{

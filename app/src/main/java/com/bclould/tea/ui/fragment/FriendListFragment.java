@@ -192,6 +192,7 @@ public class FriendListFragment extends Fragment {
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.login_succeed))) {
+            updateData();
             initData();
         } else if (msg.equals(getString(R.string.new_friend))) {
             initData();

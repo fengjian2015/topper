@@ -9,7 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/y50">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/y100"
@@ -72,9 +73,8 @@
                 >
             </com.bclould.tea.ui.widget.MyGridView>
         </RelativeLayout>
-
         <RelativeLayout
-            android:id="@+id/rl_group_name"
+            android:id="@+id/rl_group_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -85,12 +85,51 @@
             android:paddingLeft="@dimen/x20"
             >
             <TextView
+                android:id="@+id/tv11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/iv_inform"
+                android:text="@string/group_head"
+                android:layout_centerVertical="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+
+            <ImageView
+                android:id="@+id/iv_head"
+                android:layout_width="@dimen/x80"
+                android:layout_height="@dimen/y80"
+                android:layout_toLeftOf="@+id/iv3"
+                android:layout_marginRight="@dimen/x10"
+                android:textColor="@color/gray3"
+                android:singleLine="true"
+                android:maxEms="10"
+                android:textSize="@dimen/x26" />
+            <ImageView
+                android:id="@+id/iv3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/iocn_person_turn"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_group_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            android:background="@color/white"
+            >
+            <View
+                style="@style/HCutOffRule"
+                ></View>
+            <TextView
                 android:id="@+id/tv2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/iv_inform"
+                android:layout_centerVertical="true"
                 android:text="@string/group_nickname"
                 android:textColor="@color/black"
+                android:paddingLeft="@dimen/x20"
                 android:textSize="@dimen/x30"/>
 
             <TextView
@@ -99,6 +138,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/iv1"
                 android:layout_marginRight="@dimen/x10"
+                android:layout_centerVertical="true"
                 android:textColor="@color/gray3"
                 android:singleLine="true"
                 android:maxEms="10"
@@ -109,29 +149,26 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:paddingRight="@dimen/x30"
                 android:src="@mipmap/iocn_person_turn"/>
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rl_group_management"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:background="@color/white"
-            android:paddingLeft="@dimen/x20"
+            android:layout_height="@dimen/y100"
             android:visibility="gone"
             >
-            <View
-                style="@style/HCutOffRule"
-                android:layout_marginRight="@dimen/x20"
-                ></View>
+            <View style="@style/HCutOffRule"></View>
             <TextView
                 android:id="@+id/tv9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/iv_inform"
                 android:text="@string/group_management"
-                android:paddingTop="@dimen/x25"
-                android:paddingBottom="@dimen/x25"
+                android:layout_centerVertical="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
             <ImageView
@@ -142,118 +179,6 @@
                 android:layout_marginRight="@dimen/x30"
                 android:src="@mipmap/iocn_person_turn"/>
         </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_group_qr"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:paddingLeft="@dimen/x20"
-            android:visibility="gone"
-            >
-            <View
-                style="@style/HCutOffRule"
-                android:layout_marginRight="@dimen/x20"
-                ></View>
-            <TextView
-                android:id="@+id/tv3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/iv_inform"
-                android:text="@string/group_qr"
-                android:paddingTop="@dimen/x25"
-                android:paddingBottom="@dimen/x25"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x30"
-                android:src="@mipmap/iocn_person_turn"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:paddingLeft="@dimen/x20"
-            android:visibility="gone"
-            >
-            <View
-                style="@style/HCutOffRule"
-                android:layout_marginRight="@dimen/x20"
-                ></View>
-            <TextView
-                android:id="@+id/tv7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/iv_inform"
-                android:text="@string/group_announcement"
-                android:paddingTop="@dimen/x25"
-                android:paddingBottom="@dimen/x25"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y100"
-            android:layout_marginTop="@dimen/y20"
-            android:background="@color/white"
-            >
-
-            <TextView
-                android:id="@+id/tv4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/iv_inform"
-                android:text="@string/top_chat"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
-
-            <ImageView
-                android:id="@+id/on_off_top"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:padding="@dimen/x25"
-                android:src="@drawable/set_disturb_seletor"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y100"
-            android:background="@color/white">
-
-            <View
-                style="@style/HCutOffRule"
-                android:layout_marginRight="@dimen/x20"
-                android:layout_marginLeft="@dimen/x20"></View>
-
-            <TextView
-                android:id="@+id/tv5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/iv_inform"
-                android:text="@string/message_free"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
-
-            <ImageView
-                android:id="@+id/on_off_message_free"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:padding="@dimen/x25"
-                android:src="@drawable/set_disturb_seletor"/>
-        </RelativeLayout>
-
         <RelativeLayout
             android:id="@+id/rl_member_name"
             android:layout_width="match_parent"
@@ -263,8 +188,7 @@
 
             <View
                 style="@style/HCutOffRule"
-                android:layout_marginRight="@dimen/x20"
-                android:layout_marginLeft="@dimen/x20"></View>
+                ></View>
 
             <TextView
                 android:id="@+id/tv8"
@@ -297,6 +221,141 @@
                 android:layout_marginRight="@dimen/x30"
                 android:src="@mipmap/iocn_person_turn"/>
         </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_group_qr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingLeft="@dimen/x20"
+            android:visibility="gone"
+            >
+            <View
+                style="@style/HCutOffRule"
+                ></View>
+            <TextView
+                android:id="@+id/tv3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/iv_inform"
+                android:text="@string/group_qr"
+                android:paddingTop="@dimen/x25"
+                android:paddingBottom="@dimen/x25"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x30"
+                android:src="@mipmap/iocn_person_turn"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingLeft="@dimen/x20"
+            android:visibility="gone"
+            >
+            <View
+                style="@style/HCutOffRule"
+                ></View>
+            <TextView
+                android:id="@+id/tv7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/iv_inform"
+                android:text="@string/group_announcement"
+                android:paddingTop="@dimen/x25"
+                android:paddingBottom="@dimen/x25"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_looking_chat"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            android:layout_marginTop="@dimen/y20"
+            android:background="@color/white"
+            >
+
+            <TextView
+                android:id="@+id/tv10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/iv_inform"
+                android:text="@string/looking_for_chat"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x30"
+                android:src="@mipmap/iocn_person_turn"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            android:background="@color/white"
+            >
+            <View
+                style="@style/HCutOffRule"></View>
+            <TextView
+                android:id="@+id/tv4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/iv_inform"
+                android:text="@string/top_chat"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+
+            <ImageView
+                android:id="@+id/on_off_top"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/x25"
+                android:src="@drawable/set_disturb_seletor"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            android:background="@color/white">
+
+            <View
+                style="@style/HCutOffRule"
+                ></View>
+
+            <TextView
+                android:id="@+id/tv5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/iv_inform"
+                android:text="@string/message_free"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+
+            <ImageView
+                android:id="@+id/on_off_message_free"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/x25"
+                android:src="@drawable/set_disturb_seletor"/>
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rl_empty_talk"
@@ -307,8 +366,7 @@
 
             <View
                 style="@style/HCutOffRule"
-                android:layout_marginRight="@dimen/x20"
-                android:layout_marginLeft="@dimen/x20"></View>
+               ></View>
 
             <TextView
                 android:id="@+id/tv6"

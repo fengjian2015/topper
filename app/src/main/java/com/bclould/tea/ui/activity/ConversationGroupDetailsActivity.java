@@ -1,9 +1,12 @@
 package com.bclould.tea.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bclould.tea.Presenter.GroupPresenter;
+import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
@@ -23,17 +27,25 @@ import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.ui.adapter.GroupDetailsMemberAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.MyGridView;
+import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.RoomManage;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.compress.Luban;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.entity.LocalMedia;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,6 +57,7 @@ import butterknife.OnClick;
 
 import static com.bclould.tea.Presenter.GroupPresenter.CallBack;
 import static com.bclould.tea.utils.MySharedPreferences.SETTING;
+import static com.luck.picture.lib.config.PictureMimeType.ofImage;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class ConversationGroupDetailsActivity extends BaseActivity {
@@ -65,6 +78,8 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     TextView mTvMemberName;
     @Bind(R.id.rl_group_management)
     RelativeLayout mRlGroupManagement;
+    @Bind(R.id.iv_head)
+    ImageView mIvHead;
 
     private GroupDetailsMemberAdapter mAdapter;
     private List<RoomMemberInfo> mList = new ArrayList<>();
@@ -73,6 +88,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     private DBRoomMember mDBRoomMember;
     private DBRoomManage mDBRoomManage;
     private DBManager mMgr;
+    private List<LocalMedia> selectList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,20 +127,25 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         setGroupName();
         setMemberName();
         setGroupManager();
+        setGroupImage();
+    }
+
+    private void setGroupImage() {
+        UtilTool.getGroupImage(mDBRoomManage,roomId,this,mIvHead);
     }
 
     private void setGroupManager() {
-        if(isOwner()){
+        if (isOwner()) {
             mRlGroupManagement.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mRlGroupManagement.setVisibility(View.GONE);
         }
     }
 
-    private boolean isOwner(){
-        if(UtilTool.getTocoId().equals(mDBRoomManage.findRoomOwner(roomId))){
+    private boolean isOwner() {
+        if (UtilTool.getTocoId().equals(mDBRoomManage.findRoomOwner(roomId))) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -135,18 +156,17 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
 
     private void setGroupMember(boolean isFirst) {
         mList.clear();
+        if (isOwner()) {
+            mList.add(new RoomMemberInfo());
+        }
+        mList.add(new RoomMemberInfo());
         mList.addAll(mDBRoomMember.queryAllRequest(roomId));
         mTvMemberNumber.setText(mList.size() + "人");
         //是群主添加兩個
-//        if(isOwner()){
-//            mList.add(new RoomMemberInfo());
-//        }
-        mList.add(new RoomMemberInfo());
         if (isFirst) {
-            mAdapter = new GroupDetailsMemberAdapter(this, mList, roomId, mMgr);
-            mAdapter.setIsOwner(isOwner());
+            mAdapter = new GroupDetailsMemberAdapter(this, mList, roomId, mMgr, mDBRoomManage);
             mPartnerDetialGridview.setAdapter(mAdapter);
-            new GroupPresenter(this).selectGroupMember(Integer.parseInt(roomId), mDBRoomMember, true,mDBRoomManage,mMgr, new CallBack() {
+            new GroupPresenter(this).selectGroupMember(Integer.parseInt(roomId), mDBRoomMember, true, mDBRoomManage, mMgr, new CallBack() {
                 @Override
                 public void send() {
                     initView();
@@ -154,7 +174,6 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                 }
             });
         } else {
-            mAdapter.setIsOwner(isOwner());
             mAdapter.notifyDataSetChanged();
         }
 
@@ -178,7 +197,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         mOnOffMessageFree.setSelected(free);
     }
 
-    @OnClick({R.id.bark, R.id.on_off_message_free, R.id.on_off_top, R.id.rl_empty_talk, R.id.btn_brak, R.id.rl_group_qr,R.id.rl_group_name,R.id.rl_member_name,R.id.rl_group_management})
+    @OnClick({R.id.bark, R.id.on_off_message_free, R.id.on_off_top, R.id.rl_empty_talk, R.id.btn_brak, R.id.rl_group_qr, R.id.rl_group_name, R.id.rl_member_name, R.id.rl_group_management,R.id.rl_looking_chat,R.id.rl_group_image})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -200,34 +219,111 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                 // TODO: 2018/6/20 跳轉二維碼 
                 break;
             case R.id.rl_group_name:
-                if(isOwner()){
-                    goModificationName(2,mTvgrouprName.getText().toString());
-                }else{
-                    ToastShow.showToast2(ConversationGroupDetailsActivity.this,getString(R.string.only_owner_change_group_name));
+                if (isOwner()) {
+                    goModificationName(2, mTvgrouprName.getText().toString());
+                } else {
+                    ToastShow.showToast2(ConversationGroupDetailsActivity.this, getString(R.string.only_owner_change_group_name));
                 }
                 break;
             case R.id.rl_member_name:
-                goModificationName(1,mTvMemberName.getText().toString());
+                goModificationName(1, mTvMemberName.getText().toString());
                 break;
             case R.id.rl_group_management:
                 goSelectMember();
                 break;
+            case R.id.rl_looking_chat:
+                goRecord();
+                break;
+            case R.id.rl_group_image:
+                changeImage();
+                break;
         }
     }
 
-    private void goSelectMember() {
-        Intent intent=new Intent(this,SelectGroupMemberActivity.class);
-        intent.putExtra("roomId",roomId);
-        intent.putExtra("type",1);
+    private void changeImage() {
+        if(!isOwner()){
+            ToastShow.showToast2(ConversationGroupDetailsActivity.this, getString(R.string.only_owner_change_group_image));
+            return;
+        }
+        PictureSelector.create(this)
+                .openGallery(ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()
+//                        .theme(R.style.picture_white_style)
+                .maxSelectNum(1)// 最大图片选择数量 int
+                .imageSpanCount(3)// 每行显示个数 int
+                .selectionMode(PictureConfig.SINGLE)// 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
+                .previewImage(true)// 是否可预览图片 true or false
+                .previewVideo(true)// 是否可预览视频 true or false
+                .enablePreviewAudio(true) // 是否可播放音频 true or false
+                .compressGrade(Luban.THIRD_GEAR)// luban压缩档次，默认3档 Luban.THIRD_GEAR、Luban.FIRST_GEAR、Luban.CUSTOM_GEAR
+                .isCamera(true)// 是否显示拍照按钮 true or false
+                .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
+                .sizeMultiplier(0.5f)// glide 加载图片大小 0~1之间 如设置 .glideOverride()无效
+                .setOutputCameraPath("/CustomPath")// 自定义拍照保存路径,可不填
+                .enableCrop(true)// 是否裁剪 true or false
+                .compress(true)// 是否压缩 true or false
+                .compressMode(PictureConfig.SYSTEM_COMPRESS_MODE)//系统自带 or 鲁班压缩 PictureConfig.SYSTEM_COMPRESS_MODE or LUBAN_COMPRESS_MODE
+                .glideOverride(160, 160)// int glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
+                .withAspectRatio(1, 1)// int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
+                .hideBottomControls(true)// 是否显示uCrop工具栏，默认不显示 true or false
+                .isGif(false)// 是否显示gif图片 true or false
+                .freeStyleCropEnabled(true)// 裁剪框是否可拖拽 true or false
+                .circleDimmedLayer(true)// 是否圆形裁剪 true or false
+                .showCropFrame(false)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
+                .showCropGrid(true)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
+                .openClickSound(true)// 是否开启点击声音 true or false
+                .selectionMedia(selectList)// 是否传入已选图片 List<LocalMedia> list
+                .rotateEnabled(true) // 裁剪是否可旋转图片 true or false
+                .scaleEnabled(true)// 裁剪是否可放大缩小图片 true or false
+                .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
+    }
+
+
+    //上傳頭像
+    private void upImage(Intent data) throws UnsupportedEncodingException {
+        selectList = PictureSelector.obtainMultipleResult(data);
+        File file = new File(selectList.get(0).getCutPath());
+        final String keyCut = UtilTool.getUserId() + UtilTool.createtFileName() + "cut" + UtilTool.getPostfix2(file.getName());
+        final File newFile = new File(Constants.PUBLICDIR + keyCut);
+        Bitmap cutImg = BitmapFactory.decodeFile(selectList.get(0).getCutPath());
+        UtilTool.comp(cutImg, newFile);
+        final Bitmap bitmap = BitmapFactory.decodeFile(newFile.getAbsolutePath());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] bytes = UtilTool.getFileToByte(newFile);
+        String Base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+        UtilTool.Log("編碼", Base64Image.length() + "");
+        new GroupPresenter(this).updateLogoGroup(mDBRoomManage, Integer.parseInt(roomId), Base64Image, new CallBack() {
+            @Override
+            public void send() {
+                MessageEvent messageEvent= new MessageEvent(getString(R.string.refresh_group_room));
+                messageEvent.setId(roomId);
+                EventBus.getDefault().post(messageEvent);
+            }
+        });
+
+    }
+
+
+    private void goRecord() {
+        Intent intent=new Intent(this,ConversationRecordFindActivity.class);
+        intent.putExtra("user",roomId);
+        intent.putExtra("name",roomName);
         startActivity(intent);
     }
 
-    private void goModificationName(int type,String content) {
-        Intent intent=new Intent(this,ModificationNameActivity.class);
-        intent.putExtra("type",type);
-        intent.putExtra("content",content);
-        intent.putExtra("roomId",roomId);
-        intent.putExtra("tocoId",UtilTool.getTocoId());
+    private void goSelectMember() {
+        Intent intent = new Intent(this, SelectGroupMemberActivity.class);
+        intent.putExtra("roomId", roomId);
+        intent.putExtra("type", 1);
+        startActivity(intent);
+    }
+
+    private void goModificationName(int type, String content) {
+        Intent intent = new Intent(this, ModificationNameActivity.class);
+        intent.putExtra("type", type);
+        intent.putExtra("content", content);
+        intent.putExtra("roomId", roomId);
+        intent.putExtra("tocoId", UtilTool.getTocoId());
         startActivity(intent);
     }
 
@@ -240,15 +336,20 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                 finish();
             }
         } else if (msg.equals(getString(R.string.refresh_group_members))) {
+            initView();
             setGroupMember(false);
-        }else if(msg.equals(getString(R.string.my_nickname_group))){
+        } else if (msg.equals(getString(R.string.my_nickname_group))) {
             setMemberName();
-        }else if(msg.equals(getString(R.string.modify_group_name))){
+        } else if (msg.equals(getString(R.string.modify_group_name))) {
             setGroupName();
-        }else if(msg.equals(getString(R.string.refresh_group_room))){
-            if (roomId.equals(event.getId())){
+        } else if (msg.equals(getString(R.string.refresh_group_room))) {
+            if (roomId.equals(event.getId())) {
                 initView();
                 setGroupMember(false);
+            }
+        } else if (msg.equals(getString(R.string.kick_out_success))) {
+            if (roomId.equals(event.getId())) {
+                finish();
             }
         }
     }
@@ -353,5 +454,24 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
             }
         });
 
+    }
+
+
+    //拿到选择的图片
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PictureConfig.CHOOSE_REQUEST:
+                    // 图片选择结果回调
+                    try {
+                        upImage(data);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+            }
+        }
     }
 }

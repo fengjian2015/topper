@@ -12,6 +12,7 @@ import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.utils.UtilTool;
+import com.umeng.commonsdk.debug.E;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +83,30 @@ public class DBRoomMember {
     }
 
     public ArrayList<RoomMemberInfo> queryAllRequest(String roomId) {
+        ArrayList<RoomMemberInfo> addRequestInfos = new ArrayList<>();
+        try {
+            db = helper.getReadableDatabase();
+            String sql = "select * from RoomMember where my_user=? and roomId = ?";
+            Cursor c = db.rawQuery(sql, new String[]{UtilTool.getTocoId(),roomId});
+            while (c.moveToNext()) {
+                RoomMemberInfo roomMemberInfo=new RoomMemberInfo();
+                roomMemberInfo.setName(c.getString(c.getColumnIndex("name")));
+                roomMemberInfo.setJid(c.getString(c.getColumnIndex("jid")));
+                roomMemberInfo.setImage_url(c.getString(c.getColumnIndex("image_url")));
+                roomMemberInfo.setRemark(c.getString(c.getColumnIndex("remark")));
+                roomMemberInfo.setMy_user(c.getString(c.getColumnIndex("my_user")));
+                roomMemberInfo.setRoomId(c.getString(c.getColumnIndex("roomId")));
+                roomMemberInfo.setId(c.getInt(c.getColumnIndex("id")));
+                addRequestInfos.add(roomMemberInfo);
+            }
+            c.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return addRequestInfos;
+    }
+
+    public ArrayList<RoomMemberInfo> queryRequest(String roomId) {
         db = helper.getReadableDatabase();
         ArrayList<RoomMemberInfo> addRequestInfos = new ArrayList<>();
         String sql = "select * from RoomMember where my_user=? and roomId = ?";
@@ -167,5 +192,10 @@ public class DBRoomMember {
     public void deleteRoom(String roomId) {
         db = helper.getWritableDatabase();
         db.delete("RoomMember", "roomId=? and my_user=?", new String[]{roomId, UtilTool.getTocoId()});
+    }
+
+    public void deleteRoomMember(String roomId,String tocoId) {
+        db = helper.getWritableDatabase();
+        db.delete("RoomMember", "roomId=? and my_user=? and jid=?", new String[]{roomId, UtilTool.getTocoId(),tocoId});
     }
 }

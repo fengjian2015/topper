@@ -2,12 +2,16 @@ package com.bclould.tea.ui.adapter;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tea.R;
@@ -36,17 +40,21 @@ public class SelectGroupMemberAdapter extends RecyclerView.Adapter{
     private OnItemListener onItemListener;
     private ArrayList<RoomMemberInfo> list;
     private DBRoomMember mDBRoomMember;
+    private int type;
+    private ArrayList<RoomMemberInfo> oldList;
 
-    public SelectGroupMemberAdapter(Context context, ArrayList<RoomMemberInfo> list, DBManager DBManager, DBRoomMember mDBRoomMember) {
+    public SelectGroupMemberAdapter(Context context, ArrayList<RoomMemberInfo> list, DBManager DBManager, DBRoomMember mDBRoomMember, int type, ArrayList<RoomMemberInfo> oldList) {
         mContext = context;
         this.list=list;
         mMgr = DBManager;
         this.mDBRoomMember=mDBRoomMember;
+        this.type=type;
+        this.oldList=oldList;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_friend_child, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_create_group, parent, false);
         return new ViewHolder(view);
     }
 
@@ -69,17 +77,17 @@ public class SelectGroupMemberAdapter extends RecyclerView.Adapter{
     }
 
     public interface OnItemListener{
-        void onItemClick(RoomMemberInfo roomMemberInfo,String memberName);
+        void onItemClick(RoomMemberInfo roomMemberInfo, boolean isCheck);
     }
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.catalog)
-        TextView mCatalog;
-        @Bind(R.id.friend_child_touxiang)
+        @Bind(R.id.iv_touxiang)
         ImageView mFriendChildTouxiang;
-        @Bind(R.id.friend_child_name)
+        @Bind(R.id.tv_name)
         TextView mFriendChildName;
+        @Bind(R.id.check_box)
+        CheckBox mCheckBox;
 
         RoomMemberInfo roomMemberInfo;
         ViewHolder(View view) {
@@ -88,14 +96,24 @@ public class SelectGroupMemberAdapter extends RecyclerView.Adapter{
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onItemListener.onItemClick(roomMemberInfo,mFriendChildName.getText().toString());
+                    if (mCheckBox.isChecked()) {
+                        mCheckBox.setChecked(false);
+                    } else {
+                        mCheckBox.setChecked(true);
+                    }
+                    onItemListener.onItemClick(roomMemberInfo,mCheckBox.isChecked());
+                }
+            });
+            mCheckBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onItemListener.onItemClick(roomMemberInfo,mCheckBox.isChecked());
                 }
             });
         }
 
         public void setData(RoomMemberInfo roomMemberInfo) {
             this.roomMemberInfo=roomMemberInfo;
-            mCatalog.setVisibility(View.GONE);
             String userId=roomMemberInfo.getJid();
             String mName=mMgr.queryRemark(userId);
             if (!StringUtils.isEmpty(mName)) {
@@ -110,7 +128,13 @@ public class SelectGroupMemberAdapter extends RecyclerView.Adapter{
                     url=info.getPath();
                 }
             }
+            if(!oldList.contains(roomMemberInfo)){
+                mCheckBox.setChecked(false);
+            }else {
+                mCheckBox.setChecked(true);
+            }
             UtilTool.getImage(mContext, mFriendChildTouxiang,url);
         }
     }
+
 }

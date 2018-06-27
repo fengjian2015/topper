@@ -21,16 +21,17 @@ import com.bclould.tea.service.ImageUpService;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.GlideImgLoader;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.UtilTool;
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.previewlibrary.ZoomMediaLoader;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.MsgConstant;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UTrack;
 import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.UmengNotificationClickHandler;
 import com.umeng.message.entity.UMessage;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,13 +92,21 @@ public class MyApp extends Application {
     }
 
     private void initUpush() {
-        PushAgent mPushAgent = PushAgent.getInstance(this);
+        final PushAgent mPushAgent = PushAgent.getInstance(this);
         mHandler = new Handler(getMainLooper());
+//        mPushAgent.addAlias(UtilTool.getTocoId(), ALIAS_TYPE.ALIAS_TYPE, new UTrack.ICallBack() {
+//            @Override
+//            public void onMessage(boolean b, String s) {
+//
+//            }
+//        });
         //注册推送服务 每次调用register都会回调该接口
         mPushAgent.register(new IUmengRegisterCallback() {
             @Override
             public void onSuccess(String deviceToken) {
+                UtilTool.Log("fengjian",deviceToken);
                 sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
+
             }
 
             @Override
@@ -149,8 +158,7 @@ public class MyApp extends Application {
                 switch (msg.builder_id) {
                     case 1:
                         Notification.Builder builder = new Notification.Builder(context);
-                        RemoteViews myNotificationView = new RemoteViews(context.getPackageName(),
-                                R.layout.notification_view);
+                        RemoteViews myNotificationView = new RemoteViews(context.getPackageName(), R.layout.notification_view);
                         myNotificationView.setTextViewText(R.id.notification_title, msg.title);
                         myNotificationView.setTextViewText(R.id.notification_text, msg.text);
                         myNotificationView.setImageViewBitmap(R.id.notification_large_icon, getLargeIcon(context, msg));
@@ -160,7 +168,9 @@ public class MyApp extends Application {
                                 .setSmallIcon(getSmallIconId(context, msg))
                                 .setTicker(msg.ticker)
                                 .setAutoCancel(true);
-
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            builder.setChannelId("1");
+                        }
                         return builder.getNotification();
                     default:
                         //默认为0，若填写的builder_id并不存在，也使用默认。

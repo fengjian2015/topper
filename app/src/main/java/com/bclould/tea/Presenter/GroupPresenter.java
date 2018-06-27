@@ -166,6 +166,7 @@ public class GroupPresenter {
                                     roomManageInfo.setRoomName(dataBean.getName());
                                     roomManageInfo.setRoomId(dataBean.getId() + "");
                                     roomManageInfo.setOwner(dataBean.getToco_id());
+                                    roomManageInfo.setRoomNumber(dataBean.getMax_people());
                                     roomManageInfo.setRoomImage(dataBean.getLogo());
                                     mDBRoomManage.addRoom(roomManageInfo);
                                     for (GroupInfo.DataBean.UsersBean usersBean : dataBean.getUsers()) {
@@ -271,6 +272,7 @@ public class GroupPresenter {
                                 roomManageInfo.setRoomId(baseInfo.getData().getId()+"");
                                 roomManageInfo.setOwner(baseInfo.getData().getToco_id());
                                 roomManageInfo.setRoomImage(baseInfo.getData().getLogo());
+                                roomManageInfo.setRoomNumber(baseInfo.getData().getMax_people());
                                 mdbRoomManage.addRoom(roomManageInfo);
                                 dbRoomMember.deleteRoom(group_id+"");
                                 dbRoomMember.addRoomMember(baseInfo.getData().getUsers(),group_id+"");
@@ -407,6 +409,93 @@ public class GroupPresenter {
                             if (baseInfo.getStatus() == 1) {
                                 callBack.send();
                                 ToastShow.showToast2((Activity) mContext,mContext.getString(R.string.transfer_success));
+                            }else{
+                                ToastShow.showToast2((Activity) mContext,baseInfo.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
+                            hideDialog();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.toast_network_error));
+        }
+    }
+
+    public void kickOutGroup(int group_id, String toco_ids, final CallBack callBack) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .kickOutGroup(UtilTool.getToken(),toco_ids,group_id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(BaseInfo baseInfo) {
+                            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
+                            hideDialog();
+                            if (baseInfo.getStatus() == 1) {
+                                callBack.send();
+                                ToastShow.showToast2((Activity) mContext,mContext.getString(R.string.kick_out_success));
+                            }else{
+                                ToastShow.showToast2((Activity) mContext,baseInfo.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
+                            hideDialog();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+        } else {
+            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.toast_network_error));
+        }
+    }
+
+    public void updateLogoGroup(final DBRoomManage dbRoomManage, final int group_id, String content, final CallBack callBack) {
+        if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
+            RetrofitUtil.getInstance(mContext)
+                    .getServer()
+                    .updateLogoGroup(UtilTool.getToken(),content,group_id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                    .subscribe(new Observer<BaseInfo>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(BaseInfo baseInfo) {
+                            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
+                            hideDialog();
+                            if (baseInfo.getStatus() == 1) {
+                                dbRoomManage.updateUrl(group_id+"",baseInfo.getData().getUrl());
+                                callBack.send();
+                                ToastShow.showToast2((Activity) mContext,mContext.getString(R.string.up_succeed));
                             }else{
                                 ToastShow.showToast2((Activity) mContext,baseInfo.getMessage());
                             }

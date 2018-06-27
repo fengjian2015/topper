@@ -36,8 +36,8 @@ android {
         applicationId "com.bclould.tea"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 54
-        versionName "0.54"
+        versionCode 55
+        versionName "0.55"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
@@ -75,6 +75,7 @@ configurations.all {
         }
     }
 }
+
 
 
 
@@ -181,6 +182,6 @@ dependencies {
     compile 'com.umeng.sdk:common:1.5.3'
     //PushSDK必须依赖utdid库，所以需要加入对应依赖
     compile 'com.umeng.sdk:utdid:1.1.5.3'
-    //友盟PushSDK
+    //PushSDK
     compile 'com.umeng.sdk:push:4.2.0'
 }

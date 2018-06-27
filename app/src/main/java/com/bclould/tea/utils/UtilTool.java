@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.model.UserInfo;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -697,6 +698,19 @@ public class UtilTool {
         return bitmap;
     }
 
+    public static void getGroupImage(DBRoomManage dbRoomManage,String roomId, Context context, ImageView imageView){
+        String url=dbRoomManage.findRoomUrl(roomId);
+        if(!StringUtils.isEmpty(url)){
+            if (Util.isOnMainThread() && context != null) {
+                Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_group_head)).into(imageView);
+            }
+        }else{
+            if (Util.isOnMainThread() && context != null) {
+                Glide.with(context).load(R.mipmap.img_group_head).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_group_head).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
+            }
+        }
+    }
+
     public static Bitmap getImage(Context context, ImageView imageView, String url) {
         Bitmap bitmap = null;
         if (!StringUtils.isEmpty(url)) {
@@ -708,8 +722,6 @@ public class UtilTool {
                 Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
             }
         }
-
-
         return bitmap;
     }
 

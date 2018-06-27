@@ -59,7 +59,16 @@ public class GroupInfo {
         private String created_at;
         private String toco_id;
         private String logo;
+        private int max_people;
         private List<UsersBean> users;
+
+        public int getMax_people() {
+            return max_people;
+        }
+
+        public void setMax_people(int max_people) {
+            this.max_people = max_people;
+        }
 
         public String getLogo() {
             return logo;

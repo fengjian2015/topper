@@ -1193,4 +1193,22 @@ public interface MyService {
             @Field("toco_id") String toco_id,
             @Field("group_id") int group_id
     );
+
+    //群主踢人
+    @FormUrlEncoded
+    @POST("chat/room/kick/out")
+    Observable<BaseInfo> kickOutGroup(
+            @Header("Authorization") String token,
+            @Field("toco_ids") String toco_ids,
+            @Field("group_id") int group_id
+    );
+
+    //修改群頭像
+    @FormUrlEncoded
+    @POST("chat/room/update/logo")
+    Observable<BaseInfo> updateLogoGroup(
+            @Header("Authorization") String token,
+            @Field("content") String content,
+            @Field("group_id") int group_id
+    );
 }

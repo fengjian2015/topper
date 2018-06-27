@@ -203,9 +203,15 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             @Override
             public void onclickitem(String name) {
                 if (getString(R.string.red_package).equals(name)) {
-                    Intent intent = new Intent(ConversationActivity.this, SendRedPacketActivity.class);
-                    intent.putExtra("user", roomId);
-                    startActivity(intent);
+                    if(RoomManage.ROOM_TYPE_MULTI.equals(roomType)){
+                        Intent intent = new Intent(ConversationActivity.this, SendRedGroupActivity.class);
+                        intent.putExtra("roomId", roomId);
+                        startActivity(intent);
+                    }else{
+                        Intent intent = new Intent(ConversationActivity.this, SendRedPacketActivity.class);
+                        intent.putExtra("user", roomId);
+                        startActivity(intent);
+                    }
                 } else if (getString(R.string.image).equals(name)) {
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.open_photo_album)));
                 } else if (getString(R.string.file).equals(name)) {
@@ -545,8 +551,11 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 mName=mDBRoomManage.findRoomName(roomId);
                 setTitleName();
             }
+        }else if(msg.equals(getString(R.string.kick_out_success))){
+            if (roomId.equals(event.getId())){
+                finish();
+            }
         }
-
     }
 
     private void changeMsgState(String id){

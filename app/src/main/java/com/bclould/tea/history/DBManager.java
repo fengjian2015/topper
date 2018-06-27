@@ -694,7 +694,7 @@ public class DBManager {
         return userInfos;
     }
 
-    public String queryRemark(String user) {
+    public synchronized String queryRemark(String user) {
         String remark = "";
         try {
             db = helper.getWritableDatabase();

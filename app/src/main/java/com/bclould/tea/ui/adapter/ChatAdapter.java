@@ -605,19 +605,46 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mGrabRedPresenter.grabRedPacket(messageInfo.getRedId(), new GrabRedPresenter.CallBack() {
-                        @Override
-                        public void send(GrabRedInfo info) {
-                            if (info.getStatus() == 4) {
-                                Toast.makeText(mContext, info.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                            mMgr.updateMessageState(messageInfo.getId() + "", 1);
-                            messageInfo.setStatus(1);
-                            notifyDataSetChanged();
+                    if(RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)){
+                        if (messageInfo.getStatus() == 1) {
+                            mGrabRedPresenter.grabRedPacket(messageInfo.getRedId(), new GrabRedPresenter.CallBack() {
+                                @Override
+                                public void send(GrabRedInfo info) {
+                                    if (info.getStatus() == 4) {
+                                        Toast.makeText(mContext, info.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                    mMgr.updateMessageState(messageInfo.getId() + "", 1);
+                                    messageInfo.setStatus(1);
+                                    notifyDataSetChanged();
 //                            skip(info, mToBitmap, UtilTool.getTocoId(), 0);
-                            skip(info, UtilTool.getTocoId(), 0, info.getData().getSend_rp_user_name());
+                                    skip(info, UtilTool.getTocoId(), 0, info.getData().getSend_rp_user_name());
+                                }
+                            });
+                        } else {
+                            mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket2));
+                            mTvExamine.setText(mContext.getString(R.string.look_red_packet));
+                            mCvRedpacket.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    showDialog(messageInfo);
+                                }
+                            });
                         }
-                    });
+                    }else{
+                        mGrabRedPresenter.grabRedPacket(messageInfo.getRedId(), new GrabRedPresenter.CallBack() {
+                            @Override
+                            public void send(GrabRedInfo info) {
+                                if (info.getStatus() == 4) {
+                                    Toast.makeText(mContext, info.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                                mMgr.updateMessageState(messageInfo.getId() + "", 1);
+                                messageInfo.setStatus(1);
+                                notifyDataSetChanged();
+//                            skip(info, mToBitmap, UtilTool.getTocoId(), 0);
+                                skip(info, UtilTool.getTocoId(), 0, info.getData().getSend_rp_user_name());
+                            }
+                        });
+                    }
                 }
             });
             mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {

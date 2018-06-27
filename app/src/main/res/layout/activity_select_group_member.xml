@@ -26,6 +26,19 @@
             android:text="@string/new_group_manager"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
+
+        <TextView
+            android:id="@+id/tv_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:paddingRight="@dimen/x20"
+            android:text="@string/confirm"
+            android:textColor="@color/blue2"
+            android:textSize="@dimen/x28"/>
+
     </RelativeLayout>
     <View style="@style/HCutOffRule"></View>
     <RelativeLayout

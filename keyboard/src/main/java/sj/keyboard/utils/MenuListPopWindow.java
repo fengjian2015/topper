@@ -100,8 +100,8 @@ public class MenuListPopWindow extends Dialog {
         menunames.add(context.getString(R.string.shooting));
         if(!XhsEmoticonsKeyBoard.ROOM_TYPE_MULTI.equals(roomType)) {
             menunames.add(context.getString(R.string.transfer));
-            menunames.add(context.getString(R.string.red_package));
         }
+        menunames.add(context.getString(R.string.red_package));
         menunames.add(context.getString(R.string.location));
     }
 

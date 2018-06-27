@@ -60,7 +60,16 @@ public class GroupMemberInfo {
         private String description;
         private String created_at;
         private String logo;
+        private int max_people;
         private List<UsersBean> users;
+
+        public int getMax_people() {
+            return max_people;
+        }
+
+        public void setMax_people(int max_people) {
+            this.max_people = max_people;
+        }
 
         public String getToco_id() {
             return toco_id;

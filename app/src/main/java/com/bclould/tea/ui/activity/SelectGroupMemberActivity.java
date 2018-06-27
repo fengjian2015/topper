@@ -18,6 +18,7 @@ import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.ui.adapter.SelectGroupMemberAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -35,6 +36,7 @@ public class SelectGroupMemberActivity extends BaseActivity implements SelectGro
     private String roomId;
     private DBRoomMember mDBRoomMember;
     private ArrayList<RoomMemberInfo> mList=new ArrayList<>();
+    private ArrayList<RoomMemberInfo> oldList=new ArrayList<>();
     private SelectGroupMemberAdapter mAdapter;
     private DBManager mDBManager;
     private DBRoomManage mDBRoomManage;
@@ -60,7 +62,7 @@ public class SelectGroupMemberActivity extends BaseActivity implements SelectGro
             }
         }
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new SelectGroupMemberAdapter(this,mList,mDBManager,mDBRoomMember);
+        mAdapter = new SelectGroupMemberAdapter(this,mList,mDBManager,mDBRoomMember,type,oldList);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.addOnItemListener(this);
     }
@@ -71,24 +73,54 @@ public class SelectGroupMemberActivity extends BaseActivity implements SelectGro
     }
 
 
-    @OnClick({R.id.bark})
+    @OnClick({R.id.bark,R.id.tv_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
+            case R.id.tv_confirm:
+                if(oldList.size()<=0){return;}
+                if(type==1){
+                    transferGroup(oldList.get(0));
+                }else if(type==2){
+                    kickOut();
+                }
+                break;
         }
     }
 
-    @Override
-    public void onItemClick(RoomMemberInfo roomMemberInfo,String memberName) {
-        transferGroup(roomMemberInfo,memberName);
+    private void kickOut(){
+        StringBuffer stringBuffer=new StringBuffer();
+        for (int i=0;i<oldList.size();i++){
+            if(i==oldList.size()-1){
+                stringBuffer.append(oldList.get(i).getJid());
+            }else {
+                stringBuffer.append(oldList.get(i).getJid() + ",");
+            }
+        }
+        new GroupPresenter(this).kickOutGroup(Integer.parseInt(roomId), stringBuffer.toString(), new GroupPresenter.CallBack() {
+            @Override
+            public void send() {
+                for (RoomMemberInfo roomMemberInfo:oldList){
+                    mDBRoomMember.deleteRoomMember(roomId,roomMemberInfo.getJid());
+                }
+                MessageEvent messageEvent= new MessageEvent(getString(R.string.refresh_group_room));
+                messageEvent.setId(roomId);
+                EventBus.getDefault().post(messageEvent);
+                finish();
+            }
+        });
     }
 
-    private void transferGroup(final RoomMemberInfo roomMemberInfo, String memberName) {
+    private void transferGroup(final RoomMemberInfo roomMemberInfo) {
+        String mName=mDBManager.queryRemark(roomMemberInfo.getJid());
+        if (StringUtils.isEmpty(mName)) {
+            mName=roomMemberInfo.getName();
+        }
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
-        deleteCacheDialog.setTitle(getString(R.string.assign_to) + " " + memberName + " " + getString(R.string.what));
+        deleteCacheDialog.setTitle(getString(R.string.assign_to) + " " + mName + " " + getString(R.string.what));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -119,5 +151,24 @@ public class SelectGroupMemberActivity extends BaseActivity implements SelectGro
             }
         });
 
+    }
+
+    @Override
+    public void onItemClick(RoomMemberInfo roomMemberInfo, boolean isCheck) {
+        if(type==1){
+            if(isCheck){
+                oldList.clear();
+                oldList.add(roomMemberInfo);
+            }else{
+                oldList.remove(roomMemberInfo);
+            }
+        }else if(type==2){
+            if(isCheck){
+                oldList.add(roomMemberInfo);
+            }else{
+                oldList.remove(roomMemberInfo);
+            }
+        }
+        mAdapter.notifyDataSetChanged();
     }
 }
