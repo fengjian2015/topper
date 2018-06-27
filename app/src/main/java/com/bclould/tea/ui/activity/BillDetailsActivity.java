@@ -20,6 +20,7 @@ import com.bclould.tea.model.InOutInfo;
 import com.bclould.tea.model.TransferInfo;
 import com.bclould.tea.ui.adapter.BillDataRVAapter;
 import com.bclould.tea.ui.adapter.InOutDataRVAapter;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.UtilTool;
 
 import java.util.ArrayList;
@@ -50,6 +51,10 @@ public class BillDetailsActivity extends BaseActivity {
     TextView mTvTitle;
     @Bind(R.id.tv_hint)
     TextView mTvHint;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private int mType;
     private DillDataPresenter mDillDataPresenter;
     List<TransferInfo.DataBean> mTransferList = new ArrayList<>();
@@ -89,17 +94,28 @@ public class BillDetailsActivity extends BaseActivity {
             mDillDataPresenter.getInOutData("1", coinId, new DillDataPresenter.CallBack2() {
                 @Override
                 public void send(List<InOutInfo.DataBean> data) {
-                    if (mRecyclerView != null) {
-                        if (data.size() != 0) {
-                            mRecyclerView.setVisibility(View.VISIBLE);
-                            mLlNoData.setVisibility(View.GONE);
-                            mInOutList.addAll(data);
-                            mInOutDataRVAapter.notifyDataSetChanged();
-                        } else {
-                            mLlNoData.setVisibility(View.VISIBLE);
-                            mRecyclerView.setVisibility(View.GONE);
+                    if (ActivityUtil.isActivityOnTop(BillDetailsActivity.this)) {
+                        if (mRecyclerView != null) {
+                            if (data.size() != 0) {
+                                mRecyclerView.setVisibility(View.VISIBLE);
+                                mLlNoData.setVisibility(View.GONE);
+                                mLlError.setVisibility(View.GONE);
+                                mInOutList.addAll(data);
+                                mInOutDataRVAapter.notifyDataSetChanged();
+                            } else {
+                                mLlNoData.setVisibility(View.VISIBLE);
+                                mRecyclerView.setVisibility(View.GONE);
+                                mLlError.setVisibility(View.GONE);
+                            }
                         }
                     }
+                }
+
+                @Override
+                public void error() {
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
                 }
             });
         } else if (mType == 1) {
@@ -113,13 +129,22 @@ public class BillDetailsActivity extends BaseActivity {
                         if (data.size() != 0) {
                             mRecyclerView.setVisibility(View.VISIBLE);
                             mLlNoData.setVisibility(View.GONE);
+                            mLlError.setVisibility(View.GONE);
                             mInOutList.addAll(data);
                             mInOutDataRVAapter.notifyDataSetChanged();
                         } else {
                             mRecyclerView.setVisibility(View.GONE);
                             mLlNoData.setVisibility(View.VISIBLE);
+                            mLlError.setVisibility(View.GONE);
                         }
                     }
+                }
+
+                @Override
+                public void error() {
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
                 }
             });
         } else {
@@ -131,13 +156,22 @@ public class BillDetailsActivity extends BaseActivity {
                         if (data.size() != 0) {
                             mRecyclerView.setVisibility(View.VISIBLE);
                             mLlNoData.setVisibility(View.GONE);
+                            mLlError.setVisibility(View.GONE);
                             mTransferList.addAll(data);
                             mBillDataRVAapter.notifyDataSetChanged();
                         } else {
                             mRecyclerView.setVisibility(View.GONE);
                             mLlNoData.setVisibility(View.VISIBLE);
+                            mLlError.setVisibility(View.GONE);
                         }
                     }
+                }
+
+                @Override
+                public void error() {
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
                 }
             });
         }
@@ -157,11 +191,14 @@ public class BillDetailsActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.bark, R.id.tv_record})
+    @OnClick({R.id.ll_error, R.id.bark, R.id.tv_record})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.ll_error:
+                initData();
                 break;
             case R.id.tv_record:
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));

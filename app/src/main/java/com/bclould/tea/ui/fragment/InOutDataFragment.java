@@ -72,6 +72,11 @@ public class InOutDataFragment extends Fragment {
                     initListView(data);
                 }
             }
+
+            @Override
+            public void error() {
+
+            }
         });
     }
 

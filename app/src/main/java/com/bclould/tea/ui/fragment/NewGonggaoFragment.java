@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,7 +33,7 @@ import butterknife.ButterKnife;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class NewGonggaoFragment extends android.support.v4.app.Fragment {
+public class NewGonggaoFragment extends Fragment {
     @Bind(R.id.iv)
     ImageView mIv;
     @Bind(R.id.ll_no_data)
@@ -41,6 +42,10 @@ public class NewGonggaoFragment extends android.support.v4.app.Fragment {
     RecyclerView mRecyclerView;
     @Bind(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private GonggaoManagerRVAdapter mGonggaoManagerRVAdapter;
     private int mPage = 1;
     private int mStatus = 3;
@@ -84,15 +89,25 @@ public class NewGonggaoFragment extends android.support.v4.app.Fragment {
                     if (data.size() != 0) {
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.GONE);
                         mDataList.clear();
                         mDataList.addAll(data);
                         mGonggaoManagerRVAdapter.notifyDataSetChanged();
                     } else {
-                        mLlNoData.setVisibility(View.VISIBLE);
                         mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.VISIBLE);
+                        mLlError.setVisibility(View.GONE);
                     }
                 }
             }
+
+            @Override
+            public void error() {
+                mRecyclerView.setVisibility(View.GONE);
+                mLlNoData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
+            }
+
         });
     }
 

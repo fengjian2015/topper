@@ -96,6 +96,14 @@ public class OtcActivity extends BaseActivity {
     LinearLayout mLlBottom;
     @Bind(R.id.tv_filtrate)
     TextView mTvFiltrate;
+    @Bind(R.id.xx3)
+    TextView mXx3;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
+    @Bind(R.id.my_publish)
+    Button mMyPublish;
     private Dialog mBottomDialog;
     private int mId;
     private String mName_zh;
@@ -183,6 +191,7 @@ public class OtcActivity extends BaseActivity {
             coinPresenter.coinLists("otc", new CoinPresenter.CallBack() {
                 @Override
                 public void send(List<CoinListInfo.DataBean> data) {
+                    mLlError.setVisibility(View.GONE);
                     UtilTool.Log(getString(R.string.coins), data.size() + "");
                     if (MyApp.getInstance().mOtcCoinList.size() == 0) {
                         MyApp.getInstance().mOtcCoinList.addAll(data);
@@ -197,6 +206,11 @@ public class OtcActivity extends BaseActivity {
                         initViewPager();
                         initTopMenu();
                     }
+                }
+
+                @Override
+                public void error() {
+                    mLlError.setVisibility(View.VISIBLE);
                 }
             });
         }
@@ -296,7 +310,7 @@ public class OtcActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.tv_coin_name, R.id.rl_selector_state, R.id.bark, R.id.my_publish, R.id.btn_push_ad, R.id.tv_filtrate})
+    @OnClick({R.id.ll_error, R.id.tv_coin_name, R.id.rl_selector_state, R.id.bark, R.id.my_publish, R.id.btn_push_ad, R.id.tv_filtrate})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_selector_state:
@@ -310,6 +324,9 @@ public class OtcActivity extends BaseActivity {
                 break;
             case R.id.tv_filtrate:
                 showFiltrateDialog();
+                break;
+            case R.id.ll_error:
+                initData();
                 break;
             case R.id.my_publish:
                 Intent intent2 = new Intent(this, MyPushAdActivity.class);

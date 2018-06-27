@@ -109,6 +109,10 @@ public class OrderDetailsActivity extends BaseActivity {
     TextView mTvDealNumber;
     @Bind(R.id.scrollView)
     ScrollView mScrollView;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private OrderInfo.DataBean mData;
     Timer mTimer = new Timer();
     private int mRecLen = 0;
@@ -139,6 +143,7 @@ public class OrderDetailsActivity extends BaseActivity {
     private String mTo_user_toco_id;
     private String mUser_name;
     private String mUser_toco_id;
+    private String mId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -154,8 +159,8 @@ public class OrderDetailsActivity extends BaseActivity {
         Intent intent = getIntent();
         mType = intent.getStringExtra("type");
         if (mType.equals(getString(R.string.order))) {
-            String id = intent.getStringExtra("id");
-            initData(id);
+            mId = intent.getStringExtra("id");
+            initData();
         } else {
             mScrollView.setVisibility(View.VISIBLE);
             mData = (OrderInfo.DataBean) intent.getSerializableExtra("data");
@@ -218,12 +223,13 @@ public class OrderDetailsActivity extends BaseActivity {
 
     OrderInfo2 mInfo = new OrderInfo2();
 
-    private void initData(String id) {
-        mOrderDetailsPresenter.orderInfo(id, new OrderDetailsPresenter.CallBack() {
+    private void initData() {
+        mOrderDetailsPresenter.orderInfo(mId, new OrderDetailsPresenter.CallBack() {
             @Override
             public void send(OrderInfo2.DataBean data) {
                 if (!OrderDetailsActivity.this.isDestroyed()) {
                     mScrollView.setVisibility(View.VISIBLE);
+                    mLlError.setVisibility(View.GONE);
                     mType1 = data.getType();
                     mInfo.setData(data);
                     mTvOrderNumber.setText(getString(R.string.order_number) + ":" + data.getOrder_no());
@@ -331,10 +337,16 @@ public class OrderDetailsActivity extends BaseActivity {
                     mTvBankSite.setText(data.getBank().getBank_name());
                 }
             }
+
+            @Override
+            public void error() {
+                mScrollView.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
+            }
         });
     }
 
-    @OnClick({R.id.btn_contact, R.id.bark, R.id.tv_help, R.id.btn_buy_cancel, R.id.btn_sell_cancel, R.id.btn_buy_confirm, R.id.btn_sell_confirm})
+    @OnClick({R.id.ll_error,R.id.btn_contact, R.id.bark, R.id.tv_help, R.id.btn_buy_cancel, R.id.btn_sell_cancel, R.id.btn_buy_confirm, R.id.btn_sell_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -375,6 +387,9 @@ public class OrderDetailsActivity extends BaseActivity {
                 break;
             case R.id.btn_sell_confirm:
                 showHintDialog(2);
+                break;
+            case R.id.ll_error:
+                initData();
                 break;
         }
     }

@@ -252,5 +252,6 @@ public class BankCardPresenter {
     //定义接口
     public interface CallBack2 {
         void send(List<CardListInfo.DataBean> data);
+        void error();
     }
 }

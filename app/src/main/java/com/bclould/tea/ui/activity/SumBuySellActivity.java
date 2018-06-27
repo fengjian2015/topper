@@ -17,7 +17,6 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.OrderListInfo;
-import com.bclould.tea.model.TransRecordInfo;
 import com.bclould.tea.ui.adapter.OrderRVAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -50,6 +49,10 @@ public class SumBuySellActivity extends BaseActivity {
     ImageView mBark;
     @Bind(R.id.tv_title)
     TextView mTvTitle;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private DBManager mMgr;
     private OrderRVAdapter mOrderRVAdapter;
     private BuySellPresenter mBuySellPresenter;
@@ -102,20 +105,26 @@ public class SumBuySellActivity extends BaseActivity {
                     if (data.size() != 0) {
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.GONE);
                         mDataList.clear();
                         mDataList.addAll(data);
                         mOrderRVAdapter.notifyDataSetChanged();
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);
+                        mLlError.setVisibility(View.GONE);
                     }
                 }
             }
 
             @Override
-            public void send2(TransRecordInfo.DataBean data) {
-
+            public void error() {
+                mRecyclerView.setVisibility(View.GONE);
+                mLlNoData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
             }
+
+
         });
     }
 
@@ -131,8 +140,16 @@ public class SumBuySellActivity extends BaseActivity {
         ButterKnife.unbind(this);
     }
 
-    @OnClick(R.id.bark)
-    public void onViewClicked() {
-        finish();
+
+    @OnClick({R.id.bark, R.id.ll_error})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.bark:
+                finish();
+                break;
+            case R.id.ll_error:
+                initData();
+                break;
+        }
     }
 }

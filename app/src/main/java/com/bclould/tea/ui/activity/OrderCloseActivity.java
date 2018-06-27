@@ -81,6 +81,12 @@ public class OrderCloseActivity extends BaseActivity {
     TextView mTvShiji;
     @Bind(R.id.btn_confirm)
     Button mBtnConfirm;
+    @Bind(R.id.ll_data)
+    LinearLayout mLlData;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private String mId;
     private int mStatus;
     private OrderDetailsPresenter mOrderDetailsPresenter;
@@ -100,6 +106,8 @@ public class OrderCloseActivity extends BaseActivity {
         mOrderDetailsPresenter.orderInfo(mId, new OrderDetailsPresenter.CallBack() {
             @Override
             public void send(OrderInfo2.DataBean data) {
+                mLlData.setVisibility(View.VISIBLE);
+                mLlError.setVisibility(View.GONE);
                 mInfo.setData(data);
                 if (data.getTo_user_name().equals(UtilTool.getUser())) {
                     mTvWho.setText(getString(R.string.buyer));
@@ -149,6 +157,12 @@ public class OrderCloseActivity extends BaseActivity {
                 mTvTime.setText(data.getCreated_at());
                 mTvLimit.setText(data.getMin_amount() + " - " + data.getMax_amount());
             }
+
+            @Override
+            public void error() {
+                mLlData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
+            }
         });
     }
 
@@ -166,7 +180,7 @@ public class OrderCloseActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.bark, R.id.tv_question, R.id.btn_confirm})
+    @OnClick({R.id.bark, R.id.tv_question, R.id.btn_confirm, R.id.ll_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -177,6 +191,9 @@ public class OrderCloseActivity extends BaseActivity {
                 break;
             case R.id.btn_confirm:
                 showDialog();
+                break;
+            case R.id.ll_error:
+                initData();
                 break;
         }
     }

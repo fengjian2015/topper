@@ -61,6 +61,11 @@ public class SubscribeCoinActivity extends BaseActivity {
             public void send(List<MyAssetsInfo.DataBean> info) {
                 initRecyclerView(info);
             }
+
+            @Override
+            public void error() {
+
+            }
         });
     }
 

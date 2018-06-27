@@ -33,6 +33,7 @@
         style="@style/HCutOffRule"/>
 
     <RelativeLayout
+        android:id="@+id/rl_data"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -55,16 +56,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/y20"
-                android:visibility="gone"
                 android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
+                android:textSize="@dimen/x30"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/tv_auth_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/y20"
-                android:text="实名认证通过"
+                android:text="@string/real_name_pass"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x30"/>
 
@@ -74,7 +75,7 @@
                 android:layout_height="@dimen/y80"
                 android:layout_marginTop="@dimen/y20"
                 android:background="@drawable/bg_blue_shape"
-                android:text="重新认证"
+                android:text="@string/reauthentication"
                 android:textColor="@color/white"
                 android:textSize="@dimen/x30"
                 android:visibility="gone"/>
@@ -333,4 +334,29 @@
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_ununited"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/img_wrong"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y50"
+            android:text="@string/loading_error_anew_loading_hint2"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/x30"/>
+
+    </LinearLayout>
 </LinearLayout>

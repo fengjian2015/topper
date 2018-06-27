@@ -61,6 +61,10 @@ public class MyStartActivity extends BaseActivity {
     LinearLayout mLlNoData;
     @Bind(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
 
     private int PULL_UP = 0;
@@ -93,6 +97,7 @@ public class MyStartActivity extends BaseActivity {
     }
 
     boolean isFinish = true;
+
     private void initListener() {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -150,6 +155,7 @@ public class MyStartActivity extends BaseActivity {
                             if (data.size() == 0) {
                                 mRecyclerView.setVisibility(View.GONE);
                                 mLlNoData.setVisibility(View.VISIBLE);
+                                mLlError.setVisibility(View.GONE);
                             } else {
                                 if (mPage == 1) {
                                     mPage++;
@@ -162,8 +168,19 @@ public class MyStartActivity extends BaseActivity {
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);
+                        mLlError.setVisibility(View.GONE);
                     }
                 }
+            }
+
+            @Override
+            public void error() {
+                if (type == PULL_DOWN) {
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
+
             }
         });
     }

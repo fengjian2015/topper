@@ -115,6 +115,7 @@ public class CoinPresenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            callBack2.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -124,6 +125,7 @@ public class CoinPresenter {
                         }
                     });
         } else {
+            callBack2.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -193,6 +195,7 @@ public class CoinPresenter {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
+                            callBack.error();
                             UtilTool.Log("日志1", e.getMessage());
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
@@ -203,7 +206,7 @@ public class CoinPresenter {
                         }
                     });
         } else {
-
+            callBack.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
 
         }
@@ -275,6 +278,7 @@ public class CoinPresenter {
 
                         @Override
                         public void onError(@NonNull Throwable e) {
+                            callBack3.error();
                             UtilTool.Log("日志1", e.getMessage());
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
@@ -285,7 +289,7 @@ public class CoinPresenter {
                         }
                     });
         } else {
-
+            callBack3.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
 
         }
@@ -334,16 +338,19 @@ public class CoinPresenter {
     //定义接口
     public interface CallBack {
         void send(List<CoinListInfo.DataBean> data);
+        void error();
     }
 
     //定义接口
     public interface CallBack2 {
         void send(BaseInfo.DataBean data);
+        void error();
     }
 
     //定义接口
     public interface CallBack3 {
         void send(ExchangeOrderInfo.DataBeanX data);
+        void error();
     }
 
     //定义接口

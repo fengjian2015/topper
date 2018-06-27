@@ -128,6 +128,11 @@ public class StartGuessActivity extends BaseActivity {
                     UtilTool.Log(getString(R.string.coins), data.size() + "");
                     MyApp.getInstance().mBetCoinList.addAll(data);
                 }
+
+                @Override
+                public void error() {
+
+                }
             });
         }
     }

@@ -73,6 +73,7 @@ public class BlockchainGuessPresenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            callBack.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -82,6 +83,7 @@ public class BlockchainGuessPresenter {
                         }
                     });
         } else {
+            callBack.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -108,6 +110,7 @@ public class BlockchainGuessPresenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            callBack.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -117,6 +120,7 @@ public class BlockchainGuessPresenter {
                         }
                     });
         } else {
+            callBack.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -164,8 +168,8 @@ public class BlockchainGuessPresenter {
     }
 
     public void getGuessInfo(int bet_id, int period_qty, final CallBack3 callBack3) {
-        showDialog();
         if (UtilTool.isNetworkAvailable(mContext)) {
+            showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
                     .GuessInfo(UtilTool.getToken(), bet_id, period_qty)
@@ -190,6 +194,7 @@ public class BlockchainGuessPresenter {
                         public void onError(Throwable e) {
                             UtilTool.Log("發佈競猜", e.getMessage());
                             hideDialog();
+                            callBack3.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -199,6 +204,7 @@ public class BlockchainGuessPresenter {
                         }
                     });
         } else {
+            callBack3.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -311,6 +317,7 @@ public class BlockchainGuessPresenter {
                         public void onError(Throwable e) {
                             UtilTool.Log("發佈競猜", e.getMessage());
                             hideDialog();
+                            callBack.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -320,6 +327,7 @@ public class BlockchainGuessPresenter {
                         }
                     });
         } else {
+            callBack.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -351,6 +359,7 @@ public class BlockchainGuessPresenter {
                         public void onError(Throwable e) {
                             UtilTool.Log("發佈競猜", e.getMessage());
                             hideDialog();
+                            callBack.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -360,6 +369,7 @@ public class BlockchainGuessPresenter {
                         }
                     });
         } else {
+            callBack.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -367,6 +377,7 @@ public class BlockchainGuessPresenter {
     //定义接口
     public interface CallBack {
         void send(List<GuessListInfo.DataBean> data);
+        void error();
     }
 
     //定义接口
@@ -377,6 +388,7 @@ public class BlockchainGuessPresenter {
     //定义接口
     public interface CallBack3 {
         void send(GuessInfo.DataBean data);
+        void error();
     }
 
     //定义接口

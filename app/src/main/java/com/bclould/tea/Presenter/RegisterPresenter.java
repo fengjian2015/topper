@@ -1,6 +1,7 @@
 package com.bclould.tea.Presenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.widget.Toast;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 import com.bclould.tea.R;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.network.RetrofitUtil;
+import com.bclould.tea.ui.activity.LoginActivity;
 import com.bclould.tea.ui.activity.ServiceAgreementActivity;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.UtilTool;
@@ -102,6 +104,7 @@ public class RegisterPresenter {
 
                         @Override
                         public void onNext(@NonNull BaseInfo baseInfo) {
+                            mContext.startActivity(new Intent(mContext, LoginActivity.class));
                             ServiceAgreementActivity serviceAgreementActivity = (ServiceAgreementActivity) mContext;
                             serviceAgreementActivity.finish();
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();

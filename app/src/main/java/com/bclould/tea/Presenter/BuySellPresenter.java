@@ -85,6 +85,7 @@ public class BuySellPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
+                            callBack.error();
                             UtilTool.Log("otc", e.getMessage());
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
@@ -95,6 +96,7 @@ public class BuySellPresenter {
                         }
                     });
         } else {
+            callBack.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -122,6 +124,7 @@ public class BuySellPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
+                            callBack.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -131,6 +134,7 @@ public class BuySellPresenter {
                         }
                     });
         } else {
+            callBack.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -158,6 +162,7 @@ public class BuySellPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
+                            callBack.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -167,6 +172,7 @@ public class BuySellPresenter {
                         }
                     });
         } else {
+            callBack.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -295,7 +301,7 @@ public class BuySellPresenter {
         });
     }
 
-    public void transRecordInfo(String log_id, String id, String type_number, final CallBack3 callBack3) {
+    public void transRecordInfo(String log_id, String id, String type_number, final CallBack7 callBack7) {
         if (UtilTool.isNetworkAvailable(mContext)) {
             showDialog();
             RetrofitUtil.getInstance(mContext)
@@ -313,13 +319,14 @@ public class BuySellPresenter {
                         public void onNext(TransRecordInfo transRecordInfo) {
                             hideDialog();
                             if (transRecordInfo.getStatus() == 1) {
-                                callBack3.send2(transRecordInfo.getData());
+                                callBack7.send(transRecordInfo.getData());
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
+                            callBack7.error();
                             UtilTool.Log("错误", e.getMessage());
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
@@ -330,6 +337,7 @@ public class BuySellPresenter {
                         }
                     });
         } else {
+            callBack7.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -394,6 +402,7 @@ public class BuySellPresenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            callBack5.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -403,6 +412,7 @@ public class BuySellPresenter {
                         }
                     });
         } else {
+            callBack5.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -429,6 +439,7 @@ public class BuySellPresenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            callBack6.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -438,6 +449,7 @@ public class BuySellPresenter {
                         }
                     });
         } else {
+            callBack6.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -445,6 +457,7 @@ public class BuySellPresenter {
     //定义接口
     public interface CallBack {
         void send(List<DealListInfo.DataBean> dataBean, String coin);
+        void error();
     }
 
     //定义接口
@@ -455,8 +468,8 @@ public class BuySellPresenter {
     //定义接口
     public interface CallBack3 {
         void send(List<OrderListInfo.DataBean> data);
+        void error();
 
-        void send2(TransRecordInfo.DataBean data);
     }
 
     //定义接口
@@ -468,10 +481,18 @@ public class BuySellPresenter {
     public interface CallBack5 {
 
         void send(List<MyAdListInfo.DataBean> data);
+        void error();
     }
 
     //定义接口
     public interface CallBack6 {
         void send(OrderStatisticsInfo.DataBean data);
+        void error();
+    }
+
+    //定义接口
+    public interface CallBack7 {
+        void send(TransRecordInfo.DataBean data);
+        void error();
     }
 }

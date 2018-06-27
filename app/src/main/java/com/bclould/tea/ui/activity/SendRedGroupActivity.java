@@ -158,6 +158,11 @@ public class SendRedGroupActivity extends BaseActivity {
                     if (MyApp.getInstance().mRedCoinList.size() == 0)
                         MyApp.getInstance().mRedCoinList.addAll(data);
                 }
+
+                @Override
+                public void error() {
+
+                }
             });
         }
     }

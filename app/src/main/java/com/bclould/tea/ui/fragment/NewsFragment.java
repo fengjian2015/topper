@@ -58,6 +58,14 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     SmartRefreshLayout mRefreshLayout;
     @Bind(R.id.scrollView)
     ScrollView mScrollView;
+    @Bind(R.id.iv)
+    ImageView mIv;
+    @Bind(R.id.ll_no_data)
+    LinearLayout mLlNoData;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private NewsRVAdapter mNewsRVAdapter;
     private int mPage = 1;
     private int mPageSize = 10;
@@ -66,6 +74,7 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     private NewsNoticePresenter mNewsNoticePresenter;
     private int end = 0;
     public LinearLayoutManager mLinearLayoutManager;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -118,8 +127,11 @@ public class NewsFragment extends Fragment implements OnBannerListener {
         mNewsNoticePresenter.getNewsList(mPage, mPageSize, new NewsNoticePresenter.CallBack() {
             @Override
             public void send(List<NewsListInfo.ListsBean> lists, List<NewsListInfo.TopBean> top) {
-                if (lists != null) {
+                if (lists != null || top != null) {
                     if (lists.size() != 0 || mNewsList.size() != 0 || top.size() != 0 || mTopList.size() != 0) {
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.GONE);
                         isFinish = true;
                         if (type == PULL_UP) {
                             if (lists.size() == mPageSize) {
@@ -150,8 +162,19 @@ public class NewsFragment extends Fragment implements OnBannerListener {
                             }
                             initBanner(imgList, titleList);
                         }
+                    }else {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.VISIBLE);
+                        mLlError.setVisibility(View.GONE);
                     }
                 }
+            }
+
+            @Override
+            public void error() {
+                mRecyclerView.setVisibility(View.GONE);
+                mLlNoData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
             }
         });
 

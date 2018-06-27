@@ -61,6 +61,10 @@ public class MyJoinActivity extends BaseActivity {
     LinearLayout mLlNoData;
     @Bind(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
     private int mType;
     private List<String> mFiltrateList = new ArrayList<>();
@@ -152,6 +156,7 @@ public class MyJoinActivity extends BaseActivity {
                             if (data.size() == 0) {
                                 mRecyclerView.setVisibility(View.GONE);
                                 mLlNoData.setVisibility(View.VISIBLE);
+                                mLlError.setVisibility(View.GONE);
                             } else {
                                 if (mPage == 1) {
                                     mPage++;
@@ -163,8 +168,18 @@ public class MyJoinActivity extends BaseActivity {
                         }
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);
                     }
+                }
+            }
+
+            @Override
+            public void error() {
+                if (type == PULL_DOWN) {
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                    mLlNoData.setVisibility(View.GONE);
                 }
             }
         });

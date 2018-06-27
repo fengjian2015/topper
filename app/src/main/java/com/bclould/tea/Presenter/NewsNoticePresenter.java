@@ -33,7 +33,7 @@ import io.reactivex.schedulers.Schedulers;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class NewsNoticePresenter {
 
-    private static final String NEWS_JSON = "news_json";
+    private static final String NEWS_JSON = UtilTool.getTocoId() + "news_json";
     private final Context mContext;
 
     public NewsNoticePresenter(Context context) {
@@ -73,6 +73,8 @@ public class NewsNoticePresenter {
                                     Gson gson = new Gson();
                                     NewsListInfo newsListInfo = gson.fromJson(MySharedPreferences.getInstance().getString(NEWS_JSON), NewsListInfo.class);
                                     callBack.send(newsListInfo.getLists(), newsListInfo.getTop());
+                                }else {
+                                    callBack.error();
                                 }
                             }
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
@@ -90,6 +92,8 @@ public class NewsNoticePresenter {
                     Gson gson = new Gson();
                     NewsListInfo newsListInfo = gson.fromJson(MySharedPreferences.getInstance().getString(NEWS_JSON), NewsListInfo.class);
                     callBack.send(newsListInfo.getLists(), newsListInfo.getTop());
+                }else {
+                    callBack.error();
                 }
             }
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
@@ -118,6 +122,7 @@ public class NewsNoticePresenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            callBack2.error();
                             UtilTool.Log("新聞", e.getMessage());
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
@@ -128,6 +133,7 @@ public class NewsNoticePresenter {
                         }
                     });
         } else {
+            callBack2.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -154,6 +160,7 @@ public class NewsNoticePresenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            callBack2.error();
                             UtilTool.Log("新聞", e.getMessage());
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
@@ -164,6 +171,7 @@ public class NewsNoticePresenter {
                         }
                     });
         } else {
+            callBack2.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -190,6 +198,7 @@ public class NewsNoticePresenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            callBack2.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -199,6 +208,7 @@ public class NewsNoticePresenter {
                         }
                     });
         } else {
+            callBack2.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -305,6 +315,7 @@ public class NewsNoticePresenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            callBack2.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -314,6 +325,7 @@ public class NewsNoticePresenter {
                         }
                     });
         } else {
+            callBack2.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -356,11 +368,14 @@ public class NewsNoticePresenter {
     //定义接口
     public interface CallBack {
         void send(List<NewsListInfo.ListsBean> lists, List<NewsListInfo.TopBean> top);
+        void error();
     }
 
     //定义接口
     public interface CallBack2 {
         void send(List<GonggaoListInfo.DataBean> data);
+
+        void error();
     }
 
     //定义接口

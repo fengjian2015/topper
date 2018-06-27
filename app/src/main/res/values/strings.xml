@@ -962,4 +962,8 @@
     <string name="toast_count_and_money">數量或金額不能為空</string>
     <string name="group_member1">群員</string>
     <string name="group_member_maxuser">群人數達到上限</string>
+    <string name="loading_error_anew_loading_hint">~出錯了，請下拉重新加載~</string>
+    <string name="loading_error_anew_loading_hint2">~出錯了，請點擊空白處重新加載~</string>
+    <string name="real_name_pass">實名認證通過</string>
+    <string name="reauthentication">重新認證</string>
 </resources>

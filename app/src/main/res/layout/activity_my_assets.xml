@@ -53,101 +53,134 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/cb_search"
+            <LinearLayout
+                android:id="@+id/ll_data"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/y110"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_marginRight="@dimen/x20"
-                android:layout_marginTop="@dimen/y30"
-                android:visibility="visible"
-                app:cardCornerRadius="@dimen/x50">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <LinearLayout
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cb_search"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_height="@dimen/y110"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_marginRight="@dimen/x20"
+                    android:layout_marginTop="@dimen/y30"
+                    android:visibility="visible"
+                    app:cardCornerRadius="@dimen/x50">
 
-                    <ImageView
-                        android:id="@+id/iv_search"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/x20"
-                        android:layout_weight="1"
-                        android:padding="@dimen/x20"
-                        android:src="@mipmap/icon_seek"/>
+                        android:orientation="horizontal">
 
-                    <com.bclould.tea.ui.widget.ClearEditText
-                        android:id="@+id/et_coin_name"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="6"
-                        android:background="@android:color/transparent"
-                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                        android:hint="@string/et_coin_name"
-                        android:maxLength="8"
-                        android:paddingLeft="@dimen/x30"
-                        android:paddingRight="@dimen/x30"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x35"/>
+                        <ImageView
+                            android:id="@+id/iv_search"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/x20"
+                            android:layout_weight="1"
+                            android:padding="@dimen/x20"
+                            android:src="@mipmap/icon_seek"/>
+
+                        <com.bclould.tea.ui.widget.ClearEditText
+                            android:id="@+id/et_coin_name"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="6"
+                            android:background="@android:color/transparent"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                            android:hint="@string/et_coin_name"
+                            android:maxLength="8"
+                            android:paddingLeft="@dimen/x30"
+                            android:paddingRight="@dimen/x30"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/x35"/>
 
 
-                </LinearLayout>
+                    </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+                </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y110"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_marginRight="@dimen/x20"
-                android:layout_marginTop="@dimen/y30"
-                app:cardBackgroundColor="#F7F7F7"
-                app:cardCornerRadius="@dimen/x50">
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y110"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_marginRight="@dimen/x20"
+                    android:layout_marginTop="@dimen/y30"
+                    app:cardBackgroundColor="#F7F7F7"
+                    app:cardCornerRadius="@dimen/x50">
 
-                <RelativeLayout
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/tv_currency"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/x30"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/x30"/>
+
+                        <TextView
+                            android:id="@+id/tv_total"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/x30"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/x35"/>
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+                </android.support.v7.widget.RecyclerView>
 
-                    <TextView
-                        android:id="@+id/tv_currency"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x30"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x30"/>
+            </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tv_total"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/x30"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x35"/>
-
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
+            <LinearLayout
+                android:id="@+id/ll_error"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </android.support.v7.widget.RecyclerView>
+                android:layout_height="match_parent"
+                android:layout_below="@+id/rl_ununited"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/iv2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@mipmap/img_wrong"/>
+
+                <TextView
+                    android:layout_marginTop="@dimen/y50"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/loading_error_anew_loading_hint"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/x30"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 

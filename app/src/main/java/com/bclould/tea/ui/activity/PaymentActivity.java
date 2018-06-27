@@ -130,6 +130,11 @@ public class PaymentActivity extends BaseActivity {
                     if (MyApp.getInstance().mPayCoinList.size() == 0)
                         MyApp.getInstance().mPayCoinList.addAll(data);
                 }
+
+                @Override
+                public void error() {
+
+                }
             });
         }
     }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.bclould.tea.Presenter.BlockchainGuessPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.model.GuessListInfo;
 import com.bclould.tea.ui.adapter.GuessListRVAdapter;
+import com.bclould.tea.ui.widget.ClearEditText;
 import com.bclould.tea.utils.MessageEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -47,6 +49,16 @@ public class PlatformGuessFragment extends Fragment {
     LinearLayout mLlNoData;
     @Bind(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.iv_search)
+    ImageView mIvSearch;
+    @Bind(R.id.et_search)
+    ClearEditText mEtSearch;
+    @Bind(R.id.cb_search)
+    CardView mCbSearch;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
@@ -90,6 +102,7 @@ public class PlatformGuessFragment extends Fragment {
     }
 
     boolean isFinish = true;
+
     private void initListener() {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -151,10 +164,21 @@ public class PlatformGuessFragment extends Fragment {
                         }
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.GONE);
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);
+                        mLlError.setVisibility(View.GONE);
                     }
+                }
+            }
+
+            @Override
+            public void error() {
+                if (type == PULL_DOWN) {
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
                 }
             }
         });

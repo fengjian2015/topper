@@ -66,6 +66,11 @@ public class BankCardBindingActivity extends BaseActivity {
                     Toast.makeText(BankCardBindingActivity.this, getString(R.string.verify_check_pending), Toast.LENGTH_SHORT).show();
                 }
             }
+
+            @Override
+            public void error() {
+
+            }
         });
     }
 

@@ -114,6 +114,8 @@ public class MyApp extends Application {
                 sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
             }
         });
+        String registrationId = mPushAgent.getRegistrationId();
+        UtilTool.Log("設備ID", registrationId);
         UmengMessageHandler messageHandler = new UmengMessageHandler() {
 
             /**
@@ -207,6 +209,7 @@ public class MyApp extends Application {
             }
         };
         mPushAgent.setNotificationClickHandler(notificationClickHandler);
+
     }
 
     //创建项目公开目录

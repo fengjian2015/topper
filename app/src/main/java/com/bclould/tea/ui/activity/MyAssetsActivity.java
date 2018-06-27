@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -19,6 +20,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -69,10 +71,21 @@ public class MyAssetsActivity extends BaseActivity {
     TextView mTvTotal;
     @Bind(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.iv_search)
+    ImageView mIvSearch;
+    @Bind(R.id.cb_search)
+    CardView mCbSearch;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
+    @Bind(R.id.ll_data)
+    LinearLayout mLlData;
     private MyWalletRVAapter mMyWalletRVAapter;
     private ViewGroup mPopupWindowView;
     private PopupWindow mPopupWindow;
     private SubscribeCoinPresenter mSubscribeCoinPresenter;
+    private int mCount = 0;
 
     @Override
 
@@ -107,9 +120,20 @@ public class MyAssetsActivity extends BaseActivity {
             @Override
             public void send(String data) {
                 if (data != null && !MyAssetsActivity.this.isDestroyed()) {
+                    mCount++;
+                    if(mCount == 2){
+                        mLlData.setVisibility(View.VISIBLE);
+                        mLlError.setVisibility(View.GONE);
+                    }
                     mTvCurrency.setText(getString(R.string.total_assets_usd));
                     mTvTotal.setText("≈" + data);
                 }
+            }
+
+            @Override
+            public void error() {
+                mLlData.setVisibility(View.VISIBLE);
+                mLlError.setVisibility(View.GONE);
             }
         });
     }
@@ -161,12 +185,23 @@ public class MyAssetsActivity extends BaseActivity {
             @Override
             public void send(List<MyAssetsInfo.DataBean> info) {
                 if (!MyAssetsActivity.this.isDestroyed() && info.size() != 0) {
+                    mCount++;
+                    if(mCount == 2){
+                        mLlData.setVisibility(View.VISIBLE);
+                        mLlError.setVisibility(View.GONE);
+                    }
                     mDataList.clear();
                     mDiltrateData.clear();
                     mDataList.addAll(info);
                     mDiltrateData.addAll(info);
                     mMyWalletRVAapter.notifyDataSetChanged();
                 }
+            }
+
+            @Override
+            public void error() {
+                mLlData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
             }
         });
     }
