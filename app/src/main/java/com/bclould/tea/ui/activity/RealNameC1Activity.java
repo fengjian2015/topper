@@ -83,6 +83,12 @@ public class RealNameC1Activity extends BaseActivity {
     ImageView mIvJiantou;
     @Bind(R.id.tv_cause)
     TextView mTvCause;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
+    @Bind(R.id.rl_data)
+    RelativeLayout mRlData;
     private ViewGroup mView;
     private PopupWindow mPopupWindow;
     private RealNamePresenter mRealNamePresenter;
@@ -98,9 +104,15 @@ public class RealNameC1Activity extends BaseActivity {
         ButterKnife.bind(this);
         mRealNamePresenter = new RealNamePresenter(this);
         MyApp.getInstance().addActivity(this);
+        initData();
+    }
+
+    private void initData() {
         mRealNamePresenter.realNameInfo(new RealNamePresenter.CallBack2() {
             @Override
             public void send(int type, String mark) {
+                mLlError.setVisibility(View.GONE);
+                mRlData.setVisibility(View.VISIBLE);
                 if (type == 3) {
                     mLlNoPass.setVisibility(View.GONE);
                     mBtnAuth.setVisibility(View.GONE);
@@ -127,10 +139,16 @@ public class RealNameC1Activity extends BaseActivity {
                     mLlPass.setVisibility(View.GONE);
                 }
             }
+
+            @Override
+            public void error() {
+                mLlError.setVisibility(View.VISIBLE);
+                mRlData.setVisibility(View.GONE);
+            }
         });
     }
 
-    @OnClick({R.id.bark, R.id.cv_card_type, R.id.btn_next, R.id.btn_auth, R.id.rl_selector_state})
+    @OnClick({R.id.ll_error, R.id.bark, R.id.cv_card_type, R.id.btn_next, R.id.btn_auth, R.id.rl_selector_state})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -150,6 +168,9 @@ public class RealNameC1Activity extends BaseActivity {
             case R.id.btn_auth:
                 mLlNoPass.setVisibility(View.VISIBLE);
                 mLlPass.setVisibility(View.GONE);
+                break;
+            case R.id.ll_error:
+                initData();
                 break;
         }
     }

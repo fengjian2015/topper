@@ -83,6 +83,10 @@ public class DynamicFragment extends Fragment {
     TextView mSend;
     @Bind(R.id.rl_edit)
     RelativeLayout mRlEdit;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private DynamicPresenter mDynamicPresenter;
     private DynamicRVAdapter mDynamicRVAdapter;
     private DBManager mMgr;
@@ -273,11 +277,20 @@ public class DynamicFragment extends Fragment {
                         }
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.GONE);
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);
+                        mLlError.setVisibility(View.GONE);
                     }
                 }
+            }
+
+            @Override
+            public void error() {
+                mRecyclerView.setVisibility(View.GONE);
+                mLlNoData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
             }
         });
     }

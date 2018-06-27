@@ -215,6 +215,7 @@ public class CurrencyInOutPresenter {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
+                            callBack.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -224,6 +225,7 @@ public class CurrencyInOutPresenter {
                         }
                     });
         } else {
+            callBack.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -330,6 +332,7 @@ public class CurrencyInOutPresenter {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
+                            callBack.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -339,6 +342,7 @@ public class CurrencyInOutPresenter {
                         }
                     });
         } else {
+            callBack.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -347,5 +351,6 @@ public class CurrencyInOutPresenter {
     public interface CallBack {
 
         void send(BaseInfo.DataBean data);
+        void error();
     }
 }

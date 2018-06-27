@@ -33,7 +33,7 @@ import io.reactivex.schedulers.Schedulers;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class DynamicPresenter {
-    private static final String DYNAMIC_JSON = "dynamic_json";
+    private static final String DYNAMIC_JSON = UtilTool.getTocoId() + "dynamic_json";
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
 
@@ -135,6 +135,8 @@ public class DynamicPresenter {
                                     Gson gson = new Gson();
                                     DynamicListInfo dynamicListInfo = gson.fromJson(MySharedPreferences.getInstance().getString(DYNAMIC_JSON), DynamicListInfo.class);
                                     callBack2.send(dynamicListInfo.getData());
+                                }else {
+                                    callBack2.error();
                                 }
                             }
                             UtilTool.Log("动态", e.getMessage());
@@ -153,6 +155,8 @@ public class DynamicPresenter {
                     Gson gson = new Gson();
                     DynamicListInfo dynamicListInfo = gson.fromJson(MySharedPreferences.getInstance().getString(DYNAMIC_JSON), DynamicListInfo.class);
                     callBack2.send(dynamicListInfo.getData());
+                }else {
+                    callBack2.error();
                 }
             }
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
@@ -195,6 +199,7 @@ public class DynamicPresenter {
                         }
                     });
         } else {
+            callBack2.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -483,6 +488,7 @@ public class DynamicPresenter {
     //定义接口
     public interface CallBack2 {
         void send(List<DynamicListInfo.DataBean> data);
+        void error();
     }
 
     //定义接口

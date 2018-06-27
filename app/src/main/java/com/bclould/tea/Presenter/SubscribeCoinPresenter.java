@@ -79,6 +79,7 @@ public class SubscribeCoinPresenter {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
+                            callBack.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -88,6 +89,7 @@ public class SubscribeCoinPresenter {
                         }
                     });
         }else {
+            callBack.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -237,6 +239,7 @@ public class SubscribeCoinPresenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            callBack3.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -246,7 +249,7 @@ public class SubscribeCoinPresenter {
                         }
                     });
         } else {
-
+            callBack3.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
 
         }
@@ -255,6 +258,7 @@ public class SubscribeCoinPresenter {
     //定义接口
     public interface CallBack {
         void send(List<MyAssetsInfo.DataBean> info);
+        void error();
     }
 
     //定义接口
@@ -265,5 +269,6 @@ public class SubscribeCoinPresenter {
     //定义接口
     public interface CallBack3 {
         void send(String data);
+        void error();
     }
 }

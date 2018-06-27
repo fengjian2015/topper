@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.InCoinInfo;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.VirtualKeyboardView;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -83,6 +85,12 @@ public class OutCoinActivity extends BaseActivity {
     ImageView mIv;
     @Bind(R.id.tv_desc)
     TextView mTvDesc;
+    @Bind(R.id.ll_data)
+    LinearLayout mLlData;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
 
 
     private int mId;
@@ -112,10 +120,20 @@ public class OutCoinActivity extends BaseActivity {
         currencyInOutPresenter.outCoinDesc(mId, new CurrencyInOutPresenter.CallBack() {
             @Override
             public void send(BaseInfo.DataBean data) {
-                if (data.getDesc() != null) {
-                    String desc = data.getDesc().replace("\\n", "\n");
-                    mTvDesc.setText(desc);
+                if (ActivityUtil.isActivityOnTop(OutCoinActivity.this)) {
+                    mLlData.setVisibility(View.VISIBLE);
+                    mLlError.setVisibility(View.GONE);
+                    if (data.getDesc() != null) {
+                        String desc = data.getDesc().replace("\\n", "\n");
+                        mTvDesc.setText(desc);
+                    }
                 }
+            }
+
+            @Override
+            public void error() {
+                mLlData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -129,11 +147,13 @@ public class OutCoinActivity extends BaseActivity {
         mTvCoinCount.setText(mOver);
     }
 
-    @OnClick({R.id.iv_qr_code, R.id.bark, R.id.tv_record, R.id.iv_selector_site, R.id.btn_confirm})
+    @OnClick({R.id.ll_error,R.id.iv_qr_code, R.id.bark, R.id.tv_record, R.id.iv_selector_site, R.id.btn_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;case R.id.ll_error:
+                initData();
                 break;
             case R.id.iv_qr_code:
                 Intent intent = new Intent(this, ScanQRCodeActivity.class);

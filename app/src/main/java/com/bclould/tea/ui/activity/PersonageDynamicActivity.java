@@ -55,6 +55,10 @@ public class PersonageDynamicActivity extends BaseActivity {
     RecyclerView mRecyclerView;
     @Bind(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private String mName;
     private String mUser;
     private DynamicPresenter mDynamicPresenter;
@@ -97,6 +101,7 @@ public class PersonageDynamicActivity extends BaseActivity {
     }
 
     boolean isFinish = true;
+
     private void initListener() {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -152,11 +157,20 @@ public class PersonageDynamicActivity extends BaseActivity {
                         }
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.GONE);
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);
+                        mLlError.setVisibility(View.GONE);
                     }
                 }
+            }
+
+            @Override
+            public void error() {
+                mRecyclerView.setVisibility(View.GONE);
+                mLlNoData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -170,7 +184,7 @@ public class PersonageDynamicActivity extends BaseActivity {
 
     private void initIntent() {
         mName = getIntent().getStringExtra("name");
-        mUser= getIntent().getStringExtra("user");
+        mUser = getIntent().getStringExtra("user");
         mTvTitle.setText(mName);
     }
 

@@ -103,6 +103,12 @@ public class MyPushAdActivity extends BaseActivity {
     TextView mTvOnOff;
     @Bind(R.id.iv_jiantou3)
     ImageView mIvJiantou3;
+    @Bind(R.id.ll_data)
+    LinearLayout mLlData;
+    @Bind(R.id.iv4)
+    ImageView mIv4;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private String mCoinName;
     private Map<String, Integer> mMap = new HashMap<>();
     private Dialog mBottomDialog;
@@ -130,6 +136,8 @@ public class MyPushAdActivity extends BaseActivity {
             @Override
             public void send(OrderStatisticsInfo.DataBean data) {
                 if (!MyPushAdActivity.this.isDestroyed()) {
+                    mLlData.setVisibility(View.VISIBLE);
+                    mLlError.setVisibility(View.GONE);
                     mTvSumBuy.setText(data.getBuy_sum());
                     mTvSumSell.setText(data.getSale_sum());
                     mTvSumDealCount.setText(data.getTotal_trans() + "");
@@ -139,6 +147,12 @@ public class MyPushAdActivity extends BaseActivity {
                     mTvOrderSum.setText(data.getAll() + "");
                     mTvUnderwaySum.setText(data.getProcessing() + "");
                 }
+            }
+
+            @Override
+            public void error() {
+                mLlData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -194,11 +208,14 @@ public class MyPushAdActivity extends BaseActivity {
     private List<String> mFiltrateList = new ArrayList<>();
     boolean isOnOff = false;
 
-    @OnClick({R.id.bark, R.id.tv_filtrate, R.id.rl_my_buy, R.id.rl_my_sell, R.id.ll_on_off, R.id.rl_sum_buy, R.id.rl_sum_sell})
+    @OnClick({R.id.ll_error, R.id.bark, R.id.tv_filtrate, R.id.rl_my_buy, R.id.rl_my_sell, R.id.ll_on_off, R.id.rl_sum_buy, R.id.rl_sum_sell})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.ll_error:
+                initData();
                 break;
             case R.id.rl_sum_buy:
                 Intent intent = new Intent(this, SumBuySellActivity.class);

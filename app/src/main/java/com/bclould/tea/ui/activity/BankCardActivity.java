@@ -22,6 +22,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +70,18 @@ public class BankCardActivity extends BaseActivity {
     RecyclerView mRecyclerView;
     @Bind(R.id.add_bank_card)
     Button mAddBankCard;
+    @Bind(R.id.tv_delete)
+    TextView mTvDelete;
+    @Bind(R.id.rl_title)
+    RelativeLayout mRlTitle;
+    @Bind(R.id.xx)
+    TextView mXx;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
+    @Bind(R.id.scrollView)
+    ScrollView mScrollView;
     private ArrayList<Map<String, String>> valueList;
     private Animation mEnterAnim;
     private Animation mExitAnim;
@@ -102,8 +117,16 @@ public class BankCardActivity extends BaseActivity {
         mBankCardPresenter.bankCardList(new BankCardPresenter.CallBack2() {
             @Override
             public void send(List<CardListInfo.DataBean> data) {
+                mScrollView.setVisibility(View.VISIBLE);
+                mLlError.setVisibility(View.GONE);
                 mCardList.addAll(data);
                 mBankCardRVAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void error() {
+                mScrollView.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
             }
         });
     }

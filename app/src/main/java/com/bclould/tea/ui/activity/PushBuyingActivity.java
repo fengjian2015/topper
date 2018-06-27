@@ -331,6 +331,11 @@ public class PushBuyingActivity extends BaseActivity {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void error() {
+
+            }
         });
 
     }

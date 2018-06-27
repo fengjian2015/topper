@@ -33,8 +33,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.bclould.tea.ui.activity.AddFriendSetActivity.QRCODE;
-
 /**
  * Created by GA on 2017/9/25.
  */
@@ -114,7 +112,7 @@ public class AddFriendActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.iv_qr_code:
                 Intent intent = new Intent(this, ScanQRCodeActivity.class);
-                intent.putExtra("code", QRCODE);
+                intent.putExtra("code", 1);
                 startActivity(intent);
                 break;
             case R.id.tv_cancel:

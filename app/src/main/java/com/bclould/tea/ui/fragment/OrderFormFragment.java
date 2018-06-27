@@ -23,9 +23,9 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.OrderListInfo;
-import com.bclould.tea.model.TransRecordInfo;
 import com.bclould.tea.ui.adapter.OrderRVAdapter;
 import com.bclould.tea.ui.widget.ClearEditText;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.UtilTool;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -67,6 +67,10 @@ public class OrderFormFragment extends Fragment {
     RecyclerView mRecyclerView;
     @Bind(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private String mCoinName = "TPC";
     private String mFiltrate = "";
     private List<OrderListInfo.DataBean> mDataList = new ArrayList<>();
@@ -200,47 +204,59 @@ public class OrderFormFragment extends Fragment {
         mBuySellPresenter.getOrderList(mPage, mPageSize, coinName, filtrate, user, new BuySellPresenter.CallBack3() {
             @Override
             public void send(List<OrderListInfo.DataBean> data) {
-                if (mRecyclerView != null) {
-                    if (mDataList.size() != 0 || data.size() != 0) {
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        mLlNoData.setVisibility(View.GONE);
-                        isFinish = true;
-                        if (type == PULL_UP) {
-                            if (data.size() == mPageSize) {
-                                mPage++;
-                                mDataList.addAll(data);
-                                mOrderRVAdapter.notifyDataSetChanged();
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    if (mRecyclerView != null) {
+                        if (mDataList.size() != 0 || data.size() != 0) {
+                            mRecyclerView.setVisibility(View.VISIBLE);
+                            mLlNoData.setVisibility(View.GONE);
+                            mLlError.setVisibility(View.GONE);
+                            isFinish = true;
+                            if (type == PULL_UP) {
+                                if (data.size() == mPageSize) {
+                                    mPage++;
+                                    mDataList.addAll(data);
+                                    mOrderRVAdapter.notifyDataSetChanged();
+                                } else {
+                                    if (end == 0) {
+                                        end++;
+                                        mDataList.addAll(data);
+                                        mOrderRVAdapter.notifyDataSetChanged();
+                                    }
+                                }
                             } else {
-                                if (end == 0) {
-                                    end++;
+                                if (data.size() == 0) {
+                                    mRecyclerView.setVisibility(View.GONE);
+                                    mLlNoData.setVisibility(View.VISIBLE);
+                                    mLlError.setVisibility(View.GONE);
+                                } else {
+                                    if (mPage == 1) {
+                                        mPage++;
+                                    }
+                                    mDataList.clear();
                                     mDataList.addAll(data);
                                     mOrderRVAdapter.notifyDataSetChanged();
                                 }
                             }
                         } else {
-                            if (data.size() == 0) {
-                                mRecyclerView.setVisibility(View.GONE);
-                                mLlNoData.setVisibility(View.VISIBLE);
-                            } else {
-                                if (mPage == 1) {
-                                    mPage++;
-                                }
-                                mDataList.clear();
-                                mDataList.addAll(data);
-                                mOrderRVAdapter.notifyDataSetChanged();
-                            }
+                            mRecyclerView.setVisibility(View.GONE);
+                            mLlNoData.setVisibility(View.VISIBLE);
+                            mLlError.setVisibility(View.GONE);
                         }
-                    } else {
-                        mRecyclerView.setVisibility(View.GONE);
-                        mLlNoData.setVisibility(View.VISIBLE);
                     }
                 }
             }
 
             @Override
-            public void send2(TransRecordInfo.DataBean data) {
-
+            public void error() {
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    if (type == PULL_DOWN) {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.VISIBLE);
+                    }
+                }
             }
+
         });
     }
 

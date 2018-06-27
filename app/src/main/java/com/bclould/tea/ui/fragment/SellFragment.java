@@ -18,6 +18,7 @@ import com.bclould.tea.base.BaseFragment;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.DealListInfo;
 import com.bclould.tea.ui.adapter.BuySellRVAdapter;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
@@ -53,6 +54,10 @@ public class SellFragment extends BaseFragment {
     ImageView mIv;
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private View mView;
     private String mCoinName = "TPC";
     private String mState;
@@ -154,34 +159,49 @@ public class SellFragment extends BaseFragment {
         mBuySellPresenter.getDealList(mPage, mPageSize, 2, coinName, state, new BuySellPresenter.CallBack() {
             @Override
             public void send(List<DealListInfo.DataBean> dataBean, String coin) {
-                if (mRecyclerView != null) {
-                    if (mDataList.size() != 0 || dataBean.size() != 0) {
-                        isFinish = true;
-                        if (type == PULL_UP) {
-                            if (dataBean.size() == mPageSize) {
-                                mPage++;
-                                mDataList.addAll(dataBean);
-                                mBuySellRVAdapter.notifyDataSetChanged();
-                            } else {
-                                if (end == 0) {
-                                    end++;
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    if (mRecyclerView != null) {
+                        if (mDataList.size() != 0 || dataBean.size() != 0) {
+                            isFinish = true;
+                            if (type == PULL_UP) {
+                                if (dataBean.size() == mPageSize) {
+                                    mPage++;
                                     mDataList.addAll(dataBean);
                                     mBuySellRVAdapter.notifyDataSetChanged();
+                                } else {
+                                    if (end == 0) {
+                                        end++;
+                                        mDataList.addAll(dataBean);
+                                        mBuySellRVAdapter.notifyDataSetChanged();
+                                    }
                                 }
+                            } else {
+                                if (mPage == 1) {
+                                    mPage++;
+                                }
+                                mDataList.clear();
+                                mDataList.addAll(dataBean);
+                                mBuySellRVAdapter.notifyDataSetChanged();
                             }
+                            mRecyclerView.setVisibility(View.VISIBLE);
+                            mLlNoData.setVisibility(View.GONE);
+                            mLlError.setVisibility(View.GONE);
                         } else {
-                            if (mPage == 1) {
-                                mPage++;
-                            }
-                            mDataList.clear();
-                            mDataList.addAll(dataBean);
-                            mBuySellRVAdapter.notifyDataSetChanged();
+                            mRecyclerView.setVisibility(View.GONE);
+                            mLlNoData.setVisibility(View.VISIBLE);
+                            mLlError.setVisibility(View.GONE);
                         }
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        mLlNoData.setVisibility(View.GONE);
-                    } else {
+                    }
+                }
+            }
+
+            @Override
+            public void error() {
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    if (type == PULL_DOWN) {
                         mRecyclerView.setVisibility(View.GONE);
-                        mLlNoData.setVisibility(View.VISIBLE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.VISIBLE);
                     }
                 }
             }

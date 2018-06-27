@@ -80,6 +80,11 @@ public class BillDataFragment extends Fragment {
                     }
                 }
             }
+
+            @Override
+            public void error() {
+
+            }
         });
     }
 

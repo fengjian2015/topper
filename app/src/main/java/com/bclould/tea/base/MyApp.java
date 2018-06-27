@@ -21,6 +21,7 @@ import com.bclould.tea.service.ImageUpService;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.GlideImgLoader;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.UtilTool;
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.previewlibrary.ZoomMediaLoader;
 import com.umeng.commonsdk.UMConfigure;
@@ -105,6 +106,8 @@ public class MyApp extends Application {
                 sendBroadcast(new Intent(UPDATE_STATUS_ACTION));
             }
         });
+        String registrationId = mPushAgent.getRegistrationId();
+        UtilTool.Log("設備ID", registrationId);
         UmengMessageHandler messageHandler = new UmengMessageHandler() {
 
             /**
@@ -197,6 +200,7 @@ public class MyApp extends Application {
             }
         };
         mPushAgent.setNotificationClickHandler(notificationClickHandler);
+
     }
 
     //创建项目公开目录

@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.view.View;
@@ -86,6 +87,12 @@ public class GoogleVerificationActivity extends BaseActivity {
     LinearLayout mLlUnbinding;
     @Bind(R.id.tv_hint)
     TextView mTvHint;
+    @Bind(R.id.tv_unbinding)
+    TextView mTvUnbinding;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private GoogleVerificationPresenter mGoogleVerificationPresenter;
     private CurrencyDialog mCurrencyDialog;
     private RegisterPresenter mRegisterPresenter;
@@ -111,7 +118,32 @@ public class GoogleVerificationActivity extends BaseActivity {
 
     private void getGoogleKey() {
         mGoogleVerificationPresenter = new GoogleVerificationPresenter(this);
-        mGoogleVerificationPresenter.getGoogleKey();
+        mGoogleVerificationPresenter.getGoogleKey(new GoogleVerificationPresenter.CallBack2() {
+            @Override
+            public void send(GoogleInfo googleInfo) {
+                mLlError.setVisibility(View.GONE);
+                UtilTool.Log("谷歌", googleInfo.getIs_google_verify() + "");
+                if (googleInfo.getIs_google_verify() == 1) {
+                    mLlBindingStatus.setVisibility(View.VISIBLE);
+                    mLlUnbinding.setVisibility(View.GONE);
+                    mLlBinding.setVisibility(View.GONE);
+                } else {
+                    mLlBinding.setVisibility(View.VISIBLE);
+                    mLlUnbinding.setVisibility(View.GONE);
+                    mLlBindingStatus.setVisibility(View.GONE);
+                    mSecretKey.setText(googleInfo.getKey());
+                    Glide.with(GoogleVerificationActivity.this).load(googleInfo.getImg()).into(mIvQrCode);
+                }
+            }
+
+            @Override
+            public void error() {
+                mLlBindingStatus.setVisibility(View.GONE);
+                mLlUnbinding.setVisibility(View.GONE);
+                mLlBinding.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private boolean checkEdit2() {
@@ -166,22 +198,8 @@ public class GoogleVerificationActivity extends BaseActivity {
         Toast.makeText(this, getString(R.string.copy_succeed), Toast.LENGTH_LONG).show();
     }
 
-    public void setData(GoogleInfo googleInfo) {
-        UtilTool.Log("谷歌", googleInfo.getIs_google_verify() + "");
-        if (googleInfo.getIs_google_verify() == 1) {
-            mLlBindingStatus.setVisibility(View.VISIBLE);
-            mLlUnbinding.setVisibility(View.GONE);
-            mLlBinding.setVisibility(View.GONE);
-        } else {
-            mLlBinding.setVisibility(View.VISIBLE);
-            mLlUnbinding.setVisibility(View.GONE);
-            mLlBindingStatus.setVisibility(View.GONE);
-            mSecretKey.setText(googleInfo.getKey());
-            Glide.with(this).load(googleInfo.getImg()).into(mIvQrCode);
-        }
-    }
 
-    @OnClick({R.id.bark, R.id.tv_hint, R.id.tv_download, R.id.btn_copy, R.id.btn_finish, R.id.tv_send, R.id.btn_unbinding, R.id.tv_unbinding})
+    @OnClick({R.id.ll_error, R.id.bark, R.id.tv_hint, R.id.tv_download, R.id.btn_copy, R.id.btn_finish, R.id.tv_send, R.id.btn_unbinding, R.id.tv_unbinding})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -218,6 +236,9 @@ public class GoogleVerificationActivity extends BaseActivity {
                 if (checkEdit2()) {
                     unBinding();
                 }
+                break;
+            case R.id.ll_error:
+                getGoogleKey();
                 break;
         }
     }
@@ -259,7 +280,7 @@ public class GoogleVerificationActivity extends BaseActivity {
     //更新完成弹出安装
     private void showDownloadSetting() {
         String packageName = "com.android.providers.downloads";
-        Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.parse("package:" + packageName));
         if (intentAvailable(intent)) {
             startActivity(intent);

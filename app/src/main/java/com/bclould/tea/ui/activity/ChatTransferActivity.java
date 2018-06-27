@@ -116,6 +116,11 @@ public class ChatTransferActivity extends BaseActivity {
                     if (MyApp.getInstance().mCoinList.size() == 0)
                         MyApp.getInstance().mCoinList.addAll(data);
                 }
+
+                @Override
+                public void error() {
+
+                }
             });
         }
     }

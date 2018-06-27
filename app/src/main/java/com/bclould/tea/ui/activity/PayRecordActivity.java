@@ -74,6 +74,10 @@ public class PayRecordActivity extends BaseActivity {
     LinearLayout mLlNoData;
     @Bind(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private PayRecordRVAdapter mPayRecordRVAdapter;
     private Dialog mBottomDialog;
     private int PULL_UP = 0;
@@ -165,9 +169,11 @@ public class PayRecordActivity extends BaseActivity {
                             if (data.size() == 0) {
                                 mRecyclerView.setVisibility(View.GONE);
                                 mLlNoData.setVisibility(View.VISIBLE);
+                                mLlError.setVisibility(View.GONE);
                             } else {
                                 mRecyclerView.setVisibility(View.VISIBLE);
                                 mLlNoData.setVisibility(View.GONE);
+                                mLlError.setVisibility(View.GONE);
                                 if (mPage == 1) {
                                     mPage++;
                                 }
@@ -179,9 +185,19 @@ public class PayRecordActivity extends BaseActivity {
                     } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);
+                        mLlError.setVisibility(View.GONE);
                     }
                 }
 
+            }
+
+            @Override
+            public void error() {
+                if (type == PULL_DOWN) {
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -192,7 +208,7 @@ public class PayRecordActivity extends BaseActivity {
         mRecyclerView.setAdapter(mPayRecordRVAdapter);
     }
 
-    @OnClick({R.id.bark, R.id.rl_date_selector, R.id.tv_filtrate})
+    @OnClick({R.id.bark, R.id.rl_date_selector, R.id.tv_filtrate, R.id.ll_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -203,6 +219,9 @@ public class PayRecordActivity extends BaseActivity {
                 break;
             case R.id.tv_filtrate:
                 showFiltrateDialog();
+                break;
+            case R.id.ll_error:
+                initData(PULL_DOWN);
                 break;
         }
     }

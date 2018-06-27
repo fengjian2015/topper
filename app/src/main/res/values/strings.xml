@@ -948,4 +948,8 @@
     <string name="assign_to">確定轉讓給</string>
     <string name="transfer_success">轉讓成功</string>
     <string name="video_big_hint">發佈的視頻大小不能超過20M</string>
+    <string name="loading_error_anew_loading_hint">~出錯了，請下拉重新加載~</string>
+    <string name="loading_error_anew_loading_hint2">~出錯了，請點擊空白處重新加載~</string>
+    <string name="real_name_pass">實名認證通過</string>
+    <string name="reauthentication">重新認證</string>
 </resources>

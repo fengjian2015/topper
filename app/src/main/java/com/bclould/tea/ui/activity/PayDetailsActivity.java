@@ -6,8 +6,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,11 +18,8 @@ import com.bclould.tea.Presenter.BuySellPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
-import com.bclould.tea.model.OrderListInfo;
 import com.bclould.tea.model.TransRecordInfo;
 import com.bclould.tea.utils.StringUtils;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -62,6 +61,12 @@ public class PayDetailsActivity extends BaseActivity {
     TextView mTvCopy;
     @Bind(R.id.rl_tx_id)
     RelativeLayout mRlTxId;
+    @Bind(R.id.cv_data)
+    CardView mCvData;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,16 +89,12 @@ public class PayDetailsActivity extends BaseActivity {
                 mRlTxId.setVisibility(View.GONE);
             }
         }
-        buySellPresenter.transRecordInfo(log_id, id, type_number, new BuySellPresenter.CallBack3() {
-
-
-            @Override
-            public void send(List<OrderListInfo.DataBean> data) {
-
-            }
+        buySellPresenter.transRecordInfo(log_id, id, type_number, new BuySellPresenter.CallBack7() {
 
             @Override
-            public void send2(TransRecordInfo.DataBean data) {
+            public void send(TransRecordInfo.DataBean data) {
+                mCvData.setVisibility(View.VISIBLE);
+                mLlError.setVisibility(View.GONE);
                 mTvName.setText(data.getType_name());
                 mTvLimit.setText(data.getName());
                 mTvMoney.setText(data.getNumber());
@@ -102,6 +103,12 @@ public class PayDetailsActivity extends BaseActivity {
                 if (!StringUtils.isEmpty(data.getTxid())) {
                     mTvTxId.setText("Txid: " + data.getTxid());
                 }
+            }
+
+            @Override
+            public void error() {
+                mCvData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
             }
         });
         mTvCopy.setOnClickListener(new View.OnClickListener() {
@@ -115,8 +122,16 @@ public class PayDetailsActivity extends BaseActivity {
         });
     }
 
-    @OnClick(R.id.bark)
-    public void onViewClicked() {
-        finish();
+
+    @OnClick({R.id.bark, R.id.ll_error})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.bark:
+                finish();
+                break;
+            case R.id.ll_error:
+                initData();
+                break;
+        }
     }
 }

@@ -234,6 +234,10 @@ public class GuessDetailsActivity extends BaseActivity {
     LinearLayout mLlHash;
     @Bind(R.id.iv_share)
     ImageView mIvShare;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private Animation mEnterAnim;
     private Animation mExitAnim;
     private Dialog mRedDialog;
@@ -352,6 +356,7 @@ public class GuessDetailsActivity extends BaseActivity {
             @Override
             public void send(GuessInfo.DataBean data) {
                 if (!GuessDetailsActivity.this.isDestroyed()) {
+                    mLlError.setVisibility(View.GONE);
                     UtilTool.Log("投注列表", data.getBetList().size() + "");
                     mDataList.addAll(data.getBetList());
                     mGuessBetRVAdapter.notifyDataSetChanged();
@@ -429,6 +434,13 @@ public class GuessDetailsActivity extends BaseActivity {
                         mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
                     }
                 }
+            }
+
+            @Override
+            public void error() {
+                mLlError.setVisibility(View.VISIBLE);
+                mLlNo.setVisibility(View.GONE);
+                mLlAlready.setVisibility(View.GONE);
             }
         });
     }
@@ -798,7 +810,7 @@ public class GuessDetailsActivity extends BaseActivity {
         }
     };
 
-    @OnClick({R.id.iv_share, R.id.ll_hash, R.id.btn_plus, R.id.btn_minus, R.id.bark, R.id.btn_random, R.id.btn_random2, R.id.btn_random3, R.id.btn_random4, R.id.btn_random5, R.id.btn_bet, R.id.btn_confirm})
+    @OnClick({R.id.ll_error, R.id.iv_share, R.id.ll_hash, R.id.btn_plus, R.id.btn_minus, R.id.bark, R.id.btn_random, R.id.btn_random2, R.id.btn_random3, R.id.btn_random4, R.id.btn_random5, R.id.btn_bet, R.id.btn_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -893,6 +905,9 @@ public class GuessDetailsActivity extends BaseActivity {
                 } else if (mStatus == 2) {
                     Toast.makeText(this, getString(R.string.sum_jiangjin_chi), Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case R.id.ll_error:
+                initData();
                 break;
         }
     }

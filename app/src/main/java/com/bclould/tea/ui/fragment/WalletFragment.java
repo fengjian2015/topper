@@ -116,6 +116,11 @@ public class WalletFragment extends Fragment {
                         mTvTotal.setText(data);
                     }
                 }
+
+                @Override
+                public void error() {
+
+                }
             });
         }
     }

@@ -76,6 +76,7 @@ public class DillDataPresenter {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
+                            callBack.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -85,6 +86,7 @@ public class DillDataPresenter {
                         }
                     });
         } else {
+            callBack.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -117,6 +119,7 @@ public class DillDataPresenter {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
+                            callBack.error();
                             UtilTool.Log("充提幣", e.getMessage());
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
@@ -127,6 +130,7 @@ public class DillDataPresenter {
                         }
                     });
         } else {
+            callBack.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -170,11 +174,13 @@ public class DillDataPresenter {
     //定义接口
     public interface CallBack {
         void send(List<TransferInfo.DataBean> data);
+        void error();
     }
 
     //定义接口
     public interface CallBack2 {
         void send(List<InOutInfo.DataBean> data);
+        void error();
     }
 
     //定义接口

@@ -27,6 +27,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -94,6 +95,20 @@ public class CoinExchangeActivity extends BaseActivity {
     Button mBtnExchange;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.rl_title)
+    RelativeLayout mRlTitle;
+    @Bind(R.id.xx)
+    TextView mXx;
+    @Bind(R.id.ll_exchange)
+    LinearLayout mLlExchange;
+    @Bind(R.id.tv)
+    TextView mTv;
+    @Bind(R.id.rl_data)
+    RelativeLayout mRlData;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private CoinPresenter mCoinPresenter;
     private Dialog mBottomDialog;
     private Animation mEnterAnim;
@@ -216,6 +231,11 @@ public class CoinExchangeActivity extends BaseActivity {
                 if (!CoinExchangeActivity.this.isDestroyed()) {
                     if (data.getUSDT() != null && data.getRate() != null && data.getTrend() != null) {
                         if (!data.getUSDT().isEmpty() && !data.getRate().isEmpty() && !data.getTrend().isEmpty()) {
+                            mCount++;
+                            if (mCount >= 3) {
+                                mRlData.setVisibility(View.VISIBLE);
+                                mLlError.setVisibility(View.GONE);
+                            }
                             double usdt = Double.parseDouble(data.getUSDT());
                             double cny = Double.parseDouble(data.getRate());
                             DecimalFormat df = new DecimalFormat("#.00");
@@ -233,6 +253,12 @@ public class CoinExchangeActivity extends BaseActivity {
                 }
 
             }
+
+            @Override
+            public void error() {
+                mRlData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
+            }
         });
     }
 
@@ -245,21 +271,39 @@ public class CoinExchangeActivity extends BaseActivity {
         mCoinPresenter.exchangeOrder("USDT", name, mPage, mPageSize, new CoinPresenter.CallBack3() {
             @Override
             public void send(ExchangeOrderInfo.DataBeanX data) {
+                mCount++;
+                if (mCount >= 3) {
+                    mRlData.setVisibility(View.VISIBLE);
+                    mLlError.setVisibility(View.GONE);
+                }
                 mExchangeOrderList.addAll(data.getData());
                 mCoinExchangeRVAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void error() {
+                mRlData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
             }
         });
     }
 
     List<CoinListInfo.DataBean> mCoinList = new ArrayList<>();
     List<String> mCoin = new ArrayList<>();
+    private int mCount = 0;
 
     private void initCoin() {
+        mCoinList.clear();
         mCoinPresenter.coinLists("exchange", new CoinPresenter.CallBack() {
             @Override
             public void send(List<CoinListInfo.DataBean> data) {
                 if (!CoinExchangeActivity.this.isDestroyed()) {
                     if (data.size() != 0) {
+                        mCount++;
+                        if (mCount == 3) {
+                            mRlData.setVisibility(View.VISIBLE);
+                            mLlError.setVisibility(View.GONE);
+                        }
                         mCoinList.addAll(data);
                         mCoin.add(data.get(0).getName());
                         mServiceCharge = data.get(0).getOut_exchange();
@@ -272,10 +316,16 @@ public class CoinExchangeActivity extends BaseActivity {
                     }
                 }
             }
+
+            @Override
+            public void error() {
+                mRlData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
+            }
         });
     }
 
-    @OnClick({R.id.bark, R.id.tv_question, R.id.ll_coin_selector, R.id.btn_exchange})
+    @OnClick({R.id.bark, R.id.tv_question, R.id.ll_coin_selector, R.id.btn_exchange, R.id.ll_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -292,26 +342,9 @@ public class CoinExchangeActivity extends BaseActivity {
                     showPWDialog();
                 }
                 break;
-           /* case R.id.tv_up:
-                if (mPage.get("page").equals("1")) {
-                    Toast.makeText(this, "已经是第一页了", Toast.LENGTH_SHORT).show();
-                } else {
-                    int page = Integer.parseInt(mPage.get("page"));
-                    page--;
-                    mPage.put("page", page + "");
-                    initListData(mCoin.get(0));
-                }
+            case R.id.ll_error:
+                initCoin();
                 break;
-            case R.id.tv_below:
-                if (mPage.get("page").equals(mPageSum.get("pageSum"))) {
-                    Toast.makeText(this, "已经是第最后一页了", Toast.LENGTH_SHORT).show();
-                } else {
-                    int page = Integer.parseInt(mPage.get("page"));
-                    page++;
-                    mPage.put("page", page + "");
-                    initListData(mCoin.get(0));
-                }
-                break;*/
         }
     }
 

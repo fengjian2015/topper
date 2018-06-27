@@ -246,6 +246,7 @@ public class ReceiptPaymentPresenter {
                         @Override
                         public void onError(Throwable e) {
                             hideDialog();
+                            callBack4.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -255,6 +256,7 @@ public class ReceiptPaymentPresenter {
                         }
                     });
         } else {
+            callBack4.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -317,6 +319,7 @@ public class ReceiptPaymentPresenter {
     //定义接口
     public interface CallBack4 {
         void send(List<TransferListInfo.DataBean> data);
+        void error();
     }
 
     //定义接口

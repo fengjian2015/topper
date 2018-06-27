@@ -45,6 +45,10 @@ public class GonggaoFragment extends Fragment {
     RecyclerView mRecyclerView;
     @Bind(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private NewsNoticePresenter mNewsNoticePresenter;
     private GonggaoManagerRVAdapter mGonggaoManagerRVAdapter;
     private int mPage = 1;
@@ -89,14 +93,23 @@ public class GonggaoFragment extends Fragment {
                     if (data.size() != 0) {
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.GONE);
                         mDataList.clear();
                         mDataList.addAll(data);
                         mGonggaoManagerRVAdapter.notifyDataSetChanged();
                     } else {
-                        mLlNoData.setVisibility(View.VISIBLE);
                         mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.VISIBLE);
+                        mLlError.setVisibility(View.GONE);
                     }
                 }
+            }
+
+            @Override
+            public void error() {
+                mRecyclerView.setVisibility(View.GONE);
+                mLlNoData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
             }
         });
     }

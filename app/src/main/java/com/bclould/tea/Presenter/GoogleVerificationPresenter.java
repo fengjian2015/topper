@@ -48,7 +48,7 @@ public class GoogleVerificationPresenter {
         }
     }
 
-    public void getGoogleKey() {
+    public void getGoogleKey(final CallBack2 callBack2) {
         if (UtilTool.isNetworkAvailable(mGoogleVerificationActivity)) {
             showDialog();
             RetrofitUtil.getInstance(mGoogleVerificationActivity)
@@ -65,12 +65,13 @@ public class GoogleVerificationPresenter {
                         @Override
                         public void onNext(@NonNull GoogleInfo googleInfo) {
                             hideDialog();
-                            mGoogleVerificationActivity.setData(googleInfo);
+                            callBack2.send(googleInfo);
                         }
 
                         @Override
                         public void onError(@NonNull Throwable e) {
                             hideDialog();
+                            callBack2.error();
                             Toast.makeText(mGoogleVerificationActivity, mGoogleVerificationActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -80,6 +81,7 @@ public class GoogleVerificationPresenter {
                         }
                     });
         } else {
+            callBack2.error();
             Toast.makeText(mGoogleVerificationActivity, mGoogleVerificationActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -162,5 +164,11 @@ public class GoogleVerificationPresenter {
     //定义接口
     public interface CallBack {
         void send();
+    }
+
+    //定义接口
+    public interface CallBack2 {
+        void send(GoogleInfo googleInfo);
+        void error();
     }
 }
