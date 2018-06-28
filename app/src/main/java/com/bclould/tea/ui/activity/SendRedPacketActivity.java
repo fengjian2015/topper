@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -76,6 +77,12 @@ public class SendRedPacketActivity extends BaseActivity {
     EditText mEtRemark;
     @Bind(R.id.btn_send)
     Button mBtnSend;
+    @Bind(R.id.ll_data)
+    LinearLayout mLlData;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private Dialog mBottomDialog;
     private DBManager mMgr;
     private String mUser;
@@ -109,23 +116,29 @@ public class SendRedPacketActivity extends BaseActivity {
             coinPresenter.coinLists("red_packet", new CoinPresenter.CallBack() {
                 @Override
                 public void send(List<CoinListInfo.DataBean> data) {
+                    mLlData.setVisibility(View.VISIBLE);
+                    mLlError.setVisibility(View.GONE);
                     if (MyApp.getInstance().mRedCoinList.size() == 0)
                         MyApp.getInstance().mRedCoinList.addAll(data);
                 }
 
                 @Override
                 public void error() {
-
+                    mLlData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
                 }
             });
         }
     }
 
-    @OnClick({R.id.bark, R.id.rl_selector_currency, R.id.btn_send})
+    @OnClick({R.id.ll_error,R.id.bark, R.id.rl_selector_currency, R.id.btn_send})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.ll_error:
+                initData();
                 break;
             case R.id.rl_selector_currency:
                 showDialog();

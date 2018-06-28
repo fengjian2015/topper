@@ -754,7 +754,16 @@ public class ChatAdapter extends RecyclerView.Adapter {
         String mUser = messageInfo.getSend();
         if (StringUtils.isEmpty(mUser))
             mUser = mRoomId;
-        final String mName = mMgr.findUserName(mUser);
+        String mName=mMgr.queryRemark(mUser);
+        if(StringUtils.isEmpty(mName)){
+            mName=mMgr.findUserName(mUser);
+        }
+        if(StringUtils.isEmpty(mName)){
+            mName=mMgr.findStrangerName(mUser);
+        }
+        if(StringUtils.isEmpty(mName)){
+            mName=mUser;
+        }
         mCurrencyDialog = new CurrencyDialog(R.layout.dialog_redpacket, mContext, R.style.dialog);
         Window window = mCurrencyDialog.getWindow();
         window.setWindowAnimations(R.style.CustomDialog);
@@ -778,6 +787,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             }
         });
         final String finalMUser = mUser;
+        final String finalMName = mName;
         open.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -793,7 +803,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                             if(info.getStatus()==2)
                                 ToastShow.showToast2((Activity) mContext,info.getMessage());
 //                            skip(info, mFromBitmap, mUser, 1);
-                            skip(info, finalMUser, 1, mName);
+                            skip(info, finalMUser, 1, finalMName);
                         }
                     }
                 });

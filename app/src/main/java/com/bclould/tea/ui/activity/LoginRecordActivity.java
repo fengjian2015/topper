@@ -6,7 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
@@ -32,6 +34,10 @@ public class LoginRecordActivity extends BaseActivity {
     ImageView mBark;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private LoginRecordRVAdapter mLoginRecordRVAdapter;
     List<LoginRecordInfo.DataBean> mDataList = new ArrayList<>();
 
@@ -50,8 +56,16 @@ public class LoginRecordActivity extends BaseActivity {
         loginPresenter.loginRecord(new LoginPresenter.CallBack() {
             @Override
             public void send(List<LoginRecordInfo.DataBean> data) {
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mLlError.setVisibility(View.GONE);
                 mDataList.addAll(data);
                 mLoginRecordRVAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void error() {
+                mRecyclerView.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -62,8 +76,15 @@ public class LoginRecordActivity extends BaseActivity {
         mRecyclerView.setAdapter(mLoginRecordRVAdapter);
     }
 
-    @OnClick(R.id.bark)
-    public void onViewClicked() {
-        finish();
+    @OnClick({R.id.bark, R.id.ll_error})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.bark:
+                finish();
+                break;
+            case R.id.ll_error:
+                initData();
+                break;
+        }
     }
 }

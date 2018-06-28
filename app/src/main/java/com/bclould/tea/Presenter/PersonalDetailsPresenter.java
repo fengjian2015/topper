@@ -380,5 +380,6 @@ public class PersonalDetailsPresenter {
 
     public interface CallBack4{
         void send(UserDataInfo.DataBean listdata);
+        void error();
     }
 }

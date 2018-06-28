@@ -110,7 +110,7 @@
         android:layout_height="@dimen/y80"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y30"
-        android:background="@drawable/bg_login_shape"
+        android:background="@drawable/bg_blue_shape"
         android:text="@string/submit"
         android:textColor="@color/white"
         android:textSize="@dimen/x28"/>

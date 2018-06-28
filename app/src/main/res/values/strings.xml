@@ -971,4 +971,11 @@
     <string name="group_red_max_out_member">紅包個數不能大於群人數</string>
     <string name="group_red_max_money">單個紅包金額最大200</string>
     <string name="group_red_min_money">單個紅包不能低於0.01</string>
+    <string name="sum_rceive">共收到</string>
+    <string name="receive_red">收到紅包</string>
+    <string name="money_highest">金額最高</string>
+    <string name="max_coin">最多幣種</string>
+    <string name="ge_bi">個幣</string>
+    <string name="send_red">發出紅包</string>
+    <string name="back_send">後發送</string>
 </resources>

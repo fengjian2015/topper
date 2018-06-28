@@ -90,6 +90,10 @@ public class PaymentActivity extends BaseActivity {
     ImageView mIvTouxiang;
     @Bind(R.id.cv_who)
     CardView mCvWho;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private String mUserId;
     private ReceiptPaymentPresenter mReceiptPaymentPresenter;
     private Dialog mBottomDialog;
@@ -127,13 +131,16 @@ public class PaymentActivity extends BaseActivity {
             coinPresenter.coinLists("pay", new CoinPresenter.CallBack() {
                 @Override
                 public void send(List<CoinListInfo.DataBean> data) {
+                    mLlNoSteadfast.setVisibility(View.VISIBLE);
+                    mLlError.setVisibility(View.GONE);
                     if (MyApp.getInstance().mPayCoinList.size() == 0)
                         MyApp.getInstance().mPayCoinList.addAll(data);
                 }
 
                 @Override
                 public void error() {
-
+                    mLlNoSteadfast.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
                 }
             });
         }
@@ -154,6 +161,11 @@ public class PaymentActivity extends BaseActivity {
                         UtilTool.setCircleImg(PaymentActivity.this, dataBean.getAvatar(), mIvTouxiang);
                         mTvName.setText(username);
                     }
+                }
+
+                @Override
+                public void error() {
+                    UtilTool.setCircleImg(PaymentActivity.this, R.mipmap.img_nfriend_headshot1, mIvTouxiang);
                 }
             });
         } else if (mType.equals(Constants.MONEYOUT)) {
@@ -180,6 +192,11 @@ public class PaymentActivity extends BaseActivity {
                         mTvName.setText(username);
                     }
                 }
+
+                @Override
+                public void error() {
+                    UtilTool.setCircleImg(PaymentActivity.this, R.mipmap.img_nfriend_headshot1, mIvTouxiang);
+                }
             });
             mTvCoin.setText(mCoinNames);
             mEtCount.setText(mNumber);
@@ -189,11 +206,14 @@ public class PaymentActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.bark, R.id.btn_payment, R.id.rl_selector_coin})
+    @OnClick({R.id.ll_error, R.id.bark, R.id.btn_payment, R.id.rl_selector_coin})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.ll_error:
+                initData();
                 break;
             case R.id.btn_payment:
                 if (mType.equals(Constants.DATAMONEYIN)) {
@@ -348,6 +368,11 @@ public class PaymentActivity extends BaseActivity {
                 intent.putExtra("remark", data.getRemark());
                 setResult(RESULT_OK, intent);
                 finish();
+            }
+
+            @Override
+            public void error() {
+
             }
         });
     }

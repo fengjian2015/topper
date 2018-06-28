@@ -293,6 +293,11 @@ public class MainActivity extends BaseActivity {
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.xg_touxaing)));
                     }
                 }
+
+                @Override
+                public void error() {
+
+                }
             });
         }
     }

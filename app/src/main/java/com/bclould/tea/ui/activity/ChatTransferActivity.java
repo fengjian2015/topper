@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,6 +79,12 @@ public class ChatTransferActivity extends BaseActivity {
     EditText mEtRemark;
     @Bind(R.id.btn_confirm)
     Button mBtnConfirm;
+    @Bind(R.id.ll_data)
+    LinearLayout mLlData;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private Dialog mBottomDialog;
     private String mUser;
     private Animation mEnterAnim;
@@ -113,13 +120,16 @@ public class ChatTransferActivity extends BaseActivity {
             coinPresenter.coinLists("trans", new CoinPresenter.CallBack() {
                 @Override
                 public void send(List<CoinListInfo.DataBean> data) {
+                    mLlData.setVisibility(View.VISIBLE);
+                    mLlError.setVisibility(View.GONE);
                     if (MyApp.getInstance().mCoinList.size() == 0)
                         MyApp.getInstance().mCoinList.addAll(data);
                 }
 
                 @Override
                 public void error() {
-
+                    mLlData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
                 }
             });
         }
@@ -143,11 +153,14 @@ public class ChatTransferActivity extends BaseActivity {
         UtilTool.getImage(mMgr, mUser, ChatTransferActivity.this, mIvTouxiang);
     }
 
-    @OnClick({R.id.bark, R.id.tv_transfer_record, R.id.rl_selector_coin, R.id.btn_confirm})
+    @OnClick({R.id.ll_error, R.id.bark, R.id.tv_transfer_record, R.id.rl_selector_coin, R.id.btn_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.ll_error:
+                initData();
                 break;
             case R.id.tv_transfer_record:
                 Intent intent = new Intent(this, BillDetailsActivity.class);

@@ -32,150 +32,184 @@
 
     </RelativeLayout>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x20">
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/rl_selector_currency"
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y30"
+            app:cardCornerRadius="@dimen/x20">
+
+            <RelativeLayout
+                android:id="@+id/rl_selector_currency"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y120">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:text="@string/selected_currency"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x30"/>
+
+                <TextView
+                    android:id="@+id/tv_currency"
+                    android:layout_width="@dimen/x100"
+                    android:layout_height="@dimen/y50"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x20"
+                    android:layout_toLeftOf="@+id/iv"
+                    android:background="@drawable/bg_register_shape"
+                    android:gravity="center"
+                    android:text="TPC"/>
+
+                <ImageView
+                    android:id="@+id/iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x30"
+                    android:src="@mipmap/icon_transfer_down_default"/>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y30"
+            app:cardCornerRadius="@dimen/x20">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y120">
+
+                <EditText
+                    android:id="@+id/et_count"
+                    android:layout_width="match_parent"
+                    android:singleLine="true"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/tv"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/et_count"
+                    android:inputType="numberDecimal"
+                    android:paddingLeft="@dimen/x20"
+                    android:paddingRight="@dimen/x20"
+                    android:textSize="@dimen/x30"/>
+
+                <!--<TextView
+                    android:id="@+id/tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x5"
+                    android:layout_toLeftOf="@+id/tv_balance"
+                    android:text="可用余额"
+                    android:textSize="@dimen/x26"/>
+
+                <TextView
+                    android:id="@+id/tv_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/tv_coin"
+                    android:text="0.00"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/x26"/>-->
+
+                <TextView
+                    android:id="@+id/tv_coin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x5"
+                    android:layout_marginRight="@dimen/x30"
+                    android:text="TPC"
+                    android:textSize="@dimen/x26"/>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:text="@string/selected_currency"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
-
-            <TextView
-                android:id="@+id/tv_currency"
-                android:layout_width="@dimen/x100"
-                android:layout_height="@dimen/y50"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x20"
-                android:layout_toLeftOf="@+id/iv"
-                android:background="@drawable/bg_register_shape"
-                android:gravity="center"
-                android:text="TPC"/>
-
-            <ImageView
-                android:id="@+id/iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x30"
-                android:src="@mipmap/icon_transfer_down_default"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x20">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:layout_marginTop="@dimen/y30"
+            app:cardCornerRadius="@dimen/x20">
 
             <EditText
-                android:id="@+id/et_count"
+                android:id="@+id/et_remark"
                 android:layout_width="match_parent"
+                android:layout_height="@dimen/y120"
                 android:singleLine="true"
-                android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/tv"
                 android:background="@android:color/transparent"
-                android:hint="@string/et_count"
-                android:inputType="numberDecimal"
+                android:hint="@string/congratulation"
                 android:paddingLeft="@dimen/x20"
                 android:paddingRight="@dimen/x20"
                 android:textSize="@dimen/x30"/>
 
-            <!--<TextView
-                android:id="@+id/tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x5"
-                android:layout_toLeftOf="@+id/tv_balance"
-                android:text="可用余额"
-                android:textSize="@dimen/x26"/>
+        </android.support.v7.widget.CardView>
 
-            <TextView
-                android:id="@+id/tv_balance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/tv_coin"
-                android:text="0.00"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/x26"/>-->
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="@dimen/x450"
+            android:layout_height="@dimen/y80"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y80"
+            android:background="@drawable/bg_red_shape"
+            android:text="@string/btn_text_send"
+            android:textColor="@color/white"/>
 
-            <TextView
-                android:id="@+id/tv_coin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x5"
-                android:layout_marginRight="@dimen/x30"
-                android:text="TPC"
-                android:textSize="@dimen/x26"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y30"
+            android:text="@string/send_red_packet_hint"
+            android:textSize="@dimen/x26"/>
+    </LinearLayout>
 
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-
-    <android.support.v7.widget.CardView
+    <LinearLayout
+        android:id="@+id/ll_error"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x20">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_ununited"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-        <EditText
-            android:id="@+id/et_remark"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120"
-            android:singleLine="true"
-            android:background="@android:color/transparent"
-            android:hint="@string/congratulation"
-            android:paddingLeft="@dimen/x20"
-            android:paddingRight="@dimen/x20"
+        <ImageView
+            android:id="@+id/iv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/img_wrong"/>
+
+        <TextView
+            android:layout_marginTop="@dimen/y50"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading_error_anew_loading_hint2"
+            android:textColor="@android:color/black"
             android:textSize="@dimen/x30"/>
 
-    </android.support.v7.widget.CardView>
-
-    <Button
-        android:id="@+id/btn_send"
-        android:layout_width="@dimen/x450"
-        android:layout_height="@dimen/y80"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y80"
-        android:background="@drawable/bg_red_shape"
-        android:text="@string/btn_text_send"
-        android:textColor="@color/white"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y30"
-        android:text="@string/send_red_packet_hint"
-        android:textSize="@dimen/x26"/>
+    </LinearLayout>
 
 </LinearLayout>

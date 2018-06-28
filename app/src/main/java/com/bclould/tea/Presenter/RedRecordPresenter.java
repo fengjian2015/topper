@@ -69,6 +69,7 @@ public class RedRecordPresenter {
                         @Override
                         public void onError(Throwable e) {
 //                            hideDialog();
+                            callBack.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -78,6 +79,7 @@ public class RedRecordPresenter {
                         }
                     });
         } else {
+            callBack.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -123,6 +125,7 @@ public class RedRecordPresenter {
     //定义接口
     public interface CallBack {
         void send(RedRecordInfo.DataBean data);
+        void error();
     }
 
     //定义接口

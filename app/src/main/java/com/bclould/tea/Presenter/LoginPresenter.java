@@ -271,6 +271,7 @@ public class LoginPresenter {
                         @Override
                         public void onError(Throwable e) {
 //                            hideDialog();
+                            callBack.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -280,6 +281,7 @@ public class LoginPresenter {
                         }
                     });
         } else {
+            callBack.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -330,6 +332,7 @@ public class LoginPresenter {
     //定义接口
     public interface CallBack {
         void send(List<LoginRecordInfo.DataBean> data);
+        void error();
     }
 
     //定义接口

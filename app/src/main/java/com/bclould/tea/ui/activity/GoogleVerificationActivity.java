@@ -34,6 +34,8 @@ import com.bclould.tea.utils.UtilTool;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -98,6 +100,8 @@ public class GoogleVerificationActivity extends BaseActivity {
     private RegisterPresenter mRegisterPresenter;
     private String mEmail;
     private DeleteCacheDialog mDeleteCacheDialog;
+    private int mRecLen;
+    Timer mTimer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -221,11 +225,7 @@ public class GoogleVerificationActivity extends BaseActivity {
                     bindGoogle();
                 break;
             case R.id.tv_send:
-                if (!UtilTool.isFastClick()) {
                     sendVcode();
-                } else {
-                    Toast.makeText(this, getString(R.string.toast_after_time), Toast.LENGTH_SHORT).show();
-                }
                 break;
             case R.id.tv_unbinding:
                 mLlBindingStatus.setVisibility(View.GONE);
@@ -310,6 +310,30 @@ public class GoogleVerificationActivity extends BaseActivity {
             @Override
             public void send() {
                 Toast.makeText(GoogleVerificationActivity.this, getString(R.string.send_succeed), Toast.LENGTH_SHORT).show();
+                mRecLen = 60;
+                mTimer = new Timer();
+                mTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {      // UI thread
+                            @Override
+                            public void run() {
+                                mRecLen--;
+                                mTvSend.setText(mRecLen + "s" + getString(R.string.back_send));
+                                if (mRecLen <= 0) {
+                                    if (mTimer != null) {
+                                        mTimer.cancel();
+                                        mTimer = null;
+                                    }
+                                    mTvSend.setEnabled(true);
+                                    mTvSend.setText(getString(R.string.send));
+                                } else {
+                                    mTvSend.setEnabled(false);
+                                }
+                            }
+                        });
+                    }
+                }, 1000, 1000);
             }
         });
     }

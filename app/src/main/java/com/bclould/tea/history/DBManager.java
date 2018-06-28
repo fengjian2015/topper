@@ -941,6 +941,18 @@ public class DBManager {
         return result;
     }
 
+    public String findStrangerName(String user) {
+        db = helper.getReadableDatabase();
+        String userName = null;
+        Cursor cursor = db.rawQuery("select userName from UserInfo where user=?",
+                new String[]{user});
+        while (cursor.moveToNext()) {
+            userName = cursor.getString(cursor.getColumnIndex("userName"));
+        }
+        cursor.close();
+        return userName;
+    }
+
     public void updateStrangerUserInfo(String user,String path,String userName) {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();

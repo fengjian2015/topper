@@ -20,6 +20,9 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.AnimatorTool;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -47,12 +50,37 @@ public class RegisterActivity2 extends AppCompatActivity {
     private RegisterPresenter mRegisterPresenter;
     private String mUsername;
     private String mEmail;
+    private int mRecLen = 60;
+    Timer mTimer = new Timer();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register2);
         ButterKnife.bind(this);
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                runOnUiThread(new Runnable() {      // UI thread
+                    @Override
+                    public void run() {
+                        mRecLen--;
+                        mTvSend.setText(mRecLen + "s" + getString(R.string.back_send));
+                        if (mRecLen <= 0) {
+                            if (mTimer != null) {
+                                mTimer.cancel();
+                                mTimer = null;
+                            }
+                            mTvSend.setEnabled(true);
+                            mTvSend.setText(getString(R.string.send));
+                        } else {
+                            mTvSend.setEnabled(false);
+                        }
+                    }
+                });
+            }
+        }, 1000, 1000);
         MyApp.getInstance().addActivity(this);
         mRegisterPresenter = new RegisterPresenter(this);
         initIntent();
@@ -88,6 +116,31 @@ public class RegisterActivity2 extends AppCompatActivity {
         mRegisterPresenter.signUpValidator(mEmail, mUsername, new RegisterPresenter.CallBack2() {
             @Override
             public void send() {
+                mRecLen = 60;
+                mTimer = new Timer();
+                mTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+
+                        runOnUiThread(new Runnable() {      // UI thread
+                            @Override
+                            public void run() {
+                                mRecLen--;
+                                mTvSend.setText(mRecLen + "s" + getString(R.string.back_send));
+                                if (mRecLen <= 0) {
+                                    if (mTimer != null) {
+                                        mTimer.cancel();
+                                        mTimer = null;
+                                    }
+                                    mTvSend.setEnabled(true);
+                                    mTvSend.setText(getString(R.string.send));
+                                } else {
+                                    mTvSend.setEnabled(false);
+                                }
+                            }
+                        });
+                    }
+                }, 1000, 1000);
             }
         });
     }
