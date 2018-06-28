@@ -28,6 +28,7 @@
             android:layout_marginLeft="@dimen/x20"
             android:text="安子"
             android:textColor="@color/black"
+            android:singleLine="true"
             android:gravity="center"
             android:textSize="@dimen/x28"
             android:layout_toRightOf="@+id/iv_touxiang"

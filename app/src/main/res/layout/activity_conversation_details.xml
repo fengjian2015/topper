@@ -62,7 +62,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:textColor="@color/image_overlay_true"
-            android:textSize="@dimen/x32"/>
+            android:textSize="@dimen/x32"
+            android:visibility="gone"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -70,7 +71,8 @@
         android:layout_height="@dimen/y160"
         android:layout_marginTop="@dimen/y20"
         android:background="@color/white"
-        android:paddingTop="@dimen/y40">
+        android:paddingTop="@dimen/y40"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv1"
@@ -108,7 +110,8 @@
         android:layout_height="@dimen/y160"
         android:layout_marginTop="@dimen/y20"
         android:background="@color/white"
-        android:paddingTop="@dimen/y40">
+        android:paddingTop="@dimen/y40"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv2"

@@ -69,6 +69,7 @@ public class SingleManage implements Room {
     private String mUser;//對方id
     private Context context;
     private String mName;
+    private String url;
     private ArrayList<MessageManageListener> listeners = new ArrayList<>();
 
 
@@ -80,6 +81,10 @@ public class SingleManage implements Room {
         if (StringUtils.isEmpty(mName)) {
             this.mName = mMgr.findUserName(mUser);
         }
+    }
+
+    public void setUrl(String url){
+        this.url=url;
     }
 
     private synchronized boolean send(String to, byte[] attachment, String body, int msgType, String msgId, long time) throws Exception {

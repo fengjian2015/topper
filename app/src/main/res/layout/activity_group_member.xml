@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/light"
-    tools:context="com.bclould.tea.ui.activity.ModificationNameActivity">
+    tools:context="com.bclould.tea.ui.activity.GroupMemberActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
@@ -20,35 +19,28 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
-            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/my_nickname_group"
+            android:text="@string/group_member_manage"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
-
-        <TextView
-            android:id="@+id/tv_hint"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:paddingRight="@dimen/x20"
-            android:text="@string/finish"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"/>
     </RelativeLayout>
     <View style="@style/HCutOffRule"></View>
-    <EditText
-        android:id="@+id/et_name"
+
+    <GridView
+        android:id="@+id/partner_detial_gridview"
+        android:paddingTop="@dimen/y30"
+        android:paddingBottom="@dimen/y30"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y80"
-        android:layout_marginTop="@dimen/y20"
-        android:paddingLeft="@dimen/x30"
-        android:paddingRight="@dimen/x30"
-        android:maxLength="10"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tv_member_number"
         android:background="@color/white"
-        android:singleLine="true" />
+        android:gravity="center_horizontal|top"
+        android:listSelector="@android:color/transparent"
+        android:verticalSpacing="@dimen/y15"
+        android:layout_marginTop="@dimen/y10"
+        android:numColumns="6"
+        >
+    </GridView>
 </LinearLayout>

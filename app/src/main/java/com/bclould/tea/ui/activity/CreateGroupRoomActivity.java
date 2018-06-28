@@ -42,6 +42,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tea.topperchat.WsContans.TOCO_SERVICE;
+
 /**
  * Created by GA on 2018/1/5.
  */
@@ -87,18 +89,14 @@ public class CreateGroupRoomActivity extends BaseActivity {
         mDBRoomMember=new DBRoomMember(this);
         mDBRoomManage=new DBRoomManage(this);
         List<UserInfo> userInfos = mgr.queryAllUser();
-        UserInfo userInfo = null;
-        UserInfo userInfo2 = null;
+        List<UserInfo> deleteInfos=new ArrayList<>();
         for (UserInfo info : userInfos) {
-            if (info.getUser().equals(UtilTool.getTocoId())) {
-                userInfo = info;
-            } else if (info.getUser().isEmpty()) {
-                userInfo2 = info;
+            if (info.getUser().equals(UtilTool.getTocoId())||(info.getUser().isEmpty()&&info!=null)
+                    ||TOCO_SERVICE.equals(info.getUser())) {
+                deleteInfos.add(info);
             }
         }
-        userInfos.remove(userInfo);
-        if (userInfo2 != null)
-            userInfos.remove(userInfo2);
+        userInfos.removeAll(deleteInfos);
         mUserInfos.addAll(userInfos);
         Collections.sort(mUserInfos);
     }

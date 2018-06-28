@@ -80,6 +80,8 @@ configurations.all {
 
 
 
+
+
 dependencies {
     implementation 'com.android.support:design:26.1.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -184,4 +186,5 @@ dependencies {
     compile 'com.umeng.sdk:utdid:1.1.5.3'
     //PushSDK
     compile 'com.umeng.sdk:push:4.2.0'
+    compile 'com.github.andy6804tw:ZoomImageView-lib:0.0.1'
 }

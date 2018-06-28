@@ -11,6 +11,7 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.BaseInfo;
+import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.GroupCreateInfo;
 import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.GroupMemberInfo;
@@ -19,8 +20,14 @@ import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.ActivityUtil;
+import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.xmpp.RoomManage;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -46,7 +53,6 @@ public class GroupPresenter {
             mProgressDialog = LoadingProgressDialog.createDialog(mContext);
             mProgressDialog.setMessage(mContext.getString(R.string.loading));
         }
-
         mProgressDialog.show();
     }
 
@@ -79,7 +85,7 @@ public class GroupPresenter {
                             if (groupCreateInfo.getStatus()== 1) {
                                 callBack.send(groupCreateInfo.getData().getGroup_id()+"");
                             } else {
-                                ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.create_failure));
+                                ToastShow.showToast2((Activity) mContext, groupCreateInfo.getMessage());
                             }
                         }
 
@@ -161,6 +167,7 @@ public class GroupPresenter {
                             if (baseInfo.getStatus() == 1) {
                                 mDBRoomManage.deleteAllRoom();
                                 mDBRoomMember.deleteAllRoomMember();
+                                List<ConversationInfo> list= dbManager.queryConversationGroup();
                                 for (GroupInfo.DataBean dataBean : baseInfo.getData()) {
                                     RoomManageInfo roomManageInfo = new RoomManageInfo();
                                     roomManageInfo.setRoomName(dataBean.getName());
@@ -176,8 +183,22 @@ public class GroupPresenter {
                                         roomMemberInfo.setImage_url(usersBean.getAvatar());
                                         roomMemberInfo.setName(usersBean.getName());
                                         mDBRoomMember.addRoomMember(roomMemberInfo);
+                                        dbManager.addStrangerUserInfo(usersBean.getToco_id(),usersBean.getAvatar(),usersBean.getName());
                                     }
                                 }
+                                for(ConversationInfo conversationInfo: list){
+                                  boolean isExist=false;
+                                   A:for (GroupInfo.DataBean dataBean : baseInfo.getData()) {
+                                        if(conversationInfo.getUser().equals(dataBean.getId()+"")){
+                                            isExist=true;
+                                            break A;
+                                        }
+                                    }
+                                    if(!isExist){
+                                       dbManager.deleteConversation(conversationInfo.getUser());
+                                    }
+                                }
+                                EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.refresh_group_room)));
 //                                dbManager.deleteConversation(baseInfo.getData());
                                 callBack.send(baseInfo);
 
@@ -267,6 +288,10 @@ public class GroupPresenter {
                             }
                             hideDialog();
                             if (baseInfo.getStatus() == 1) {
+                                if(baseInfo.getData()==null){
+                                    RoomManage.getInstance().removeRoom(group_id+"");
+                                    return;
+                                }
                                 RoomManageInfo roomManageInfo = new RoomManageInfo();
                                 roomManageInfo.setRoomName(baseInfo.getData().getName());
                                 roomManageInfo.setRoomId(baseInfo.getData().getId()+"");

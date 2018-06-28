@@ -24,11 +24,13 @@
 
         <TextView
             android:id="@+id/tab1_item_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:textColor="@color/black"
             android:textSize="@dimen/x35"
+            android:singleLine="true"
+            android:maxEms="8"
             android:textStyle="bold"/>
 
         <io.github.rockerhieu.emojicon.EmojiconTextView

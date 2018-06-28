@@ -121,7 +121,7 @@ public class SelectConversationAdapter extends RecyclerView.Adapter {
                     url=info.getPath();
                 }
             }
-            UtilTool.getImage(mContext, mIvTouxiang,url);
+            UtilTool.getImage(mContext, mIvTouxiang,mDBRoomMember,mMgr,mConversationInfo.getUser());
         }
 
 

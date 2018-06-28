@@ -10,6 +10,7 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -156,15 +157,25 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
 
     private void setGroupMember(boolean isFirst) {
         mList.clear();
+        //是群主添加兩個
         if (isOwner()) {
             mList.add(new RoomMemberInfo());
         }
         mList.add(new RoomMemberInfo());
         mList.addAll(mDBRoomMember.queryAllRequest(roomId));
-        mTvMemberNumber.setText(mList.size() + "人");
-        //是群主添加兩個
+        if(isOwner()){
+            mTvMemberNumber.setText(getString(R.string.group_member)+"("+(mList.size()-2)+"/"+mDBRoomManage.findRoomNumber(roomId) + ")");
+        }else{
+            mTvMemberNumber.setText(getString(R.string.group_member)+"("+(mList.size()-1)+"/"+mDBRoomManage.findRoomNumber(roomId) + ")");
+        }
+        if(mList.size()>6){
+           List<RoomMemberInfo> memberInfoListView=new ArrayList<>();
+           memberInfoListView.addAll(mList.subList(0,6));
+           mList.clear();
+           mList.addAll(memberInfoListView);
+        }
         if (isFirst) {
-            mAdapter = new GroupDetailsMemberAdapter(this, mList, roomId, mMgr, mDBRoomManage);
+            mAdapter = new GroupDetailsMemberAdapter(this, mList, roomId, mMgr, mDBRoomManage,mDBRoomMember);
             mPartnerDetialGridview.setAdapter(mAdapter);
             new GroupPresenter(this).selectGroupMember(Integer.parseInt(roomId), mDBRoomMember, true, mDBRoomManage, mMgr, new CallBack() {
                 @Override
@@ -197,7 +208,8 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         mOnOffMessageFree.setSelected(free);
     }
 
-    @OnClick({R.id.bark, R.id.on_off_message_free, R.id.on_off_top, R.id.rl_empty_talk, R.id.btn_brak, R.id.rl_group_qr, R.id.rl_group_name, R.id.rl_member_name, R.id.rl_group_management,R.id.rl_looking_chat,R.id.rl_group_image})
+    @OnClick({R.id.bark, R.id.on_off_message_free, R.id.on_off_top, R.id.rl_empty_talk, R.id.btn_brak, R.id.rl_group_qr, R.id.rl_group_name, R.id.rl_member_name, R.id.rl_group_management,R.id.rl_looking_chat
+            ,R.id.rl_group_image,R.id.rl_go_memberlist})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -237,7 +249,16 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
             case R.id.rl_group_image:
                 changeImage();
                 break;
+            case R.id.rl_go_memberlist:
+                goMemberList();
+                break;
         }
+    }
+
+    private void goMemberList() {
+        Intent intent=new Intent(this,GroupMemberActivity.class);
+        intent.putExtra("roomId",roomId);
+        startActivity(intent);
     }
 
     private void changeImage() {
@@ -373,13 +394,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                     new GroupPresenter(ConversationGroupDetailsActivity.this).deleteGroup(Integer.parseInt(roomId), UtilTool.getTocoId(), new CallBack() {
                         @Override
                         public void send() {
-                            mDBRoomManage.deleteRoom(roomId);
-                            mDBRoomMember.deleteRoom(roomId);
-                            mMgr.deleteConversation(roomId);
-                            mMgr.deleteMessage(roomId);
-                            MessageEvent messageEvent = new MessageEvent(getString(R.string.quit_group));
-                            messageEvent.setId(roomId);
-                            EventBus.getDefault().post(messageEvent);
+                           RoomManage.getInstance().removeRoom(roomId);
                         }
                     });
                     deleteCacheDialog.dismiss();

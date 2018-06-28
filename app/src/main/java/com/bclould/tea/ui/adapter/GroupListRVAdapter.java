@@ -15,9 +15,11 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.RoomManage;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,12 +40,14 @@ public class GroupListRVAdapter extends RecyclerView.Adapter {
     private final List<RoomManageInfo> mJoinChatRoom;
     private DBManager mDBManager;
     private ArrayList<Boolean> roomList;
+    private DBRoomManage dbRoomManage;
 
-    public GroupListRVAdapter(Context context, ArrayList<RoomManageInfo> joinChatRoom, DBManager mDBManager, ArrayList<Boolean> roomList) {
+    public GroupListRVAdapter(Context context, ArrayList<RoomManageInfo> joinChatRoom, DBManager mDBManager, ArrayList<Boolean> roomList, DBRoomManage dbRoomManage) {
         mContext = context;
         this.mDBManager=mDBManager;
         mJoinChatRoom = joinChatRoom;
         this.roomList=roomList;
+        this.dbRoomManage=dbRoomManage;
     }
 
     @Override
@@ -97,6 +101,7 @@ public class GroupListRVAdapter extends RecyclerView.Adapter {
         public void setData(RoomManageInfo groupInfo) {
             mRoomManageInfo=groupInfo;
             mGroupName.setText(groupInfo.getRoomName());
+            UtilTool.getGroupImage(dbRoomManage,mRoomManageInfo.getRoomId(),mContext,mGroupTouxiang);
         }
     }
 }

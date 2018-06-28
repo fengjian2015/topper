@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,6 +79,10 @@ public class SendRedGroupActivity extends BaseActivity {
     EditText mEtRemark;
     @Bind(R.id.tv_money_state)
     TextView mTvMoneyState;
+    @Bind(R.id.ll_data)
+    LinearLayout mLlData;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
 
     private Dialog mBottomDialog;
     private Animation mEnterAnim;
@@ -98,10 +103,11 @@ public class SendRedGroupActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket4));
         setContentView(R.layout.activity_send_red_group);
         ButterKnife.bind(this);
         mMgr = new DBManager(this);
-        mDBRoomMember=new DBRoomMember(this);
+        mDBRoomMember = new DBRoomMember(this);
         MyApp.getInstance().addActivity(this);
         init();
         initData();
@@ -109,7 +115,7 @@ public class SendRedGroupActivity extends BaseActivity {
 
     private void init() {
         roomId = getIntent().getStringExtra("roomId");
-        mTvGroupNumber.setText(getString(R.string.group_member1) + mDBRoomMember.queryAllRequest(roomId).size()+ getString(R.string.individual));
+        mTvGroupNumber.setText(getString(R.string.group_member1) + mDBRoomMember.queryAllRequest(roomId).size() + getString(R.string.individual));
         mEtMoney.setSelection(mEtMoney.getText().length());
         mEtNumber.setSelection(mEtNumber.getText().length());
         changeRed();
@@ -155,19 +161,22 @@ public class SendRedGroupActivity extends BaseActivity {
             coinPresenter.coinLists("red_packet", new CoinPresenter.CallBack() {
                 @Override
                 public void send(List<CoinListInfo.DataBean> data) {
+                    mLlError.setVisibility(View.GONE);
+                    mLlData.setVisibility(View.VISIBLE);
                     if (MyApp.getInstance().mRedCoinList.size() == 0)
                         MyApp.getInstance().mRedCoinList.addAll(data);
                 }
 
                 @Override
                 public void error() {
-
+                    mLlError.setVisibility(View.VISIBLE);
+                    mLlData.setVisibility(View.GONE);
                 }
             });
         }
     }
 
-    @OnClick({R.id.bark, R.id.rl_selector_currency, R.id.btn_send})
+    @OnClick({R.id.bark, R.id.rl_selector_currency, R.id.btn_send,R.id.ll_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -177,13 +186,39 @@ public class SendRedGroupActivity extends BaseActivity {
                 showDialog();
                 break;
             case R.id.btn_send:
-                if (mEtMoney.getText().toString().isEmpty() || mEtNumber.getText().toString().isEmpty()) {
-                    Toast.makeText(this, getString(R.string.toast_count_and_money), Toast.LENGTH_SHORT).show();
-                } else {
-                    showPWDialog();
-                }
+                sendGroupRed();
+                break;
+            case R.id.ll_error:
+                initData();
                 break;
         }
+    }
+
+    private void sendGroupRed() {
+        int number = UtilTool.parseInt(mEtNumber.getText().toString());
+        double money = UtilTool.parseDouble(mEtMoney.getText().toString());
+        if (number == 0 || money == 0) {
+            Toast.makeText(this, getString(R.string.toast_count_and_money), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (number > 100) {
+            Toast.makeText(this, getString(R.string.group_red_max_out), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (number > mDBRoomMember.queryAllRequest(roomId).size()) {
+            Toast.makeText(this, getString(R.string.group_red_max_out_member), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!isluckyRed && money > 200) {
+            Toast.makeText(this, getString(R.string.group_red_max_money), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (isluckyRed && (number * 0.01) > money) {
+            Toast.makeText(this, getString(R.string.group_red_min_money), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        showPWDialog();
     }
 
     private void showPWDialog() {
@@ -210,10 +245,10 @@ public class SendRedGroupActivity extends BaseActivity {
 
     private void initDialog() {
         String coins = mTvCurrency.getText().toString();
-        if(isluckyRed){
+        if (isluckyRed) {
             mCount = Double.parseDouble(mEtMoney.getText().toString());
-        }else{
-            mCount =  Double.parseDouble(mEtMoney.getText().toString())*Double.parseDouble(mEtNumber.getText().toString());
+        } else {
+            mCount = Double.parseDouble(mEtMoney.getText().toString()) * Double.parseDouble(mEtNumber.getText().toString());
         }
         TextView coin = (TextView) mRedDialog.findViewById(R.id.tv_coin);
         TextView countCoin = (TextView) mRedDialog.findViewById(R.id.tv_count_coin);
@@ -245,7 +280,7 @@ public class SendRedGroupActivity extends BaseActivity {
             }
         });
         valueList = virtualKeyboardView.getValueList();
-        countCoin.setText(UtilTool.removeZero(mCount+"") + coins);
+        countCoin.setText(UtilTool.removeZero(mCount + "") + coins);
         coin.setText(coins + getString(R.string.red_package));
         virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -280,17 +315,17 @@ public class SendRedGroupActivity extends BaseActivity {
 
     private void sendRed(String password) {
         int type;
-        if(isluckyRed){
+        if (isluckyRed) {
             mCount = Double.parseDouble(mEtMoney.getText().toString());
-            type=3;
-        }else{
-            mCount =  Double.parseDouble(mEtMoney.getText().toString())*Double.parseDouble(mEtNumber.getText().toString());
-            singleMoney=Double.parseDouble(mEtMoney.getText().toString());
-            type=2;
+            type = 3;
+        } else {
+            mCount = Double.parseDouble(mEtMoney.getText().toString()) * Double.parseDouble(mEtNumber.getText().toString());
+            singleMoney = Double.parseDouble(mEtMoney.getText().toString());
+            type = 2;
         }
-        int redCount=Integer.parseInt(mEtNumber.getText().toString());
-         mCoin = mTvCurrency.getText().toString();
-         mRemark = mEtRemark.getText().toString();
+        int redCount = Integer.parseInt(mEtNumber.getText().toString());
+        mCoin = mTvCurrency.getText().toString();
+        mRemark = mEtRemark.getText().toString();
         if (mRemark.isEmpty())
             mRemark = getString(R.string.congratulation);
         new RedPacketPresenter(this).sendRedPacket(roomId, type, mCoin, mRemark, 1, redCount, singleMoney, mCount, password, new RedPacketPresenter.CallBack() {
@@ -301,6 +336,7 @@ public class SendRedGroupActivity extends BaseActivity {
             }
         });
     }
+
     public void setData(int id) {
         RoomManage.getInstance().addMultiMessageManage(roomId, mMgr.findConversationName(roomId)).sendRed(mRemark, mCoin, mCount, id);
         finish();
@@ -392,6 +428,7 @@ public class SendRedGroupActivity extends BaseActivity {
         }
 
     }
+
     public void showHintDialog() {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this, R.style.dialog);
         deleteCacheDialog.show();

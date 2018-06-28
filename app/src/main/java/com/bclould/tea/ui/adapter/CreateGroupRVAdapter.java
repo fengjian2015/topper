@@ -114,12 +114,13 @@ public class CreateGroupRVAdapter extends RecyclerView.Adapter {
                         } else {
                             mCheckBox.setChecked(true);
                         }
+                        mActivity.setData(userInfo, mCheckBox.isChecked());
                     }
                 });
-                mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                mCheckBox.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                            mActivity.setData(userInfo, b);
+                    public void onClick(View view) {
+                        mActivity.setData(userInfo, mCheckBox.isChecked());
                     }
                 });
             }

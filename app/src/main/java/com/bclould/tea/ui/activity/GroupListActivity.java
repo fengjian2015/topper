@@ -114,7 +114,7 @@ public class GroupListActivity extends BaseActivity {
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        groupListRVAdapter = new GroupListRVAdapter(this, roomManagesList, mDBManager, roomList);
+        groupListRVAdapter = new GroupListRVAdapter(this, roomManagesList, mDBManager, roomList,dbRoomManage);
         mRecyclerView.setAdapter(groupListRVAdapter);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override

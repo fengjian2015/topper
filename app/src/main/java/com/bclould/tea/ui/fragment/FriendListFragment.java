@@ -194,7 +194,6 @@ public class FriendListFragment extends Fragment {
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.login_succeed))) {
-            updateData();
             initData();
         } else if (msg.equals(getString(R.string.new_friend))) {
             initData();
@@ -204,6 +203,9 @@ public class FriendListFragment extends Fragment {
             updateData();
         } else if (msg.equals(getString(R.string.receive_add_request))) {
             sendHandler();
+        }else if(msg.equals(getString(R.string.refresh_the_interface))){
+            updateData();
+            initData();
         }
     }
 
@@ -216,6 +218,9 @@ public class FriendListFragment extends Fragment {
     Map<String, Integer> mMap = new HashMap<>();
 
     private void updateData() {
+        if(mFriendListRVAdapter==null){
+            return;
+        }
         mUsers.clear();
         mMap.clear();
         List<UserInfo> userInfos = mMgr.queryAllUser();

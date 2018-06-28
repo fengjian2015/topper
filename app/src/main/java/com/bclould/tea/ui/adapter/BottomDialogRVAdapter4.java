@@ -19,6 +19,7 @@ import com.bclould.tea.ui.activity.PaymentActivity;
 import com.bclould.tea.ui.activity.PushBuyingActivity;
 import com.bclould.tea.ui.activity.RewardActivity;
 import com.bclould.tea.ui.activity.SendQRCodeRedActivity;
+import com.bclould.tea.ui.activity.SendRedGroupActivity;
 import com.bclould.tea.ui.activity.SendRedPacketActivity;
 import com.bclould.tea.ui.activity.StartGuessActivity;
 import com.bumptech.glide.Glide;
@@ -111,6 +112,9 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
                     } else if (mContext instanceof RewardActivity) {
                         RewardActivity activity = (RewardActivity) mContext;
                         activity.hideDialog(mName, mId);
+                    }else if(mContext instanceof SendRedGroupActivity){
+                        SendRedGroupActivity activity = (SendRedGroupActivity) mContext;
+                        activity.hideDialog(mName);
                     }
                 }
             });
