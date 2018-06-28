@@ -68,7 +68,8 @@ public interface MyService {
     Observable<LoginInfo> login(
             @Field("email") String email,
             @Field("password") String password,
-            @Field("code") String code
+            @Field("code") String code,
+            @Field("device") int device
     );
 
     //图形验证码
@@ -416,7 +417,8 @@ public interface MyService {
     //获取市场参考价
     @POST("api/updateToken")
     Observable<BaseInfo> updataToken(
-            @Header("Authorization") String token
+            @Header("Authorization") String token,
+            @Field("device") int device
     );
 
     //下载apk

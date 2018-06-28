@@ -81,7 +81,7 @@ public class LoginPresenter {
             showDialog();
             RetrofitUtil.getInstance(mContext)
                     .getServer()
-                    .login(email, password, code)
+                    .login(email, password, code, 1)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                     .subscribe(new Observer<LoginInfo>() {

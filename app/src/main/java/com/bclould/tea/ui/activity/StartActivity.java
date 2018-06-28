@@ -56,7 +56,7 @@ public class StartActivity extends AppCompatActivity {
                     if (UtilTool.isNetworkAvailable(StartActivity.this)) {
                         RetrofitUtil.getInstance(StartActivity.this)
                                 .getServer()
-                                .updataToken(UtilTool.getToken())
+                                .updataToken(UtilTool.getToken(), 1)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                                 .subscribe(new Observer<BaseInfo>() {

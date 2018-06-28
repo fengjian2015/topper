@@ -248,7 +248,7 @@
                     android:text="@string/region"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x28"/>
-
+ 
                 <TextView
                     android:id="@+id/tv_region"
                     android:layout_width="wrap_content"
