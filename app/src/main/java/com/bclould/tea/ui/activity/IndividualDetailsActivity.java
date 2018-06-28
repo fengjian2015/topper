@@ -20,6 +20,7 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.IndividualInfo;
 import com.bclould.tea.model.MessageInfo;
+import com.bclould.tea.topperchat.WsContans;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
@@ -36,6 +37,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tea.topperchat.WsContans.TOCO_SERVICE;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_CARD_MSG;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -161,12 +163,16 @@ public class IndividualDetailsActivity extends BaseActivity {
             mCvNoLookTaDy2.setVisibility(View.GONE);
             rlRemark.setVisibility(View.GONE);
         }
+        if(TOCO_SERVICE.equals(mUser)){
+            btnBrak.setVisibility(View.GONE);
+        }
         mPresenter = new IndividualDetailsPresenter(this);
         mPresenter.getIndividual(mUser, true, new IndividualDetailsPresenter.CallBack() {
             @Override
             public void send(IndividualInfo.DataBean data) {
                 if (!IndividualDetailsActivity.this.isDestroyed()) {
                     if (data == null) return;
+                    saveData(data);
                     individualInfo = data;
                     mName=individualInfo.getName();
                     tvName.setText(individualInfo.getName());
@@ -196,7 +202,12 @@ public class IndividualDetailsActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.cv_no_look_ta_dy, R.id.cv_no_look_ta_dy2, R.id.rl_dynamic, R.id.bark, R.id.btn_brak, R.id.rl_qr, R.id.rl_remark, R.id.rl_card})
+    private void saveData(IndividualInfo.DataBean data){
+        mMgr.addStrangerUserInfo(data.getToco_id(),data.getAvatar(),data.getName());
+        mMgr.updateConversationName(data.getToco_id(),data.getName());
+    }
+
+    @OnClick({R.id.cv_no_look_ta_dy, R.id.cv_no_look_ta_dy2, R.id.rl_dynamic, R.id.bark, R.id.btn_brak, R.id.rl_qr, R.id.rl_remark, R.id.rl_card,R.id.iv_head})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_dynamic:
@@ -234,7 +245,17 @@ public class IndividualDetailsActivity extends BaseActivity {
             case R.id.rl_card:
                 sendCard();
                 break;
+            case R.id.iv_head:
+                lookLargerImage();
+                break;
         }
+    }
+
+    private void lookLargerImage(){
+        Intent intent=new Intent(this,LargerImageActivity.class);
+        intent.putExtra("url",individualInfo.getAvatar());
+        startActivity(intent);
+        overridePendingTransition();
     }
 
     //不看Ta的動態

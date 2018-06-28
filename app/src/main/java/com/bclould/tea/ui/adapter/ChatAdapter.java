@@ -443,14 +443,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     }
 
     private void setNameAndUrl(ImageView mIvTouxiang, MessageInfo messageInfo, TextView tvName){
-        String url=mDBRoomMember.findMemberUrl(messageInfo.getSend());
-        if(StringUtils.isEmpty(url)&&mMgr.findUser(messageInfo.getSend())){
-            UserInfo info = mMgr.queryUser(messageInfo.getSend());
-            if (!info.getPath().isEmpty()) {
-                url=info.getPath();
-            }
-        }
-        UtilTool.getImage(mContext, mIvTouxiang,url);
+        UtilTool.getImage(mContext, mIvTouxiang,mDBRoomMember,mMgr,messageInfo.getSend());
 
         if(RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)){
             String name=mMgr.queryRemark(messageInfo.getSend());
@@ -725,7 +718,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
                                 notifyDataSetChanged();
                                 if (info.getStatus() == 4) {
                                     Toast.makeText(mContext, info.getMessage(), Toast.LENGTH_SHORT).show();
-                                } else {
+                                }else {
+                                    if(info.getStatus()==2)
+                                        ToastShow.showToast2((Activity) mContext,info.getMessage());
 //                                    skip(info, mFromBitmap, mUser, 1);
                                     skip(info, finalMUser, 1, info.getData().getSend_rp_user_name());
                                 }
@@ -795,6 +790,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
                         if (info.getStatus() == 4) {
                             Toast.makeText(mContext, info.getMessage(), Toast.LENGTH_SHORT).show();
                         } else {
+                            if(info.getStatus()==2)
+                                ToastShow.showToast2((Activity) mContext,info.getMessage());
 //                            skip(info, mFromBitmap, mUser, 1);
                             skip(info, finalMUser, 1, mName);
                         }

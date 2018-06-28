@@ -285,6 +285,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:singleLine="true"
                 android:layout_marginRight="@dimen/x25"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>

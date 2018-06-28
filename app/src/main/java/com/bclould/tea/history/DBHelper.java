@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 19;
+    private static final int DATABASE_VERSION = 20;
 
     public DBHelper(Context context) {
         //CursorFactory设置为null,使用默认值
@@ -34,6 +34,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("create table RoomMember(id integer primary key autoincrement, name varchar, jid varchar, image_url varchar, remark varchar,my_user varchar,roomId varchar)");
         db.execSQL("create table MessageState(id integer primary key autoincrement, msgId varchar)");
         db.execSQL("create table UserCodeDB(id integer primary key autoincrement, email varchar,password varchar)");
+        db.execSQL("create table UserInfo(id integer primary key autoincrement, user varchar,path varchar,userName varchar)");//保存陌生人的信息
     }
 
     /**
@@ -44,6 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        String userCodeDB;
         switch (oldVersion){
             case 8:
                 //2018-5-28增加發送名片
@@ -80,7 +82,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL( messageState );
             case 16:
                 //2018-06-15增加UserCodeDB用於保存登錄的賬號 ,會話列表新增時間,增加用於顯示聊天時間的
-                String userCodeDB = "create table if not exists UserCodeDB"  + "(id integer primary key autoincrement,email text,password text)";
+                userCodeDB = "create table if not exists UserCodeDB"  + "(id integer primary key autoincrement,email text,password text)";
                 db.execSQL( userCodeDB );
                 db.execSQL("ALTER TABLE ConversationRecord ADD createTime INTEGER");
                 db.execSQL("ALTER TABLE MessageRecord ADD showChatTime TEXT");
@@ -89,6 +91,10 @@ public class DBHelper extends SQLiteOpenHelper {
             case 18:
                 //2018-06-26新增群主id owner
                 db.execSQL("ALTER TABLE RoomManage ADD owner TEXT");
+            case 19:
+                //2018-06-28新增UserInfo表，用於存儲陌生人信息
+                userCodeDB = "create table if not exists UserInfo"  + "(id integer primary key autoincrement,user text,path text,userName text)";
+                db.execSQL( userCodeDB );
                 break;
         }
 

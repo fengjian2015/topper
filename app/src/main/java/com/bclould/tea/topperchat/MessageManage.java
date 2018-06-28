@@ -62,6 +62,9 @@ public class MessageManage {
                     contentMap.put("type", msgType);
                     contentMap.put("id", msgId);
                     contentMap.put("time", time);
+                    if(!mMgr.findUser(to)){
+                        contentMap.put("name", UtilTool.getUser());
+                    }
 
                     Map<Object, Object> sendMap = new HashMap<>();
                     if(mMgr.findUser(to)){

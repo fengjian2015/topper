@@ -29,6 +29,7 @@ import static com.bclould.tea.topperchat.WsContans.MSG_GROUP;
 import static com.bclould.tea.topperchat.WsContans.MSG_OFFINE;
 import static com.bclould.tea.topperchat.WsContans.MSG_OFFINE_RESULT;
 import static com.bclould.tea.topperchat.WsContans.MSG_SINGLER;
+import static com.bclould.tea.topperchat.WsContans.MSG_STEANGER;
 import static com.bclould.tea.topperchat.WsContans.PASSWORD;
 import static com.bclould.tea.topperchat.WsContans.TOCOID;
 import static com.bclould.tea.topperchat.WsContans.TYPE;
@@ -187,6 +188,9 @@ public class WsOfflineConnection {
         }else if((int)messageMap3.get(TYPE)==MSG_GROUP){
             Map<Object, Object>  messageMap4 = objectMapper.readValue((byte[]) messageMap3.get(CONTENT), new TypeReference<Map<String, Object>>() {});
             SocketListener.getInstance(mContext).messageFeedback(messageMap4,false,RoomManage.ROOM_TYPE_MULTI);
+        }else if((int)messageMap3.get(TYPE)==MSG_STEANGER){
+            Map<Object, Object>  messageMap4 = objectMapper.readValue((byte[]) messageMap3.get(CONTENT), new TypeReference<Map<String, Object>>() {});
+            SocketListener.getInstance(mContext).messageFeedback(messageMap4,false,RoomManage.ROOM_TYPE_SINGLE);
         }
     }
 

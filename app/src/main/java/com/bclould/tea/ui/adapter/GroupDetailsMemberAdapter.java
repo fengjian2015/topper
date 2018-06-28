@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
+import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.ui.activity.CreateGroupRoomActivity;
 import com.bclould.tea.ui.activity.IndividualDetailsActivity;
@@ -34,12 +35,14 @@ public class GroupDetailsMemberAdapter extends BaseAdapter{
     private  String roomId;
     private DBManager mgr;
     private DBRoomManage mDBRoomManage;
-    public GroupDetailsMemberAdapter(Context context, List<RoomMemberInfo> list, String roomId, DBManager mgr, DBRoomManage mDBRoomManage) {
+    private DBRoomMember mDBRoomMember;
+    public GroupDetailsMemberAdapter(Context context, List<RoomMemberInfo> list, String roomId, DBManager mgr, DBRoomManage mDBRoomManage, DBRoomMember mDBRoomMember) {
         this.context=context;
         this.list=list;
         this.roomId=roomId;
         this.mgr=mgr;
         this.mDBRoomManage=mDBRoomManage;
+        this.mDBRoomMember=mDBRoomMember;
     }
 
     @Override
@@ -77,7 +80,7 @@ public class GroupDetailsMemberAdapter extends BaseAdapter{
                 viewHolder.group_touxiang.setImageResource(R.mipmap.add_member);
                 viewHolder.tvName.setText(context.getString(R.string.add_group_member));
             }else {
-                UtilTool.getImage(context, viewHolder.group_touxiang, list.get(i).getImage_url());
+                UtilTool.getImage(context, viewHolder.group_touxiang,mDBRoomMember,mgr,list.get(i).getJid());
                 String remark = mgr.queryRemark(list.get(i).getJid());
                 if (!StringUtils.isEmpty(remark)) {
                     viewHolder.tvName.setText(remark);
@@ -90,7 +93,7 @@ public class GroupDetailsMemberAdapter extends BaseAdapter{
                 viewHolder.group_touxiang.setImageResource(R.mipmap.add_member);
                 viewHolder.tvName.setText(context.getString(R.string.add_group_member));
             } else {
-                UtilTool.getImage(context, viewHolder.group_touxiang, list.get(i).getImage_url());
+                UtilTool.getImage(context, viewHolder.group_touxiang,mDBRoomMember,mgr, list.get(i).getJid());
                 String remark = mgr.queryRemark(list.get(i).getJid());
                 if(list.get(i).getJid().equals(UtilTool.getTocoId())){
                     remark="";

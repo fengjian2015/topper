@@ -133,7 +133,7 @@ public class SelectGroupMemberAdapter extends RecyclerView.Adapter{
             }else {
                 mCheckBox.setChecked(true);
             }
-            UtilTool.getImage(mContext, mFriendChildTouxiang,url);
+            UtilTool.getImage(mContext, mFriendChildTouxiang,mDBRoomMember,mMgr,userId);
         }
     }
 

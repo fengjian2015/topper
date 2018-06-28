@@ -12,6 +12,7 @@ public class WsContans {
     public static final int DEVICE_ID=1;
     public static final String TYPE="type";
     public static final String INDEX="index";
+    public static final String TOCO_SERVICE="4ed77e8f9c715";
 
     //文檔定義消息類型
     public static final int MSG_SINGLER=3;//單聊消息

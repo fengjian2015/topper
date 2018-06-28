@@ -154,7 +154,6 @@ public class ConversationAdapter extends RecyclerView.Adapter {
                UtilTool.getGroupImage(mDBRoomManage,conversationInfo.getUser(),mContext,mTab1ItemImg);
            }else {
                setNameAndUrl(mTab1ItemImg,conversationInfo.getUser());
-               UtilTool.getImage(mMgr, conversationInfo.getUser(), mContext, mTab1ItemImg);
            }
             String remark = mMgr.queryRemark(conversationInfo.getUser());
             if (!StringUtils.isEmpty(remark)) {
@@ -174,14 +173,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
     }
 
     private void setNameAndUrl(ImageView mIvTouxiang, String user){
-        String url=mDBRoomMember.findMemberUrl(user);
-        if(StringUtils.isEmpty(url)&&mMgr.findUser(user)){
-            UserInfo info = mMgr.queryUser(user);
-            if (!info.getPath().isEmpty()) {
-                url=info.getPath();
-            }
-        }
-        UtilTool.getImage(mContext, mIvTouxiang,url);
+        UtilTool.getImage(mContext, mIvTouxiang,mDBRoomMember,mMgr,user);
     }
 
     private void showDeleteDialog(final String user) {

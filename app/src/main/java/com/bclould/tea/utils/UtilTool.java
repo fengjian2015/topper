@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
+import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.UserInfo;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
@@ -685,12 +686,20 @@ public class UtilTool {
                 if (Util.isOnMainThread() && context != null) {
                     Glide.with(context).load(info.getPath()).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1)).into(imageView);
                 }
+            }else if(!StringUtils.isEmpty(mgr.findStrangerPath(myUser))){
+                if (Util.isOnMainThread() && context != null) {
+                    Glide.with(context).load(mgr.findStrangerPath(myUser)).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1)).into(imageView);
+                }
             } else {
                 if (Util.isOnMainThread() && context != null) {
                     Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
                 }
             }
-        } else {
+        }else if(!StringUtils.isEmpty(mgr.findStrangerPath(myUser))){
+            if (Util.isOnMainThread() && context != null) {
+                Glide.with(context).load(mgr.findStrangerPath(myUser)).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1)).into(imageView);
+            }
+        }  else {
             if (Util.isOnMainThread() && context != null) {
                 Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
             }
@@ -711,7 +720,18 @@ public class UtilTool {
         }
     }
 
-    public static Bitmap getImage(Context context, ImageView imageView, String url) {
+    public static Bitmap getImage(Context context, ImageView imageView, DBRoomMember mDBRoomMember,DBManager dbManager,String user) {
+        String url=mDBRoomMember.findMemberUrl(user);
+        if(StringUtils.isEmpty(url)&&dbManager.findUser(user)){
+            UserInfo info = dbManager.queryUser(user);
+            if (!info.getPath().isEmpty()) {
+                url=info.getPath();
+            }
+        }
+        if(StringUtils.isEmpty(url)){
+            url=dbManager.findStrangerPath(user);
+        }
+
         Bitmap bitmap = null;
         if (!StringUtils.isEmpty(url)) {
             if (Util.isOnMainThread() && context != null) {
@@ -1026,5 +1046,19 @@ public class UtilTool {
         }
         return fileSizeString;
     }
+    public static int parseInt(String number){
+        try {
+            return Integer.parseInt(number);
+        }catch (Exception e){
+            return 0;
+        }
+    }
 
+    public static double parseDouble(String number){
+        try {
+            return Double.parseDouble(number);
+        }catch (Exception e){
+            return 0;
+        }
+    }
 }

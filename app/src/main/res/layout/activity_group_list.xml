@@ -38,7 +38,6 @@
             android:id="@+id/tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableLeft="@mipmap/icon_jc_more"
             android:text="@string/create_group"
             android:drawablePadding="@dimen/x12"
             android:textColor="@color/black"
@@ -56,6 +55,7 @@
             android:paddingRight="@dimen/x20"
             android:layout_marginTop="@dimen/y20"
             android:singleLine="true"
+            android:maxLength="10"
             android:layout_toLeftOf="@+id/tv_create"
             />
         <TextView

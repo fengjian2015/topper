@@ -18,7 +18,8 @@ public class MyHostnameVerifier {
                         hostname.equalsIgnoreCase("api.cnblocklink.com") ||
                         hostname.equalsIgnoreCase("socket.bclould.com") ||
                         hostname.equalsIgnoreCase("socket.cnblocklink.com") ||
-                        hostname.equalsIgnoreCase("offline.cnblocklink.com")) {
+                        hostname.equalsIgnoreCase("offline.cnblocklink.com") ||
+                         hostname.equalsIgnoreCase("msg.umengcloud.com")){
                     return true;
                 } else {
                     return false;

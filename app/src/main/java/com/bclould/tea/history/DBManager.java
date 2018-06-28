@@ -450,6 +450,14 @@ public class DBManager {
         return result;
     }
 
+    public void updateConversationName(String user,String name) {
+        if(!findConversation(user))return;
+        db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("friend", name);
+        db.update("ConversationRecord", values, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
+    }
+
     public void updateConversation(ConversationInfo conversationInfo) {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -531,6 +539,27 @@ public class DBManager {
         List<ConversationInfo> conversationList = new ArrayList<>();
         String sql = "select * from ConversationRecord where my_user=?";
         Cursor c = db.rawQuery(sql, new String[]{UtilTool.getTocoId()});
+        while (c.moveToNext()) {
+            ConversationInfo conversationInfo = new ConversationInfo();
+            conversationInfo.setNumber(c.getInt(c.getColumnIndex("number")));
+            conversationInfo.setMessage(c.getString(c.getColumnIndex("message")));
+            conversationInfo.setTime(c.getString(c.getColumnIndex("time")));
+            conversationInfo.setUser(c.getString(c.getColumnIndex("user")));
+            conversationInfo.setFriend(c.getString(c.getColumnIndex("friend")));
+            conversationInfo.setIstop(c.getString(c.getColumnIndex("istop")));
+            conversationInfo.setChatType(c.getString(c.getColumnIndex("chatType")));
+            conversationInfo.setCreateTime(c.getInt(c.getColumnIndex("createTime")));
+            conversationList.add(conversationInfo);
+        }
+        c.close();
+        return conversationList;
+    }
+
+    public List<ConversationInfo> queryConversationGroup() {
+        db = helper.getWritableDatabase();
+        List<ConversationInfo> conversationList = new ArrayList<>();
+        String sql = "select * from ConversationRecord where my_user=? and chatType=?";
+        Cursor c = db.rawQuery(sql, new String[]{UtilTool.getTocoId(),RoomManage.ROOM_TYPE_MULTI});
         while (c.moveToNext()) {
             ConversationInfo conversationInfo = new ConversationInfo();
             conversationInfo.setNumber(c.getInt(c.getColumnIndex("number")));
@@ -877,19 +906,46 @@ public class DBManager {
         return userInfos;
     }
 
-//    public void versionCompatibility(){
-//        db = helper.getReadableDatabase();
-//        List<Integer> idList = new ArrayList<>();
-//        String sql = "select id from MessageRecord where sendStatus = ? and my_user = ?";
-//        Cursor c = db.rawQuery(sql, new String[]{0+"", UtilTool.getTocoId()});
-//        if (c != null) {
-//            while (c.moveToNext()) {
-//                idList.add(c.getInt(c.getColumnIndex("id")));
-//            }
-//            c.close();
-//        }
-//        for(int id:idList){
-//            updateMessageHint(id,1);
-//        }
-//    }
+    //-----------用戶信息
+    public int addStrangerUserInfo(String user,String path,String userName) {
+        if(findStrangerUserInfo(user)){
+            updateStrangerUserInfo(user,path,userName);
+        }
+        db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("user", user);
+        values.put("path", path);
+        values.put("userName",userName);
+        int id = (int) db.insert("UserInfo", null, values);
+        return id;
+    }
+
+    public String findStrangerPath(String user) {
+        db = helper.getReadableDatabase();
+        String path = null;
+        Cursor cursor = db.rawQuery("select path from UserInfo where user=?",
+                new String[]{user});
+        while (cursor.moveToNext()) {
+            path = cursor.getString(cursor.getColumnIndex("path"));
+        }
+        cursor.close();
+        return path;
+    }
+
+    public boolean findStrangerUserInfo(String user) {
+        db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from UserInfo where user=? ",
+                new String[]{user});
+        boolean result = cursor.moveToNext();
+        cursor.close();
+        return result;
+    }
+
+    public void updateStrangerUserInfo(String user,String path,String userName) {
+        db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("path", path);
+        values.put("userName",userName);
+        db.update("UserInfo", values, "user=?", new String[]{user});
+    }
 }

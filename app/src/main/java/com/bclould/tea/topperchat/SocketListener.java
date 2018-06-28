@@ -38,6 +38,7 @@ import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.activity.InitialActivity;
 import com.bclould.tea.ui.activity.MainActivity;
 import com.bclould.tea.ui.activity.OrderCloseActivity;
+import com.bclould.tea.ui.activity.OrderDetailsActivity;
 import com.bclould.tea.ui.activity.PayDetailsActivity;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
@@ -49,6 +50,7 @@ import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tea.xmpp.RoomManage;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.umeng.message.UTrack;
 
 import org.greenrobot.eventbus.EventBus;
 import org.msgpack.jackson.dataformat.MessagePackFactory;
@@ -103,6 +105,7 @@ import static com.bclould.tea.topperchat.WsContans.MSG_LOGINOUT;
 import static com.bclould.tea.topperchat.WsContans.MSG_PING;
 import static com.bclould.tea.topperchat.WsContans.MSG_SINGLER;
 import static com.bclould.tea.topperchat.WsContans.MSG_SINGLER_RESULT;
+import static com.bclould.tea.topperchat.WsContans.MSG_STEANGER;
 import static com.bclould.tea.topperchat.WsContans.TYPE;
 import static com.bclould.tea.ui.activity.SystemSetActivity.INFORM;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_CARD_MSG;
@@ -211,7 +214,7 @@ public class SocketListener {
                     break;
                 case MSG_BROADCAST:
                     //廣播消息
-                    friendRequest((byte[]) deserialized.get(CONTENT));
+//                    friendRequest((byte[]) deserialized.get(CONTENT));
                     break;
                 case MSG_PING:
                     //ping反饋
@@ -230,6 +233,13 @@ public class SocketListener {
                     content = objectMapper.readValue((byte[]) deserialized.get(CONTENT), new TypeReference<Map<String, Object>>() {});
                     //消息回執，改變消息狀態
                     changeMsgState(content);
+                    break;
+                case MSG_STEANGER:
+                    //陌生人聊天
+                    content = objectMapper.readValue((byte[]) deserialized.get(CONTENT), new TypeReference<Map<String, Object>>() {
+                    });
+                    UtilTool.Log("fengjian", "聊天消息message：to：" + content.get("to") + "   from:" + content.get("from") + "   crypt:" + content.get("crypt") + "   message：" + content.get("message") + "   type：" + content.get(TYPE) + "   id:" + content.get("id"));
+                    messageFeedback(content, true, RoomManage.ROOM_TYPE_SINGLE);
                     break;
             }
         } catch (Exception e) {
@@ -277,7 +287,7 @@ public class SocketListener {
         WsConnection.getInstance().setLoginConnection(false);
         new PingThread(context).start();
         new PingThreadRequest(context).start();
-
+        UmManage.getInstance().setAlias();
     }
 
     /**
@@ -348,7 +358,6 @@ public class SocketListener {
                 sendFrom=from;
             }
             //處理多終端登錄，自己消息同步問題
-
             String message = (String) messageMap.get("body");
             boolean crypt = (boolean) content.get("crypt");
             String msgId = (String) content.get("id");
@@ -385,7 +394,13 @@ public class SocketListener {
             } else {
                 friend = mgr.findUserName(from);
             }
-            if (StringUtils.isEmpty(friend)) friend = from;
+            if (StringUtils.isEmpty(friend)){
+                if(!StringUtils.isEmpty((String) content.get("name"))){
+                    friend= (String) content.get("name");
+                }else{
+                    friend = from;
+                }
+            }
             int status = 0;
             int type = 0;
             String redpacket = messageInfo.getMessage();
@@ -608,13 +623,12 @@ public class SocketListener {
      *
      * @param binary
      */
-    private void friendRequest(byte[] binary) {
+    public void friendRequest(Map<String,String> jsonMap) {
         try {
-            Map<Object, Object> contentMap = objectMapper.readValue(binary, new TypeReference<Map<String, Object>>() {
-            });
-            Map<Object, Object> jsonMap = JSON.parseObject(new String((byte[]) contentMap.get("message")), HashMap.class);
+//            Map<Object, Object> contentMap = objectMapper.readValue(binary, new TypeReference<Map<String, Object>>() {});
+//            Map<Object, Object> jsonMap = JSON.parseObject(new String((byte[]) contentMap.get("message")), HashMap.class);
+            int type = UtilTool.parseInt(jsonMap.get(TYPE));
             Map<Object, Object> messageMap = JSON.parseObject((String) jsonMap.get("message"), HashMap.class);
-            int type = (int) jsonMap.get(TYPE);
             switch (type) {
                 case BC_FRIEND_REQUEST:
                 case BC_FRIEND_COMMIT:
@@ -832,7 +846,7 @@ public class SocketListener {
         mgr.updateMessageRedState(messageMap.get("rp_id") + "", 1);
         MessageInfo messageInfo = new MessageInfo();
         String groupid= messageMap.get("group_id")+"";
-        if(!StringUtils.isEmpty(groupid)){
+        if(!StringUtils.isEmpty(groupid)&&!"null".equals(groupid)){
             messageInfo.setSend(groupid);
             messageInfo.setUsername(groupid);
         }else{
@@ -840,7 +854,7 @@ public class SocketListener {
             messageInfo.setUsername((String) messageMap.get("toco_id"));
         }
         messageInfo.setMsgType(RED_GET_MSG);
-        messageInfo.setConverstaion((String) messageMap.get("desc"));
+        messageInfo.setConverstaion(messageMap.get("desc")+context.getString(R.string.red_package));
         messageInfo.setTime(UtilTool.createChatTime());
         messageInfo.setRedId((Integer) messageMap.get("rp_id"));
         messageInfo.setMessage((String) messageMap.get("desc"));
@@ -1014,15 +1028,15 @@ public class SocketListener {
         messageInfo.setStatus((Integer) messageMap.get("status"));
         messageInfo.setType((Integer) messageMap.get(TYPE));
         Intent intent;
-        if ((int) messageMap.get("status") == 1) {
-            intent = new Intent(context, PayDetailsActivity.class);
+        if ((int) messageMap.get("status") == 1||(int) messageMap.get("status") == 2) {
+            intent = new Intent(context, OrderDetailsActivity.class);
             intent.putExtra("type", context.getString(R.string.order));
             intent.putExtra("id", messageMap.get("id")+"");
             intent.putExtra(TYPE, context.getString(R.string.order));
         } else {
             intent = new Intent(context, OrderCloseActivity.class);
             intent.putExtra("id", messageMap.get("id") + "");
-            intent.putExtra("status", messageMap.get(TYPE) + "");
+            intent.putExtra("status", messageMap.get("status") + "");
         }
         goActivity(intent, context.getString(R.string.order_inform), context.getString(R.string.order_inform_hint));
         addMessage(messageInfo);
