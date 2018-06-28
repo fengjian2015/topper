@@ -76,6 +76,7 @@ public class IndividualDetailsPresenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            callBack.error();
                             if(context instanceof Activity&&!ActivityUtil.isActivityOnTop((Activity) context)) return;
                             hideDialog();
                             UtilTool.Log("信息", e.getMessage());
@@ -88,6 +89,7 @@ public class IndividualDetailsPresenter {
                         }
                     });
         } else {
+            callBack.error();
             Toast.makeText(context, context.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -175,6 +177,7 @@ public class IndividualDetailsPresenter {
     //定义接口
     public interface CallBack {
         void send(IndividualInfo.DataBean data);
+        void error();
     }
 
     //定义接口

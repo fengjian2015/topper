@@ -26,6 +26,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by GA on 2017/9/22.
@@ -56,6 +57,10 @@ public class ReceiveFragment extends Fragment {
     ImageView mIv;
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private DBManager mDbManager;
 
     @Nullable
@@ -80,20 +85,29 @@ public class ReceiveFragment extends Fragment {
                     if (data.getLog().size() == 0) {
                         mLlTotal.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);
+                        mLlError.setVisibility(View.GONE);
                     } else {
                         mLlTotal.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.GONE);
                     }
                     UtilTool.getImage(mDbManager, UtilTool.getTocoId(), getContext(), mIvTouxiang);
 
 //                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mDbManager, UtilTool.getTocoId(), getContext()));
-                    mTvName.setText(data.getName() + "共收到");
+                    mTvName.setText(data.getName() + getString(R.string.sum_rceive));
                     mTvCount.setText(data.getTotal_money() + "");
                     mTvRedCount.setText(data.getRp_number() + "");
                     mTvMaxMoney.setText(data.getMax_money());
                     mTvMostCoin.setText(data.getMost_coin());
                     initRecyclerView(data.getLog());
                 }
+            }
+
+            @Override
+            public void error() {
+                mLlTotal.setVisibility(View.GONE);
+                mLlNoData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -112,5 +126,10 @@ public class ReceiveFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @OnClick(R.id.ll_error)
+    public void onViewClicked() {
+        initData();
     }
 }

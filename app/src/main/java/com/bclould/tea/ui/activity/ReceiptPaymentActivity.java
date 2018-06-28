@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -71,6 +72,12 @@ public class ReceiptPaymentActivity extends BaseActivity {
     RelativeLayout mRlReceiptPaymentRecord;
     @Bind(R.id.tv3)
     TextView mTv3;
+    @Bind(R.id.ll_data)
+    LinearLayout mLlData;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private DisplayMetrics mDm;
     private int mHeightPixels;
     private ViewGroup mView;
@@ -98,18 +105,29 @@ public class ReceiptPaymentActivity extends BaseActivity {
         mReceiptPaymentPresenter.generateReceiptQrCode("", "", "", new ReceiptPaymentPresenter.CallBack() {
             @Override
             public void send(BaseInfo.DataBean data) {
+                mLlData.setVisibility(View.VISIBLE);
+                mLlError.setVisibility(View.GONE);
                 String code = UtilTool.base64PetToJson(ReceiptPaymentActivity.this, Constants.MONEYIN, "user_id", data.getId() + "", getString(R.string.receipt_payment));
                 Bitmap bitmap = UtilTool.createQRImage(code);
                 mIvQr.setBackground(new BitmapDrawable(bitmap));
             }
+
+            @Override
+            public void error() {
+                mLlData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
+            }
         });
     }
 
-    @OnClick({R.id.bark, R.id.tv_selector_way, R.id.rl_receipt_payment_record, R.id.tv_set})
+    @OnClick({R.id.ll_error, R.id.bark, R.id.tv_selector_way, R.id.rl_receipt_payment_record, R.id.tv_set})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.ll_error:
+                moneyIn();
                 break;
             case R.id.tv_selector_way:
                 initPopWindow();

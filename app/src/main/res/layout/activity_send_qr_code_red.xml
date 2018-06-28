@@ -44,124 +44,157 @@
         style="@style/HCutOffRule"/>
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x90"
-        android:layout_marginTop="@dimen/y250"
-        android:text="@string/coins"
-        android:textColor="@color/redpacket"
-        android:textSize="@dimen/x30"/>
-
-    <RelativeLayout
-        android:id="@+id/rl_selector_coin"
+    <LinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:layout_marginLeft="@dimen/x50"
-        android:layout_marginRight="@dimen/x50"
-        android:layout_marginTop="@dimen/y20"
-        android:background="@drawable/bg_qr_red_shape"
-        android:paddingLeft="@dimen/x30"
-        android:paddingRight="@dimen/x40">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/ll_data">
 
         <TextView
-            android:id="@+id/tv_coin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/selector_coin"
-            android:textColor="@color/red"
+            android:layout_marginLeft="@dimen/x90"
+            android:layout_marginTop="@dimen/y250"
+            android:text="@string/coins"
+            android:textColor="@color/redpacket"
             android:textSize="@dimen/x30"/>
 
-        <ImageView
+        <RelativeLayout
+            android:id="@+id/rl_selector_coin"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            android:layout_marginLeft="@dimen/x50"
+            android:layout_marginRight="@dimen/x50"
+            android:layout_marginTop="@dimen/y20"
+            android:background="@drawable/bg_qr_red_shape"
+            android:paddingLeft="@dimen/x30"
+            android:paddingRight="@dimen/x40">
+
+            <TextView
+                android:id="@+id/tv_coin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/selector_coin"
+                android:textColor="@color/red"
+                android:textSize="@dimen/x30"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/icon_click_triangle_selected"/>
+
+        </RelativeLayout>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/icon_click_triangle_selected"/>
+            android:layout_marginLeft="@dimen/x90"
+            android:layout_marginTop="@dimen/y30"
+            android:text="@string/money"
+            android:textColor="@color/redpacket"
+            android:textSize="@dimen/x30"/>
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            android:layout_marginLeft="@dimen/x50"
+            android:layout_marginRight="@dimen/x50"
+            android:layout_marginTop="@dimen/y20"
+            android:background="@drawable/bg_qr_red_shape"
+            android:paddingLeft="@dimen/x30"
+            android:paddingRight="@dimen/x40">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x90"
-        android:layout_marginTop="@dimen/y30"
-        android:text="@string/money"
-        android:textColor="@color/redpacket"
-        android:textSize="@dimen/x30"/>
+            <EditText
+                android:id="@+id/et_money_count"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/tv_cny"
+                android:background="@android:color/transparent"
+                android:hint="@string/et_count"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/red"
+                android:textSize="@dimen/x30"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:layout_marginLeft="@dimen/x50"
-        android:layout_marginRight="@dimen/x50"
-        android:layout_marginTop="@dimen/y20"
-        android:background="@drawable/bg_qr_red_shape"
-        android:paddingLeft="@dimen/x30"
-        android:paddingRight="@dimen/x40">
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x90"
+            android:layout_marginTop="@dimen/y30"
+            android:text="@string/count"
+            android:textColor="@color/redpacket"
+            android:textSize="@dimen/x30"/>
 
         <EditText
-            android:id="@+id/et_money_count"
+            android:id="@+id/et_red_count"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/tv_cny"
-            android:background="@android:color/transparent"
-            android:hint="@string/et_count"
-            android:inputType="numberDecimal"
+            android:layout_height="@dimen/y100"
+            android:layout_marginLeft="@dimen/x50"
+            android:layout_marginRight="@dimen/x50"
+            android:layout_marginTop="@dimen/y20"
+            android:background="@drawable/bg_qr_red_shape"
+            android:hint="@string/et_number"
+            android:inputType="number"
+            android:paddingLeft="@dimen/x30"
+            android:paddingRight="@dimen/x30"
             android:singleLine="true"
             android:textColor="@color/black"
             android:textColorHint="@color/red"
             android:textSize="@dimen/x30"/>
 
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y80"
+            android:layout_marginLeft="@dimen/x50"
+            android:layout_marginRight="@dimen/x50"
+            android:layout_marginTop="@dimen/y80"
+            android:background="@drawable/bg_orange_shape"
+            android:text="@string/send"
+            android:textColor="@color/white"
+            android:textSize="@dimen/x30"/>
 
-    </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y30"
+            android:text="@string/send_red_packet_hint"
+            android:textSize="@dimen/x26"/>
+    </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x90"
-        android:layout_marginTop="@dimen/y30"
-        android:text="@string/count"
-        android:textColor="@color/redpacket"
-        android:textSize="@dimen/x30"/>
-
-    <EditText
-        android:id="@+id/et_red_count"
+    <LinearLayout
+        android:id="@+id/ll_error"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:layout_marginLeft="@dimen/x50"
-        android:layout_marginRight="@dimen/x50"
-        android:layout_marginTop="@dimen/y20"
-        android:background="@drawable/bg_qr_red_shape"
-        android:hint="@string/et_number"
-        android:inputType="number"
-        android:paddingLeft="@dimen/x30"
-        android:paddingRight="@dimen/x30"
-        android:singleLine="true"
-        android:textColor="@color/black"
-        android:textColorHint="@color/red"
-        android:textSize="@dimen/x30"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_ununited"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-    <Button
-        android:id="@+id/btn_send"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y80"
-        android:layout_marginLeft="@dimen/x50"
-        android:layout_marginRight="@dimen/x50"
-        android:layout_marginTop="@dimen/y80"
-        android:background="@drawable/bg_orange_shape"
-        android:text="@string/send"
-        android:textColor="@color/white"
-        android:textSize="@dimen/x30"/>
+        <ImageView
+            android:id="@+id/iv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/img_wrong"/>
 
+        <TextView
+            android:layout_marginTop="@dimen/y50"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading_error_anew_loading_hint2"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/x30"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y30"
-        android:text="@string/send_red_packet_hint"
-        android:textSize="@dimen/x26"/>
+    </LinearLayout>
 
 </LinearLayout>

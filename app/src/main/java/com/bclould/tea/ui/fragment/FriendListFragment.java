@@ -99,6 +99,8 @@ public class FriendListFragment extends Fragment {
     SmartRefreshLayout mRefreshLayout;
     @Bind(R.id.side_bar)
     WaveSideBar mSideBar;
+    @Bind(R.id.tv_friend_count)
+    TextView mTvFriendCount;
 
     private int QRCODE = 1;
     private DisplayMetrics mDm;
@@ -230,6 +232,7 @@ public class FriendListFragment extends Fragment {
         if (userInfo2 != null)
             userInfos.remove(userInfo2);
         mUsers.addAll(userInfos);
+        mTvFriendCount.setText(getString(R.string.friend) + "(" + mUsers.size() + ")");
         Collections.sort(mUsers);
         try {
             for (int i = 0; i < mUsers.size(); i++) {

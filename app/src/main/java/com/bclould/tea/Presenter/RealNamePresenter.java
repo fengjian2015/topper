@@ -219,6 +219,7 @@ public class RealNamePresenter {
 
                         @Override
                         public void onError(Throwable e) {
+                            callBack3.error();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
@@ -228,6 +229,7 @@ public class RealNamePresenter {
                         }
                     });
         } else {
+            callBack3.error();
             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
         }
     }
@@ -246,5 +248,6 @@ public class RealNamePresenter {
     //定义接口
     public interface CallBack3 {
         void send(List<QuestionInfo.DataBean> data);
+        void error();
     }
 }

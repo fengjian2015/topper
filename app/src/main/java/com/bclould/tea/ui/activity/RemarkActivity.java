@@ -89,6 +89,11 @@ public class RemarkActivity extends BaseActivity {
                     setResult(RESULT_OK, intent);
                     finish();
                 }
+
+                @Override
+                public void error() {
+
+                }
             });
         }
     }

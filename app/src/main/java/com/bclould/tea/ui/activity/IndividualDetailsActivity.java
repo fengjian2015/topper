@@ -8,6 +8,7 @@ import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -94,6 +95,12 @@ public class IndividualDetailsActivity extends BaseActivity {
     CardView mCvNoLookTaDy;
     @Bind(R.id.cv_no_look_ta_dy2)
     CardView mCvNoLookTaDy2;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
+    @Bind(R.id.ll_data)
+    LinearLayout mLlData;
 
     private DBManager mMgr;
     private String mUser;
@@ -161,14 +168,20 @@ public class IndividualDetailsActivity extends BaseActivity {
             mCvNoLookTaDy2.setVisibility(View.GONE);
             rlRemark.setVisibility(View.GONE);
         }
+        initData();
+    }
+
+    private void initData() {
         mPresenter = new IndividualDetailsPresenter(this);
         mPresenter.getIndividual(mUser, true, new IndividualDetailsPresenter.CallBack() {
             @Override
             public void send(IndividualInfo.DataBean data) {
                 if (!IndividualDetailsActivity.this.isDestroyed()) {
+                    mLlData.setVisibility(View.VISIBLE);
+                    mLlError.setVisibility(View.GONE);
                     if (data == null) return;
                     individualInfo = data;
-                    mName=individualInfo.getName();
+                    mName = individualInfo.getName();
                     tvName.setText(individualInfo.getName());
                     tvRemark.setText(individualInfo.getRemark());
                     tvRegion.setText(individualInfo.getCountry());
@@ -193,10 +206,16 @@ public class IndividualDetailsActivity extends BaseActivity {
                     }
                 }
             }
+
+            @Override
+            public void error() {
+                mLlData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
+            }
         });
     }
 
-    @OnClick({R.id.cv_no_look_ta_dy, R.id.cv_no_look_ta_dy2, R.id.rl_dynamic, R.id.bark, R.id.btn_brak, R.id.rl_qr, R.id.rl_remark, R.id.rl_card})
+    @OnClick({R.id.ll_error, R.id.cv_no_look_ta_dy, R.id.cv_no_look_ta_dy2, R.id.rl_dynamic, R.id.bark, R.id.btn_brak, R.id.rl_qr, R.id.rl_remark, R.id.rl_card})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_dynamic:
@@ -211,6 +230,9 @@ public class IndividualDetailsActivity extends BaseActivity {
                 break;
             case R.id.bark:
                 finish();
+                break;
+            case R.id.ll_error:
+                initData();
                 break;
             case R.id.cv_no_look_ta_dy:
                 noLookTaDy(2);

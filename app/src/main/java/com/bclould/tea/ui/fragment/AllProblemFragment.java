@@ -10,12 +10,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bclould.tea.Presenter.RealNamePresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.model.QuestionInfo;
 import com.bclould.tea.ui.adapter.AllProblemRVAdapter;
+import com.bclould.tea.ui.widget.ClearEditText;
+import com.bclould.tea.utils.ActivityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +39,14 @@ public class AllProblemFragment extends Fragment {
     LinearLayout mLlSearch;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.iv_search)
+    ImageView mIvSearch;
+    @Bind(R.id.et_search)
+    ClearEditText mEtSearch;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private AllProblemRVAdapter mAllProblemRVAdapter;
     private RealNamePresenter mRealNamePresenter;
 
@@ -72,8 +83,20 @@ public class AllProblemFragment extends Fragment {
         mRealNamePresenter.getQuestionList(new RealNamePresenter.CallBack3() {
             @Override
             public void send(List<QuestionInfo.DataBean> data) {
-                mDataBeanList.addAll(data);
-                mAllProblemRVAdapter.notifyDataSetChanged();
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    mLlSearch.setVisibility(View.VISIBLE);
+                    mLlError.setVisibility(View.GONE);
+                    mDataBeanList.addAll(data);
+                    mAllProblemRVAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void error() {
+                mRecyclerView.setVisibility(View.GONE);
+                mLlSearch.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -95,10 +118,9 @@ public class AllProblemFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick(R.id.ll_search)
+
+    @OnClick(R.id.ll_error)
     public void onViewClicked() {
-
-//        startActivity(new Intent(getActivity(), SearchActivity.class));
-
+        initData();
     }
 }

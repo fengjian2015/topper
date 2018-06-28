@@ -27,6 +27,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by GA on 2017/9/22.
@@ -57,6 +58,10 @@ public class EmitFragment extends Fragment {
     ImageView mIv;
     @Bind(R.id.ll_no_data)
     LinearLayout mLlNoData;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private DBManager mDbManager;
     List<RedRecordInfo.DataBean.LogBean> mLogBeanList = new ArrayList<>();
     private ReceiveRVAdapter mReceiveRVAdapter;
@@ -88,9 +93,11 @@ public class EmitFragment extends Fragment {
                     if (data.getLog().size() == 0) {
                         mLlTotal.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);
+                        mLlError.setVisibility(View.GONE);
                     } else {
                         mLlTotal.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.GONE);
                     }
                     UtilTool.getImage(mDbManager, UtilTool.getTocoId(), getContext(), mIvTouxiang);
                     mTvName.setText(data.getName() + getString(R.string.sum_send));
@@ -101,6 +108,13 @@ public class EmitFragment extends Fragment {
                     mLogBeanList.addAll(data.getLog());
                     mReceiveRVAdapter.notifyDataSetChanged();
                 }
+            }
+
+            @Override
+            public void error() {
+                mLlTotal.setVisibility(View.GONE);
+                mLlNoData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -121,5 +135,10 @@ public class EmitFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @OnClick(R.id.ll_error)
+    public void onViewClicked() {
+        initData();
     }
 }

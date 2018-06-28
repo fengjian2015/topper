@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -84,6 +85,14 @@ public class RewardActivity extends BaseActivity {
     Button mBtnConfirm;
     @Bind(R.id.tv_name)
     TextView mTvName;
+    @Bind(R.id.tv_record)
+    TextView mTvRecord;
+    @Bind(R.id.ll_data)
+    LinearLayout mLlData;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private Dialog mBottomDialog;
     private int mId;
     private String mCoinName;
@@ -116,13 +125,16 @@ public class RewardActivity extends BaseActivity {
             coinPresenter.coinLists("pay", new CoinPresenter.CallBack() {
                 @Override
                 public void send(List<CoinListInfo.DataBean> data) {
+                    mLlData.setVisibility(View.VISIBLE);
+                    mLlError.setVisibility(View.GONE);
                     if (MyApp.getInstance().mPayCoinList.size() == 0)
                         MyApp.getInstance().mPayCoinList.addAll(data);
                 }
 
                 @Override
                 public void error() {
-
+                    mLlData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
                 }
             });
         }
@@ -145,11 +157,14 @@ public class RewardActivity extends BaseActivity {
         mTvName.setText(getString(R.string.user) + " : " + mName);
     }
 
-    @OnClick({R.id.tv_record, R.id.bark, R.id.rl_selector_coin, R.id.btn_confirm})
+    @OnClick({R.id.ll_error, R.id.tv_record, R.id.bark, R.id.rl_selector_coin, R.id.btn_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.ll_error:
+                initData();
                 break;
             case R.id.tv_record:
                 Intent intent = new Intent(this, PayRecordActivity.class);

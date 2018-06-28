@@ -342,7 +342,7 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/x20"
                     android:paddingRight="@dimen/x20"
-                    android:text="@string/vcode"
+                    android:text="@string/send"
                     android:textColor="@color/blue2"
                     android:textSize="@dimen/x28"/>
 

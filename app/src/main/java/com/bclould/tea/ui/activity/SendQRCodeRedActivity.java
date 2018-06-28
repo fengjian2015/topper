@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,7 +56,7 @@ import static com.bclould.tea.R.style.BottomDialog;
  * Created by GA on 2018/1/22.
  */
 
-@android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class SendQRCodeRedActivity extends BaseActivity {
 
     @Bind(R.id.bark)
@@ -73,6 +75,12 @@ public class SendQRCodeRedActivity extends BaseActivity {
     EditText mEtRedCount;
     @Bind(R.id.btn_send)
     Button mBtnSend;
+    @Bind(R.id.ll_data)
+    LinearLayout mLlData;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
     private Dialog mRedDialog;
     private Animation mEnterAnim;
     private Animation mExitAnim;
@@ -100,24 +108,30 @@ public class SendQRCodeRedActivity extends BaseActivity {
             coinPresenter.coinLists("red_packet", new CoinPresenter.CallBack() {
                 @Override
                 public void send(List<CoinListInfo.DataBean> data) {
+                    mLlData.setVisibility(View.VISIBLE);
+                    mLlError.setVisibility(View.GONE);
                     if (MyApp.getInstance().mRedCoinList.size() == 0)
                         MyApp.getInstance().mRedCoinList.addAll(data);
                 }
 
                 @Override
                 public void error() {
-
+                    mLlData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
                 }
             });
         }
     }
 
 
-    @OnClick({R.id.bark, R.id.tv_redpacket_record, R.id.rl_selector_coin, R.id.btn_send})
+    @OnClick({R.id.ll_error,R.id.bark, R.id.tv_redpacket_record, R.id.rl_selector_coin, R.id.btn_send})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.ll_error:
+                initData();
                 break;
             case R.id.tv_redpacket_record:
                 startActivity(new Intent(this, RedPacketRecordActivity.class));

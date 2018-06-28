@@ -966,4 +966,11 @@
     <string name="loading_error_anew_loading_hint2">~出錯了，請點擊空白處重新加載~</string>
     <string name="real_name_pass">實名認證通過</string>
     <string name="reauthentication">重新認證</string>
+    <string name="sum_rceive">共收到</string>
+    <string name="receive_red">收到紅包</string>
+    <string name="money_highest">金額最高</string>
+    <string name="max_coin">最多幣種</string>
+    <string name="ge_bi">個幣</string>
+    <string name="send_red">發出紅包</string>
+    <string name="back_send">後發送</string>
 </resources>
