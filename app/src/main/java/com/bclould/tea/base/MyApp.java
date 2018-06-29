@@ -2,16 +2,11 @@ package com.bclould.tea.base;
 
 import android.app.Activity;
 import android.app.Application;
-import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Handler;
 import android.support.annotation.RequiresApi;
-import android.widget.RemoteViews;
-import android.widget.Toast;
 
-import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.listener.CrashHandler;
 import com.bclould.tea.model.CoinListInfo;
@@ -22,17 +17,9 @@ import com.bclould.tea.topperchat.UmManage;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.GlideImgLoader;
 import com.bclould.tea.utils.MySharedPreferences;
-import com.bclould.tea.utils.UtilTool;
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.previewlibrary.ZoomMediaLoader;
-import com.umeng.commonsdk.UMConfigure;
-import com.umeng.message.IUmengRegisterCallback;
-import com.umeng.message.MsgConstant;
-import com.umeng.message.PushAgent;
-import com.umeng.message.UTrack;
-import com.umeng.message.UmengMessageHandler;
-import com.umeng.message.UmengNotificationClickHandler;
-import com.umeng.message.entity.UMessage;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +42,7 @@ public class MyApp extends Application {
     public List<CoinListInfo.DataBean> mOtcCoinList = new ArrayList<>();
     public List<CoinListInfo.DataBean> mBetCoinList = new ArrayList<>();
     public List<CoinListInfo.DataBean> mPayCoinList = new ArrayList<>();
+    public List<CoinListInfo.DataBean> mRewardCoinList = new ArrayList<>();
 
     //单例
     public static MyApp getInstance() {

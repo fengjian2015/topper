@@ -119,16 +119,16 @@ public class RewardActivity extends BaseActivity {
     }
 
     private void initData() {
-        MyApp.getInstance().mPayCoinList.clear();
-        if (MyApp.getInstance().mPayCoinList.size() == 0) {
+        MyApp.getInstance().mRewardCoinList.clear();
+        if (MyApp.getInstance().mRewardCoinList.size() == 0) {
             CoinPresenter coinPresenter = new CoinPresenter(this);
-            coinPresenter.coinLists("pay", new CoinPresenter.CallBack() {
+            coinPresenter.coinLists("can_reward", new CoinPresenter.CallBack() {
                 @Override
                 public void send(List<CoinListInfo.DataBean> data) {
                     mLlData.setVisibility(View.VISIBLE);
                     mLlError.setVisibility(View.GONE);
-                    if (MyApp.getInstance().mPayCoinList.size() == 0)
-                        MyApp.getInstance().mPayCoinList.addAll(data);
+                    if (MyApp.getInstance().mRewardCoinList.size() == 0)
+                        MyApp.getInstance().mRewardCoinList.addAll(data);
                 }
 
                 @Override

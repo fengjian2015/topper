@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.ui.activity.PersonalDetailsActivity;
-import com.bclould.tea.ui.activity.RealNameC1Activity;
 import com.bclould.tea.ui.activity.SystemSetActivity;
 import com.bclould.tea.ui.activity.UserSafetyActivity;
 import com.bclould.tea.utils.Constants;
@@ -44,26 +43,23 @@ public class MyFragment extends Fragment {
     ImageView mIvTouxiang;
     @Bind(R.id.tv_name)
     TextView mTvName;
+    @Bind(R.id.tv_tocoid)
+    TextView mTvTocoid;
     @Bind(R.id.rl_personal_data)
     RelativeLayout mRlPersonalData;
-    @Bind(R.id.iv)
-    ImageView mIv;
-    @Bind(R.id.rl_autonym_attestation)
-    RelativeLayout mRlAutonymAttestation;
     @Bind(R.id.iv2)
     ImageView mIv2;
     @Bind(R.id.rl_security_center)
     RelativeLayout mRlSecurityCenter;
     @Bind(R.id.iv3)
     ImageView mIv3;
-    @Bind(R.id.rl_system_set)
-    RelativeLayout mRlSystemSet;
     @Bind(R.id.tv)
     TextView mTv;
     @Bind(R.id.tv_new_update)
     TextView mTvNewUpdate;
-    @Bind(R.id.tv_tocoid)
-    TextView mTvTocoid;
+    @Bind(R.id.rl_system_set)
+    RelativeLayout mRlSystemSet;
+
 
     private DBManager mMgr;
 
@@ -101,7 +97,7 @@ public class MyFragment extends Fragment {
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), getContext(), mIvTouxiang);
         } else if (msg.equals(getString(R.string.check_new_version))) {
             mTvNewUpdate.setVisibility(View.VISIBLE);
-        }else if(msg.equals(getString(R.string.refresh_the_interface))){
+        } else if (msg.equals(getString(R.string.refresh_the_interface))) {
             init();
         }
     }
@@ -128,14 +124,11 @@ public class MyFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.rl_personal_data, R.id.rl_autonym_attestation, R.id.rl_security_center, R.id.rl_system_set})
+    @OnClick({R.id.rl_personal_data, R.id.rl_security_center, R.id.rl_system_set})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_personal_data:
                 startActivity(new Intent(getActivity(), PersonalDetailsActivity.class));
-                break;
-            case R.id.rl_autonym_attestation:
-                startActivity(new Intent(getActivity(), RealNameC1Activity.class));
                 break;
             case R.id.rl_security_center:
                 startActivity(new Intent(getActivity(), UserSafetyActivity.class));

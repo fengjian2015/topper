@@ -1,5 +1,6 @@
 package com.bclould.tea.Presenter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
@@ -12,9 +13,7 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.topperchat.WsConnection;
-import com.bclould.tea.ui.activity.InitialActivity;
 import com.bclould.tea.ui.activity.MainActivity;
-import com.bclould.tea.ui.activity.SystemSetActivity;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
@@ -35,17 +34,17 @@ import static com.bclould.tea.Presenter.LoginPresenter.TOKEN;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class LogoutPresenter {
 
-    private final SystemSetActivity mSystemSetActivity;
+    private final Activity mActivity;
     private LoadingProgressDialog mProgressDialog;
 
-    public LogoutPresenter(SystemSetActivity systemSetActivity) {
-        mSystemSetActivity = systemSetActivity;
+    public LogoutPresenter(Activity activity) {
+        mActivity = activity;
     }
 
     private void showDialog() {
         if (mProgressDialog == null) {
-            mProgressDialog = LoadingProgressDialog.createDialog(mSystemSetActivity);
-            mProgressDialog.setMessage(mSystemSetActivity.getString(R.string.kitson));
+            mProgressDialog = LoadingProgressDialog.createDialog(mActivity);
+            mProgressDialog.setMessage(mActivity.getString(R.string.kitson));
         }
 
         mProgressDialog.show();
@@ -60,7 +59,7 @@ public class LogoutPresenter {
 
     public void logout() {
         showDialog();
-        RetrofitUtil.getInstance(mSystemSetActivity)
+        RetrofitUtil.getInstance(mActivity)
                 .getServer()
                 .logout(UtilTool.getToken())
                 .subscribeOn(Schedulers.io())
@@ -98,7 +97,7 @@ public class LogoutPresenter {
             public void run() {
                 try {
                     WsConnection.getInstance().senLogout();
-                    WsConnection.getInstance().logoutService(mSystemSetActivity);
+                    WsConnection.getInstance().logoutService(mActivity);
                     Thread.sleep(1000);
                     UtilTool.Log("fengjian", "退出成功");
                     Message msg = new Message();
@@ -115,20 +114,21 @@ public class LogoutPresenter {
     Handler myHandler = new Handler() {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Toast.makeText(mSystemSetActivity, (String) msg.obj, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, (String) msg.obj, Toast.LENGTH_SHORT).show();
 //            MyApp.getInstance().exit();
-            mSystemSetActivity.finish();
+            if (!(mActivity instanceof MainActivity)) {
+                mActivity.finish();
+            }
             MySharedPreferences.getInstance().setString(TOKEN, "");
             MySharedPreferences.getInstance().setString(TOCOID, "");
             MyApp.getInstance().mCoinList.clear();
             MyApp.getInstance().mPayCoinList.clear();
             MyApp.getInstance().mOtcCoinList.clear();
             MyApp.getInstance().mBetCoinList.clear();
-            Intent intent = new Intent(mSystemSetActivity, MainActivity.class);
+            Intent intent = new Intent(mActivity, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("whence", 2);
-            mSystemSetActivity.startActivity(intent);
-//            mSystemSetActivity.startActivity(new Intent(mSystemSetActivity, InitialActivity.class));
+            mActivity.startActivity(intent);
         }
     };
 }

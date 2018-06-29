@@ -437,6 +437,10 @@ public class OrderDetailsActivity extends BaseActivity {
                     EventBus.getDefault().post(messageEvent);
                     Toast.makeText(OrderDetailsActivity.this, getString(R.string.deal_finish), Toast.LENGTH_SHORT).show();
                     finish();
+                    Intent intent = new Intent(OrderDetailsActivity.this, OrderCloseActivity.class);
+                    intent.putExtra("id", mId);
+                    intent.putExtra("status", 3);
+                    startActivity(intent);
                 }
             });
         } else {
@@ -448,6 +452,10 @@ public class OrderDetailsActivity extends BaseActivity {
                     EventBus.getDefault().post(messageEvent);
                     Toast.makeText(OrderDetailsActivity.this, getString(R.string.deal_finish), Toast.LENGTH_SHORT).show();
                     finish();
+                    Intent intent = new Intent(OrderDetailsActivity.this, OrderCloseActivity.class);
+                    intent.putExtra("id", mId);
+                    intent.putExtra("status", 3);
+                    startActivity(intent);
                 }
             });
         }

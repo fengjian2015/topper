@@ -109,6 +109,7 @@ public class RealNamePresenter {
                     @Override
                     public void onError(Throwable e) {
                         hideDialog();
+                        UtilTool.Log("實名認證", e.getMessage());
                         callBack.error();
                     }
 

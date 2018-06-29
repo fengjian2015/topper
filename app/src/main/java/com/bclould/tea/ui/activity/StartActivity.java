@@ -84,18 +84,6 @@ public class StartActivity extends AppCompatActivity {
                                     public void onError(@NonNull Throwable e) {
                                         MySharedPreferences.getInstance().setString(TOKEN, "");
                                         startActivity(new Intent(StartActivity.this, MainActivity.class));
-                                        /*if (e.getMessage().equals("HTTP 401 Unauthorized")) {
-                                            finish();
-                                            MySharedPreferences.getInstance().setString(TOKEN, "");
-                                            startActivity(new Intent(StartActivity.this, MainActivity.class));
-                                        } else if (e.getMessage().equals("connect timed out")) {
-                                            finish();
-                                            startActivity(new Intent(StartActivity.this, MainActivity.class));
-                                        } else {
-                                            finish();
-                                            MySharedPreferences.getInstance().setString(TOKEN, "");
-                                            startActivity(new Intent(StartActivity.this, InitialActivity.class));
-                                        }*/
                                         UtilTool.Log("日志", e.getMessage());
                                         finish();
                                     }

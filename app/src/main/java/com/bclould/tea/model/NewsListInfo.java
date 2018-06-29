@@ -111,8 +111,17 @@ public class NewsListInfo {
         private String title;
         private String created_at;
         private String index_pic;
+        private int view_count;
         private int is_important;
         private int is_ad;
+
+        public int getView_count() {
+            return view_count;
+        }
+
+        public void setView_count(int view_count) {
+            this.view_count = view_count;
+        }
 
         public int getIs_ad() {
             return is_ad;

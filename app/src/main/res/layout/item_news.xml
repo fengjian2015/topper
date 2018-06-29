@@ -33,7 +33,9 @@
             android:id="@+id/tv_news_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="噶克里斯多夫记录数据法拉盛家乐福接口积分卡拉斯就发了撒娇了"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="噶克里斯多夫记录数据法拉盛家乐福接口积分卡拉斯"
             android:textColor="@color/black"
             android:textSize="@dimen/x28"/>
 
@@ -61,6 +63,19 @@
             android:layout_marginTop="@dimen/y30"
             android:text="3小时前"
             android:textSize="@dimen/x26"/>
+
+        <TextView
+            android:id="@+id/tv_look_count"
+            android:visibility="gone"
+            android:drawableLeft="@mipmap/icon_eye_of2"
+            android:drawablePadding="@dimen/x10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:layout_below="@+id/tv_time"
+            android:layout_marginTop="@dimen/y20"
+            android:text="45623"
+            android:textSize="@dimen/x22"/>
 
     </RelativeLayout>
 

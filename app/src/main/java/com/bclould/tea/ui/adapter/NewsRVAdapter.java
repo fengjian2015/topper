@@ -36,6 +36,7 @@ public class NewsRVAdapter extends RecyclerView.Adapter {
     private final List<NewsListInfo.ListsBean> mNewsList;
 
 
+
     public NewsRVAdapter(Context context, List<NewsListInfo.ListsBean> newsList) {
         mContext = context;
         mNewsList = newsList;
@@ -96,6 +97,8 @@ public class NewsRVAdapter extends RecyclerView.Adapter {
         TextView mTvTime;
         @Bind(R.id.tv_type)
         TextView mTvType;
+        @Bind(R.id.tv_look_count)
+        TextView mTvLookCount;
         private int mId;
 
         ViewHolder(View view) {
@@ -115,8 +118,11 @@ public class NewsRVAdapter extends RecyclerView.Adapter {
         public void setData(NewsListInfo.ListsBean listsBean) {
             if (listsBean.getIs_ad() == 1) {
                 mTvType.setVisibility(View.VISIBLE);
+                mTvLookCount.setVisibility(View.GONE);
             } else {
                 mTvType.setVisibility(View.GONE);
+                mTvLookCount.setVisibility(View.VISIBLE);
+                mTvLookCount.setText(listsBean.getView_count() + "");
             }
             mId = listsBean.getId();
             mTvNewsTitle.setText(listsBean.getTitle());
@@ -129,10 +135,12 @@ public class NewsRVAdapter extends RecyclerView.Adapter {
         ImageView mIvImage;
         @Bind(R.id.tv_news_title)
         TextView mTvNewsTitle;
-        @Bind(R.id.tv_time)
-        TextView mTvTime;
         @Bind(R.id.tv_type)
         TextView mTvType;
+        @Bind(R.id.tv_time)
+        TextView mTvTime;
+        @Bind(R.id.tv_look_count)
+        TextView mTvLookCount;
         private int mId;
 
         ViewHolder2(View view) {
@@ -152,8 +160,11 @@ public class NewsRVAdapter extends RecyclerView.Adapter {
         public void setData(NewsListInfo.ListsBean listBean) {
             if (listBean.getIs_ad() == 1) {
                 mTvType.setVisibility(View.VISIBLE);
+                mTvLookCount.setVisibility(View.GONE);
             } else {
                 mTvType.setVisibility(View.GONE);
+                mTvLookCount.setVisibility(View.VISIBLE);
+                mTvLookCount.setText(listBean.getView_count() + "");
             }
             mId = listBean.getId();
             mTvNewsTitle.setText(listBean.getTitle());

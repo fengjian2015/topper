@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.bclould.tea.ui.activity.GroupMemberActivity">
+    tools:activity="com.bclould.tea.ui.activity.GroupMemberActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"

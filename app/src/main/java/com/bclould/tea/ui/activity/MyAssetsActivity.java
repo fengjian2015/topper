@@ -30,6 +30,7 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.MyAssetsInfo;
 import com.bclould.tea.ui.adapter.MyWalletRVAapter;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.SpaceItemDecoration;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -121,7 +122,7 @@ public class MyAssetsActivity extends BaseActivity {
             public void send(String data) {
                 if (data != null && !MyAssetsActivity.this.isDestroyed()) {
                     mCount++;
-                    if(mCount == 2){
+                    if (mCount == 2) {
                         mLlData.setVisibility(View.VISIBLE);
                         mLlError.setVisibility(View.GONE);
                     }
@@ -132,8 +133,10 @@ public class MyAssetsActivity extends BaseActivity {
 
             @Override
             public void error() {
-                mLlData.setVisibility(View.VISIBLE);
-                mLlError.setVisibility(View.GONE);
+                if (ActivityUtil.isActivityOnTop(MyAssetsActivity.this)) {
+                    mLlData.setVisibility(View.VISIBLE);
+                    mLlError.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -186,7 +189,7 @@ public class MyAssetsActivity extends BaseActivity {
             public void send(List<MyAssetsInfo.DataBean> info) {
                 if (!MyAssetsActivity.this.isDestroyed() && info.size() != 0) {
                     mCount++;
-                    if(mCount == 2){
+                    if (mCount == 2) {
                         mLlData.setVisibility(View.VISIBLE);
                         mLlError.setVisibility(View.GONE);
                     }

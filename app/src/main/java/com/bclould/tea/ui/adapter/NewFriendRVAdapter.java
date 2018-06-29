@@ -1,7 +1,10 @@
 package com.bclould.tea.ui.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,8 +18,11 @@ import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.AddRequestInfo;
+import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
@@ -81,6 +87,21 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (mMgr.findUser(mAddRequestInfo.getUser())) {
+                        Intent intent = new Intent(mContext, ConversationActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("name", mAddRequestInfo.getUserName());
+                        bundle.putString("user", mAddRequestInfo.getUser());
+                        intent.putExtras(bundle);
+                        mContext.startActivity(intent);
+                        }else {
+                            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.add_friends_first));
+                        }
+                    }
+                });
             mBtnConsent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -56,11 +56,14 @@ public class UserSafetyActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
     }
 
-    @OnClick({R.id.bark, R.id.rl_login_password, R.id.rl_pay_password, R.id.rl_google, R.id.rl_login_set, R.id.rl_login_record})
+    @OnClick({R.id.rl_autonym_attestation,R.id.bark, R.id.rl_login_password, R.id.rl_pay_password, R.id.rl_google, R.id.rl_login_set, R.id.rl_login_record})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.rl_autonym_attestation:
+                startActivity(new Intent(this, RealNameC1Activity.class));
                 break;
             case R.id.rl_login_password:
                 startActivity(new Intent(this, LoginPasswordActivity.class));

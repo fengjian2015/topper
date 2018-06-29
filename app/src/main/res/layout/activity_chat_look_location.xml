@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light"
-    tools:context="com.bclould.tea.ui.activity.ChatLookLocationActivity">
+    tools:activity="com.bclould.tea.ui.activity.ChatLookLocationActivity">
     <RelativeLayout
         android:id="@+id/rl_tou"
         android:layout_width="match_parent"
