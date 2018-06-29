@@ -13,7 +13,6 @@ import com.bclould.tea.model.RemarkListInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.ActivityUtil;
-import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tocotalk.model.UserDataInfo;
 
@@ -55,319 +54,271 @@ public class PersonalDetailsPresenter {
     }
 
     public void upImage(String base64Image, final CallBack callBack) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .uploadAvatar(UtilTool.getToken(), base64Image)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .uploadAvatar(UtilTool.getToken(), base64Image)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            callBack.send();
+                            Toast.makeText(mContext, mContext.getString(R.string.xg_succeed), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(mContext, mContext.getString(R.string.xg_error), Toast.LENGTH_SHORT).show();
                         }
+                    }
 
-                        @Override
-                        public void onNext(BaseInfo baseInfo) {
-                            hideDialog();
-                            if (baseInfo.getStatus() == 1) {
-                                callBack.send();
-                                Toast.makeText(mContext, mContext.getString(R.string.xg_succeed), Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(mContext, mContext.getString(R.string.xg_error), Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     public void getFriendImageList(String toco_id, final CallBack2 callBack2) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .avatarList(UtilTool.getToken(), toco_id)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<AuatarListInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .avatarList(UtilTool.getToken(), toco_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<AuatarListInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onNext(AuatarListInfo auatarListInfo) {
-                            if (auatarListInfo.getStatus() == 1) {
-                                callBack2.send(auatarListInfo.getData());
-                            }/*else {
+                    @Override
+                    public void onNext(AuatarListInfo auatarListInfo) {
+                        if (auatarListInfo.getStatus() == 1) {
+                            callBack2.send(auatarListInfo.getData());
+                        }/*else {
                                 Toast.makeText(mContext, auatarListInfo.getMessage(), Toast.LENGTH_SHORT).show();
                             }*/
-                        }
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
-    public void getFriendRemark(String name,final CallBack3 callBack3){
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .getRemarkList(UtilTool.getToken(), name)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<RemarkListInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+    public void getFriendRemark(String name, final CallBack3 callBack3) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .getRemarkList(UtilTool.getToken(), name)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<RemarkListInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(RemarkListInfo remarkListInfo) {
+                        if (remarkListInfo.getStatus() == 1) {
+                            callBack3.send(remarkListInfo.getData());
                         }
+                    }
 
-                        @Override
-                        public void onNext(RemarkListInfo remarkListInfo) {
-                            if (remarkListInfo.getStatus() == 1) {
-                                callBack3.send(remarkListInfo.getData());
-                            }
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     //獲取好友列表
-    public void getFriendList(final CallBack2 callBack2){
+    public void getFriendList(final CallBack2 callBack2) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .getFriendsList(UtilTool.getToken())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<AuatarListInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .getFriendsList(UtilTool.getToken())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<AuatarListInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+                    }
 
+                    @Override
+                    public void onNext(AuatarListInfo remarkListInfo) {
+                        if (((Activity) mContext).isDestroyed()) return;
+                        hideDialog();
+                        if (remarkListInfo.getStatus() == 1) {
+                            callBack2.send(remarkListInfo.getData());
                         }
+                    }
 
-                        @Override
-                        public void onNext(AuatarListInfo remarkListInfo) {
-                            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
-                            hideDialog();
-                            if (remarkListInfo.getStatus() == 1) {
-                                callBack2.send(remarkListInfo.getData());
-                            }else{
-                                callBack2.error();
-                            }
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
-                            callBack2.error();
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
-            callBack2.error();
-            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.toast_network_error));
-        }
+                    }
+                });
     }
 
     //添加好友
-    public void addFriend(String toco_id,String friend_label){
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .addFriend(UtilTool.getToken(),toco_id,friend_label)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+    public void addFriend(String toco_id, String friend_label) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .addFriend(UtilTool.getToken(), toco_id, friend_label)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        if (baseInfo.getStatus() == 1) {
+                            Toast.makeText(mContext, mContext.getString(R.string.send_request_succeed), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(mContext, mContext.getString(R.string.send_request_error), Toast.LENGTH_SHORT).show();
                         }
+                    }
 
-                        @Override
-                        public void onNext(BaseInfo baseInfo) {
-                            if (baseInfo.getStatus() == 1) {
-                                Toast.makeText(mContext, mContext.getString(R.string.send_request_succeed), Toast.LENGTH_SHORT).show();
-                            }else{
-                                Toast.makeText(mContext, mContext.getString(R.string.send_request_error), Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     //確認添加
-    public void confirmAddFriend(String toco_id, int confirm, final CallBack callBack){
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .confirmAddFriend(UtilTool.getToken(),toco_id,confirm)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+    public void confirmAddFriend(String toco_id, int confirm, final CallBack callBack) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .confirmAddFriend(UtilTool.getToken(), toco_id, confirm)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            callBack.send();
                         }
+                    }
 
-                        @Override
-                        public void onNext(BaseInfo baseInfo) {
-                            if (!ActivityUtil.isActivityOnTop((Activity) mContext))return;
-                            hideDialog();
-                            if (baseInfo.getStatus() == 1) {
-                                callBack.send();
-                            }
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            if (!ActivityUtil.isActivityOnTop((Activity) mContext))return;
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     //刪除好友
-    public void deleteFriend(String toco_id, final CallBack callBack){
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .deleteFriend(UtilTool.getToken(),toco_id)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+    public void deleteFriend(String toco_id, final CallBack callBack) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .deleteFriend(UtilTool.getToken(), toco_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        if (baseInfo.getStatus() == 1) {
+                            Toast.makeText(mContext, mContext.getString(R.string.delete_succeed), Toast.LENGTH_SHORT).show();
+                            callBack.send();
                         }
+                    }
 
-                        @Override
-                        public void onNext(BaseInfo baseInfo) {
-                            if (baseInfo.getStatus() == 1) {
-                                Toast.makeText(mContext, mContext.getString(R.string.delete_succeed), Toast.LENGTH_SHORT).show();
-                                callBack.send();
-                            }
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     //刪除好友
-    public void getUserData(int user_id, final CallBack4 callBack4){
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .getUserData(UtilTool.getToken(),user_id)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<UserDataInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+    public void getUserData(int user_id, final CallBack4 callBack4) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .getUserData(UtilTool.getToken(), user_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<UserDataInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(UserDataInfo userDataInfo) {
+                        if (userDataInfo.getStatus() == 1) {
+                            callBack4.send(userDataInfo.getData());
                         }
+                    }
 
-                        @Override
-                        public void onNext(UserDataInfo userDataInfo) {
-                            if (userDataInfo.getStatus() == 1) {
-                                callBack4.send(userDataInfo.getData());
-                            }
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     //定义接口
@@ -381,12 +332,13 @@ public class PersonalDetailsPresenter {
         void error();
     }
 
-    public interface CallBack3{
+    public interface CallBack3 {
         void send(List<RemarkListInfo.DataBean> listdata);
     }
 
-    public interface CallBack4{
+    public interface CallBack4 {
         void send(UserDataInfo.DataBean listdata);
+
         void error();
     }
 }

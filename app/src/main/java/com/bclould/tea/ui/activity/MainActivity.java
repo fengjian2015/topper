@@ -277,6 +277,11 @@ public class MainActivity extends BaseActivity {
             public void error() {
 
             }
+
+            @Override
+            public void finishRefresh() {
+
+            }
         });
     }
 
@@ -329,7 +334,6 @@ public class MainActivity extends BaseActivity {
     //检测版本更新
     private void checkVersion() {
         //判断是否开启网络
-        if (UtilTool.isNetworkAvailable(this)) {
             RetrofitUtil.getInstance(this)
                     .getServer()
                     .checkVersion(Constants.VERSION_UPDATE_URL)//githua获取版本更新
@@ -364,7 +368,6 @@ public class MainActivity extends BaseActivity {
                         @Override
                         public void onError(Throwable e) {
                             UtilTool.Log("日志", e.getMessage());
-                            Toast.makeText(MainActivity.this, getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -372,9 +375,6 @@ public class MainActivity extends BaseActivity {
 
                         }
                     });
-        } else {
-            Toast.makeText(MainActivity.this, getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
     }
 
     //显示Dialog

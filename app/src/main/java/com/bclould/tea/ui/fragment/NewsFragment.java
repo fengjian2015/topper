@@ -165,7 +165,7 @@ public class NewsFragment extends Fragment implements OnBannerListener {
                             }
                             initBanner(imgList, titleList);
                         }
-                    }else {
+                    } else {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.VISIBLE);
                         mLlError.setVisibility(View.GONE);

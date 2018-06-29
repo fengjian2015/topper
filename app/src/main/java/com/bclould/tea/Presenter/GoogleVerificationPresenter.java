@@ -49,116 +49,100 @@ public class GoogleVerificationPresenter {
     }
 
     public void getGoogleKey(final CallBack2 callBack2) {
-        if (UtilTool.isNetworkAvailable(mGoogleVerificationActivity)) {
-            showDialog();
-            RetrofitUtil.getInstance(mGoogleVerificationActivity)
-                    .getServer()
-                    .getGoogleKey(UtilTool.getToken())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<GoogleInfo>() {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
+        showDialog();
+        RetrofitUtil.getInstance(mGoogleVerificationActivity)
+                .getServer()
+                .getGoogleKey(UtilTool.getToken())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<GoogleInfo>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onNext(@NonNull GoogleInfo googleInfo) {
-                            hideDialog();
-                            callBack2.send(googleInfo);
-                        }
+                    @Override
+                    public void onNext(@NonNull GoogleInfo googleInfo) {
+                        hideDialog();
+                        callBack2.send(googleInfo);
+                    }
 
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-                            hideDialog();
-                            callBack2.error();
-                            Toast.makeText(mGoogleVerificationActivity, mGoogleVerificationActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        hideDialog();
+                        callBack2.error();
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-        } else {
-            callBack2.error();
-            Toast.makeText(mGoogleVerificationActivity, mGoogleVerificationActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     public void bindGoogle(String googleCode) {
-        if (UtilTool.isNetworkAvailable(mGoogleVerificationActivity)) {
-            showDialog();
-            RetrofitUtil.getInstance(mGoogleVerificationActivity)
-                    .getServer()
-                    .bindGoogle(UtilTool.getToken(), googleCode)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
+        showDialog();
+        RetrofitUtil.getInstance(mGoogleVerificationActivity)
+                .getServer()
+                .bindGoogle(UtilTool.getToken(), googleCode)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onNext(@NonNull BaseInfo baseInfo) {
-                            if (baseInfo.getStatus() == 1)
-                                mGoogleVerificationActivity.finish();
-                            hideDialog();
-                            Toast.makeText(mGoogleVerificationActivity, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onNext(@NonNull BaseInfo baseInfo) {
+                        if (baseInfo.getStatus() == 1)
+                            mGoogleVerificationActivity.finish();
+                        hideDialog();
+                        Toast.makeText(mGoogleVerificationActivity, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
 
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mGoogleVerificationActivity, mGoogleVerificationActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-        } else {
-            Toast.makeText(mGoogleVerificationActivity, mGoogleVerificationActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     public void unBinding(String vcode, final CallBack callBack) {
-        if (UtilTool.isNetworkAvailable(mGoogleVerificationActivity)) {
-            showDialog();
-            RetrofitUtil.getInstance(mGoogleVerificationActivity)
-                    .getServer()
-                    .unBindGoogle(UtilTool.getToken(), vcode)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
-                        }
+        showDialog();
+        RetrofitUtil.getInstance(mGoogleVerificationActivity)
+                .getServer()
+                .unBindGoogle(UtilTool.getToken(), vcode)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                    }
 
-                        @Override
-                        public void onNext(@NonNull BaseInfo baseInfo) {
-                            if (baseInfo.getStatus() == 1)
-                                callBack.send();
-                            hideDialog();
-                            Toast.makeText(mGoogleVerificationActivity, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onNext(@NonNull BaseInfo baseInfo) {
+                        if (baseInfo.getStatus() == 1)
+                            callBack.send();
+                        hideDialog();
+                        Toast.makeText(mGoogleVerificationActivity, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
 
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mGoogleVerificationActivity, mGoogleVerificationActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-        } else {
-            Toast.makeText(mGoogleVerificationActivity, mGoogleVerificationActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     //定义接口
@@ -169,6 +153,7 @@ public class GoogleVerificationPresenter {
     //定义接口
     public interface CallBack2 {
         void send(GoogleInfo googleInfo);
+
         void error();
     }
 }

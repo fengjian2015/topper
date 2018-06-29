@@ -53,189 +53,160 @@ public class BankCardPresenter {
     }
 
     public void bankCardInfo(String cardNumber, final CallBack callBack) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .bankCardInfo(UtilTool.getToken(), cardNumber)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BankCardInfo>() {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .bankCardInfo(UtilTool.getToken(), cardNumber)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BankCardInfo>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(@NonNull BankCardInfo bankCardInfo) {
+                        hideDialog();
+                        if (bankCardInfo.getStatus() == 1) {
+                            callBack.send(bankCardInfo.getData());
+                        } else {
+                            Toast.makeText(mContext, bankCardInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
+                    }
 
-                        @Override
-                        public void onNext(@NonNull BankCardInfo bankCardInfo) {
-                            hideDialog();
-                            if (bankCardInfo.getStatus() == 1) {
-                                callBack.send(bankCardInfo.getData());
-                            } else {
-                                Toast.makeText(mContext, bankCardInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-
-        }
+                    }
+                });
     }
 
     public void bindBankCard(String truename, String bank, String openingBank, String cardNumber, final CallBack3 callBack3) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .bindBankCard(UtilTool.getToken(), truename, bank, openingBank, cardNumber)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .bindBankCard(UtilTool.getToken(), truename, bank, openingBank, cardNumber)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onNext(@NonNull BaseInfo baseInfo) {
-                            hideDialog();
-                            callBack3.send(baseInfo.getStatus());
+                    @Override
+                    public void onNext(@NonNull BaseInfo baseInfo) {
+                        hideDialog();
+                        callBack3.send(baseInfo.getStatus());
 
-                        }
+                    }
 
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-
-        }
+                    }
+                });
     }
 
     public void bankCardList(final CallBack2 callBack2) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .bankCardList(UtilTool.getToken())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<CardListInfo>() {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .bankCardList(UtilTool.getToken())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<CardListInfo>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(@NonNull CardListInfo cardListInfo) {
+                        if (cardListInfo.getStatus() == 1) {
+                            callBack2.send(cardListInfo.getData());
                         }
+                    }
 
-                        @Override
-                        public void onNext(@NonNull CardListInfo cardListInfo) {
-                            if (cardListInfo.getStatus() == 1) {
-                                callBack2.send(cardListInfo.getData());
-                            }
-                        }
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        callBack2.error();
+                    }
 
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     public void unBindBankCard(int id, final CallBack3 callBack3) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .unBindBankCard(UtilTool.getToken(), id + "")
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .unBindBankCard(UtilTool.getToken(), id + "")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onNext(@NonNull BaseInfo baseInfo) {
-                            hideDialog();
-                            callBack3.send(baseInfo.getStatus());
-                        }
+                    @Override
+                    public void onNext(@NonNull BaseInfo baseInfo) {
+                        hideDialog();
+                        callBack3.send(baseInfo.getStatus());
+                    }
 
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-
-        }
+                    }
+                });
     }
 
     public void setDefaultBankCard(int id, final CallBack3 callBack3) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .setDefaultBankCard(UtilTool.getToken(), id + "")
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .setDefaultBankCard(UtilTool.getToken(), id + "")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onNext(@NonNull BaseInfo baseInfo) {
-                            callBack3.send(baseInfo.getStatus());
-                        }
+                    @Override
+                    public void onNext(@NonNull BaseInfo baseInfo) {
+                        callBack3.send(baseInfo.getStatus());
+                    }
 
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-
-        }
+                    }
+                });
     }
 
     //定义接口
@@ -252,6 +223,7 @@ public class BankCardPresenter {
     //定义接口
     public interface CallBack2 {
         void send(List<CardListInfo.DataBean> data);
+
         void error();
     }
 }

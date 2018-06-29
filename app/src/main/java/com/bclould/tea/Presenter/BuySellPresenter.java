@@ -62,124 +62,108 @@ public class BuySellPresenter {
     }
 
     public void getDealList(int page, int pageSize, int type, String coinName, final String state, final CallBack callBack) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .getDealList(UtilTool.getToken(), type, coinName, state, page, pageSize)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<DealListInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .getDealList(UtilTool.getToken(), type, coinName, state, page, pageSize)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<DealListInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(DealListInfo baseInfo) {
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            callBack.send(baseInfo.getData(), state);
+                        }else {
+                            callBack.finishRefresh();
                         }
 
-                        @Override
-                        public void onNext(DealListInfo baseInfo) {
-                            hideDialog();
-                            if (baseInfo.getStatus() == 1) {
-                                callBack.send(baseInfo.getData(), state);
-                            }else{
-                                callBack.finishRefresh();
-                            }
-                        }
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            callBack.error();
-                            UtilTool.Log("otc", e.getMessage());
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                        callBack.error();
+                        UtilTool.Log("otc", e.getMessage());
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-        } else {
-            callBack.error();
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     public void getOrderList(int page, int pageSize, String coinName, final String filtrate, String user, final CallBack3 callBack) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .getOrderList(UtilTool.getToken(), coinName, filtrate, user, page, pageSize)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<OrderListInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .getOrderList(UtilTool.getToken(), coinName, filtrate, user, page, pageSize)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<OrderListInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onNext(OrderListInfo baseInfo) {
-                            hideDialog();
-                            if (baseInfo.getStatus() == 1) {
-                                callBack.send(baseInfo.getData());
-                            }else {
-                                callBack.finishRefresh();
-                            }
-                        }
+                    @Override
+                    public void onNext(OrderListInfo baseInfo) {
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1)
+                            callBack.send(baseInfo.getData());
+                        else
+                            callBack.finishRefresh();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            callBack.error();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                        callBack.error();
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-        } else {
-            callBack.error();
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     public void getMyOrderList(String coinName, int type, int page, int pageSize, final CallBack3 callBack) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .getMyOrderList(UtilTool.getToken(), type, page, pageSize, coinName)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<OrderListInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .getMyOrderList(UtilTool.getToken(), type, page, pageSize, coinName)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<OrderListInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onNext(OrderListInfo baseInfo) {
-                            hideDialog();
-                            if (baseInfo.getStatus() == 1)
-                                callBack.send(baseInfo.getData());
-                        }
+                    @Override
+                    public void onNext(OrderListInfo baseInfo) {
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1)
+                            callBack.send(baseInfo.getData());
+                        else
+                            callBack.finishRefresh();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            callBack.error();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                        callBack.error();
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-        } else {
-            callBack.error();
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     public void createOrder(int id, String coinCount, String price, String money, final CallBack2 callBack2, String password) {
@@ -187,88 +171,78 @@ public class BuySellPresenter {
         double count = Double.parseDouble(coinCount);
         double priced = Double.parseDouble(price);
         double moneyd = Double.parseDouble(money);
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .createOrder(UtilTool.getToken(), id, count, priced, moneyd, password)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<OrderInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .createOrder(UtilTool.getToken(), id, count, priced, moneyd, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<OrderInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onNext(OrderInfo baseInfo) {
-                            hideDialog();
-                            if (baseInfo.getStatus() == 1) {
-                                callBack2.send(baseInfo.getData());
-                            } else if (baseInfo.getStatus() == 2) {
-                                if (baseInfo.getType() == 4) {
-                                    showHintDialog(1);
-                                } else if (baseInfo.getType() == 6) {
-                                    BuySellActivity activity = (BuySellActivity) mContext;
-                                    activity.showHintDialog();
-                                } else if (baseInfo.getType() == 2) {
-                                    showHintDialog(0);
-                                } else {
-                                    Toast.makeText(mContext, baseInfo.getMessage() + "", Toast.LENGTH_SHORT).show();
-                                }
+                    @Override
+                    public void onNext(OrderInfo baseInfo) {
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            callBack2.send(baseInfo.getData());
+                        } else if (baseInfo.getStatus() == 2) {
+                            if (baseInfo.getType() == 4) {
+                                showHintDialog(1);
+                            } else if (baseInfo.getType() == 6) {
+                                BuySellActivity activity = (BuySellActivity) mContext;
+                                activity.showHintDialog();
+                            } else if (baseInfo.getType() == 2) {
+                                showHintDialog(0);
+                            } else {
+                                Toast.makeText(mContext, baseInfo.getMessage() + "", Toast.LENGTH_SHORT).show();
                             }
                         }
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
 
     public void bindBankStatus() {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .bindBankStatus(UtilTool.getToken())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .bindBankStatus(UtilTool.getToken())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        if (baseInfo.getStatus() == 1) {
+                        } else if (baseInfo.getType() == 2) {
+                            showHintDialog(0);
                         }
+                    }
 
-                        @Override
-                        public void onNext(BaseInfo baseInfo) {
-                            if (baseInfo.getStatus() == 1) {
-                            } else if (baseInfo.getType() == 2) {
-                                showHintDialog(0);
-                            }
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     private void showHintDialog(final int type) {
@@ -307,162 +281,140 @@ public class BuySellPresenter {
     }
 
     public void transRecordInfo(String log_id, String id, String type_number, final CallBack7 callBack7) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .transRecord(UtilTool.getToken(), log_id, type_number, id)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<TransRecordInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .transRecord(UtilTool.getToken(), log_id, type_number, id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<TransRecordInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(TransRecordInfo transRecordInfo) {
+                        hideDialog();
+                        if (transRecordInfo.getStatus() == 1) {
+                            callBack7.send(transRecordInfo.getData());
                         }
+                    }
 
-                        @Override
-                        public void onNext(TransRecordInfo transRecordInfo) {
-                            hideDialog();
-                            if (transRecordInfo.getStatus() == 1) {
-                                callBack7.send(transRecordInfo.getData());
-                            }
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                        callBack7.error();
+                        UtilTool.Log("错误", e.getMessage());
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            callBack7.error();
-                            UtilTool.Log("错误", e.getMessage());
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            callBack7.error();
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     public void cancelAd(int id, final CallBack4 callBack4) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .cancelTrans(UtilTool.getToken(), id + "")
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .cancelTrans(UtilTool.getToken(), id + "")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        if (baseInfo.getStatus() == 1) {
+                            callBack4.send();
                         }
+                        Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
 
-                        @Override
-                        public void onNext(BaseInfo baseInfo) {
-                            if (baseInfo.getStatus() == 1) {
-                                callBack4.send();
-                            }
-                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     public void getUserAdList(int type, int page, int page_size, int status, String coinName, final CallBack5 callBack5) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .getMyAdList(UtilTool.getToken(), type, page, page_size, coinName, status)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<MyAdListInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .getMyAdList(UtilTool.getToken(), type, page, page_size, coinName, status)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<MyAdListInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(MyAdListInfo myAdListInfo) {
+                        if (myAdListInfo.getStatus() == 1) {
+                            callBack5.send(myAdListInfo.getData());
+                        } else {
+                            callBack5.finishRefresh();
+                            Toast.makeText(mContext, myAdListInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
+                    }
 
-                        @Override
-                        public void onNext(MyAdListInfo myAdListInfo) {
-                            if (myAdListInfo.getStatus() == 1) {
-                                callBack5.send(myAdListInfo.getData());
-                            } else {
-                                callBack5.finishRefresh();
-                                Toast.makeText(mContext, myAdListInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        callBack5.error();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            callBack5.error();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            callBack5.error();
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     public void getTotal(String coinName, final CallBack6 callBack6) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .getTotal(UtilTool.getToken(), coinName)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<OrderStatisticsInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .getTotal(UtilTool.getToken(), coinName)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<OrderStatisticsInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(OrderStatisticsInfo orderStatisticsInfo) {
+                        if (orderStatisticsInfo.getStatus() == 1) {
+                            callBack6.send(orderStatisticsInfo.getData());
                         }
+                    }
 
-                        @Override
-                        public void onNext(OrderStatisticsInfo orderStatisticsInfo) {
-                            if (orderStatisticsInfo.getStatus() == 1) {
-                                callBack6.send(orderStatisticsInfo.getData());
-                            }
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        callBack6.error();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            callBack6.error();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            callBack6.error();
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     //定义接口
     public interface CallBack {
         void send(List<DealListInfo.DataBean> dataBean, String coin);
+
         void error();
         void finishRefresh();
     }
@@ -475,6 +427,7 @@ public class BuySellPresenter {
     //定义接口
     public interface CallBack3 {
         void send(List<OrderListInfo.DataBean> data);
+
         void error();
         void finishRefresh();
     }
@@ -488,6 +441,7 @@ public class BuySellPresenter {
     public interface CallBack5 {
 
         void send(List<MyAdListInfo.DataBean> data);
+
         void error();
         void finishRefresh();
     }
@@ -495,12 +449,14 @@ public class BuySellPresenter {
     //定义接口
     public interface CallBack6 {
         void send(OrderStatisticsInfo.DataBean data);
+
         void error();
     }
 
     //定义接口
     public interface CallBack7 {
         void send(TransRecordInfo.DataBean data);
+
         void error();
     }
 }

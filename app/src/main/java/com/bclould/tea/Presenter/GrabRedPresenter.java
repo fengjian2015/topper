@@ -3,7 +3,6 @@ package com.bclould.tea.Presenter;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.widget.Toast;
 
 import com.bclould.tea.R;
 import com.bclould.tea.model.GrabRedInfo;
@@ -46,39 +45,34 @@ public class GrabRedPresenter {
     }
 
     public void grabRedPacket(int redId, final CallBack callBack) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .grabRedPacket(UtilTool.getToken(), redId)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<GrabRedInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .grabRedPacket(UtilTool.getToken(), redId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<GrabRedInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onNext(GrabRedInfo baseInfo) {
-                            callBack.send(baseInfo);
-                            hideDialog();
-                        }
+                    @Override
+                    public void onNext(GrabRedInfo baseInfo) {
+                        callBack.send(baseInfo);
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     //定义接口

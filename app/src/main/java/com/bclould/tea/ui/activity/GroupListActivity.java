@@ -147,6 +147,11 @@ public class GroupListActivity extends BaseActivity {
             public void error() {
                 mRefreshLayout.finishRefresh();
             }
+
+            @Override
+            public void finishRefresh() {
+                mRefreshLayout.finishRefresh();
+            }
         });
     }
 

@@ -44,7 +44,6 @@ import com.bclould.tea.ui.activity.SendQRCodeRedActivity;
 import com.bclould.tea.ui.adapter.ConversationAdapter;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
-import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tea.xmpp.IConnectStateChangeListener;
@@ -154,7 +153,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                     initData();
                     //发送登录失败通知
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.login_error)));
-                    ToastShow.showToast2((Activity) getContext(), getString(R.string.toast_network_error));
                     break;
                 case 1:
                     initRecyclerView();
