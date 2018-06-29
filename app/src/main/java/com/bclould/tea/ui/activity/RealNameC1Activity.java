@@ -136,6 +136,7 @@ public class RealNameC1Activity extends BaseActivity {
                     mTvAuthType.setText(getString(R.string.verify_succeed));
                     mTvCause.setVisibility(View.GONE);
                     mLlPass.setVisibility(View.VISIBLE);
+                    mIvAuthType.setImageResource(R.mipmap.shenhetongguo);
                 } else if (type == 4) {
                     mTvCause.setVisibility(View.VISIBLE);
                     mTvCause.setText(mark);
