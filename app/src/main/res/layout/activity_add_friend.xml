@@ -64,7 +64,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="6"
                     android:background="@android:color/transparent"
-                    android:hint="@string/et_order_who"
+                    android:hint="@string/et_order_who_or_mailbox"
                     android:imeOptions="actionSearch"
                     android:maxLength="20"
                     android:paddingRight="@dimen/x30"
