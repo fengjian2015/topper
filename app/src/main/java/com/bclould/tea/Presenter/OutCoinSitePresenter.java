@@ -57,127 +57,111 @@ public class OutCoinSitePresenter {
     }
 
     public void getSite(int id, final CallBack callBack) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .withdrawalAddresses(UtilTool.getToken(), id)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<OutCoinSiteInfo>() {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .withdrawalAddresses(UtilTool.getToken(), id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<OutCoinSiteInfo>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(@NonNull OutCoinSiteInfo outCoinSiteInfo) {
+                        hideDialog();
+                        if (outCoinSiteInfo.getStatus() == 1) {
+                            callBack.send(outCoinSiteInfo.getMessage());
                         }
+                    }
 
-                        @Override
-                        public void onNext(@NonNull OutCoinSiteInfo outCoinSiteInfo) {
-                            hideDialog();
-                            if (outCoinSiteInfo.getStatus() == 1) {
-                                callBack.send(outCoinSiteInfo.getMessage());
-                            }
-                        }
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     public void deleteSite(int id, int address_id, final CallBack2 callBack2) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .deleteCoinOutAddress(UtilTool.getToken(), id, address_id)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .deleteCoinOutAddress(UtilTool.getToken(), id, address_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(@NonNull BaseInfo baseInfo) {
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            callBack2.send();
                         }
+                        Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
 
-                        @Override
-                        public void onNext(@NonNull BaseInfo baseInfo) {
-                            hideDialog();
-                            if (baseInfo.getStatus() == 1) {
-                                callBack2.send();
-                            }
-                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
-
+                    }
+                });
     }
 
     public void addCoinOutAddress(int id, String memo, String address, String vcode) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .addCoinOutAddress(UtilTool.getToken(), id, memo, address, vcode)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .addCoinOutAddress(UtilTool.getToken(), id, memo, address, vcode)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onNext(BaseInfo baseInfo) {
-                            hideDialog();
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        hideDialog();
+                        Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                        if (baseInfo.getStatus() == 1) {
+                            AddOutCoinSiteActivity activity = (AddOutCoinSiteActivity) mContext;
+                            activity.finish();
+                            EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.add_site)));
+                        } else if (baseInfo.getStatus() == 2) {
+                            if (baseInfo.getType() == 3)
+                                mContext.startActivity(new Intent(mContext, GoogleVerificationActivity.class));
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                            if (baseInfo.getStatus() == 1) {
-                                AddOutCoinSiteActivity activity = (AddOutCoinSiteActivity) mContext;
-                                activity.finish();
-                                EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.add_site)));
-                            } else if (baseInfo.getStatus() == 2) {
-                                if (baseInfo.getType() == 3)
-                                    mContext.startActivity(new Intent(mContext, GoogleVerificationActivity.class));
-                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
+                        }
 //                            if (baseInfo.getMessage().equals("请先绑定谷歌验证"))
-                        }
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     //定义接口

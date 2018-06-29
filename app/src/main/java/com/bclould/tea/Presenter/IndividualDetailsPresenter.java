@@ -51,132 +51,119 @@ public class IndividualDetailsPresenter {
     }
 
     //獲取個人信息
-    public void getIndividual(String toco_id,boolean isShow, final CallBack callBack) {
-        if (UtilTool.isNetworkAvailable(context)) {
-            if(isShow){
-                showDialog();
-            }
-            RetrofitUtil.getInstance(context)
-                    .getServer()
-                    .getIndividual(UtilTool.getToken(), toco_id)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<IndividualInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-
-                        }
-
-                        @Override
-                        public void onNext(IndividualInfo individualInfo) {
-                            if(context instanceof Activity&&!ActivityUtil.isActivityOnTop((Activity) context)) return;
-                            callBack.send(individualInfo.getData());
-                            hideDialog();
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            callBack.error();
-                            if(context instanceof Activity&&!ActivityUtil.isActivityOnTop((Activity) context)) return;
-                            hideDialog();
-                            UtilTool.Log("信息", e.getMessage());
-                            Toast.makeText(context, context.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            callBack.error();
-            Toast.makeText(context, context.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+    public void getIndividual(String toco_id, boolean isShow, final CallBack callBack) {
+        if (isShow) {
+            showDialog();
         }
+        RetrofitUtil.getInstance(context)
+                .getServer()
+                .getIndividual(UtilTool.getToken(), toco_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<IndividualInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(IndividualInfo individualInfo) {
+                        if (context instanceof Activity && !ActivityUtil.isActivityOnTop((Activity) context))
+                            return;
+                        callBack.send(individualInfo.getData());
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callBack.error();
+                        if (context instanceof Activity && !ActivityUtil.isActivityOnTop((Activity) context))
+                            return;
+                        hideDialog();
+                        UtilTool.Log("信息", e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     //修改備註
     public void getChangeRemark(String toco_id, String remark, final CallBack callBack) {
-        if (UtilTool.isNetworkAvailable(context)) {
-            showDialog();
-            RetrofitUtil.getInstance(context)
-                    .getServer()
-                    .getChangeRemark(UtilTool.getToken(), toco_id, remark)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<IndividualInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        showDialog();
+        RetrofitUtil.getInstance(context)
+                .getServer()
+                .getChangeRemark(UtilTool.getToken(), toco_id, remark)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<IndividualInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(IndividualInfo individualInfo) {
+                        if (individualInfo.getStatus() == 1) {
+                            callBack.send(individualInfo.getData());
+                            Toast.makeText(context, context.getString(R.string.xg_succeed), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, context.getString(R.string.xg_error), Toast.LENGTH_SHORT).show();
                         }
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onNext(IndividualInfo individualInfo) {
-                            if (individualInfo.getStatus() == 1) {
-                                callBack.send(individualInfo.getData());
-                                Toast.makeText(context, context.getString(R.string.xg_succeed), Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(context, context.getString(R.string.xg_error), Toast.LENGTH_SHORT).show();
-                            }
-                            hideDialog();
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            Toast.makeText(context, context.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(context, context.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     public void noLookTaDy(String name, int type, final CallBack2 callBack2) {
-        if (UtilTool.isNetworkAvailable(context)) {
-            RetrofitUtil.getInstance(context)
-                    .getServer()
-                    .noLookTaDy(UtilTool.getToken(), type, name)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        RetrofitUtil.getInstance(context)
+                .getServer()
+                .noLookTaDy(UtilTool.getToken(), type, name)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        if (baseInfo.getStatus() == 1) {
+                            callBack2.send();
+                        } else {
+                            ToastShow.showToast2((Activity) context, baseInfo.getMessage());
                         }
+                    }
 
-                        @Override
-                        public void onNext(BaseInfo baseInfo) {
-                            if (baseInfo.getStatus() == 1) {
-                                callBack2.send();
-                            } else {
-                                ToastShow.showToast2((Activity) context, baseInfo.getMessage());
-                            }
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            Toast.makeText(context, context.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(context, context.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     //定义接口
     public interface CallBack {
         void send(IndividualInfo.DataBean data);
+
         void error();
     }
 

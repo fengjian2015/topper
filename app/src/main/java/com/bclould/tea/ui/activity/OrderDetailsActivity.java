@@ -259,6 +259,7 @@ public class OrderDetailsActivity extends BaseActivity {
                             mBtnBuyCancel.setVisibility(View.GONE);
                             mBtnBuyConfirm.setBackground(getDrawable(R.drawable.bg_gray_shape));
                             mBtnBuyConfirm.setText(getString(R.string.yi_pay));
+                            mBtnBuyConfirm.setEnabled(false);
                         } else {
                             mBtnSellCancel.setVisibility(View.GONE);
                         }
@@ -461,6 +462,7 @@ public class OrderDetailsActivity extends BaseActivity {
                     mBtnBuyCancel.setVisibility(View.GONE);
                     mBtnBuyConfirm.setBackground(getDrawable(R.drawable.bg_gray_shape));
                     mBtnBuyConfirm.setText(getString(R.string.yi_pay));
+                    mBtnBuyConfirm.setEnabled(false);
                     MessageEvent messageEvent = new MessageEvent(getString(R.string.confirm_fk));
                     messageEvent.setId(mInfo.getData().getId() + "");
                     EventBus.getDefault().post(messageEvent);
@@ -475,6 +477,7 @@ public class OrderDetailsActivity extends BaseActivity {
                     mBtnBuyCancel.setVisibility(View.GONE);
                     mBtnBuyConfirm.setBackground(getDrawable(R.drawable.bg_gray_shape));
                     mBtnBuyConfirm.setText(getString(R.string.yi_pay));
+                    mBtnBuyConfirm.setEnabled(false);
                     MessageEvent messageEvent = new MessageEvent(getString(R.string.confirm_fk));
                     messageEvent.setId(mData.getId() + "");
                     EventBus.getDefault().post(messageEvent);

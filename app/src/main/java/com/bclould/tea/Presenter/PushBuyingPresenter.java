@@ -68,55 +68,49 @@ public class PushBuyingPresenter {
         double maxd = Double.parseDouble(maxLimit);
         String s = paymentTime.substring(0, paymentTime.indexOf(mContext.getString(R.string.fen)));
         int time = Integer.parseInt(s);
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .publishDeal(UtilTool.getToken(), type, coin, state, MySharedPreferences.getInstance().getString(CURRENCY), priced, countd, time, payment, mind, maxd, remark, password, phoneNumber)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .publishDeal(UtilTool.getToken(), type, coin, state, MySharedPreferences.getInstance().getString(CURRENCY), priced, countd, time, payment, mind, maxd, remark, password, phoneNumber)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+                    }
 
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        if (baseInfo.getStatus() == 1) {
+                            PushBuyingActivity activity = (PushBuyingActivity) mContext;
+                            activity.finish();
+                            EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.publish_deal)));
+                        } else if (baseInfo.getType() == 4) {
+                            showHintDialog(1);
+                        } else if (baseInfo.getType() == 6) {
+                            PushBuyingActivity activity = (PushBuyingActivity) mContext;
+                            activity.showHintDialog();
+                        } else if (baseInfo.getType() == 2) {
+                            showHintDialog(0);
+                        } else if (baseInfo.getType() == 1) {
+                            showHintDialog(2);
                         }
+                        hideDialog();
+                        UtilTool.Log("PushBuyingPresenter", baseInfo.getMessage());
+                        Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
 
-                        @Override
-                        public void onNext(BaseInfo baseInfo) {
-                            if (baseInfo.getStatus() == 1) {
-                                PushBuyingActivity activity = (PushBuyingActivity) mContext;
-                                activity.finish();
-                                EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.publish_deal)));
-                            } else if (baseInfo.getType() == 4) {
-                                showHintDialog(1);
-                            } else if (baseInfo.getType() == 6) {
-                                PushBuyingActivity activity = (PushBuyingActivity) mContext;
-                                activity.showHintDialog();
-                            } else if (baseInfo.getType() == 2) {
-                                showHintDialog(0);
-                            } else if (baseInfo.getType() == 1) {
-                                showHintDialog(2);
-                            }
-                            hideDialog();
-                            UtilTool.Log("PushBuyingPresenter", baseInfo.getMessage());
-                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
 
@@ -162,39 +156,34 @@ public class PushBuyingPresenter {
     }
 
     public void getModeOfPayment(final SubscribeCoinPresenter.CallBack2 callBack2) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .getModeOfPayment(UtilTool.getToken())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<ModeOfPaymentInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .getModeOfPayment(UtilTool.getToken())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<ModeOfPaymentInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(ModeOfPaymentInfo modeOfPaymentInfo) {
+                        if (modeOfPaymentInfo.getStatus() == 1) {
+                            callBack2.send(modeOfPaymentInfo.getData());
                         }
+                    }
 
-                        @Override
-                        public void onNext(ModeOfPaymentInfo modeOfPaymentInfo) {
-                            if (modeOfPaymentInfo.getStatus() == 1) {
-                                callBack2.send(modeOfPaymentInfo.getData());
-                            }
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
 

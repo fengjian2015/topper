@@ -18,6 +18,7 @@ import com.bclould.tea.ui.activity.SystemSetActivity;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
+
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -58,44 +59,37 @@ public class LogoutPresenter {
     }
 
     public void logout() {
-        if (UtilTool.isNetworkAvailable(mSystemSetActivity)) {
-            showDialog();
-            RetrofitUtil.getInstance(mSystemSetActivity)
-                    .getServer()
-                    .logout(UtilTool.getToken())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
+        showDialog();
+        RetrofitUtil.getInstance(mSystemSetActivity)
+                .getServer()
+                .logout(UtilTool.getToken())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(@NonNull BaseInfo baseInfo) {
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            imLogout(baseInfo.getMessage());
                         }
 
-                        @Override
-                        public void onNext(@NonNull BaseInfo baseInfo) {
-                            hideDialog();
-                            if (baseInfo.getStatus() == 1) {
-                                imLogout(baseInfo.getMessage());
-                            }
+                    }
 
-                        }
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mSystemSetActivity, mSystemSetActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-
-            Toast.makeText(mSystemSetActivity, mSystemSetActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-
-        }
+                    }
+                });
     }
 
     public void imLogout(final String message) {
@@ -132,7 +126,7 @@ public class LogoutPresenter {
             MyApp.getInstance().mBetCoinList.clear();
             Intent intent = new Intent(mSystemSetActivity, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra("whence",2);
+            intent.putExtra("whence", 2);
             mSystemSetActivity.startActivity(intent);
 //            mSystemSetActivity.startActivity(new Intent(mSystemSetActivity, InitialActivity.class));
         }

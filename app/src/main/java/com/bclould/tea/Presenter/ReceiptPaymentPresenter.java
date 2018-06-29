@@ -59,91 +59,80 @@ public class ReceiptPaymentPresenter {
 
 
     public void generateReceiptQrCode(String coinId, String count, String remark, final CallBack callBack) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .generateReceiptQrCode(UtilTool.getToken(), coinId, count, remark)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .generateReceiptQrCode(UtilTool.getToken(), coinId, count, remark)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        if (baseInfo.getStatus() == 1) {
+                            callBack.send(baseInfo.getData());
+                        } else if (baseInfo.getType() == 1) {
+                            showHintDialog(0);
+                        } else {
+                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
+                    }
 
-                        @Override
-                        public void onNext(BaseInfo baseInfo) {
-                            if (baseInfo.getStatus() == 1) {
-                                callBack.send(baseInfo.getData());
-                            } else if (baseInfo.getType() == 1) {
-                                showHintDialog(0);
-                            } else {
-                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                        callBack.error();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            callBack.error();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            callBack.error();
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     public void payment(String userId, String count, int id, String password, final CallBack2 callBack2) {
         UtilTool.Log("日志", userId + "," + id);
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .payment(UtilTool.getToken(), userId, count, id + "", password)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<ReceiptInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .payment(UtilTool.getToken(), userId, count, id + "", password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<ReceiptInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(ReceiptInfo receiptInfo) {
+                        if (receiptInfo.getStatus() == 1) {
+                            callBack2.send(receiptInfo.getData());
+                        } else if (receiptInfo.getType() == 4) {
+                            showHintDialog(1);
+                        } else if (receiptInfo.getType() == 6) {
+                            PaymentActivity activity = (PaymentActivity) mContext;
+                            activity.showHintDialog();
+                        } else if (receiptInfo.getType() == 1) {
+                            showHintDialog(0);
+                        } else {
+                            Toast.makeText(mContext, receiptInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
+                    }
 
-                        @Override
-                        public void onNext(ReceiptInfo receiptInfo) {
-                            if (receiptInfo.getStatus() == 1) {
-                                callBack2.send(receiptInfo.getData());
-                            } else if (receiptInfo.getType() == 4) {
-                                showHintDialog(1);
-                            } else if (receiptInfo.getType() == 6) {
-                                PaymentActivity activity = (PaymentActivity) mContext;
-                                activity.showHintDialog();
-                            } else if (receiptInfo.getType() == 1) {
-                                showHintDialog(0);
-                            } else {
-                                Toast.makeText(mContext, receiptInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     private void showHintDialog(final int type) {
@@ -182,130 +171,115 @@ public class ReceiptPaymentPresenter {
     }
 
     public void generatePaymentQrCode(String count, int id, String password, final CallBack3 callBack3) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .generatePaymentQrCode(UtilTool.getToken(), count, id + "", password)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .generatePaymentQrCode(UtilTool.getToken(), count, id + "", password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        if (baseInfo.getStatus() == 1) {
+                            callBack3.send(baseInfo.getData().getUrl());
+                        } else if (baseInfo.getType() == 4) {
+                            showHintDialog(1);
+                        } else if (baseInfo.getType() == 6) {
+                            PaymentActivity activity = (PaymentActivity) mContext;
+                            activity.showHintDialog();
+                        } else if (baseInfo.getType() == 1) {
+                            showHintDialog(0);
                         }
+                        Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
 
-                        @Override
-                        public void onNext(BaseInfo baseInfo) {
-                            if (baseInfo.getStatus() == 1) {
-                                callBack3.send(baseInfo.getData().getUrl());
-                            } else if (baseInfo.getType() == 4) {
-                                showHintDialog(1);
-                            } else if (baseInfo.getType() == 6) {
-                                PaymentActivity activity = (PaymentActivity) mContext;
-                                activity.showHintDialog();
-                            } else if (baseInfo.getType() == 1) {
-                                showHintDialog(0);
-                            }
-                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     public void transRecord(int page, int pageSize, String type, String date, final CallBack4 callBack4) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .getTransRecord(UtilTool.getToken(), page, pageSize, type, date)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<TransferListInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .getTransRecord(UtilTool.getToken(), page, pageSize, type, date)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<TransferListInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(TransferListInfo transferListInfo) {
+                        if (transferListInfo.getStatus() == 1) {
+                            callBack4.send(transferListInfo.getData());
                         }
+                    }
 
-                        @Override
-                        public void onNext(TransferListInfo transferListInfo) {
-                            if (transferListInfo.getStatus() == 1) {
-                                callBack4.send(transferListInfo.getData());
-                            }
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                        callBack4.error();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            callBack4.error();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            callBack4.error();
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     public void receipt(String data, final CallBack5 callBack5) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .receipt(UtilTool.getToken(), data)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<ReceiptInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .receipt(UtilTool.getToken(), data)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<ReceiptInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(ReceiptInfo receiptInfo) {
+                        if (receiptInfo.getStatus() == 1) {
+                            callBack5.send(receiptInfo.getData());
+                        } else if (receiptInfo.getType() == 1) {
+                            showHintDialog(0);
                         }
+                        Toast.makeText(mContext, receiptInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
 
-                        @Override
-                        public void onNext(ReceiptInfo receiptInfo) {
-                            if (receiptInfo.getStatus() == 1) {
-                                callBack5.send(receiptInfo.getData());
-                            } else if (receiptInfo.getType() == 1) {
-                                showHintDialog(0);
-                            }
-                            Toast.makeText(mContext, receiptInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                        UtilTool.Log("错误", e.getMessage());
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            UtilTool.Log("错误", e.getMessage());
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     //定义接口
     public interface CallBack {
         void send(BaseInfo.DataBean data);
+
         void error();
     }
 
@@ -322,6 +296,7 @@ public class ReceiptPaymentPresenter {
     //定义接口
     public interface CallBack4 {
         void send(List<TransferListInfo.DataBean> data);
+
         void error();
     }
 

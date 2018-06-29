@@ -77,82 +77,75 @@ public class LoginPresenter {
     }
 
     public void Login(final String email, final String password, final String code, final DBUserCode dbUserCode) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .login(email, password, code, 1)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<LoginInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .login(email, password, code, 1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<LoginInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onNext(LoginInfo baseInfo) {
-                            hideDialog();
-                            if (baseInfo.getStatus() == 2) {
-                                if (baseInfo.getData() != null) {
-                                    if (baseInfo.getData().getValidate_type() == 1) {
-                                        sendVcode(email);
-                                        showEmailDialog(email, password, dbUserCode);
-                                    } else {
-                                        showGoogleDialog(email, password, dbUserCode);
-                                    }
+                    @Override
+                    public void onNext(LoginInfo baseInfo) {
+                        hideDialog();
+                        if (baseInfo.getStatus() == 2) {
+                            if (baseInfo.getData() != null) {
+                                if (baseInfo.getData().getValidate_type() == 1) {
+                                    sendVcode(email);
+                                    showEmailDialog(email, password, dbUserCode);
                                 } else {
-                                    if (baseInfo.getType() == 7) {
-                                        showHintDialog(baseInfo.getMessage());
-                                    } else {
-                                        Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
+                                    showGoogleDialog(email, password, dbUserCode);
                                 }
-                            } else if (baseInfo.getStatus() == 1) {
-                                WsConnection.getInstance().setOutConnection(false);
-                                UtilTool.Log("日志", baseInfo.getData().getName());
-                                MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
-                                MySharedPreferences.getInstance().setString(TOCOID, baseInfo.getData().getToco_id());
-                                MySharedPreferences.getInstance().setInteger(USERID, baseInfo.getData().getUser_id());
-                                MySharedPreferences.getInstance().setString(MYUSERNAME, baseInfo.getData().getName());
-                                MySharedPreferences.getInstance().setString(EMAIL, email);
-                                MySharedPreferences.getInstance().setString(LOGINPW, password);
-                                MySharedPreferences.getInstance().setString(CURRENCY, baseInfo.getData().getCurrency());
-                                if (!baseInfo.getData().getCountry().isEmpty()) {
-                                    MySharedPreferences.getInstance().setString(STATE, baseInfo.getData().getCountry());
+                            } else {
+                                if (baseInfo.getType() == 7) {
+                                    showHintDialog(baseInfo.getMessage());
+                                } else {
+                                    Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
-                                UserCodeInfo userCodeInfo = new UserCodeInfo();
-                                userCodeInfo.setEmail(email);
-                                userCodeInfo.setPassword(password);
-                                dbUserCode.addUserCode(userCodeInfo);
-                                hideDialog();
-                                Intent intent = new Intent(mContext, MainActivity.class);
-                                intent.putExtra("whence", 1);
-                                mContext.startActivity(intent);
-                                LoginActivity activity = (LoginActivity) mContext;
-                                EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.refresh_the_interface)));
-                                activity.finish();
-                                Toast.makeText(mContext, mContext.getString(R.string.toast_succeed), Toast.LENGTH_SHORT).show();
                             }
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
+                        } else if (baseInfo.getStatus() == 1) {
+                            WsConnection.getInstance().setOutConnection(false);
+                            UtilTool.Log("日志", baseInfo.getData().getName());
+                            MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
+                            MySharedPreferences.getInstance().setString(TOCOID, baseInfo.getData().getToco_id());
+                            MySharedPreferences.getInstance().setInteger(USERID, baseInfo.getData().getUser_id());
+                            MySharedPreferences.getInstance().setString(MYUSERNAME, baseInfo.getData().getName());
+                            MySharedPreferences.getInstance().setString(EMAIL, email);
+                            MySharedPreferences.getInstance().setString(LOGINPW, password);
+                            MySharedPreferences.getInstance().setString(CURRENCY, baseInfo.getData().getCurrency());
+                            if (!baseInfo.getData().getCountry().isEmpty()) {
+                                MySharedPreferences.getInstance().setString(STATE, baseInfo.getData().getCountry());
+                            }
+                            UserCodeInfo userCodeInfo = new UserCodeInfo();
+                            userCodeInfo.setEmail(email);
+                            userCodeInfo.setPassword(password);
+                            dbUserCode.addUserCode(userCodeInfo);
                             hideDialog();
-                            UtilTool.Log("登录", e.getMessage());
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(mContext, MainActivity.class);
+                            intent.putExtra("whence", 1);
+                            mContext.startActivity(intent);
+                            LoginActivity activity = (LoginActivity) mContext;
+                            EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.refresh_the_interface)));
+                            activity.finish();
+                            Toast.makeText(mContext, mContext.getString(R.string.toast_succeed), Toast.LENGTH_SHORT).show();
                         }
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                        UtilTool.Log("登录", e.getMessage());
+                    }
 
-                        }
-                    });
-        } else {
+                    @Override
+                    public void onComplete() {
 
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-
-        }
+                    }
+                });
     }
 
     private void showHintDialog(String message) {
@@ -173,37 +166,32 @@ public class LoginPresenter {
     }
 
     private void sendVcode(String email) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .sendRegcode(email)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .sendRegcode(email)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onNext(BaseInfo baseInfo) {
-                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     private void showGoogleDialog(final String email, final String password, final DBUserCode dbUserCode) {
@@ -246,92 +234,82 @@ public class LoginPresenter {
     }
 
     public void loginRecord(final CallBack callBack) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-//            showDialog();
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .loginRecord(UtilTool.getToken())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<LoginRecordInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
 
-                        }
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .loginRecord(UtilTool.getToken())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<LoginRecordInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-                        @Override
-                        public void onNext(LoginRecordInfo loginRecordInfo) {
+                    }
+
+                    @Override
+                    public void onNext(LoginRecordInfo loginRecordInfo) {
 //                            hideDialog();
-                            if (loginRecordInfo.getStatus() == 1) {
-                                callBack.send(loginRecordInfo.getData());
-                            }
-
+                        if (loginRecordInfo.getStatus() == 1) {
+                            callBack.send(loginRecordInfo.getData());
                         }
 
-                        @Override
-                        public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
 //                            hideDialog();
-                            callBack.error();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                        callBack.error();
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-        } else {
-            callBack.error();
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     public void loginValidateTypeSetting(final int index, String pw, String googleCode) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-//            showDialog();
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .loginValidateTypeSetting(UtilTool.getToken(), index + "", pw, googleCode)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
 
-                        }
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .loginValidateTypeSetting(UtilTool.getToken(), index + "", pw, googleCode)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-                        @Override
-                        public void onNext(BaseInfo baseInfo) {
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
 //                            hideDialog();
-                            if (baseInfo.getStatus() == 1) {
-                                LoginSetActivity activity = (LoginSetActivity) mContext;
-                                activity.finish();
-                                MySharedPreferences.getInstance().setString(LOGINSET, index + "");
-                            } else {
-                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
+                        if (baseInfo.getStatus() == 1) {
+                            LoginSetActivity activity = (LoginSetActivity) mContext;
+                            activity.finish();
+                            MySharedPreferences.getInstance().setString(LOGINSET, index + "");
+                        } else {
+                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
+                    @Override
+                    public void onError(Throwable e) {
 //                            hideDialog();
-                            UtilTool.Log("登录设置", e.getMessage());
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                        UtilTool.Log("登录设置", e.getMessage());
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     //定义接口
     public interface CallBack {
         void send(List<LoginRecordInfo.DataBean> data);
+
         void error();
     }
 

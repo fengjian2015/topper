@@ -417,8 +417,7 @@ public interface MyService {
     //获取市场参考价
     @POST("api/updateToken")
     Observable<BaseInfo> updataToken(
-            @Header("Authorization") String token,
-            @Field("device") int device
+            @Header("Authorization") String token
     );
 
     //下载apk

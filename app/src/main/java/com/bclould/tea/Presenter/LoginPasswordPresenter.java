@@ -51,48 +51,39 @@ public class LoginPasswordPresenter {
 
     //提交修改的密码
     public void submit(String vcode, String password, String password2) {
-        if (UtilTool.isNetworkAvailable(mLoginPasswordActivity)) {
-            showDialog();
-            RetrofitUtil.getInstance(mLoginPasswordActivity)
-                    .getServer()
-                    .modifyPassword(UtilTool.getToken(), vcode, password, password2)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
+        showDialog();
+        RetrofitUtil.getInstance(mLoginPasswordActivity)
+                .getServer()
+                .modifyPassword(UtilTool.getToken(), vcode, password, password2)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onNext(@NonNull BaseInfo baseInfo) {
-                            if (baseInfo.getStatus() == 1)
-                                mLoginPasswordActivity.finish();
-                            if (baseInfo.getType() == 3)
-                                mLoginPasswordActivity.startActivity(new Intent(mLoginPasswordActivity, GoogleVerificationActivity.class));
-                            hideDialog();
-                            Toast.makeText(mLoginPasswordActivity, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onNext(@NonNull BaseInfo baseInfo) {
+                        if (baseInfo.getStatus() == 1)
+                            mLoginPasswordActivity.finish();
+                        if (baseInfo.getType() == 3)
+                            mLoginPasswordActivity.startActivity(new Intent(mLoginPasswordActivity, GoogleVerificationActivity.class));
+                        hideDialog();
+                        Toast.makeText(mLoginPasswordActivity, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
 
-                        }
+                    }
 
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mLoginPasswordActivity, mLoginPasswordActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        hideDialog();
 
-                        }
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-
-
-        } else {
-
-            Toast.makeText(mLoginPasswordActivity, mLoginPasswordActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
-
+                    }
+                });
     }
 }

@@ -5,7 +5,6 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
-import com.bclould.tea.R;
 import com.bclould.tea.model.UpdateLogInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.utils.UtilTool;
@@ -31,42 +30,36 @@ public class UpdateLogPresenter {
     }
 
     public void getUpdateLogList(int type, final UpdateLogPresenter.CallBack callBack) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-//            showDialog();
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .getUpdateLogList(UtilTool.getToken(), type)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<UpdateLogInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-                        }
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .getUpdateLogList(UtilTool.getToken(), type)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<UpdateLogInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
 
-                        @Override
-                        public void onNext(UpdateLogInfo updateLogInfo) {
-                            if (updateLogInfo.getStatus() == 1) {
-                                callBack.send(updateLogInfo.getData());
-                            } else {
-                                Toast.makeText(mContext, updateLogInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
+                    @Override
+                    public void onNext(UpdateLogInfo updateLogInfo) {
+                        if (updateLogInfo.getStatus() == 1) {
+                            callBack.send(updateLogInfo.getData());
+                        } else {
+                            Toast.makeText(mContext, updateLogInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
+                    @Override
+                    public void onError(Throwable e) {
 //                            hideDialog();
-                            UtilTool.Log("更新日誌", e.getMessage());
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                        UtilTool.Log("更新日誌", e.getMessage());
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     //定义接口

@@ -58,59 +58,54 @@ public class RedPacketPresenter {
     }
 
     public void sendRedPacket(String user, int type, String coin, String remark, int rp_type, int redCount, double redSum, double count, String password, final CallBack callBack) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .sendRedPacket(UtilTool.getToken(), user, type, coin, remark, rp_type, redCount, redSum, count, password)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .sendRedPacket(UtilTool.getToken(), user, type, coin, remark, rp_type, redCount, redSum, count, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onNext(BaseInfo baseInfo) {
-                            if (baseInfo.getStatus() == 1) {
-                                callBack.send(baseInfo.getData().getId());
-                                Toast.makeText(mContext, mContext.getString(R.string.sent), Toast.LENGTH_SHORT).show();
-                            } else if (baseInfo.getType() == 6) {
-                                if (mContext instanceof SendRedPacketActivity) {
-                                    SendRedPacketActivity activity = (SendRedPacketActivity) mContext;
-                                    activity.showHintDialog();
-                                } else if(mContext instanceof SendRedGroupActivity){
-                                    SendRedGroupActivity activity = (SendRedGroupActivity) mContext;
-                                    activity.showHintDialog();
-                                }else {
-                                    SendQRCodeRedActivity activity = (SendQRCodeRedActivity) mContext;
-                                    activity.showHintDialog();
-                                }
-                            } else if (baseInfo.getType() == 1) {
-                                showHintDialog();
-                            } else if (baseInfo.getType() == 4) {
-                                showSetPwDialog();
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        if (baseInfo.getStatus() == 1) {
+                            callBack.send(baseInfo.getData().getId());
+                            Toast.makeText(mContext, mContext.getString(R.string.sent), Toast.LENGTH_SHORT).show();
+                        } else if (baseInfo.getType() == 6) {
+                            if (mContext instanceof SendRedPacketActivity) {
+                                SendRedPacketActivity activity = (SendRedPacketActivity) mContext;
+                                activity.showHintDialog();
+                            } else if (mContext instanceof SendRedGroupActivity) {
+                                SendRedGroupActivity activity = (SendRedGroupActivity) mContext;
+                                activity.showHintDialog();
                             } else {
-                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                                SendQRCodeRedActivity activity = (SendQRCodeRedActivity) mContext;
+                                activity.showHintDialog();
                             }
-                            hideDialog();
+                        } else if (baseInfo.getType() == 1) {
+                            showHintDialog();
+                        } else if (baseInfo.getType() == 4) {
+                            showSetPwDialog();
+                        } else {
+                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     private void showHintDialog() {
@@ -159,93 +154,83 @@ public class RedPacketPresenter {
 
 
     public void grabQrRed(int id, final CallBack3 callBack) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .grabRedPacket(UtilTool.getToken(), id)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<GrabRedInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .grabRedPacket(UtilTool.getToken(), id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<GrabRedInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(GrabRedInfo baseInfo) {
+                        if (baseInfo.getStatus() != 2) {
+                            callBack.send(baseInfo.getData());
+                        } else if (baseInfo.getStatus() == 4) {
+                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else if (baseInfo.getStatus() == 2) {
+                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
+                        hideDialog();
 
-                        @Override
-                        public void onNext(GrabRedInfo baseInfo) {
-                            if (baseInfo.getStatus() != 2) {
-                                callBack.send(baseInfo.getData());
-                            } else if (baseInfo.getStatus() == 4) {
-                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                            } else if (baseInfo.getStatus() == 2) {
-                                Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                            hideDialog();
+                    }
 
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     public void transgerfriend(String coin, String user, double count, String password, String remark) {
-        if (UtilTool.isNetworkAvailable(mContext)) {
-            showDialog();
-            RetrofitUtil.getInstance(mContext)
-                    .getServer()
-                    .friendTransfer(UtilTool.getToken(), coin, user, count, password, remark)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<BaseInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .friendTransfer(UtilTool.getToken(), coin, user, count, password, remark)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            ChatTransferActivity activity = (ChatTransferActivity) mContext;
+                            activity.sendMessage();
+                        } else if (baseInfo.getType() == 4) {
+                            showSetPwDialog();
+                        } else if (baseInfo.getType() == 6) {
+                            ChatTransferActivity activity = (ChatTransferActivity) mContext;
+                            activity.showHintDialog();
+                        } else if (baseInfo.getMessage().equals(mContext.getString(R.string.real_name_authentication_hint))) {
+                            showHintDialog();
                         }
+                        Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
 
-                        @Override
-                        public void onNext(BaseInfo baseInfo) {
-                            hideDialog();
-                            if (baseInfo.getStatus() == 1) {
-                                ChatTransferActivity activity = (ChatTransferActivity) mContext;
-                                activity.sendMessage();
-                            } else if (baseInfo.getType() == 4) {
-                                showSetPwDialog();
-                            } else if (baseInfo.getType() == 6) {
-                                ChatTransferActivity activity = (ChatTransferActivity) mContext;
-                                activity.showHintDialog();
-                            } else if (baseInfo.getMessage().equals(mContext.getString(R.string.real_name_authentication_hint))) {
-                                showHintDialog();
-                            }
-                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onComplete() {
 
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-        } else {
-            Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-        }
+                    }
+                });
     }
 
     //定义接口

@@ -56,7 +56,7 @@ public class StartActivity extends AppCompatActivity {
                     if (UtilTool.isNetworkAvailable(StartActivity.this)) {
                         RetrofitUtil.getInstance(StartActivity.this)
                                 .getServer()
-                                .updataToken(UtilTool.getToken(), 1)
+                                .updataToken(UtilTool.getToken())
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                                 .subscribe(new Observer<BaseInfo>() {
@@ -96,7 +96,6 @@ public class StartActivity extends AppCompatActivity {
                                             MySharedPreferences.getInstance().setString(TOKEN, "");
                                             startActivity(new Intent(StartActivity.this, InitialActivity.class));
                                         }*/
-                                        Toast.makeText(StartActivity.this, getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                                         UtilTool.Log("日志", e.getMessage());
                                         finish();
                                     }
@@ -114,7 +113,6 @@ public class StartActivity extends AppCompatActivity {
                         }*/
                         MySharedPreferences.getInstance().setString(TOKEN, "");
                         startActivity(new Intent(StartActivity.this, MainActivity.class));
-                        Toast.makeText(StartActivity.this, StartActivity.this.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 }

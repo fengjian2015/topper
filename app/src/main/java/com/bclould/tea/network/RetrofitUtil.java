@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.NetworkUtils;
+import com.bclould.tea.utils.UtilTool;
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -49,6 +50,7 @@ public class RetrofitUtil {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();//获取请求
+
             //这里就是说判读我们的网络条件，要是有网络的话我么就直接获取网络上面的数据，要是没有网络的话我么就去缓存里面取数据
             if (!NetworkUtils.isNetworkAvailable(mContext)) {
                 request = request.newBuilder()
@@ -59,6 +61,8 @@ public class RetrofitUtil {
                 Log.d("CacheInterceptor", "no network");
             }
             Response originalResponse = chain.proceed(request);
+            int code = originalResponse.code();
+            UtilTool.Log("攔截器", request.url() + "接口返回碼:" + code + "");
             if (NetworkUtils.isNetworkAvailable(mContext)) {
                 //这里大家看点开源码看看.header .removeHeader做了什么操作很简答，就是的加字段和减字段的。
                 String cacheControl = request.cacheControl().toString();
@@ -85,10 +89,9 @@ public class RetrofitUtil {
         Cache cache = new Cache(cacheFile, DEFAULT_DIR_CACHE);
         OkHttpClient client = new OkHttpClient.Builder()
                 .retryOnConnectionFailure(true)//连接失败后是否重新连接
-//                .cookieJar(cookieJar)
                 .connectTimeout(20, TimeUnit.SECONDS)//超时时间20S
                 .addInterceptor(new CacheInterceptor())//也就这里不同
-                .addNetworkInterceptor(new CacheInterceptor())//也就这里不同
+//                .addNetworkInterceptor(new CacheInterceptor())//也就这里不同
                 .cache(cache)
                 .build();
 

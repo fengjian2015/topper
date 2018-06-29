@@ -3,7 +3,6 @@ package com.bclould.tea.Presenter;
 import android.app.Activity;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.widget.Toast;
 
 import com.bclould.tea.R;
 import com.bclould.tea.model.MyAssetsInfo;
@@ -51,44 +50,35 @@ public class CloudCoinPresenter {
     }
 
     public void getMyAssets() {
+        showDialog();
+        RetrofitUtil.getInstance(mActivity)
+                .getServer()
+                .getMyAssets(UtilTool.getToken())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<MyAssetsInfo>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
 
-        if (UtilTool.isNetworkAvailable(mActivity)) {
-            showDialog();
-            RetrofitUtil.getInstance(mActivity)
-                    .getServer()
-                    .getMyAssets(UtilTool.getToken())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<MyAssetsInfo>() {
-                        @Override
-                        public void onSubscribe(@NonNull Disposable d) {
+                    }
 
-                        }
-
-                        @Override
-                        public void onNext(@NonNull MyAssetsInfo myAssetsInfo) {
-                            if(myAssetsInfo.getStatus() == 1){
+                    @Override
+                    public void onNext(@NonNull MyAssetsInfo myAssetsInfo) {
+                        if (myAssetsInfo.getStatus() == 1) {
 //                                mWalletFragment.setData(myAssetsInfo.getData());
-                            }
-                            hideDialog();
                         }
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onError(@NonNull Throwable e) {
-                            hideDialog();
-                            Toast.makeText(mActivity, mActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        hideDialog();
+                    }
 
-                        @Override
-                        public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                        }
-                    });
-        } else {
-
-            Toast.makeText(mActivity, mActivity.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
-
-        }
-
+                    }
+                });
     }
 }
