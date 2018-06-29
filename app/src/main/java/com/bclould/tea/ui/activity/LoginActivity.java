@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
+import com.bclould.tea.base.LoginBaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBUserCode;
 import com.bclould.tea.model.UserCodeInfo;
@@ -46,7 +47,7 @@ import static com.bclould.tea.ui.activity.SystemSetActivity.PRIVATE;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends LoginBaseActivity {
 
 
     @Bind(R.id.iv_back)

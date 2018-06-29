@@ -161,25 +161,12 @@ public class ConversationServerActivity extends BaseActivity {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                refreshlayout.finishRefresh(1000);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        handler.sendEmptyMessage(0);
-                    }
-                }).start();
-
+                handler.sendEmptyMessage(0);
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
-                refreshLayout.finishLoadMore(1000);
                 Bundle bundle = new Bundle();
                 bundle.putBoolean("isFist", false);
                 Message message = new Message();
@@ -196,6 +183,7 @@ public class ConversationServerActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
+                    mRefreshLayout.finishRefresh();
                     //下拉查询历史消息
                     if (mMessageList.size() == 0) return;
                     currentPosition=mMessageList.size();
@@ -212,6 +200,7 @@ public class ConversationServerActivity extends BaseActivity {
                     mLayoutManager.scrollToPositionWithOffset(currentPosition,top);
                     break;
                 case 4:
+                    mRefreshLayout.finishLoadMore();
                     //上啦加載
 //                    if (mMessageList.size() == 0) return;
                     Bundle bundle3 = (Bundle) msg.obj;

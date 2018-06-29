@@ -135,14 +135,12 @@ public class SellFragment extends BaseFragment {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                refreshlayout.finishRefresh(2000);
                 initData(mCoinName, mState, PULL_DOWN);
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
-                refreshLayout.finishLoadMore(1000);
                 if (isFinish) {
                     initData(mCoinName, mState, PULL_UP);
                 }
@@ -161,6 +159,11 @@ public class SellFragment extends BaseFragment {
             public void send(List<DealListInfo.DataBean> dataBean, String coin) {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
                     if (mRecyclerView != null) {
+                        if (type == PULL_DOWN) {
+                            mRefreshLayout.finishRefresh();
+                        }else{
+                            mRefreshLayout.finishLoadMore();
+                        }
                         if (mDataList.size() != 0 || dataBean.size() != 0) {
                             isFinish = true;
                             if (type == PULL_UP) {
@@ -199,10 +202,24 @@ public class SellFragment extends BaseFragment {
             public void error() {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
                     if (type == PULL_DOWN) {
+                        mRefreshLayout.finishRefresh();
+                    }else{
+                        mRefreshLayout.finishLoadMore();
+                    }
+                    if (type == PULL_DOWN) {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.GONE);
                         mLlError.setVisibility(View.VISIBLE);
                     }
+                }
+            }
+
+            @Override
+            public void finishRefresh() {
+                if (type == PULL_DOWN) {
+                    mRefreshLayout.finishRefresh();
+                }else{
+                    mRefreshLayout.finishLoadMore();
                 }
             }
         });

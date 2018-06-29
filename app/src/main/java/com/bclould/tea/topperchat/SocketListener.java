@@ -9,6 +9,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,6 +35,7 @@ import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.network.OSSupload;
+import com.bclould.tea.service.IMCoreService;
 import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.activity.InitialActivity;
 import com.bclould.tea.ui.activity.MainActivity;
@@ -84,7 +86,7 @@ import static com.bclould.tea.topperchat.WsContans.BC_FRIEND_REQUEST;
 import static com.bclould.tea.topperchat.WsContans.BC_INOUT_COIN_INFORM;
 import static com.bclould.tea.topperchat.WsContans.BC_KICK_OUT_GROUP;
 import static com.bclould.tea.topperchat.WsContans.BC_MEMBER_GROUP;
-import static com.bclould.tea.topperchat.WsContans.BC_OFFLINE;
+import static com.bclould.tea.topperchat.WsContans.BC_OFFLINE_NEWS;
 import static com.bclould.tea.topperchat.WsContans.BC_OTC_ORDER;
 import static com.bclould.tea.topperchat.WsContans.BC_QRCODE_RECEIPT_PAYMENT;
 import static com.bclould.tea.topperchat.WsContans.BC_QUIT_GROUP;
@@ -299,9 +301,7 @@ public class SocketListener {
      * @return false表示攔截消息
      */
     private String bellJudgment(String from, String chatmesssage, boolean crypt, boolean isPlayHint) {
-        //鈴聲必須放在處理消息類前面
-        SharedPreferences sp = context.getSharedPreferences(SETTING, 0);
-        boolean free = MySharedPreferences.getInstance().getBoolean(SETTING + from + UtilTool.getTocoId());
+
         if (crypt) {
             if (OtrChatListenerManager.getInstance().isOtrEstablishMessage(chatmesssage,
                     OtrChatListenerManager.getInstance().sessionID(UtilTool.getTocoId(), from), context)) {
@@ -313,19 +313,34 @@ public class SocketListener {
             }
         }
         if (isPlayHint) {
-            if (free) {
 
-            } else if (sp.contains(INFORM)) {
-                if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
-                    UtilTool.playHint(context);
-                }
-            } else {
-                UtilTool.playHint(context);
-            }
         }
         return chatmesssage;
     }
 
+
+    /**
+     * 是否免打扰
+     * @return true是
+     */
+    private boolean isNoDisturbing(String from){
+        //鈴聲必須放在處理消息類前面
+        SharedPreferences sp = context.getSharedPreferences(SETTING, 0);
+        boolean free = MySharedPreferences.getInstance().getBoolean(SETTING + from + UtilTool.getTocoId());
+        if (free) {
+            return true;
+        } else if (sp.contains(INFORM)) {
+            if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
+                UtilTool.playHint(context);
+                return false;
+            }else{
+                return true;
+            }
+        } else {
+            UtilTool.playHint(context);
+            return false;
+        }
+    }
 
     /**
      * 消息反饋
@@ -561,7 +576,7 @@ public class SocketListener {
                 if (!isMe) {
                     number++;
                 }
-                mgr.updateConversation(from, number, redpacket, time, createTime);
+                mgr.updateConversation(from, number, mgr.findLastMessageConversation(from), mgr.findLastMessageConversationTime(from), createTime);
             } else {
                 ConversationInfo info = new ConversationInfo();
                 info.setTime(time);
@@ -636,9 +651,9 @@ public class SocketListener {
                     //好友相關
                     friends(type, messageMap);
                     break;
-                case BC_OFFLINE:
+                case BC_OFFLINE_NEWS:
                     //離線消息
-                    offlineChat(messageMap);
+                    offlineNew(messageMap);
                     break;
                 case BC_OTC_ORDER:
                     //OTC訂單信息
@@ -710,6 +725,22 @@ public class SocketListener {
         }
     }
 
+    /**
+     * 離線消息通知
+     * @param messageMap
+     */
+    private void offlineNew(Map<Object, Object> messageMap) {
+        if (!WsConnection.isServiceWork(context, IMCoreService.CORE_SERVICE_NAME)) {
+            Intent intent1 = new Intent(context, IMCoreService.class);
+            context.startService(intent1);
+
+            PackageManager packageManager = context.getPackageManager();
+            Intent intent = packageManager.getLaunchIntentForPackage("com.bclould.tea");
+            goActivity(intent, Constants.ADMINISTRATOR_NAME, messageMap.get("text")+"");
+        }
+
+    }
+
     private void kickOut(Map<Object, Object> messageMap){
         final String roomId=messageMap.get("group_id")+"";
         mdbRoomManage.deleteRoom(roomId);
@@ -744,6 +775,7 @@ public class SocketListener {
     private void enjoyPlaying(Map<Object, Object> messageMap) {
         Intent intent = new Intent(context, PayDetailsActivity.class);
         intent.putExtra("id", messageMap.get("id") + "");
+        intent.putExtra("log_id", messageMap.get("log_id")+"");
         intent.putExtra("type_number", messageMap.get("type_number") + "");
         goActivity(intent, context.getString(R.string.exceptional_inform), context.getString(R.string.exceptional_inform_hint));
 
@@ -849,9 +881,11 @@ public class SocketListener {
         if(!StringUtils.isEmpty(groupid)&&!"null".equals(groupid)){
             messageInfo.setSend(groupid);
             messageInfo.setUsername(groupid);
+            goChat(groupid,messageMap.get("desc")+context.getString(R.string.red_package),RoomManage.ROOM_TYPE_MULTI);
         }else{
             messageInfo.setSend((String) messageMap.get("toco_id"));
             messageInfo.setUsername((String) messageMap.get("toco_id"));
+            goChat((String) messageMap.get("toco_id"),messageMap.get("desc")+context.getString(R.string.red_package),RoomManage.ROOM_TYPE_SINGLE);
         }
         messageInfo.setMsgType(RED_GET_MSG);
         messageInfo.setConverstaion(messageMap.get("desc")+context.getString(R.string.red_package));
@@ -869,6 +903,7 @@ public class SocketListener {
     private void inoutCoinInform(Map<Object, Object> messageMap) {
         Intent intent = new Intent(context, PayDetailsActivity.class);
         intent.putExtra("id", messageMap.get("id") + "");
+        intent.putExtra("log_id", messageMap.get("log_id") + "");
         intent.putExtra("type_number", messageMap.get("type_number") + "");
         goActivity(intent, context.getString(R.string.out_coin_inform), context.getString(R.string.out_coin_inform_hint));
 
@@ -895,6 +930,7 @@ public class SocketListener {
     private void inoutCoinBroad(Map<Object, Object> messageMap) {
         Intent intent = new Intent(context, PayDetailsActivity.class);
         intent.putExtra("id", messageMap.get("id") + "");
+        intent.putExtra("log_id", messageMap.get("log_id") + "");
         intent.putExtra("type_number", messageMap.get("type_number") + "");
         goActivity(intent, context.getString(R.string.out_coin_broad), context.getString(R.string.out_coin_borad_hint));
 
@@ -926,6 +962,7 @@ public class SocketListener {
         if ((int) messageMap.get(TYPE) == 1) {
             messageInfo.setConverstaion("[" + context.getString(R.string.in_account_inform) + "]");
             Intent intent = new Intent(context, PayDetailsActivity.class);
+            intent.putExtra("log_id", messageMap.get("log_id") + "");
             intent.putExtra("id", messageMap.get("id") + "");
             intent.putExtra("type_number", messageMap.get("type_number") + "");
             goActivity(intent, context.getString(R.string.transfer_inform), context.getString(R.string.transfer_inform_hint));
@@ -966,6 +1003,17 @@ public class SocketListener {
         messageInfo.setRemark((String) messageMap.get("name"));
         messageInfo.setBetId(messageMap.get("log_id") + "");
         messageInfo.setType((Integer) messageMap.get("type_number"));
+
+        Intent intent = new Intent(context, PayDetailsActivity.class);
+        intent.putExtra("id", messageInfo.getRedId() + "");
+        intent.putExtra("log_id", messageInfo.getBetId());
+        intent.putExtra("type_number", messageInfo.getType() + "");
+        if (messageInfo.getStatus() == 1) {
+            goActivity(intent, context.getString(R.string.receipt_inform), context.getString(R.string.receipt_pay_inform_hint));
+        } else {
+            goActivity(intent, context.getString(R.string.pay_inform), context.getString(R.string.receipt_pay_inform_hint));
+        }
+
         addMessage(messageInfo);
     }
 
@@ -987,6 +1035,7 @@ public class SocketListener {
         }
         messageInfo.setStatus((Integer) messageMap.get("status"));
         addMessage(messageInfo);
+        EventBus.getDefault().post(new MessageEvent(context.getString(R.string.real_name_verify)));//发送更新未读消息通知
     }
 
     /**
@@ -1042,22 +1091,6 @@ public class SocketListener {
         addMessage(messageInfo);
     }
 
-
-    /**
-     * 離線消息
-     *
-     * @param messageMap
-     */
-    private void offlineChat(Map<Object, Object> messageMap) {
-        UtilTool.Log("fengjian", "接受到離線消息" + messageMap.toString());
-        List<Map> mapList = JSON.parseArray(messageMap.get("data").toString(), Map.class);
-        for (Map<Object, Object> map : mapList) {
-            Map<Object, Object> contentmap = JSON.parseObject((String) map.get(CONTENT), Map.class);
-            byte[] bytes = Base64.decode((String) contentmap.get("message"), Base64.DEFAULT);
-            contentmap.put("message", bytes);
-            messageFeedback(contentmap, false, "");
-        }
-    }
 
     /**
      * 好友請求相關

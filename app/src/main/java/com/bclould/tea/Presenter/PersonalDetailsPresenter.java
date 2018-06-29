@@ -329,6 +329,7 @@ public class PersonalDetailsPresenter {
     //定义接口
     public interface CallBack2 {
         void send(List<AuatarListInfo.DataBean> data);
+        void error();
     }
 
     public interface CallBack3 {

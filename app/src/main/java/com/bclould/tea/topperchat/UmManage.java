@@ -1,23 +1,15 @@
 package com.bclould.tea.topperchat;
 import android.content.Context;
 import android.os.Build;
-import android.os.Handler;
 import android.support.annotation.RequiresApi;
-import android.widget.Toast;
-
-import com.alibaba.fastjson.JSON;
 import com.bclould.tea.utils.UtilTool;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UTrack;
 import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.entity.UMessage;
-
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by GIjia on 2018/6/28.
@@ -27,6 +19,7 @@ public class UmManage {
     private static UmManage mInstance;
     private Context mContext;
     public PushAgent mPushAgent;
+    public MobclickAgent mobclickAgent;
     public final static String SECRET="a5a739a2c291c19ad390fa93c365fdda";
     public static UmManage getInstance(){
         if(mInstance == null){
@@ -46,8 +39,10 @@ public class UmManage {
     }
 
     private void initUpush() {
+        mobclickAgent =new MobclickAgent();
         UMConfigure.setLogEnabled(true);
         mPushAgent = PushAgent.getInstance(mContext);
+        mobclickAgent.setScenarioType(mContext, MobclickAgent.EScenarioType.E_UM_NORMAL);
         //注册推送服务 每次调用register都会回调该接口
         mPushAgent.register(new IUmengRegisterCallback() {
             @Override

@@ -121,7 +121,6 @@ public class NewsBrowseRecordFragment extends Fragment {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
-                refreshLayout.finishRefresh(2000);
                 initData();
             }
         });
@@ -134,6 +133,7 @@ public class NewsBrowseRecordFragment extends Fragment {
             @Override
             public void send(List<GonggaoListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
+                    mRefreshLayout.finishRefresh();
                     if (data.size() != 0) {
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
@@ -151,9 +151,15 @@ public class NewsBrowseRecordFragment extends Fragment {
 
             @Override
             public void error() {
+                mRefreshLayout.finishRefresh();
                 mRecyclerView.setVisibility(View.GONE);
                 mLlNoData.setVisibility(View.GONE);
                 mLlError.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void finishRefresh() {
+                mRefreshLayout.finishRefresh();
             }
         });
     }

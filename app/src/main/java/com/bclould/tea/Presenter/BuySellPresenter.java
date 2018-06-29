@@ -78,7 +78,10 @@ public class BuySellPresenter {
                         hideDialog();
                         if (baseInfo.getStatus() == 1) {
                             callBack.send(baseInfo.getData(), state);
+                        }else {
+                            callBack.finishRefresh();
                         }
+
                     }
 
                     @Override
@@ -112,6 +115,8 @@ public class BuySellPresenter {
                         hideDialog();
                         if (baseInfo.getStatus() == 1)
                             callBack.send(baseInfo.getData());
+                        else
+                            callBack.finishRefresh();
                     }
 
                     @Override
@@ -144,6 +149,8 @@ public class BuySellPresenter {
                         hideDialog();
                         if (baseInfo.getStatus() == 1)
                             callBack.send(baseInfo.getData());
+                        else
+                            callBack.finishRefresh();
                     }
 
                     @Override
@@ -356,6 +363,7 @@ public class BuySellPresenter {
                         if (myAdListInfo.getStatus() == 1) {
                             callBack5.send(myAdListInfo.getData());
                         } else {
+                            callBack5.finishRefresh();
                             Toast.makeText(mContext, myAdListInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -408,6 +416,7 @@ public class BuySellPresenter {
         void send(List<DealListInfo.DataBean> dataBean, String coin);
 
         void error();
+        void finishRefresh();
     }
 
     //定义接口
@@ -420,7 +429,7 @@ public class BuySellPresenter {
         void send(List<OrderListInfo.DataBean> data);
 
         void error();
-
+        void finishRefresh();
     }
 
     //定义接口
@@ -434,6 +443,7 @@ public class BuySellPresenter {
         void send(List<MyAdListInfo.DataBean> data);
 
         void error();
+        void finishRefresh();
     }
 
     //定义接口

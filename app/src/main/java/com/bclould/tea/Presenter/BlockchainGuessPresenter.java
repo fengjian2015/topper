@@ -67,6 +67,8 @@ public class BlockchainGuessPresenter {
                     public void onNext(GuessListInfo guessListInfo) {
                         if (guessListInfo.getStatus() == 1) {
                             callBack.send(guessListInfo.getData());
+                        }else{
+                            callBack.finishRefresh();
                         }
                     }
 
@@ -98,6 +100,8 @@ public class BlockchainGuessPresenter {
                     public void onNext(GuessListInfo guessListInfo) {
                         if (guessListInfo.getStatus() == 1) {
                             callBack.send(guessListInfo.getData());
+                        }else{
+                            callBack.finishRefresh();
                         }
                     }
 
@@ -275,6 +279,7 @@ public class BlockchainGuessPresenter {
                         if (guessListInfo.getStatus() == 1) {
                             callBack.send(guessListInfo.getData());
                         } else {
+                            callBack.finishRefresh();
                             Toast.makeText(mContext, guessListInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -311,6 +316,7 @@ public class BlockchainGuessPresenter {
                         if (guessListInfo.getStatus() == 1) {
                             callBack.send(guessListInfo.getData());
                         } else {
+                            callBack.finishRefresh();
                             Toast.makeText(mContext, guessListInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -334,6 +340,7 @@ public class BlockchainGuessPresenter {
         void send(List<GuessListInfo.DataBean> data);
 
         void error();
+        void finishRefresh();
     }
 
     //定义接口

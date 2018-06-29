@@ -117,6 +117,7 @@ public class DynamicPresenter {
                             }
                             callBack2.send(dynamicListInfo.getData());
                         } else {
+                            callBack2.finishRefresh();
                             Toast.makeText(mContext, mContext.getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -162,6 +163,7 @@ public class DynamicPresenter {
                         if (dynamicListInfo.getStatus() == 1) {
                             callBack2.send(dynamicListInfo.getData());
                         } else {
+                            callBack2.finishRefresh();
                             Toast.makeText(mContext, mContext.getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -430,6 +432,7 @@ public class DynamicPresenter {
         void send(List<DynamicListInfo.DataBean> data);
 
         void error();
+        void finishRefresh();
     }
 
     //定义接口

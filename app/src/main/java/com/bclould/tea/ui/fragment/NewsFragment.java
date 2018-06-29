@@ -98,7 +98,6 @@ public class NewsFragment extends Fragment implements OnBannerListener {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
-                refreshLayout.finishRefresh(2000);
                 initData(PULL_DOWN);
             }
         });
@@ -106,7 +105,6 @@ public class NewsFragment extends Fragment implements OnBannerListener {
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
-                refreshLayout.finishLoadMore(1000);
                 if (isFinish) {
                     initData(PULL_UP);
                 }
@@ -127,6 +125,11 @@ public class NewsFragment extends Fragment implements OnBannerListener {
         mNewsNoticePresenter.getNewsList(mPage, mPageSize, new NewsNoticePresenter.CallBack() {
             @Override
             public void send(List<NewsListInfo.ListsBean> lists, List<NewsListInfo.TopBean> top) {
+                if (type == PULL_DOWN) {
+                    mRefreshLayout.finishRefresh();
+                }else{
+                    mRefreshLayout.finishLoadMore();
+                }
                 if (lists != null || top != null) {
                     if (lists.size() != 0 || mNewsList.size() != 0 || top.size() != 0 || mTopList.size() != 0) {
                         mRecyclerView.setVisibility(View.VISIBLE);
@@ -172,9 +175,23 @@ public class NewsFragment extends Fragment implements OnBannerListener {
 
             @Override
             public void error() {
+                if (type == PULL_DOWN) {
+                    mRefreshLayout.finishRefresh();
+                }else{
+                    mRefreshLayout.finishLoadMore();
+                }
                 mRecyclerView.setVisibility(View.GONE);
                 mLlNoData.setVisibility(View.GONE);
                 mLlError.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void finishRefresh() {
+                if (type == PULL_DOWN) {
+                    mRefreshLayout.finishRefresh();
+                }else{
+                    mRefreshLayout.finishLoadMore();
+                }
             }
         });
 

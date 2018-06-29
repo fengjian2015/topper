@@ -611,6 +611,7 @@
     <string name="order_inform">訂單通知</string>
     <string name="order_inform_hint">您有一個新訂單消息,點擊查看詳情</string>
     <string name="transfer_inform_hint">您有一個新轉賬消息,點擊查看詳情</string>
+    <string name="receipt_pay_inform_hint">您有一個新收付款消息,點擊查看詳情</string>
     <string name="insert_coins_guess">投幣競猜</string>
     <string name="platform_guess">平台競猜</string>
     <string name="personage_guess">個人競猜</string>
@@ -980,4 +981,6 @@
     <string name="back_send">後發送</string>
     <string name="token_stale_dated">身份憑證過期，請重新登錄</string>
     <string name="add_friends_first">請先添加好友</string>
+    <string name="click_to_view">點擊查看</string>
+    <string name="et_order_who_or_mailbox">輸入用戶名或邮箱</string>
 </resources>
