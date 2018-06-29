@@ -29,8 +29,16 @@ import com.bclould.tea.Presenter.RealNamePresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.crypto.otr.OtrChatListenerManager;
+import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter3;
 import com.bclould.tea.utils.AnimatorTool;
+import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.UtilTool;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -104,7 +112,16 @@ public class RealNameC1Activity extends BaseActivity {
         ButterKnife.bind(this);
         mRealNamePresenter = new RealNamePresenter(this);
         MyApp.getInstance().addActivity(this);
+        if(!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this);//初始化EventBus
+        }
         initData();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);//初始化EventBus
     }
 
     private void initData() {
@@ -146,6 +163,15 @@ public class RealNameC1Activity extends BaseActivity {
                 mRlData.setVisibility(View.GONE);
             }
         });
+    }
+
+    //接受通知
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(getString(R.string.real_name_verify))) {
+            initData();
+        }
     }
 
     @OnClick({R.id.ll_error, R.id.bark, R.id.cv_card_type, R.id.btn_next, R.id.btn_auth, R.id.rl_selector_state})

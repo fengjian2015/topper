@@ -35,7 +35,6 @@ import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.GrabRedInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.SerMap;
-import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.activity.ChatLookLocationActivity;
 import com.bclould.tea.ui.activity.GuessDetailsActivity;
 import com.bclould.tea.ui.activity.ImageViewActivity;

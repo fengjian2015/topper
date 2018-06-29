@@ -576,7 +576,7 @@ public class SocketListener {
                 if (!isMe) {
                     number++;
                 }
-                mgr.updateConversation(from, number, redpacket, time, createTime);
+                mgr.updateConversation(from, number, mgr.findLastMessageConversation(from), mgr.findLastMessageConversationTime(from), createTime);
             } else {
                 ConversationInfo info = new ConversationInfo();
                 info.setTime(time);
@@ -736,7 +736,7 @@ public class SocketListener {
 
             PackageManager packageManager = context.getPackageManager();
             Intent intent = packageManager.getLaunchIntentForPackage("com.bclould.tea");
-            goActivity(intent, context.getString(R.string.click_to_view), messageMap.get("text")+"");
+            goActivity(intent, Constants.ADMINISTRATOR_NAME, messageMap.get("text")+"");
         }
 
     }
@@ -1035,6 +1035,7 @@ public class SocketListener {
         }
         messageInfo.setStatus((Integer) messageMap.get("status"));
         addMessage(messageInfo);
+        EventBus.getDefault().post(new MessageEvent(context.getString(R.string.real_name_verify)));//发送更新未读消息通知
     }
 
     /**

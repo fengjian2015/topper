@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.LoginBaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.network.RetrofitUtil;
@@ -36,7 +38,7 @@ import static com.bclould.tea.Presenter.LoginPresenter.TOKEN;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class StartActivity extends AppCompatActivity {
+public class StartActivity extends LoginBaseActivity {
     @Bind(R.id.iv_start)
     ImageView mIvStart;
 

@@ -334,6 +334,19 @@ public class DBManager {
         return conversation;
     }
 
+    public String findLastMessageConversationTime(String roomid) {
+        db = helper.getReadableDatabase();
+        String time = "";
+        Cursor cursor = db.rawQuery("select time from MessageRecord where user=? and my_user=? ORDER BY createTime asc",
+                new String[]{roomid, UtilTool.getTocoId()});
+
+        if (cursor.moveToLast()) {
+            time = cursor.getString(cursor.getColumnIndex("time"));
+        }
+        cursor.close();
+        return time;
+    }
+
     public void updateMessageState(String id, int state) {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();

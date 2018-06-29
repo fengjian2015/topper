@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.bclould.tea.Presenter.RegisterPresenter;
 import com.bclould.tea.R;
+import com.bclould.tea.base.LoginBaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.AnimatorTool;
 
@@ -30,7 +31,7 @@ import butterknife.OnClick;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends LoginBaseActivity {
 
     @Bind(R.id.iv_back)
     ImageView mIvBack;

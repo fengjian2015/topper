@@ -980,4 +980,5 @@
     <string name="send_red">發出紅包</string>
     <string name="back_send">後發送</string>
     <string name="click_to_view">點擊查看</string>
+    <string name="et_order_who_or_mailbox">輸入用戶名或邮箱</string>
 </resources>

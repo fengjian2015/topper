@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.bclould.tea.R;
+import com.bclould.tea.base.LoginBaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.utils.UtilTool;
@@ -24,7 +25,7 @@ import butterknife.OnClick;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class InitialActivity extends AppCompatActivity {
+public class InitialActivity extends LoginBaseActivity {
     @Bind(R.id.btn_login)
     Button mBtnLogin;
     @Bind(R.id.btn_register)

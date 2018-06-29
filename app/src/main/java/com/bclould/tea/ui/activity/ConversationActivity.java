@@ -47,8 +47,10 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.MessageInfo;
+import com.bclould.tea.topperchat.UmManage;
 import com.bclould.tea.ui.adapter.ChatAdapter;
 import com.bclould.tea.ui.widget.SimpleAppsGridView;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.RecordUtil;
 import com.bclould.tea.utils.StringUtils;
@@ -161,6 +163,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         mMgr = new DBManager(this);//初始化数据库管理类
         mDBRoomMember=new DBRoomMember(this);
         mDBRoomManage=new DBRoomManage(this);
+        ActivityUtil.isGoStartActivity(this);
         EventBus.getDefault().register(this);//初始化EventBus
         initIntent();//初始化intent事件
         initEmoticonsKeyboard();//初始化功能盘
@@ -473,13 +476,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         Toast.makeText(this, getString(R.string.cancel_record), Toast.LENGTH_SHORT).show();
     }
 
-    //界面失去焦点暂停语音播放
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mediaPlayer.stop();
-        mediaPlayer.reset();
-    }
 
     //界面销毁隐藏软键盘
     @Override
@@ -946,5 +942,17 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
         return false;
+    }
+
+    public void onResume() {
+        super.onResume();
+        UmManage.getInstance().mobclickAgent.onPageStart(getClass().getName());
+    }
+
+    public void onPause() {
+        super.onPause();
+        UmManage.getInstance().mobclickAgent.onPageEnd(getClass().getName());
+        mediaPlayer.stop();
+        mediaPlayer.reset();
     }
 }

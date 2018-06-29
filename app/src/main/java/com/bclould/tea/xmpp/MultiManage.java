@@ -190,7 +190,7 @@ public class MultiManage implements Room{
 
     private void changeConversationInfo(String time,String message,long createTime){
         if (mMgr.findConversation(roomId)) {
-            mMgr.updateConversation(roomId, 0, message, time,createTime);
+            mMgr.updateConversation(roomId, 0,  mMgr.findLastMessageConversation(roomId), mMgr.findLastMessageConversationTime(roomId),createTime);
         } else {
             mMgr.addConversation(createConversation(time,message,createTime));
         }
@@ -373,10 +373,10 @@ public class MultiManage implements Room{
                 messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
             }
             messageInfo.setCreateTime(UtilTool.createChatCreatTime());
-            changeConversationInfo(time,message,messageInfo.getCreateTime());
             messageInfo.setMsgId(UtilTool.createMsgId(roomId));
             messageInfo.setSendStatus(0);
             messageInfo.setId(mMgr.addMessage(messageInfo));
+            changeConversationInfo(time,message,messageInfo.getCreateTime());
             refreshAddData(messageInfo);
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
         } catch (Exception e) {
@@ -411,9 +411,9 @@ public class MultiManage implements Room{
                 messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
             }
             messageInfo.setCreateTime(UtilTool.createChatCreatTime());
-            changeConversationInfo(time,message,messageInfo.getCreateTime());
             messageInfo.setMsgId(UtilTool.createMsgId(roomId));
             messageInfo.setId(mMgr.addMessage(messageInfo));
+            changeConversationInfo(time,message,messageInfo.getCreateTime());
             refreshAddData(messageInfo);
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
         }
