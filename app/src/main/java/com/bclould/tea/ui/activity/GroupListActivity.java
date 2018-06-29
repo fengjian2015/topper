@@ -119,19 +119,7 @@ public class GroupListActivity extends BaseActivity {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                refreshlayout.finishRefresh(1000);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        getGroup(false);
-                    }
-                }).start();
-
+                getGroup(false);
             }
         });
     }
@@ -151,8 +139,13 @@ public class GroupListActivity extends BaseActivity {
         new GroupPresenter(this).getGroup(mDBRoomMember,dbRoomManage,mDBManager,isShow,new GroupPresenter.CallBack1() {
             @Override
             public void send(GroupInfo baseInfo) {
-                // TODO: 2018/6/11 獲取群聊房間塞入數據庫
+                mRefreshLayout.finishRefresh();
                 updataRecyclerView();
+            }
+
+            @Override
+            public void error() {
+                mRefreshLayout.finishRefresh();
             }
         });
     }

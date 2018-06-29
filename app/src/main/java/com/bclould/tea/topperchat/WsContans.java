@@ -52,7 +52,7 @@ public class WsContans {
     public static final int BC_FRIEND_REQUEST=9;//好友請求
     public static final int BC_FRIEND_COMMIT=10;//好友請求確認
     public static final int BC_FRIEND_REJECT=25;//轉賬
-    public static final int BC_OFFLINE=26;//離線消息
+    public static final int BC_OFFLINE_NEWS=26;//離線通知
     public static final int BC_MEMBER_GROUP=31;//加入群組通知
     public static final int BC_QUIT_GROUP=32;//退出群組通知
     public static final int BC_ADD_GROUP=33;//創建群組通知

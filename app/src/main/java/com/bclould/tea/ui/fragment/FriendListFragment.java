@@ -284,9 +284,15 @@ public class FriendListFragment extends Fragment {
             mPersonalDetailsPresenter.getFriendList(new PersonalDetailsPresenter.CallBack2() {
                 @Override
                 public void send(List<AuatarListInfo.DataBean> data) {
+                    mRefreshLayout.finishRefresh();
                     mMgr.deleteAllFriend();
                     mMgr.addUserList(data);
                     myHandler.sendEmptyMessage(0);
+                }
+
+                @Override
+                public void error() {
+                    mRefreshLayout.finishRefresh();
                 }
             });
         } catch (Exception e) {
@@ -303,19 +309,7 @@ public class FriendListFragment extends Fragment {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                refreshlayout.finishRefresh(1000);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        initData();
-                    }
-                }).start();
-
+                initData();
             }
         });
     }

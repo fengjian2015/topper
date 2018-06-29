@@ -20,6 +20,8 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okhttp3.internal.http.RealResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -59,6 +61,7 @@ public class RetrofitUtil {
                 Log.d("CacheInterceptor", "no network");
             }
             Response originalResponse = chain.proceed(request);
+            ResponseBody body= originalResponse.body();
             if (NetworkUtils.isNetworkAvailable(mContext)) {
                 //这里大家看点开源码看看.header .removeHeader做了什么操作很简答，就是的加字段和减字段的。
                 String cacheControl = request.cacheControl().toString();

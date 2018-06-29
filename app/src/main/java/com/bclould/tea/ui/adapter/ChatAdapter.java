@@ -759,7 +759,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mName=mMgr.findUserName(mUser);
         }
         if(StringUtils.isEmpty(mName)){
-            mName=mMgr.findStrangerName(mUser);
+            mName=mDBRoomMember.findMemberName(mRoomId,mUser);
         }
         if(StringUtils.isEmpty(mName)){
             mName=mUser;

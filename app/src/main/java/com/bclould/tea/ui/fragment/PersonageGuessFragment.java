@@ -110,14 +110,12 @@ public class PersonageGuessFragment extends Fragment {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                refreshlayout.finishRefresh(2000);
                 initData("", PULL_DOWN);
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
-                refreshLayout.finishLoadMore(1000);
                 if (isFinish) {
                     initData("", PULL_UP);
                 }
@@ -159,6 +157,11 @@ public class PersonageGuessFragment extends Fragment {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
+                    if (type == PULL_DOWN) {
+                        mRefreshLayout.finishRefresh();
+                    }else{
+                        mRefreshLayout.finishLoadMore();
+                    }
                     if (mDataList.size() != 0 || data.size() != 0) {
                         isFinish = true;
                         if (type == PULL_UP) {
@@ -195,11 +198,25 @@ public class PersonageGuessFragment extends Fragment {
             @Override
             public void error() {
                 if (type == PULL_DOWN) {
+                    mRefreshLayout.finishRefresh();
+                }else{
+                    mRefreshLayout.finishLoadMore();
+                }
+                if (type == PULL_DOWN) {
                     mRecyclerView.setVisibility(View.GONE);
                     mLlNoData.setVisibility(View.GONE);
                     mLlError.setVisibility(View.VISIBLE);
                 }
 
+            }
+
+            @Override
+            public void finishRefresh() {
+                if (type == PULL_DOWN) {
+                    mRefreshLayout.finishRefresh();
+                }else{
+                    mRefreshLayout.finishLoadMore();
+                }
             }
         });
     }

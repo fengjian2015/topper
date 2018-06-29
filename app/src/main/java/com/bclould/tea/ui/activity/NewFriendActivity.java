@@ -81,6 +81,11 @@ public class NewFriendActivity extends BaseActivity {
                     mNewFriendRVAdapter.notifyDataSetChanged();
                 }
             }
+
+            @Override
+            public void error() {
+
+            }
         });
 
     }

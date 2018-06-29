@@ -185,15 +185,19 @@ public class PersonalDetailsPresenter {
 
                         @Override
                         public void onNext(AuatarListInfo remarkListInfo) {
-                            if(((Activity)mContext).isDestroyed())return;
+                            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
                             hideDialog();
                             if (remarkListInfo.getStatus() == 1) {
                                 callBack2.send(remarkListInfo.getData());
+                            }else{
+                                callBack2.error();
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
+                            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
+                            callBack2.error();
                             hideDialog();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
@@ -204,6 +208,8 @@ public class PersonalDetailsPresenter {
                         }
                     });
         } else {
+            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
+            callBack2.error();
             ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.toast_network_error));
         }
     }
@@ -372,6 +378,7 @@ public class PersonalDetailsPresenter {
     //定义接口
     public interface CallBack2 {
         void send(List<AuatarListInfo.DataBean> data);
+        void error();
     }
 
     public interface CallBack3{

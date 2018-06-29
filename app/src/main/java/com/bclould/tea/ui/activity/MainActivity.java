@@ -272,6 +272,11 @@ public class MainActivity extends BaseActivity {
                 // TODO: 2018/6/11 獲取群聊房間塞入數據庫
 
             }
+
+            @Override
+            public void error() {
+
+            }
         });
     }
 
@@ -308,6 +313,11 @@ public class MainActivity extends BaseActivity {
             public void send(List<AuatarListInfo.DataBean> data) {
                 mMgr.deleteAllFriend();
                 mMgr.addUserList(data);
+            }
+
+            @Override
+            public void error() {
+
             }
         });
     }

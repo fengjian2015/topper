@@ -109,7 +109,7 @@ public class MyAssetsActivity extends BaseActivity {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
                 refreshLayout.finishRefresh(2000);
-                getTotal();
+                getTotal() ;
                 initData();
             }
         });

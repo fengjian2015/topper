@@ -1,5 +1,6 @@
 package com.bclould.tea.Presenter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -11,6 +12,7 @@ import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.GonggaoListInfo;
 import com.bclould.tea.model.NewsListInfo;
 import com.bclould.tea.network.RetrofitUtil;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -55,6 +57,7 @@ public class NewsNoticePresenter {
 
                         @Override
                         public void onNext(NewsListInfo newsListInfo) {
+                            if (!ActivityUtil.isActivityOnTop((Activity) mContext))return;
                             if (newsListInfo.getStatus() == 1) {
                                 if (page == 1) {
                                     Gson gson = new Gson();
@@ -62,11 +65,14 @@ public class NewsNoticePresenter {
                                     MySharedPreferences.getInstance().setString(NEWS_JSON, gson.toJson(newsListInfo));
                                 }
                                 callBack.send(newsListInfo.getLists(), newsListInfo.getTop());
+                            }else{
+                                callBack.finishRefresh();
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
+                            if (!ActivityUtil.isActivityOnTop((Activity) mContext))return;
                             if (page == 1) {
                                 SharedPreferences sp = MySharedPreferences.getInstance().getSp();
                                 if (sp.contains(NEWS_JSON)) {
@@ -193,6 +199,8 @@ public class NewsNoticePresenter {
                         public void onNext(GonggaoListInfo gonggaoListInfo) {
                             if (gonggaoListInfo.getStatus() == 1) {
                                 callBack2.send(gonggaoListInfo.getData());
+                            }else{
+                                callBack2.finishRefresh();
                             }
                         }
 
@@ -369,6 +377,7 @@ public class NewsNoticePresenter {
     public interface CallBack {
         void send(List<NewsListInfo.ListsBean> lists, List<NewsListInfo.TopBean> top);
         void error();
+        void finishRefresh();
     }
 
     //定义接口
@@ -376,6 +385,7 @@ public class NewsNoticePresenter {
         void send(List<GonggaoListInfo.DataBean> data);
 
         void error();
+        void finishRefresh();
     }
 
     //定义接口

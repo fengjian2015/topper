@@ -156,7 +156,6 @@ public class OrderFormFragment extends Fragment {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                refreshlayout.finishRefresh(2000);
                 initData(mCoinName, mFiltrate, "", PULL_DOWN);
             }
         });
@@ -164,7 +163,6 @@ public class OrderFormFragment extends Fragment {
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
-                refreshLayout.finishLoadMore(1000);
                 if (isFinish) {
                     initData(mCoinName, mFiltrate, "", PULL_UP);
                 }
@@ -206,6 +204,11 @@ public class OrderFormFragment extends Fragment {
             public void send(List<OrderListInfo.DataBean> data) {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
                     if (mRecyclerView != null) {
+                        if (type == PULL_DOWN) {
+                            mRefreshLayout.finishRefresh();
+                        }else{
+                            mRefreshLayout.finishLoadMore();
+                        }
                         if (mDataList.size() != 0 || data.size() != 0) {
                             mRecyclerView.setVisibility(View.VISIBLE);
                             mLlNoData.setVisibility(View.GONE);
@@ -250,10 +253,24 @@ public class OrderFormFragment extends Fragment {
             public void error() {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
                     if (type == PULL_DOWN) {
+                        mRefreshLayout.finishRefresh();
+                    }else{
+                        mRefreshLayout.finishLoadMore();
+                    }
+                    if (type == PULL_DOWN) {
                         mRecyclerView.setVisibility(View.GONE);
                         mLlNoData.setVisibility(View.GONE);
                         mLlError.setVisibility(View.VISIBLE);
                     }
+                }
+            }
+
+            @Override
+            public void finishRefresh() {
+                if (type == PULL_DOWN) {
+                    mRefreshLayout.finishRefresh();
+                }else{
+                    mRefreshLayout.finishLoadMore();
                 }
             }
 

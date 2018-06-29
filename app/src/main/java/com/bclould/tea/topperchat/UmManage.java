@@ -1,11 +1,7 @@
 package com.bclould.tea.topperchat;
 import android.content.Context;
 import android.os.Build;
-import android.os.Handler;
 import android.support.annotation.RequiresApi;
-import android.widget.Toast;
-
-import com.alibaba.fastjson.JSON;
 import com.bclould.tea.utils.UtilTool;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengRegisterCallback;
@@ -13,11 +9,6 @@ import com.umeng.message.PushAgent;
 import com.umeng.message.UTrack;
 import com.umeng.message.UmengMessageHandler;
 import com.umeng.message.entity.UMessage;
-
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by GIjia on 2018/6/28.

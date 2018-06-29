@@ -252,6 +252,11 @@ public class DynamicFragment extends Fragment {
         mDynamicPresenter.dynamicList(mPage, mPageSize, userList, new DynamicPresenter.CallBack2() {
             @Override
             public void send(List<DynamicListInfo.DataBean> data) {
+                if (type == PULL_UP) {
+                    mRefreshLayout.finishLoadMore();
+                }else{
+                    mRefreshLayout.finishRefresh();
+                }
                 if (mRecyclerView != null) {
                     if (mDataList.size() != 0 || data.size() != 0) {
                         isFinish = true;
@@ -288,9 +293,23 @@ public class DynamicFragment extends Fragment {
 
             @Override
             public void error() {
+                if (type == PULL_UP) {
+                    mRefreshLayout.finishLoadMore();
+                }else{
+                    mRefreshLayout.finishRefresh();
+                }
                 mRecyclerView.setVisibility(View.GONE);
                 mLlNoData.setVisibility(View.GONE);
                 mLlError.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void finishRefresh() {
+                if (type == PULL_UP) {
+                    mRefreshLayout.finishLoadMore();
+                }else{
+                    mRefreshLayout.finishRefresh();
+                }
             }
         });
     }
@@ -342,14 +361,12 @@ public class DynamicFragment extends Fragment {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                refreshlayout.finishRefresh(2000);
                 initData(PULL_DOWN);
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
-                refreshLayout.finishLoadMore(1000);
                 if (isFinish) {
                     initData(PULL_UP);
                 }

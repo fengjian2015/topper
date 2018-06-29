@@ -89,7 +89,6 @@ public class SumBuySellActivity extends BaseActivity {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
-                refreshLayout.finishRefresh(2000);
                 initData();
             }
         });
@@ -102,6 +101,7 @@ public class SumBuySellActivity extends BaseActivity {
             @Override
             public void send(List<OrderListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
+                    mRefreshLayout.finishRefresh();
                     if (data.size() != 0) {
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
@@ -119,9 +119,15 @@ public class SumBuySellActivity extends BaseActivity {
 
             @Override
             public void error() {
+                mRefreshLayout.finishRefresh();
                 mRecyclerView.setVisibility(View.GONE);
                 mLlNoData.setVisibility(View.GONE);
                 mLlError.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void finishRefresh() {
+                mRefreshLayout.finishRefresh();
             }
 
 

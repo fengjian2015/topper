@@ -574,26 +574,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         startActivityForResult(intent, CODE_TAKE_PHOTO_SHOOTING);
     }
 
-//    //打开系统视频录制
-//    private void openCameraShooting() {
-//        Uri uri = null;
-//        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-//        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 15);
-//        intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 1024 * 6000);
-//        try {
-//            File cacheDir = new File(getFilesDir().getAbsolutePath() + "/images");
-//            if (!cacheDir.exists())
-//                cacheDir.mkdirs();
-//            mImagePath = ConversationActivity.this.getFilesDir().getAbsolutePath() + "/images/" + UtilTool.createtFileName() + ".mp4";
-//            File file = new File(mImagePath);
-//            uri = FileProvider.getUriForFile(this, "com.bclould.tea.provider", file);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-//        startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
-//    }
-
     //选择图片
     private void selectorImages() {
 
@@ -688,6 +668,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
+                    mRefreshLayout.finishRefresh();
                     //下拉查询历史消息
                     if (mMessageList.size() == 0) return;
                     currentPosition=mMessageList.size();
@@ -706,6 +687,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 case 4:
                     //上啦加載
 //                    if (mMessageList.size() == 0) return;
+                    mRefreshLayout.finishLoadMore();
                     Bundle bundle3 = (Bundle) msg.obj;
                     boolean isFist = bundle3.getBoolean("isFist");
                     List<MessageInfo> messageInfos1 = null;
@@ -833,25 +815,12 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                refreshlayout.finishRefresh(1000);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        handler.sendEmptyMessage(0);
-                    }
-                }).start();
-
+                handler.sendEmptyMessage(0);
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
-                refreshLayout.finishLoadMore(1000);
                 Bundle bundle = new Bundle();
                 bundle.putBoolean("isFist", false);
                 Message message = new Message();
@@ -861,52 +830,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
             }
         });
     }
-
-    //显示更多dialog
-    private void showDialog() {
-        mBottomDialog = new Dialog(this, R.style.BottomDialog2);
-        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_conversation, null);
-        //获得dialog的window窗口
-        Window window = mBottomDialog.getWindow();
-        window.getDecorView().setPadding(0, 0, 0, 0);
-        //获得window窗口的属性
-        WindowManager.LayoutParams lp = window.getAttributes();
-        //设置窗口宽度为充满全屏
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        //将设置好的属性set回去
-        window.setAttributes(lp);
-        window.setGravity(Gravity.BOTTOM);
-        window.setWindowAnimations(BottomDialog);
-        mBottomDialog.setContentView(contentView);
-        mBottomDialog.show();
-        dialogClick();
-    }
-
-    //处理更多Dialog的点击事件
-    private void dialogClick() {
-        LinearLayout help = (LinearLayout) mBottomDialog.findViewById(R.id.ll_help);
-        help.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mBottomDialog.dismiss();
-            }
-        });
-        LinearLayout groupChat = (LinearLayout) mBottomDialog.findViewById(R.id.ll_group_chat);
-        groupChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mBottomDialog.dismiss();
-            }
-        });
-        LinearLayout complain = (LinearLayout) mBottomDialog.findViewById(R.id.ll_complain);
-        complain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mBottomDialog.dismiss();
-            }
-        });
-    }
-
 
     @OnClick({R.id.bark, R.id.iv_else})
     public void onViewClicked(View view) {
@@ -920,7 +843,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
                 }
                 break;
             case R.id.iv_else:
-//                showDialog();
                 goDetails();
                 break;
         }
@@ -955,13 +877,6 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     }
 
     private void scrollToBottom() {
-        /*mLvMessage.requestLayout();
-        mLvMessage.post(new Runnable() {
-            @Override
-            public void run() {
-                mLvMessage.setSelection(mLvMessage.getBottom());
-            }
-        });*/
         mLayoutManager.scrollToPositionWithOffset(mChatAdapter.getItemCount() - 1, 0);
     }
 

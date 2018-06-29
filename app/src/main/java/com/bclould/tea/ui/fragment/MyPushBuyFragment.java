@@ -101,7 +101,6 @@ public class MyPushBuyFragment extends Fragment {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                refreshlayout.finishRefresh(2000);
                 initData();
             }
         });
@@ -113,6 +112,7 @@ public class MyPushBuyFragment extends Fragment {
         mBuySellPresenter.getUserAdList(mType, mPage, mPage_size, mStatus, mCoinName, new BuySellPresenter.CallBack5() {
             @Override
             public void send(List<MyAdListInfo.DataBean> data) {
+                mRefreshLayout.finishRefresh();
                 if (mRecyclerView != null) {
                     if (data.size() != 0) {
                         mRecyclerView.setVisibility(View.VISIBLE);
@@ -131,9 +131,15 @@ public class MyPushBuyFragment extends Fragment {
 
             @Override
             public void error() {
+                mRefreshLayout.finishRefresh();
                 mRecyclerView.setVisibility(View.GONE);
                 mLlNoData.setVisibility(View.GONE);
                 mLlError.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void finishRefresh() {
+                mRefreshLayout.finishRefresh();
             }
         });
     }

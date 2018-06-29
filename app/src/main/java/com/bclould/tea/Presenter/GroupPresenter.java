@@ -161,53 +161,65 @@ public class GroupPresenter {
                         }
 
                         @Override
-                        public void onNext(GroupInfo baseInfo) {
+                        public void onNext(final GroupInfo baseInfo) {
                             if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
                             hideDialog();
                             if (baseInfo.getStatus() == 1) {
-                                mDBRoomManage.deleteAllRoom();
-                                mDBRoomMember.deleteAllRoomMember();
-                                List<ConversationInfo> list= dbManager.queryConversationGroup();
-                                for (GroupInfo.DataBean dataBean : baseInfo.getData()) {
-                                    RoomManageInfo roomManageInfo = new RoomManageInfo();
-                                    roomManageInfo.setRoomName(dataBean.getName());
-                                    roomManageInfo.setRoomId(dataBean.getId() + "");
-                                    roomManageInfo.setOwner(dataBean.getToco_id());
-                                    roomManageInfo.setRoomNumber(dataBean.getMax_people());
-                                    roomManageInfo.setRoomImage(dataBean.getLogo());
-                                    mDBRoomManage.addRoom(roomManageInfo);
-                                    for (GroupInfo.DataBean.UsersBean usersBean : dataBean.getUsers()) {
-                                        RoomMemberInfo roomMemberInfo = new RoomMemberInfo();
-                                        roomMemberInfo.setRoomId(dataBean.getId() + "");
-                                        roomMemberInfo.setJid(usersBean.getToco_id());
-                                        roomMemberInfo.setImage_url(usersBean.getAvatar());
-                                        roomMemberInfo.setName(usersBean.getName());
-                                        mDBRoomMember.addRoomMember(roomMemberInfo);
-                                        dbManager.addStrangerUserInfo(usersBean.getToco_id(),usersBean.getAvatar(),usersBean.getName());
-                                    }
-                                }
-                                for(ConversationInfo conversationInfo: list){
-                                  boolean isExist=false;
-                                   A:for (GroupInfo.DataBean dataBean : baseInfo.getData()) {
-                                        if(conversationInfo.getUser().equals(dataBean.getId()+"")){
-                                            isExist=true;
-                                            break A;
+                                new Thread(){
+                                    @Override
+                                    public void run() {
+                                        mDBRoomManage.deleteAllRoom();
+                                        mDBRoomMember.deleteAllRoomMember();
+                                        List<ConversationInfo> list= dbManager.queryConversationGroup();
+                                        for (GroupInfo.DataBean dataBean : baseInfo.getData()) {
+                                            RoomManageInfo roomManageInfo = new RoomManageInfo();
+                                            roomManageInfo.setRoomName(dataBean.getName());
+                                            roomManageInfo.setRoomId(dataBean.getId() + "");
+                                            roomManageInfo.setOwner(dataBean.getToco_id());
+                                            roomManageInfo.setRoomNumber(dataBean.getMax_people());
+                                            roomManageInfo.setRoomImage(dataBean.getLogo());
+                                            mDBRoomManage.addRoom(roomManageInfo);
+                                            for (GroupInfo.DataBean.UsersBean usersBean : dataBean.getUsers()) {
+                                                RoomMemberInfo roomMemberInfo = new RoomMemberInfo();
+                                                roomMemberInfo.setRoomId(dataBean.getId() + "");
+                                                roomMemberInfo.setJid(usersBean.getToco_id());
+                                                roomMemberInfo.setImage_url(usersBean.getAvatar());
+                                                roomMemberInfo.setName(usersBean.getName());
+                                                mDBRoomMember.addRoomMember(roomMemberInfo);
+                                                dbManager.addStrangerUserInfo(usersBean.getToco_id(),usersBean.getAvatar(),usersBean.getName());
+                                            }
                                         }
+                                        for(ConversationInfo conversationInfo: list){
+                                            boolean isExist=false;
+                                            A:for (GroupInfo.DataBean dataBean : baseInfo.getData()) {
+                                                if(conversationInfo.getUser().equals(dataBean.getId()+"")){
+                                                    isExist=true;
+                                                    break A;
+                                                }
+                                            }
+                                            if(!isExist){
+                                                dbManager.deleteConversation(conversationInfo.getUser());
+                                            }
+                                        }
+                                        ((Activity)mContext).runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.refresh_group_room)));
+                                                callBack.send(baseInfo);
+                                            }
+                                        });
                                     }
-                                    if(!isExist){
-                                       dbManager.deleteConversation(conversationInfo.getUser());
-                                    }
-                                }
-                                EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.refresh_group_room)));
-//                                dbManager.deleteConversation(baseInfo.getData());
-                                callBack.send(baseInfo);
-
+                                }.start();
+                            }else{
+                                callBack.error();
                             }
+
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
+                            callBack.error();
                             hideDialog();
                             Toast.makeText(mContext, mContext.getString(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
                         }
@@ -218,6 +230,8 @@ public class GroupPresenter {
                         }
                     });
         } else {
+            if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
+            callBack.error();
             ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.toast_network_error));
         }
     }
@@ -550,6 +564,7 @@ public class GroupPresenter {
     //定义接口
     public interface CallBack1 {
         void send(GroupInfo baseInfo);
+        void error();
     }
     //定义接口
     public interface CallBack2 {

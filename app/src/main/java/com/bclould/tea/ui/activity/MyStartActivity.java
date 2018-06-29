@@ -102,14 +102,12 @@ public class MyStartActivity extends BaseActivity {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                refreshlayout.finishRefresh(2000);
                 initData(mType, PULL_DOWN);
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
-                refreshLayout.finishLoadMore(1000);
                 initData(mType, PULL_UP);
             }
         });
@@ -135,6 +133,11 @@ public class MyStartActivity extends BaseActivity {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
                 if (mRecyclerView != null) {
+                    if (type == PULL_DOWN) {
+                        mRefreshLayout.finishRefresh();
+                    }else{
+                        mRefreshLayout.finishLoadMore();
+                    }
                     if (mDataList.size() != 0 || data.size() != 0) {
                         mRecyclerView.setVisibility(View.VISIBLE);
                         mLlNoData.setVisibility(View.GONE);
@@ -176,11 +179,25 @@ public class MyStartActivity extends BaseActivity {
             @Override
             public void error() {
                 if (type == PULL_DOWN) {
+                    mRefreshLayout.finishRefresh();
+                }else{
+                    mRefreshLayout.finishLoadMore();
+                }
+                if (type == PULL_DOWN) {
                     mRecyclerView.setVisibility(View.GONE);
                     mLlNoData.setVisibility(View.GONE);
                     mLlError.setVisibility(View.VISIBLE);
                 }
 
+            }
+
+            @Override
+            public void finishRefresh() {
+                if (type == PULL_DOWN) {
+                    mRefreshLayout.finishRefresh();
+                }else{
+                    mRefreshLayout.finishLoadMore();
+                }
             }
         });
     }
