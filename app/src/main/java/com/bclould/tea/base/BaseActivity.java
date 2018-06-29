@@ -11,7 +11,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.bclould.tea.R;
-import com.bclould.tea.topperchat.UmManage;
 import com.umeng.message.PushAgent;
 
 /**
@@ -72,13 +71,13 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        UmManage.getInstance().mobclickAgent.onResume(this);
+//        UmManage.getInstance().mobclickAgent.onResume(this);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        UmManage.getInstance().mobclickAgent.onPause(this);
+//        UmManage.getInstance().mobclickAgent.onPause(this);
     }
     @Override
     protected void onDestroy() {

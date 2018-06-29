@@ -22,15 +22,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Spannable;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -47,7 +42,6 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.MessageInfo;
-import com.bclould.tea.topperchat.UmManage;
 import com.bclould.tea.ui.adapter.ChatAdapter;
 import com.bclould.tea.ui.widget.SimpleAppsGridView;
 import com.bclould.tea.utils.ActivityUtil;
@@ -101,7 +95,6 @@ import sj.keyboard.widget.EmoticonPageView;
 import sj.keyboard.widget.EmoticonsEditText;
 import sj.keyboard.widget.FuncLayout;
 import sj.keyboard.widget.RecordIndicator;
-import static com.bclould.tea.R.style.BottomDialog;
 
 
 /**
@@ -946,12 +939,12 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     public void onResume() {
         super.onResume();
-        UmManage.getInstance().mobclickAgent.onPageStart(getClass().getName());
+//        UmManage.getInstance().mobclickAgent.onPageStart(getClass().getName());
     }
 
     public void onPause() {
         super.onPause();
-        UmManage.getInstance().mobclickAgent.onPageEnd(getClass().getName());
+//        UmManage.getInstance().mobclickAgent.onPageEnd(getClass().getName());
         mediaPlayer.stop();
         mediaPlayer.reset();
     }
