@@ -107,7 +107,7 @@ public class RedPacketActivity extends BaseActivity {
             } else if (who == 1) {
                 mTvHint.setText(getString(R.string.red_packet_hint));
             }
-            initRecylerView(mLogBeanList);
+            initRecylerView(mLogBeanList,grabRedInfo.getData());
 //            mBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             mTvCoin.setText(mCoin);
             mTvCount.setText(mCount);
@@ -129,7 +129,7 @@ public class RedPacketActivity extends BaseActivity {
                     mTvCount.setSpacing(2);
                     mTvRemark.setText(data.getIntro());
                     mTvName.setText(data.getSend_rp_user_name());
-                    initRecylerView(logBeanList);
+                    initRecylerView(logBeanList,data);
                     UtilTool.setCircleImg(RedPacketActivity.this,data.getAvatar(), mIvTouxiang);
                     //                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, RedPacketActivity.this));
                 }
@@ -137,8 +137,12 @@ public class RedPacketActivity extends BaseActivity {
         }
     }
 
-    private void initRecylerView(List<GrabRedInfo.DataBean.LogBean> mLogBeanList) {
-        RedPacketRVAdapter redPacketRVAdapter = new RedPacketRVAdapter(this, mLogBeanList, mMgr,mCoin);
+    private void initRecylerView(List<GrabRedInfo.DataBean.LogBean> mLogBeanList,GrabRedInfo.DataBean data) {
+        boolean isShowBestLuck=false;
+        if(data.getRp_number()==mLogBeanList.size()){
+               isShowBestLuck=true;
+        }
+        RedPacketRVAdapter redPacketRVAdapter = new RedPacketRVAdapter(this, mLogBeanList, mMgr,mCoin,isShowBestLuck);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(redPacketRVAdapter);
     }

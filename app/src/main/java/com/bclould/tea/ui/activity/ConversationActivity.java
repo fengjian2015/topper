@@ -42,6 +42,7 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.MessageInfo;
+import com.bclould.tea.topperchat.UmManage;
 import com.bclould.tea.ui.adapter.ChatAdapter;
 import com.bclould.tea.ui.widget.SimpleAppsGridView;
 import com.bclould.tea.utils.ActivityUtil;
@@ -939,12 +940,10 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     public void onResume() {
         super.onResume();
-//        UmManage.getInstance().mobclickAgent.onPageStart(getClass().getName());
     }
 
     public void onPause() {
         super.onPause();
-//        UmManage.getInstance().mobclickAgent.onPageEnd(getClass().getName());
         mediaPlayer.stop();
         mediaPlayer.reset();
     }

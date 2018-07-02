@@ -35,13 +35,16 @@ public class UmManage {
     public void init(Context context){
         mContext=context;
         UMConfigure.init(context, UMConfigure.DEVICE_TYPE_PHONE, SECRET);
-        initUpush();
+        initUpush(context);
     }
 
-    private void initUpush() {
-       /* mobclickAgent =new MobclickAgent();
+    private void initUpush(Context context) {
+        //華為
+//        HuaWeiRegister.register(context);
+
+//        mobclickAgent =new MobclickAgent();
         UMConfigure.setLogEnabled(true);
-        mobclickAgent.setScenarioType(mContext, MobclickAgent.EScenarioType.E_UM_NORMAL);*/
+//        mobclickAgent.setScenarioType(mContext, MobclickAgent.EScenarioType.E_UM_NORMAL);
         mPushAgent = PushAgent.getInstance(mContext);
         //注册推送服务 每次调用register都会回调该接口
         mPushAgent.register(new IUmengRegisterCallback() {
@@ -63,8 +66,8 @@ public class UmManage {
             public void dealWithNotificationMessage(Context context, UMessage msg) {
                 //调用super，会展示通知，不调用super，则不展示通知。
 //                super.dealWithNotificationMessage(context, msg);
-                UtilTool.Log("fengjian",msg.custom);
-                SocketListener.getInstance(context).friendRequest(msg.extra);
+                 UtilTool.Log("fengjian",msg.custom);
+                SocketListener.getInstance(context).umengFriendRequest(msg.extra);
 
             }
         };

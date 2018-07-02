@@ -2,6 +2,8 @@ package com.bclould.tea.base;
 
 import android.support.v7.app.AppCompatActivity;
 
+import com.bclould.tea.topperchat.UmManage;
+
 /**
  * Created by GIjia on 2018/6/29.
  */
