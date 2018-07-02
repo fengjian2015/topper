@@ -38,6 +38,7 @@ import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.VirtualKeyboardView;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
@@ -120,16 +121,20 @@ public class ChatTransferActivity extends BaseActivity {
             coinPresenter.coinLists("trans", new CoinPresenter.CallBack() {
                 @Override
                 public void send(List<CoinListInfo.DataBean> data) {
-                    mLlData.setVisibility(View.VISIBLE);
-                    mLlError.setVisibility(View.GONE);
-                    if (MyApp.getInstance().mCoinList.size() == 0)
-                        MyApp.getInstance().mCoinList.addAll(data);
+                    if (ActivityUtil.isActivityOnTop(ChatTransferActivity.this)) {
+                        mLlData.setVisibility(View.VISIBLE);
+                        mLlError.setVisibility(View.GONE);
+                        if (MyApp.getInstance().mCoinList.size() == 0)
+                            MyApp.getInstance().mCoinList.addAll(data);
+                    }
                 }
 
                 @Override
                 public void error() {
-                    mLlData.setVisibility(View.GONE);
-                    mLlError.setVisibility(View.VISIBLE);
+                    if (ActivityUtil.isActivityOnTop(ChatTransferActivity.this)) {
+                        mLlData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.VISIBLE);
+                    }
                 }
             });
         }

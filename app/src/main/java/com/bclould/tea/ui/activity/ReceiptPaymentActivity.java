@@ -3,7 +3,6 @@ package com.bclould.tea.ui.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,11 +23,13 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BaseInfo;
+import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.UtilTool;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -84,6 +85,7 @@ public class ReceiptPaymentActivity extends BaseActivity {
     private PopupWindow mPopupWindow;
     private ReceiptPaymentPresenter mReceiptPaymentPresenter;
     private boolean mType;
+    private LoadingProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,6 +99,7 @@ public class ReceiptPaymentActivity extends BaseActivity {
     }
 
     private void moneyIn() {
+        mType = false;
         mTvSet.setText(getString(R.string.set_money_coin));
         mRlData.setVisibility(View.GONE);
         mXx.setVisibility(View.VISIBLE);
@@ -105,17 +108,21 @@ public class ReceiptPaymentActivity extends BaseActivity {
         mReceiptPaymentPresenter.generateReceiptQrCode("", "", "", new ReceiptPaymentPresenter.CallBack() {
             @Override
             public void send(BaseInfo.DataBean data) {
-                mLlData.setVisibility(View.VISIBLE);
-                mLlError.setVisibility(View.GONE);
-                String code = UtilTool.base64PetToJson(ReceiptPaymentActivity.this, Constants.MONEYIN, "user_id", data.getId() + "", getString(R.string.receipt_payment));
-                Bitmap bitmap = UtilTool.createQRImage(code);
-                mIvQr.setBackground(new BitmapDrawable(bitmap));
+                if (ActivityUtil.isActivityOnTop(ReceiptPaymentActivity.this)) {
+                    mLlData.setVisibility(View.VISIBLE);
+                    mLlError.setVisibility(View.GONE);
+                    String code = UtilTool.base64PetToJson(ReceiptPaymentActivity.this, Constants.MONEYIN, "user_id", data.getId() + "", getString(R.string.receipt_payment));
+                    Bitmap bitmap = UtilTool.createQRImage(code);
+                    Glide.with(ReceiptPaymentActivity.this).load(bitmap).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(mIvQr);
+                }
             }
 
             @Override
             public void error() {
-                mLlData.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
+                if (ActivityUtil.isActivityOnTop(ReceiptPaymentActivity.this)) {
+                    mLlData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -138,10 +145,9 @@ public class ReceiptPaymentActivity extends BaseActivity {
                     intent.putExtra("type", Constants.MONEYOUT);
                     startActivityForResult(intent, MONEYOUT);
                 } else {
-                    Intent intent = new Intent(this, PaymentActivity.class);
+                    Intent intent = new Intent(ReceiptPaymentActivity.this, PaymentActivity.class);
                     intent.putExtra("type", Constants.QRMONEYIN);
                     startActivityForResult(intent, MONEYIN);
-
                 }
                 break;
             case R.id.rl_receipt_payment_record:
@@ -185,6 +191,22 @@ public class ReceiptPaymentActivity extends BaseActivity {
         popChildClick();
     }
 
+    private void showDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = LoadingProgressDialog.createDialog(this);
+            mProgressDialog.setMessage(getString(R.string.loading));
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideDialog() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -197,14 +219,8 @@ public class ReceiptPaymentActivity extends BaseActivity {
                 String coinName = data.getStringExtra("coinName");
                 String remark = data.getStringExtra("remark");
                 String count = data.getStringExtra("count");
-                Glide.with(this).load(url).into(new SimpleTarget<Drawable>() {
-                    @Override
-                    public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-                        if (resource != null) {
-                            mIvQr.setBackground(resource);
-                        }
-                    }
-                });
+                Glide.with(this).load(url).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(mIvQr);
+                hideDialog();
                 if (remark == null) {
                     mTv3.setVisibility(View.GONE);
                     mTvRemark.setVisibility(View.GONE);
@@ -213,11 +229,13 @@ public class ReceiptPaymentActivity extends BaseActivity {
                 }
                 mTvCoin.setText(coinName);
                 mTvCount.setText(count);
+                mTvSelectorWay.setText(getString(R.string.payment));
                 mTvHint.setText(getString(R.string.qr_coder_pay));
             } else if (requestCode == MONEYIN) {
                 mType = false;
                 mRlData.setVisibility(View.VISIBLE);
                 mTvSet.setText(getString(R.string.gg_set));
+                mTvSelectorWay.setText(getString(R.string.payment));
                 String coinId = data.getStringExtra("coinId");
                 String coinName = data.getStringExtra("coinName");
                 String count = data.getStringExtra("count");
@@ -225,9 +243,11 @@ public class ReceiptPaymentActivity extends BaseActivity {
                 String remark = data.getStringExtra("remark");
                 mTvCount.setText(count);
                 mTvCoin.setText(coinName);
+                showDialog();
                 String base64PetToJson = UtilTool.base64PetToJson2(Constants.MONEYIN, "user_id", id, "number", count, "coin_id", coinId, "coin_name", coinName, "mark", remark, "user_name", UtilTool.getUser());
                 Bitmap bitmap = UtilTool.createQRImage(base64PetToJson);
-                mIvQr.setImageBitmap(bitmap);
+                Glide.with(ReceiptPaymentActivity.this).load(bitmap).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE)).into(mIvQr);
+                hideDialog();
                 if (remark == null) {
                     mTv3.setVisibility(View.GONE);
                     mTvRemark.setVisibility(View.GONE);
@@ -252,7 +272,6 @@ public class ReceiptPaymentActivity extends BaseActivity {
         payment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mTvSelectorWay.setText(payment.getText());
                 mPopupWindow.dismiss();
                 Intent intent = new Intent(ReceiptPaymentActivity.this, PaymentActivity.class);
                 intent.putExtra("type", Constants.MONEYOUT);

@@ -42,6 +42,7 @@ import com.bclould.tea.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tea.ui.adapter.CoinExchangeRVAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.VirtualKeyboardView;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -256,8 +257,10 @@ public class CoinExchangeActivity extends BaseActivity {
 
             @Override
             public void error() {
-                mRlData.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
+                if (ActivityUtil.isActivityOnTop(CoinExchangeActivity.this)) {
+                    mRlData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -282,8 +285,10 @@ public class CoinExchangeActivity extends BaseActivity {
 
             @Override
             public void error() {
-                mRlData.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
+                if (ActivityUtil.isActivityOnTop(CoinExchangeActivity.this)) {
+                    mRlData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -319,8 +324,10 @@ public class CoinExchangeActivity extends BaseActivity {
 
             @Override
             public void error() {
-                mRlData.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
+                if (ActivityUtil.isActivityOnTop(CoinExchangeActivity.this)) {
+                    mRlData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

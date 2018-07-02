@@ -28,6 +28,7 @@ import com.bclould.tea.model.ProvinceBean;
 import com.bclould.tea.model.TransferListInfo;
 import com.bclould.tea.ui.adapter.PayManageGVAdapter;
 import com.bclould.tea.ui.adapter.PayRecordRVAdapter;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.UtilTool;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
@@ -193,10 +194,12 @@ public class PayRecordActivity extends BaseActivity {
 
             @Override
             public void error() {
-                if (type == PULL_DOWN) {
-                    mRecyclerView.setVisibility(View.GONE);
-                    mLlNoData.setVisibility(View.GONE);
-                    mLlError.setVisibility(View.VISIBLE);
+                if (ActivityUtil.isActivityOnTop(PayRecordActivity.this)) {
+                    if (type == PULL_DOWN) {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });

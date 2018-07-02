@@ -34,6 +34,7 @@ import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.activity.MainActivity;
 import com.bclould.tea.ui.adapter.DynamicRVAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.UtilTool;
 import com.luck.picture.lib.PictureSelector;
@@ -293,14 +294,16 @@ public class DynamicFragment extends Fragment {
 
             @Override
             public void error() {
-                if (type == PULL_UP) {
-                    mRefreshLayout.finishLoadMore();
-                }else{
-                    mRefreshLayout.finishRefresh();
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    if (type == PULL_UP) {
+                        mRefreshLayout.finishLoadMore();
+                    }else{
+                        mRefreshLayout.finishRefresh();
+                    }
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
                 }
-                mRecyclerView.setVisibility(View.GONE);
-                mLlNoData.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
             }
 
             @Override

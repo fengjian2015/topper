@@ -37,6 +37,7 @@ import com.bclould.tea.ui.fragment.BuyFragment;
 import com.bclould.tea.ui.fragment.OrderFormFragment;
 import com.bclould.tea.ui.fragment.SellFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -191,26 +192,30 @@ public class OtcActivity extends BaseActivity {
             coinPresenter.coinLists("otc", new CoinPresenter.CallBack() {
                 @Override
                 public void send(List<CoinListInfo.DataBean> data) {
-                    mLlError.setVisibility(View.GONE);
-                    UtilTool.Log(getString(R.string.coins), data.size() + "");
-                    if (MyApp.getInstance().mOtcCoinList.size() == 0) {
-                        MyApp.getInstance().mOtcCoinList.addAll(data);
-                        mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();
-                        mTvCoinName.setText(mCoinName);
-                        mServiceCharge = MyApp.getInstance().mOtcCoinList.get(0).getOut_otc();
-                        mServiceCharge2 = MyApp.getInstance().mOtcCoinList.get(0).getIn_otc();
-                        mCloudCircleVp.setCurrentItem(0);
-                        mLlMenu.getChildAt(0).setSelected(true);
-                        mTvXx.setVisibility(View.VISIBLE);
-                        initFragment();
-                        initViewPager();
-                        initTopMenu();
+                    if (ActivityUtil.isActivityOnTop(OtcActivity.this)) {
+                        mLlError.setVisibility(View.GONE);
+                        UtilTool.Log(getString(R.string.coins), data.size() + "");
+                        if (MyApp.getInstance().mOtcCoinList.size() == 0) {
+                            MyApp.getInstance().mOtcCoinList.addAll(data);
+                            mCoinName = MyApp.getInstance().mOtcCoinList.get(0).getName();
+                            mTvCoinName.setText(mCoinName);
+                            mServiceCharge = MyApp.getInstance().mOtcCoinList.get(0).getOut_otc();
+                            mServiceCharge2 = MyApp.getInstance().mOtcCoinList.get(0).getIn_otc();
+                            mCloudCircleVp.setCurrentItem(0);
+                            mLlMenu.getChildAt(0).setSelected(true);
+                            mTvXx.setVisibility(View.VISIBLE);
+                            initFragment();
+                            initViewPager();
+                            initTopMenu();
+                        }
                     }
                 }
 
                 @Override
                 public void error() {
-                    mLlError.setVisibility(View.VISIBLE);
+                    if (ActivityUtil.isActivityOnTop(OtcActivity.this)) {
+                        mLlError.setVisibility(View.VISIBLE);
+                    }
                 }
             });
         }

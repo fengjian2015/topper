@@ -20,6 +20,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.model.GonggaoListInfo;
 import com.bclould.tea.ui.adapter.NewsManagerRVAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.SpaceItemDecoration;
@@ -151,10 +152,12 @@ public class NewsBrowseRecordFragment extends Fragment {
 
             @Override
             public void error() {
-                mRefreshLayout.finishRefresh();
-                mRecyclerView.setVisibility(View.GONE);
-                mLlNoData.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    mRefreshLayout.finishRefresh();
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override

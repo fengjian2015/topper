@@ -364,7 +364,8 @@ public interface MyService {
     Observable<BaseInfo> payment(
             @Header("Authorization") String token,
             @Field("id") int id,
-            @Field("trans_order_id") int trans_amount
+            @Field("trans_order_id") int trans_amount,
+            @Field("second_password") String second_password
     );
 
     //完成交易
@@ -373,7 +374,8 @@ public interface MyService {
     Observable<BaseInfo> paymentComplete(
             @Header("Authorization") String token,
             @Field("id") int id,
-            @Field("trans_order_id") int trans_amount
+            @Field("trans_order_id") int trans_amount,
+            @Field("second_password") String second_password
     );
 
     //取消交易
@@ -382,7 +384,8 @@ public interface MyService {
     Observable<BaseInfo> cancelPayment(
             @Header("Authorization") String token,
             @Field("id") int id,
-            @Field("trans_order_id") int trans_amount
+            @Field("trans_order_id") int trans_amount,
+            @Field("second_password") String second_password
     );
 
     //订单列表

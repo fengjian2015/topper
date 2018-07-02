@@ -29,6 +29,7 @@ import com.bclould.tea.ui.adapter.CloudCircleVPAdapter;
 import com.bclould.tea.ui.adapter.PayManageGVAdapter;
 import com.bclould.tea.ui.fragment.MyPushBuyFragment;
 import com.bclould.tea.ui.fragment.MyPushSellFragment;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -151,8 +152,10 @@ public class MyPushAdActivity extends BaseActivity {
 
             @Override
             public void error() {
-                mLlData.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
+                if (ActivityUtil.isActivityOnTop(MyPushAdActivity.this)) {
+                    mLlData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

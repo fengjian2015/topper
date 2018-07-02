@@ -113,9 +113,11 @@ public class BillDetailsActivity extends BaseActivity {
 
                 @Override
                 public void error() {
-                    mRecyclerView.setVisibility(View.GONE);
-                    mLlNoData.setVisibility(View.GONE);
-                    mLlError.setVisibility(View.VISIBLE);
+                    if (ActivityUtil.isActivityOnTop(BillDetailsActivity.this)) {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.VISIBLE);
+                    }
                 }
             });
         } else if (mType == 1) {
@@ -142,9 +144,11 @@ public class BillDetailsActivity extends BaseActivity {
 
                 @Override
                 public void error() {
-                    mRecyclerView.setVisibility(View.GONE);
-                    mLlNoData.setVisibility(View.GONE);
-                    mLlError.setVisibility(View.VISIBLE);
+                    if (ActivityUtil.isActivityOnTop(BillDetailsActivity.this)) {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.VISIBLE);
+                    }
                 }
             });
         } else {
@@ -169,9 +173,11 @@ public class BillDetailsActivity extends BaseActivity {
 
                 @Override
                 public void error() {
-                    mRecyclerView.setVisibility(View.GONE);
-                    mLlNoData.setVisibility(View.GONE);
-                    mLlError.setVisibility(View.VISIBLE);
+                    if (ActivityUtil.isActivityOnTop(BillDetailsActivity.this)) {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.VISIBLE);
+                    }
                 }
             });
         }

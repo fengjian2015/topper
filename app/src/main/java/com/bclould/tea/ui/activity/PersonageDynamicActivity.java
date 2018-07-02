@@ -17,6 +17,7 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.DynamicListInfo;
 import com.bclould.tea.ui.adapter.DynamicRVAdapter;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -171,14 +172,16 @@ public class PersonageDynamicActivity extends BaseActivity {
 
             @Override
             public void error() {
-                if (type == PULL_DOWN) {
-                    mRefreshLayout.finishRefresh();
-                }else{
-                    mRefreshLayout.finishLoadMore();
+                if (ActivityUtil.isActivityOnTop(PersonageDynamicActivity.this)) {
+                    if (type == PULL_DOWN) {
+                        mRefreshLayout.finishRefresh();
+                    }else{
+                        mRefreshLayout.finishLoadMore();
+                    }
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
                 }
-                mRecyclerView.setVisibility(View.GONE);
-                mLlNoData.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
             }
 
             @Override

@@ -80,11 +80,11 @@ public class OrderDetailsPresenter {
                 });
     }
 
-    public void cancel(int id, int trans_id, final CallBack2 callBack2) {
+    public void cancel(int id, int trans_id, String password,final CallBack2 callBack2) {
         showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .cancelPayment(UtilTool.getToken(), id, trans_id)
+                .cancelPayment(UtilTool.getToken(), id, trans_id, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<BaseInfo>() {
@@ -116,11 +116,11 @@ public class OrderDetailsPresenter {
                 });
     }
 
-    public void confirmPay(int id, int trans_id, final CallBack2 callBack2) {
+    public void confirmPay(int id, int trans_id, String password, final CallBack2 callBack2) {
         showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .payment(UtilTool.getToken(), id, trans_id)
+                .payment(UtilTool.getToken(), id, trans_id, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<BaseInfo>() {
@@ -152,11 +152,11 @@ public class OrderDetailsPresenter {
                 });
     }
 
-    public void confirmGiveCoin(int id, int trans_id, final CallBack2 callBack2) {
+    public void confirmGiveCoin(int id, int trans_id, String password, final CallBack2 callBack2) {
         showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .paymentComplete(UtilTool.getToken(), id, trans_id)
+                .paymentComplete(UtilTool.getToken(), id, trans_id, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<BaseInfo>() {

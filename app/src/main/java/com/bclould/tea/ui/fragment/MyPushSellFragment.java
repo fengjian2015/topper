@@ -17,6 +17,7 @@ import com.bclould.tea.Presenter.BuySellPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.model.MyAdListInfo;
 import com.bclould.tea.ui.adapter.MyPushAdRVAdapter;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -131,10 +132,12 @@ public class MyPushSellFragment extends Fragment {
 
             @Override
             public void error() {
-                mRecyclerView.setVisibility(View.GONE);
-                mLlNoData.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
-                mRefreshLayout.finishRefresh();
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                    mRefreshLayout.finishRefresh();
+                }
             }
 
             @Override

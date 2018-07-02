@@ -132,8 +132,10 @@ public class OutCoinActivity extends BaseActivity {
 
             @Override
             public void error() {
-                mLlData.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
+                if (ActivityUtil.isActivityOnTop(OutCoinActivity.this)) {
+                    mLlData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

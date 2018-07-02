@@ -29,12 +29,10 @@ import com.bclould.tea.Presenter.RealNamePresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
-import com.bclould.tea.crypto.otr.OtrChatListenerManager;
-import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter3;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.MessageEvent;
-import com.bclould.tea.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -121,6 +119,7 @@ public class RealNameC1Activity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ButterKnife.unbind(this);
         EventBus.getDefault().unregister(this);//初始化EventBus
     }
 
@@ -128,40 +127,44 @@ public class RealNameC1Activity extends BaseActivity {
         mRealNamePresenter.realNameInfo(new RealNamePresenter.CallBack2() {
             @Override
             public void send(int type, String mark) {
-                mLlError.setVisibility(View.GONE);
-                mRlData.setVisibility(View.VISIBLE);
-                if (type == 3) {
-                    mLlNoPass.setVisibility(View.GONE);
-                    mBtnAuth.setVisibility(View.GONE);
-                    mTvAuthType.setText(getString(R.string.verify_succeed));
-                    mTvCause.setVisibility(View.GONE);
-                    mLlPass.setVisibility(View.VISIBLE);
-                    mIvAuthType.setImageResource(R.mipmap.shenhetongguo);
-                } else if (type == 4) {
-                    mTvCause.setVisibility(View.VISIBLE);
-                    mTvCause.setText(mark);
-                    mIvAuthType.setImageResource(R.mipmap.shenheshibai);
-                    mLlNoPass.setVisibility(View.GONE);
-                    mLlPass.setVisibility(View.VISIBLE);
-                    mTvAuthType.setText(getString(R.string.verify_error));
-                    mBtnAuth.setVisibility(View.VISIBLE);
-                } else if (type == 2) {
-                    mTvCause.setVisibility(View.GONE);
-                    mIvAuthType.setImageResource(R.mipmap.shenhezhong);
-                    mLlNoPass.setVisibility(View.GONE);
-                    mBtnAuth.setVisibility(View.GONE);
-                    mTvAuthType.setText(getString(R.string.check_pending));
-                    mLlPass.setVisibility(View.VISIBLE);
-                } else if (type == 1) {
-                    mLlNoPass.setVisibility(View.VISIBLE);
-                    mLlPass.setVisibility(View.GONE);
+                if (ActivityUtil.isActivityOnTop(RealNameC1Activity.this)) {
+                    mLlError.setVisibility(View.GONE);
+                    mRlData.setVisibility(View.VISIBLE);
+                    if (type == 3) {
+                        mLlNoPass.setVisibility(View.GONE);
+                        mBtnAuth.setVisibility(View.GONE);
+                        mTvAuthType.setText(getString(R.string.verify_succeed));
+                        mTvCause.setVisibility(View.GONE);
+                        mLlPass.setVisibility(View.VISIBLE);
+                        mIvAuthType.setImageResource(R.mipmap.shenhetongguo);
+                    } else if (type == 4) {
+                        mTvCause.setVisibility(View.VISIBLE);
+                        mTvCause.setText(mark);
+                        mIvAuthType.setImageResource(R.mipmap.shenheshibai);
+                        mLlNoPass.setVisibility(View.GONE);
+                        mLlPass.setVisibility(View.VISIBLE);
+                        mTvAuthType.setText(getString(R.string.verify_error));
+                        mBtnAuth.setVisibility(View.VISIBLE);
+                    } else if (type == 2) {
+                        mTvCause.setVisibility(View.GONE);
+                        mIvAuthType.setImageResource(R.mipmap.shenhezhong);
+                        mLlNoPass.setVisibility(View.GONE);
+                        mBtnAuth.setVisibility(View.GONE);
+                        mTvAuthType.setText(getString(R.string.check_pending));
+                        mLlPass.setVisibility(View.VISIBLE);
+                    } else if (type == 1) {
+                        mLlNoPass.setVisibility(View.VISIBLE);
+                        mLlPass.setVisibility(View.GONE);
+                    }
                 }
             }
 
             @Override
             public void error() {
-                mLlError.setVisibility(View.VISIBLE);
-                mRlData.setVisibility(View.GONE);
+                if (ActivityUtil.isActivityOnTop(RealNameC1Activity.this)) {
+                    mLlError.setVisibility(View.VISIBLE);
+                    mRlData.setVisibility(View.GONE);
+                }
             }
         });
     }

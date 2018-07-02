@@ -20,6 +20,7 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.RedRecordInfo;
 import com.bclould.tea.ui.adapter.ReceiveRVAdapter;
 import com.bclould.tea.ui.widget.ChangeTextSpaceView;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.UtilTool;
 
 import java.util.ArrayList;
@@ -112,9 +113,11 @@ public class EmitFragment extends Fragment {
 
             @Override
             public void error() {
-                mLlTotal.setVisibility(View.GONE);
-                mLlNoData.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    mLlTotal.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

@@ -18,6 +18,7 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.OrderListInfo;
 import com.bclould.tea.ui.adapter.OrderRVAdapter;
+import com.bclould.tea.utils.ActivityUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -119,10 +120,12 @@ public class SumBuySellActivity extends BaseActivity {
 
             @Override
             public void error() {
-                mRefreshLayout.finishRefresh();
-                mRecyclerView.setVisibility(View.GONE);
-                mLlNoData.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
+                if (ActivityUtil.isActivityOnTop(SumBuySellActivity.this)) {
+                    mRefreshLayout.finishRefresh();
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override

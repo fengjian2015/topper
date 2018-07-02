@@ -18,6 +18,7 @@ import com.bclould.tea.Presenter.NewsNoticePresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.model.GonggaoListInfo;
 import com.bclould.tea.ui.adapter.GonggaoManagerRVAdapter;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.SpaceItemDecoration;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -107,10 +108,12 @@ public class GonggaoFragment extends Fragment {
 
             @Override
             public void error() {
-                mRefreshLayout.finishRefresh();
-                mRecyclerView.setVisibility(View.GONE);
-                mLlNoData.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    mRefreshLayout.finishRefresh();
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override

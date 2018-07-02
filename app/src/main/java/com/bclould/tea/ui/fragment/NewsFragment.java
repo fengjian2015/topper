@@ -22,6 +22,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.model.NewsListInfo;
 import com.bclould.tea.ui.activity.NewsDetailsActivity;
 import com.bclould.tea.ui.adapter.NewsRVAdapter;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.UtilTool;
 import com.bumptech.glide.Glide;
@@ -175,14 +176,16 @@ public class NewsFragment extends Fragment implements OnBannerListener {
 
             @Override
             public void error() {
-                if (type == PULL_DOWN) {
-                    mRefreshLayout.finishRefresh();
-                }else{
-                    mRefreshLayout.finishLoadMore();
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    if (type == PULL_DOWN) {
+                        mRefreshLayout.finishRefresh();
+                    }else{
+                        mRefreshLayout.finishLoadMore();
+                    }
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
                 }
-                mRecyclerView.setVisibility(View.GONE);
-                mLlNoData.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
             }
 
             @Override

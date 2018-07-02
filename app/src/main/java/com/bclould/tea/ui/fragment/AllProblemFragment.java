@@ -94,9 +94,11 @@ public class AllProblemFragment extends Fragment {
 
             @Override
             public void error() {
-                mRecyclerView.setVisibility(View.GONE);
-                mLlSearch.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlSearch.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

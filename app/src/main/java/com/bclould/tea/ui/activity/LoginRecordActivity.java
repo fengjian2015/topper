@@ -16,6 +16,7 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.LoginRecordInfo;
 import com.bclould.tea.ui.adapter.LoginRecordRVAdapter;
+import com.bclould.tea.utils.ActivityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,16 +57,20 @@ public class LoginRecordActivity extends BaseActivity {
         loginPresenter.loginRecord(new LoginPresenter.CallBack() {
             @Override
             public void send(List<LoginRecordInfo.DataBean> data) {
-                mRecyclerView.setVisibility(View.VISIBLE);
-                mLlError.setVisibility(View.GONE);
-                mDataList.addAll(data);
-                mLoginRecordRVAdapter.notifyDataSetChanged();
+                if (ActivityUtil.isActivityOnTop(LoginRecordActivity.this)) {
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                    mLlError.setVisibility(View.GONE);
+                    mDataList.addAll(data);
+                    mLoginRecordRVAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override
             public void error() {
-                mRecyclerView.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
+                if (ActivityUtil.isActivityOnTop(LoginRecordActivity.this)) {
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

@@ -25,6 +25,7 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.GuessListInfo;
 import com.bclould.tea.ui.adapter.GuessListRVAdapter;
 import com.bclould.tea.ui.adapter.PayManageGVAdapter;
+import com.bclould.tea.utils.ActivityUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -179,15 +180,17 @@ public class MyJoinActivity extends BaseActivity {
 
             @Override
             public void error() {
-                if (type == PULL_DOWN) {
-                    mRefreshLayout.finishRefresh();
-                }else{
-                    mRefreshLayout.finishLoadMore();
-                }
-                if (type == PULL_DOWN) {
-                    mRecyclerView.setVisibility(View.GONE);
-                    mLlError.setVisibility(View.VISIBLE);
-                    mLlNoData.setVisibility(View.GONE);
+                if (ActivityUtil.isActivityOnTop(MyJoinActivity.this)) {
+                    if (type == PULL_DOWN) {
+                        mRefreshLayout.finishRefresh();
+                    }else{
+                        mRefreshLayout.finishLoadMore();
+                    }
+                    if (type == PULL_DOWN) {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.VISIBLE);
+                        mLlNoData.setVisibility(View.GONE);
+                    }
                 }
             }
 

@@ -37,6 +37,7 @@ import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.VirtualKeyboardView;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.xmpp.RoomManage;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
@@ -116,16 +117,20 @@ public class SendRedPacketActivity extends BaseActivity {
             coinPresenter.coinLists("red_packet", new CoinPresenter.CallBack() {
                 @Override
                 public void send(List<CoinListInfo.DataBean> data) {
-                    mLlData.setVisibility(View.VISIBLE);
-                    mLlError.setVisibility(View.GONE);
-                    if (MyApp.getInstance().mRedCoinList.size() == 0)
-                        MyApp.getInstance().mRedCoinList.addAll(data);
+                    if (ActivityUtil.isActivityOnTop(SendRedPacketActivity.this)) {
+                        mLlData.setVisibility(View.VISIBLE);
+                        mLlError.setVisibility(View.GONE);
+                        if (MyApp.getInstance().mRedCoinList.size() == 0)
+                            MyApp.getInstance().mRedCoinList.addAll(data);
+                    }
                 }
 
                 @Override
                 public void error() {
-                    mLlData.setVisibility(View.GONE);
-                    mLlError.setVisibility(View.VISIBLE);
+                    if (ActivityUtil.isActivityOnTop(SendRedPacketActivity.this)) {
+                        mLlData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.VISIBLE);
+                    }
                 }
             });
         }

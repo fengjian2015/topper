@@ -46,6 +46,7 @@ import com.bclould.tea.ui.adapter.GuessBetRVAdapter;
 import com.bclould.tea.ui.widget.CurrencyDialog;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.ui.widget.VirtualKeyboardView;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
@@ -438,9 +439,11 @@ public class GuessDetailsActivity extends BaseActivity {
 
             @Override
             public void error() {
-                mLlError.setVisibility(View.VISIBLE);
-                mLlNo.setVisibility(View.GONE);
-                mLlAlready.setVisibility(View.GONE);
+                if (ActivityUtil.isActivityOnTop(GuessDetailsActivity.this)) {
+                    mLlError.setVisibility(View.VISIBLE);
+                    mLlNo.setVisibility(View.GONE);
+                    mLlAlready.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -1308,14 +1311,6 @@ public class GuessDetailsActivity extends BaseActivity {
                 mEt5Array4.setSelection(2);
                 break;
         }
-
-        /*mBlockchainGuessPresenter.getRandom(new BlockchainGuessPresenter.CallBack4() {
-            @Override
-            public void send(String data) {
-                String[] split = data.split(":");
-                mRandom = data;
-            }
-        });*/
     }
 
     private void bet(String password, final int count) {

@@ -19,6 +19,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.TransRecordInfo;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.StringUtils;
 
 import butterknife.Bind;
@@ -93,22 +94,26 @@ public class PayDetailsActivity extends BaseActivity {
 
             @Override
             public void send(TransRecordInfo.DataBean data) {
-                mCvData.setVisibility(View.VISIBLE);
-                mLlError.setVisibility(View.GONE);
-                mTvName.setText(data.getType_name());
-                mTvLimit.setText(data.getName());
-                mTvMoney.setText(data.getNumber());
-                mTvCount.setText(data.getCoin_name());
-                mTvPrice.setText(data.getCreated_at());
-                if (!StringUtils.isEmpty(data.getTxid())) {
-                    mTvTxId.setText("Txid: " + data.getTxid());
+                if (ActivityUtil.isActivityOnTop(PayDetailsActivity.this)) {
+                    mCvData.setVisibility(View.VISIBLE);
+                    mLlError.setVisibility(View.GONE);
+                    mTvName.setText(data.getType_name());
+                    mTvLimit.setText(data.getName());
+                    mTvMoney.setText(data.getNumber());
+                    mTvCount.setText(data.getCoin_name());
+                    mTvPrice.setText(data.getCreated_at());
+                    if (!StringUtils.isEmpty(data.getTxid())) {
+                        mTvTxId.setText("Txid: " + data.getTxid());
+                    }
                 }
             }
 
             @Override
             public void error() {
-                mCvData.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
+                if (ActivityUtil.isActivityOnTop(PayDetailsActivity.this)) {
+                    mCvData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
             }
         });
         mTvCopy.setOnClickListener(new View.OnClickListener() {

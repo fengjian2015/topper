@@ -64,6 +64,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="@dimen/x20"
+                        android:layout_marginRight="@dimen/x20"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginBottom="@dimen/y20"
                         android:textColor="@android:color/black"
@@ -73,8 +75,9 @@
                     <TextView
                         android:id="@+id/tv_count_coin"
                         android:layout_width="wrap_content"
+                        android:layout_marginLeft="@dimen/x20"
+                        android:layout_marginRight="@dimen/x20"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
                         android:layout_gravity="center_horizontal"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/x45"/>

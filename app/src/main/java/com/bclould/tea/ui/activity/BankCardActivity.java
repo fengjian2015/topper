@@ -37,6 +37,7 @@ import com.bclould.tea.model.CardListInfo;
 import com.bclould.tea.ui.adapter.BankCardRVAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.VirtualKeyboardView;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.SpaceItemDecoration;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
@@ -117,16 +118,20 @@ public class BankCardActivity extends BaseActivity {
         mBankCardPresenter.bankCardList(new BankCardPresenter.CallBack2() {
             @Override
             public void send(List<CardListInfo.DataBean> data) {
-                mScrollView.setVisibility(View.VISIBLE);
-                mLlError.setVisibility(View.GONE);
-                mCardList.addAll(data);
-                mBankCardRVAdapter.notifyDataSetChanged();
+                if (ActivityUtil.isActivityOnTop(BankCardActivity.this)) {
+                    mScrollView.setVisibility(View.VISIBLE);
+                    mLlError.setVisibility(View.GONE);
+                    mCardList.addAll(data);
+                    mBankCardRVAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override
             public void error() {
-                mScrollView.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
+                if (ActivityUtil.isActivityOnTop(BankCardActivity.this)) {
+                    mScrollView.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

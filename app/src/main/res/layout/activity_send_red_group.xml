@@ -68,9 +68,7 @@
                     android:layout_marginRight="11dp"
                     android:layout_toLeftOf="@+id/iv"
                     android:layout_toStartOf="@+id/iv"
-                    android:background="@drawable/bg_register_shape"
-                    android:gravity="center"
-                    android:text="TPC" />
+                    android:gravity="center" />
 
                 <ImageView
                     android:id="@+id/iv"

@@ -63,14 +63,12 @@
 
                 <TextView
                     android:id="@+id/tv_currency"
-                    android:layout_width="@dimen/x100"
-                    android:layout_height="@dimen/y50"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/x20"
                     android:layout_toLeftOf="@+id/iv"
-                    android:background="@drawable/bg_register_shape"
-                    android:gravity="center"
-                    android:text="TPC"/>
+                    android:gravity="center"/>
 
                 <ImageView
                     android:id="@+id/iv"
@@ -138,7 +136,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x5"
                     android:layout_marginRight="@dimen/x30"
-                    android:text="TPC"
                     android:textSize="@dimen/x26"/>
 
             </RelativeLayout>

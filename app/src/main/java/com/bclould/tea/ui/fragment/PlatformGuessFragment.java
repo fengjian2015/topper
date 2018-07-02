@@ -19,6 +19,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.model.GuessListInfo;
 import com.bclould.tea.ui.adapter.GuessListRVAdapter;
 import com.bclould.tea.ui.widget.ClearEditText;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -178,15 +179,17 @@ public class PlatformGuessFragment extends Fragment {
 
             @Override
             public void error() {
-                if (type == PULL_DOWN) {
-                    mRefreshLayout.finishRefresh();
-                }else{
-                    mRefreshLayout.finishLoadMore();
-                }
-                if (type == PULL_DOWN) {
-                    mRecyclerView.setVisibility(View.GONE);
-                    mLlNoData.setVisibility(View.GONE);
-                    mLlError.setVisibility(View.VISIBLE);
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    if (type == PULL_DOWN) {
+                        mRefreshLayout.finishRefresh();
+                    }else{
+                        mRefreshLayout.finishLoadMore();
+                    }
+                    if (type == PULL_DOWN) {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.VISIBLE);
+                    }
                 }
             }
 

@@ -131,16 +131,20 @@ public class PaymentActivity extends BaseActivity {
             coinPresenter.coinLists("pay", new CoinPresenter.CallBack() {
                 @Override
                 public void send(List<CoinListInfo.DataBean> data) {
-                    mLlNoSteadfast.setVisibility(View.VISIBLE);
-                    mLlError.setVisibility(View.GONE);
-                    if (MyApp.getInstance().mPayCoinList.size() == 0)
-                        MyApp.getInstance().mPayCoinList.addAll(data);
+                    if (ActivityUtil.isActivityOnTop(PaymentActivity.this)) {
+                        mLlNoSteadfast.setVisibility(View.VISIBLE);
+                        mLlError.setVisibility(View.GONE);
+                        if (MyApp.getInstance().mPayCoinList.size() == 0)
+                            MyApp.getInstance().mPayCoinList.addAll(data);
+                    }
                 }
 
                 @Override
                 public void error() {
-                    mLlNoSteadfast.setVisibility(View.GONE);
-                    mLlError.setVisibility(View.VISIBLE);
+                    if (ActivityUtil.isActivityOnTop(PaymentActivity.this)) {
+                        mLlNoSteadfast.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.VISIBLE);
+                    }
                 }
             });
         }
@@ -165,7 +169,9 @@ public class PaymentActivity extends BaseActivity {
 
                 @Override
                 public void error() {
-                    UtilTool.setCircleImg(PaymentActivity.this, R.mipmap.img_nfriend_headshot1, mIvTouxiang);
+                    if (ActivityUtil.isActivityOnTop(PaymentActivity.this)) {
+                        UtilTool.setCircleImg(PaymentActivity.this, R.mipmap.img_nfriend_headshot1, mIvTouxiang);
+                    }
                 }
             });
         } else if (mType.equals(Constants.MONEYOUT)) {
@@ -195,7 +201,9 @@ public class PaymentActivity extends BaseActivity {
 
                 @Override
                 public void error() {
-                    UtilTool.setCircleImg(PaymentActivity.this, R.mipmap.img_nfriend_headshot1, mIvTouxiang);
+                    if (ActivityUtil.isActivityOnTop(PaymentActivity.this)) {
+                        UtilTool.setCircleImg(PaymentActivity.this, R.mipmap.img_nfriend_headshot1, mIvTouxiang);
+                    }
                 }
             });
             mTvCoin.setText(mCoinNames);

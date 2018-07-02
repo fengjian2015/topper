@@ -28,6 +28,7 @@ import com.bclould.tea.model.GoogleInfo;
 import com.bclould.tea.network.DownLoadApk;
 import com.bclould.tea.ui.widget.CurrencyDialog;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
@@ -125,27 +126,31 @@ public class GoogleVerificationActivity extends BaseActivity {
         mGoogleVerificationPresenter.getGoogleKey(new GoogleVerificationPresenter.CallBack2() {
             @Override
             public void send(GoogleInfo googleInfo) {
-                mLlError.setVisibility(View.GONE);
-                UtilTool.Log("谷歌", googleInfo.getIs_google_verify() + "");
-                if (googleInfo.getIs_google_verify() == 1) {
-                    mLlBindingStatus.setVisibility(View.VISIBLE);
-                    mLlUnbinding.setVisibility(View.GONE);
-                    mLlBinding.setVisibility(View.GONE);
-                } else {
-                    mLlBinding.setVisibility(View.VISIBLE);
-                    mLlUnbinding.setVisibility(View.GONE);
-                    mLlBindingStatus.setVisibility(View.GONE);
-                    mSecretKey.setText(googleInfo.getKey());
-                    Glide.with(GoogleVerificationActivity.this).load(googleInfo.getImg()).into(mIvQrCode);
+                if (ActivityUtil.isActivityOnTop(GoogleVerificationActivity.this)) {
+                    mLlError.setVisibility(View.GONE);
+                    UtilTool.Log("谷歌", googleInfo.getIs_google_verify() + "");
+                    if (googleInfo.getIs_google_verify() == 1) {
+                        mLlBindingStatus.setVisibility(View.VISIBLE);
+                        mLlUnbinding.setVisibility(View.GONE);
+                        mLlBinding.setVisibility(View.GONE);
+                    } else {
+                        mLlBinding.setVisibility(View.VISIBLE);
+                        mLlUnbinding.setVisibility(View.GONE);
+                        mLlBindingStatus.setVisibility(View.GONE);
+                        mSecretKey.setText(googleInfo.getKey());
+                        Glide.with(GoogleVerificationActivity.this).load(googleInfo.getImg()).into(mIvQrCode);
+                    }
                 }
             }
 
             @Override
             public void error() {
-                mLlBindingStatus.setVisibility(View.GONE);
-                mLlUnbinding.setVisibility(View.GONE);
-                mLlBinding.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
+                if (ActivityUtil.isActivityOnTop(GoogleVerificationActivity.this)) {
+                    mLlBindingStatus.setVisibility(View.GONE);
+                    mLlUnbinding.setVisibility(View.GONE);
+                    mLlBinding.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

@@ -34,6 +34,7 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tea.ui.widget.VirtualKeyboardView;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.ToastShow;
@@ -125,16 +126,20 @@ public class RewardActivity extends BaseActivity {
             coinPresenter.coinLists("can_reward", new CoinPresenter.CallBack() {
                 @Override
                 public void send(List<CoinListInfo.DataBean> data) {
-                    mLlData.setVisibility(View.VISIBLE);
-                    mLlError.setVisibility(View.GONE);
-                    if (MyApp.getInstance().mRewardCoinList.size() == 0)
-                        MyApp.getInstance().mRewardCoinList.addAll(data);
+                    if (ActivityUtil.isActivityOnTop(RewardActivity.this)) {
+                        mLlData.setVisibility(View.VISIBLE);
+                        mLlError.setVisibility(View.GONE);
+                        if (MyApp.getInstance().mRewardCoinList.size() == 0)
+                            MyApp.getInstance().mRewardCoinList.addAll(data);
+                    }
                 }
 
                 @Override
                 public void error() {
-                    mLlData.setVisibility(View.GONE);
-                    mLlError.setVisibility(View.VISIBLE);
+                    if (ActivityUtil.isActivityOnTop(RewardActivity.this)) {
+                        mLlData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.VISIBLE);
+                    }
                 }
             });
         }
