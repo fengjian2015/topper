@@ -119,14 +119,22 @@ public class ReceiveRVAdapter extends RecyclerView.Adapter {
                 mTvName.setText(logBean.getName());
                 mTvType.setVisibility(View.VISIBLE);
                 if (logBean.getRp_type() == 1) {
-                    mTvType.setText(mContext.getString(R.string.individual));
+                    if(logBean.getType()==1){
+                        mTvType.setText(mContext.getString(R.string.individual));
+                    }else{
+                        mTvType.setText(mContext.getString(R.string.group1));
+                    }
                 } else {
                     mTvType.setText(mContext.getString(R.string.sao));
                 }
             } else {
                 mTvType.setVisibility(View.GONE);
                 if (logBean.getRp_type() == 1) {
-                    mTvName.setText(mContext.getString(R.string.putong_red));
+                    if(logBean.getType()==1||logBean.getType()==2){
+                        mTvName.setText(mContext.getString(R.string.putong_red));
+                    }else{
+                        mTvName.setText(mContext.getString(R.string.lucky_red_packets));
+                    }
                 } else {
                     mTvName.setText(mContext.getString(R.string.qr_code_red_packet));
                 }

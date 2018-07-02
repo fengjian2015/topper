@@ -983,4 +983,7 @@
     <string name="add_friends_first">請先添加好友</string>
     <string name="click_to_view">點擊查看</string>
     <string name="et_order_who_or_mailbox">輸入用戶名或邮箱</string>
+    <string name="group1">群</string>
+    <string name="lucky_red_packets">手氣紅包</string>
+    <string name="best_luck">手氣最佳</string>
 </resources>

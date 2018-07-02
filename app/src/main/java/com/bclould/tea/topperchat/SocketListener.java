@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.PowerManager;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.NotificationCompat;
 import android.util.Base64;
@@ -216,7 +217,7 @@ public class SocketListener {
                     break;
                 case MSG_BROADCAST:
                     //廣播消息
-//                    friendRequest((byte[]) deserialized.get(CONTENT));
+                    friendRequest((byte[]) deserialized.get(CONTENT));
                     break;
                 case MSG_PING:
                     //ping反饋
@@ -248,9 +249,8 @@ public class SocketListener {
             e.printStackTrace();
         }
     }
-
     //其他賬號登錄
-    private void logout() {
+    public void logout() {
         WsConnection.getInstance().logoutService(context);
         Intent intent = new Intent(context, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -301,7 +301,6 @@ public class SocketListener {
      * @return false表示攔截消息
      */
     private String bellJudgment(String from, String chatmesssage, boolean crypt, boolean isPlayHint) {
-
         if (crypt) {
             if (OtrChatListenerManager.getInstance().isOtrEstablishMessage(chatmesssage,
                     OtrChatListenerManager.getInstance().sessionID(UtilTool.getTocoId(), from), context)) {
@@ -312,7 +311,8 @@ public class SocketListener {
                         OtrChatListenerManager.getInstance().sessionID(UtilTool.getTocoId(), from));
             }
         }
-        if (isPlayHint) {
+        if (isPlayHint&&!isNoDisturbing(from)) {
+            UtilTool.playHint(context);
 
         }
         return chatmesssage;
@@ -331,13 +331,11 @@ public class SocketListener {
             return true;
         } else if (sp.contains(INFORM)) {
             if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
-                UtilTool.playHint(context);
                 return false;
             }else{
                 return true;
             }
         } else {
-            UtilTool.playHint(context);
             return false;
         }
     }
@@ -632,13 +630,58 @@ public class SocketListener {
 
         return file;
     }
-
     /**
-     * 處理廣播消息
+     *處理廣播消息
      *
      * @param binary
      */
-    public void friendRequest(Map<String,String> jsonMap) {
+    public void friendRequest(byte[] binary) {
+        try {
+            Map<Object, Object> contentMap = objectMapper.readValue(binary, new TypeReference<Map<String, Object>>() {});
+            Map<Object, Object> jsonMap = JSON.parseObject(new String((byte[]) contentMap.get("message")), HashMap.class);
+            int type = UtilTool.parseInt(jsonMap.get(TYPE)+"");
+            Map<Object, Object> messageMap = JSON.parseObject((String) jsonMap.get("message"), HashMap.class);
+            switch (type) {
+                case BC_MEMBER_GROUP:
+                    //加入群組
+                    addGroup(messageMap);
+                    break;
+                case BC_QUIT_GROUP:
+                    //退出群組
+                    qiutGroup(messageMap);
+                    break;
+                case BC_ADD_GROUP:
+                    //創建群組通知
+                    createGroup(messageMap, (String) jsonMap.get("toco_id"));
+                    break;
+                case BC_UPDATE_GROUP_LOGO:
+                    //更新群头像
+                case BC_UPDATE_GROUP_REMARK:
+                    //更新群昵称
+                case BC_TRANSFER_GROUP_BROAD:
+                    //转让群组管理员
+                case BC_REFRESH_GROUP:
+                    //刷新群成員
+                case BC_UPDATE_GROUP_NAME:
+                    //更新群名字
+                    updataGroupRoom(messageMap);
+                    break;
+                case BC_KICK_OUT_GROUP:
+                    kickOut(messageMap);
+                    break;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 友盟處理廣播消息
+     *
+     * @param binary
+     */
+    public void umengFriendRequest(Map<String,String> jsonMap) {
         try {
 //            Map<Object, Object> contentMap = objectMapper.readValue(binary, new TypeReference<Map<String, Object>>() {});
 //            Map<Object, Object> jsonMap = JSON.parseObject(new String((byte[]) contentMap.get("message")), HashMap.class);
@@ -687,36 +730,9 @@ public class SocketListener {
                     //紅包領取通知
                     redGet(messageMap);
                     break;
-                case BC_MEMBER_GROUP:
-                    //加入群組
-                    addGroup(messageMap);
-                    break;
-                case BC_QUIT_GROUP:
-                    //退出群組
-                    qiutGroup(messageMap);
-                    break;
-                case BC_ADD_GROUP:
-                    //創建群組通知
-                    createGroup(messageMap, (String) jsonMap.get("toco_id"));
-                    break;
                 case BC_ENJOY_PLAYING:
                     //打賞
                     enjoyPlaying(messageMap);
-                    break;
-                case BC_UPDATE_GROUP_LOGO:
-                    //更新群头像
-                case BC_UPDATE_GROUP_REMARK:
-                    //更新群昵称
-                case BC_TRANSFER_GROUP_BROAD:
-                    //转让群组管理员
-                case BC_REFRESH_GROUP:
-                    //刷新群成員
-                case BC_UPDATE_GROUP_NAME:
-                    //更新群名字
-                    updataGroupRoom(messageMap);
-                    break;
-                case BC_KICK_OUT_GROUP:
-                    kickOut(messageMap);
                     break;
             }
 
@@ -1126,7 +1142,7 @@ public class SocketListener {
             String from = (String) messageMap.get("toco_id");
             //確認請求
             String response;
-            if ("1".equals(messageMap.get("status"))) {
+            if ("1".equals(messageMap.get("status")+"")) {
                 response = context.getString(R.string.ta_consent_add_friend);
                 Intent intent = new Intent();
                 intent.putExtra("response", response);
@@ -1139,7 +1155,7 @@ public class SocketListener {
                 mgr.addUser(userInfo);
                 EventBus.getDefault().post(new MessageEvent(context.getString(R.string.new_friend)));
                 context.sendBroadcast(intent);
-            } else if ("2".equals(messageMap.get("status"))) {
+            } else if ("2".equals(messageMap.get("status")+"")) {
                 //发送广播传递response字符串
                 response = context.getString(R.string.ta_reject_add_friend);
                 UtilTool.Log("fengjian", "删除成功！");
@@ -1196,6 +1212,9 @@ public class SocketListener {
      * @param content
      */
     private void goActivity(Intent intent, String title, String content) {
+        if(isNoDisturbing(Constants.ADMINISTRATOR_NAME)){
+            return;
+        }
         mResultIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setSmallIcon(R.mipmap.logo);
         mBuilder.setContentTitle(title);
@@ -1209,7 +1228,16 @@ public class SocketListener {
     }
 
     private void goChat(String from, String message, String roomType) {
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        boolean screen = pm.isScreenOn();
+
+
         if (!isApplicationBroughtToBackground(context)) {
+            if(screen){
+                return;
+            }
+        }
+        if(isNoDisturbing(from)){
             return;
         }
         if (from.isEmpty()) {

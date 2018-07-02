@@ -22,7 +22,7 @@ public class IMLogin {
 			return false;
 		}
 		if (WsConnection.getInstance().get(context)==null||!WsConnection.getInstance().get(context).isOpen()) {
-			UtilTool.Log("fengjian","login 还是未连接");
+			UtilTool.Log("fengjian","WebSocket未连接");
 			return false;
 		}
 		return loginAction();

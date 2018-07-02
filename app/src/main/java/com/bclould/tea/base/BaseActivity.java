@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.bclould.tea.R;
+import com.bclould.tea.topperchat.UmManage;
 import com.umeng.message.PushAgent;
 
 /**

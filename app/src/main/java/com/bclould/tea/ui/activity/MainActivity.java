@@ -270,17 +270,12 @@ public class MainActivity extends BaseActivity {
             @Override
             public void send(GroupInfo baseInfo) {
                 // TODO: 2018/6/11 獲取群聊房間塞入數據庫
-
             }
-
             @Override
             public void error() {
-
             }
-
             @Override
             public void finishRefresh() {
-
             }
         });
     }

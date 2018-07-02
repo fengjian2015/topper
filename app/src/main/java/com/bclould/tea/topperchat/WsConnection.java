@@ -14,7 +14,9 @@ import com.bclould.tea.service.IMCoreService;
 import com.bclould.tea.service.IMService;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tea.xmpp.LoginThread;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -131,6 +133,9 @@ public class WsConnection {
     }
 
     public synchronized void login() throws Exception {
+        if(StringUtils.isEmpty(UtilTool.getTocoId())){
+            SocketListener.getInstance(mContext).logout();
+        }
         if(isLogin||isOutConnection||isLoginConnection){
             UtilTool.Log("fengjian", "暫時不讓登錄：isLogin："+isLogin +"    isOutConnection："+isOutConnection+"    isLoginConnection："+isLoginConnection);
             if(isOutConnection){
@@ -161,7 +166,7 @@ public class WsConnection {
                     closeConnection();
                 }
             }
-        },20*1000);
+        },60*1000);
     }
 
     public void senPing(){
@@ -249,9 +254,13 @@ public class WsConnection {
     /**
      * 关闭连接
      */
-    public void closeConnection() {
+    public void closeConnection(){
         senLogout();
-        setIsLogin(false);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         LoginThread.isStartExReconnect = false;
         if (ws != null) {
             // 移除连接监听
@@ -260,13 +269,13 @@ public class WsConnection {
                 ws.end();
             }
         }
-
+        setIsLogin(false);
+        setOutConnection(true);
     }
 
     //退出登錄用
     public void logoutService(Context context) {
-        setOutConnection(true);
-        setIsLogin(false);
+        ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.DISCONNECT);
         closeConnection();
         stopAllIMCoreService(context);
         context.stopService(new Intent(context, IMService.class));

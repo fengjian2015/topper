@@ -38,15 +38,32 @@
             android:textSize="@dimen/x26"/>
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_money"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:text="20.50"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/x30"/>
-
+        android:gravity="center_vertical|right"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="20.50"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/x30"/>
+        <TextView
+            android:id="@+id/tv_best_luck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20"
+            android:textColor="@color/green"
+            android:drawableLeft="@mipmap/bestluck"
+            android:drawablePadding="@dimen/x10"
+            android:textSize="@dimen/x26"
+            android:text="@string/best_luck"
+            />
+    </LinearLayout>
 </RelativeLayout>

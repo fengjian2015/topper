@@ -103,6 +103,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
     public void onScanQRCodeSuccess(String result) {
         //扫描成功后调用震动器
         vibrator();
+        mZxingview.stopCamera();
         //显示扫描结果
 //        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
         if (mCode == 0) {

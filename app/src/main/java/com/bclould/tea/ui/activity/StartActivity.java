@@ -20,6 +20,7 @@ import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 
 import butterknife.Bind;
@@ -51,6 +52,12 @@ public class StartActivity extends LoginBaseActivity {
         WsConnection.getInstance().setOutConnection(true);
         new Handler() {
             public void handleMessage(Message msg) {
+                if(StringUtils.isEmpty(UtilTool.getTocoId())){
+                    MySharedPreferences.getInstance().setString(TOKEN, "");
+                    startActivity(new Intent(StartActivity.this, MainActivity.class));
+                    finish();
+                    return;
+                }
                 if (UtilTool.getToken().equals("bearer")) {
                     startActivity(new Intent(StartActivity.this, MainActivity.class));
                     finish();

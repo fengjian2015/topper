@@ -29,11 +29,13 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.ConversationInfo;
+import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.QrRedInfo;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.AddFriendActivity;
@@ -349,6 +351,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.login_succeed))) {
+            getGroup();
             initData();
         } else if (msg.equals(getString(R.string.oneself_send_msg))) {
             initData();
@@ -377,6 +380,21 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         }else if(msg.equals(getString(R.string.kick_out_success))){
             initData();
         }
+    }
+
+    private void getGroup() {
+        new GroupPresenter(getActivity()).getGroup(mDBRoomMember, mDBRoomManage, mgr, false, new GroupPresenter.CallBack1() {
+            @Override
+            public void send(GroupInfo baseInfo) {
+                // TODO: 2018/6/11 獲取群聊房間塞入數據庫
+            }
+            @Override
+            public void error() {
+            }
+            @Override
+            public void finishRefresh() {
+            }
+        });
     }
 
     @Override

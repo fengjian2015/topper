@@ -119,7 +119,7 @@ public class GroupPresenter {
                         if (baseInfo.getStatus() == 1) {
                             callBack.send();
                         } else {
-                            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.invite_failure));
+                            ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
                         }
                     }
 
