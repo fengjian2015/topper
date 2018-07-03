@@ -8,12 +8,16 @@ import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
 
+import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.service.IMCoreService;
 import com.bclould.tea.service.IMService;
+import com.bclould.tea.ui.activity.MainActivity;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
@@ -35,6 +39,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static com.bclould.tea.Presenter.LoginPresenter.TOKEN;
 import static com.bclould.tea.topperchat.WsContans.CONTENT;
 import static com.bclould.tea.topperchat.WsContans.DEVICE;
 import static com.bclould.tea.topperchat.WsContans.DEVICE_ID;
@@ -135,6 +140,7 @@ public class WsConnection {
     public synchronized void login() throws Exception {
         if(StringUtils.isEmpty(UtilTool.getTocoId())){
             SocketListener.getInstance(mContext).logout();
+            goMainActivity();
         }
         if(isLogin||isOutConnection||isLoginConnection){
             UtilTool.Log("fengjian", "暫時不讓登錄：isLogin："+isLogin +"    isOutConnection："+isOutConnection+"    isLoginConnection："+isLoginConnection);
@@ -145,7 +151,6 @@ public class WsConnection {
         }
         changeMsgState();
         setLoginConnection(true);
-        senLogout();
         Thread.sleep(2000);
         UtilTool.Log("fengjian","發送登錄消息：TOCOID:"+UtilTool.getTocoId());
         ObjectMapper objectMapper =  new ObjectMapper(new  MessagePackFactory());
@@ -270,13 +275,25 @@ public class WsConnection {
             }
         }
         setIsLogin(false);
-        setOutConnection(true);
+    }
+
+    public void goMainActivity(){
+        MySharedPreferences.getInstance().setString(TOKEN, "");
+        MySharedPreferences.getInstance().setString(LoginPresenter.TOCOID, "");
+        MyApp.getInstance().mCoinList.clear();
+        MyApp.getInstance().mPayCoinList.clear();
+        MyApp.getInstance().mOtcCoinList.clear();
+        MyApp.getInstance().mBetCoinList.clear();
+        Intent intent = new Intent(mContext, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("whence", 2);
+        mContext.startActivity(intent);
     }
 
     //退出登錄用
     public void logoutService(Context context) {
-        ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.DISCONNECT);
         closeConnection();
+        setOutConnection(true);
         stopAllIMCoreService(context);
         context.stopService(new Intent(context, IMService.class));
         LoginThread.isStartExReconnect = false;

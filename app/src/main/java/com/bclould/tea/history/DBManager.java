@@ -347,6 +347,19 @@ public class DBManager {
         return time;
     }
 
+    public long findLastMessageConversationCreateTime(String roomid) {
+        db = helper.getReadableDatabase();
+        long time =0;
+        Cursor cursor = db.rawQuery("select createTime from MessageRecord where user=? and my_user=? ORDER BY createTime asc",
+                new String[]{roomid, UtilTool.getTocoId()});
+
+        if (cursor.moveToLast()) {
+            time = cursor.getLong(cursor.getColumnIndex("createTime"));
+        }
+        cursor.close();
+        return time;
+    }
+
     public void updateMessageState(String id, int state) {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -404,6 +417,7 @@ public class DBManager {
         return addRequestInfo;
     }
 
+
     public void updateRequest(int id, int type) {
         db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -433,6 +447,14 @@ public class DBManager {
         c.close();
         return addRequestInfos;
     }
+    public void deleteRequest() {
+        try {
+            db = helper.getWritableDatabase();
+            db.delete("AddRequest", "my_user=? ", new String[]{UtilTool.getTocoId()});
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
 
     public synchronized void addConversation(ConversationInfo conversationInfo) {
@@ -461,6 +483,25 @@ public class DBManager {
         boolean result = cursor.moveToNext();
         cursor.close();
         return result;
+    }
+
+    public void updateConversationCreateTime(String user,long createTime){
+        db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("createTime", createTime);
+        db.update("ConversationRecord", values, "user=?", new String[]{user});
+    }
+
+    public int queryConversationNumber() {
+        db = helper.getWritableDatabase();
+        String sql = "select number from ConversationRecord where my_user=?";
+        Cursor c = db.rawQuery(sql, new String[]{UtilTool.getTocoId()});
+        int number=0;
+        while (c.moveToNext()) {
+            number+=(c.getInt(c.getColumnIndex("number")));
+        }
+        c.close();
+        return number;
     }
 
     public void updateConversationName(String user,String name) {
@@ -561,7 +602,7 @@ public class DBManager {
             conversationInfo.setFriend(c.getString(c.getColumnIndex("friend")));
             conversationInfo.setIstop(c.getString(c.getColumnIndex("istop")));
             conversationInfo.setChatType(c.getString(c.getColumnIndex("chatType")));
-            conversationInfo.setCreateTime(c.getInt(c.getColumnIndex("createTime")));
+            conversationInfo.setCreateTime(c.getLong(c.getColumnIndex("createTime")));
             conversationList.add(conversationInfo);
         }
         c.close();
@@ -582,7 +623,7 @@ public class DBManager {
             conversationInfo.setFriend(c.getString(c.getColumnIndex("friend")));
             conversationInfo.setIstop(c.getString(c.getColumnIndex("istop")));
             conversationInfo.setChatType(c.getString(c.getColumnIndex("chatType")));
-            conversationInfo.setCreateTime(c.getInt(c.getColumnIndex("createTime")));
+            conversationInfo.setCreateTime(c.getLong(c.getColumnIndex("createTime")));
             conversationList.add(conversationInfo);
         }
         c.close();

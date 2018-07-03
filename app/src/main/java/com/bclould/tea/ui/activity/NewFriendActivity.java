@@ -18,6 +18,7 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.AddRequestInfo;
 import com.bclould.tea.model.AuatarListInfo;
+import com.bclould.tea.model.NewFriendInfo;
 import com.bclould.tea.ui.adapter.NewFriendRVAdapter;
 
 import java.util.ArrayList;
@@ -44,7 +45,6 @@ public class NewFriendActivity extends BaseActivity {
     RecyclerView mRecyclerView;
     private DBManager mMgr;
     List<AddRequestInfo> mAddRequestInfos = new ArrayList<>();
-    List<String> mImageList = new ArrayList<>();
     private NewFriendRVAdapter mNewFriendRVAdapter;
 
     @Override
@@ -59,32 +59,33 @@ public class NewFriendActivity extends BaseActivity {
     }
 
     private void initData() {
-        ArrayList<AddRequestInfo> addRequestInfos = mMgr.queryAllRequest();
-        Collections.reverse(addRequestInfos);
-        mAddRequestInfos.addAll(addRequestInfos);
-        String userList = "";
-        for (AddRequestInfo info : mAddRequestInfos) {
-            if (userList.isEmpty()) {
-                userList = info.getUser();
-            } else {
-                userList += "," + info.getUser();
-            }
-        }
+//        ArrayList<AddRequestInfo> addRequestInfos = mMgr.queryAllRequest();
+//        (addRequestInfos);
+//        mAddRequestInfos.addAll(addRequestInfos);
+//        String userList = "";
+//        for (AddRequestInfo info : mAddRequestInfos) {
+//            if (userList.isEmpty()) {
+//                userList = info.getUser();
+//            } else {
+//                userList += "," + info.getUser();
+//            }
+//        }
         PersonalDetailsPresenter personalDetailsPresenter = new PersonalDetailsPresenter(this);
-        personalDetailsPresenter.getFriendImageList(userList, new PersonalDetailsPresenter.CallBack2() {
+        personalDetailsPresenter.getNewFriendData(new PersonalDetailsPresenter.CallBack5() {
             @Override
-            public void send(final List<AuatarListInfo.DataBean> data) {
-                if (data != null && data.size() != 0) {
-                    for (int i = 0; i < data.size(); i++) {
-                        mImageList.add(data.get(i).getAvatar());
-                    }
-                    mNewFriendRVAdapter.notifyDataSetChanged();
+            public void send(NewFriendInfo listdata) {
+                mMgr.deleteRequest();
+                for(int i=0;i<listdata.getData().size();i++){
+                    AddRequestInfo addRequestInfo=new AddRequestInfo();
+                    addRequestInfo.setType(listdata.getData().get(i).getStatus());
+                    addRequestInfo.setUrl(listdata.getData().get(i).getAvatar());
+                    addRequestInfo.setUser(listdata.getData().get(i).getToco_id());
+                    addRequestInfo.setUserName(listdata.getData().get(i).getName());
+                    mAddRequestInfos.add(addRequestInfo);
+                    mMgr.addRequest(listdata.getData().get(i).getToco_id(),listdata.getData().get(i).getStatus(),listdata.getData().get(i).getName());
                 }
-            }
-
-            @Override
-            public void error() {
-
+                Collections.reverse(mAddRequestInfos);
+                mNewFriendRVAdapter.notifyDataSetChanged();
             }
         });
 
@@ -92,7 +93,7 @@ public class NewFriendActivity extends BaseActivity {
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mNewFriendRVAdapter = new NewFriendRVAdapter(this, mAddRequestInfos, mMgr, mImageList);
+        mNewFriendRVAdapter = new NewFriendRVAdapter(this, mAddRequestInfos, mMgr);
         mRecyclerView.setAdapter(mNewFriendRVAdapter);
     }
 

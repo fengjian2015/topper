@@ -292,15 +292,7 @@ public class SocketListener {
         UmManage.getInstance().setAlias();
     }
 
-    /**
-     * 處理鈴聲
-     *
-     * @param from
-     * @param chatmesssage
-     * @param crypt
-     * @return false表示攔截消息
-     */
-    private String bellJudgment(String from, String chatmesssage, boolean crypt, boolean isPlayHint) {
+    private String OTRCrypt(String from, String chatmesssage, boolean crypt){
         if (crypt) {
             if (OtrChatListenerManager.getInstance().isOtrEstablishMessage(chatmesssage,
                     OtrChatListenerManager.getInstance().sessionID(UtilTool.getTocoId(), from), context)) {
@@ -311,11 +303,19 @@ public class SocketListener {
                         OtrChatListenerManager.getInstance().sessionID(UtilTool.getTocoId(), from));
             }
         }
+        return chatmesssage;
+    }
+
+    /**
+     * 處理鈴聲
+     *
+     * @param from
+     * @return false表示攔截消息
+     */
+    private void bellJudgment(String from, boolean isPlayHint) {
         if (isPlayHint&&!isNoDisturbing(from)) {
             UtilTool.playHint(context);
-
         }
-        return chatmesssage;
     }
 
 
@@ -378,7 +378,7 @@ public class SocketListener {
                 msgId = UtilTool.createMsgId(UtilTool.getTocoId());
             }
             long createTime = UtilTool.stringToLong(content.get("time") + "");
-            String otr = bellJudgment(from, message, crypt, isPlayHint);
+            String otr = OTRCrypt(from, message, crypt);
             if (StringUtils.isEmpty(otr)) return;
             //默認文本類型
             MessageInfo messageInfo = new MessageInfo();
@@ -440,6 +440,7 @@ public class SocketListener {
                 case WsContans.MSG_IMAGE:
                     //圖片
                     String url = downFile(messageInfo.getKey());
+                    messageInfo.setKey(messageInfo.getKey());
                     messageInfo.setMessage(url);
                     redpacket = "[" + context.getString(R.string.image) + "]";
                     if (isMe) {
@@ -594,6 +595,7 @@ public class SocketListener {
             messageEvent.setId(msgId);
             EventBus.getDefault().post(messageEvent);
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.dispose_unread_msg)));
+            bellJudgment(from,isPlayHint);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1224,7 +1226,7 @@ public class SocketListener {
         mBuilder.setAutoCancel(true);
         Notification notification = mBuilder.build();
         mNotificationManager.notify(0, notification);
-        bellJudgment(Constants.ADMINISTRATOR_NAME, "", false, true);
+        bellJudgment(Constants.ADMINISTRATOR_NAME,  true);
     }
 
     private void goChat(String from, String message, String roomType) {

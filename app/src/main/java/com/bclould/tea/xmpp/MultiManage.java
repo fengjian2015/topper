@@ -40,7 +40,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.greenrobot.eventbus.EventBus;
 import org.msgpack.jackson.dataformat.MessagePackFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -323,7 +325,14 @@ public class MultiManage implements Room{
 
     private void sendFileAfterMessage(String key, String postfix, String newFile, int mId ,String msgId,long createTime) {
         try {
-            byte[] bytes = UtilTool.readStream(newFile);
+            String postfixs = key.substring(key.lastIndexOf("."));
+            byte[] bytes;
+            if (".gif".equals(postfixs) || ".GIF".equals(postfixs)) {
+                Bitmap bitmap= BitmapFactory.decodeFile(newFile);
+                bytes=UtilTool.comp(bitmap);
+            }else{
+                bytes = UtilTool.readStream(newFile);
+            }
             MessageInfo sendMessage = new MessageInfo();
             sendMessage.setKey(key);
             int type = 0;

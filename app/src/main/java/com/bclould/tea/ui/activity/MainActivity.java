@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bclould.tea.Presenter.CoinPresenter;
@@ -51,6 +52,8 @@ import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +71,8 @@ import io.reactivex.schedulers.Schedulers;
 
 @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
 public class MainActivity extends BaseActivity {
-
+    @Bind(R.id.number)
+    TextView mNumber;
     @Bind(R.id.main_fl)
     FrameLayout mMainFl;
     @Bind(R.id.main_bottom_menu)
@@ -105,6 +109,8 @@ public class MainActivity extends BaseActivity {
         mCoinPresenter = new CoinPresenter(this);
         ButterKnife.bind(this);
         mMgr = new DBManager(this);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         mDBRoomManage = new DBRoomManage(this);
         mDBRoomMember = new DBRoomMember(this);
         initRelogin();
@@ -132,6 +138,7 @@ public class MainActivity extends BaseActivity {
         //whence =1 登錄   2 退出登錄  3強制退出
         int whence = intent.getIntExtra("whence", 0);
         initRelogin();
+        refreshNumber();
         if (1 == whence) {
             DiscoverFragment discoverFragment = DiscoverFragment.getInstance();
             discoverFragment.initInterface();
@@ -139,7 +146,7 @@ public class MainActivity extends BaseActivity {
             //切换Fragment
             changeFragment(0);
             getStateList();
-            getGroup();
+//            getGroup();
             getMyImage();
             getFriends();
         } else if (2 == whence || 3 == whence) {
@@ -151,6 +158,29 @@ public class MainActivity extends BaseActivity {
             if (3 == whence) {
                 showLoginOut();
             }
+        }
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(getString(R.string.refresh_msg_number))) {
+            refreshNumber();
+        }
+    }
+
+    private void refreshNumber(){
+        int numer=mMgr.queryConversationNumber();
+        if(numer>0&&!WsConnection.getInstance().getOutConnection()){
+            mNumber.setVisibility(View.VISIBLE);
+            if(numer>=100){
+                mNumber.setText("99+");
+            }else{
+                mNumber.setText(numer+"");
+            }
+        }else{
+            mNumber.setVisibility(View.GONE);
         }
     }
 
@@ -262,6 +292,7 @@ public class MainActivity extends BaseActivity {
         UtilTool.getPermissions(this, Manifest.permission.RECORD_AUDIO, "", getString(R.string.jurisdiction_voice_hint));
         //检测版本更新
         checkVersion();
+        refreshNumber();
     }
 
 
@@ -453,6 +484,7 @@ public class MainActivity extends BaseActivity {
         //页面销毁删除掉储存的fragment
         Map<Integer, Fragment> map = FragmentFactory.mMainMap;
         FragmentFactory.getInstanes().setNull();
+        EventBus.getDefault().unregister(this);
         for (int i : map.keySet()) {
             mSupportFragmentManager.beginTransaction().remove(map.get(i));
             mSupportFragmentManager.beginTransaction().hide(map.get(i));
@@ -507,12 +539,12 @@ public class MainActivity extends BaseActivity {
         Fragment fragment = fragmentFactory.createMainFragment(index);
 
         if (mSupportFragmentManager.getFragments() == null) {
-            if (!fragment.isAdded()) {
-                ft.add(R.id.main_fl, fragment);
+            if (!fragment.isAdded()&&null==mSupportFragmentManager.findFragmentByTag(index+"")) {
+                ft.add(R.id.main_fl, fragment,index+"");
             }
         } else if (!mSupportFragmentManager.getFragments().contains(fragment)) {
-            if (!fragment.isAdded()) {
-                ft.add(R.id.main_fl, fragment);
+            if (!fragment.isAdded()&&null==mSupportFragmentManager.findFragmentByTag(index+"")) {
+                ft.add(R.id.main_fl, fragment,index+"");
             }
         }
         if (ft != null) {

@@ -27,6 +27,7 @@ import com.bclould.tea.model.LoginRecordInfo;
 import com.bclould.tea.model.ModeOfPaymentInfo;
 import com.bclould.tea.model.MyAdListInfo;
 import com.bclould.tea.model.MyAssetsInfo;
+import com.bclould.tea.model.NewFriendInfo;
 import com.bclould.tea.model.NewsListInfo;
 import com.bclould.tea.model.OSSInfo;
 import com.bclould.tea.model.OrderInfo;
@@ -1214,5 +1215,11 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("content") String content,
             @Field("group_id") int group_id
+    );
+
+    //獲取請求列表
+    @POST("chat/new/friend")
+    Observable<NewFriendInfo> getNewFriendData(
+            @Header("Authorization") String token
     );
 }

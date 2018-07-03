@@ -174,7 +174,6 @@ public class GroupPresenter {
                                             roomMemberInfo.setImage_url(usersBean.getAvatar());
                                             roomMemberInfo.setName(usersBean.getName());
                                             mDBRoomMember.addRoomMember(roomMemberInfo);
-                                            dbManager.addStrangerUserInfo(usersBean.getToco_id(), usersBean.getAvatar(), usersBean.getName());
                                         }
                                     }
                                     for (ConversationInfo conversationInfo : list) {
@@ -199,7 +198,6 @@ public class GroupPresenter {
                                     });
                                 }
                             }.start();
-
 
                         }else {
                             callBack.finishRefresh();

@@ -43,7 +43,7 @@ public class DBRoomMember {
         values.put("remark", roomMemberInfo.getRemark());
         values.put("roomId",roomMemberInfo.getRoomId());
         int id = (int) db.insert("RoomMember", null, values);
-        UtilTool.Log("fengjian", "添加成員到数据库成功" + roomMemberInfo.toString());
+        UtilTool.Log("數據庫","插入成員");
         return id;
     }
 

@@ -109,6 +109,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     private ViewGroup mView;
     private PopupWindow mPopupWindow;
     private int QRCODE = 1;
+    private RefreshList mRefreshList;
 
     public static ConversationFragment getInstance() {
 
@@ -132,6 +133,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         mgr = new DBManager(getActivity());
         mDBRoomMember=new DBRoomMember(getActivity());
         mDBRoomManage=new DBRoomManage(getActivity());
+        mRefreshList=new RefreshList();
         return view;
     }
 
@@ -164,7 +166,9 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                         mRlUnunited.setVisibility(View.GONE);
                     }
                     break;
-
+                case 2:
+                    mConversationAdapter.notifyDataSetChanged();
+                    break;
             }
         }
     };
@@ -202,6 +206,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     @Override
     public void onStateChange(int serviceState) {
         if (serviceState == -1 || mTvTitle == null) return;
+
         if (imState == serviceState) {
             return;
         } else {
@@ -358,6 +363,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         } else if (msg.equals(getString(R.string.send_red_packet_le))) {
             initData();
         } else if (msg.equals(getString(R.string.dispose_unread_msg))) {
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.refresh_msg_number)));
             initData();
         } else if (msg.equals(getString(R.string.new_friend))) {
             initData();
@@ -406,18 +412,27 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
     private void initData() {
         if (mRecyclerView != null) {
-            List<ConversationInfo> conversationInfos = mgr.queryConversation();
-            if (conversationInfos.size() == 0) {
-                mLlNoData.setVisibility(View.VISIBLE);
-                mRecyclerView.setVisibility(View.GONE);
-            } else {
-                mLlNoData.setVisibility(View.GONE);
-                mRecyclerView.setVisibility(View.VISIBLE);
+            mRefreshList.run();
+        }
+    }
+
+    class RefreshList implements Runnable {
+        @Override
+        public void run() {
+            synchronized (mRecyclerView){
+                List<ConversationInfo> conversationInfos = mgr.queryConversation();
+                if (conversationInfos.size() == 0) {
+                    mLlNoData.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.GONE);
+                } else {
+                    mLlNoData.setVisibility(View.GONE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                }
+                showlist.removeAll(showlist);
+                showlist.addAll(conversationInfos);
+                sort();
+                mHandler.sendEmptyMessage(2);
             }
-            showlist.removeAll(showlist);
-            showlist.addAll(conversationInfos);
-            sort();
-            mConversationAdapter.notifyDataSetChanged();
         }
     }
 

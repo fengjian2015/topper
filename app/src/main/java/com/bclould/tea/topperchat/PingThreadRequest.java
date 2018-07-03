@@ -23,7 +23,7 @@ public class PingThreadRequest extends Thread {
     public void run() {
         while (WsConnection.getInstance().isLogin()) {
             try {
-                sleep(1 * 60 * 1000);
+                sleep(2 * 60 * 1000);
                 if(MySharedPreferences.getInstance().getInteger("ping")!=1){
                     UtilTool.Log("fengjian","未收到ping反饋，需要重新登錄");
                     WsConnection.getInstance().setIsLogin(false);

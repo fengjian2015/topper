@@ -986,4 +986,7 @@
     <string name="group1">群</string>
     <string name="lucky_red_packets">手氣紅包</string>
     <string name="best_luck">手氣最佳</string>
+    <string name="red_envelope_been_robbed">紅包已被搶完</string>
+    <string name="refresh_msg_number">刷新消息總數</string>
+    <string name="waiting_agreed">等待同意</string>
 </resources>

@@ -9,6 +9,15 @@ public class AddRequestInfo {
     private int type;
     private int id;
     private String userName;
+    private String url;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public String getUserName() {
         return userName;

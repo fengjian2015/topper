@@ -27,6 +27,7 @@ import com.bclould.tea.ui.activity.ConversationServerActivity;
 import com.bclould.tea.ui.fragment.ConversationFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
+import com.bclould.tea.utils.ChatTimeUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
@@ -162,10 +163,22 @@ public class ConversationAdapter extends RecyclerView.Adapter {
                 mTab1ItemName.setText(conversationInfo.getFriend());
             }
             mTab1ItemText.setText(conversationInfo.getMessage());
-            mTime.setText(conversationInfo.getTime());
+            //兼容老版本
+            if((conversationInfo.getCreateTime()+"").length()<11){
+                long time=mMgr.findLastMessageConversationCreateTime(conversationInfo.getUser());
+                if(time<=0){
+                    time=UtilTool.createChatCreatTime();
+                }
+                mMgr.updateConversationCreateTime(conversationInfo.getUser(),time);
+            }
+            mTime.setText(ChatTimeUtil.getConversation(conversationInfo.getCreateTime()));
             if (conversationInfo.getNumber() != 0) {
                 mNumber.setVisibility(View.VISIBLE);
-                mNumber.setText(conversationInfo.getNumber() + "");
+                if(conversationInfo.getNumber()>=100){
+                    mNumber.setText("99+");
+                }else {
+                    mNumber.setText(conversationInfo.getNumber() + "");
+                }
             }else{
                 mNumber.setVisibility(View.GONE);
             }

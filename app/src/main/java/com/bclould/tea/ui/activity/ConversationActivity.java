@@ -163,7 +163,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         initEmoticonsKeyboard();//初始化功能盘
         MyApp.getInstance().addActivity(this);//打开添加activity
         initAdapter();//初始化适配器
-        initData(null);//初始化数据
+        initData(null,true);//初始化数据
         mMgr.updateNumber(roomId, 0);//更新未读消息条数
         EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));//发送更新未读消息通知
         setOnClick();
@@ -491,13 +491,13 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.msg_database_update))) {
-            initData(event.getId());
+            initData(event.getId(),false);
             mMgr.updateNumber(roomId, 0);
             EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));
         } else if (msg.equals(getString(R.string.send_red_packet_le))) {
-            initData(event.getId());
+            initData(event.getId(),true);
         } else if (msg.equals(getString(R.string.transfer))) {
-            initData(event.getId());
+            initData(event.getId(),true);
         } else if (msg.equals(getString(R.string.open_shooting))) {
             openShooting();
         } else if (msg.equals(getString(R.string.open_photo_album))) {
@@ -706,7 +706,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     };
 
     //初始化数据
-    private void initData(String msgId) {
+    private void initData(String msgId,boolean isScroll) {
         if(StringUtils.isEmpty(msgId)){
             List<MessageInfo> messageInfos = mMgr.queryMessage(roomId);
             mMessageList.clear();

@@ -116,12 +116,18 @@ public class RedPacketActivity extends BaseActivity {
             mTvName.setText(mName);
 //            mIvTouxiang.setImageBitmap(mBitmap);
             UtilTool.getImage(mMgr, mUser, this, mIvTouxiang);
+            if(grabRedInfo.getStatus()==2){
+                mTvHint.setText(getString(R.string.red_envelope_been_robbed));
+            }
+            mTvHint.setVisibility(View.VISIBLE);
         } else {
+            mTvHint.setVisibility(View.GONE);
             String id = intent.getStringExtra("id");
             RedRecordPresenter redRecordPresenter = new RedRecordPresenter(this);
             redRecordPresenter.signRpLog(Integer.parseInt(id), new RedRecordPresenter.CallBack2() {
                 @Override
-                public void send(GrabRedInfo.DataBean data) {
+                public void send(GrabRedInfo grabRedInfo) {
+                    GrabRedInfo.DataBean data = grabRedInfo.getData();
                     List<GrabRedInfo.DataBean.LogBean> logBeanList = data.getLog();
                     mCoin=data.getCoin_name();
                     mTvCoin.setText(data.getCoin_name());
@@ -132,6 +138,7 @@ public class RedPacketActivity extends BaseActivity {
                     initRecylerView(logBeanList,data);
                     UtilTool.setCircleImg(RedPacketActivity.this,data.getAvatar(), mIvTouxiang);
                     //                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, RedPacketActivity.this));
+
                 }
             });
         }

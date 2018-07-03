@@ -428,6 +428,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
             info.setFriend(roomName);
             info.setUser(roomId);
             info.setMessage("");
+            info.setCreateTime(UtilTool.createChatCreatTime());
             info.setChatType(RoomManage.ROOM_TYPE_MULTI);
             mMgr.addConversation(info);
             mOnOffTop.setSelected(true);

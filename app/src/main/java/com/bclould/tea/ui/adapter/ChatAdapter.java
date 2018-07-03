@@ -1069,18 +1069,34 @@ public class ChatAdapter extends RecyclerView.Adapter {
             setNameAndUrl(mIvTouxiang,messageInfo, tvName);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
-            Glide.with(mContext).load(new File(messageInfo.getVoice())).listener(new RequestListener<Drawable>() {
-                @Override
-                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                    return false;
-                }
+            String postfixs = messageInfo.getKey().substring(messageInfo.getKey().lastIndexOf("."));
+            if (".gif".equals(postfixs) || ".GIF".equals(postfixs)) {
+                mIvImg.setImageBitmap(BitmapFactory.decodeFile(messageInfo.getVoice()));
+                Glide.with(mContext).load(messageInfo.getMessage()).listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        mIvImg.setImageDrawable(resource);
+                        return false;
+                    }
+                }).apply(requestOptions).into(mIvImg);
+            }else {
+                Glide.with(mContext).load(new File(messageInfo.getVoice())).listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        return false;
+                    }
 
-                @Override
-                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                    mIvImg.setImageDrawable(resource);
-                    return false;
-                }
-            }).apply(requestOptions).into(mIvImg);
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        mIvImg.setImageDrawable(resource);
+                        return false;
+                    }
+                }).apply(requestOptions).into(mIvImg);
+            }
             mIvImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.bclould.tea.R;
 import com.bclould.tea.model.AuatarListInfo;
 import com.bclould.tea.model.BaseInfo;
+import com.bclould.tea.model.NewFriendInfo;
 import com.bclould.tea.model.RemarkListInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
@@ -321,6 +322,42 @@ public class PersonalDetailsPresenter {
                 });
     }
 
+    //獲取請求列表
+    public void getNewFriendData(final CallBack5 callBack5) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .getNewFriendData(UtilTool.getToken())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<NewFriendInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(NewFriendInfo userDataInfo) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        if (userDataInfo.getStatus() == 1) {
+                            callBack5.send(userDataInfo);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     //定义接口
     public interface CallBack {
         void send();
@@ -340,5 +377,9 @@ public class PersonalDetailsPresenter {
         void send(UserDataInfo.DataBean listdata);
 
         void error();
+    }
+
+    public interface CallBack5 {
+        void send(NewFriendInfo listdata);
     }
 }

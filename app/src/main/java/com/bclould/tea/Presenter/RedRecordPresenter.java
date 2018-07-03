@@ -93,7 +93,7 @@ public class RedRecordPresenter {
                     @Override
                     public void onNext(GrabRedInfo baseInfo) {
                         if (baseInfo.getStatus() == 1)
-                            callBack.send(baseInfo.getData());
+                            callBack.send(baseInfo);
                         hideDialog();
 //                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -119,6 +119,6 @@ public class RedRecordPresenter {
 
     //定义接口
     public interface CallBack2 {
-        void send(GrabRedInfo.DataBean data);
+        void send(GrabRedInfo data);
     }
 }

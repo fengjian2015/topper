@@ -160,6 +160,7 @@
                 android:hint="@string/congratulation"
                 android:paddingLeft="@dimen/x20"
                 android:paddingRight="@dimen/x20"
+                android:maxLength="10"
                 android:textSize="@dimen/x30"/>
 
         </android.support.v7.widget.CardView>

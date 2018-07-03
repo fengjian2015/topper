@@ -47,6 +47,9 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y50"
         android:textColor="#EACD99"
+        android:singleLine="true"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
         android:textSize="@dimen/x45"/>
 
     <Button

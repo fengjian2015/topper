@@ -92,43 +92,10 @@ public class LogoutPresenter {
     }
 
     public void imLogout(final String message) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    WsConnection.getInstance().senLogout();
-                    WsConnection.getInstance().logoutService(mActivity);
-                    Thread.sleep(1000);
-                    UtilTool.Log("fengjian", "退出成功");
-                    Message msg = new Message();
-                    msg.obj = message;
-                    myHandler.sendMessage(msg);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    UtilTool.Log("fengjian", "退出失败");
-                }
-            }
-        }).start();
-    }
-
-    Handler myHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            Toast.makeText(mActivity, (String) msg.obj, Toast.LENGTH_SHORT).show();
+        WsConnection.getInstance().logoutService(mActivity);
+        UtilTool.Log("fengjian", "退出成功");
+        Toast.makeText(mActivity,message, Toast.LENGTH_SHORT).show();
 //            MyApp.getInstance().exit();
-            if (!(mActivity instanceof MainActivity)) {
-                mActivity.finish();
-            }
-            MySharedPreferences.getInstance().setString(TOKEN, "");
-            MySharedPreferences.getInstance().setString(TOCOID, "");
-            MyApp.getInstance().mCoinList.clear();
-            MyApp.getInstance().mPayCoinList.clear();
-            MyApp.getInstance().mOtcCoinList.clear();
-            MyApp.getInstance().mBetCoinList.clear();
-            Intent intent = new Intent(mActivity, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra("whence", 2);
-            mActivity.startActivity(intent);
-        }
-    };
+        WsConnection.getInstance().goMainActivity();
+    }
 }

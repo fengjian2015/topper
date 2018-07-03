@@ -208,6 +208,7 @@ public class CreateGroupRoomActivity extends BaseActivity {
         info.setTime(time);
         info.setCreateTime(UtilTool.createChatCreatTime());
         info.setMessage("加入群聊");
+        info.setCreateTime(UtilTool.createChatCreatTime());
         mgr.addConversation(info);
     }
 

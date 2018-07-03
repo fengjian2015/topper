@@ -100,6 +100,7 @@
             android:layout_marginTop="@dimen/y10"
             android:text="@string/red_packet_hint"
             android:textColor="@color/blue2"
+            android:visibility="gone"
             android:textSize="@dimen/x30"/>
 
     </LinearLayout>

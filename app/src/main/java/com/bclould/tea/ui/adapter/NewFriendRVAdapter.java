@@ -40,13 +40,11 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
     private final Context mContext;
     private final List<AddRequestInfo> mAddRequestInfos;
     private final DBManager mMgr;
-    private final List<String> mImageList;
 
-    public NewFriendRVAdapter(Context context, List<AddRequestInfo> addRequestInfos, DBManager mgr, List<String> imageList) {
+    public NewFriendRVAdapter(Context context, List<AddRequestInfo> addRequestInfos, DBManager mgr) {
         mContext = context;
         mAddRequestInfos = addRequestInfos;
         mMgr = mgr;
-        mImageList = imageList;
     }
 
     @Override
@@ -62,8 +60,8 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        if (mAddRequestInfos.size() != 0 && mImageList.size() != 0)
-            viewHolder.setData(mAddRequestInfos.get(position), mImageList.get(position));
+        if (mAddRequestInfos.size() != 0 )
+            viewHolder.setData(mAddRequestInfos.get(position));
     }
 
     @Override
@@ -124,21 +122,33 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
             });
         }
 
-        public void setData(AddRequestInfo addRequestInfo, String url) {
+        public void setData(AddRequestInfo addRequestInfo) {
             mBtnConsent.setVisibility(View.VISIBLE);
             mAddRequestInfo = addRequestInfo;
-            if (url.isEmpty()) {
+            if (addRequestInfo.getUrl().isEmpty()) {
                 UtilTool.setCircleImg(mContext, R.mipmap.img_nfriend_headshot1, mIvTouxiang);
             } else {
-                UtilTool.setCircleImg(mContext, url, mIvTouxiang);
+                UtilTool.setCircleImg(mContext, addRequestInfo.getUrl(), mIvTouxiang);
             }
             mName.setText(addRequestInfo.getUserName());
             if (addRequestInfo.getType() == 1) {
+                if(addRequestInfo.getUser().equals(UtilTool.getTocoId())){
+                    mBtnConsent.setEnabled(false);
+                    mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                    mBtnConsent.setText(mContext.getString(R.string.waiting_agreed));
+                    mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.gray));
+                }else{
+                    mBtnConsent.setEnabled(true);
+                    mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.green));
+                    mBtnConsent.setText(mContext.getString(R.string.consent));
+                    mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.white));
+                }
+            }else if(addRequestInfo.getType() == 2){
                 mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                 mBtnConsent.setText(mContext.getString(R.string.agrd_agreed));
                 mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.gray));
                 mBtnConsent.setEnabled(false);
-            }else if(addRequestInfo.getType() == 2){
+            }else{
                 mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                 mBtnConsent.setText(mContext.getString(R.string.denied));
                 mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.gray));
