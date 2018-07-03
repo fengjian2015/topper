@@ -105,7 +105,6 @@
         </activity>
         <activity
             android:name=".ui.activity.LoginActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"
             android:windowSoftInputMode="stateHidden|adjustPan|adjustResize" />
@@ -358,9 +357,6 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 功能设置页面 -->
-        <activity
-            android:name=".ui.activity.FunctionSetActivity"
-            android:screenOrientation="portrait" />
 
         <!-- 新的好友页面 -->
         <activity
@@ -805,6 +801,7 @@
         <!-- 初始頁 -->
         <activity
             android:name=".ui.activity.InitialActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />

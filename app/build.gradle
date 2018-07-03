@@ -7,6 +7,7 @@ android {
             keyPassword '123456'
             storeFile file('D:/AndroidStudio/Project/TocoTalk/app/src/main/assets/KeyStore.jks')
             storePassword '123456'
+            v2SigningEnabled false
         }*/
     }
     compileSdkVersion 26
@@ -36,8 +37,8 @@ android {
         applicationId "com.bclould.tea"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 59
-        versionName "0.59"
+        versionCode 60
+        versionName "0.60"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {

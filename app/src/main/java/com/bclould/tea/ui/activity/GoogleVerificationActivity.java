@@ -218,8 +218,6 @@ public class GoogleVerificationActivity extends BaseActivity {
                 showHintDialog();
                 break;
             case R.id.tv_download:
-                http:
-//qufenqi-static.oss-cn-hangzhou.aliyuncs.com/mobile/android/Authenticator_49.apk
                 showDialog();
                 break;
             case R.id.btn_copy:

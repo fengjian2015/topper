@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -32,6 +31,7 @@ public class InitialActivity extends LoginBaseActivity {
     Button mBtnRegister;
     @Bind(R.id.tv_version)
     TextView mTvVersion;
+    private Thread mThread;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,9 +45,15 @@ public class InitialActivity extends LoginBaseActivity {
     private void init() {
         String versionCode = UtilTool.getVersionCode(this);
         mTvVersion.setText("V" + versionCode);
-        WsConnection.getInstance().logoutService(this);
-
+        mThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                WsConnection.getInstance().logoutService(InitialActivity.this);
+            }
+        });
+        mThread.start();
     }
+
 
     @OnClick({R.id.btn_login, R.id.btn_register})
     public void onViewClicked(View view) {
@@ -59,5 +65,12 @@ public class InitialActivity extends LoginBaseActivity {
                 startActivity(new Intent(this, RegisterActivity.class));
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+        mThread.interrupt();
     }
 }

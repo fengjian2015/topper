@@ -832,10 +832,10 @@ public class GuessDetailsActivity extends BaseActivity {
                 break;
             case R.id.btn_confirm:
                 if (!mEtBetCount.getText().toString().isEmpty()) {
-                    if (Integer.parseInt(mEtBetCount.getText().toString()) <= 5) {
+                    if (Integer.parseInt(mEtBetCount.getText().toString()) <= mOver_count_num) {
                         setBetCount();
                     } else {
-                        Toast.makeText(this, getString(R.string.bet_hint2), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.bet_zuiduo_cishu), Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(this, getString(R.string.toast_guess_count_null), Toast.LENGTH_SHORT).show();
@@ -1088,7 +1088,7 @@ public class GuessDetailsActivity extends BaseActivity {
                 }
             } else {
                 if (counti == mOver_count_num) {
-                    Toast.makeText(this, getString(R.string.toast_count_max), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.bet_zuiduo_cishu), Toast.LENGTH_SHORT).show();
                 } else {
                     counti++;
                     mEtBetCount.setText(counti + "");

@@ -126,50 +126,52 @@ public class NewsFragment extends Fragment implements OnBannerListener {
         mNewsNoticePresenter.getNewsList(mPage, mPageSize, new NewsNoticePresenter.CallBack() {
             @Override
             public void send(List<NewsListInfo.ListsBean> lists, List<NewsListInfo.TopBean> top) {
-                if (type == PULL_DOWN) {
-                    mRefreshLayout.finishRefresh();
-                }else{
-                    mRefreshLayout.finishLoadMore();
-                }
-                if (lists != null || top != null) {
-                    if (lists.size() != 0 || mNewsList.size() != 0 || top.size() != 0 || mTopList.size() != 0) {
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        mLlNoData.setVisibility(View.GONE);
-                        mLlError.setVisibility(View.GONE);
-                        isFinish = true;
-                        if (type == PULL_UP) {
-                            if (lists.size() == mPageSize) {
-                                mPage++;
-                                mNewsList.addAll(lists);
-                                mNewsRVAdapter.notifyDataSetChanged();
-                            } else {
-                                if (end == 0) {
-                                    end++;
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    if (type == PULL_DOWN) {
+                        mRefreshLayout.finishRefresh();
+                    }else{
+                        mRefreshLayout.finishLoadMore();
+                    }
+                    if (lists != null || top != null) {
+                        if (lists.size() != 0 || mNewsList.size() != 0 || top.size() != 0 || mTopList.size() != 0) {
+                            mRecyclerView.setVisibility(View.VISIBLE);
+                            mLlNoData.setVisibility(View.GONE);
+                            mLlError.setVisibility(View.GONE);
+                            isFinish = true;
+                            if (type == PULL_UP) {
+                                if (lists.size() == mPageSize) {
+                                    mPage++;
                                     mNewsList.addAll(lists);
                                     mNewsRVAdapter.notifyDataSetChanged();
+                                } else {
+                                    if (end == 0) {
+                                        end++;
+                                        mNewsList.addAll(lists);
+                                        mNewsRVAdapter.notifyDataSetChanged();
+                                    }
                                 }
+                            } else {
+                                if (mPage == 1) {
+                                    mPage++;
+                                }
+                                mNewsList.clear();
+                                mTopList.clear();
+                                mNewsList.addAll(lists);
+                                mTopList.addAll(top);
+                                mNewsRVAdapter.notifyDataSetChanged();
+                                List<String> imgList = new ArrayList<>();
+                                List<String> titleList = new ArrayList<>();
+                                for (NewsListInfo.TopBean info : top) {
+                                    imgList.add(info.getIndex_pic());
+                                    titleList.add(info.getTitle());
+                                }
+                                initBanner(imgList, titleList);
                             }
                         } else {
-                            if (mPage == 1) {
-                                mPage++;
-                            }
-                            mNewsList.clear();
-                            mTopList.clear();
-                            mNewsList.addAll(lists);
-                            mTopList.addAll(top);
-                            mNewsRVAdapter.notifyDataSetChanged();
-                            List<String> imgList = new ArrayList<>();
-                            List<String> titleList = new ArrayList<>();
-                            for (NewsListInfo.TopBean info : top) {
-                                imgList.add(info.getIndex_pic());
-                                titleList.add(info.getTitle());
-                            }
-                            initBanner(imgList, titleList);
+                            mRecyclerView.setVisibility(View.GONE);
+                            mLlNoData.setVisibility(View.VISIBLE);
+                            mLlError.setVisibility(View.GONE);
                         }
-                    } else {
-                        mRecyclerView.setVisibility(View.GONE);
-                        mLlNoData.setVisibility(View.VISIBLE);
-                        mLlError.setVisibility(View.GONE);
                     }
                 }
             }

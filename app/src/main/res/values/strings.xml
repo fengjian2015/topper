@@ -685,7 +685,7 @@
     <string name="dengdai_kj">等待開獎</string>
     <string name="touzhuzhong">投注中</string>
     <string name="yikaijinag">已開獎</string>
-    <string name="bet_zuiduo_cishu">最多投注5次</string>
+    <string name="bet_zuiduo_cishu">最多投5注</string>
     <string name="sum_jiangjin_chi">總獎金池已滿</string>
     <string name="shijidao_transfer">實際到賬</string>
     <string name="shijikou_coin">實際扣幣</string>

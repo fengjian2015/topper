@@ -4,5 +4,11 @@
         name="images"
         path="images/"/>
 
-    <external-path name="ext_root" path="/" />
+    <external-path
+        name="ext_root"
+        path="/"/>
+
+    <paths>
+        <external-path path="" name="download"/>
+    </paths>
 </resources>

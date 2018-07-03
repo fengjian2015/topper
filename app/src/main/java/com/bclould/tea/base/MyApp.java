@@ -79,6 +79,7 @@ public class MyApp extends Application {
 
     private void createDir() {
         File file = new File(Constants.PUBLICDIR);
+
         if (!file.exists()) {
             file.mkdirs();
         }

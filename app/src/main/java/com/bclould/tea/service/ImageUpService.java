@@ -53,6 +53,7 @@ public class ImageUpService extends Service {
     private String mLocation;
     private OSSAsyncTask<PutObjectResult> mTask;
     private OSSClient mOssClient;
+    private Thread mThread;
 
     @Nullable
     @Override
@@ -125,7 +126,7 @@ public class ImageUpService extends Service {
                     upVoide(keyCompress, newCompressImg, false, mOssClient);
                     final String key = UtilTool.getUserId() + UtilTool.createtFileName() + UtilTool.getPostfix2(file.getName());
                     if (UtilTool.getFolderSize(file) > (1048576 * 5) && UtilTool.getFolderSize(file) < (1048576 * 20)) {
-                        new Thread(new Runnable() {
+                        mThread = new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 try {
@@ -140,7 +141,8 @@ public class ImageUpService extends Service {
                                 } catch (URISyntaxException e) {
                                 }
                             }
-                        }).start();
+                        });
+                        mThread.start();
                     } else if (UtilTool.getFolderSize(file) > (1048576 * 20)) {
                         Toast.makeText(this, getString(R.string.video_big_hint), Toast.LENGTH_SHORT).show();
                     } else {
@@ -271,6 +273,9 @@ public class ImageUpService extends Service {
         super.onDestroy();
         if (mTask != null) {
             mTask.cancel();
+        }
+        if (mThread != null) {
+            mThread.interrupt();
         }
         mKeyList = "";
         mkeyCompressList = "";

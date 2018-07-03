@@ -56,6 +56,7 @@
             android:layout_marginTop="@dimen/y20"
             android:singleLine="true"
             android:maxLength="10"
+            android:textSize="@dimen/x28"
             android:layout_toLeftOf="@+id/tv_create"
             />
         <TextView
