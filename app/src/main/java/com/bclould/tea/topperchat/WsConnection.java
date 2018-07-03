@@ -33,11 +33,10 @@ import com.koushikdutta.async.http.WebSocket;
 
 import org.greenrobot.eventbus.EventBus;
 import org.msgpack.jackson.dataformat.MessagePackFactory;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static com.bclould.tea.Presenter.LoginPresenter.TOKEN;
 import static com.bclould.tea.topperchat.WsContans.CONTENT;

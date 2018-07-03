@@ -131,7 +131,6 @@ public class LoginPresenter {
                             LoginActivity activity = (LoginActivity) mContext;
                             EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.refresh_the_interface)));
                             activity.finish();
-                            Toast.makeText(mContext, mContext.getString(R.string.toast_succeed), Toast.LENGTH_SHORT).show();
                         }
                     }
 

@@ -8,15 +8,21 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.annotation.RequiresApi;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 
-import com.bclould.tea.R;
+import com.bclould.tea.utils.UtilTool;
+
+import java.io.File;
 
 /**
  * Created by lenovo on 2018/2/1 0001.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class DownLoadApk {
     public static final String TAG = DownLoadApk.class.getSimpleName();
 
@@ -50,21 +56,29 @@ public class DownLoadApk {
     }
 
     private static void start(Context context, String url, String title, String appName) {
+        UtilTool.Log("更新", appName);
         FileDownloadManager manager = FileDownloadManager.getInstance(context);
-        long id = manager.startDownload(url,
-                title, context.getString(R.string.download_completes_open), appName);
+        DownloadManager downloadManager = manager.getDownloadManager();
+        Uri uri = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        request.setTitle(title);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, appName + ".apk");
+        long id = downloadManager.enqueue(request);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().putLong(DownloadManager.EXTRA_DOWNLOAD_ID, id).commit();
         Log.d(TAG, "apk start download " + id);
     }
 
     public static void startInstall(Context context, Uri uri) {
+        UtilTool.Log("更新", uri.toString());
         if (Build.VERSION.SDK_INT >= 24) {
+            String path = uri.getPath();
+            File file= new File(path);
+            Uri apkUri = FileProvider.getUriForFile(context, "com.bclould.tea.provider", file);//在AndroidManifest中的android:authorities值
             Intent install = new Intent(Intent.ACTION_VIEW);
-            install.addCategory(Intent.CATEGORY_DEFAULT);
             install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            install.setDataAndType(uri, "application/vnd.android.package-archive");
+            install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//添加这一句表示对目标应用临时授权该Uri所代表的文件
+            install.setDataAndType(apkUri, "application/vnd.android.package-archive");
             context.startActivity(install);
         } else {
             Intent intent = new Intent();
