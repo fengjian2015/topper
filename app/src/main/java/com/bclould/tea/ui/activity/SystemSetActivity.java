@@ -18,14 +18,9 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.Constants;
-import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 
@@ -45,10 +40,6 @@ public class SystemSetActivity extends BaseActivity {
     public static final String PRIVATE = "private";
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.iv_concern_we)
-    ImageView mIvConcernWe;
-    @Bind(R.id.rl_concern_we)
-    RelativeLayout mRlConcernWe;
     @Bind(R.id.iv_inform)
     ImageView mIvInform;
     @Bind(R.id.tv_inform)
@@ -75,46 +66,27 @@ public class SystemSetActivity extends BaseActivity {
     ImageView mIvCache;
     @Bind(R.id.tv_cache)
     TextView mTvCache;
+    @Bind(R.id.tv_cache_count)
+    TextView mTvCacheCount;
     @Bind(R.id.rl_cache)
     RelativeLayout mRlCache;
     @Bind(R.id.btn_brak)
     Button mBtnBrak;
-    @Bind(R.id.tv_cache_count)
-    TextView mTvCacheCount;
-    @Bind(R.id.tv)
-    TextView mTv;
-    @Bind(R.id.tv_new_update)
-    TextView mTvNewUpdate;
+
     private long mFolderSize;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_system_set);
-        if (!EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().register(this);
         ButterKnife.bind(this);
-        if (!MySharedPreferences.getInstance().getString(Constants.NEW_APK_URL).isEmpty()) {
-            mTvNewUpdate.setVisibility(View.VISIBLE);
-        } else {
-            mTvNewUpdate.setVisibility(View.GONE);
-        }
         MyApp.getInstance().addActivity(this);
         init();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEvent event) {
-        String msg = event.getMsg();
-        if (msg.equals(getString(R.string.check_new_version))) {
-            mTvNewUpdate.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
         ButterKnife.unbind(this);
     }
 
@@ -174,7 +146,7 @@ public class SystemSetActivity extends BaseActivity {
     boolean isOnOff = false;
     boolean isOnOff2 = false;
 
-    @OnClick({R.id.btn_brak, R.id.bark, R.id.rl_concern_we, R.id.rl_inform, R.id.rl_private, R.id.rl_help, R.id.rl_cache})
+    @OnClick({R.id.btn_brak, R.id.bark, R.id.rl_inform, R.id.rl_private, R.id.rl_help, R.id.rl_cache})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_brak:
@@ -182,9 +154,6 @@ public class SystemSetActivity extends BaseActivity {
                 break;
             case R.id.bark:
                 finish();
-                break;
-            case R.id.rl_concern_we:
-                startActivity(new Intent(this, GuanYuMeActivity.class));
                 break;
             case R.id.rl_inform:
                 isOnOff = !isOnOff;

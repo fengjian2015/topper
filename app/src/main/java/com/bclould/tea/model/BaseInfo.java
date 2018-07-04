@@ -71,6 +71,24 @@ public class BaseInfo {
         private String name;
         private String merchant_name;
         private String toco_id;
+        private int fingerprint;
+        private int gesture;
+
+        public int getFingerprint() {
+            return fingerprint;
+        }
+
+        public void setFingerprint(int fingerprint) {
+            this.fingerprint = fingerprint;
+        }
+
+        public int getGesture() {
+            return gesture;
+        }
+
+        public void setGesture(int gesture) {
+            this.gesture = gesture;
+        }
 
         public String getToco_id() {
             return toco_id;

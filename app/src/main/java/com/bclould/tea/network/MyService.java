@@ -1231,4 +1231,21 @@ public interface MyService {
             @Field("group_id") int group_id,
             @Field("bulletin") String bulletin
     );
+    //設置手勢密碼
+    @FormUrlEncoded
+    @POST("api/user/setGesture")
+    Observable<BaseInfo> setGesture(
+            @Header("Authorization") String token,
+            @Field("gesture") int gesture,
+            @Field("second_password") String second_password
+    );
+
+    //設置指紋密碼
+    @FormUrlEncoded
+    @POST("api/user/setFingerprint")
+    Observable<BaseInfo> setFingerprint(
+            @Header("Authorization") String token,
+            @Field("fingerprint") int fingerprint,
+            @Field("second_password") String second_password
+    );
 }

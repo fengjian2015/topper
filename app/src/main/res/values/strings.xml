@@ -429,7 +429,7 @@
     <string name="toast_contact_information">聯繫方式不能為空</string>
     <string name="toast_expect_coin">期望幣種不能為空</string>
     <string name="copy_succeed">複製成功</string>
-    <string name="toast_after_time">不能快速點擊</string>
+    <string name="toast_after_time">禁止快速點擊</string>
     <string name="send_succeed">發送成功</string>
     <string name="download_google_verify">確定下載谷歌驗證器？</string>
     <string name="location">位置</string>
@@ -813,12 +813,12 @@
     <string name="number_pw">數字密碼</string>
     <string name="nonsupport_fingerprint">該手機不支持指紋密碼</string>
     <string name="no_set_fingerprint">請先在系統設置中錄入指紋</string>
-    <string name="check_fingerprint_hint">請驗證指紋已開通指紋支付</string>
+    <string name="check_fingerprint_hint">請驗證指紋</string>
     <string name="insecurity">当前设备未处于安全保护中</string>
-    <string name="check_fingerprint_error">指紋校驗失敗，請重試</string>
-    <string name="close_fingerprint_hint">是否關閉指紋支付?</string>
-    <string name="check_fingerprint_succeed">校驗指紋成功</string>
-    <string name="open_fingerprint_succeed">開通指紋支付成功</string>
+    <string name="check_fingerprint_error">指紋驗證失敗，請重試</string>
+    <string name="close_fingerprint_hint">是否關閉指紋驗證?</string>
+    <string name="check_fingerprint_succeed">驗證指紋成功</string>
+    <string name="open_fingerprint_succeed">開通指紋驗證成功</string>
     <string name="finger_move_fast">手指移動太快，請重試</string>
     <string name="network_break">網絡已斷開</string>
     <string name="network_break_click_update">請鏈接網絡后，點擊空白刷新</string>
@@ -995,4 +995,7 @@
     <string name="network_image">網絡圖庫</string>
     <string name="modify_group_announcement">修改群公告</string>
     <string name="only_owner_change_group_announcement">只有群主才能修改群名稱</string>
+    <string name="set_gesture">設置手勢密碼</string>
+    <string name="app_look">應用加鎖</string>
+    <string name="set_app_look">設置應用鎖</string>
 </resources>

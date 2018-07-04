@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.ui.activity.GuanYuMeActivity;
 import com.bclould.tea.ui.activity.PersonalDetailsActivity;
 import com.bclould.tea.ui.activity.SystemSetActivity;
 import com.bclould.tea.ui.activity.UserSafetyActivity;
@@ -55,10 +56,16 @@ public class MyFragment extends Fragment {
     ImageView mIv3;
     @Bind(R.id.tv)
     TextView mTv;
-    @Bind(R.id.tv_new_update)
-    TextView mTvNewUpdate;
     @Bind(R.id.rl_system_set)
     RelativeLayout mRlSystemSet;
+    @Bind(R.id.iv_concern_we)
+    ImageView mIvConcernWe;
+    @Bind(R.id.tv2)
+    TextView mTv2;
+    @Bind(R.id.tv_new_update)
+    TextView mTvNewUpdate;
+    @Bind(R.id.rl_concern_we)
+    RelativeLayout mRlConcernWe;
 
 
     private DBManager mMgr;
@@ -112,9 +119,6 @@ public class MyFragment extends Fragment {
         mTvName.setText(UtilTool.getUser());
         mTvTocoid.setText(getString(R.string.id) + UtilTool.getTocoId());
         mMgr = new DBManager(getContext());
-        /*Bitmap bitmap = UtilTool.getImage(mMgr, UtilTool.getTocoId(), getContext());
-        if (bitmap != null)
-            mIvTouxiang.setImageBitmap(bitmap);*/
         UtilTool.getImage(mMgr, UtilTool.getTocoId(), getContext(), mIvTouxiang);
     }
 
@@ -124,7 +128,7 @@ public class MyFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.rl_personal_data, R.id.rl_security_center, R.id.rl_system_set})
+    @OnClick({R.id.rl_personal_data, R.id.rl_security_center, R.id.rl_system_set, R.id.rl_concern_we})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_personal_data:
@@ -135,6 +139,9 @@ public class MyFragment extends Fragment {
                 break;
             case R.id.rl_system_set:
                 startActivity(new Intent(getActivity(), SystemSetActivity.class));
+                break;
+            case R.id.rl_concern_we:
+                startActivity(new Intent(getActivity(), GuanYuMeActivity.class));
                 break;
         }
     }

@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
@@ -28,7 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bclould.tea.Presenter.BankCardPresenter;
-import com.bclould.tea.Presenter.CurrencyInOutPresenter;
+import com.bclould.tea.Presenter.UpdateLogPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
@@ -46,6 +47,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tea.Presenter.LoginPresenter.FINGERPRINT_PW;
 import static com.bclould.tea.R.style.BottomDialog;
 
 /**
@@ -54,12 +56,9 @@ import static com.bclould.tea.R.style.BottomDialog;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class PayPwSelectorActivity extends BaseActivity {
+
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.iv_login_password)
-    ImageView mIvLoginPassword;
-    @Bind(R.id.rl_number_pw)
-    RelativeLayout mRlNumberPw;
     @Bind(R.id.iv_gesture)
     ImageView mIvGesture;
     @Bind(R.id.tv_gesture)
@@ -76,8 +75,8 @@ public class PayPwSelectorActivity extends BaseActivity {
     ImageView mOnOffFingerprint;
     @Bind(R.id.rl_fingerprint_pw)
     RelativeLayout mRlFingerprintPw;
-    private String GESTURE_PW = "gesture_pw";
-    private String FINGERPRINT_PW = "fingerprint_pw";
+    private String GESTURE_PW_SELE = "gesture_pw_sele";
+    private String FINGERPRINT_PW_SELE = "fingerprint_pw_sele";
     private ArrayList<Map<String, String>> valueList;
     private Animation mEnterAnim;
     private Animation mExitAnim;
@@ -85,6 +84,7 @@ public class PayPwSelectorActivity extends BaseActivity {
     private GridView mGridView;
     private MNPasswordEditText mEtPassword;
     private BankCardPresenter mBankCardPresenter;
+    private UpdateLogPresenter mUpdateLogPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,39 +92,37 @@ public class PayPwSelectorActivity extends BaseActivity {
         setContentView(R.layout.activity_pay_pw_selector);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
+        mUpdateLogPresenter = new UpdateLogPresenter(this);
         initSp();
     }
 
     private void initSp() {
-        isFingerprint = MySharedPreferences.getInstance().getBoolean(FINGERPRINT_PW);
+        isFingerprint = MySharedPreferences.getInstance().getBoolean(FINGERPRINT_PW_SELE);
         mOnOffFingerprint.setSelected(isFingerprint);
-        isGesture = MySharedPreferences.getInstance().getBoolean(GESTURE_PW);
+        isGesture = MySharedPreferences.getInstance().getBoolean(GESTURE_PW_SELE);
         mOnOffGesture.setSelected(isGesture);
     }
 
     boolean isGesture = false;
     boolean isFingerprint = false;
 
-    @OnClick({R.id.bark, R.id.rl_number_pw, R.id.rl_gesture_pw, R.id.rl_fingerprint_pw})
+    @OnClick({R.id.bark, R.id.rl_gesture_pw, R.id.rl_fingerprint_pw})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
-                break;
-            case R.id.rl_number_pw:
-                startActivity(new Intent(this, PayPasswordActivity.class));
                 break;
             case R.id.rl_gesture_pw:
                 Toast.makeText(this, "開發當中，敬請期待", Toast.LENGTH_SHORT).show();
 //                setGesturePw();
                 break;
             case R.id.rl_fingerprint_pw:
-                Toast.makeText(this, "開發當中，敬請期待", Toast.LENGTH_SHORT).show();
-                /*if (isFingerprint) {
+//                Toast.makeText(this, "開發當中，敬請期待", Toast.LENGTH_SHORT).show();
+                if (isFingerprint) {
                     showCancelFingerprintDialog();
                 } else {
-                    setFingerprintPw();
-                }*/
+                    checkFingerprint();
+                }
                 break;
         }
     }
@@ -144,10 +142,8 @@ public class PayPwSelectorActivity extends BaseActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                isFingerprint = !isFingerprint;
-                mOnOffFingerprint.setSelected(isFingerprint);
-                MySharedPreferences.getInstance().setBoolean(FINGERPRINT_PW, isFingerprint);
                 deleteCacheDialog.dismiss();
+                showPWDialog(0);
             }
         });
     }
@@ -174,7 +170,7 @@ public class PayPwSelectorActivity extends BaseActivity {
         });
     }
 
-    private void setFingerprintPw() {
+    private void checkFingerprint() {
 
         FingerprintUtil.callFingerPrint(new FingerprintUtil.OnCallBackListenr() {
 
@@ -233,6 +229,7 @@ public class PayPwSelectorActivity extends BaseActivity {
                 Toast.makeText(PayPwSelectorActivity.this, getString(R.string.finger_move_fast), Toast.LENGTH_SHORT).show();
             }
 
+            @SuppressLint("HandlerLeak")
             @Override
             public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
                 if (mDeleteCacheDialog != null && mDeleteCacheDialog.isShowing()) {
@@ -241,7 +238,7 @@ public class PayPwSelectorActivity extends BaseActivity {
                     new Handler() {
                         public void handleMessage(Message msg) {
                             mDeleteCacheDialog.dismiss();
-                            showPWDialog();
+                            showPWDialog(1);
                         }
                     }.sendEmptyMessageDelayed(0, 1500);
                 }
@@ -249,7 +246,7 @@ public class PayPwSelectorActivity extends BaseActivity {
         });
     }
 
-    private void showPWDialog() {
+    private void showPWDialog(int type) {
         mEnterAnim = AnimationUtils.loadAnimation(this, R.anim.dialog_enter);
         mExitAnim = AnimationUtils.loadAnimation(this, R.anim.dialog_exit);
         mRedDialog = new Dialog(this, R.style.BottomDialog2);
@@ -269,10 +266,10 @@ public class PayPwSelectorActivity extends BaseActivity {
         mRedDialog.show();
         mRedDialog.setCancelable(false);
         mRedDialog.setCanceledOnTouchOutside(false);
-        initDialog();
+        initDialog(type);
     }
 
-    private void initDialog() {
+    private void initDialog(final int type) {
         TextView coin = (TextView) mRedDialog.findViewById(R.id.tv_coin);
         coin.setVisibility(View.GONE);
         TextView countCoin = (TextView) mRedDialog.findViewById(R.id.tv_count_coin);
@@ -330,15 +327,27 @@ public class PayPwSelectorActivity extends BaseActivity {
                 if (password.length() == 6) {
                     mRedDialog.dismiss();
                     mEtPassword.setText("");
-                    check(password);
+                    setFingerprint(password, type);
                 }
             }
         });
     }
 
-    private void check(String password) {
-        CurrencyInOutPresenter currencyInOutPresenter = new CurrencyInOutPresenter(this);
-        currencyInOutPresenter.check(password);
+    private void setFingerprint(String password, int status) {
+        mUpdateLogPresenter.setFingerprint(password, status, new UpdateLogPresenter.CallBack2() {
+            @Override
+            public void send(int status) {
+                if (status == 0) {
+                    isFingerprint = false;
+                } else {
+                    isFingerprint = true;
+                    Toast.makeText(PayPwSelectorActivity.this, getString(R.string.open_fingerprint_succeed), Toast.LENGTH_SHORT).show();
+                }
+                mOnOffFingerprint.setSelected(isFingerprint);
+                MySharedPreferences.getInstance().setInteger(FINGERPRINT_PW, status);
+                MySharedPreferences.getInstance().setBoolean(FINGERPRINT_PW_SELE, isFingerprint);
+            }
+        });
     }
 
     private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
@@ -385,12 +394,5 @@ public class PayPwSelectorActivity extends BaseActivity {
         /*isGesture = !isGesture;
         MySharedPreferences.getInstance().setBoolean(GESTURE_PW, isGesture);
         mOnOffGesture.setSelected(isGesture);*/
-    }
-
-    public void setData() {
-        Toast.makeText(this, getString(R.string.open_fingerprint_succeed), Toast.LENGTH_SHORT).show();
-        isFingerprint = !isFingerprint;
-        mOnOffFingerprint.setSelected(isFingerprint);
-        MySharedPreferences.getInstance().setBoolean(FINGERPRINT_PW, isFingerprint);
     }
 }

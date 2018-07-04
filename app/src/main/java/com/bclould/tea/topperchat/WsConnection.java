@@ -138,7 +138,6 @@ public class WsConnection {
 
     public synchronized void login() throws Exception {
         if(StringUtils.isEmpty(UtilTool.getTocoId())){
-            SocketListener.getInstance(mContext).logout();
             goMainActivity();
         }
         if(isLogin||isOutConnection||isLoginConnection){

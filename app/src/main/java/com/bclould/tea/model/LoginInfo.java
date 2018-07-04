@@ -61,6 +61,33 @@ public class LoginInfo {
         private String currency;
         private String xmpp;
         private String toco_id;
+        private int fingerprint;
+        private int gesture;
+        private int is_update;
+
+        public int getFingerprint() {
+            return fingerprint;
+        }
+
+        public void setFingerprint(int fingerprint) {
+            this.fingerprint = fingerprint;
+        }
+
+        public int getGesture() {
+            return gesture;
+        }
+
+        public void setGesture(int gesture) {
+            this.gesture = gesture;
+        }
+
+        public int getIs_update() {
+            return is_update;
+        }
+
+        public void setIs_update(int is_update) {
+            this.is_update = is_update;
+        }
 
         public String getToco_id() {
             return toco_id;

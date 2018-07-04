@@ -123,7 +123,7 @@ public class RewardActivity extends BaseActivity {
         MyApp.getInstance().mRewardCoinList.clear();
         if (MyApp.getInstance().mRewardCoinList.size() == 0) {
             CoinPresenter coinPresenter = new CoinPresenter(this);
-            coinPresenter.coinLists("can_reward", new CoinPresenter.CallBack() {
+            coinPresenter.coinLists("reward", new CoinPresenter.CallBack() {
                 @Override
                 public void send(List<CoinListInfo.DataBean> data) {
                     if (ActivityUtil.isActivityOnTop(RewardActivity.this)) {
@@ -366,7 +366,7 @@ public class RewardActivity extends BaseActivity {
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new BottomDialogRVAdapter4(this, MyApp.getInstance().mPayCoinList));
+        recyclerView.setAdapter(new BottomDialogRVAdapter4(this, MyApp.getInstance().mRewardCoinList));
         addCoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

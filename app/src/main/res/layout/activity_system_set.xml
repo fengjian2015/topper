@@ -31,64 +31,7 @@
     <TextView
         style="@style/HCutOffRule"/>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
 
-        <RelativeLayout
-            android:id="@+id/rl_concern_we"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120"
-            android:visibility="visible">
-
-            <ImageView
-                android:id="@+id/iv_concern_we"
-                android:layout_width="@dimen/x40"
-                android:layout_height="@dimen/x40"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:src="@mipmap/iocn_aboutus"/>
-
-            <TextView
-                android:id="@+id/tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/iv_concern_we"
-                android:text="@string/guanyu_me"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
-
-            <TextView
-                android:id="@+id/tv_new_update"
-                android:layout_width="@dimen/x80"
-                android:layout_height="@dimen/y40"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/tv"
-                android:background="@drawable/bg_new_update"
-                android:gravity="center"
-                android:text="New"
-                android:textColor="@color/white"
-                android:textSize="@dimen/x28"
-                android:visibility="gone"/>
-
-            <ImageView
-                android:layout_width="@dimen/x15"
-                android:layout_height="@dimen/x25"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x25"
-                android:src="@mipmap/iocn_person_turninto"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
         android:layout_width="wrap_content"
