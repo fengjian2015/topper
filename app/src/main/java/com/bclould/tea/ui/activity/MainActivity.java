@@ -5,8 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,6 +25,7 @@ import com.bclould.tea.Presenter.CoinPresenter;
 import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.Presenter.IndividualDetailsPresenter;
 import com.bclould.tea.Presenter.PersonalDetailsPresenter;
+import com.bclould.tea.Presenter.UpdateLogPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.FragmentFactory;
@@ -35,17 +34,13 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.AuatarListInfo;
-import com.bclould.tea.model.GitHubInfo;
 import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.IndividualInfo;
-import com.bclould.tea.network.DownLoadApk;
-import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.service.IMCoreService;
 import com.bclould.tea.topperchat.AddFriendReceiver;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.fragment.DiscoverFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
-import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
@@ -63,10 +58,8 @@ import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+
+import static com.bclould.tea.Presenter.LoginPresenter.IS_UPDATE;
 
 
 @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
@@ -139,6 +132,10 @@ public class MainActivity extends BaseActivity {
         int whence = intent.getIntExtra("whence", 0);
         initRelogin();
         refreshNumber();
+        if (MySharedPreferences.getInstance().getInteger(IS_UPDATE) == 1) {
+            //检测版本更新
+            checkVersion();
+        }
         if (1 == whence) {
             DiscoverFragment discoverFragment = DiscoverFragment.getInstance();
             discoverFragment.initInterface();
@@ -170,16 +167,16 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void refreshNumber(){
-        int numer=mMgr.queryConversationNumber();
-        if(numer>0&&!WsConnection.getInstance().getOutConnection()){
+    private void refreshNumber() {
+        int numer = mMgr.queryConversationNumber();
+        if (numer > 0 && !WsConnection.getInstance().getOutConnection()) {
             mNumber.setVisibility(View.VISIBLE);
-            if(numer>=100){
+            if (numer >= 100) {
                 mNumber.setText("99+");
-            }else{
-                mNumber.setText(numer+"");
+            } else {
+                mNumber.setText(numer + "");
             }
-        }else{
+        } else {
             mNumber.setVisibility(View.GONE);
         }
     }
@@ -290,8 +287,10 @@ public class MainActivity extends BaseActivity {
         UtilTool.getPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, getString(R.string.jurisdiction_store_hint));
         UtilTool.getPermissions(this, Manifest.permission.CAMERA, "", getString(R.string.jurisdiction_camera_hint));
         UtilTool.getPermissions(this, Manifest.permission.RECORD_AUDIO, "", getString(R.string.jurisdiction_voice_hint));
-        //检测版本更新
-        checkVersion();
+        if (MySharedPreferences.getInstance().getInteger(IS_UPDATE) == 1) {
+            //检测版本更新
+            checkVersion();
+        }
         refreshNumber();
     }
 
@@ -302,9 +301,11 @@ public class MainActivity extends BaseActivity {
             public void send(GroupInfo baseInfo) {
                 // TODO: 2018/6/11 獲取群聊房間塞入數據庫
             }
+
             @Override
             public void error() {
             }
+
             @Override
             public void finishRefresh() {
             }
@@ -359,123 +360,12 @@ public class MainActivity extends BaseActivity {
 
     //检测版本更新
     private void checkVersion() {
-        //判断是否开启网络
-            RetrofitUtil.getInstance(this)
-                    .getServer()
-                    .checkVersion(Constants.VERSION_UPDATE_URL)//githua获取版本更新
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                    .subscribe(new Observer<GitHubInfo>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-
-                        }
-
-                        @Override
-                        public void onNext(GitHubInfo baseInfo) {
-                            //判断是否需要更新
-                            float version = Float.parseFloat(UtilTool.getVersionCode(MainActivity.this));
-                            String tag_version = "";
-                            if (baseInfo.getTag_name().contains("v")) {
-                                tag_version = baseInfo.getTag_name().replace("v", "");
-                            } else {
-                                tag_version = baseInfo.getTag_name();
-                            }
-                            float tag = Float.parseFloat(tag_version);
-                            if (version < tag) {
-                                showUpdateDialog(baseInfo);
-                            } else {
-                                MySharedPreferences.getInstance().setString(Constants.NEW_APK_URL, "");
-                                MySharedPreferences.getInstance().setString(Constants.NEW_APK_NAME, "");
-                                MySharedPreferences.getInstance().setString(Constants.NEW_APK_BODY, "");
-                            }
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            UtilTool.Log("日志", e.getMessage());
-                        }
-
-                        @Override
-                        public void onComplete() {
-
-                        }
-                    });
-    }
-
-    //显示Dialog
-    private void showUpdateDialog(GitHubInfo gitHubInfo) {
-        //获取download连接
-        final String url = Constants.DOWNLOAD_APK_URL;
-        //获取apk名字
-        final String appName = gitHubInfo.getName();
-        //更新描述
-        final String body = gitHubInfo.getBody();
-        MySharedPreferences.getInstance().setString(Constants.NEW_APK_URL, url);
-        UtilTool.Log("版本更新", url);
-        MySharedPreferences.getInstance().setString(Constants.NEW_APK_NAME, appName);
-        MySharedPreferences.getInstance().setString(Constants.NEW_APK_BODY, body);
-        //显示更新dialog
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
-        deleteCacheDialog.show();
-        deleteCacheDialog.setTitle(getString(R.string.check_new_version));
-        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
-        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
-        cancel.setOnClickListener(new View.OnClickListener() {
+        UpdateLogPresenter updateLogPresenter = new UpdateLogPresenter(this);
+        updateLogPresenter.checkVersion(new UpdateLogPresenter.CallBack2() {
             @Override
-            public void onClick(View view) {
-                deleteCacheDialog.dismiss();
+            public void send(int type) {
             }
         });
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (!canDownloadState()) {
-                    showDownloadSetting();
-                    return;
-                }
-                UtilTool.Log("版本更新", url);
-                DownLoadApk.download(MainActivity.this, url, body, appName);
-                deleteCacheDialog.dismiss();
-            }
-        });
-
-    }
-
-    //获取intent意图
-    private boolean intentAvailable(Intent intent) {
-        PackageManager packageManager = getPackageManager();
-        List list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-        return list.size() > 0;
-    }
-
-    //更新完成弹出安装
-    private void showDownloadSetting() {
-        String packageName = "com.android.providers.downloads";
-        Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse("package:" + packageName));
-        if (intentAvailable(intent)) {
-            startActivity(intent);
-        }
-    }
-
-    //下载状态
-    private boolean canDownloadState() {
-        try {
-            int state = this.getPackageManager().getApplicationEnabledSetting("com.android.providers.downloads");
-
-            if (state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED
-                    || state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
-                    || state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_UNTIL_USED) {
-                return false;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
     }
 
     @Override
@@ -539,12 +429,12 @@ public class MainActivity extends BaseActivity {
         Fragment fragment = fragmentFactory.createMainFragment(index);
 
         if (mSupportFragmentManager.getFragments() == null) {
-            if (!fragment.isAdded()&&null==mSupportFragmentManager.findFragmentByTag(index+"")) {
-                ft.add(R.id.main_fl, fragment,index+"");
+            if (!fragment.isAdded() && null == mSupportFragmentManager.findFragmentByTag(index + "")) {
+                ft.add(R.id.main_fl, fragment, index + "");
             }
         } else if (!mSupportFragmentManager.getFragments().contains(fragment)) {
-            if (!fragment.isAdded()&&null==mSupportFragmentManager.findFragmentByTag(index+"")) {
-                ft.add(R.id.main_fl, fragment,index+"");
+            if (!fragment.isAdded() && null == mSupportFragmentManager.findFragmentByTag(index + "")) {
+                ft.add(R.id.main_fl, fragment, index + "");
             }
         }
         if (ft != null) {

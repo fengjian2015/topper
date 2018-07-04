@@ -259,13 +259,9 @@ public class CurrencyInOutPresenter {
                                 activity.showHintDialog();
                             }
                         } else if (baseInfo.getStatus() == 1) {
-                            if (mContext instanceof BankCardActivity) {
                                 BankCardActivity activity = (BankCardActivity) mContext;
                                 mContext.startActivity(new Intent(activity, BankCardBindingActivity.class));
-                            } else {
-                                PayPwSelectorActivity activity = (PayPwSelectorActivity) mContext;
-                                activity.setData();
-                            }
+
                         } else {
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }

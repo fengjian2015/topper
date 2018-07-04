@@ -429,7 +429,7 @@
     <string name="toast_contact_information">聯繫方式不能為空</string>
     <string name="toast_expect_coin">期望幣種不能為空</string>
     <string name="copy_succeed">複製成功</string>
-    <string name="toast_after_time">不能快速點擊</string>
+    <string name="toast_after_time">禁止快速點擊</string>
     <string name="send_succeed">發送成功</string>
     <string name="download_google_verify">確定下載谷歌驗證器？</string>
     <string name="location">位置</string>
@@ -989,4 +989,6 @@
     <string name="red_envelope_been_robbed">紅包已被搶完</string>
     <string name="refresh_msg_number">刷新消息總數</string>
     <string name="waiting_agreed">等待同意</string>
+    <string name="set_gesture">設置手勢密碼</string>
+    <string name="app_look">應用加鎖</string>
 </resources>

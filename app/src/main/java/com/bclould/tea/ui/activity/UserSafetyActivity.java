@@ -24,9 +24,12 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class UserSafetyActivity extends BaseActivity {
 
-
     @Bind(R.id.bark)
     ImageView mBark;
+    @Bind(R.id.iv)
+    ImageView mIv;
+    @Bind(R.id.rl_autonym_attestation)
+    RelativeLayout mRlAutonymAttestation;
     @Bind(R.id.iv_login_password)
     ImageView mIvLoginPassword;
     @Bind(R.id.rl_login_password)
@@ -35,6 +38,10 @@ public class UserSafetyActivity extends BaseActivity {
     ImageView mIvPayPassword;
     @Bind(R.id.rl_pay_password)
     RelativeLayout mRlPayPassword;
+    @Bind(R.id.iv_pw_check)
+    ImageView mIvPwCheck;
+    @Bind(R.id.rl_app_look)
+    RelativeLayout mRlAppLook;
     @Bind(R.id.iv_google)
     ImageView mIvGoogle;
     @Bind(R.id.rl_google)
@@ -56,11 +63,14 @@ public class UserSafetyActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
     }
 
-    @OnClick({R.id.rl_autonym_attestation,R.id.bark, R.id.rl_login_password, R.id.rl_pay_password, R.id.rl_google, R.id.rl_login_set, R.id.rl_login_record})
+    @OnClick({R.id.rl_app_look, R.id.rl_autonym_attestation, R.id.bark, R.id.rl_login_password, R.id.rl_pay_password, R.id.rl_google, R.id.rl_login_set, R.id.rl_login_record})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.rl_app_look:
+                startActivity(new Intent(this, PayPwSelectorActivity.class));
                 break;
             case R.id.rl_autonym_attestation:
                 startActivity(new Intent(this, RealNameC1Activity.class));
@@ -69,7 +79,7 @@ public class UserSafetyActivity extends BaseActivity {
                 startActivity(new Intent(this, LoginPasswordActivity.class));
                 break;
             case R.id.rl_pay_password:
-                startActivity(new Intent(this, PayPwSelectorActivity.class));
+                startActivity(new Intent(this, PayPasswordActivity.class));
                 break;
             case R.id.rl_google:
                 startActivity(new Intent(this, GoogleVerificationActivity.class));

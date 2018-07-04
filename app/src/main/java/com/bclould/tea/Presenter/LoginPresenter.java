@@ -51,6 +51,9 @@ public class LoginPresenter {
     public static final String LOGINSET = "login_set";
     public static final String STATE = "state";
     public static final String CURRENCY = "currency";
+    public static final String IS_UPDATE = "is_update";
+    private static final String GESTURE_PW = "gesture_pw";
+    public static final String FINGERPRINT_PW = "fingerprint_pw";
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
     public static final String MYUSERNAME = "my_username";
@@ -117,6 +120,9 @@ public class LoginPresenter {
                             MySharedPreferences.getInstance().setString(EMAIL, email);
                             MySharedPreferences.getInstance().setString(LOGINPW, password);
                             MySharedPreferences.getInstance().setString(CURRENCY, baseInfo.getData().getCurrency());
+                            MySharedPreferences.getInstance().setInteger(IS_UPDATE, baseInfo.getData().getIs_update());
+                            MySharedPreferences.getInstance().setInteger(GESTURE_PW, baseInfo.getData().getGesture());
+                            MySharedPreferences.getInstance().setInteger(FINGERPRINT_PW, baseInfo.getData().getFingerprint());
                             if (!baseInfo.getData().getCountry().isEmpty()) {
                                 MySharedPreferences.getInstance().setString(STATE, baseInfo.getData().getCountry());
                             }

@@ -5,10 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/set_gesture"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+    </RelativeLayout>
+
     <com.bclould.tea.ui.widget.GestureLockViewGroup
-        android:id="@+id/id_gestureLockViewGroup"
+        android:id="@+id/gesture_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/rl_title"
         android:background="#F2F2F7"
         android:gravity="center_vertical"
         app:GestureLockViewGroup_color_finger_on="@color/blue2"

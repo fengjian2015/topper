@@ -366,7 +366,7 @@ public class RewardActivity extends BaseActivity {
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new BottomDialogRVAdapter4(this, MyApp.getInstance().mPayCoinList));
+        recyclerView.setAdapter(new BottomDialogRVAdapter4(this, MyApp.getInstance().mRewardCoinList));
         addCoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
