@@ -813,12 +813,12 @@
     <string name="number_pw">數字密碼</string>
     <string name="nonsupport_fingerprint">該手機不支持指紋密碼</string>
     <string name="no_set_fingerprint">請先在系統設置中錄入指紋</string>
-    <string name="check_fingerprint_hint">請驗證指紋已開通指紋支付</string>
+    <string name="check_fingerprint_hint">請驗證指紋</string>
     <string name="insecurity">当前设备未处于安全保护中</string>
-    <string name="check_fingerprint_error">指紋校驗失敗，請重試</string>
-    <string name="close_fingerprint_hint">是否關閉指紋支付?</string>
-    <string name="check_fingerprint_succeed">校驗指紋成功</string>
-    <string name="open_fingerprint_succeed">開通指紋支付成功</string>
+    <string name="check_fingerprint_error">指紋驗證失敗，請重試</string>
+    <string name="close_fingerprint_hint">是否關閉指紋驗證?</string>
+    <string name="check_fingerprint_succeed">驗證指紋成功</string>
+    <string name="open_fingerprint_succeed">開通指紋驗證成功</string>
     <string name="finger_move_fast">手指移動太快，請重試</string>
     <string name="network_break">網絡已斷開</string>
     <string name="network_break_click_update">請鏈接網絡后，點擊空白刷新</string>
@@ -991,4 +991,5 @@
     <string name="waiting_agreed">等待同意</string>
     <string name="set_gesture">設置手勢密碼</string>
     <string name="app_look">應用加鎖</string>
+    <string name="set_app_look">設置應用鎖</string>
 </resources>

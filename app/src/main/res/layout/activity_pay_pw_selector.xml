@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/set_payment_pw"
+            android:text="@string/set_app_look"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
 
