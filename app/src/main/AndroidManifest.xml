@@ -358,6 +358,7 @@
 
         <!-- 功能设置页面 -->
 
+
         <!-- 新的好友页面 -->
         <activity
             android:name=".ui.activity.NewFriendActivity"
@@ -824,6 +825,7 @@
         <!-- 群聊房間詳情 -->
         <activity
             android:name=".ui.activity.ConversationGroupDetailsActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
@@ -869,7 +871,9 @@
             android:name=".ui.activity.GroupMemberActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.activity.LargerImageActivity"></activity>
+        <activity android:name=".ui.activity.LargerImageActivity" />
+        <activity android:name=".ui.activity.SerchImageActivity" />
+        <activity android:name=".ui.activity.CropImageActivity"></activity>
     </application>
 
 </manifest>

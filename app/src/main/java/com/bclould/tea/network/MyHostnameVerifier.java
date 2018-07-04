@@ -19,7 +19,8 @@ public class MyHostnameVerifier {
                         hostname.equalsIgnoreCase("socket.bclould.com") ||
                         hostname.equalsIgnoreCase("socket.cnblocklink.com") ||
                         hostname.equalsIgnoreCase("offline.cnblocklink.com") ||
-                         hostname.equalsIgnoreCase("msg.umengcloud.com")){
+                         hostname.equalsIgnoreCase("msg.umengcloud.com")||
+                        hostname.equalsIgnoreCase("image.baidu.com")){
                     return true;
                 } else {
                     return false;

@@ -166,6 +166,7 @@ public class GroupPresenter {
                                         roomManageInfo.setOwner(dataBean.getToco_id());
                                         roomManageInfo.setRoomNumber(dataBean.getMax_people());
                                         roomManageInfo.setRoomImage(dataBean.getLogo());
+                                        roomManageInfo.setDescription(dataBean.getDescription());
                                         mDBRoomManage.addRoom(roomManageInfo);
                                         for (GroupInfo.DataBean.UsersBean usersBean : dataBean.getUsers()) {
                                             RoomMemberInfo roomMemberInfo = new RoomMemberInfo();
@@ -287,6 +288,7 @@ public class GroupPresenter {
                             roomManageInfo.setOwner(baseInfo.getData().getToco_id());
                             roomManageInfo.setRoomImage(baseInfo.getData().getLogo());
                             roomManageInfo.setRoomNumber(baseInfo.getData().getMax_people());
+                            roomManageInfo.setDescription(baseInfo.getData().getDescription());
                             mdbRoomManage.addRoom(roomManageInfo);
                             dbRoomMember.deleteRoom(group_id + "");
                             dbRoomMember.addRoomMember(baseInfo.getData().getUsers(), group_id + "");
@@ -466,7 +468,7 @@ public class GroupPresenter {
 
     public void updateLogoGroup(final DBRoomManage dbRoomManage, final int group_id, String content, final CallBack callBack) {
         showDialog();
-        RetrofitUtil.getInstance(mContext)
+        RetrofitUtil.getInstance(mContext,60)
                 .getServer()
                 .updateLogoGroup(UtilTool.getToken(), content, group_id)
                 .subscribeOn(Schedulers.io())
@@ -485,6 +487,44 @@ public class GroupPresenter {
                             dbRoomManage.updateUrl(group_id + "", baseInfo.getData().getUrl());
                             callBack.send();
                             ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.up_succeed));
+                        } else {
+                            ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void updateBullet(final int group_id, String content, final CallBack callBack) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .getNewFriendData(UtilTool.getToken(), group_id, content)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            callBack.send();
+                            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.xg_succeed));
                         } else {
                             ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
                         }

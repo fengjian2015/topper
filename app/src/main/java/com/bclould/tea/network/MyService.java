@@ -1222,4 +1222,13 @@ public interface MyService {
     Observable<NewFriendInfo> getNewFriendData(
             @Header("Authorization") String token
     );
+
+    //修改群公告
+    @FormUrlEncoded
+    @POST("chat/room/update/bullet")
+    Observable<BaseInfo> getNewFriendData(
+            @Header("Authorization") String token,
+            @Field("group_id") int group_id,
+            @Field("bulletin") String bulletin
+    );
 }

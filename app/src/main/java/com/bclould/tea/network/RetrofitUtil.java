@@ -53,6 +53,13 @@ public class RetrofitUtil {
         return instance;
     }
 
+    public static RetrofitUtil getInstance(Context context,int time) {
+        if (instance == null) {
+            instance = new RetrofitUtil(context,time);
+        }
+        return instance;
+    }
+
     public class CacheInterceptor implements Interceptor {
         @Override
         public Response intercept(Chain chain) throws IOException {
@@ -109,6 +116,29 @@ public class RetrofitUtil {
                 .connectTimeout(20, TimeUnit.SECONDS)//超时时间20S
                 .readTimeout(10, TimeUnit.SECONDS)//超时时间20S
                 .writeTimeout(10, TimeUnit.SECONDS)//超时时间20S
+                .addInterceptor(new CacheInterceptor())//也就这里不同
+//                .addNetworkInterceptor(new CacheInterceptor())//也就这里不同
+                .cache(cache)
+                .build();
+
+        mRetrofit = new Retrofit.Builder()
+                .baseUrl(Constants.BASE_URL)
+                .client(client)
+                .addConverterFactory(factory)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+    }
+
+    private RetrofitUtil(Context Context,int time) {
+        mContext = Context;//设置缓存路径
+        File cacheFile = new File(mContext.getCacheDir(), "caheData");
+        //设置缓存大小
+        Cache cache = new Cache(cacheFile, DEFAULT_DIR_CACHE);
+        OkHttpClient client = new OkHttpClient.Builder()
+                .retryOnConnectionFailure(true)//连接失败后是否重新连接
+                .connectTimeout(time, TimeUnit.SECONDS)//超时时间20S
+                .readTimeout(time, TimeUnit.SECONDS)//超时时间20S
+                .writeTimeout(time, TimeUnit.SECONDS)//超时时间20S
                 .addInterceptor(new CacheInterceptor())//也就这里不同
 //                .addNetworkInterceptor(new CacheInterceptor())//也就这里不同
                 .cache(cache)

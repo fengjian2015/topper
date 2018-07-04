@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/light"
-    tools:activity="com.bclould.tea.ui.activity.ModificationNameActivity">
+    tools:context="com.bclould.tea.ui.activity.CropImageActivity">
     <RelativeLayout
+        android:id="@+id/rl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
         android:background="@color/white">
@@ -23,44 +23,38 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxWidth="@dimen/x300"
             android:layout_centerInParent="true"
-            android:text="@string/my_nickname_group"
+            android:singleLine="true"
             android:textColor="@color/black"
+            android:text="@string/crop"
             android:textSize="@dimen/x32"/>
-
         <TextView
-            android:id="@+id/tv_hint"
+            android:id="@+id/tv_ok"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:paddingRight="@dimen/x20"
             android:text="@string/finish"
             android:textColor="@color/blue2"
             android:textSize="@dimen/x28"/>
     </RelativeLayout>
-    <View style="@style/HCutOffRule"></View>
-    <EditText
-        android:id="@+id/et_name"
+    <com.isseiaoki.simplecropview.CropImageView
+        android:id="@+id/CropImageView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y80"
-        android:layout_marginTop="@dimen/y20"
-        android:paddingLeft="@dimen/x30"
-        android:paddingRight="@dimen/x30"
-        android:maxLength="10"
-        android:background="@color/white"
-        android:singleLine="true" />
-
-    <EditText
-        android:id="@+id/et_announcement"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y300"
-        android:layout_marginTop="@dimen/y20"
-        android:padding="@dimen/x30"
-        android:maxLength="200"
-        android:background="@color/white"
-        android:gravity="top|left"
-        android:visibility="gone"
-        />
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"
+        android:layout_gravity="center"
+        custom:scv_crop_mode="circle"
+        custom:scv_handle_size="10dp"
+        custom:scv_touch_padding="10dp"
+        custom:scv_background_color="#000000"
+        custom:scv_handle_color="#FFFFFF"
+        custom:scv_guide_color="#FFFFFF"
+        custom:scv_overlay_color="#aa1c1c1c"
+        custom:scv_frame_color="#FFFFFF"
+        custom:scv_handle_show_mode="show_always"
+        custom:scv_guide_show_mode="show_on_touch" />
 </LinearLayout>

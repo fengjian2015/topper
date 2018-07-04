@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 20;
+    private static final int DATABASE_VERSION = 21;
 
     public DBHelper(Context context) {
         //CursorFactory设置为null,使用默认值
@@ -30,7 +30,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 ",showChatTime varchar)");
         db.execSQL("create table AddRequest(id integer primary key autoincrement, my_user varchar, user varchar, type integer,userName varchar)");
         db.execSQL("create table UserImage(id integer primary key autoincrement, my_user varchar, user varchar, status integer, path varchar, remark varchar,userName varchar)");
-        db.execSQL("create table RoomManage(id integer primary key autoincrement, roomImage varchar, roomId varchar, roomName varchar, roomNumber integer,my_user varchar,owner varchar)");
+        db.execSQL("create table RoomManage(id integer primary key autoincrement, roomImage varchar, roomId varchar, roomName varchar, roomNumber integer,my_user varchar,owner varchar,description varchar)");
         db.execSQL("create table RoomMember(id integer primary key autoincrement, name varchar, jid varchar, image_url varchar, remark varchar,my_user varchar,roomId varchar)");
         db.execSQL("create table MessageState(id integer primary key autoincrement, msgId varchar)");
         db.execSQL("create table UserCodeDB(id integer primary key autoincrement, email varchar,password varchar)");
@@ -95,6 +95,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 //2018-06-28新增UserInfo表，用於存儲陌生人信息
                 userCodeDB = "create table if not exists UserInfo"  + "(id integer primary key autoincrement,user text,path text,userName text)";
                 db.execSQL( userCodeDB );
+            case 20:
+                db.execSQL("ALTER TABLE RoomManage ADD description TEXT");
                 break;
         }
 

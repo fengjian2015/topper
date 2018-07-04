@@ -989,4 +989,10 @@
     <string name="red_envelope_been_robbed">紅包已被搶完</string>
     <string name="refresh_msg_number">刷新消息總數</string>
     <string name="waiting_agreed">等待同意</string>
+    <string name="search_content_notnull">搜索內容不能為空</string>
+    <string name="crop">裁剪</string>
+    <string name="picture_is_not_loaded">圖片未加載完成</string>
+    <string name="network_image">網絡圖庫</string>
+    <string name="modify_group_announcement">修改群公告</string>
+    <string name="only_owner_change_group_announcement">只有群主才能修改群名稱</string>
 </resources>

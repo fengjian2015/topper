@@ -34,7 +34,9 @@ public class ModificationNameActivity extends BaseActivity {
     EditText mEtName;
     @Bind(R.id.tv_title)
     TextView mTvTitle;
-    private int type = 0;//1修改我在本群暱稱，2修改群暱稱
+    @Bind(R.id.et_announcement)
+    EditText mEtAnnouncement;
+    private int type = 0;//1修改我在本群暱稱，2修改群暱稱 3.修改公告
     private String content;
     private String roomId;
     private String tocoId;
@@ -48,9 +50,9 @@ public class ModificationNameActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         setContentView(R.layout.activity_modification_name);
         ButterKnife.bind(this);
-        mDBRoomMember=new DBRoomMember(this);
-        mDBRoomManage=new DBRoomManage(this);
-        mDBManager=new DBManager(this);
+        mDBRoomMember = new DBRoomMember(this);
+        mDBRoomManage = new DBRoomManage(this);
+        mDBManager = new DBManager(this);
         initIntent();
         initData();
     }
@@ -60,16 +62,22 @@ public class ModificationNameActivity extends BaseActivity {
             mTvTitle.setText(getString(R.string.my_nickname_group));
         } else if (type == 2) {
             mTvTitle.setText(getString(R.string.modify_group_name));
+        }else if(type==3){
+            mTvTitle.setText(getString(R.string.gonggao));
+            mEtName.setVisibility(View.GONE);
+            mEtAnnouncement.setVisibility(View.VISIBLE);
         }
         mEtName.setText(content);
         mEtName.setSelection(mEtName.getText().length());
+        mEtAnnouncement.setText(content);
+        mEtAnnouncement.setSelection(mEtAnnouncement.getText().length());
     }
 
     private void initIntent() {
         type = getIntent().getIntExtra("type", 0);
-        content=getIntent().getStringExtra("content");
-        roomId=getIntent().getStringExtra("roomId");
-        tocoId=getIntent().getStringExtra("tocoId");
+        content = getIntent().getStringExtra("content");
+        roomId = getIntent().getStringExtra("roomId");
+        tocoId = getIntent().getStringExtra("tocoId");
     }
 
     @OnClick({R.id.bark, R.id.tv_hint})
@@ -86,25 +94,41 @@ public class ModificationNameActivity extends BaseActivity {
     }
 
     private void commit() {
-        final String name=mEtName.getText().toString();
-        if(type==1){
+        final String name ;
+        if(type==3){
+            name=mEtAnnouncement.getText().toString();
+        }else{
+            name = mEtName.getText().toString();
+        }
+        if (type == 1) {
             new GroupPresenter(this).updataGroupMemberName(Integer.parseInt(roomId), name, new GroupPresenter.CallBack() {
                 @Override
                 public void send() {
-                    mDBRoomMember.updateRoom(roomId,tocoId,name);
-                    MessageEvent messageEvent= new MessageEvent(getString(R.string.my_nickname_group));
+                    mDBRoomMember.updateRoom(roomId, tocoId, name);
+                    MessageEvent messageEvent = new MessageEvent(getString(R.string.my_nickname_group));
                     messageEvent.setName(name);
                     EventBus.getDefault().post(messageEvent);
                     finish();
                 }
             });
-        }else if(type==2){
+        } else if (type == 2) {
             new GroupPresenter(this).updataGroupName(Integer.parseInt(roomId), name, new GroupPresenter.CallBack() {
                 @Override
                 public void send() {
-                    mDBRoomManage.updateRoom(roomId,name);
-                    mDBManager.updateConversationFriend(roomId,name);
-                    MessageEvent messageEvent= new MessageEvent(getString(R.string.modify_group_name));
+                    mDBRoomManage.updateRoom(roomId, name);
+                    mDBManager.updateConversationFriend(roomId, name);
+                    MessageEvent messageEvent = new MessageEvent(getString(R.string.modify_group_name));
+                    messageEvent.setName(name);
+                    EventBus.getDefault().post(messageEvent);
+                    finish();
+                }
+            });
+        }else if(type==3){
+            new GroupPresenter(this).updateBullet(Integer.parseInt(roomId), name, new GroupPresenter.CallBack() {
+                @Override
+                public void send() {
+                    mDBRoomManage.updateDescription(roomId, name);
+                    MessageEvent messageEvent = new MessageEvent(getString(R.string.modify_group_announcement));
                     messageEvent.setName(name);
                     EventBus.getDefault().post(messageEvent);
                     finish();

@@ -92,10 +92,10 @@ public class RedRecordPresenter {
 
                     @Override
                     public void onNext(GrabRedInfo baseInfo) {
-                        if (baseInfo.getStatus() == 1)
-                            callBack.send(baseInfo);
+                        callBack.send(baseInfo);
                         hideDialog();
-//                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                        if(baseInfo.getStatus() == 2)
+                        Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

@@ -11,6 +11,15 @@ public class RoomManageInfo {
     private int roomNumber;
     private String my_user;
     private String owner;
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getOwner() {
         return owner;

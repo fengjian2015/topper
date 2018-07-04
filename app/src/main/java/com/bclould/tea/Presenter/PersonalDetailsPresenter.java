@@ -323,7 +323,8 @@ public class PersonalDetailsPresenter {
     }
 
     //獲取請求列表
-    public void getNewFriendData(final CallBack5 callBack5) {
+    public void getNewFriendData(boolean isShow,final CallBack5 callBack5) {
+        if(isShow)
         showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()

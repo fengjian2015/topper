@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DatabaseManager;
 import com.bclould.tea.listener.CrashHandler;
 import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.model.StateInfo;
@@ -118,22 +119,12 @@ public class MyApp extends Application {
     @Override
     public void onTerminate() {
         super.onTerminate();
-        DBManager dbManager = new DBManager(this);
-        if (dbManager.db != null) {
-            dbManager.db.close();
-        }
-        dbManager = null;
         stopService(new Intent(this, ImageUpService.class));
     }
 
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
-        DBManager dbManager = new DBManager(this);
-        if (dbManager.db != null) {
-            dbManager.db.close();
-        }
-        dbManager = null;
     }
 
     public MyApp app() {

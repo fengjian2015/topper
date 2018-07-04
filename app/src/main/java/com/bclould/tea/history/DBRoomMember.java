@@ -23,73 +23,112 @@ import java.util.List;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class DBRoomMember {
     private final Context mContext;
-    private DBHelper helper;
-    public SQLiteDatabase db;
+    private static Object lock = new Object();
 
     public DBRoomMember(Context context) {
         mContext = context;
-        helper = new DBHelper(context);
+        DatabaseManager.initializeInstance(new DBHelper(context));
         //因为getWritableDatabase内部调用了mContext.openOrCreateDatabase(mName, 0, mFactory);
         //所以要确保context已初始化,我们可以把实例化DBManager的步骤放在Activity的onCreate里
     }
 
     public synchronized int addRoomMember(RoomMemberInfo roomMemberInfo) {
-        db = helper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("name", roomMemberInfo.getName());
-        values.put("my_user", UtilTool.getTocoId());
-        values.put("jid", roomMemberInfo.getJid());
-        values.put("image_url", roomMemberInfo.getImage_url());
-        values.put("remark", roomMemberInfo.getRemark());
-        values.put("roomId",roomMemberInfo.getRoomId());
-        int id = (int) db.insert("RoomMember", null, values);
-        UtilTool.Log("數據庫","插入成員");
-        return id;
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            ContentValues values = new ContentValues();
+            values.put("name", roomMemberInfo.getName());
+            values.put("my_user", UtilTool.getTocoId());
+            values.put("jid", roomMemberInfo.getJid());
+            values.put("image_url", roomMemberInfo.getImage_url());
+            values.put("remark", roomMemberInfo.getRemark());
+            values.put("roomId", roomMemberInfo.getRoomId());
+            int id = (int) db.insert("RoomMember", null, values);
+            UtilTool.Log("數據庫", "插入成員");
+            DatabaseManager.getInstance().closeWritableDatabase();
+            return id;
+        }
     }
 
     public synchronized void addRoomMember(List<GroupMemberInfo.DataBean.UsersBean> groupMemberInfoList,String roomId) {
-        db = helper.getWritableDatabase();
-        for(GroupMemberInfo.DataBean.UsersBean dataBean:groupMemberInfoList){
-            ContentValues values = new ContentValues();
-            values.put("name", dataBean.getName());
-            values.put("my_user", UtilTool.getTocoId());
-            values.put("jid", dataBean.getToco_id());
-            values.put("image_url", dataBean.getAvatar());
-            values.put("remark", "");
-            values.put("roomId",roomId);
-            db.insert("RoomMember", null, values);
-            UtilTool.Log("fengjian", "添加成員到数据库成功" + dataBean.toString());
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            for (GroupMemberInfo.DataBean.UsersBean dataBean : groupMemberInfoList) {
+                ContentValues values = new ContentValues();
+                values.put("name", dataBean.getName());
+                values.put("my_user", UtilTool.getTocoId());
+                values.put("jid", dataBean.getToco_id());
+                values.put("image_url", dataBean.getAvatar());
+                values.put("remark", "");
+                values.put("roomId", roomId);
+                db.insert("RoomMember", null, values);
+                UtilTool.Log("fengjian", "添加成員到数据库成功" + dataBean.toString());
+            }
+            DatabaseManager.getInstance().closeWritableDatabase();
         }
     }
 
     public synchronized void addRoomMemberUserInfo(List<UserInfo> infoList, String roomId) {
-        db = helper.getWritableDatabase();
-        for(UserInfo userInfo:infoList){
-            ContentValues values = new ContentValues();
-            values.put("name", userInfo.getUserName());
-            values.put("my_user", UtilTool.getTocoId());
-            values.put("jid", userInfo.getUser());
-            values.put("image_url", userInfo.getPath());
-            values.put("remark", "");
-            values.put("roomId",roomId);
-            db.insert("RoomMember", null, values);
-            UtilTool.Log("fengjian", "添加成員到数据库成功" + userInfo.toString());
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            for (UserInfo userInfo : infoList) {
+                ContentValues values = new ContentValues();
+                values.put("name", userInfo.getUserName());
+                values.put("my_user", UtilTool.getTocoId());
+                values.put("jid", userInfo.getUser());
+                values.put("image_url", userInfo.getPath());
+                values.put("remark", "");
+                values.put("roomId", roomId);
+                db.insert("RoomMember", null, values);
+                UtilTool.Log("fengjian", "添加成員到数据库成功" + userInfo.toString());
+            }
+            DatabaseManager.getInstance().closeWritableDatabase();
         }
     }
 
     public void deleteAllRoomMember(){
-        db = helper.getWritableDatabase();
-        db.execSQL("DELETE FROM RoomMember");
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            db.execSQL("DELETE FROM RoomMember");
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
     }
 
     public ArrayList<RoomMemberInfo> queryAllRequest(String roomId) {
-        ArrayList<RoomMemberInfo> addRequestInfos = new ArrayList<>();
-        try {
-            db = helper.getReadableDatabase();
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
+            ArrayList<RoomMemberInfo> addRequestInfos = new ArrayList<>();
+            try {
+                String sql = "select * from RoomMember where my_user=? and roomId = ?";
+                Cursor c = db.rawQuery(sql, new String[]{UtilTool.getTocoId(), roomId});
+                while (c.moveToNext()) {
+                    RoomMemberInfo roomMemberInfo = new RoomMemberInfo();
+                    roomMemberInfo.setName(c.getString(c.getColumnIndex("name")));
+                    roomMemberInfo.setJid(c.getString(c.getColumnIndex("jid")));
+                    roomMemberInfo.setImage_url(c.getString(c.getColumnIndex("image_url")));
+                    roomMemberInfo.setRemark(c.getString(c.getColumnIndex("remark")));
+                    roomMemberInfo.setMy_user(c.getString(c.getColumnIndex("my_user")));
+                    roomMemberInfo.setRoomId(c.getString(c.getColumnIndex("roomId")));
+                    roomMemberInfo.setId(c.getInt(c.getColumnIndex("id")));
+                    addRequestInfos.add(roomMemberInfo);
+                }
+                c.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                DatabaseManager.getInstance().closeWritableDatabase();
+            }
+            return addRequestInfos;
+        }
+    }
+
+    public ArrayList<RoomMemberInfo> queryRequest(String roomId) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
+            ArrayList<RoomMemberInfo> addRequestInfos = new ArrayList<>();
             String sql = "select * from RoomMember where my_user=? and roomId = ?";
-            Cursor c = db.rawQuery(sql, new String[]{UtilTool.getTocoId(),roomId});
+            Cursor c = db.rawQuery(sql, new String[]{UtilTool.getTocoId(), roomId});
             while (c.moveToNext()) {
-                RoomMemberInfo roomMemberInfo=new RoomMemberInfo();
+                RoomMemberInfo roomMemberInfo = new RoomMemberInfo();
                 roomMemberInfo.setName(c.getString(c.getColumnIndex("name")));
                 roomMemberInfo.setJid(c.getString(c.getColumnIndex("jid")));
                 roomMemberInfo.setImage_url(c.getString(c.getColumnIndex("image_url")));
@@ -100,102 +139,102 @@ public class DBRoomMember {
                 addRequestInfos.add(roomMemberInfo);
             }
             c.close();
-        }catch (Exception e){
-            e.printStackTrace();
+            DatabaseManager.getInstance().closeWritableDatabase();
+            return addRequestInfos;
         }
-        return addRequestInfos;
-    }
-
-    public ArrayList<RoomMemberInfo> queryRequest(String roomId) {
-        db = helper.getReadableDatabase();
-        ArrayList<RoomMemberInfo> addRequestInfos = new ArrayList<>();
-        String sql = "select * from RoomMember where my_user=? and roomId = ?";
-        Cursor c = db.rawQuery(sql, new String[]{UtilTool.getTocoId(),roomId});
-        while (c.moveToNext()) {
-            RoomMemberInfo roomMemberInfo=new RoomMemberInfo();
-            roomMemberInfo.setName(c.getString(c.getColumnIndex("name")));
-            roomMemberInfo.setJid(c.getString(c.getColumnIndex("jid")));
-            roomMemberInfo.setImage_url(c.getString(c.getColumnIndex("image_url")));
-            roomMemberInfo.setRemark(c.getString(c.getColumnIndex("remark")));
-            roomMemberInfo.setMy_user(c.getString(c.getColumnIndex("my_user")));
-            roomMemberInfo.setRoomId(c.getString(c.getColumnIndex("roomId")));
-            roomMemberInfo.setId(c.getInt(c.getColumnIndex("id")));
-            addRequestInfos.add(roomMemberInfo);
-        }
-        c.close();
-        return addRequestInfos;
     }
 
     public String findMemberName(String roomId,String toco_id) {
-        db = helper.getReadableDatabase();
-        String name = null;
-        Cursor cursor = db.rawQuery("select name from RoomMember where roomId=? and jid=? and my_user=?",
-                new String[]{roomId,toco_id, UtilTool.getTocoId()});
-        while (cursor.moveToNext()) {
-            name = cursor.getString(cursor.getColumnIndex("name"));
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
+            String name = null;
+            Cursor cursor = db.rawQuery("select name from RoomMember where roomId=? and jid=? and my_user=?",
+                    new String[]{roomId, toco_id, UtilTool.getTocoId()});
+            while (cursor.moveToNext()) {
+                name = cursor.getString(cursor.getColumnIndex("name"));
+            }
+            cursor.close();
+            DatabaseManager.getInstance().closeWritableDatabase();
+            return name;
         }
-        cursor.close();
-        return name;
     }
 
     public String findMemberUrl(String roomId,String toco_id) {
-        db = helper.getReadableDatabase();
-        String image_url = null;
-        Cursor cursor = db.rawQuery("select image_url from RoomMember where roomId=? and jid=? and my_user=?",
-                new String[]{roomId,toco_id, UtilTool.getTocoId()});
-        while (cursor.moveToNext()) {
-            image_url = cursor.getString(cursor.getColumnIndex("image_url"));
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
+            String image_url = null;
+            Cursor cursor = db.rawQuery("select image_url from RoomMember where roomId=? and jid=? and my_user=?",
+                    new String[]{roomId, toco_id, UtilTool.getTocoId()});
+            while (cursor.moveToNext()) {
+                image_url = cursor.getString(cursor.getColumnIndex("image_url"));
+            }
+            cursor.close();
+            DatabaseManager.getInstance().closeWritableDatabase();
+            return image_url;
         }
-        cursor.close();
-        return image_url;
     }
 
 
     public String findMemberUrl(String toco_id) {
-        db = helper.getReadableDatabase();
-        String image_url = null;
-        Cursor cursor = db.rawQuery("select image_url from RoomMember where jid=? and my_user=?",
-                new String[]{toco_id, UtilTool.getTocoId()});
-        while (cursor.moveToNext()) {
-            image_url = cursor.getString(cursor.getColumnIndex("image_url"));
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
+            String image_url = null;
+            Cursor cursor = db.rawQuery("select image_url from RoomMember where jid=? and my_user=?",
+                    new String[]{toco_id, UtilTool.getTocoId()});
+            while (cursor.moveToNext()) {
+                image_url = cursor.getString(cursor.getColumnIndex("image_url"));
+            }
+            cursor.close();
+            DatabaseManager.getInstance().closeWritableDatabase();
+            return image_url;
         }
-        cursor.close();
-        return image_url;
     }
 
     public boolean findMember(String roomId,String toco_id) {
-        Cursor cursor=null;
-        try {
-            db = helper.getReadableDatabase();
-            String image_url = null;
-            cursor = db.rawQuery("select * from RoomMember where roomId=? and jid=? and my_user=?",
-                    new String[]{roomId,toco_id, UtilTool.getTocoId()});
-            boolean result = cursor.moveToNext();
-            return result;
-        }catch (Exception e){
-            e.printStackTrace();
-        } finally {
-            if (cursor != null)
-                cursor.close();
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
+            Cursor cursor = null;
+            try {
+                String image_url = null;
+                cursor = db.rawQuery("select * from RoomMember where roomId=? and jid=? and my_user=?",
+                        new String[]{roomId, toco_id, UtilTool.getTocoId()});
+                boolean result = cursor.moveToNext();
+                return result;
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                DatabaseManager.getInstance().closeWritableDatabase();
+                if (cursor != null)
+                    cursor.close();
+            }
+            return false;
         }
-        return false;
     }
 
     public void updateRoom(String roomId,String jid, String name) {
-        db = helper.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put("name", name);
-        db.update("RoomMember", cv, "roomId=? and jid=? and my_user=?", new String[]{roomId,jid, UtilTool.getTocoId()});
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            ContentValues cv = new ContentValues();
+            cv.put("name", name);
+            db.update("RoomMember", cv, "roomId=? and jid=? and my_user=?", new String[]{roomId, jid, UtilTool.getTocoId()});
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
     }
 
 
     public void deleteRoom(String roomId) {
-        db = helper.getWritableDatabase();
-        db.delete("RoomMember", "roomId=? and my_user=?", new String[]{roomId, UtilTool.getTocoId()});
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            db.delete("RoomMember", "roomId=? and my_user=?", new String[]{roomId, UtilTool.getTocoId()});
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
     }
 
     public void deleteRoomMember(String roomId,String tocoId) {
-        db = helper.getWritableDatabase();
-        db.delete("RoomMember", "roomId=? and my_user=? and jid=?", new String[]{roomId, UtilTool.getTocoId(),tocoId});
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            db.delete("RoomMember", "roomId=? and my_user=? and jid=?", new String[]{roomId, UtilTool.getTocoId(), tocoId});
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
     }
 }

@@ -71,7 +71,7 @@ public class NewFriendActivity extends BaseActivity {
 //            }
 //        }
         PersonalDetailsPresenter personalDetailsPresenter = new PersonalDetailsPresenter(this);
-        personalDetailsPresenter.getNewFriendData(new PersonalDetailsPresenter.CallBack5() {
+        personalDetailsPresenter.getNewFriendData(true,new PersonalDetailsPresenter.CallBack5() {
             @Override
             public void send(NewFriendInfo listdata) {
                 mMgr.deleteRequest();

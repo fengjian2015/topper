@@ -258,11 +258,11 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rl_announcement"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:paddingLeft="@dimen/x20"
-                android:visibility="gone"
+                android:paddingBottom="@dimen/x25"
                 >
                 <View
                     style="@style/HCutOffRule"
@@ -273,10 +273,32 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/iv_inform"
                     android:text="@string/group_announcement"
+                    android:layout_marginLeft="@dimen/x20"
                     android:paddingTop="@dimen/x25"
-                    android:paddingBottom="@dimen/x25"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x30"/>
+                <TextView
+                    android:id="@+id/tv_announcement"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/iv_1"
+                    android:layout_toLeftOf="@+id/iv_1"
+                    android:layout_below="@+id/tv7"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_marginTop="@dimen/y6"
+                    android:textSize="@dimen/x26"
+                    android:textColor="@color/gray3"
+                    android:layout_marginRight="@dimen/x15"
+                    android:visibility="gone"
+                    />
+                <ImageView
+                    android:id="@+id/iv_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x30"
+                    android:src="@mipmap/iocn_person_turn"/>
             </RelativeLayout>
 
             <RelativeLayout

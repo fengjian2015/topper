@@ -3,6 +3,7 @@ package com.bclould.tea.ui.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -10,13 +11,11 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bclould.tea.Presenter.GroupPresenter;
-import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
@@ -27,6 +26,7 @@ import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.ui.adapter.GroupDetailsMemberAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.ui.widget.MyGridView;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
@@ -81,6 +81,8 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     RelativeLayout mRlGroupManagement;
     @Bind(R.id.iv_head)
     ImageView mIvHead;
+    @Bind(R.id.tv_announcement)
+    TextView mTvAnnouncement;
 
     private GroupDetailsMemberAdapter mAdapter;
     private List<RoomMemberInfo> mList = new ArrayList<>();
@@ -100,6 +102,19 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         EventBus.getDefault().register(this);//初始化EventBus
         initIntent();
         init();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String path = intent.getStringExtra("path");
+        if (!StringUtils.isEmpty(path)) {
+            try {
+                upImage(path);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -129,10 +144,20 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         setMemberName();
         setGroupManager();
         setGroupImage();
+        setGroupAnnouncement();
+    }
+
+    private void setGroupAnnouncement() {
+        if(!StringUtils.isEmpty(mDBRoomManage.findRoomDescription(roomId))) {
+            mTvAnnouncement.setText(mDBRoomManage.findRoomDescription(roomId));
+            mTvAnnouncement.setVisibility(View.VISIBLE);
+        }else{
+            mTvAnnouncement.setVisibility(View.GONE);
+        }
     }
 
     private void setGroupImage() {
-        UtilTool.getGroupImage(mDBRoomManage,roomId,this,mIvHead);
+        UtilTool.getGroupImage(mDBRoomManage, roomId, this, mIvHead);
     }
 
     private void setGroupManager() {
@@ -163,19 +188,19 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         }
         mList.add(new RoomMemberInfo());
         mList.addAll(mDBRoomMember.queryAllRequest(roomId));
-        if(isOwner()){
-            mTvMemberNumber.setText(getString(R.string.group_member)+"("+(mList.size()-2)+"/"+mDBRoomManage.findRoomNumber(roomId) + ")");
-        }else{
-            mTvMemberNumber.setText(getString(R.string.group_member)+"("+(mList.size()-1)+"/"+mDBRoomManage.findRoomNumber(roomId) + ")");
+        if (isOwner()) {
+            mTvMemberNumber.setText(getString(R.string.group_member) + "(" + (mList.size() - 2) + "/" + mDBRoomManage.findRoomNumber(roomId) + ")");
+        } else {
+            mTvMemberNumber.setText(getString(R.string.group_member) + "(" + (mList.size() - 1) + "/" + mDBRoomManage.findRoomNumber(roomId) + ")");
         }
-        if(mList.size()>6){
-           List<RoomMemberInfo> memberInfoListView=new ArrayList<>();
-           memberInfoListView.addAll(mList.subList(0,6));
-           mList.clear();
-           mList.addAll(memberInfoListView);
+        if (mList.size() > 6) {
+            List<RoomMemberInfo> memberInfoListView = new ArrayList<>();
+            memberInfoListView.addAll(mList.subList(0, 6));
+            mList.clear();
+            mList.addAll(memberInfoListView);
         }
         if (isFirst) {
-            mAdapter = new GroupDetailsMemberAdapter(this, mList, roomId, mMgr, mDBRoomManage,mDBRoomMember);
+            mAdapter = new GroupDetailsMemberAdapter(this, mList, roomId, mMgr, mDBRoomManage, mDBRoomMember);
             mPartnerDetialGridview.setAdapter(mAdapter);
             new GroupPresenter(this).selectGroupMember(Integer.parseInt(roomId), mDBRoomMember, true, mDBRoomManage, mMgr, new CallBack() {
                 @Override
@@ -208,8 +233,8 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         mOnOffMessageFree.setSelected(free);
     }
 
-    @OnClick({R.id.bark, R.id.on_off_message_free, R.id.on_off_top, R.id.rl_empty_talk, R.id.btn_brak, R.id.rl_group_qr, R.id.rl_group_name, R.id.rl_member_name, R.id.rl_group_management,R.id.rl_looking_chat
-            ,R.id.rl_group_image,R.id.rl_go_memberlist})
+    @OnClick({R.id.bark, R.id.on_off_message_free, R.id.on_off_top, R.id.rl_empty_talk, R.id.btn_brak, R.id.rl_group_qr, R.id.rl_group_name, R.id.rl_member_name, R.id.rl_group_management, R.id.rl_looking_chat
+            , R.id.rl_group_image, R.id.rl_go_memberlist,R.id.rl_announcement})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -252,20 +277,67 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
             case R.id.rl_go_memberlist:
                 goMemberList();
                 break;
+            case R.id.rl_announcement:
+                goAnnouncement();
+                break;
         }
     }
 
+    private void goAnnouncement() {
+        if (!isOwner()) {
+            ToastShow.showToast2(ConversationGroupDetailsActivity.this, getString(R.string.only_owner_change_group_announcement));
+        }
+        Intent intent = new Intent(this, ModificationNameActivity.class);
+        intent.putExtra("type", 3);
+        intent.putExtra("content", mTvAnnouncement.getText().toString());
+        intent.putExtra("roomId", roomId);
+        intent.putExtra("tocoId", UtilTool.getTocoId());
+        startActivity(intent);
+    }
+
     private void goMemberList() {
-        Intent intent=new Intent(this,GroupMemberActivity.class);
-        intent.putExtra("roomId",roomId);
+        Intent intent = new Intent(this, GroupMemberActivity.class);
+        intent.putExtra("roomId", roomId);
         startActivity(intent);
     }
 
     private void changeImage() {
-        if(!isOwner()){
+        if (!isOwner()) {
             ToastShow.showToast2(ConversationGroupDetailsActivity.this, getString(R.string.only_owner_change_group_image));
             return;
         }
+        showDialog();
+    }
+
+    private void showDialog() {
+        List<String> list = new ArrayList<>();
+        list.add(getString(R.string.image));
+        list.add(getString(R.string.network_image));
+        final MenuListPopWindow menu = new MenuListPopWindow(this, list);
+        menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
+            @Override
+            public void onclickitem(int position) {
+                switch (position) {
+                    case 0:
+                        menu.dismiss();
+                        break;
+                    case 1:
+                        menu.dismiss();
+                        goImage();
+                        break;
+                    case 2:
+                        menu.dismiss();
+                        Intent intent = new Intent(ConversationGroupDetailsActivity.this, SerchImageActivity.class);
+                        startActivity(intent);
+                        break;
+                }
+            }
+        });
+        menu.setColor(Color.BLACK);
+        menu.showAtLocation();
+    }
+
+    private void goImage() {
         PictureSelector.create(this)
                 .openGallery(ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()
 //                        .theme(R.style.picture_white_style)
@@ -300,12 +372,11 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
 
 
     //上傳頭像
-    private void upImage(Intent data) throws UnsupportedEncodingException {
-        selectList = PictureSelector.obtainMultipleResult(data);
-        File file = new File(selectList.get(0).getCutPath());
+    private void upImage(String path) throws UnsupportedEncodingException {
+        File file = new File(path);
         final String keyCut = UtilTool.getUserId() + UtilTool.createtFileName() + "cut" + UtilTool.getPostfix2(file.getName());
         final File newFile = new File(Constants.PUBLICDIR + keyCut);
-        Bitmap cutImg = BitmapFactory.decodeFile(selectList.get(0).getCutPath());
+        Bitmap cutImg = BitmapFactory.decodeFile(path);
         UtilTool.comp(cutImg, newFile);
         final Bitmap bitmap = BitmapFactory.decodeFile(newFile.getAbsolutePath());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -316,7 +387,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         new GroupPresenter(this).updateLogoGroup(mDBRoomManage, Integer.parseInt(roomId), Base64Image, new CallBack() {
             @Override
             public void send() {
-                MessageEvent messageEvent= new MessageEvent(getString(R.string.refresh_group_room));
+                MessageEvent messageEvent = new MessageEvent(getString(R.string.refresh_group_room));
                 messageEvent.setId(roomId);
                 EventBus.getDefault().post(messageEvent);
             }
@@ -326,9 +397,9 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
 
 
     private void goRecord() {
-        Intent intent=new Intent(this,ConversationRecordFindActivity.class);
-        intent.putExtra("user",roomId);
-        intent.putExtra("name",roomName);
+        Intent intent = new Intent(this, ConversationRecordFindActivity.class);
+        intent.putExtra("user", roomId);
+        intent.putExtra("name", roomName);
         startActivity(intent);
     }
 
@@ -372,6 +443,8 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
             if (roomId.equals(event.getId())) {
                 finish();
             }
+        }else if(msg.equals(getString(R.string.modify_group_announcement))){
+            setGroupAnnouncement();
         }
     }
 
@@ -394,7 +467,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                     new GroupPresenter(ConversationGroupDetailsActivity.this).deleteGroup(Integer.parseInt(roomId), UtilTool.getTocoId(), new CallBack() {
                         @Override
                         public void send() {
-                           RoomManage.getInstance().removeRoom(roomId);
+                            RoomManage.getInstance().removeRoom(roomId);
                         }
                     });
                     deleteCacheDialog.dismiss();
@@ -482,7 +555,8 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                 case PictureConfig.CHOOSE_REQUEST:
                     // 图片选择结果回调
                     try {
-                        upImage(data);
+                        selectList = PictureSelector.obtainMultipleResult(data);
+                        upImage(selectList.get(0).getCutPath());
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }

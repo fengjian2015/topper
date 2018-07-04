@@ -25,7 +25,9 @@ import android.widget.TextView;
 import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.model.AddRequestInfo;
 import com.bclould.tea.model.AuatarListInfo;
+import com.bclould.tea.model.NewFriendInfo;
 import com.bclould.tea.model.QrRedInfo;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.activity.AddFriendActivity;
@@ -170,6 +172,7 @@ public class FriendListFragment extends Fragment {
         }*/
         updateData();
         getPhoneSize();
+        showNumber();
         return view;
     }
 
@@ -273,6 +276,30 @@ public class FriendListFragment extends Fragment {
                         ((LinearLayoutManager) mRecyclerView.getLayoutManager()).scrollToPositionWithOffset(i, 0);
                         return;
                     }
+                }
+            }
+        });
+    }
+
+    private void showNumber(){
+        new PersonalDetailsPresenter(getActivity()).getNewFriendData(false,new PersonalDetailsPresenter.CallBack5() {
+            @Override
+            public void send(NewFriendInfo listdata) {
+                mMgr.deleteRequest();
+                int number=0;
+                for(int i=0;i<listdata.getData().size();i++){
+                    mMgr.addRequest(listdata.getData().get(i).getToco_id(),listdata.getData().get(i).getStatus(),listdata.getData().get(i).getName());
+                    if(!listdata.getData().get(i).getToco_id().equals(UtilTool.getTocoId())&&
+                            listdata.getData().get(i).getStatus()==1){
+                        number++;
+                    }
+                }
+                MySharedPreferences.getInstance().setInteger(NEWFRIEND,number);
+                if (number > 0) {
+                    mNumber.setText(number + "");
+                    mNumber.setVisibility(View.VISIBLE);
+                } else {
+                    mNumber.setVisibility(View.GONE);
                 }
             }
         });
