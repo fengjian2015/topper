@@ -286,6 +286,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     private void goAnnouncement() {
         if (!isOwner()) {
             ToastShow.showToast2(ConversationGroupDetailsActivity.this, getString(R.string.only_owner_change_group_announcement));
+            return;
         }
         Intent intent = new Intent(this, ModificationNameActivity.class);
         intent.putExtra("type", 3);

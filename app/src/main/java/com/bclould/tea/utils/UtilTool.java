@@ -730,7 +730,7 @@ public class UtilTool {
         Bitmap bitmap = null;
         if (mgr.findUser(myUser)) {
             UserInfo info = mgr.queryUser(myUser);
-            if (!info.getPath().isEmpty()) {
+            if (!StringUtils.isEmpty(info.getPath())) {
                 UtilTool.Log("頭像", info.getPath());
                 if (Util.isOnMainThread() && context != null) {
                     Glide.with(context).load(info.getPath()).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1)).into(imageView);

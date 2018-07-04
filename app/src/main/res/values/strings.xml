@@ -994,7 +994,7 @@
     <string name="picture_is_not_loaded">圖片未加載完成</string>
     <string name="network_image">網絡圖庫</string>
     <string name="modify_group_announcement">修改群公告</string>
-    <string name="only_owner_change_group_announcement">只有群主才能修改群名稱</string>
+    <string name="only_owner_change_group_announcement">只有群主才能修改群公告</string>
     <string name="set_gesture">設置手勢密碼</string>
     <string name="app_look">應用加鎖</string>
     <string name="set_app_look">設置應用鎖</string>
