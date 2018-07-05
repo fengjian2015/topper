@@ -115,13 +115,16 @@ public class IMService extends Service{
 //                            MyLogger.xuxLog().i("-----EXLOGIN1");
                                 if (ConnectStateChangeListenerManager.get().getCurrentState()
                                         != ConnectStateChangeListenerManager.CONNECTED && ConnectStateChangeListenerManager.get().getCurrentState()
-                                        != ConnectStateChangeListenerManager.RECEIVING) {
+                                        != ConnectStateChangeListenerManager.RECEIVING&&
+                                        !WsConnection.getInstance().getLoginConnection()) {
                                     disconnect();
-                                    UtilTool.Log("---------","目前登錄狀態不符合："+ConnectStateChangeListenerManager.get().getCurrentState()+"    "+WsConnection.getInstance().get(IMService.this).isOpen());
+                                    UtilTool.Log("fengjian","目前登錄狀態不符合："+ConnectStateChangeListenerManager.get().getCurrentState()+"    "+WsConnection.getInstance().get(IMService.this).isOpen());
+                                    exReconnect(2000);
+                                    break;
                                 }
-                                if(!WsConnection.getInstance().isLogin()){
+                                if(!WsConnection.getInstance().isLogin()&&!WsConnection.getInstance().getLoginConnection()){
                                     disconnect();
-                                    UtilTool.Log("---------","目前登錄狀態不符合："+WsConnection.getInstance().isLogin());
+                                    UtilTool.Log("fengjian","目前登錄狀態不符合："+WsConnection.getInstance().isLogin());
                                 }
                                 exReconnect(2000);
                                 break;
@@ -159,7 +162,10 @@ public class IMService extends Service{
         new Thread(){
             @Override
             public void run() {
+                UtilTool.Log("fengjian","關閉連接");
                 WsConnection.getInstance().closeConnection();
+                ConnectStateChangeListenerManager.get().notifyListener(
+                        ConnectStateChangeListenerManager.CONNECTING);
             }
         }.start();
     }

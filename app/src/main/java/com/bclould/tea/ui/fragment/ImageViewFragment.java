@@ -1,5 +1,7 @@
 package com.bclould.tea.ui.fragment;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -14,18 +16,26 @@ import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.ui.widget.ZoomImageView;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.QRDiscernUtil;
 import com.bclould.tea.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.RGBLuminanceSource;
+import com.google.zxing.Result;
+import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeReader;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by GA on 2018/3/7.
@@ -95,7 +105,18 @@ public class ImageViewFragment extends Fragment {
                 getActivity().finish();
             }
         });
+        imageGiv.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                new QRDiscernUtil(getActivity()).discernQR(imageUrl);
+                return false;
+            }
+        });
     }
+
+
+
+
 
     public void loadImage(String url) {
         if (url.startsWith("https://") || url.startsWith("http://")) {

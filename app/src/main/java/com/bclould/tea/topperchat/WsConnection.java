@@ -34,6 +34,7 @@ import com.koushikdutta.async.http.WebSocket;
 import org.greenrobot.eventbus.EventBus;
 import org.msgpack.jackson.dataformat.MessagePackFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,8 +59,9 @@ public class WsConnection {
     private boolean isConnection=false;
     private boolean isOutConnection=false;//是否已經退出登錄，到登錄界面
     private boolean isLoginConnection=false;//是否登錄鏈接中，避免重複登錄導致一直斷開
-
+    private static Object lock = new Object();
     private DBManager mManager;
+    private ArrayList<WebSocket> mWebSocketArrayList=new ArrayList<>();
     private Handler mHandler=new Handler();
     public static WsConnection getInstance(){
         if(mInstance == null){
@@ -75,65 +77,78 @@ public class WsConnection {
     private WsConnection() {}
 
     public synchronized WebSocket get(Context context){
-        mContext=context;
-        try {
-            if((ws==null||!ws.isOpen())&&!isConnection&&!isOutConnection){
-                isConnection=true;
-                AsyncHttpClient.getDefaultInstance().getSocketMiddleware().setIdleTimeoutMs(20000);
-                AsyncHttpClient.getDefaultInstance().websocket(Constants.DOMAINNAME3, "2087", new AsyncHttpClient.WebSocketConnectCallback() {
-                    @Override
-                    public void onCompleted(Exception ex, com.koushikdutta.async.http.WebSocket webSocket) {
-                        isConnection=false;
-                        if (ex != null) {
-                            setIsLogin(false);
-                            setLoginConnection(false);
-                            UtilTool.Log("fengjian","连接服務器失敗"+ex.getMessage());
-                            ex.printStackTrace();
-                            return;
-                        }
-                        ws=webSocket;
-                        UtilTool.Log("fengjian","连接服務器成功");
-                        try {
-                            login();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        webSocket.setDataCallback(new DataCallback() {
-                            public void onDataAvailable(DataEmitter emitter, ByteBufferList byteBufferList) {
-                                byte[] bytes=byteBufferList.getAllByteArray();
-                                SocketListener.getInstance(mContext).onBinaryMessage(bytes);
-                            }
-                        });
-
-                        webSocket.setClosedCallback(new CompletedCallback() {
-                            @Override
-                            public void onCompleted(Exception ex) {
-                                UtilTool.Log("fengjian","断开连接");
-                                setIsLogin(false);
-                                setLoginConnection(false);
-                            }
-                        });
-                        webSocket.setEndCallback(new CompletedCallback() {
-                            @Override
-                            public void onCompleted(Exception ex) {
-                                UtilTool.Log("fengjian","断开连接");
-                                setIsLogin(false);
-                                setLoginConnection(false);
-                            }
-                        });
-                        webSocket.setPongCallback(new WebSocket.PongCallback() {
-                            @Override
-                            public void onPongReceived(String s) {
-                                UtilTool.Log("fengjian","pong回調："+s);
-                            }
-                        });
+        synchronized (lock) {
+            mContext = context;
+            try {
+                if ((ws == null || !ws.isOpen()) && !isConnection && !isOutConnection) {
+                    setIsConnection(true);
+                    if(ws!=null){
+                        UtilTool.Log("fengjian","進入打開websocket-------------"+ws.isOpen());
                     }
-                });
+                    UtilTool.Log("fengjian","進入打開websocket-------------"+mWebSocketArrayList.size());
+                    AsyncHttpClient.getDefaultInstance().getSocketMiddleware().setIdleTimeoutMs(20000);
+                    AsyncHttpClient.getDefaultInstance().websocket(Constants.DOMAINNAME3, "2087", new AsyncHttpClient.WebSocketConnectCallback() {
+                        @Override
+                        public void onCompleted(Exception ex, final com.koushikdutta.async.http.WebSocket webSocket) {
+                            if (ex != null) {
+                                setIsLogin(false);
+                                setLoginConnection(false);
+                                setIsConnection(false);
+                                UtilTool.Log("fengjian", "连接服務器失敗" + ex.getMessage());
+                                ex.printStackTrace();
+                                return;
+                            }
+                            ws = webSocket;
+                            mWebSocketArrayList.add(ws);
+                            UtilTool.Log("fengjian", "连接服務器成功-----"+mWebSocketArrayList.size());
+                            try {
+                                login();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            webSocket.setDataCallback(new DataCallback() {
+                                public void onDataAvailable(DataEmitter emitter, ByteBufferList byteBufferList) {
+                                    byte[] bytes = byteBufferList.getAllByteArray();
+                                    SocketListener.getInstance(mContext).onBinaryMessage(bytes);
+                                }
+                            });
+
+                            webSocket.setClosedCallback(new CompletedCallback() {
+                                @Override
+                                public void onCompleted(Exception ex) {
+                                    UtilTool.Log("fengjian", "断开连接");
+                                    setIsConnection(false);
+                                    mWebSocketArrayList.remove(webSocket);
+                                    setIsLogin(false);
+                                    setLoginConnection(false);
+                                }
+                            });
+                            webSocket.setEndCallback(new CompletedCallback() {
+                                @Override
+                                public void onCompleted(Exception ex) {
+                                    UtilTool.Log("fengjian", "断开连接");
+                                    setIsConnection(false);
+                                    mWebSocketArrayList.remove(webSocket);
+                                    setIsLogin(false);
+                                    setLoginConnection(false);
+                                }
+                            });
+                            webSocket.setPongCallback(new WebSocket.PongCallback() {
+                                @Override
+                                public void onPongReceived(String s) {
+                                MySharedPreferences.getInstance().setInteger("ping", 1);
+                                    UtilTool.Log("fengjian", "pong回調：" + s);
+                                }
+                            });
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }catch (Exception e){
-            e.printStackTrace();
+            return ws;
         }
-        return ws;
     }
 
     public synchronized void login() throws Exception {
@@ -161,29 +176,29 @@ public class WsConnection {
         map.put(CONTENT,objectMapper.writeValueAsBytes(contentMap));
         map.put(TYPE,1);
         ws.send(objectMapper.writeValueAsBytes(map));
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setLoginConnection(false);
-                if(!isLogin){
-                    closeConnection();
-                }
-            }
-        },60*1000);
+//        mHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                setLoginConnection(false);
+//                if(!isLogin){
+//                    closeConnection();
+//                }
+//            }
+//        },60*1000);
     }
 
     public void senPing(){
         try {
             ws.ping("Android");
-            ObjectMapper objectMapper =  new ObjectMapper(new MessagePackFactory());
-            Map<Object,Object> sendMap = new HashMap<>();
-            sendMap.put("type",4);
-            sendMap.put("content",new byte[]{});
-            try {
-                sendMessage(objectMapper.writeValueAsBytes(sendMap));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
+//            ObjectMapper objectMapper =  new ObjectMapper(new MessagePackFactory());
+//            Map<Object,Object> sendMap = new HashMap<>();
+//            sendMap.put("type",4);
+//            sendMap.put("content",new byte[]{});
+//            try {
+//                sendMessage(objectMapper.writeValueAsBytes(sendMap));
+//            } catch (JsonProcessingException e) {
+//                e.printStackTrace();
+//            }
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -209,6 +224,10 @@ public class WsConnection {
             throw new NullPointerException();
         }
         ws.send(bytes);
+    }
+
+    private void setIsConnection(boolean isConnection){
+        this.isConnection=isConnection;
     }
 
     public void setLoginConnection(boolean isLoginConnection){
@@ -267,10 +286,9 @@ public class WsConnection {
         LoginThread.isStartExReconnect = false;
         if (ws != null) {
             // 移除连接监听
-            if (ws.isOpen()) {
-                ws.close();
-                ws.end();
-            }
+            ws.close();
+            ws.end();
+            ws=null;
         }
         setIsLogin(false);
     }

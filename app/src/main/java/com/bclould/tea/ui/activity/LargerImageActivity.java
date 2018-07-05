@@ -14,6 +14,7 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.QRDiscernUtil;
 import com.bclould.tea.utils.ToastShow;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
@@ -48,6 +49,13 @@ public class LargerImageActivity extends BaseActivity {
                 .getSystemService(Context.WINDOW_SERVICE);
         int width = wm.getDefaultDisplay().getWidth();
         Glide.with(this).load(url).apply(new RequestOptions().override(width,width).placeholder(R.mipmap.img_nfriend_headshot1)).into(mImage);
+        mImage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                new QRDiscernUtil(LargerImageActivity.this).discernQR(url);
+                return false;
+            }
+        });
     }
 
     @OnClick({R.id.image})

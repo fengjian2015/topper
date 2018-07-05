@@ -998,4 +998,7 @@
     <string name="set_gesture">設置手勢密碼</string>
     <string name="app_look">應用加鎖</string>
     <string name="set_app_look">設置應用鎖</string>
+    <string name="send_message">發送消息</string>
+    <string name="discern_qr">識別二維碼</string>
+    <string name="search_image">搜索網絡圖片</string>
 </resources>

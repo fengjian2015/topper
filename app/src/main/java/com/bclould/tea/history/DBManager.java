@@ -636,6 +636,20 @@ public class DBManager {
         }
     }
 
+    public void updateConversation(String name,String user, int number, String chat, String time,long createTime) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            ContentValues cv = new ContentValues();
+            cv.put("number", number);
+            cv.put("time", time);
+            cv.put("message", chat);
+            cv.put("createTime", createTime);
+            cv.put("friend",name);
+            db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
+    }
+
     public void updateConversationNumber(String user, int number) {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);

@@ -56,4 +56,9 @@
             android:textSize="@dimen/x30"/>-->
 
     </RelativeLayout>
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+       />
 </LinearLayout>

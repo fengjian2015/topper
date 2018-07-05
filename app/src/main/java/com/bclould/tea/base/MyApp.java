@@ -116,6 +116,16 @@ public class MyApp extends Application {
         }
     }
 
+    // 遍历所有Activity并finish指定activity
+    public void exit(String activityName) {
+        for (int i = 0; i < mActivityList.size(); i++) {
+            Activity activity = (Activity) mActivityList.get(i);
+            if(activity.getClass().getName().equals(activityName)){
+                activity.finish();
+            }
+        }
+    }
+
     @Override
     public void onTerminate() {
         super.onTerminate();

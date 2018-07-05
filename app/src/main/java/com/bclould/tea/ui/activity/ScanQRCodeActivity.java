@@ -24,6 +24,7 @@ import com.bclould.tea.model.ReceiptInfo;
 import com.bclould.tea.ui.fragment.ConversationFragment;
 import com.bclould.tea.ui.fragment.FriendListFragment;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.QRDiscernUtil;
 import com.bclould.tea.utils.UtilTool;
 import com.google.gson.Gson;
 import butterknife.Bind;
@@ -113,99 +114,7 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
             UtilTool.Log("日志", result);
             finish();
         } else if (mCode == 1) {
-            if (result != null && !result.isEmpty()) {
-                if (result.contains(Constants.BUSINESSCARD)) {
-                    String base64 = result.substring(Constants.BUSINESSCARD.length(), result.length());
-                    String jsonresult = new String(Base64.decode(base64,Base64.DEFAULT));
-                    UtilTool.Log("日志", jsonresult);
-
-                    Gson gson = new Gson();
-                    QrCardInfo qrCardInfo = gson.fromJson(jsonresult, QrCardInfo.class);
-                    String name = qrCardInfo.getName();
-                    Intent intent = new Intent(ScanQRCodeActivity.this, IndividualDetailsActivity.class);
-                    intent.putExtra("name", name);
-                    intent.putExtra("user", name);
-                    intent.putExtra("roomId", name);
-                    startActivity(intent);
-                    finish();
-                } else if (result.contains(Constants.MONEYIN)) {
-                    try {
-                        String base64 = result.substring(Constants.MONEYIN.length(), result.length());
-                        String jsonresult =new String(Base64.decode(base64,Base64.DEFAULT));
-                        UtilTool.Log("日志", jsonresult);
-                        Gson gson = new Gson();
-                        QrReceiptInfo qrReceiptInfo = gson.fromJson(jsonresult, QrReceiptInfo.class);
-                        if (qrReceiptInfo.getCoin_id() == null && qrReceiptInfo.getCoin_name() == null && qrReceiptInfo.getNumber() == null) {
-                            Intent intent = new Intent(this, PaymentActivity.class);
-                            intent.putExtra("userId", qrReceiptInfo.getUser_id() + "");
-                            intent.putExtra("username", qrReceiptInfo.getUser_name());
-                            intent.putExtra("type", Constants.MONEYIN);
-                            startActivity(intent);
-                        } else {
-                            Intent intent = new Intent(this, PaymentActivity.class);
-                            intent.putExtra("userId", qrReceiptInfo.getUser_id() + "");
-                            intent.putExtra("username", qrReceiptInfo.getUser_name());
-                            intent.putExtra("coinId", qrReceiptInfo.getCoin_id());
-                            intent.putExtra("coinName", qrReceiptInfo.getCoin_name());
-                            intent.putExtra("number", qrReceiptInfo.getNumber());
-                            intent.putExtra("mark", qrReceiptInfo.getMark());
-                            intent.putExtra("type", Constants.DATAMONEYIN);
-                            startActivity(intent);
-                        }
-                        finish();
-                    } catch (Exception e) {
-                        Toast.makeText(this, getString(R.string.scan_qr_code_error), Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
-                    }
-                } else if (result.contains(Constants.MONEYOUT)) {
-                    try {
-                        String base64 = result.substring(Constants.MONEYOUT.length(), result.length());
-                        String jsonresult = new String(Base64.decode(base64,Base64.DEFAULT));
-                        UtilTool.Log("日志", jsonresult);
-                        Gson gson = new Gson();
-                        QrPaymentInfo qrPaymentInfo = gson.fromJson(jsonresult, QrPaymentInfo.class);
-                        if (qrPaymentInfo.getStatus() == 1) {
-                            mReceiptPaymentPresenter.receipt(qrPaymentInfo.getData(), new ReceiptPaymentPresenter.CallBack5() {
-                                @Override
-                                public void send(ReceiptInfo.DataBean data) {
-                                    Intent intent = new Intent(ScanQRCodeActivity.this, PayReceiptResultActivity.class);
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("coinName", data.getCoin_name());
-                                    bundle.putString("date", data.getDate());
-                                    bundle.putString("name", data.getName());
-                                    bundle.putString("number", data.getNumber());
-                                    bundle.putString("type", Constants.MONEYOUT);
-                                    bundle.putString("avatar", data.getAvatar());
-                                    intent.putExtras(bundle);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            });
-                        }
-                    } catch (Exception e) {
-                        Toast.makeText(this, getString(R.string.scan_qr_code_error), Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
-                    }
-                } else if (result.equals(Constants.KEFU)) {
-                    try {
-                        startActivity(new Intent(this, ProblemFeedBackActivity.class));
-                        finish();
-                    } catch (Exception e) {
-                        Toast.makeText(this, getString(R.string.scan_qr_code_error), Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
-                    }
-                } else if(result.contains(REDPACKAGE)){
-                    Intent intent = new Intent(ScanQRCodeActivity.this, ConversationFragment.class);
-                    intent.putExtra("result", result);
-                    setResult(RESULT_OK, intent);
-                    finish();
-                }else{
-                    Intent intent = new Intent(ScanQRCodeActivity.this, ScanQRResultActivty.class);
-                    intent.putExtra("result", result);
-                    startActivity(intent);
-                    finish();
-                }
-            }
+            new QRDiscernUtil(this).goActivity(result);
         } else if (mCode == 2) {
             Intent intent = new Intent(ScanQRCodeActivity.this, FriendListFragment.class);
             intent.putExtra("result", result);

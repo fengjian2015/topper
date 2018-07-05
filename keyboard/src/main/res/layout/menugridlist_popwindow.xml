@@ -15,7 +15,8 @@
     </LinearLayout>
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
         <TextView
             android:id="@+id/text1"
             android:layout_width="match_parent"
@@ -54,14 +55,20 @@
             android:layout_height="@dimen/y12"
             android:layout_above="@id/card"/>
 
-        <ListView
-            android:id="@+id/lv_menu"
+        <sj.keyboard.widget.MyGridView
+            android:id="@+id/gv_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/jiange"
-            android:divider="@null"
-            ></ListView>
+            android:layout_marginTop="@dimen/y50"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x20"
+            android:paddingBottom="@dimen/y50"
+            android:paddingTop="@dimen/y10"
+            android:listSelector="@android:color/transparent"
+            android:background="@drawable/item_app"
+            android:numColumns="4"
+            />
     </RelativeLayout>
-
 
 </RelativeLayout>

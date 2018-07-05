@@ -21,6 +21,7 @@ public class LoginThread extends Thread {
 	public void run() {
 		while (true) {
 			if (WsConnection.getInstance().getOutConnection()) {
+				UtilTool.Log("fengjian","關閉連接");
 				WsConnection.getInstance().logoutService(context);
 				break;
 			}

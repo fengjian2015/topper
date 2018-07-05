@@ -192,7 +192,7 @@ public class MultiManage implements Room{
 
     private void changeConversationInfo(String time,String message,long createTime){
         if (mMgr.findConversation(roomId)) {
-            mMgr.updateConversation(roomId, 0,  mMgr.findLastMessageConversation(roomId), mMgr.findLastMessageConversationTime(roomId),createTime);
+            mMgr.updateConversation(dbRoomManage.findRoomName(roomId),roomId, 0,  mMgr.findLastMessageConversation(roomId), mMgr.findLastMessageConversationTime(roomId),createTime);
         } else {
             mMgr.addConversation(createConversation(time,message,createTime));
         }

@@ -27,6 +27,7 @@ import java.util.List;
 import sj.keyboard.adpater.PageSetAdapter;
 import sj.keyboard.data.PageSetEntity;
 import sj.keyboard.utils.EmoticonsKeyboardUtils;
+import sj.keyboard.utils.MenuGridListPopWindow;
 import sj.keyboard.utils.MenuListPopWindow;
 import sj.keyboard.widget.AutoHeightLayout;
 import sj.keyboard.widget.EmoticonsEditText;
@@ -65,7 +66,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     private boolean initRecordIndicator = false;
     private OnResultOTR onResultOTR;
     private String roomType;//房间类型
-    private  MenuListPopWindow menu;
+    private MenuGridListPopWindow menu;
 
     public XhsEmoticonsKeyBoard(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -182,11 +183,15 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
 //        }
     }
 
-    public MenuListPopWindow setListMenu(Context context){
+    public MenuGridListPopWindow setListMenu(Context context){
         this.mContext=context;
-        menu = new MenuListPopWindow(mContext,mEtChat,roomType);
+        menu = new MenuGridListPopWindow(mContext,mEtChat,roomType);
         menu.setColor(Color.BLACK);
         return menu;
+    }
+
+    private void show(){
+        menu.showAtLocation();
     }
 
     public void reset() {
@@ -224,9 +229,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         showText();
     }
 
-    private void show(){
-         menu.showAtLocation();
-    }
+
 
     @Override
     public void onFuncChange(int key) {

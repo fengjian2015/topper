@@ -252,6 +252,7 @@ public class SingleManage implements Room {
 
     //上传文件到aws
     public void Upload(final String path) {
+        if(path==null)return;
         final File file = new File(path);//获取文件
         final String postfix = UtilTool.getPostfix(file.getName());//获取文件后缀
         final String key = UtilTool.getUserId() + UtilTool.createtFileName() + ".AN." + UtilTool.getPostfix2(file.getName());//命名aws文件名

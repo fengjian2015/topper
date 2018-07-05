@@ -21,7 +21,6 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.IndividualInfo;
 import com.bclould.tea.model.MessageInfo;
-import com.bclould.tea.topperchat.WsContans;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
@@ -103,6 +102,8 @@ public class IndividualDetailsActivity extends BaseActivity {
     LinearLayout mLlError;
     @Bind(R.id.ll_data)
     LinearLayout mLlData;
+    @Bind(R.id.btn_send)
+    Button mBtnSend;
 
     private DBManager mMgr;
     private String mUser;
@@ -110,7 +111,7 @@ public class IndividualDetailsActivity extends BaseActivity {
     private String roomId;
     private IndividualInfo.DataBean individualInfo;
     private int REMARK = 100;
-    private int type = 0;//1表示查看好友，2表示添加好友
+    private int type = 0;//1表示查看好友，2表示添加好友 3表示自己
 
     private String avatar;
     private IndividualDetailsPresenter mPresenter;
@@ -153,6 +154,7 @@ public class IndividualDetailsActivity extends BaseActivity {
             imageQr.setVisibility(View.VISIBLE);
             rlRemark.setVisibility(View.VISIBLE);
             btnBrak.setText(getString(R.string.delete));
+            mBtnSend.setVisibility(View.VISIBLE);
             rlCard.setVisibility(View.VISIBLE);
             mCvNoLookTaDy.setVisibility(View.VISIBLE);
             mCvNoLookTaDy2.setVisibility(View.VISIBLE);
@@ -160,6 +162,7 @@ public class IndividualDetailsActivity extends BaseActivity {
             imageQr.setVisibility(View.INVISIBLE);
             rlRemark.setVisibility(View.GONE);
             btnBrak.setText(getString(R.string.add_friend));
+            mBtnSend.setVisibility(View.GONE);
             rlCard.setVisibility(View.GONE);
             mCvNoLookTaDy.setVisibility(View.GONE);
             mCvNoLookTaDy2.setVisibility(View.GONE);
@@ -169,8 +172,9 @@ public class IndividualDetailsActivity extends BaseActivity {
             mCvNoLookTaDy.setVisibility(View.GONE);
             mCvNoLookTaDy2.setVisibility(View.GONE);
             rlRemark.setVisibility(View.GONE);
+            mBtnSend.setVisibility(View.GONE);
         }
-        if(TOCO_SERVICE.equals(mUser)){
+        if (TOCO_SERVICE.equals(mUser)) {
             btnBrak.setVisibility(View.GONE);
         }
         initData();
@@ -223,12 +227,12 @@ public class IndividualDetailsActivity extends BaseActivity {
         });
     }
 
-    private void saveData(IndividualInfo.DataBean data){
-        mMgr.addStrangerUserInfo(data.getToco_id(),data.getAvatar(),data.getName());
-        mMgr.updateConversationName(data.getToco_id(),data.getName());
+    private void saveData(IndividualInfo.DataBean data) {
+        mMgr.addStrangerUserInfo(data.getToco_id(), data.getAvatar(), data.getName());
+        mMgr.updateConversationName(data.getToco_id(), data.getName());
     }
 
-    @OnClick({R.id.cv_no_look_ta_dy, R.id.cv_no_look_ta_dy2, R.id.rl_dynamic, R.id.bark, R.id.btn_brak, R.id.rl_qr, R.id.rl_remark, R.id.rl_card,R.id.iv_head,R.id.ll_error})
+    @OnClick({R.id.cv_no_look_ta_dy, R.id.cv_no_look_ta_dy2, R.id.rl_dynamic, R.id.bark, R.id.btn_brak, R.id.rl_qr, R.id.rl_remark, R.id.rl_card, R.id.iv_head, R.id.ll_error,R.id.btn_send})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_dynamic:
@@ -272,12 +276,29 @@ public class IndividualDetailsActivity extends BaseActivity {
             case R.id.iv_head:
                 lookLargerImage();
                 break;
+            case R.id.btn_send:
+                goConversation();
+                break;
         }
     }
 
-    private void lookLargerImage(){
-        Intent intent=new Intent(this,LargerImageActivity.class);
-        intent.putExtra("url",individualInfo.getAvatar());
+    private void goConversation() {
+        MyApp.getInstance().exit(ConversationActivity.class.getName());
+        Intent intent = new Intent(this, ConversationActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Bundle bundle = new Bundle();
+        bundle.putString("name", mName);
+        bundle.putString("user", mUser);
+        intent.putExtras(bundle);
+        mMgr.updateNumber(mUser, 0);
+        EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));
+        startActivity(intent);
+        finish();
+    }
+
+    private void lookLargerImage() {
+        Intent intent = new Intent(this, LargerImageActivity.class);
+        intent.putExtra("url", individualInfo.getAvatar());
         startActivity(intent);
     }
 

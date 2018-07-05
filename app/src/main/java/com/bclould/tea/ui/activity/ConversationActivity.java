@@ -91,6 +91,7 @@ import sj.keyboard.interfaces.EmoticonDisplayListener;
 import sj.keyboard.interfaces.EmoticonFilter;
 import sj.keyboard.interfaces.PageViewInstantiateListener;
 import sj.keyboard.utils.EmoticonsKeyboardUtils;
+import sj.keyboard.utils.MenuGridListPopWindow;
 import sj.keyboard.utils.MenuListPopWindow;
 import sj.keyboard.widget.EmoticonPageView;
 import sj.keyboard.widget.EmoticonsEditText;
@@ -196,7 +197,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         SimpleAppsGridView simpleAppsGridView = new SimpleAppsGridView(this);
         simpleAppsGridView.setData(roomId, roomType);
 
-        mEkbEmoticonsKeyboard.setListMenu(ConversationActivity.this).setListOnClick(new MenuListPopWindow.ListOnClick() {
+        mEkbEmoticonsKeyboard.setListMenu(ConversationActivity.this).setListOnClick(new MenuGridListPopWindow.ListOnClick() {
             @Override
             public void onclickitem(String name) {
                 if (getString(R.string.red_package).equals(name)) {

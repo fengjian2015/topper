@@ -760,11 +760,11 @@ public class UtilTool {
         String url=dbRoomManage.findRoomUrl(roomId);
         if(!StringUtils.isEmpty(url)){
             if (Util.isOnMainThread() && context != null) {
-                Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_group_head)).into(imageView);
+                Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).dontAnimate().error(R.mipmap.img_group_head)).into(imageView);
             }
         }else{
             if (Util.isOnMainThread() && context != null) {
-                Glide.with(context).load(R.mipmap.img_group_head).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_group_head).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
+                Glide.with(context).load(R.mipmap.img_group_head).apply(RequestOptions.bitmapTransform(new CircleCrop()).error(R.mipmap.img_group_head).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
             }
         }
     }
@@ -809,7 +809,7 @@ public class UtilTool {
         } else if (postfix.equals(".mp4") || postfix.equals(".mov") || postfix.equals(".MP4") || postfix.equals(".MOV")) {
             return "Video";
         } else {
-            return "File";
+            return "Image";
         }
     }
 

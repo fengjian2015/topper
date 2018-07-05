@@ -575,7 +575,7 @@ public class SocketListener {
                 if (!isMe) {
                     number++;
                 }
-                mgr.updateConversation(from, number, mgr.findLastMessageConversation(from), mgr.findLastMessageConversationTime(from), createTime);
+                mgr.updateConversation(friend,from, number, mgr.findLastMessageConversation(from), mgr.findLastMessageConversationTime(from), createTime);
             } else {
                 ConversationInfo info = new ConversationInfo();
                 info.setTime(time);
@@ -1190,7 +1190,7 @@ public class SocketListener {
         mgr.addMessage(messageInfo);
         int number = mgr.queryNumber(from);
         if (mgr.findConversation(from)) {
-            mgr.updateConversation(from, number + 1, redpacket, time, messageInfo.getCreateTime());
+            mgr.updateConversation(from,from, number + 1, redpacket, time, messageInfo.getCreateTime());
         } else {
             ConversationInfo info = new ConversationInfo();
             info.setTime(time);
