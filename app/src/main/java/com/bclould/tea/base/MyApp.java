@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
-import com.bclould.tea.history.DBManager;
-import com.bclould.tea.history.DatabaseManager;
 import com.bclould.tea.listener.CrashHandler;
 import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.model.StateInfo;
@@ -113,6 +111,16 @@ public class MyApp extends Application {
         for (int i = 0; i < mActivityList.size(); i++) {
             Activity activity = (Activity) mActivityList.get(i);
             activity.finish();
+        }
+    }
+
+    // 遍历所有Activity并finish指定activity
+    public void exit(String activityName) {
+        for (int i = 0; i < mActivityList.size(); i++) {
+            Activity activity = (Activity) mActivityList.get(i);
+            if(activity.getClass().getName().equals(activityName)){
+                activity.finish();
+            }
         }
     }
 

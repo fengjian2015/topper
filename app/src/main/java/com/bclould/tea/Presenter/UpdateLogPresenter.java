@@ -29,6 +29,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.bclould.tea.ui.activity.PayPwSelectorActivity.GESTURE_PW_SELE;
+
 /**
  * Created by GA on 2018/5/28.
  */
@@ -168,6 +170,45 @@ public class UpdateLogPresenter {
                     public void onNext(BaseInfo baseInfo) {
                         if (baseInfo.getStatus() == 1) {
                             callBack2.send(baseInfo.getData().getFingerprint());
+                        } else {
+                            Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+//                            hideDialog();
+                        UtilTool.Log("更新日誌", e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void setGesture(String password, int status, final CallBack2 callBack2) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .setGesture(UtilTool.getToken(), status, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        if (baseInfo.getStatus() == 1) {
+                            callBack2.send(baseInfo.getData().getGesture());
+                            if (baseInfo.getData().getGesture() == 1) {
+                                MySharedPreferences.getInstance().setBoolean(GESTURE_PW_SELE, true);
+                            } else {
+                                MySharedPreferences.getInstance().setBoolean(GESTURE_PW_SELE, false);
+                            }
+                            EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.set_gesture)));
                         } else {
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         }

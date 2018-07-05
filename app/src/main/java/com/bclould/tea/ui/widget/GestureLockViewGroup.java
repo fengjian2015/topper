@@ -69,7 +69,7 @@ public class GestureLockViewGroup extends RelativeLayout {
     /**
      * GestureLockView手指抬起的状态下内圆和外圆的颜色
      */
-    private int mFingerUpColor = 0xFFFF0000;
+    public int mFingerUpColor = 0xFFFF0000;
 
     /**
      * 宽度
@@ -245,8 +245,7 @@ public class GestureLockViewGroup extends RelativeLayout {
         int x = (int) event.getX();
         int y = (int) event.getY();
 
-        switch (action)
-        {
+        switch (action) {
             case MotionEvent.ACTION_DOWN:
                 // 重置
                 reset();
@@ -343,7 +342,7 @@ public class GestureLockViewGroup extends RelativeLayout {
      *
      * 做一些必要的重置
      */
-    private void reset()
+    public void reset()
     {
         mChoose.clear();
         mPath.reset();

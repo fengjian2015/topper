@@ -19,8 +19,9 @@ import android.widget.Toast;
 
 import com.bclould.tea.R;
 import com.bclould.tea.topperchat.WsConnection;
-import com.bclould.tea.ui.activity.PayPwSelectorActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.ui.widget.GestureLockViewGroup;
+import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.FingerprintUtil;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
@@ -28,7 +29,9 @@ import com.umeng.message.PushAgent;
 
 import java.util.List;
 
-import static com.bclould.tea.Presenter.LoginPresenter.FINGERPRINT_PW;
+import static com.bclould.tea.ui.activity.PayPwSelectorActivity.FINGERPRINT_PW_SELE;
+import static com.bclould.tea.ui.activity.PayPwSelectorActivity.GESTURE_PW_SELE;
+import static com.bclould.tea.ui.activity.SetGesturePWActivity.GESTURE_ANSWER;
 
 /**
  * Created by GA on 2017/9/22.
@@ -38,7 +41,10 @@ import static com.bclould.tea.Presenter.LoginPresenter.FINGERPRINT_PW;
 public class BaseActivity extends AppCompatActivity {
 
     private static boolean isActive;
-    private DeleteCacheDialog mDeleteCacheDialog;
+    private DeleteCacheDialog mFingerprintdialog;
+    private DeleteCacheDialog mGestureDialog;
+    private TextView mTvHint;
+    private GestureLockViewGroup mGestureView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,13 +101,64 @@ public class BaseActivity extends AppCompatActivity {
         if (!isActive) {
             //app 从后台唤醒，进入前台
             isActive = true;
-            if (MySharedPreferences.getInstance().getInteger(FINGERPRINT_PW) == 1 && !UtilTool.getToken().equals("bearer")) {
-                checkFingerprint();
+            if (!UtilTool.getToken().equals("bearer")) {
+                if (MySharedPreferences.getInstance().getBoolean(FINGERPRINT_PW_SELE)) {
+                    checkFingerprint();
+                }
+                if (MySharedPreferences.getInstance().getBoolean(GESTURE_PW_SELE)) {
+                    showGestureDialog();
+                }
             }
             UtilTool.Log("ACTIVITY", "程序从后台唤醒");
         }
 //        UmManage.getInstance().mobclickAgent.onResume(this);
     }
+
+    private void showGestureDialog() {
+        mGestureDialog = new DeleteCacheDialog(R.layout.dialog_gesture_pw, this, R.style.dialog);
+        mGestureDialog.show();
+        mGestureDialog.setCancelable(false);
+        mGestureView = (GestureLockViewGroup) mGestureDialog.findViewById(R.id.gesture_view);
+        mTvHint = (TextView) mGestureDialog.findViewById(R.id.tv_hint);
+        mTvHint.setText(getString(R.string.import_gesture));
+        String mAnswerstr = MySharedPreferences.getInstance().getString(GESTURE_ANSWER);
+        UtilTool.Log("手勢密碼", mAnswerstr);
+        int[] arr = new int[mAnswerstr.length()];
+        for (int i = 0; i < mAnswerstr.length(); i++) {
+            arr[i] = Character.getNumericValue(mAnswerstr.charAt(i));
+        }
+        mGestureView.setAnswer(arr);
+        mGestureView.setOnGestureLockViewListener(new GestureLockViewGroup.OnGestureLockViewListener() {
+
+            public int mCount = 5;
+
+            @Override
+            public void onBlockSelected(int position) {
+
+            }
+
+            @Override
+            public void onGestureEvent(boolean matched) {
+                if (matched) {
+                    mGestureDialog.dismiss();
+                    mCount = 5;
+                } else {
+                    mCount--;
+                    mTvHint.setText(getString(R.string.set_gesture_hint5) + getString(R.string.hai_sheng) + mCount + getString(R.string.chance));
+                    mTvHint.setTextColor(getResources().getColor(R.color.red));
+                }
+            }
+
+            @Override
+            public void onUnmatchedExceedBoundary() {
+                UtilTool.Log("手勢", "onUnmatchedExceedBoundary");
+                mGestureDialog.dismiss();
+                WsConnection.getInstance().logoutService(BaseActivity.this);
+                WsConnection.getInstance().goMainActivity();
+            }
+        });
+    }
+
 
     @Override
     public void onPause() {
@@ -115,11 +172,18 @@ public class BaseActivity extends AppCompatActivity {
             //app 进入后台
             isActive = false;//记录当前已经进入后台
             UtilTool.Log("ACTIVITY", "程序进入后台");
-            if (mDeleteCacheDialog != null) {
-                if (mDeleteCacheDialog.isShowing()) {
-                    mDeleteCacheDialog.dismiss();
+            FingerprintUtil.cancel();
+            if (mFingerprintdialog != null) {
+                if (mFingerprintdialog.isShowing()) {
+                    mFingerprintdialog.dismiss();
                 }
-                mDeleteCacheDialog = null;
+                mFingerprintdialog = null;
+            }
+            if (mGestureDialog != null) {
+                if (mGestureDialog.isShowing()) {
+                    mGestureDialog.dismiss();
+                }
+                mGestureDialog = null;
             }
         }
         super.onStop();
@@ -132,6 +196,7 @@ public class BaseActivity extends AppCompatActivity {
     FingerprintUtil.OnCallBackListenr mOnCallBackListenr = new FingerprintUtil.OnCallBackListenr() {
 
         private TextView mCheck;
+        private int mCount = 5;
 
         @Override
         public void onSupportFailed() {
@@ -150,20 +215,21 @@ public class BaseActivity extends AppCompatActivity {
 
         @Override
         public void onAuthenticationStart() {
-            if (mDeleteCacheDialog == null) {
-                mDeleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_fingerprint_pw, BaseActivity.this, R.style.dialog);
+            if (mFingerprintdialog == null) {
+                mFingerprintdialog = new DeleteCacheDialog(R.layout.dialog_fingerprint_pw, BaseActivity.this, R.style.dialog);
             }
-            if (!mDeleteCacheDialog.isShowing()) {
-                mDeleteCacheDialog.show();
-                mDeleteCacheDialog.setCancelable(false);
-                TextView cancel = (TextView) mDeleteCacheDialog.findViewById(R.id.tv_cancel);
-                mCheck = (TextView) mDeleteCacheDialog.findViewById(R.id.tv_check);
+            if (!mFingerprintdialog.isShowing()) {
+                mFingerprintdialog.show();
+                mFingerprintdialog.setCancelable(false);
+                TextView cancel = (TextView) mFingerprintdialog.findViewById(R.id.tv_cancel);
+                mCheck = (TextView) mFingerprintdialog.findViewById(R.id.tv_check);
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         FingerprintUtil.cancel();
-                        mDeleteCacheDialog.dismiss();
-                        MyApp.getInstance().exit();
+                        mFingerprintdialog.dismiss();
+                        WsConnection.getInstance().logoutService(BaseActivity.this);
+                        WsConnection.getInstance().goMainActivity();
                     }
                 });
             }
@@ -171,17 +237,37 @@ public class BaseActivity extends AppCompatActivity {
 
         @Override
         public void onAuthenticationError(int errMsgId, CharSequence errString) {
-            if (mDeleteCacheDialog != null && mDeleteCacheDialog.isShowing()) {
-                mCheck.setText(getString(R.string.check_fingerprint_error));
-                mCheck.setTextColor(getResources().getColor(R.color.red));
+            UtilTool.Log("指紋", errMsgId + ":" + errString);
+            if (mFingerprintdialog != null && mFingerprintdialog.isShowing() && errMsgId != 5) {
+                if (mCount > 0) {
+                    mCount--;
+                    mCheck.setText(getString(R.string.check_fingerprint_error) + getString(R.string.hai_sheng) + mCount + getString(R.string.chance));
+                    mCheck.setTextColor(getResources().getColor(R.color.red));
+                    AnimatorTool.getInstance().editTextAnimator(mCheck);
+                } else {
+                    mFingerprintdialog.dismiss();
+                    WsConnection.getInstance().logoutService(BaseActivity.this);
+                    WsConnection.getInstance().goMainActivity();
+                    mCount = 5;
+                }
             }
+
         }
 
         @Override
         public void onAuthenticationFailed() {
-            if (mDeleteCacheDialog != null && mDeleteCacheDialog.isShowing()) {
-                mCheck.setText(getString(R.string.check_fingerprint_error));
-                mCheck.setTextColor(getResources().getColor(R.color.red));
+            if (mFingerprintdialog != null && mFingerprintdialog.isShowing()) {
+                if (mCount > 0) {
+                    mCount--;
+                    mCheck.setText(getString(R.string.check_fingerprint_error) + getString(R.string.hai_sheng) + mCount + getString(R.string.chance));
+                    mCheck.setTextColor(getResources().getColor(R.color.red));
+                    AnimatorTool.getInstance().editTextAnimator(mCheck);
+                } else {
+                    mFingerprintdialog.dismiss();
+                    WsConnection.getInstance().logoutService(BaseActivity.this);
+                    WsConnection.getInstance().goMainActivity();
+                    mCount = 5;
+                }
             }
         }
 
@@ -193,12 +279,13 @@ public class BaseActivity extends AppCompatActivity {
         @SuppressLint("HandlerLeak")
         @Override
         public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
-            if (mDeleteCacheDialog != null && mDeleteCacheDialog.isShowing()) {
+            if (mFingerprintdialog != null && mFingerprintdialog.isShowing()) {
+                mCount = 5;
                 mCheck.setText(getString(R.string.check_fingerprint_succeed));
                 mCheck.setTextColor(getResources().getColor(R.color.blue2));
                 new Handler() {
                     public void handleMessage(Message msg) {
-                        mDeleteCacheDialog.dismiss();
+                        mFingerprintdialog.dismiss();
                     }
                 }.sendEmptyMessageDelayed(0, 1500);
             }
