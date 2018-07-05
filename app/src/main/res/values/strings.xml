@@ -1001,4 +1001,17 @@
     <string name="send_message">發送消息</string>
     <string name="discern_qr">識別二維碼</string>
     <string name="search_image">搜索網絡圖片</string>
+    <string name="chance">次機會</string>
+    <string name="hai_sheng">還剩</string>
+    <string name="set_gesture_hint">請設置手勢</string>
+    <string name="set_gesture_hint2">至少連接四個點，請重新設置</string>
+    <string name="set_gesture_hint3">再次確認手勢</string>
+    <string name="set_gesture_hint4">密碼不一致，請重新設置</string>
+    <string name="set_gesture_hint5">密碼不一致，請重試</string>
+    <string name="set_succeed">設置成功</string>
+    <string name="already_set_fingerprint">應用鎖只能設置指紋或者手勢其中一項</string>
+    <string name="close_fingerprint">已關閉指紋驗證</string>
+    <string name="import_gesture">輸入手勢密碼解鎖</string>
+    <string name="close_gesture_hint">是否關閉手勢驗證?</string>
+    <string name="close_gesture">已關閉手指驗證</string>
 </resources>

@@ -37,7 +37,7 @@ import static com.bclould.tea.utils.MySharedPreferences.SETTING;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class SystemSetActivity extends BaseActivity {
     public static final String INFORM = "inform";
-    public static final String PRIVATE = "private";
+    public static final String PRIVATE = UtilTool.getUserId() + "private";
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.iv_inform)

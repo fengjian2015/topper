@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
-import com.bclould.tea.history.DBManager;
-import com.bclould.tea.history.DatabaseManager;
 import com.bclould.tea.listener.CrashHandler;
 import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.model.StateInfo;

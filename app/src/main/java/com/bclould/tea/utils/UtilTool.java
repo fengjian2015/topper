@@ -1110,4 +1110,12 @@ public class UtilTool {
             return 0;
         }
     }
+    private static long homeTime = 0;
+    public static void homeClickTwo(){
+        if(System.currentTimeMillis() - homeTime > 1000) {
+            homeTime = System.currentTimeMillis();
+        } else {
+
+        }
+    }
 }
