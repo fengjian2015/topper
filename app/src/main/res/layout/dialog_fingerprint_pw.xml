@@ -1,39 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/x600"
-    android:layout_height="@dimen/y350"
-    android:background="@drawable/bg_white_shape"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y30"
-        android:src="@mipmap/img_zhiwen"/>
-
-    <TextView
-        android:id="@+id/tv_check"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y30"
-        android:text="@string/check_fingerprint_hint"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
-
-    <TextView
-        style="@style/HCutOffRule"
-        android:layout_marginTop="@dimen/y30"/>
-
-    <TextView
-        android:id="@+id/tv_cancel"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/cancel"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x32"/>
+        android:background="@drawable/bg_white_shape">
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/iv_fingerprint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y30"
+            android:src="@mipmap/img_zhiwen"/>
+
+        <TextView
+            android:id="@+id/tv_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_fingerprint"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y30"
+            android:text="@string/check_fingerprint_hint"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x28"/>
+
+        <TextView
+            android:id="@+id/xx"
+            style="@style/HCutOffRule"
+            android:layout_above="@+id/tv_cancel"
+            android:layout_marginTop="@dimen/y30"/>
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+    </RelativeLayout>
+
+
+</RelativeLayout>

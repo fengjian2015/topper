@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -115,14 +116,13 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void showGestureDialog() {
-        mGestureDialog = new DeleteCacheDialog(R.layout.dialog_gesture_pw, this, R.style.dialog);
+        mGestureDialog = new DeleteCacheDialog(R.layout.dialog_gesture_pw, this, R.style.dialog2);
         mGestureDialog.show();
         mGestureDialog.setCancelable(false);
         mGestureView = (GestureLockViewGroup) mGestureDialog.findViewById(R.id.gesture_view);
         mTvHint = (TextView) mGestureDialog.findViewById(R.id.tv_hint);
         mTvHint.setText(getString(R.string.import_gesture));
         String mAnswerstr = MySharedPreferences.getInstance().getString(GESTURE_ANSWER);
-        UtilTool.Log("手勢密碼", mAnswerstr);
         int[] arr = new int[mAnswerstr.length()];
         for (int i = 0; i < mAnswerstr.length(); i++) {
             arr[i] = Character.getNumericValue(mAnswerstr.charAt(i));
@@ -216,20 +216,18 @@ public class BaseActivity extends AppCompatActivity {
         @Override
         public void onAuthenticationStart() {
             if (mFingerprintdialog == null) {
-                mFingerprintdialog = new DeleteCacheDialog(R.layout.dialog_fingerprint_pw, BaseActivity.this, R.style.dialog);
+                mFingerprintdialog = new DeleteCacheDialog(R.layout.dialog_fingerprint_pw, BaseActivity.this, R.style.dialog2);
             }
             if (!mFingerprintdialog.isShowing()) {
                 mFingerprintdialog.show();
                 mFingerprintdialog.setCancelable(false);
                 TextView cancel = (TextView) mFingerprintdialog.findViewById(R.id.tv_cancel);
                 mCheck = (TextView) mFingerprintdialog.findViewById(R.id.tv_check);
+                cancel.setText(getString(R.string.exit));
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        FingerprintUtil.cancel();
-                        mFingerprintdialog.dismiss();
-                        WsConnection.getInstance().logoutService(BaseActivity.this);
-                        WsConnection.getInstance().goMainActivity();
+                        showQuitDialog();
                     }
                 });
             }
@@ -291,6 +289,31 @@ public class BaseActivity extends AppCompatActivity {
             }
         }
     };
+
+    private void showQuitDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(getString(R.string.logout_hint));
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                FingerprintUtil.cancel();
+                mFingerprintdialog.dismiss();
+                WsConnection.getInstance().logoutService(BaseActivity.this);
+                WsConnection.getInstance().goMainActivity();
+            }
+        });
+
+    }
 
     @Override
     protected void onDestroy() {

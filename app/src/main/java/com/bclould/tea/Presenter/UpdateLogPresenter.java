@@ -188,10 +188,10 @@ public class UpdateLogPresenter {
                 });
     }
 
-    public void setGesture(String password, int status, final CallBack2 callBack2) {
+    public void setGesture(String password, int status, String answer, final CallBack2 callBack2) {
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .setGesture(UtilTool.getToken(), status, password)
+                .setGesture(UtilTool.getToken(), status, password, answer)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<BaseInfo>() {

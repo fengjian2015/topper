@@ -373,4 +373,10 @@ public class WsConnection {
         intent.setAction(IMCoreService.ACTION_LOGIN);
         context.sendBroadcast(intent);
     }
+    public void close(){
+        if(ws!=null){
+            ws.close();
+            ws.end();
+        }
+    }
 }

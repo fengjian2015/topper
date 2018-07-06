@@ -39,6 +39,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.bclould.tea.ui.activity.PayPwSelectorActivity.FINGERPRINT_PW_SELE;
 import static com.bclould.tea.ui.activity.PayPwSelectorActivity.GESTURE_PW_SELE;
+import static com.bclould.tea.ui.activity.SetGesturePWActivity.GESTURE_ANSWER;
 
 /**
  * Created by GA on 2017/11/15.
@@ -122,8 +123,6 @@ public class LoginPresenter {
                             MySharedPreferences.getInstance().setString(LOGINPW, password);
                             MySharedPreferences.getInstance().setString(CURRENCY, baseInfo.getData().getCurrency());
                             MySharedPreferences.getInstance().setInteger(IS_UPDATE, baseInfo.getData().getIs_update());
-//                            MySharedPreferences.getInstance().setInteger(GESTURE_PW, baseInfo.getData().getGesture());
-//                            MySharedPreferences.getInstance().setInteger(FINGERPRINT_PW, baseInfo.getData().getFingerprint());
                             if (baseInfo.getData().getFingerprint() == 1) {
                                 MySharedPreferences.getInstance().setBoolean(FINGERPRINT_PW_SELE, true);
                             } else {
@@ -131,6 +130,7 @@ public class LoginPresenter {
                             }
                             if (baseInfo.getData().getGesture() == 1) {
                                 MySharedPreferences.getInstance().setBoolean(GESTURE_PW_SELE, true);
+                                MySharedPreferences.getInstance().setString(GESTURE_ANSWER, baseInfo.getData().getGesture_number());
                             } else {
                                 MySharedPreferences.getInstance().setBoolean(GESTURE_PW_SELE, false);
                             }

@@ -64,6 +64,15 @@ public class LoginInfo {
         private int fingerprint;
         private int gesture;
         private int is_update;
+        private String gesture_number;
+
+        public String getGesture_number() {
+            return gesture_number;
+        }
+
+        public void setGesture_number(String gesture_number) {
+            this.gesture_number = gesture_number;
+        }
 
         public int getFingerprint() {
             return fingerprint;

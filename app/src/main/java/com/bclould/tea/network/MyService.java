@@ -418,7 +418,7 @@ public interface MyService {
             @Field("to_coin_name") String to_coin_name
     );
 
-    //获取市场参考价
+    //更新token
     @POST("api/updateToken")
     Observable<BaseInfo> updataToken(
             @Header("Authorization") String token
@@ -1237,7 +1237,8 @@ public interface MyService {
     Observable<BaseInfo> setGesture(
             @Header("Authorization") String token,
             @Field("gesture") int gesture,
-            @Field("second_password") String second_password
+            @Field("second_password") String second_password,
+            @Field("gesture_number") String gesture_number
     );
 
     //設置指紋密碼

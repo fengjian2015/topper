@@ -119,6 +119,12 @@ public class NewsDetailsActivity extends BaseActivity {
         // 开启 Application Caches 功能
         mWebView.getSettings().setAppCacheEnabled(true);
 
+        mWebView.getSettings().setBlockNetworkImage(false);
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            mWebView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
