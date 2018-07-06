@@ -1092,7 +1092,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        mIvImg.setImageDrawable(resource);
+                         mIvImg.setImageDrawable(resource);
                         return false;
                     }
                 }).apply(requestOptions).into(mIvImg);
