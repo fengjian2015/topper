@@ -207,6 +207,9 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                 public void send() {
                     initView();
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.refresh_group_members)));
+                    MessageEvent messageEvent = new MessageEvent(getString(R.string.refresh_group_room));
+                    messageEvent.setId(roomId);
+                    EventBus.getDefault().post(messageEvent);
                 }
             });
         } else {
@@ -256,11 +259,11 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                 // TODO: 2018/6/20 跳轉二維碼 
                 break;
             case R.id.rl_group_name:
-                if (isOwner()) {
+//                if (isOwner()) {
                     goModificationName(2, mTvgrouprName.getText().toString());
-                } else {
-                    ToastShow.showToast2(ConversationGroupDetailsActivity.this, getString(R.string.only_owner_change_group_name));
-                }
+//                } else {
+//                    ToastShow.showToast2(ConversationGroupDetailsActivity.this, getString(R.string.only_owner_change_group_name));
+//                }
                 break;
             case R.id.rl_member_name:
                 goModificationName(1, mTvMemberName.getText().toString());
@@ -303,10 +306,6 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     }
 
     private void changeImage() {
-        if (!isOwner()) {
-            ToastShow.showToast2(ConversationGroupDetailsActivity.this, getString(R.string.only_owner_change_group_image));
-            return;
-        }
         showDialog();
     }
 

@@ -53,13 +53,13 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
                 mContext.startActivity(in);
 
                 // 杀死我们的进程
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        android.os.Process.killProcess(android.os.Process.myPid()); // 杀死线程
-                    }
-                }, 2 * 1000);
+//                Timer timer = new Timer();
+//                timer.schedule(new TimerTask() {
+//                    @Override
+//                    public void run() {
+//                        android.os.Process.killProcess(android.os.Process.myPid()); // 杀死线程
+//                    }
+//                }, 2 * 1000);
             }
         }catch (InternalError error){
             error.printStackTrace();

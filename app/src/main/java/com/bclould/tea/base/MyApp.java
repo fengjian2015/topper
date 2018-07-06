@@ -15,6 +15,7 @@ import com.bclould.tea.service.ImageUpService;
 import com.bclould.tea.topperchat.UmManage;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.GlideImgLoader;
+import com.bclould.tea.utils.MyLifecycleHandler;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.previewlibrary.ZoomMediaLoader;
@@ -71,6 +72,7 @@ public class MyApp extends Application {
 
         UmManage.getInstance().init(this);
 
+        registerActivityLifecycleCallbacks(new MyLifecycleHandler());
     }
 
 

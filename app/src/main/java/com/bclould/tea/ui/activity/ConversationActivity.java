@@ -36,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.crypto.otr.OtrChatListenerManager;
 import com.bclould.tea.history.DBManager;
@@ -46,6 +47,7 @@ import com.bclould.tea.topperchat.UmManage;
 import com.bclould.tea.ui.adapter.ChatAdapter;
 import com.bclould.tea.ui.widget.SimpleAppsGridView;
 import com.bclould.tea.utils.ActivityUtil;
+import com.bclould.tea.utils.AudioModeManger;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.RecordUtil;
 import com.bclould.tea.utils.StringUtils;
@@ -104,7 +106,7 @@ import sj.keyboard.widget.RecordIndicator;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ConversationActivity extends AppCompatActivity implements FuncLayout.OnFuncKeyBoardListener, XhsEmoticonsKeyBoard.OnResultOTR, MessageManageListener, TextView.OnEditorActionListener {
+public class ConversationActivity extends BaseActivity implements FuncLayout.OnFuncKeyBoardListener, XhsEmoticonsKeyBoard.OnResultOTR, MessageManageListener, TextView.OnEditorActionListener {
 
     private static final int CODE_TAKE_PHOTO_SHOOTING = 100;
     private static final int FILE_SELECT_CODE = 2;
@@ -145,6 +147,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     private Room roomManage;
     private String roomType;//房间类型
     private int currentPosition;//記錄刷新位置
+    private AudioModeManger audioModeManger;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -167,7 +170,12 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
         initData(null,true);//初始化数据
         mMgr.updateNumber(roomId, 0);//更新未读消息条数
         EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));//发送更新未读消息通知
+//        if (audioModeManger == null) {
+//            audioModeManger = new AudioModeManger();
+//        }
+//        audioModeManger.register(this);
         setOnClick();
+
     }
 
 
@@ -476,6 +484,8 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     @Override
     public void onDestroy() {
         super.onDestroy();
+//        if (audioModeManger != null)
+//            audioModeManger.unregister();
         roomManage.removerMessageManageListener(this);
         mediaPlayer.release();
         mediaPlayer = null;
@@ -725,6 +735,12 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
     }
 
     private void setOnClick() {
+//        audioModeManger.setOnSpeakerListener(new AudioModeManger.onSpeakerListener() {
+//            @Override
+//            public void onSpeakerChanged(boolean isSpeakerOn) {
+//                mChatAdapter.refreshPlayVoice();
+//            }
+//        });
         mEkbEmoticonsKeyboard.addOnResultOTR(this);
         //监听touch事件隐藏软键盘
         mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
@@ -785,7 +801,7 @@ public class ConversationActivity extends AppCompatActivity implements FuncLayou
 
     private void setTitleName() {
         if(RoomManage.ROOM_TYPE_MULTI.equals(roomType)){
-            mTitleName.setText(mName+"("+mDBRoomMember.queryAllRequest(roomId).size()+")");
+            mTitleName.setText(mDBRoomManage.findRoomName(roomId)+"("+mDBRoomMember.queryAllRequest(roomId).size()+")");
         }else {
             String remark = mMgr.queryRemark(roomId);
             if (!StringUtils.isEmpty(remark)) {

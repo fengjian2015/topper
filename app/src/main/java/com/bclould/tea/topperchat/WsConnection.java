@@ -98,8 +98,14 @@ public class WsConnection {
                                 ex.printStackTrace();
                                 return;
                             }
+                            if(mWebSocketArrayList.size()>0){
+                                ws=mWebSocketArrayList.get(0);
+                                closeConnection();
+                                mWebSocketArrayList.clear();
+                            }
                             ws = webSocket;
                             mWebSocketArrayList.add(ws);
+
                             UtilTool.Log("fengjian", "连接服務器成功-----"+mWebSocketArrayList.size());
                             try {
                                 login();

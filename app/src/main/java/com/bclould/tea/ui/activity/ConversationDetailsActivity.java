@@ -136,7 +136,7 @@ public class ConversationDetailsActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.rl_details, R.id.bark, R.id.on_off_otr, R.id.rl_looking_chat, R.id.on_off_message_free, R.id.on_off_top, R.id.rl_empty_talk})
+    @OnClick({R.id.rl_details, R.id.bark, R.id.on_off_otr, R.id.rl_looking_chat, R.id.on_off_message_free, R.id.on_off_top, R.id.rl_empty_talk,R.id.image_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_details:
@@ -160,7 +160,18 @@ public class ConversationDetailsActivity extends BaseActivity {
             case R.id.rl_empty_talk:
                 clearMessage();
                 break;
+            case R.id.image_add:
+                goCreateGroup();
+                break;
         }
+    }
+
+    private void goCreateGroup() {
+        Intent intent = new Intent(this, CreateGroupRoomActivity.class);
+        intent.putExtra("roomName", "");
+        intent.putExtra("type",0);
+        intent.putExtra("tocoId",mUser);
+        startActivity(intent);
     }
 
     private void goRecord() {

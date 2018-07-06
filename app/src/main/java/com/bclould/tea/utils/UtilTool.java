@@ -2,11 +2,13 @@ package com.bclould.tea.utils;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -22,6 +24,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -40,6 +43,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.util.Util;
 import com.google.zxing.BarcodeFormat;
@@ -71,6 +75,7 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1111,11 +1116,51 @@ public class UtilTool {
         }
     }
     private static long homeTime = 0;
-    public static void homeClickTwo(){
+    public static boolean homeClickTwo(){
         if(System.currentTimeMillis() - homeTime > 1000) {
             homeTime = System.currentTimeMillis();
+            return false;
         } else {
-
+            return true;
         }
+    }
+    public static String getImgPathFromCache(Uri url, Context context) {
+        FutureTarget<File> future = Glide.with(context)
+                .load(url)
+                .downloadOnly(400, 400);
+        try {
+            File cacheFile = future.get();
+            String absolutePath = cacheFile.getAbsolutePath();
+            UtilTool.Log("fengjian", "圖片地址：" + absolutePath);
+            return absolutePath;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getRealFilePath( final Context context, final Uri uri ) {
+        if ( null == uri ) return null;
+        final String scheme = uri.getScheme();
+        String data = null;
+        if ( scheme == null )
+            data = uri.getPath();
+        else if ( ContentResolver.SCHEME_FILE.equals( scheme ) ) {
+            data = uri.getPath();
+        } else if ( ContentResolver.SCHEME_CONTENT.equals( scheme ) ) {
+            Cursor cursor = context.getContentResolver().query( uri, new String[] { MediaStore.Images.ImageColumns.DATA }, null, null, null );
+            if ( null != cursor ) {
+                if ( cursor.moveToFirst() ) {
+                    int index = cursor.getColumnIndex( MediaStore.Images.ImageColumns.DATA );
+                    if ( index > -1 ) {
+                        data = cursor.getString( index );
+                    }
+                }
+                cursor.close();
+            }
+        }
+        return data;
     }
 }

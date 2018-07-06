@@ -44,7 +44,8 @@ public class GrabRedPresenter {
         }
     }
 
-    public void grabRedPacket(int redId, final CallBack callBack) {
+    public void grabRedPacket(boolean isShowDialog,int redId, final CallBack callBack) {
+        if(isShowDialog)
         showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
@@ -66,6 +67,7 @@ public class GrabRedPresenter {
                     @Override
                     public void onError(Throwable e) {
                         hideDialog();
+                        callBack.error();
                     }
 
                     @Override
@@ -78,5 +80,6 @@ public class GrabRedPresenter {
     //定义接口
     public interface CallBack {
         void send(GrabRedInfo info);
+        void error();
     }
 }

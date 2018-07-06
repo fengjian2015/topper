@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.UserInfo;
@@ -51,12 +52,14 @@ public class SelectConversationAdapter extends RecyclerView.Adapter {
     private final DBManager mMgr;
     private OnItemListener onItemListener;
     private DBRoomMember mDBRoomMember;
+    private DBRoomManage mDBRoomManage;
 
-    public SelectConversationAdapter(Context context, List<ConversationInfo> ConversationList, DBManager mgr,DBRoomMember mDBRoomMember) {
+    public SelectConversationAdapter(Context context, List<ConversationInfo> ConversationList, DBManager mgr, DBRoomMember mDBRoomMember, DBRoomManage mDBRoomManage) {
         mContext = context;
         mConversationList = ConversationList;
         mMgr = mgr;
         this.mDBRoomMember=mDBRoomMember;
+        this.mDBRoomManage=mDBRoomManage;
     }
 
     public void addOnItemListener(OnItemListener onItemListener){
@@ -127,11 +130,11 @@ public class SelectConversationAdapter extends RecyclerView.Adapter {
 
         public void setData(ConversationInfo conversationInfo) {
             mConversationInfo = conversationInfo;
-           if(RoomManage.ROOM_TYPE_MULTI.equals(conversationInfo.getChatType())){
-               mTab1ItemImg.setImageResource(R.mipmap.img_group_head);
-           }else {
-               setNameAndUrl(mTab1ItemImg,conversationInfo.getUser());
-           }
+            if(RoomManage.ROOM_TYPE_MULTI.equals(conversationInfo.getChatType())){
+                UtilTool.getGroupImage(mDBRoomManage,conversationInfo.getUser(),mContext,mTab1ItemImg);
+            }else {
+                setNameAndUrl(mTab1ItemImg,conversationInfo.getUser());
+            }
             String remark = mMgr.queryRemark(conversationInfo.getUser());
             if (!StringUtils.isEmpty(remark)) {
                 mTab1ItemName.setText(remark);

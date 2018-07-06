@@ -10,6 +10,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.topperchat.WsConnection;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class ActivityUtil {
 	}
 
 	public static void isGoStartActivity(Activity context){
-		if(!isActivityRunning(context)){
+		if(!isActivityRunning(context)||WsConnection.getInstance().getOutConnection()){
 			PackageManager packageManager = context.getPackageManager();
 			Intent intent = packageManager.getLaunchIntentForPackage("com.bclould.tea");
 			context.startActivity(intent);

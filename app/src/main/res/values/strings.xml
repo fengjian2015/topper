@@ -1014,4 +1014,5 @@
     <string name="import_gesture">輸入手勢密碼解鎖</string>
     <string name="close_gesture_hint">是否關閉手勢驗證?</string>
     <string name="close_gesture">已關閉手指驗證</string>
+    <string name="home_msg_click_two">聊天點擊兩次</string>
 </resources>
