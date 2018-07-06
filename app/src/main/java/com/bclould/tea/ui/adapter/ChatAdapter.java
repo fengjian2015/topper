@@ -1185,7 +1185,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         @Bind(R.id.iv_video_play)
         ImageView mIvVideoPlay;
         @Bind(R.id.rl_video)
-        RelativeLayout mRlVideo;
+        CardView mRlVideo;
         @Bind(R.id.iv_warning)
         ImageView mIvWarning;
         @Bind(R.id.iv_load)
@@ -1237,7 +1237,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         @Bind(R.id.iv_video)
         ImageView mIvVideo;
         @Bind(R.id.rl_video)
-        RelativeLayout mRlVideo;
+        CardView mRlVideo;
         @Bind(R.id.iv_video_play)
         ImageView mIvVideoPlay;
         @Bind(R.id.chat_createtime)
