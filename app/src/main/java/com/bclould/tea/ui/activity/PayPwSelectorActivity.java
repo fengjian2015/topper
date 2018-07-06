@@ -381,12 +381,11 @@ public class PayPwSelectorActivity extends BaseActivity {
     }
 
     private void closeGesture(String password) {
-        mUpdateLogPresenter.setGesture(password, 0, new UpdateLogPresenter.CallBack2() {
+        mUpdateLogPresenter.setGesture(password, 0, "",new UpdateLogPresenter.CallBack2() {
             @Override
             public void send(int status) {
                 if (status == 0) {
                     Toast.makeText(PayPwSelectorActivity.this, getString(R.string.close_gesture), Toast.LENGTH_SHORT).show();
-
                 }
             }
         });

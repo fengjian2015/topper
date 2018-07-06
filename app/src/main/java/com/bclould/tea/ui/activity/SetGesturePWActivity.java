@@ -70,6 +70,7 @@ public class SetGesturePWActivity extends BaseActivity {
     private Dialog mRedDialog;
     private GridView mGridView;
     private MNPasswordEditText mEtPassword;
+    private String mGesturePW;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -228,19 +229,20 @@ public class SetGesturePWActivity extends BaseActivity {
     }
 
     private void setGesture(String password) {
+        mGesturePW = "";
+        for (int i = 0; i < mAnswerarr.length; i++) {
+            mGesturePW += mAnswerarr[i];
+        }
         UpdateLogPresenter updateLogPresenter = new UpdateLogPresenter(SetGesturePWActivity.this);
-        updateLogPresenter.setGesture(password, 1, new UpdateLogPresenter.CallBack2() {
+        updateLogPresenter.setGesture(password, 1, mGesturePW, new UpdateLogPresenter.CallBack2() {
             @Override
             public void send(int type) {
                 if (type == 1) {
                     ToastShow.showToast2(SetGesturePWActivity.this, getString(R.string.set_succeed));
                     MyApp.getInstance().exit(SetGesturePWActivity.class.getName());
-                    String gesturePW = "";
-                    for (int i = 0; i < mAnswerarr.length; i++) {
-                        gesturePW += mAnswerarr[i];
-                    }
-                    UtilTool.Log("手勢", gesturePW);
-                    MySharedPreferences.getInstance().setString(GESTURE_ANSWER, gesturePW);
+
+                    UtilTool.Log("手勢", mGesturePW);
+                    MySharedPreferences.getInstance().setString(GESTURE_ANSWER, mGesturePW);
                 }
             }
         });

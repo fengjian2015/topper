@@ -118,7 +118,7 @@ public class SystemSetActivity extends BaseActivity {
     private void showDialog() {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
-        deleteCacheDialog.setTitle(getString(R.string.quit_hint));
+        deleteCacheDialog.setTitle(getString(R.string.logout_hint));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
         cancel.setOnClickListener(new View.OnClickListener() {

@@ -9,7 +9,6 @@ import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.topperchat.WsOfflineConnection;
-import com.bclould.tea.utils.CheckClassIsWork;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tea.xmpp.IMLogin;
@@ -102,7 +101,7 @@ public class IMService extends Service{
                     case EXLOGIN: {
                         synchronized (this) {
                             if (WsConnection.getInstance().getOutConnection()) {
-                                WsConnection.getInstance().get(IMService.this).close();
+                                WsConnection.getInstance().close();
                                 WsOfflineConnection.getInstance().closeConnection();
                                 break;
                             }

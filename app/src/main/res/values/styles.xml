@@ -43,6 +43,17 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+    <!--自定义的dialog样式-->
+    <style name="dialog2" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
     <!--加载中dialog-->
     <style name="LoadingProgressDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
@@ -55,6 +66,7 @@
     <style name="LoadingProgressDialog2" parent="LoadingProgressDialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item><!-- dim:模糊的 阴影效果 -->
     </style>
 
     <style name="CustomDialog" type="text/css">

@@ -253,41 +253,43 @@ public class DynamicFragment extends Fragment {
         mDynamicPresenter.dynamicList(mPage, mPageSize, userList, new DynamicPresenter.CallBack2() {
             @Override
             public void send(List<DynamicListInfo.DataBean> data) {
-                if (type == PULL_UP) {
-                    mRefreshLayout.finishLoadMore();
-                }else{
-                    mRefreshLayout.finishRefresh();
-                }
-                if (mRecyclerView != null) {
-                    if (mDataList.size() != 0 || data.size() != 0) {
-                        isFinish = true;
-                        if (type == PULL_UP) {
-                            if (data.size() == mPageSize) {
-                                mPage++;
-                                mDataList.addAll(data);
-                                mDynamicRVAdapter.notifyDataSetChanged();
-                            } else {
-                                if (end == 0) {
-                                    end++;
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    if (type == PULL_UP) {
+                        mRefreshLayout.finishLoadMore();
+                    } else {
+                        mRefreshLayout.finishRefresh();
+                    }
+                    if (mRecyclerView != null) {
+                        if (mDataList.size() != 0 || data.size() != 0) {
+                            isFinish = true;
+                            if (type == PULL_UP) {
+                                if (data.size() == mPageSize) {
+                                    mPage++;
                                     mDataList.addAll(data);
                                     mDynamicRVAdapter.notifyDataSetChanged();
+                                } else {
+                                    if (end == 0) {
+                                        end++;
+                                        mDataList.addAll(data);
+                                        mDynamicRVAdapter.notifyDataSetChanged();
+                                    }
                                 }
+                            } else {
+                                if (mPage == 1) {
+                                    mPage++;
+                                }
+                                mDataList.clear();
+                                mDataList.addAll(data);
+                                mDynamicRVAdapter.notifyDataSetChanged();
                             }
+                            mRecyclerView.setVisibility(View.VISIBLE);
+                            mLlNoData.setVisibility(View.GONE);
+                            mLlError.setVisibility(View.GONE);
                         } else {
-                            if (mPage == 1) {
-                                mPage++;
-                            }
-                            mDataList.clear();
-                            mDataList.addAll(data);
-                            mDynamicRVAdapter.notifyDataSetChanged();
+                            mRecyclerView.setVisibility(View.GONE);
+                            mLlNoData.setVisibility(View.VISIBLE);
+                            mLlError.setVisibility(View.GONE);
                         }
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        mLlNoData.setVisibility(View.GONE);
-                        mLlError.setVisibility(View.GONE);
-                    } else {
-                        mRecyclerView.setVisibility(View.GONE);
-                        mLlNoData.setVisibility(View.VISIBLE);
-                        mLlError.setVisibility(View.GONE);
                     }
                 }
             }
@@ -297,7 +299,7 @@ public class DynamicFragment extends Fragment {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
                     if (type == PULL_UP) {
                         mRefreshLayout.finishLoadMore();
-                    }else{
+                    } else {
                         mRefreshLayout.finishRefresh();
                     }
                     mRecyclerView.setVisibility(View.GONE);
@@ -310,7 +312,7 @@ public class DynamicFragment extends Fragment {
             public void finishRefresh() {
                 if (type == PULL_UP) {
                     mRefreshLayout.finishLoadMore();
-                }else{
+                } else {
                     mRefreshLayout.finishRefresh();
                 }
             }
