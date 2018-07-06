@@ -39,6 +39,7 @@ import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.QrRedInfo;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.AddFriendActivity;
+import com.bclould.tea.ui.activity.CameraActivity;
 import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tea.ui.activity.ScanQRCodeActivity;
 import com.bclould.tea.ui.activity.SearchActivity;
@@ -55,6 +56,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -110,6 +112,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     private PopupWindow mPopupWindow;
     private int QRCODE = 1;
     private RefreshList mRefreshList;
+    private LinearLayoutManager linearLayoutManager;
 
     public static ConversationFragment getInstance() {
 
@@ -134,7 +137,32 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         mDBRoomMember=new DBRoomMember(getActivity());
         mDBRoomManage=new DBRoomManage(getActivity());
         mRefreshList=new RefreshList();
+        createFile();
         return view;
+    }
+
+    private void createFile(){
+        File cacheDir1 = new File(Constants.PUBLICDIR);
+        if (!cacheDir1.exists())
+            cacheDir1.mkdirs();
+        File nomedia1 = new File(Constants.PUBLICDIR+ ".nomedia" );
+        if (! nomedia1.exists())
+            try {
+                nomedia1.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        File cacheDir = new File(getActivity().getFilesDir().getAbsolutePath() + "/images");
+        if (!cacheDir.exists())
+            cacheDir.mkdirs();
+        File nomedia = new File(getActivity().getFilesDir().getAbsolutePath() + "/images" + "/.nomedia" );
+        if (! nomedia.exists())
+            try {
+                nomedia.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
     }
 
     @Override
@@ -385,6 +413,17 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
             initData();
         }else if(msg.equals(getString(R.string.kick_out_success))){
             initData();
+        }else if(msg.equals(getString(R.string.home_msg_click_two))){
+            unNumbertopList();
+        }
+    }
+
+    private void unNumbertopList() {
+        A:for(int i=0;i<showlist.size();i++){
+            if(showlist.get(i).getNumber()>0){
+                linearLayoutManager.scrollToPositionWithOffset(i,0);
+                break A;
+            }
         }
     }
 
@@ -437,8 +476,10 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     }
 
     private void initRecyclerView() {
+        if(mRecyclerView==null)return;
         mConversationAdapter = new ConversationAdapter( getActivity(), getSimpleData(), mgr, mRlTitle, mDBRoomMember,mDBRoomManage);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(mConversationAdapter);
     }
 

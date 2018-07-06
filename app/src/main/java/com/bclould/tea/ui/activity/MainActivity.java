@@ -397,6 +397,7 @@ public class MainActivity extends BaseActivity {
                         changeFragment(index);
 
                         setSelector(index);
+                        converstonTop(index);
                     } else {
                         if (index != 2) {
                             startActivity(new Intent(MainActivity.this, InitialActivity.class));
@@ -404,9 +405,13 @@ public class MainActivity extends BaseActivity {
                     }
                 }
             });
-
         }
+    }
 
+    private void converstonTop(int index){
+        if(index==0&&mMainBottomMenu.getChildAt(index).isSelected()&&UtilTool.homeClickTwo()){
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.home_msg_click_two)));
+        }
     }
 
 

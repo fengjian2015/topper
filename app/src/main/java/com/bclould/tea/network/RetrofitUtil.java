@@ -42,19 +42,23 @@ public class RetrofitUtil {
     private static final long DEFAULT_DIR_CACHE = 2000;
     private Context mContext;
 
+    private static int timeOut=20;
+
     GsonConverterFactory factory = GsonConverterFactory.create(new GsonBuilder().create());
     private static RetrofitUtil instance = null;
     private Retrofit mRetrofit = null;
 
     public static RetrofitUtil getInstance(Context context) {
-        if (instance == null) {
+        if (instance == null||timeOut!=20) {
+            timeOut=20;
             instance = new RetrofitUtil(context);
         }
         return instance;
     }
 
     public static RetrofitUtil getInstance(Context context,int time) {
-        if (instance == null) {
+        if (instance == null||timeOut==20) {
+            timeOut=time;
             instance = new RetrofitUtil(context,time);
         }
         return instance;

@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
@@ -22,8 +21,6 @@ import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.adapter.SelectFriendAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
-import com.bclould.tea.utils.ActivityUtil;
-import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
@@ -32,25 +29,20 @@ import com.bclould.tea.xmpp.Room;
 import com.bclould.tea.xmpp.RoomManage;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-
 import org.greenrobot.eventbus.EventBus;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tea.ui.activity.SelectConversationActivity.IMAGE_TYPE;
+import static com.bclould.tea.ui.activity.SelectConversationActivity.TEXT_PLAIN;
+import static com.bclould.tea.ui.activity.SelectConversationActivity.VIDEO_TYPE;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_CARD_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_GUESS_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_IMG_MSG;
@@ -74,19 +66,18 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
     @Bind(R.id.image)
     ImageView mImage;
 
-    public static final String TEXT_PLAIN = "text/plain";
-    public static final String IMAGE_TYPE = "image";
     private List<UserInfo> mUsers = new ArrayList<>();
     private SelectFriendAdapter selectFriendAdapter;
     private DBManager mMgr;
     private String shareType;
     private Intent shareIntent;
-    private Uri uri;
     private String filePath;
-
+    private String shareText;
     private int msgType;
     private MessageInfo messageInfo;
     private LoadingProgressDialog mProgressDialog;
+
+    //系統信息
 
     private int type = 0;//默認0 代表外部分享過來， 1表示轉發 2表示內部請求分享
 
@@ -95,7 +86,6 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_friend);
         ButterKnife.bind(this);
-        ActivityUtil.isGoStartActivity(this);
         MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);
         initRecylerView();
@@ -112,58 +102,39 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
         msgType = getIntent().getIntExtra("msgType", 0);
     }
 
-    RequestOptions requestOptions = new RequestOptions()
-            .placeholder(R.mipmap.image_placeholder)
-            .error(R.mipmap.image_placeholder)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .centerCrop();
-
-    private String getImgPathFromCache(Uri url) {
-        FutureTarget<File> future = Glide.with(this)
-                .load(url)
-                .downloadOnly(400, 400);
-        try {
-            File cacheFile = future.get();
-            String absolutePath = cacheFile.getAbsolutePath();
-            UtilTool.Log("fengjian", "圖片地址：" + absolutePath);
-            return absolutePath;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     private void getShareIntent() {
         shareIntent = getIntent();
-        Bundle bundle = shareIntent.getExtras();
-        String text = shareIntent.getAction();  //分享的action都是Intent.ACTION_SEND
-        String type = shareIntent.getType();//获取分享来的数据类型，和上面<data android:mimeType="text/plain" />中的一致
-        uri = bundle.getParcelable(Intent.EXTRA_STREAM);
-
-        //具体还有其他的类型，请上网参考
-        if (Intent.ACTION_SEND.equals(text) && type != null) {
-            this.shareType = type;
-        }
-        if (shareType.contains(IMAGE_TYPE)) {
-            Glide.with(this).load(uri).listener(new RequestListener<Drawable>() {
-                @Override
-                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                    return false;
-                }
-                @Override
-                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            filePath = getImgPathFromCache(uri);
-                        }
-                    }.start();
-                    return false;
-                }
-            }).apply(requestOptions).into(mImage);
-        }
+        filePath=getIntent().getStringExtra("filePath");
+        shareType=getIntent().getStringExtra("shareType");
+        shareText=getIntent().getStringExtra("shareText");
+//        //具体还有其他的类型，请上网参考
+//        if (Intent.ACTION_SEND.equals(text) && type != null) {
+//            this.shareType = type;
+//        }else {
+//            return;
+//        }
+//
+//        if (shareType.contains(IMAGE_TYPE)) {
+//            Glide.with(this).load(uri).listener(new RequestListener<Drawable>() {
+//                @Override
+//                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+//                    return false;
+//                }
+//                @Override
+//                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+//                    new Thread() {
+//                        @Override
+//                        public void run() {
+//                            filePath = UtilTool.getImgPathFromCache(uri,SelectFriendActivity.this);
+//                        }
+//                    }.start();
+//                    return false;
+//                }
+//            }).into(mImage);
+//        }else if(shareType.contains(VIDEO_TYPE)){
+//            //系統分享視頻
+//            filePath=UtilTool.getRealFilePath(this,uri);
+//        }
     }
 
 
@@ -227,15 +198,14 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
     }
 
 
-    private Room singleManage;
+    private Room mRoom;
 
     private void sendMessage(String user, String name) {
-        singleManage = RoomManage.getInstance().addSingleMessageManage(user, name);
-        singleManage.addMessageManageListener(this);
+        mRoom = RoomManage.getInstance().addSingleMessageManage(user, name);
+        mRoom.addMessageManageListener(this);
         if (type == 0) {
-            if (TEXT_PLAIN.equals(shareType)) {
-                String shareText = shareIntent.getStringExtra(Intent.EXTRA_TEXT);
-                messageInfo = singleManage.sendMessage(shareText);
+            if (shareType.contains(TEXT_PLAIN)) {
+                messageInfo = mRoom.sendMessage(shareText);
                 if (messageInfo != null) {
                     ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_complete));
                     close();
@@ -243,13 +213,30 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
                     ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_failure));
                 }
             } else if (shareType.contains(IMAGE_TYPE)) {
-                showDialog();
-                singleManage.Upload(filePath);
+//                showDialog();
+                if(filePath==null){
+                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_failure));
+//                    hideDialog();
+                    return;
+                }
+                mRoom.Upload(filePath);
+                ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_complete));
+                close();
+            }else if(shareType.contains(VIDEO_TYPE)){
+//                showDialog();
+                if(filePath==null){
+                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_failure));
+//                    hideDialog();
+                    return;
+                }
+                mRoom.Upload(filePath);
+                ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_complete));
+                close();
             }
         } else if (type == 1) {
             if (msgType == TO_TEXT_MSG || msgType == FROM_TEXT_MSG) {
                 String message = messageInfo.getMessage();
-                messageInfo = singleManage.sendMessage(message);
+                messageInfo = mRoom.sendMessage(message);
                 if (messageInfo != null) {
                     ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_success));
                     close();
@@ -257,33 +244,37 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
                     ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_failure));
                 }
             } else if (msgType == FROM_IMG_MSG || msgType == TO_IMG_MSG) {
-                showDialog();
-                singleManage.Upload(messageInfo.getVoice());
+//                showDialog();
+                mRoom.Upload(messageInfo.getVoice());
+                ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_success));
+                close();
             } else if (msgType == FROM_VIDEO_MSG || msgType == TO_VIDEO_MSG) {
-                showDialog();
+//                showDialog();
                 if (messageInfo.getMessage().startsWith("http")) {
-                    singleManage.transmitVideo(messageInfo);
+                    mRoom.transmitVideo(messageInfo);
                 } else {
-                    singleManage.Upload(messageInfo.getMessage());
+                    mRoom.Upload(messageInfo.getMessage());
                 }
+                ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_success));
+                close();
             }
         } else if (type == 2) {
             if (TO_CARD_MSG == msgType || msgType == FROM_CARD_MSG) {
-                if (singleManage.sendCaed(messageInfo)) {
+                if (mRoom.sendCaed(messageInfo)) {
                     ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
                     close();
                 } else {
                     ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_error));
                 }
             } else if (TO_LINK_MSG == msgType || msgType == FROM_LINK_MSG) {
-                if (singleManage.sendShareLink(messageInfo)) {
+                if (mRoom.sendShareLink(messageInfo)) {
                     ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
                     close();
                 } else {
                     ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_error));
                 }
             } else if (TO_GUESS_MSG == msgType || msgType == FROM_GUESS_MSG) {
-                if (singleManage.sendShareGuess(messageInfo)) {
+                if (mRoom.sendShareGuess(messageInfo)) {
                     ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
                     close();
                 } else {
@@ -292,6 +283,7 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
             }
         }
     }
+
 
     private void showDialog() {
         if (mProgressDialog == null) {
@@ -344,8 +336,8 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
 
     @Override
     protected void onDestroy() {
-        if (singleManage != null) {
-            singleManage.removerMessageManageListener(this);
+        if (mRoom != null) {
+            mRoom.removerMessageManageListener(this);
         }
         super.onDestroy();
     }

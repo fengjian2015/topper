@@ -283,7 +283,7 @@ public class NewsDetailsActivity extends BaseActivity {
     private void goShare() {
         if (!isLoaded) return;
         messageInfo.setMessage(messageInfo.getTitle());
-        Intent intent = new Intent(this, SelectFriendActivity.class);
+        Intent intent = new Intent(this, SelectConversationActivity.class);
         intent.putExtra("type", 2);
         intent.putExtra("msgType", TO_LINK_MSG);
         intent.putExtra("messageInfo", messageInfo);

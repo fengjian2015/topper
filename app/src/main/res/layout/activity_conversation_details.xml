@@ -46,7 +46,14 @@
             android:id="@+id/image_head"
             android:layout_width="@dimen/x100"
             android:layout_height="@dimen/y100"/>
-
+        <ImageView
+            android:id="@+id/image_add"
+            android:layout_width="@dimen/x100"
+            android:layout_height="@dimen/y100"
+            android:layout_toEndOf="@+id/image_head"
+            android:layout_toRightOf="@+id/image_head"
+            android:layout_marginLeft="@dimen/x30"
+            android:src="@mipmap/add_member"/>
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"

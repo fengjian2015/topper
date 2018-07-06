@@ -324,7 +324,7 @@ public class IndividualDetailsActivity extends BaseActivity {
             init();
             return;
         }
-        Intent intent = new Intent(this, SelectFriendActivity.class);
+        Intent intent = new Intent(this, SelectConversationActivity.class);
         intent.putExtra("type", 2);
         MessageInfo messageInfo = new MessageInfo();
         messageInfo.setHeadUrl(avatar);

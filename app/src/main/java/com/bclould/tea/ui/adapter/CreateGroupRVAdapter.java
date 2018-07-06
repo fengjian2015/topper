@@ -38,14 +38,16 @@ public class CreateGroupRVAdapter extends RecyclerView.Adapter {
     private String roomId;
     private DBRoomMember mDBRoomMember;
     private List<UserInfo> userInfoList;
+    private String tocoId;
 
-    public CreateGroupRVAdapter(CreateGroupRoomActivity activity, List<UserInfo> userInfos, DBManager mgr, String roomId, DBRoomMember mDBRoomMember, List<UserInfo> userInfoList) {
+    public CreateGroupRVAdapter(CreateGroupRoomActivity activity, List<UserInfo> userInfos, DBManager mgr, String roomId, DBRoomMember mDBRoomMember, List<UserInfo> userInfoList, String tocoId) {
         mUserInfos = userInfos;
         mActivity = activity;
         this.mgr=mgr;
         this.roomId=roomId;
         this.mDBRoomMember=mDBRoomMember;
         this.userInfoList=userInfoList;
+        this.tocoId=tocoId;
     }
 
     @Override
@@ -95,6 +97,11 @@ public class CreateGroupRVAdapter extends RecyclerView.Adapter {
             UtilTool.getImage(mgr, userInfo.getUser(),mActivity , mIvTouxiang);
             mIvTouxiang.setImageBitmap(BitmapFactory.decodeFile(userInfo.getPath()));
             if(roomId!=null&&mDBRoomMember.findMember(roomId,mUser)){
+                rl.setOnClickListener(null);
+                mCheckBox.setOnClickListener(null);
+                mCheckBox.setChecked(true);
+                mCheckBox.setEnabled(false);
+            }else if(userInfo.getUser().equals(tocoId)){
                 rl.setOnClickListener(null);
                 mCheckBox.setOnClickListener(null);
                 mCheckBox.setChecked(true);

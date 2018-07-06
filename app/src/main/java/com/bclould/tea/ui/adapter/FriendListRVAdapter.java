@@ -20,7 +20,7 @@ import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.activity.RemarkActivity;
-import com.bclould.tea.ui.activity.SelectFriendActivity;
+import com.bclould.tea.ui.activity.SelectConversationActivity;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
@@ -172,7 +172,7 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
                     case 2:
                         menu.dismiss();
                         UserInfo info = mMgr.queryUser(user);
-                        intent = new Intent(mContext, SelectFriendActivity.class);
+                        intent = new Intent(mContext, SelectConversationActivity.class);
                         intent.putExtra("type", 2);
                         MessageInfo messageInfo=new MessageInfo();
                         messageInfo.setHeadUrl(info.getPath());

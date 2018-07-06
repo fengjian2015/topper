@@ -45,6 +45,7 @@ import com.bclould.tea.ui.activity.OrderDetailsActivity;
 import com.bclould.tea.ui.activity.PayDetailsActivity;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MyLifecycleHandler;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
@@ -1232,9 +1233,7 @@ public class SocketListener {
     private void goChat(String from, String message, String roomType) {
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         boolean screen = pm.isScreenOn();
-
-
-        if (!isApplicationBroughtToBackground(context)) {
+        if (MyLifecycleHandler.isApplicationInForeground()) {
             if(screen){
                 return;
             }
@@ -1282,8 +1281,7 @@ public class SocketListener {
     }
 
     private boolean isApplicationBroughtToBackground(final Context context) {
-        ActivityManager am = (ActivityManager) context
-                .getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
         if (!tasks.isEmpty()) {
             ComponentName topActivity = tasks.get(0).topActivity;

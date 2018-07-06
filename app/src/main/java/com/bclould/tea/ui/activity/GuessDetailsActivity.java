@@ -928,7 +928,7 @@ public class GuessDetailsActivity extends BaseActivity {
                         break;
                     case 1:
                         menu.dismiss();
-                        intent = new Intent(GuessDetailsActivity.this, SelectFriendActivity.class);
+                        intent = new Intent(GuessDetailsActivity.this, SelectConversationActivity.class);
                         intent.putExtra("type", 2);
                         MessageInfo messageInfo = new MessageInfo();
                         messageInfo.setTitle(mTvTitle.getText().toString());

@@ -182,6 +182,7 @@ public class GroupPresenter {
                                         A:
                                         for (GroupInfo.DataBean dataBean : baseInfo.getData()) {
                                             if (conversationInfo.getUser().equals(dataBean.getId() + "")) {
+                                                dbManager.updateConversationName(dataBean.getId()+"",dataBean.getName());
                                                 isExist = true;
                                                 break A;
                                             }

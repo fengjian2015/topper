@@ -65,6 +65,8 @@ public class CreateGroupRoomActivity extends BaseActivity {
     private String roomId;
     private Context context;
 
+    private String tocoId;//快速創群傳遞過來的tocoid
+
     private int type=0;//0表示創建群，1表示邀請人加入
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,6 +84,7 @@ public class CreateGroupRoomActivity extends BaseActivity {
         type=getIntent().getIntExtra("type",0);
         roomName=getIntent().getStringExtra("roomName");
         roomId=getIntent().getStringExtra("roomId");
+        tocoId=getIntent().getStringExtra("tocoId");
     }
 
     private void initData() {
@@ -95,7 +98,12 @@ public class CreateGroupRoomActivity extends BaseActivity {
                     ||TOCO_SERVICE.equals(info.getUser())) {
                 deleteInfos.add(info);
             }
+            //首先移除傳遞過來的用戶
+            if (!StringUtils.isEmpty(tocoId)&&info.getUser().equals(tocoId)) {
+                mUserInfoList.add(info);
+            }
         }
+
         userInfos.removeAll(deleteInfos);
         mUserInfos.addAll(userInfos);
         Collections.sort(mUserInfos);
@@ -103,7 +111,7 @@ public class CreateGroupRoomActivity extends BaseActivity {
 
     private void initRecylerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        CreateGroupRVAdapter createGroupRVAdapter = new CreateGroupRVAdapter(this, mUserInfos,mgr,roomId,mDBRoomMember,mUserInfoList);
+        CreateGroupRVAdapter createGroupRVAdapter = new CreateGroupRVAdapter(this, mUserInfos,mgr,roomId,mDBRoomMember,mUserInfoList,tocoId);
         mRecyclerView.setAdapter(createGroupRVAdapter);
     }
 
@@ -144,9 +152,6 @@ public class CreateGroupRoomActivity extends BaseActivity {
     private void createGroup(){
         if (mUserInfoList != null)
             try {
-                if(StringUtils.isEmpty(roomName)){
-                    roomName="群聊";
-                }
                 StringBuffer stringBuffer=new StringBuffer();
                 stringBuffer.append(UtilTool.getTocoId()+",");
                 for (int i = 0; i < mUserInfoList.size(); i++) {  //添加群成员
@@ -155,13 +160,17 @@ public class CreateGroupRoomActivity extends BaseActivity {
                         stringBuffer.append(",");
                     }
                 }
+                if(StringUtils.isEmpty(roomName)){
+                    roomName=UtilTool.getUser()+"、"+mUserInfoList.get(0).getUserName();
+                }
                 new GroupPresenter(context).createGroup(roomName, stringBuffer.toString(), "", new GroupPresenter.CallBack2() {
                     @Override
                     public void send(String group_id) {
                         createConversation(group_id,roomName);
                         saveRoom(group_id,mUserInfoList);
-
+                        MyApp.getInstance().exit(ConversationActivity.class.getName());
                         Intent intent = new Intent(context, ConversationActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         Bundle bundle = new Bundle();
                         bundle.putString("name", roomName);
                         bundle.putString("user", group_id);
