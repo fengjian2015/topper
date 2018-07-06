@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.MessageInfo;
@@ -43,7 +44,7 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_TRANSFER_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_VIDEO_MSG;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ConversationRecordFindActivity extends AppCompatActivity implements MessageRecordSelectAdapter.OnItemClickListener {
+public class ConversationRecordFindActivity extends BaseActivity implements MessageRecordSelectAdapter.OnItemClickListener {
 
     @Bind(R.id.bark)
     ImageView bark;
