@@ -34,12 +34,15 @@ public class ActivityUtil {
 		return true;
 	}
 
-	public static void isGoStartActivity(Activity context){
+	public static boolean isGoStartActivity(Activity context){
 		if(!isActivityRunning(context)||WsConnection.getInstance().getOutConnection()){
 			PackageManager packageManager = context.getPackageManager();
 			Intent intent = packageManager.getLaunchIntentForPackage("com.bclould.tea");
 			context.startActivity(intent);
 			context.finish();
+			return true;
+		}else {
+			return false;
 		}
 	}
 

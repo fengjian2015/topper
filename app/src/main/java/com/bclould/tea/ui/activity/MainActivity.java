@@ -111,6 +111,15 @@ public class MainActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         WsConnection.loginService(this);
         initAddFriendReceiver();
+        isGoSelectConversation();
+    }
+
+    private void isGoSelectConversation() {
+        if(MySharedPreferences.getInstance().getBoolean("SHARE")&&!WsConnection.getInstance().getOutConnection()){
+            Intent intent=new Intent(this,SelectConversationActivity.class);
+            intent.putExtra("type",3);
+            startActivity(intent);
+        }
     }
 
     private void initRelogin() {

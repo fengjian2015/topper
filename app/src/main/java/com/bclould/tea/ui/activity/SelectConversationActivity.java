@@ -28,6 +28,7 @@ import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.MessageManageListener;
@@ -95,26 +96,43 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
     private MessageInfo messageInfo;
     private LoadingProgressDialog mProgressDialog;
 
-    private int type = 0;//默認0 代表外部分享過來， 1表示轉發 2表示內部請求分享
+    private String text;
+
+    private int type = 0;//默認0 代表外部分享過來， 1表示轉發 2表示內部請求分享  3表示重新打開應用進行分享
     //修改本頁面的同時，需要修改SelectFriendActivity頁面
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityUtil.isGoStartActivity(this);
         setContentView(R.layout.activity_select_conversation);
         ButterKnife.bind(this);
-        MyApp.getInstance().addActivity(this);
         EventBus.getDefault().register(this);//初始化EventBus
+        type = getIntent().getIntExtra("type", 0);
+        if (type == 0) {
+            MySharedPreferences.getInstance().setBoolean("SHARE",true);
+            getShareIntent();
+        } else if(type==3){
+            getMainShareIntent();
+        }else {
+            getChatIntent();
+        }
+        if(!ActivityUtil.isGoStartActivity(this)){
+            MySharedPreferences.getInstance().setBoolean("SHARE",false);
+        }
+        MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);
         mDBRoomMember = new DBRoomMember(this);
         mDBRoomManage=new DBRoomManage(this);
         initRecylerView();
-        type = getIntent().getIntExtra("type", 0);
-        if (type == 0) {
-            getShareIntent();
-        } else {
-            getChatIntent();
-        }
+    }
+
+
+    private void getMainShareIntent() {
+        type=0;
+        shareText= MySharedPreferences.getInstance().getString("share_text");
+        uri= Uri.parse(MySharedPreferences.getInstance().getString("share_uri"));
+        String text=MySharedPreferences.getInstance().getString("share_action");
+        String type= MySharedPreferences.getInstance().getString("share_type");
+        setShareData(text,type);
     }
 
 
@@ -126,11 +144,19 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
     private void getShareIntent() {
         shareIntent = getIntent();
         Bundle bundle = shareIntent.getExtras();
-        String text = shareIntent.getAction();  //分享的action都是Intent.ACTION_SEND
+        text = shareIntent.getAction();  //分享的action都是Intent.ACTION_SEND
         String type = shareIntent.getType();//获取分享来的数据类型，和上面<data android:mimeType="text/plain" />中的一致
         shareText = shareIntent.getStringExtra(Intent.EXTRA_TEXT);
         uri = bundle.getParcelable(Intent.EXTRA_STREAM);
 
+        MySharedPreferences.getInstance().setString("share_action",text);
+        MySharedPreferences.getInstance().setString("share_type",type);
+        MySharedPreferences.getInstance().setString("share_text",shareText);
+        MySharedPreferences.getInstance().setString("share_uri",uri.toString());
+        setShareData(text,type);
+    }
+
+    private void setShareData(String text,String type){
         //具体还有其他的类型，请上网参考
         if (Intent.ACTION_SEND.equals(text) && type != null) {
             this.shareType = type;
@@ -286,6 +312,7 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
                 if(filePath==null){
                     ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.share_failure));
 //                    hideDialog();
+                    setShareData(text,shareType);
                     return;
                 }
                 mRoom.Upload(filePath);

@@ -95,7 +95,7 @@ public class MultiManage implements Room{
 
 
     private synchronized boolean send(String to, byte[] attachment, String body, int msgType,String msgId,long time) throws Exception {
-        MessageManage.getInstance().sendMulti(to,attachment,body,msgType,msgId,time,roomId,mMgr);
+        MessageManage.getInstance().sendMulti(to,attachment,body,msgType,msgId,time,roomId,mMgr,context);
         return true;
     }
 
