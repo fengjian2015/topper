@@ -529,6 +529,7 @@ public class DynamicFragment extends Fragment {
                         mDataList.get(i).getReviewList().add(data.get(0));
                         mDataList.get(i).setReview_count(mDataList.get(i).getReview_count() + 1);
                         mDynamicRVAdapter.notifyItemChanged(i);
+                        mDynamicRVAdapter.setLookCount(Integer.parseInt(mDynamicId));
                         break;
                     }
                 }

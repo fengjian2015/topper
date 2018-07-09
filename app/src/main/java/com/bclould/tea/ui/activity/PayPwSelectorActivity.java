@@ -218,7 +218,7 @@ public class PayPwSelectorActivity extends BaseActivity {
         FingerprintUtil.callFingerPrint(new FingerprintUtil.OnCallBackListenr() {
 
             private TextView mCheck;
-            private DeleteCacheDialog mDeleteCacheDialog;
+            private Dialog mFingerprintdialog;
 
             @Override
             public void onSupportFailed() {
@@ -237,23 +237,39 @@ public class PayPwSelectorActivity extends BaseActivity {
 
             @Override
             public void onAuthenticationStart() {
-                mDeleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_fingerprint_pw, PayPwSelectorActivity.this, R.style.dialog);
-                mDeleteCacheDialog.show();
-                mDeleteCacheDialog.setCancelable(false);
-                TextView cancel = (TextView) mDeleteCacheDialog.findViewById(R.id.tv_cancel);
-                mCheck = (TextView) mDeleteCacheDialog.findViewById(R.id.tv_check);
-                cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        FingerprintUtil.cancel();
-                        mDeleteCacheDialog.dismiss();
-                    }
-                });
+                if (mFingerprintdialog == null) {
+                    mFingerprintdialog = new Dialog(PayPwSelectorActivity.this, R.style.dialog2);
+                    View contentView = LayoutInflater.from(PayPwSelectorActivity.this).inflate(R.layout.dialog_fingerprint_pw, null);
+                    //获得dialog的window窗口
+                    Window window = mFingerprintdialog.getWindow();
+                    window.getDecorView().setPadding(0, 0, 0, 0);
+                    //获得window窗口的属性
+                    WindowManager.LayoutParams lp = window.getAttributes();
+                    //设置窗口宽度为充满全屏
+                    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    //将设置好的属性set回去
+                    window.setAttributes(lp);
+                    mFingerprintdialog.setContentView(contentView);
+                    mFingerprintdialog.setCancelable(false);
+                }
+                if (!mFingerprintdialog.isShowing()) {
+                    mFingerprintdialog.show();
+                    TextView cancel = (TextView) mFingerprintdialog.findViewById(R.id.tv_cancel);
+                    mCheck = (TextView) mFingerprintdialog.findViewById(R.id.tv_check);
+                    cancel.setText(getString(R.string.exit));
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            FingerprintUtil.cancel();
+                            mFingerprintdialog.dismiss();
+                        }
+                    });
+                }
             }
 
             @Override
             public void onAuthenticationError(int errMsgId, CharSequence errString) {
-                if (mDeleteCacheDialog != null && mDeleteCacheDialog.isShowing()) {
+                if (mFingerprintdialog != null && mFingerprintdialog.isShowing()) {
                     mCheck.setText(getString(R.string.check_fingerprint_error));
                     mCheck.setTextColor(getResources().getColor(R.color.red));
                 }
@@ -261,7 +277,7 @@ public class PayPwSelectorActivity extends BaseActivity {
 
             @Override
             public void onAuthenticationFailed() {
-                if (mDeleteCacheDialog != null && mDeleteCacheDialog.isShowing()) {
+                if (mFingerprintdialog != null && mFingerprintdialog.isShowing()) {
                     mCheck.setText(getString(R.string.check_fingerprint_error));
                     mCheck.setTextColor(getResources().getColor(R.color.red));
                 }
@@ -275,12 +291,12 @@ public class PayPwSelectorActivity extends BaseActivity {
             @SuppressLint("HandlerLeak")
             @Override
             public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
-                if (mDeleteCacheDialog != null && mDeleteCacheDialog.isShowing()) {
+                if (mFingerprintdialog != null && mFingerprintdialog.isShowing()) {
                     mCheck.setText(getString(R.string.check_fingerprint_succeed));
                     mCheck.setTextColor(getResources().getColor(R.color.blue2));
                     new Handler() {
                         public void handleMessage(Message msg) {
-                            mDeleteCacheDialog.dismiss();
+                            mFingerprintdialog.dismiss();
                             showPWDialog(1);
                         }
                     }.sendEmptyMessageDelayed(0, 1500);

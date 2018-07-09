@@ -127,16 +127,33 @@
 
             </LinearLayout>
 
-
-            <com.bclould.tea.ui.widget.CommentsView
-                android:id="@+id/commentView"
-                android:layout_width="match_parent"
+            <RelativeLayout
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ll_menu"
                 android:layout_marginBottom="@dimen/y30"
+                android:padding="@dimen/x15"
                 android:layout_marginRight="@dimen/x30"
                 android:background="#10000000"
-                android:padding="@dimen/x15"/>
+                android:layout_width="wrap_content">
+
+                <com.bclould.tea.ui.widget.CommentsView
+                    android:id="@+id/commentView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/tv_look_all"
+                    android:layout_below="@+id/commentView"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/blue2"
+                    android:text="@string/look_all"
+                    android:textSize="@dimen/x32"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+
 
         </RelativeLayout>
 
