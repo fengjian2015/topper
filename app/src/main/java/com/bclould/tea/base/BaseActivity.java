@@ -2,6 +2,7 @@ package com.bclould.tea.base;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,8 +11,11 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,8 +46,8 @@ import static com.bclould.tea.ui.activity.SetGesturePWActivity.GESTURE_ANSWER;
 public class BaseActivity extends AppCompatActivity {
 
     private static boolean isActive;
-    private DeleteCacheDialog mFingerprintdialog;
-    private DeleteCacheDialog mGestureDialog;
+    private Dialog mFingerprintdialog;
+    private Dialog mGestureDialog;
     private TextView mTvHint;
     private GestureLockViewGroup mGestureView;
 
@@ -116,47 +120,64 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void showGestureDialog() {
-        mGestureDialog = new DeleteCacheDialog(R.layout.dialog_gesture_pw, this, R.style.dialog2);
-        mGestureDialog.show();
-        mGestureDialog.setCancelable(false);
-        mGestureView = (GestureLockViewGroup) mGestureDialog.findViewById(R.id.gesture_view);
-        mTvHint = (TextView) mGestureDialog.findViewById(R.id.tv_hint);
-        mTvHint.setText(getString(R.string.import_gesture));
-        String mAnswerstr = MySharedPreferences.getInstance().getString(GESTURE_ANSWER);
-        int[] arr = new int[mAnswerstr.length()];
-        for (int i = 0; i < mAnswerstr.length(); i++) {
-            arr[i] = Character.getNumericValue(mAnswerstr.charAt(i));
+        if (mGestureDialog == null) {
+            mGestureDialog = new Dialog(BaseActivity.this, R.style.dialog2);
+            View contentView = LayoutInflater.from(BaseActivity.this).inflate(R.layout.dialog_gesture_pw, null);
+            //获得dialog的window窗口
+            Window window = mGestureDialog.getWindow();
+            window.getDecorView().setPadding(0, 0, 0, 0);
+            //获得window窗口的属性
+            WindowManager.LayoutParams lp = window.getAttributes();
+            //设置窗口宽度为充满全屏
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+            //将设置好的属性set回去
+            window.setAttributes(lp);
+            mGestureDialog.setContentView(contentView);
+            mGestureDialog.setCancelable(false);
         }
-        mGestureView.setAnswer(arr);
-        mGestureView.setOnGestureLockViewListener(new GestureLockViewGroup.OnGestureLockViewListener() {
-
-            public int mCount = 5;
-
-            @Override
-            public void onBlockSelected(int position) {
-
+        if (!mGestureDialog.isShowing()) {
+            mGestureDialog.show();
+            mGestureView = (GestureLockViewGroup) mGestureDialog.findViewById(R.id.gesture_view);
+            mTvHint = (TextView) mGestureDialog.findViewById(R.id.tv_hint);
+            mTvHint.setText(getString(R.string.import_gesture));
+            String mAnswerstr = MySharedPreferences.getInstance().getString(GESTURE_ANSWER);
+            int[] arr = new int[mAnswerstr.length()];
+            for (int i = 0; i < mAnswerstr.length(); i++) {
+                arr[i] = Character.getNumericValue(mAnswerstr.charAt(i));
             }
+            mGestureView.setAnswer(arr);
+            mGestureView.setOnGestureLockViewListener(new GestureLockViewGroup.OnGestureLockViewListener() {
 
-            @Override
-            public void onGestureEvent(boolean matched) {
-                if (matched) {
-                    mGestureDialog.dismiss();
-                    mCount = 5;
-                } else {
-                    mCount--;
-                    mTvHint.setText(getString(R.string.set_gesture_hint5) + getString(R.string.hai_sheng) + mCount + getString(R.string.chance));
-                    mTvHint.setTextColor(getResources().getColor(R.color.red));
+                public int mCount = 5;
+
+                @Override
+                public void onBlockSelected(int position) {
+
                 }
-            }
 
-            @Override
-            public void onUnmatchedExceedBoundary() {
-                UtilTool.Log("手勢", "onUnmatchedExceedBoundary");
-                mGestureDialog.dismiss();
-                WsConnection.getInstance().logoutService(BaseActivity.this);
-                WsConnection.getInstance().goMainActivity();
-            }
-        });
+                @Override
+                public void onGestureEvent(boolean matched) {
+                    if (matched) {
+                        mGestureDialog.dismiss();
+                        mCount = 5;
+                    } else {
+                        mCount--;
+                        mTvHint.setText(getString(R.string.set_gesture_hint5) + getString(R.string.hai_sheng) + mCount + getString(R.string.chance));
+                        mTvHint.setTextColor(getResources().getColor(R.color.red));
+                    }
+                }
+
+                @Override
+                public void onUnmatchedExceedBoundary() {
+                    UtilTool.Log("手勢", "onUnmatchedExceedBoundary");
+                    if (mCount == 0) {
+                        mGestureDialog.dismiss();
+                        WsConnection.getInstance().logoutService(BaseActivity.this);
+                        WsConnection.getInstance().goMainActivity();
+                    }
+                }
+            });
+        }
     }
 
 
@@ -216,11 +237,22 @@ public class BaseActivity extends AppCompatActivity {
         @Override
         public void onAuthenticationStart() {
             if (mFingerprintdialog == null) {
-                mFingerprintdialog = new DeleteCacheDialog(R.layout.dialog_fingerprint_pw, BaseActivity.this, R.style.dialog2);
+                mFingerprintdialog = new Dialog(BaseActivity.this, R.style.dialog2);
+                View contentView = LayoutInflater.from(BaseActivity.this).inflate(R.layout.dialog_fingerprint_pw, null);
+                //获得dialog的window窗口
+                Window window = mFingerprintdialog.getWindow();
+                window.getDecorView().setPadding(0, 0, 0, 0);
+                //获得window窗口的属性
+                WindowManager.LayoutParams lp = window.getAttributes();
+                //设置窗口宽度为充满全屏
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                //将设置好的属性set回去
+                window.setAttributes(lp);
+                mFingerprintdialog.setContentView(contentView);
+                mFingerprintdialog.setCancelable(false);
             }
             if (!mFingerprintdialog.isShowing()) {
                 mFingerprintdialog.show();
-                mFingerprintdialog.setCancelable(false);
                 TextView cancel = (TextView) mFingerprintdialog.findViewById(R.id.tv_cancel);
                 mCheck = (TextView) mFingerprintdialog.findViewById(R.id.tv_check);
                 cancel.setText(getString(R.string.exit));

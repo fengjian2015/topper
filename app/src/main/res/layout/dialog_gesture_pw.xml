@@ -5,33 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:gravity="center"
-        android:background="@drawable/bg_white_shape"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center">
 
-    <TextView
-        android:id="@+id/tv_hint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/y50"
-        android:text="@string/set_gesture_hint"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x32"/>
+        <TextView
+            android:id="@+id/tv_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y50"
+            android:text="@string/set_gesture_hint"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
 
-    <com.bclould.tea.ui.widget.GestureLockViewGroup
-        android:id="@+id/gesture_view"
-        android:layout_width="@dimen/x600"
-        android:layout_height="@dimen/x600"
-        android:layout_below="@+id/tv_hint"
-        android:layout_centerHorizontal="true"
-        app:GestureLockViewGroup_color_finger_on="@color/blue2"
-        app:GestureLockViewGroup_color_finger_up="@color/green"
-        app:GestureLockViewGroup_color_no_finger_inner_circle="@color/blue2"
-        app:GestureLockViewGroup_count="3"
-        app:GestureLockViewGroup_tryTimes="5"/>
+        <com.bclould.tea.ui.widget.GestureLockViewGroup
+            android:id="@+id/gesture_view"
+            android:layout_width="@dimen/x600"
+            android:layout_height="@dimen/x600"
+            android:layout_below="@+id/tv_hint"
+            android:layout_centerHorizontal="true"
+            app:GestureLockViewGroup_color_finger_on="@color/blue2"
+            app:GestureLockViewGroup_color_finger_up="@color/green"
+            app:GestureLockViewGroup_color_no_finger_inner_circle="@color/blue2"
+            app:GestureLockViewGroup_count="3"
+            app:GestureLockViewGroup_tryTimes="5"/>
 
     </RelativeLayout>
 
