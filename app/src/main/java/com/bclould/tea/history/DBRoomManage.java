@@ -7,10 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.utils.UtilTool;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by GIjia on 2018/5/24.
@@ -44,6 +46,7 @@ public class DBRoomManage {
                 values.put("roomNumber", roomManageInfo.getRoomNumber());
                 values.put("owner", roomManageInfo.getOwner());
                 values.put("description", roomManageInfo.getDescription());
+                values.put("isRefresh",roomManageInfo.getIsRefresh());
                 int id = (int) db.insert("RoomManage", null, values);
                 UtilTool.Log("數據庫", "插入房間");
                 DatabaseManager.getInstance().closeWritableDatabase();
@@ -61,6 +64,7 @@ public class DBRoomManage {
             cv.put("roomNumber", roomManageInfo.getRoomNumber());
             cv.put("owner", roomManageInfo.getOwner());
             cv.put("description",roomManageInfo.getDescription());
+            cv.put("isRefresh",roomManageInfo.getIsRefresh());
             db.update("RoomManage", cv, "roomId=? and my_user=?", new String[]{roomManageInfo.getRoomId(), UtilTool.getTocoId()});
             DatabaseManager.getInstance().closeWritableDatabase();
         }
@@ -72,6 +76,19 @@ public class DBRoomManage {
             ContentValues cv = new ContentValues();
             cv.put("roomName", roomName);
             db.update("RoomManage", cv, "roomId=? and my_user=?", new String[]{roomId, UtilTool.getTocoId()});
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
+    }
+
+
+    public void updateIsRefresh(List<GroupInfo.DataBean> dataBeans) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            for(GroupInfo.DataBean dataBean:dataBeans){
+                ContentValues cv = new ContentValues();
+                cv.put("isRefresh", 0);
+                db.update("RoomManage", cv, "roomId=? and my_user=?", new String[]{dataBean.getId()+"", UtilTool.getTocoId()});
+            }
             DatabaseManager.getInstance().closeWritableDatabase();
         }
     }
@@ -211,6 +228,41 @@ public class DBRoomManage {
             DatabaseManager.getInstance().closeWritableDatabase();
         }
     }
+
+    public void deleteOldRoom() {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            ArrayList<RoomManageInfo> roomManageInfos=queryAllOldRoom();
+            for(RoomManageInfo roomManageInfo:roomManageInfos){
+                db.delete("RoomManage", "roomId=? and my_user=?", new String[]{roomManageInfo.getRoomId(), UtilTool.getTocoId()});
+            }
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
+    }
+
+    public ArrayList<RoomManageInfo> queryAllOldRoom() {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
+            ArrayList<RoomManageInfo> addRequestInfos = new ArrayList<>();
+            String sql = "select * from RoomManage where my_user=? and isRefresh=0";
+            Cursor c = db.rawQuery(sql, new String[]{UtilTool.getTocoId()});
+            while (c.moveToNext()) {
+                RoomManageInfo addRequestInfo = new RoomManageInfo();
+                addRequestInfo.setRoomName(c.getString(c.getColumnIndex("roomName")));
+                addRequestInfo.setRoomId(c.getString(c.getColumnIndex("roomId")));
+                addRequestInfo.setRoomImage(c.getString(c.getColumnIndex("roomImage")));
+                addRequestInfo.setRoomNumber(c.getInt(c.getColumnIndex("roomNumber")));
+                addRequestInfo.setMy_user(c.getString(c.getColumnIndex("my_user")));
+                addRequestInfo.setOwner(c.getString(c.getColumnIndex("owner")));
+                addRequestInfo.setDescription(c.getString(c.getColumnIndex("description")));
+                addRequestInfos.add(addRequestInfo);
+            }
+            c.close();
+            DatabaseManager.getInstance().closeWritableDatabase();
+            return addRequestInfos;
+        }
+    }
+
 
     public ArrayList<RoomManageInfo> queryAllRequest() {
         synchronized (lock) {

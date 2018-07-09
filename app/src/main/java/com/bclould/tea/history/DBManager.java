@@ -1141,6 +1141,7 @@ public class DBManager {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
             ContentValues values = new ContentValues();
             values.put("msgId", msgId);
+            values.put("msgTime",System.currentTimeMillis());
             db.insert("MessageState", null, values);
             DatabaseManager.getInstance().closeWritableDatabase();
         }
@@ -1180,6 +1181,26 @@ public class DBManager {
             List<String> userInfos = new ArrayList<>();
             try {
                 Cursor c = db.rawQuery("select * from MessageState", null);
+                while (c.moveToNext()) {
+                    String msgId = c.getString(c.getColumnIndex("msgId"));
+                    userInfos.add(msgId);
+                }
+                c.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }finally {
+                DatabaseManager.getInstance().closeWritableDatabase();
+            }
+            return userInfos;
+        }
+    }
+
+    public List<String> queryAllOvertimeMsgId(long time) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
+            List<String> userInfos = new ArrayList<>();
+            try {
+                Cursor c = db.rawQuery("select * from MessageState where msgTime<?",  new String[]{time+""});
                 while (c.moveToNext()) {
                     String msgId = c.getString(c.getColumnIndex("msgId"));
                     userInfos.add(msgId);

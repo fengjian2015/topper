@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 21;
+    private static final int DATABASE_VERSION = 23;
 
     public DBHelper(Context context) {
         //CursorFactory设置为null,使用默认值
@@ -30,9 +30,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 ",showChatTime varchar)");
         db.execSQL("create table AddRequest(id integer primary key autoincrement, my_user varchar, user varchar, type integer,userName varchar)");
         db.execSQL("create table UserImage(id integer primary key autoincrement, my_user varchar, user varchar, status integer, path varchar, remark varchar,userName varchar)");
-        db.execSQL("create table RoomManage(id integer primary key autoincrement, roomImage varchar, roomId varchar, roomName varchar, roomNumber integer,my_user varchar,owner varchar,description varchar)");
-        db.execSQL("create table RoomMember(id integer primary key autoincrement, name varchar, jid varchar, image_url varchar, remark varchar,my_user varchar,roomId varchar)");
-        db.execSQL("create table MessageState(id integer primary key autoincrement, msgId varchar)");
+        db.execSQL("create table RoomManage(id integer primary key autoincrement, roomImage varchar, roomId varchar, roomName varchar, roomNumber integer,my_user varchar,owner varchar,description varchar,isRefresh integer)");
+        db.execSQL("create table RoomMember(id integer primary key autoincrement, name varchar, jid varchar, image_url varchar, remark varchar,my_user varchar,roomId varchar,isRefresh integer)");
+        db.execSQL("create table MessageState(id integer primary key autoincrement, msgId varchar,msgTime integer)");
         db.execSQL("create table UserCodeDB(id integer primary key autoincrement, email varchar,password varchar)");
         db.execSQL("create table UserInfo(id integer primary key autoincrement, user varchar,path varchar,userName varchar)");//保存陌生人的信息
     }
@@ -97,6 +97,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL( userCodeDB );
             case 20:
                 db.execSQL("ALTER TABLE RoomManage ADD description TEXT");
+            case 21:
+                //2018-7-9新增字段isRefresh，用於刪除多餘的房間和成員
+                db.execSQL("ALTER TABLE RoomManage ADD isRefresh INTEGER");
+                db.execSQL("ALTER TABLE RoomMember ADD isRefresh INTEGER");
+            case 22:
+                db.execSQL("ALTER TABLE MessageState ADD msgTime INTEGER");
                 break;
         }
 

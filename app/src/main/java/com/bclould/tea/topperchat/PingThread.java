@@ -23,6 +23,7 @@ public class PingThread extends Thread {
 
         while (WsConnection.getInstance().isLogin()) {
             try {
+                WsConnection.getInstance().changeMsgStateOvertime();
                 UtilTool.Log("fengjian","發送ping");
                 WsConnection.getInstance().senPing();
                 WsOfflineConnection.getInstance().senPing(context);

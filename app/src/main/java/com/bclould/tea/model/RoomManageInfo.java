@@ -12,6 +12,15 @@ public class RoomManageInfo {
     private String my_user;
     private String owner;
     private String description;
+    private int isRefresh;
+
+    public int getIsRefresh() {
+        return isRefresh;
+    }
+
+    public void setIsRefresh(int isRefresh) {
+        this.isRefresh = isRefresh;
+    }
 
     public String getDescription() {
         return description;

@@ -196,15 +196,15 @@ public class WsConnection {
     public void senPing(){
         try {
             ws.ping("Android");
-//            ObjectMapper objectMapper =  new ObjectMapper(new MessagePackFactory());
-//            Map<Object,Object> sendMap = new HashMap<>();
-//            sendMap.put("type",4);
-//            sendMap.put("content",new byte[]{});
-//            try {
-//                sendMessage(objectMapper.writeValueAsBytes(sendMap));
-//            } catch (JsonProcessingException e) {
-//                e.printStackTrace();
-//            }
+            ObjectMapper objectMapper =  new ObjectMapper(new MessagePackFactory());
+            Map<Object,Object> sendMap = new HashMap<>();
+            sendMap.put("type",4);
+            sendMap.put("content",new byte[]{});
+            try {
+                sendMessage(objectMapper.writeValueAsBytes(sendMap));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -229,6 +229,7 @@ public class WsConnection {
             get(mContext);
             throw new NullPointerException();
         }
+        UtilTool.Log("fengjian","發送消息："+isLogin+"   "+isLoginConnection+"   "+isConnection);
         ws.send(bytes);
     }
 
@@ -264,7 +265,7 @@ public class WsConnection {
     }
 
 
-    private void changeMsgState() {
+    public void changeMsgState() {
         if(mManager==null){
             mManager=new DBManager(mContext);
         }
@@ -278,6 +279,18 @@ public class WsConnection {
         mManager.deleteAllMsgId();
     }
 
+    public void changeMsgStateOvertime(){
+        if(mManager==null){
+            mManager=new DBManager(mContext);
+        }
+        List<String> list = mManager.queryAllOvertimeMsgId(System.currentTimeMillis()-(60*1000));
+        if (list != null && list.size() > 0) {
+            for (String string : list) {
+                mManager.updateMessageStatus(string, 2);
+            }
+            EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.msg_database_update)));
+        }
+    }
 
     /**
      * 关闭连接

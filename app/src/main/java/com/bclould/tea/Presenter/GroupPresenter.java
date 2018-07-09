@@ -156,7 +156,6 @@ public class GroupPresenter {
                             new Thread(){
                                 @Override
                                 public void run() {
-                                    mDBRoomManage.deleteAllRoom();
                                     mDBRoomMember.deleteAllRoomMember();
                                     List<ConversationInfo> list = dbManager.queryConversationGroup();
                                     for (GroupInfo.DataBean dataBean : baseInfo.getData()) {
@@ -167,6 +166,7 @@ public class GroupPresenter {
                                         roomManageInfo.setRoomNumber(dataBean.getMax_people());
                                         roomManageInfo.setRoomImage(dataBean.getLogo());
                                         roomManageInfo.setDescription(dataBean.getDescription());
+                                        roomManageInfo.setIsRefresh(1);
                                         mDBRoomManage.addRoom(roomManageInfo);
                                         for (GroupInfo.DataBean.UsersBean usersBean : dataBean.getUsers()) {
                                             RoomMemberInfo roomMemberInfo = new RoomMemberInfo();
@@ -177,6 +177,8 @@ public class GroupPresenter {
                                             mDBRoomMember.addRoomMember(roomMemberInfo);
                                         }
                                     }
+                                    mDBRoomManage.deleteOldRoom();
+                                    mDBRoomManage.updateIsRefresh(baseInfo.getData());
                                     for (ConversationInfo conversationInfo : list) {
                                         boolean isExist = false;
                                         A:

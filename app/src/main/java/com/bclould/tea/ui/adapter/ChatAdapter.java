@@ -12,6 +12,8 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
@@ -36,6 +38,7 @@ import com.bclould.tea.model.GrabRedInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.SerMap;
 import com.bclould.tea.ui.activity.ChatLookLocationActivity;
+import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.activity.GuessDetailsActivity;
 import com.bclould.tea.ui.activity.ImageViewActivity;
 import com.bclould.tea.ui.activity.IndividualDetailsActivity;
@@ -121,6 +124,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private final GrabRedPresenter mGrabRedPresenter;
     //    private final Bitmap mToBitmap;
     private final MediaPlayer mMediaPlayer;
+    private int voicePosition;
     ArrayList<String> mImageList = new ArrayList<>();
     private CurrencyDialog mCurrencyDialog;
     private String mFileName;
@@ -278,7 +282,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 break;
             case FROM_VOICE_MSG:
                 FromVoiceHolder fromVoiceHolder = (FromVoiceHolder) holder;
-                fromVoiceHolder.setData(mMessageList.get(position));
+                fromVoiceHolder.setData(mMessageList.get(position),position);
                 break;
             case TO_IMG_MSG:
                 ToImgHolder toImgHolder = (ToImgHolder) holder;
@@ -883,7 +887,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mRlVoice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    playVoice(mMediaPlayer, messageInfo.getVoice(), anim);
+                    playVoice(mMediaPlayer, messageInfo.getVoice(), anim,mMessageList.size()-1);
                 }
             });
 
@@ -897,18 +901,28 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public void playVoice(MediaPlayer mediaPlayer, String fileName, final AnimationDrawable anim) {
-
+    public void playVoice(MediaPlayer mediaPlayer, String fileName, final AnimationDrawable anim, final int position) {
         try {
+            ((ConversationActivity)mContext).isPlayVoi1ce(true);
             mFileName = fileName;
             mAnim = anim;
+            voicePosition=position;
             //对mediaPlayer进行实例化
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mediaPlayer) {
+                    ((ConversationActivity)mContext).isPlayVoi1ce(false);
                     mediaPlayer.reset();
                     anim.selectDrawable(0);
                     anim.stop();
+                    mMessageList.get(position).setVoiceStatus(1);
+                    for(int i=position;i<mMessageList.size();i++){
+                        if(mMessageList.get(i).getMsgType()==FROM_VOICE_MSG&&mMessageList.get(i).getVoiceStatus() != 1){
+                            playVoice(mMediaPlayer, mMessageList.get(i).getVoice(), anim,position+1);
+                            mMgr.updateMessageStatus(mMessageList.get(i).getId());
+                            break;
+                        }
+                    }
                 }
             });
             if (mediaPlayer.isPlaying()) {
@@ -940,14 +954,54 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public void refreshPlayVoice(){
-        try {
-            if (mAnim!=null && mAnim.isRunning()){
+    Handler mHandler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            try {
+                ((ConversationActivity)mContext).isPlayVoi1ce(true);
+                mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        ((ConversationActivity)mContext).isPlayVoi1ce(false);
+                        mediaPlayer.reset();
+                        mAnim.selectDrawable(0);
+                        mAnim.stop();
+                        mMessageList.get(voicePosition).setVoiceStatus(1);
+                        for(int i=voicePosition;i<mMessageList.size();i++){
+                            if(mMessageList.get(i).getMsgType()==FROM_VOICE_MSG&&mMessageList.get(i).getVoiceStatus() != 1){
+                                playVoice(mMediaPlayer, mMessageList.get(i).getVoice(), mAnim,voicePosition+1);
+                                mMgr.updateMessageStatus(mMessageList.get(i).getId());
+                                break;
+                            }
+                        }
+                    }
+                });
+                mAnim.stop();
+                mMediaPlayer.stop();
                 mMediaPlayer.reset();
                 mMediaPlayer.setDataSource(mFileName);     //设置资源目录
                 mMediaPlayer.prepare();//缓冲
                 mMediaPlayer.start();//开始或恢复播放
                 mAnim.start();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    };
+
+    public void refreshPlayVoice(boolean isSpeakerOn){
+        try {
+            if (mAnim!=null && mAnim.isRunning()){
+                if(isSpeakerOn){
+                    mMediaPlayer.setAudioStreamType(android.media.AudioManager.MODE_NORMAL);
+                }else{
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                        mMediaPlayer.setAudioStreamType(android.media.AudioManager.MODE_IN_COMMUNICATION);
+                    } else {
+                        mMediaPlayer.setAudioStreamType(android.media.AudioManager.MODE_IN_CALL);
+                    }
+                }
+                mHandler.sendEmptyMessageDelayed(1,2000);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -977,7 +1031,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             ButterKnife.bind(this, view);
         }
 
-        public void setData(final MessageInfo messageInfo) {
+        public void setData(final MessageInfo messageInfo, final int position) {
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             setNameAndUrl(mIvTouxiang,messageInfo, tvName);
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
@@ -997,10 +1051,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mRlVoice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    playVoice(mMediaPlayer, messageInfo.getVoice(), anim);
+                    playVoice(mMediaPlayer, messageInfo.getVoice(), anim,position);
                     mMgr.updateMessageStatus(messageInfo.getId());
                     mIvStatus.setVisibility(View.GONE);
                     messageInfo.setVoiceStatus(1);
+                    mMessageList.get(position).setVoiceStatus(1);
                 }
             });
             mRlVoice.setOnLongClickListener(new View.OnLongClickListener() {

@@ -43,7 +43,6 @@ public class DBRoomMember {
             values.put("remark", roomMemberInfo.getRemark());
             values.put("roomId", roomMemberInfo.getRoomId());
             int id = (int) db.insert("RoomMember", null, values);
-            UtilTool.Log("數據庫", "插入成員");
             DatabaseManager.getInstance().closeWritableDatabase();
             return id;
         }
@@ -61,7 +60,6 @@ public class DBRoomMember {
                 values.put("remark", "");
                 values.put("roomId", roomId);
                 db.insert("RoomMember", null, values);
-                UtilTool.Log("fengjian", "添加成員到数据库成功" + dataBean.toString());
             }
             DatabaseManager.getInstance().closeWritableDatabase();
         }
@@ -79,7 +77,6 @@ public class DBRoomMember {
                 values.put("remark", "");
                 values.put("roomId", roomId);
                 db.insert("RoomMember", null, values);
-                UtilTool.Log("fengjian", "添加成員到数据库成功" + userInfo.toString());
             }
             DatabaseManager.getInstance().closeWritableDatabase();
         }

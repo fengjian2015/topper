@@ -23,7 +23,7 @@ public class AudioModeManger {
     private SensorManager sensorManager;
     private Sensor mProximiny;
     private onSpeakerListener mOnSpeakerListener;
-
+    private boolean isPlayVoice=false;
     /**
      * 扬声器状态监听器
      * 如果要做成类似微信那种切换后重新播放音频的效果，需要这个监听回调
@@ -44,12 +44,19 @@ public class AudioModeManger {
 
     }
 
+    public void setIsPlayVoice(boolean isPlayVoice){
+        this.isPlayVoice=isPlayVoice;
+    }
+
     /**
      * 距离传感器监听者
      */
     private SensorEventListener mDistanceSensorListener = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent event) {
+            if(!isPlayVoice){
+                return;
+            }
             float f_proximiny = event.values[0];
             //扬声器模式
             //魅蓝E传感器得到的值竟然比最大值都要大？what fuck ？
@@ -61,9 +68,7 @@ public class AudioModeManger {
                 }
 
             } else {//听筒模式
-
                 setSpeakerPhoneOn(false);
-
                 if (mOnSpeakerListener != null){
                     mOnSpeakerListener.onSpeakerChanged(false);
                 }
@@ -136,15 +141,12 @@ public class AudioModeManger {
     private void setSpeakerPhoneOn(boolean on) {
 
         if (on) {
-            audioManager.setSpeakerphoneOn(true);
             audioManager.setMode(android.media.AudioManager.MODE_NORMAL);
             //设置音量，解决有些机型切换后没声音或者声音突然变大的问题
             audioManager.setStreamVolume(android.media.AudioManager.STREAM_MUSIC,
                     audioManager.getStreamVolume(android.media.AudioManager.STREAM_MUSIC), android.media.AudioManager.FX_KEY_CLICK);
-
+            audioManager.setSpeakerphoneOn(true);
         } else {
-            audioManager.setSpeakerphoneOn(false);
-
             //5.0以上
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
                 audioManager.setMode(android.media.AudioManager.MODE_IN_COMMUNICATION);
@@ -157,6 +159,7 @@ public class AudioModeManger {
                 audioManager.setStreamVolume(android.media.AudioManager.STREAM_VOICE_CALL,
                         audioManager.getStreamMaxVolume(android.media.AudioManager.STREAM_VOICE_CALL), android.media.AudioManager.FX_KEY_CLICK);
             }
+            audioManager.setSpeakerphoneOn(false);
         }
 
     }

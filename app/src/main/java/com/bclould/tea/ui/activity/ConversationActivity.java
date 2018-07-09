@@ -170,10 +170,10 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         initData(null,true);//初始化数据
         mMgr.updateNumber(roomId, 0);//更新未读消息条数
         EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));//发送更新未读消息通知
-//        if (audioModeManger == null) {
-//            audioModeManger = new AudioModeManger();
-//        }
-//        audioModeManger.register(this);
+        if (audioModeManger == null) {
+            audioModeManger = new AudioModeManger();
+        }
+        audioModeManger.register(this);
         setOnClick();
 
     }
@@ -484,8 +484,8 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        if (audioModeManger != null)
-//            audioModeManger.unregister();
+        if (audioModeManger != null)
+            audioModeManger.unregister();
         roomManage.removerMessageManageListener(this);
         mediaPlayer.release();
         mediaPlayer = null;
@@ -735,12 +735,12 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
     }
 
     private void setOnClick() {
-//        audioModeManger.setOnSpeakerListener(new AudioModeManger.onSpeakerListener() {
-//            @Override
-//            public void onSpeakerChanged(boolean isSpeakerOn) {
-//                mChatAdapter.refreshPlayVoice();
-//            }
-//        });
+        audioModeManger.setOnSpeakerListener(new AudioModeManger.onSpeakerListener() {
+            @Override
+            public void onSpeakerChanged(boolean isSpeakerOn) {
+                mChatAdapter.refreshPlayVoice(isSpeakerOn);
+            }
+        });
         mEkbEmoticonsKeyboard.addOnResultOTR(this);
         //监听touch事件隐藏软键盘
         mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
@@ -758,6 +758,10 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                 return false;
             }
         });
+    }
+
+    public void isPlayVoi1ce(boolean isPlayVoice){
+        audioModeManger.setIsPlayVoice(isPlayVoice);
     }
 
     //设置title
