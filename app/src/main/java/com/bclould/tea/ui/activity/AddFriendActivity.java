@@ -2,6 +2,7 @@ package com.bclould.tea.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bclould.tea.Presenter.CloudMessagePresenter;
@@ -24,7 +26,9 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.ui.adapter.AddFriendAdapter;
 import com.bclould.tea.ui.widget.ClearEditText;
+import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.ToastShow;
+import com.bclould.tea.utils.UtilTool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +55,12 @@ public class AddFriendActivity extends BaseActivity {
     TextView mTvCancel;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.qr_code_iv)
+    ImageView mQrCodeIv;
+    @Bind(R.id.touxiang)
+    ImageView mTouxiang;
+    @Bind(R.id.ll_qr)
+    LinearLayout mLlQr;
     private CloudMessagePresenter mCloudMessagePresenter;
     private List<BaseInfo.DataBean> mDataList = new ArrayList<>();
     private AddFriendAdapter mAddFriendAdapter;
@@ -66,6 +76,20 @@ public class AddFriendActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         initListener();
         initRecyclerView();
+        initQR();
+    }
+
+    private void initQR() {
+        try {
+            DBManager mgr = new DBManager(this);
+            String user = UtilTool.getTocoId();
+            UtilTool.getImage(mgr, user, this, mTouxiang);
+//            mTouxiang.setImageBitmap(UtilTool.getImage(mgr,user, this));
+            Bitmap bitmap = UtilTool.createQRImage(UtilTool.base64PetToJson(this, Constants.BUSINESSCARD, "name", user, "名片"));
+            mQrCodeIv.setImageBitmap(bitmap);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initRecyclerView() {
@@ -94,12 +118,14 @@ public class AddFriendActivity extends BaseActivity {
 
     private void initData(String user) {
         mDataList.clear();
+        mLlQr.setVisibility(View.VISIBLE);
         mCloudMessagePresenter.searchUser(user, new CloudMessagePresenter.CallBack() {
             @Override
             public void send(BaseInfo.DataBean data) {
                 if (data.getName().isEmpty()) {
                     ToastShow.showToast2(AddFriendActivity.this, getString(R.string.no_user));
                 } else {
+                    mLlQr.setVisibility(View.GONE);
                     mDataList.add(data);
                     mAddFriendAdapter.notifyItemRangeChanged(0, mDataList.size());
                 }

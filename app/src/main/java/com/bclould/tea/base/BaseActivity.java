@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.bclould.tea.R;
 import com.bclould.tea.topperchat.WsConnection;
+import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.GestureLockViewGroup;
 import com.bclould.tea.utils.AnimatorTool;
@@ -63,6 +64,8 @@ public class BaseActivity extends SwipeActivity {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            if(this.getClass().getName().equals(ConversationActivity.class.getName()))
+                return super.dispatchTouchEvent(ev);
             View v = getCurrentFocus();
             if (isShouldHideInput(v, ev)) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

@@ -440,6 +440,13 @@ public class SocketListener {
                     break;
                 case WsContans.MSG_IMAGE:
                     //圖片
+
+                    String postfix = null;
+                    try {
+                        postfix = messageInfo.getKey().substring(messageInfo.getKey().lastIndexOf("."));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                     String url = downFile(messageInfo.getKey());
                     messageInfo.setKey(messageInfo.getKey());
                     messageInfo.setMessage(url);
@@ -449,7 +456,15 @@ public class SocketListener {
                     } else {
                         msgType = FROM_IMG_MSG;
                     }
-                    fileName = UtilTool.createtFileName() + ".jpg";
+                    if(StringUtils.isEmpty(postfix)){
+                        fileName = UtilTool.createtFileName() + ".jpg";
+                    }else{
+                        if(postfix.contains("gif")||postfix.contains("GIF"))
+                            fileName=UtilTool.createtFileName()+".gif";
+                        else
+                            fileName = UtilTool.createtFileName() + ".jpg";
+                    }
+
                     path = context.getFilesDir().getAbsolutePath() + File.separator
                             + "images";
                     file = saveFile((byte[]) messageMap.get("attachment"), fileName, path);
