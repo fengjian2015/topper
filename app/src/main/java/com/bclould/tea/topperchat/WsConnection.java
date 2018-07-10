@@ -201,7 +201,7 @@ public class WsConnection {
             sendMap.put("type",4);
             sendMap.put("content",new byte[]{});
             try {
-                sendMessage(objectMapper.writeValueAsBytes(sendMap));
+                send(objectMapper.writeValueAsBytes(sendMap));
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
@@ -217,19 +217,25 @@ public class WsConnection {
             Map<Object,Object> sendMap = new HashMap<>();
             sendMap.put("type",33);
             sendMap.put("content",new byte[]{});
-            sendMessage(objectMapper.writeValueAsBytes(sendMap));
+            send(objectMapper.writeValueAsBytes(sendMap));
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-
-    public synchronized void sendMessage(byte[] bytes) throws Exception{
+    public synchronized void send(byte[] bytes) throws Exception{
         if(ws==null||!ws.isOpen()||!isLogin){
             get(mContext);
             throw new NullPointerException();
         }
-        UtilTool.Log("fengjian","發送消息："+isLogin+"   "+isLoginConnection+"   "+isConnection);
+        ws.send(bytes);
+    }
+
+    public synchronized void sendMessage(byte[] bytes) throws Exception{
+        if(ws==null||!ws.isOpen()||!isLogin){
+            throw new NullPointerException();
+        }
+        UtilTool.Log("fengjian","發送消息");
         ws.send(bytes);
     }
 

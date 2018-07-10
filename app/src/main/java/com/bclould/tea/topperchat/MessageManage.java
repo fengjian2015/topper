@@ -1,13 +1,17 @@
 package com.bclould.tea.topperchat;
 
+import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import com.bclould.tea.R;
 import com.bclould.tea.crypto.otr.OtrChatListenerManager;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.UtilTool;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.greenrobot.eventbus.EventBus;
 import org.msgpack.jackson.dataformat.MessagePackFactory;
 
 import java.util.HashMap;
@@ -39,7 +43,7 @@ public class MessageManage {
         return mInstance;
     }
 
-    public void sendSingLe(final String to, final byte[] attachment, final String body, final int msgType, final String msgId, final long time, final String roomId, final DBManager mMgr){
+    public void sendSingLe(final String to, final byte[] attachment, final String body, final int msgType, final String msgId, final long time, final String roomId, final DBManager mMgr, final Context context){
         mSingleThreadExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -65,7 +69,6 @@ public class MessageManage {
                     if(!mMgr.findUser(to)){
                         contentMap.put("name", UtilTool.getUser());
                     }
-
                     Map<Object, Object> sendMap = new HashMap<>();
                     if(mMgr.findUser(to)){
                         sendMap.put("type", MSG_SINGLER);
@@ -74,15 +77,18 @@ public class MessageManage {
                     }
                     sendMap.put("content", objectMapper.writeValueAsBytes(contentMap));
                     mMgr.addMessageMsgId(msgId);
+                    UtilTool.Log("fengjian","發送單聊");
                     WsConnection.getInstance().sendMessage(objectMapper.writeValueAsBytes(sendMap));
                 }catch (Exception e){
+                    mMgr.updateMessageStatus(msgId, 2);
+                    EventBus.getDefault().post(new MessageEvent(context.getString(R.string.msg_database_update)));
                     e.printStackTrace();
                 }
             }
         });
     }
 
-    public void sendMulti(String to, final byte[] attachment, final String body, final int msgType, final String msgId, final long time, final String roomId, final DBManager mMgr){
+    public void sendMulti(String to, final byte[] attachment, final String body, final int msgType, final String msgId, final long time, final String roomId, final DBManager mMgr, final Context context){
         mSingleThreadExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -112,6 +118,8 @@ public class MessageManage {
                     mMgr.addMessageMsgId(msgId);
                     WsConnection.getInstance().sendMessage(objectMapper.writeValueAsBytes(sendMap));
                 }catch (Exception e){
+                    mMgr.updateMessageStatus(msgId, 2);
+                    EventBus.getDefault().post(new MessageEvent(context.getString(R.string.msg_database_update)));
                     e.printStackTrace();
                 }
             }

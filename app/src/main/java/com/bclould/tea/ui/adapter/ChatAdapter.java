@@ -72,17 +72,14 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
 import org.greenrobot.eventbus.EventBus;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.github.rockerhieu.emojicon.EmojiconTextView;
-
 import static com.bclould.tea.utils.UtilTool.Log;
 
 /**
@@ -991,17 +988,19 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     public void refreshPlayVoice(boolean isSpeakerOn){
         try {
+            mHandler.removeMessages(1);
             if (mAnim!=null && mAnim.isRunning()){
                 if(isSpeakerOn){
                     mMediaPlayer.setAudioStreamType(android.media.AudioManager.MODE_NORMAL);
+                    mHandler.sendEmptyMessage(1);
                 }else{
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
                         mMediaPlayer.setAudioStreamType(android.media.AudioManager.MODE_IN_COMMUNICATION);
                     } else {
                         mMediaPlayer.setAudioStreamType(android.media.AudioManager.MODE_IN_CALL);
                     }
+                    mHandler.sendEmptyMessageDelayed(1,1500);
                 }
-                mHandler.sendEmptyMessageDelayed(1,2000);
             }
         }catch (Exception e){
             e.printStackTrace();

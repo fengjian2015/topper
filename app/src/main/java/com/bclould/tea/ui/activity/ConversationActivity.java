@@ -49,6 +49,7 @@ import com.bclould.tea.utils.AudioModeManger;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.RecordUtil;
 import com.bclould.tea.utils.StringUtils;
+import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.MessageManageListener;
 import com.bclould.tea.xmpp.Room;
@@ -441,6 +442,11 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         }
         //初始化OTR
         mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(roomId.toString()));
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return super.onKeyDown(keyCode, event);
     }
 
     private void sendMessage(String message) {

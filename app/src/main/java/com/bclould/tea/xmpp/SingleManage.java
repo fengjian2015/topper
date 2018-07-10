@@ -89,7 +89,7 @@ public class SingleManage implements Room {
     }
 
     private synchronized boolean send(String to, byte[] attachment, String body, int msgType, String msgId, long time) throws Exception {
-        MessageManage.getInstance().sendSingLe(to,attachment,body,msgType,msgId,time,mUser,mMgr);
+        MessageManage.getInstance().sendSingLe(to,attachment,body,msgType,msgId,time,mUser,mMgr,context);
         return true;
     }
 
