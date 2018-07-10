@@ -1016,4 +1016,7 @@
     <string name="close_gesture">已關閉手指驗證</string>
     <string name="home_msg_click_two">聊天點擊兩次</string>
     <string name="look_all">查看全部</string>
+    <string name="is_allow_modify_data">是否允許群員修改頭像、群暱稱</string>
+    <string name="draft">[草稿]</string>
+    <string name="save_image">保存圖片</string>
 </resources>

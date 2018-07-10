@@ -13,6 +13,15 @@ public class ConversationInfo {
     private String istop;
     private String chatType;
     private long createTime;
+    private String draft;
+
+    public String getDraft() {
+        return draft;
+    }
+
+    public void setDraft(String draft) {
+        this.draft = draft;
+    }
 
     public long getCreateTime() {
         return createTime;

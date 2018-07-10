@@ -162,7 +162,13 @@ public class ConversationAdapter extends RecyclerView.Adapter {
             } else {
                 mTab1ItemName.setText(conversationInfo.getFriend());
             }
-            mTab1ItemText.setText(conversationInfo.getMessage());
+            String draft=mMgr.findConversationDraft(conversationInfo.getUser());
+            if(StringUtils.isEmpty(draft)){
+                mTab1ItemText.setText(conversationInfo.getMessage());
+            }else{
+                mTab1ItemText.setText(mContext.getString(R.string.draft)+draft);
+            }
+
             //兼容老版本
             if((conversationInfo.getCreateTime()+"").length()<11){
                 long time=mMgr.findLastMessageConversationCreateTime(conversationInfo.getUser());

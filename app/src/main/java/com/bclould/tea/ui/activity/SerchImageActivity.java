@@ -59,6 +59,8 @@ public class SerchImageActivity extends BaseActivity {
     @Bind(R.id.refresh_layout)
     SmartRefreshLayout mRefreshLayout;
 
+    public static final int TYPE_GROUP=0;
+    public static final int TYPE_PERSONAL=1;
 
     private ArrayList<String> imageList = new ArrayList<>();
     private int page = 0;
@@ -66,6 +68,9 @@ public class SerchImageActivity extends BaseActivity {
     private SearchImageRVAdapter mSearchImageRVAdapter;
     String content;
     private LoadingProgressDialog mProgressDialog;
+
+    private int type=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +82,7 @@ public class SerchImageActivity extends BaseActivity {
     }
 
     private void init() {
+        type=getIntent().getIntExtra("type",0);
         mEtContent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
@@ -178,6 +184,7 @@ public class SerchImageActivity extends BaseActivity {
                     }
                     Intent intent=new Intent(SerchImageActivity.this,CropImageActivity.class);
                     intent.putExtra("url",url);
+                    intent.putExtra("type",type);
                     startActivity(intent);
                     break;
             }

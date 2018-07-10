@@ -386,6 +386,37 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rl_allow_modify_data"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y100"
+                android:background="@color/white"
+                android:visibility="gone">
+
+                <View
+                    style="@style/HCutOffRule"
+                    ></View>
+
+                <TextView
+                    android:id="@+id/tv12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_toRightOf="@+id/iv_inform"
+                    android:text="@string/is_allow_modify_data"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x30"/>
+
+                <ImageView
+                    android:id="@+id/is_allow_modify_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:padding="@dimen/x25"
+                    android:src="@drawable/set_disturb_seletor"/>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/rl_empty_talk"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y100"

@@ -1249,4 +1249,14 @@ public interface MyService {
             @Field("fingerprint") int fingerprint,
             @Field("second_password") String second_password
     );
+
+    //修改群頭像、名稱是否允許成員修改
+    @FormUrlEncoded
+    @POST("chat/room/update/setting")
+    Observable<GroupInfo> setAllowModifyt(
+            @Header("Authorization") String token,
+            @Field("group_id") int group_id,
+            @Field("is_allow_modify_data") int is_allow_modify_data
+
+    );
 }

@@ -26,12 +26,17 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tea.ui.activity.SerchImageActivity.TYPE_GROUP;
+import static com.bclould.tea.ui.activity.SerchImageActivity.TYPE_PERSONAL;
+
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CropImageActivity extends BaseActivity {
 
     @Bind(R.id.CropImageView)
     CropImageView mCropImageView;
     private String url;
+    private int type=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +92,7 @@ public class CropImageActivity extends BaseActivity {
     }
 
     private void initIntent() {
+        type=getIntent().getIntExtra("type",0);
         url = getIntent().getStringExtra("url");
     }
 
@@ -109,15 +115,25 @@ public class CropImageActivity extends BaseActivity {
             final File newFile = new File(Constants.PUBLICDIR + System.currentTimeMillis()+".jpg");
             Bitmap bitmap = mCropImageView.getCroppedBitmap();
             UtilTool.comp(bitmap, newFile);
-            Intent intent=new Intent(CropImageActivity.this,ConversationGroupDetailsActivity.class);
-            intent.putExtra("path",newFile.getAbsolutePath());
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
+            goActiviy(newFile.getAbsolutePath());
         }catch (Exception e){
             e.printStackTrace();
         }
         finish();
     }
 
+    private void goActiviy(String path){
+        if(TYPE_GROUP==type){
+            Intent intent=new Intent(CropImageActivity.this,ConversationGroupDetailsActivity.class);
+            intent.putExtra("path",path);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }else if(TYPE_PERSONAL==type){
+            Intent intent=new Intent(CropImageActivity.this,PersonalDetailsActivity.class);
+            intent.putExtra("path",path);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        finish();
+    }
 }

@@ -3,6 +3,7 @@ package com.bclould.tea.ui.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,9 +19,11 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.compress.Luban;
@@ -40,6 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.bclould.tea.Presenter.LoginPresenter.STATE;
+import static com.bclould.tea.ui.activity.SerchImageActivity.TYPE_PERSONAL;
 import static com.luck.picture.lib.config.PictureMimeType.ofImage;
 
 /**
@@ -103,7 +107,8 @@ public class PersonalDetailsActivity extends BaseActivity {
                 case PictureConfig.CHOOSE_REQUEST:
                     // 图片选择结果回调
                     try {
-                        upImage(data);
+                        selectList = PictureSelector.obtainMultipleResult(data);
+                        upImage(selectList.get(0).getCutPath());
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
@@ -113,12 +118,11 @@ public class PersonalDetailsActivity extends BaseActivity {
     }
 
     //上傳頭像
-    private void upImage(Intent data) throws UnsupportedEncodingException {
-        selectList = PictureSelector.obtainMultipleResult(data);
-        File file = new File(selectList.get(0).getCutPath());
+    private void upImage(String path) throws UnsupportedEncodingException {
+        File file = new File(path);
         final String keyCut = UtilTool.getUserId() + UtilTool.createtFileName() + "cut" + UtilTool.getPostfix2(file.getName());
         final File newFile = new File(Constants.PUBLICDIR + keyCut);
-        Bitmap cutImg = BitmapFactory.decodeFile(selectList.get(0).getCutPath());
+        Bitmap cutImg = BitmapFactory.decodeFile(path);
         UtilTool.comp(cutImg, newFile);
         final Bitmap bitmap = BitmapFactory.decodeFile(newFile.getAbsolutePath());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -147,6 +151,20 @@ public class PersonalDetailsActivity extends BaseActivity {
         }*/
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String path = intent.getStringExtra("path");
+        if (!StringUtils.isEmpty(path)) {
+            try {
+                upImage(path);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
     @OnClick({R.id.bark, R.id.rl_touxiang, R.id.rl_qr_card})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -154,36 +172,7 @@ public class PersonalDetailsActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.rl_touxiang:
-                PictureSelector.create(this)
-                        .openGallery(ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()
-//                        .theme(R.style.picture_white_style)
-                        .maxSelectNum(1)// 最大图片选择数量 int
-                        .imageSpanCount(3)// 每行显示个数 int
-                        .selectionMode(PictureConfig.SINGLE)// 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
-                        .previewImage(true)// 是否可预览图片 true or false
-                        .previewVideo(true)// 是否可预览视频 true or false
-                        .enablePreviewAudio(true) // 是否可播放音频 true or false
-                        .compressGrade(Luban.THIRD_GEAR)// luban压缩档次，默认3档 Luban.THIRD_GEAR、Luban.FIRST_GEAR、Luban.CUSTOM_GEAR
-                        .isCamera(true)// 是否显示拍照按钮 true or false
-                        .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
-                        .sizeMultiplier(0.5f)// glide 加载图片大小 0~1之间 如设置 .glideOverride()无效
-                        .setOutputCameraPath("/CustomPath")// 自定义拍照保存路径,可不填
-                        .enableCrop(true)// 是否裁剪 true or false
-                        .compress(true)// 是否压缩 true or false
-                        .compressMode(PictureConfig.SYSTEM_COMPRESS_MODE)//系统自带 or 鲁班压缩 PictureConfig.SYSTEM_COMPRESS_MODE or LUBAN_COMPRESS_MODE
-                        .glideOverride(160, 160)// int glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
-                        .withAspectRatio(1, 1)// int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
-                        .hideBottomControls(true)// 是否显示uCrop工具栏，默认不显示 true or false
-                        .isGif(false)// 是否显示gif图片 true or false
-                        .freeStyleCropEnabled(true)// 裁剪框是否可拖拽 true or false
-                        .circleDimmedLayer(true)// 是否圆形裁剪 true or false
-                        .showCropFrame(false)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
-                        .showCropGrid(true)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
-                        .openClickSound(true)// 是否开启点击声音 true or false
-                        .selectionMedia(selectList)// 是否传入已选图片 List<LocalMedia> list
-                        .rotateEnabled(true) // 裁剪是否可旋转图片 true or false
-                        .scaleEnabled(true)// 裁剪是否可放大缩小图片 true or false
-                        .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
+                showDialog();
                 break;
             case R.id.rl_qr_card:
                 Intent intent = new Intent(this, QRCodeActivity.class);
@@ -191,5 +180,67 @@ public class PersonalDetailsActivity extends BaseActivity {
                 startActivity(intent);
                 break;
         }
+    }
+
+    private void showDialog() {
+        List<String> list = new ArrayList<>();
+        list.add(getString(R.string.image));
+        list.add(getString(R.string.network_image));
+        final MenuListPopWindow menu = new MenuListPopWindow(this, list);
+        menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
+            @Override
+            public void onclickitem(int position) {
+                switch (position) {
+                    case 0:
+                        menu.dismiss();
+                        break;
+                    case 1:
+                        menu.dismiss();
+                        goImage();
+                        break;
+                    case 2:
+                        menu.dismiss();
+                        Intent intent = new Intent(PersonalDetailsActivity.this, SerchImageActivity.class);
+                        intent.putExtra("type",TYPE_PERSONAL);
+                        startActivity(intent);
+                        break;
+                }
+            }
+        });
+        menu.setColor(Color.BLACK);
+        menu.showAtLocation();
+    }
+
+    private void goImage() {
+        PictureSelector.create(this)
+                .openGallery(ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()
+//                        .theme(R.style.picture_white_style)
+                .maxSelectNum(1)// 最大图片选择数量 int
+                .imageSpanCount(3)// 每行显示个数 int
+                .selectionMode(PictureConfig.SINGLE)// 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
+                .previewImage(true)// 是否可预览图片 true or false
+                .previewVideo(true)// 是否可预览视频 true or false
+                .enablePreviewAudio(true) // 是否可播放音频 true or false
+                .compressGrade(Luban.THIRD_GEAR)// luban压缩档次，默认3档 Luban.THIRD_GEAR、Luban.FIRST_GEAR、Luban.CUSTOM_GEAR
+                .isCamera(true)// 是否显示拍照按钮 true or false
+                .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
+                .sizeMultiplier(0.5f)// glide 加载图片大小 0~1之间 如设置 .glideOverride()无效
+                .setOutputCameraPath("/CustomPath")// 自定义拍照保存路径,可不填
+                .enableCrop(true)// 是否裁剪 true or false
+                .compress(true)// 是否压缩 true or false
+                .compressMode(PictureConfig.SYSTEM_COMPRESS_MODE)//系统自带 or 鲁班压缩 PictureConfig.SYSTEM_COMPRESS_MODE or LUBAN_COMPRESS_MODE
+                .glideOverride(160, 160)// int glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
+                .withAspectRatio(1, 1)// int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
+                .hideBottomControls(true)// 是否显示uCrop工具栏，默认不显示 true or false
+                .isGif(false)// 是否显示gif图片 true or false
+                .freeStyleCropEnabled(true)// 裁剪框是否可拖拽 true or false
+                .circleDimmedLayer(true)// 是否圆形裁剪 true or false
+                .showCropFrame(false)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
+                .showCropGrid(true)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
+                .openClickSound(true)// 是否开启点击声音 true or false
+                .selectionMedia(selectList)// 是否传入已选图片 List<LocalMedia> list
+                .rotateEnabled(true) // 裁剪是否可旋转图片 true or false
+                .scaleEnabled(true)// 裁剪是否可放大缩小图片 true or false
+                .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
     }
 }

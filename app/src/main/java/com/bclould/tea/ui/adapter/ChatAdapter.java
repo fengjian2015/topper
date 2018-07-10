@@ -130,7 +130,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private RelativeLayout mrlTitle;
     private DBRoomMember mDBRoomMember;
 
-    public ChatAdapter(Context context, List<MessageInfo> messageList, String roomId, DBManager mgr, MediaPlayer mediaPlayer, String name, String roomType, RelativeLayout rlTitle, DBRoomMember mDBRoomMember) {
+    public ChatAdapter(Context context, List<MessageInfo> messageList, String roomId, DBManager mgr, MediaPlayer mediaPlayer, String name, String roomType, RelativeLayout rlTitle, DBRoomMember mDBRoomMember
+                ) {
         mContext = context;
         mMessageList = messageList;
         mRoomId = roomId;
@@ -354,6 +355,41 @@ public class ChatAdapter extends RecyclerView.Adapter {
         return 0;
     }
 
+    private void showDeleteDialog(final MessageInfo messageInfo) {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(mContext.getString(R.string.confirm_delete));
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    MessageInfo messageInfoNext = mMgr.deleteSingleMessage(mRoomId, messageInfo.getId() + "");
+                    String conversation = mMgr.findLastMessageConversation(mRoomId);
+                    if (!StringUtils.isEmpty(conversation)) {
+                        mMgr.updateConversationMessage(mRoomId, conversation);
+                    }
+                    if (messageInfoNext != null) {
+                        mMessageList.get(mMessageList.indexOf(messageInfo) + 1).setShowChatTime(messageInfoNext.getShowChatTime());
+                    }
+                    mMessageList.remove(messageInfo);
+                    notifyDataSetChanged();
+                    EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
+                    deleteCacheDialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     private void showCopyDialog(final int msgtype, final MessageInfo messageInfo, final boolean isCopy, boolean isTransmit) {
         List<String> list = new ArrayList<>();
         list.add(mContext.getString(R.string.delete));
@@ -372,17 +408,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                         break;
                     case 1:
                         menu.dismiss();
-                        MessageInfo messageInfoNext = mMgr.deleteSingleMessage(mRoomId, messageInfo.getId() + "");
-                        String conversation = mMgr.findLastMessageConversation(mRoomId);
-                        if (!StringUtils.isEmpty(conversation)) {
-                            mMgr.updateConversationMessage(mRoomId, conversation);
-                        }
-                        if (messageInfoNext != null) {
-                            mMessageList.get(mMessageList.indexOf(messageInfo) + 1).setShowChatTime(messageInfoNext.getShowChatTime());
-                        }
-                        mMessageList.remove(messageInfo);
-                        notifyDataSetChanged();
-                        EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
+                        showDeleteDialog(messageInfo);
                         break;
                     case 2:
                         menu.dismiss();
@@ -899,6 +925,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public void playVoice(MediaPlayer mediaPlayer, String fileName, final AnimationDrawable anim, final int position) {
         try {
             ((ConversationActivity)mContext).isPlayVoi1ce(true);
+            if(mAnim!=null){
+                mAnim.selectDrawable(0);
+                mAnim.stop();
+            }
             mFileName = fileName;
             mAnim = anim;
             voicePosition=position;
@@ -911,9 +941,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     anim.selectDrawable(0);
                     anim.stop();
                     mMessageList.get(position).setVoiceStatus(1);
+                    notifyItemChanged(position);
                     for(int i=position;i<mMessageList.size();i++){
                         if(mMessageList.get(i).getMsgType()==FROM_VOICE_MSG&&mMessageList.get(i).getVoiceStatus() != 1){
-                            playVoice(mMediaPlayer, mMessageList.get(i).getVoice(), anim,position+1);
+                            View view=((ConversationActivity)mContext).getItemView(i);
+                            if(view!=null) {
+                                ImageView mIvAnim = view.findViewById(R.id.iv_anim);
+                                mAnim = (AnimationDrawable) mIvAnim.getBackground();
+                            }
+                            playVoice(mMediaPlayer, mMessageList.get(i).getVoice(),mAnim,i);
                             mMgr.updateMessageStatus(mMessageList.get(i).getId());
                             break;
                         }
@@ -962,9 +998,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
                         mAnim.selectDrawable(0);
                         mAnim.stop();
                         mMessageList.get(voicePosition).setVoiceStatus(1);
+                        notifyItemChanged(voicePosition);
                         for(int i=voicePosition;i<mMessageList.size();i++){
                             if(mMessageList.get(i).getMsgType()==FROM_VOICE_MSG&&mMessageList.get(i).getVoiceStatus() != 1){
-                                playVoice(mMediaPlayer, mMessageList.get(i).getVoice(), mAnim,voicePosition+1);
+                                View view=((ConversationActivity)mContext).getItemView(i);
+                                if(view!=null) {
+                                    ImageView mIvAnim = view.findViewById(R.id.iv_anim);
+                                    mAnim = (AnimationDrawable) mIvAnim.getBackground();
+                                }
+                                playVoice(mMediaPlayer, mMessageList.get(i).getVoice(),mAnim,i);
                                 mMgr.updateMessageStatus(mMessageList.get(i).getId());
                                 break;
                             }
@@ -997,7 +1039,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     } else {
                         mMediaPlayer.setAudioStreamType(android.media.AudioManager.MODE_IN_CALL);
                     }
-                    mHandler.sendEmptyMessageDelayed(1,1500);
+                    mHandler.sendEmptyMessageDelayed(1,1000);
                 }
             }
         }catch (Exception e){

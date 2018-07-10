@@ -61,7 +61,16 @@ public class GroupMemberInfo {
         private String created_at;
         private String logo;
         private int max_people;
+        private int is_allow_modify_data;
         private List<UsersBean> users;
+
+        public int getIs_allow_modify_data() {
+            return is_allow_modify_data;
+        }
+
+        public void setIs_allow_modify_data(int is_allow_modify_data) {
+            this.is_allow_modify_data = is_allow_modify_data;
+        }
 
         public int getMax_people() {
             return max_people;

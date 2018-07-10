@@ -47,6 +47,7 @@ public class DBRoomManage {
                 values.put("owner", roomManageInfo.getOwner());
                 values.put("description", roomManageInfo.getDescription());
                 values.put("isRefresh",roomManageInfo.getIsRefresh());
+                values.put("allowModify",roomManageInfo.getAllowModify());
                 int id = (int) db.insert("RoomManage", null, values);
                 UtilTool.Log("數據庫", "插入房間");
                 DatabaseManager.getInstance().closeWritableDatabase();
@@ -65,6 +66,7 @@ public class DBRoomManage {
             cv.put("owner", roomManageInfo.getOwner());
             cv.put("description",roomManageInfo.getDescription());
             cv.put("isRefresh",roomManageInfo.getIsRefresh());
+            cv.put("allowModify",roomManageInfo.getAllowModify());
             db.update("RoomManage", cv, "roomId=? and my_user=?", new String[]{roomManageInfo.getRoomId(), UtilTool.getTocoId()});
             DatabaseManager.getInstance().closeWritableDatabase();
         }
@@ -123,6 +125,16 @@ public class DBRoomManage {
         }
     }
 
+    public void updateAllowModify(String roomId, int allowModify) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            ContentValues cv = new ContentValues();
+            cv.put("allowModify", allowModify);
+            db.update("RoomManage", cv, "roomId=? and my_user=?", new String[]{roomId, UtilTool.getTocoId()});
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
+    }
+
     public boolean findRoom(String roomJid){
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
@@ -163,6 +175,21 @@ public class DBRoomManage {
             cursor.close();
             DatabaseManager.getInstance().closeWritableDatabase();
             return description;
+        }
+    }
+
+    public int findRoomAllowModify(String roomJid){
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
+            int allowModify = 0;
+            Cursor cursor = db.rawQuery("select allowModify from RoomManage where roomId=? and my_user=?",
+                    new String[]{roomJid, UtilTool.getTocoId()});
+            while (cursor.moveToNext()) {
+                allowModify = cursor.getInt(cursor.getColumnIndex("allowModify"));
+            }
+            cursor.close();
+            DatabaseManager.getInstance().closeWritableDatabase();
+            return allowModify;
         }
     }
 
@@ -255,6 +282,7 @@ public class DBRoomManage {
                 addRequestInfo.setMy_user(c.getString(c.getColumnIndex("my_user")));
                 addRequestInfo.setOwner(c.getString(c.getColumnIndex("owner")));
                 addRequestInfo.setDescription(c.getString(c.getColumnIndex("description")));
+                addRequestInfo.setAllowModify(c.getInt(c.getColumnIndex("allowModify")));
                 addRequestInfos.add(addRequestInfo);
             }
             c.close();
@@ -279,6 +307,7 @@ public class DBRoomManage {
                 addRequestInfo.setMy_user(c.getString(c.getColumnIndex("my_user")));
                 addRequestInfo.setOwner(c.getString(c.getColumnIndex("owner")));
                 addRequestInfo.setDescription(c.getString(c.getColumnIndex("description")));
+                addRequestInfo.setAllowModify(c.getInt(c.getColumnIndex("allowModify")));
                 addRequestInfos.add(addRequestInfo);
             }
             c.close();

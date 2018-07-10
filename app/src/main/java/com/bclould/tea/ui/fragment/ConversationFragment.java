@@ -415,6 +415,8 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
             initData();
         }else if(msg.equals(getString(R.string.home_msg_click_two))){
             unNumbertopList();
+        }else if(msg.equals(getString(R.string.refresh))){
+            mConversationAdapter.notifyDataSetChanged();
         }
     }
 

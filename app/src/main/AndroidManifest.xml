@@ -238,6 +238,7 @@
         <!-- 个人信息页面 -->
         <activity
             android:name=".ui.activity.PersonalDetailsActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <!-- 手机绑定页面 -->

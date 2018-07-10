@@ -13,6 +13,15 @@ public class RoomManageInfo {
     private String owner;
     private String description;
     private int isRefresh;
+    private int allowModify;
+
+    public int getAllowModify() {
+        return allowModify;
+    }
+
+    public void setAllowModify(int allowModify) {
+        this.allowModify = allowModify;
+    }
 
     public int getIsRefresh() {
         return isRefresh;

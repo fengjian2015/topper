@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 23;
+    private static final int DATABASE_VERSION = 25;
 
     public DBHelper(Context context) {
         //CursorFactory设置为null,使用默认值
@@ -22,7 +22,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table ConversationRecord(id integer primary key autoincrement, my_user varchar, number integer, message varchar, time varchar, user varchar, friend varchar, istop varchar,chatType varchar" +
-                ",createTime integer)");
+                ",createTime integer,draft varchar)");
         db.execSQL("create table MessageRecord(id integer primary key autoincrement, my_user varchar, user varchar, message varchar, time varchar, type integer, coin varchar, count varchar, remark varchar" +
                 ", state integer, redId integer, voice varchar, voiceStatus integer, voiceTime varchar, sendStatus integer, msgType integer" +
                 ", imageType integer,send varchar,lat float,lng float,address varchar,title varchar,headUrl varchar,cardUser varchar,linkUrl varchar" +
@@ -30,7 +30,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 ",showChatTime varchar)");
         db.execSQL("create table AddRequest(id integer primary key autoincrement, my_user varchar, user varchar, type integer,userName varchar)");
         db.execSQL("create table UserImage(id integer primary key autoincrement, my_user varchar, user varchar, status integer, path varchar, remark varchar,userName varchar)");
-        db.execSQL("create table RoomManage(id integer primary key autoincrement, roomImage varchar, roomId varchar, roomName varchar, roomNumber integer,my_user varchar,owner varchar,description varchar,isRefresh integer)");
+        db.execSQL("create table RoomManage(id integer primary key autoincrement, roomImage varchar, roomId varchar, roomName varchar, roomNumber integer,my_user varchar,owner varchar,description varchar,isRefresh integer" +
+                ",allowModify integer)");
         db.execSQL("create table RoomMember(id integer primary key autoincrement, name varchar, jid varchar, image_url varchar, remark varchar,my_user varchar,roomId varchar,isRefresh integer)");
         db.execSQL("create table MessageState(id integer primary key autoincrement, msgId varchar,msgTime integer)");
         db.execSQL("create table UserCodeDB(id integer primary key autoincrement, email varchar,password varchar)");
@@ -103,6 +104,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE RoomMember ADD isRefresh INTEGER");
             case 22:
                 db.execSQL("ALTER TABLE MessageState ADD msgTime INTEGER");
+            case 23:
+                db.execSQL("ALTER TABLE RoomManage ADD allowModify INTEGER");
+            case 24:
+                db.execSQL("ALTER TABLE ConversationRecord ADD draft TEXT");
                 break;
         }
 

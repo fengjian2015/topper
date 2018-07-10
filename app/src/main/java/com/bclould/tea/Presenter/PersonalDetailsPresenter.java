@@ -55,6 +55,7 @@ public class PersonalDetailsPresenter {
     }
 
     public void upImage(String base64Image, final CallBack callBack) {
+        showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .uploadAvatar(UtilTool.getToken(), base64Image)

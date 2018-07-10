@@ -23,6 +23,7 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.ConversationInfo;
+import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.ui.adapter.GroupDetailsMemberAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
@@ -57,6 +58,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.bclould.tea.Presenter.GroupPresenter.CallBack;
+import static com.bclould.tea.ui.activity.SerchImageActivity.TYPE_GROUP;
 import static com.bclould.tea.utils.MySharedPreferences.SETTING;
 import static com.luck.picture.lib.config.PictureMimeType.ofImage;
 
@@ -83,6 +85,10 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     ImageView mIvHead;
     @Bind(R.id.tv_announcement)
     TextView mTvAnnouncement;
+    @Bind(R.id.is_allow_modify_data)
+    ImageView mIsAllowModifyData;
+    @Bind(R.id.rl_allow_modify_data)
+    RelativeLayout mRlAllowModifyData;
 
     private GroupDetailsMemberAdapter mAdapter;
     private List<RoomMemberInfo> mList = new ArrayList<>();
@@ -145,13 +151,27 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         setGroupManager();
         setGroupImage();
         setGroupAnnouncement();
+        setAllowModify();
+    }
+
+    private void setAllowModify() {
+        if(isOwner()){
+            mRlAllowModifyData.setVisibility(View.VISIBLE);
+            if (mDBRoomManage.findRoomAllowModify(roomId) == 1) {
+                mIsAllowModifyData.setSelected(true);
+            } else {
+                mIsAllowModifyData.setSelected(false);
+            }
+        }else{
+            mRlAllowModifyData.setVisibility(View.GONE);
+        }
     }
 
     private void setGroupAnnouncement() {
-        if(!StringUtils.isEmpty(mDBRoomManage.findRoomDescription(roomId))) {
+        if (!StringUtils.isEmpty(mDBRoomManage.findRoomDescription(roomId))) {
             mTvAnnouncement.setText(mDBRoomManage.findRoomDescription(roomId));
             mTvAnnouncement.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mTvAnnouncement.setVisibility(View.GONE);
         }
     }
@@ -237,7 +257,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     }
 
     @OnClick({R.id.bark, R.id.on_off_message_free, R.id.on_off_top, R.id.rl_empty_talk, R.id.btn_brak, R.id.rl_group_qr, R.id.rl_group_name, R.id.rl_member_name, R.id.rl_group_management, R.id.rl_looking_chat
-            , R.id.rl_group_image, R.id.rl_go_memberlist,R.id.rl_announcement})
+            , R.id.rl_group_image, R.id.rl_go_memberlist, R.id.rl_announcement, R.id.is_allow_modify_data})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -259,11 +279,11 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                 // TODO: 2018/6/20 跳轉二維碼 
                 break;
             case R.id.rl_group_name:
-//                if (isOwner()) {
+                if (mDBRoomManage.findRoomAllowModify(roomId) == 1 || isOwner()) {
                     goModificationName(2, mTvgrouprName.getText().toString());
-//                } else {
-//                    ToastShow.showToast2(ConversationGroupDetailsActivity.this, getString(R.string.only_owner_change_group_name));
-//                }
+                } else {
+                    ToastShow.showToast2(ConversationGroupDetailsActivity.this, getString(R.string.only_owner_change_group_name));
+                }
                 break;
             case R.id.rl_member_name:
                 goModificationName(1, mTvMemberName.getText().toString());
@@ -275,7 +295,11 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                 goRecord();
                 break;
             case R.id.rl_group_image:
-                changeImage();
+                if (mDBRoomManage.findRoomAllowModify(roomId) == 1 || isOwner()) {
+                    changeImage();
+                } else {
+                    ToastShow.showToast2(ConversationGroupDetailsActivity.this, getString(R.string.only_owner_change_group_image));
+                }
                 break;
             case R.id.rl_go_memberlist:
                 goMemberList();
@@ -283,7 +307,34 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
             case R.id.rl_announcement:
                 goAnnouncement();
                 break;
+            case R.id.is_allow_modify_data:
+                changeAllowModify();
+                break;
         }
+    }
+
+    private void changeAllowModify() {
+        int is_allow_modify_data=0;
+        if(mDBRoomManage.findRoomAllowModify(roomId)==0) {
+            is_allow_modify_data = 1;
+        }
+        new GroupPresenter(this).setAllowModifyt(Integer.parseInt(roomId),is_allow_modify_data, new GroupPresenter.CallBack1() {
+            @Override
+            public void send(GroupInfo baseInfo) {
+                mDBRoomManage.updateAllowModify(roomId, baseInfo.getIs_allow_modify_data());
+                setAllowModify();
+            }
+
+            @Override
+            public void error() {
+
+            }
+
+            @Override
+            public void finishRefresh() {
+
+            }
+        });
     }
 
     private void goAnnouncement() {
@@ -328,6 +379,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                     case 2:
                         menu.dismiss();
                         Intent intent = new Intent(ConversationGroupDetailsActivity.this, SerchImageActivity.class);
+                        intent.putExtra("type",TYPE_GROUP);
                         startActivity(intent);
                         break;
                 }
@@ -443,7 +495,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
             if (roomId.equals(event.getId())) {
                 finish();
             }
-        }else if(msg.equals(getString(R.string.modify_group_announcement))){
+        } else if (msg.equals(getString(R.string.modify_group_announcement))) {
             setGroupAnnouncement();
         }
     }

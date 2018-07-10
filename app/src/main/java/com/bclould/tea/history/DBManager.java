@@ -553,6 +553,7 @@ public class DBManager {
             values.put("istop", conversationInfo.getIstop());
             values.put("chatType", conversationInfo.getChatType());
             values.put("createTime", conversationInfo.getCreateTime());
+            values.put("draft",conversationInfo.getDraft());
             db.insert("ConversationRecord", null, values);
             DatabaseManager.getInstance().closeWritableDatabase();
         }
@@ -690,6 +691,21 @@ public class DBManager {
         }
     }
 
+    public String findConversationDraft(String user) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
+            String draft = null;
+            Cursor cursor = db.rawQuery("select draft from ConversationRecord where user=? and my_user=?",
+                    new String[]{user, UtilTool.getTocoId()});
+            while (cursor.moveToNext()) {
+                draft = cursor.getString(cursor.getColumnIndex("draft"));
+            }
+            cursor.close();
+            DatabaseManager.getInstance().closeWritableDatabase();
+            return draft;
+        }
+    }
+
     public String findConversationIstop(String user) {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
@@ -736,6 +752,7 @@ public class DBManager {
                 conversationInfo.setIstop(c.getString(c.getColumnIndex("istop")));
                 conversationInfo.setChatType(c.getString(c.getColumnIndex("chatType")));
                 conversationInfo.setCreateTime(c.getLong(c.getColumnIndex("createTime")));
+                conversationInfo.setDraft(c.getString(c.getColumnIndex("draft")));
                 conversationList.add(conversationInfo);
             }
             c.close();
@@ -788,6 +805,16 @@ public class DBManager {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
             ContentValues cv = new ContentValues();
             cv.put("number", number);
+            db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
+    }
+
+    public void updataConversationDraft(String user, String draft) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            ContentValues cv = new ContentValues();
+            cv.put("draft", draft);
             db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
             DatabaseManager.getInstance().closeWritableDatabase();
         }

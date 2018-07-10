@@ -54,12 +54,12 @@ public class StartActivity extends LoginBaseActivity {
             public void handleMessage(Message msg) {
                 if(StringUtils.isEmpty(UtilTool.getTocoId())){
                     MySharedPreferences.getInstance().setString(TOKEN, "");
-                    startActivity(new Intent(StartActivity.this, MainActivity.class));
+                    startMain();
                     finish();
                     return;
                 }
                 if (UtilTool.getToken().equals("bearer")) {
-                    startActivity(new Intent(StartActivity.this, MainActivity.class));
+                    startMain();
                     finish();
                 } else {
                     if (UtilTool.isNetworkAvailable(StartActivity.this)) {
@@ -80,11 +80,11 @@ public class StartActivity extends LoginBaseActivity {
                                             WsConnection.getInstance().setOutConnection(false);
                                             MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
                                             UtilTool.Log("日志", baseInfo.getMessage());
-                                            startActivity(new Intent(StartActivity.this, MainActivity.class));
+                                            startMain();
                                             finish();
                                         } else {
                                             MySharedPreferences.getInstance().setString(TOKEN, "");
-                                            startActivity(new Intent(StartActivity.this, MainActivity.class));
+                                            startMain();
                                             finish();
                                         }
                                     }
@@ -92,7 +92,7 @@ public class StartActivity extends LoginBaseActivity {
                                     @Override
                                     public void onError(@NonNull Throwable e) {
                                         MySharedPreferences.getInstance().setString(TOKEN, "");
-                                        startActivity(new Intent(StartActivity.this, MainActivity.class));
+                                        startMain();
                                         UtilTool.Log("日志", e.getMessage());
                                         finish();
                                     }
@@ -106,15 +106,23 @@ public class StartActivity extends LoginBaseActivity {
                         /*if (StringUtils.isEmpty(MySharedPreferences.getInstance().getString(TOCOID))) {
                             startActivity(new Intent(StartActivity.this, InitialActivity.class));
                         } else {
-                            startActivity(new Intent(StartActivity.this, MainActivity.class));
+                           startMain();
                         }*/
                         MySharedPreferences.getInstance().setString(TOKEN, "");
-                        startActivity(new Intent(StartActivity.this, MainActivity.class));
+                        startMain();
                         finish();
                     }
                 }
             }
         }.sendEmptyMessageDelayed(0, 2000);
         MyApp.getInstance().addActivity(this);
+    }
+
+    private void startMain(){
+        Intent intent=new Intent(StartActivity.this,MainActivity.class);
+        Bundle bundle=getIntent().getExtras();
+        if(bundle!=null)
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

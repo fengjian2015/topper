@@ -79,6 +79,8 @@ public class MainActivity extends BaseActivity {
     private DBRoomMember mDBRoomMember;
     private AddFriendReceiver mReceiver;
 
+    private Bundle mBundle;//用系統分享
+
     //单例
     public static MainActivity getInstance() {
         if (instance == null) {
@@ -100,6 +102,7 @@ public class MainActivity extends BaseActivity {
         }
         setContentView(R.layout.activity_main);
         mCoinPresenter = new CoinPresenter(this);
+        mBundle=getIntent().getExtras();
         ButterKnife.bind(this);
         mMgr = new DBManager(this);
         if (!EventBus.getDefault().isRegistered(this))
@@ -118,6 +121,7 @@ public class MainActivity extends BaseActivity {
         if(MySharedPreferences.getInstance().getBoolean("SHARE")&&!WsConnection.getInstance().getOutConnection()){
             Intent intent=new Intent(this,SelectConversationActivity.class);
             intent.putExtra("type",3);
+            intent.putExtras(mBundle);
             startActivity(intent);
         }
     }
@@ -141,6 +145,7 @@ public class MainActivity extends BaseActivity {
         int whence = intent.getIntExtra("whence", 0);
         initRelogin();
         refreshNumber();
+        isGoSelectConversation();
         if (MySharedPreferences.getInstance().getInteger(IS_UPDATE) == 1) {
             //检测版本更新
             checkVersion();

@@ -6,10 +6,13 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.service.IMCoreService;
 import com.bclould.tea.topperchat.WsConnection;
 
 import java.util.List;
@@ -46,6 +49,24 @@ public class ActivityUtil {
 		}
 	}
 
+	public static boolean isGoStartActivity(Activity context, Uri uri, String text, String shareType, String shareText, boolean isFinish){
+		if(!isActivityRunning(context)||WsConnection.getInstance().getOutConnection()){
+			PackageManager packageManager = context.getPackageManager();
+			Intent intent = packageManager.getLaunchIntentForPackage("com.bclould.tea");
+			Bundle bundle=new Bundle();
+			bundle.putParcelable(Intent.EXTRA_STREAM,uri);
+			bundle.putString("text",text);
+			bundle.putString("shareType",shareType);
+			bundle.putString("shareText",shareText);
+			intent.putExtras(bundle);
+			context.startActivity(intent);
+			if(isFinish)
+			context.finish();
+			return true;
+		}else {
+			return false;
+		}
+	}
 
 	public static boolean isActivityRunning(Activity activity){
 		if(MyApp.getInstance().mActivityList.size()>0){

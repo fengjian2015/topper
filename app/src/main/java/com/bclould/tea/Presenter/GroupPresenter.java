@@ -167,6 +167,7 @@ public class GroupPresenter {
                                         roomManageInfo.setRoomImage(dataBean.getLogo());
                                         roomManageInfo.setDescription(dataBean.getDescription());
                                         roomManageInfo.setIsRefresh(1);
+                                        roomManageInfo.setAllowModify(dataBean.getIs_allow_modify_data());
                                         mDBRoomManage.addRoom(roomManageInfo);
                                         for (GroupInfo.DataBean.UsersBean usersBean : dataBean.getUsers()) {
                                             RoomMemberInfo roomMemberInfo = new RoomMemberInfo();
@@ -275,7 +276,7 @@ public class GroupPresenter {
                     }
 
                     @Override
-                    public void onNext(GroupMemberInfo baseInfo) {
+                    public void onNext(final GroupMemberInfo baseInfo) {
                         if (mContext instanceof Activity && !ActivityUtil.isActivityOnTop((Activity) mContext)) {
                             return;
                         }
@@ -285,20 +286,32 @@ public class GroupPresenter {
                                 RoomManage.getInstance().removeRoom(group_id + "");
                                 return;
                             }
-                            RoomManageInfo roomManageInfo = new RoomManageInfo();
-                            roomManageInfo.setRoomName(baseInfo.getData().getName());
-                            roomManageInfo.setRoomId(baseInfo.getData().getId() + "");
-                            roomManageInfo.setOwner(baseInfo.getData().getToco_id());
-                            roomManageInfo.setRoomImage(baseInfo.getData().getLogo());
-                            roomManageInfo.setRoomNumber(baseInfo.getData().getMax_people());
-                            roomManageInfo.setDescription(baseInfo.getData().getDescription());
-                            mdbRoomManage.addRoom(roomManageInfo);
-                            dbRoomMember.deleteRoom(group_id + "");
-                            dbRoomMember.addRoomMember(baseInfo.getData().getUsers(), group_id + "");
-                            if (manager.findConversation(group_id + "")) {
-                                manager.updateConversationFriend(group_id + "", baseInfo.getData().getName());
-                            }
-                            callBack.send();
+                            new Thread(){
+                                @Override
+                                public void run() {
+                                    RoomManageInfo roomManageInfo = new RoomManageInfo();
+                                    roomManageInfo.setRoomName(baseInfo.getData().getName());
+                                    roomManageInfo.setRoomId(baseInfo.getData().getId() + "");
+                                    roomManageInfo.setOwner(baseInfo.getData().getToco_id());
+                                    roomManageInfo.setRoomImage(baseInfo.getData().getLogo());
+                                    roomManageInfo.setRoomNumber(baseInfo.getData().getMax_people());
+                                    roomManageInfo.setDescription(baseInfo.getData().getDescription());
+                                    roomManageInfo.setAllowModify(baseInfo.getData().getIs_allow_modify_data());
+                                    mdbRoomManage.addRoom(roomManageInfo);
+                                    dbRoomMember.deleteRoom(group_id + "");
+                                    dbRoomMember.addRoomMember(baseInfo.getData().getUsers(), group_id + "");
+                                    if (manager.findConversation(group_id + "")) {
+                                        manager.updateConversationFriend(group_id + "", baseInfo.getData().getName());
+                                    }
+
+                                    ((Activity)mContext).runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            callBack.send();
+                                        }
+                                    });
+                                }
+                            }.start();
                         }
                     }
 
@@ -527,6 +540,45 @@ public class GroupPresenter {
                         hideDialog();
                         if (baseInfo.getStatus() == 1) {
                             callBack.send();
+                            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.xg_succeed));
+                        } else {
+                            ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void setAllowModifyt(final int group_id,final int is_allow_modify_data, final CallBack1 callBack) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .setAllowModifyt(UtilTool.getToken(), group_id,is_allow_modify_data)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<GroupInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GroupInfo baseInfo) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            baseInfo.setIs_allow_modify_data(is_allow_modify_data);
+                            callBack.send(baseInfo);
                             ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.xg_succeed));
                         } else {
                             ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());

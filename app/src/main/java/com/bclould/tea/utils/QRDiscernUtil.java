@@ -29,6 +29,7 @@ import com.bclould.tea.ui.activity.PaymentActivity;
 import com.bclould.tea.ui.activity.ProblemFeedBackActivity;
 import com.bclould.tea.ui.activity.ScanQRCodeActivity;
 import com.bclould.tea.ui.activity.ScanQRResultActivty;
+import com.bclould.tea.ui.activity.SelectConversationActivity;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
@@ -55,6 +56,7 @@ public class QRDiscernUtil {
     private Activity mContext;
     private String url;
     private  Result re;
+    private MenuListPopWindow menu;
     public QRDiscernUtil(Activity context){
         this.mContext=context;
     }
@@ -77,10 +79,15 @@ public class QRDiscernUtil {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                Message message=new Message();
+                message.what=1;
                 if (re != null) {
                     UtilTool.Log("fengjian","有二維碼"+re.toString());
-                    mHandler.sendEmptyMessage(1);
+                    message.obj=true;
+                }else {
+                    message.obj=false;
                 }
+                mHandler.sendMessage(message);
             }
         }.start();
     }
@@ -150,14 +157,30 @@ public class QRDiscernUtil {
     Handler mHandler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            showDialog();
+            switch (msg.what){
+                case 1:
+                    boolean isShowQr= (boolean) msg.obj;
+                    showDialog(isShowQr);
+                    break;
+                case 2:
+                    String filePath= (String) msg.obj;
+                    if(UtilTool.saveAlbum(filePath,mContext)){
+                        ToastShow.showToast2(mContext,mContext.getString(R.string.save_success));
+                    }else{
+                        ToastShow.showToast2(mContext,mContext.getString(R.string.save_error));
+                    }
+                    menu.dismiss();
+                    break;
+            }
         }
     };
 
-    private void showDialog(){
+    private void showDialog(boolean isShowQr){
         List<String> list = new ArrayList<>();
+        list.add(mContext.getString(R.string.save_image));
+        if(isShowQr)
         list.add(mContext.getString(R.string.discern_qr));
-        final MenuListPopWindow menu = new MenuListPopWindow(mContext, list);
+        menu = new MenuListPopWindow(mContext, list);
         menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
             @Override
             public void onclickitem(int position) {
@@ -166,6 +189,19 @@ public class QRDiscernUtil {
                         menu.dismiss();
                         break;
                     case 1:
+                        new Thread(){
+                            @Override
+                            public void run() {
+                                String filePath = UtilTool.getImgPathFromCache(url, mContext);
+                                Message message=new Message();
+                                message.what=2;
+                                message.obj=filePath;
+                                mHandler.sendMessage(message);
+                            }
+                        }.start();
+
+                        break;
+                    case 2:
                         menu.dismiss();
                         if(re!=null){
                             goActivity(re.toString());

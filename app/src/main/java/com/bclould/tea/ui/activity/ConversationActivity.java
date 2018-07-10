@@ -21,6 +21,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Spannable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -47,6 +48,7 @@ import com.bclould.tea.ui.widget.SimpleAppsGridView;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AudioModeManger;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.RecordUtil;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
@@ -236,6 +238,8 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         });
         mEkbEmoticonsKeyboard.addFuncView(simpleAppsGridView);
         mEkbEmoticonsKeyboard.addOnFuncKeyBoardListener(this);
+        mEkbEmoticonsKeyboard.getEtChat().setText(MySharedPreferences.getInstance().getString(UtilTool.getTocoId()+roomId));
+        mEkbEmoticonsKeyboard.getEtChat().setSelection(mEkbEmoticonsKeyboard.getEtChat().getText().length());
         mEkbEmoticonsKeyboard.getEtChat().setOnSizeChangedListener(new EmoticonsEditText.OnSizeChangedListener() {
             @Override
             public void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -486,6 +490,10 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
     //界面销毁隐藏软键盘
     @Override
     public void onDestroy() {
+        String draft=mEkbEmoticonsKeyboard.getEditText().getText().toString();
+        mMgr.updataConversationDraft(roomId,draft);
+        MySharedPreferences.getInstance().setString(UtilTool.getTocoId()+roomId,draft);
+        EventBus.getDefault().post(new MessageEvent(getString(R.string.refresh)));
         super.onDestroy();
         if (audioModeManger != null)
             audioModeManger.unregister();
@@ -843,6 +851,14 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                 handler.sendMessage(message);
             }
         });
+    }
+
+    public View getItemView(int position){
+        int firstItemPosition = mLayoutManager.findFirstVisibleItemPosition();
+        View view = null;
+        if (position - firstItemPosition >= 0)
+            view = mRecyclerView.getChildAt(position - firstItemPosition );
+       return view;
     }
 
     @OnClick({R.id.bark, R.id.iv_else})

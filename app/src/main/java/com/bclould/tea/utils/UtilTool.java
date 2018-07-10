@@ -377,6 +377,31 @@ public class UtilTool {
         return false;
     }
 
+    public static boolean saveAlbum(String path,Activity activity){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+        String type = options.outMimeType;
+        String newName;
+        if(type!=null&&(type.contains("gif")||type.contains("GIF"))){
+            newName = System.currentTimeMillis() + ".gif";
+        }else{
+            newName = System.currentTimeMillis() + ".jpg";
+        }
+        String newFileName = Constants.ALBUM+newName;
+        File file=new File(Constants.ALBUM);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        copyFile(path,newFileName);
+        if(new File(newFileName).exists()){
+            activity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + newFileName)));
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public static String getVersionCode(Context mContext) {
         String versionCode = "";
         try {
@@ -1124,7 +1149,7 @@ public class UtilTool {
             return true;
         }
     }
-    public static String getImgPathFromCache(Uri url, Context context) {
+    public static String getImgPathFromCache(Object url, Context context) {
         FutureTarget<File> future = Glide.with(context)
                 .load(url)
                 .downloadOnly(400, 400);
