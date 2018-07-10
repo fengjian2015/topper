@@ -32,8 +32,6 @@ public class QRCodeActivity extends BaseActivity {
 
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.more)
-    ImageView mMore;
     @Bind(R.id.qr_code_iv)
     ImageView mQrCodeIv;
     @Bind(R.id.touxiang)
@@ -65,7 +63,7 @@ public class QRCodeActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.bark, R.id.more, R.id.btn_save_qr})
+    @OnClick({R.id.bark, R.id.btn_save_qr})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -77,8 +75,6 @@ public class QRCodeActivity extends BaseActivity {
                 } else {
                     Toast.makeText(this, getString(R.string.save_error), Toast.LENGTH_SHORT).show();
                 }
-                break;
-            case R.id.more:
                 break;
         }
     }

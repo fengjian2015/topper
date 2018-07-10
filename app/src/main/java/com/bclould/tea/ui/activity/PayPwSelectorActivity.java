@@ -256,7 +256,6 @@ public class PayPwSelectorActivity extends BaseActivity {
                     mFingerprintdialog.show();
                     TextView cancel = (TextView) mFingerprintdialog.findViewById(R.id.tv_cancel);
                     mCheck = (TextView) mFingerprintdialog.findViewById(R.id.tv_check);
-                    cancel.setText(getString(R.string.exit));
                     cancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

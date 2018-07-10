@@ -253,8 +253,11 @@ public class BaseActivity extends SwipeActivity {
             if (!mFingerprintdialog.isShowing()) {
                 mFingerprintdialog.show();
                 TextView cancel = (TextView) mFingerprintdialog.findViewById(R.id.tv_cancel);
+                TextView xx = (TextView) mFingerprintdialog.findViewById(R.id.xx);
                 mCheck = (TextView) mFingerprintdialog.findViewById(R.id.tv_check);
                 cancel.setText(getString(R.string.exit));
+                cancel.setVisibility(View.GONE);
+                xx.setVisibility(View.GONE);
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

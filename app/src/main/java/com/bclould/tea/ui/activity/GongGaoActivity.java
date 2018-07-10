@@ -31,8 +31,6 @@ public class GongGaoActivity extends BaseActivity {
 
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.more)
-    ImageView mMore;
     @Bind(R.id.xx)
     TextView mXx;
     @Bind(R.id.recycler_view)
@@ -59,17 +57,12 @@ public class GongGaoActivity extends BaseActivity {
     }
 
     //点击事件的处理
-    @OnClick({R.id.bark, R.id.more})
+    @OnClick({R.id.bark})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
 
                 finish();
-
-                break;
-            case R.id.more:
-
-                showPop();
 
                 break;
         }

@@ -24,7 +24,7 @@
             android:text="@string/qr_code"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
-
+<!--
         <ImageView
             android:id="@+id/more"
             android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:padding="@dimen/x20"
-            android:src="@mipmap/icon_notice_more"/>
+            android:src="@mipmap/icon_notice_more"/>-->
 
     </RelativeLayout>
 
