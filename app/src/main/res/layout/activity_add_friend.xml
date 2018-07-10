@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -8,6 +8,7 @@
               android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/rl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y130"
         android:background="@color/white"
@@ -91,13 +92,59 @@
     </RelativeLayout>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        android:id="@+id/tv_line"
+        style="@style/HCutOffRule"
+        android:layout_below="@+id/rl_title"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/y20">
+        android:layout_marginTop="@dimen/y20"
+        android:layout_below="@+id/tv_line">
     </android.support.v7.widget.RecyclerView>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_qr"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/y30"
+        android:layout_below="@+id/tv_line"
+        android:paddingBottom="@dimen/y30"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        >
+
+        <RelativeLayout
+            android:id="@+id/rl_qr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y30">
+
+            <ImageView
+                android:id="@+id/qr_code_iv"
+                android:layout_width="@dimen/x400"
+                android:layout_height="@dimen/y400"
+                android:src="@mipmap/qr_code1"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+
+            <ImageView
+                android:id="@+id/touxiang"
+                android:layout_width="@dimen/x80"
+                android:layout_height="@dimen/x80"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/img_nfriend_headshot1"/>
+
+        </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y15"
+            android:text="@string/qr_code_hint"
+            android:textSize="@dimen/x28"/>
+
+    </LinearLayout>
+</RelativeLayout>

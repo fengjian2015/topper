@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/x20">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="@dimen/x20">
 
     <ImageView
         android:id="@+id/iv_touxiang"
@@ -14,46 +15,50 @@
         android:src="@mipmap/img_nfriend_headshot1"/>
 
 
-    <RelativeLayout
-        android:id="@+id/rl_file"
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_redpacket"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/x20"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x30"
         android:layout_toLeftOf="@+id/iv_touxiang"
-        android:background="@drawable/img_chat_bg">
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/x20">
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/iv_file_photo"
-            android:layout_alignTop="@+id/iv_file_photo"
-            android:layout_marginLeft="@dimen/x10"
-            android:layout_toRightOf="@+id/iv_file_photo"
+            android:paddingRight="@dimen/x30"
+            android:paddingLeft="@dimen/x30"
+            android:paddingTop="@dimen/y20"
+            android:paddingBottom="@dimen/y20"
             android:orientation="vertical">
-
+            <ImageView
+                android:id="@+id/iv_type"
+                android:layout_width="@dimen/x100"
+                android:layout_height="@dimen/y100"
+                android:layout_marginRight="@dimen/x15"/>
             <TextView
                 android:id="@+id/tv_file_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxWidth="@dimen/x400"
-                android:text="春夏秋冬.mp3"
+                android:layout_toRightOf="@+id/iv_type"
+                android:maxWidth="@dimen/x240"
+                android:lines="2"
+                android:textSize="@dimen/x26"
+                android:text="春夏秋詩.mp3"
                 android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/tv_file_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/iv_type"
+                android:layout_below="@+id/tv_file_name"
+                android:textSize="@dimen/x24"
                 android:text="1.4M"/>
 
         </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/iv_file_photo"
-            android:layout_width="@dimen/x100"
-            android:layout_height="@dimen/x100"
-            android:src="@mipmap/ic_launcher_round"/>
-
-    </RelativeLayout>
+    </android.support.v7.widget.CardView>
 
 </RelativeLayout>

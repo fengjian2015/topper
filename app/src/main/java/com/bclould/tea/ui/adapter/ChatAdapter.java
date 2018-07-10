@@ -205,13 +205,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } else if (viewType == TO_LOCATION_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_to_chat_location, parent, false);
             holder = new ToLocationHolder(view);
-        } /*else if (viewType == TO_FILE_MSG) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_to_chat_file, parent, false);
-            holder = new FromVideoHolder(view);
-        } else if (viewType == FROM_FILE_MSG) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_file, parent, false);
-            holder = new FromVideoHolder(view);
-        } */ else if (viewType == TO_TRANSFER_MSG) {
+        } else if (viewType == TO_TRANSFER_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_to_chat_transfer, parent, false);
             holder = new ToTransferHolder(view);
         } else if (viewType == FROM_TRANSFER_MSG) {
@@ -220,7 +214,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } else if (viewType == RED_GET_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_chat_red_get, parent, false);
             holder = new ReadGetHolder(view);
-        } else {
+        }
+//        else if (viewType == TO_FILE_MSG) {
+//            view = LayoutInflater.from(mContext).inflate(R.layout.item_to_chat_file, parent, false);
+//            holder = new ToFileHolder(view);
+//        } else if (viewType == FROM_FILE_MSG) {
+//            view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_file, parent, false);
+//            holder = new FromFileHolder(view);
+//        }
+        else {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_chat_text, parent, false);
             holder = new TextChatHolder(view);
         }
@@ -342,6 +344,14 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 ReadGetHolder readGetHolder = (ReadGetHolder) holder;
                 readGetHolder.setData(mMessageList.get(position));
                 break;
+//            case TO_FILE_MSG:
+//                ToFileHolder toFileHolder = (ToFileHolder) holder;
+//                toFileHolder.setData(mMessageList.get(position));
+//                break;
+//            case FROM_FILE_MSG:
+//                FromFileHolder fromFileHolder = (FromFileHolder) holder;
+//                fromFileHolder.setData(mMessageList.get(position));
+//                break;
             default:
                 TextChatHolder textChatHolder = (TextChatHolder) holder;
                 textChatHolder.setData(mMessageList.get(position));
@@ -1975,6 +1985,119 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     intent.putExtra("from", false);
                     intent.putExtra("type", false);
                     mContext.startActivity(intent);
+                }
+            });
+        }
+    }
+
+    class ToFileHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.iv_touxiang)
+        ImageView mIvTouxiang;
+        @Bind(R.id.tv_remark)
+        TextView mTvRemark;
+        @Bind(R.id.tv_coin_count)
+        TextView mTvCoinCount;
+        @Bind(R.id.iv_transfer)
+        ImageView mIvTransfer;
+        @Bind(R.id.cv_redpacket)
+        CardView mCvRedpacket;
+        @Bind(R.id.chat_createtime)
+        View tvCreateTime;
+
+        ToFileHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
+            goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
+            UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
+            mTvRemark.setText(messageInfo.getRemark());
+            mTvCoinCount.setText(messageInfo.getCount() + messageInfo.getCoin());
+            if (messageInfo.getStatus() == 0) {
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket));
+                mTvRemark.setText(messageInfo.getRemark());
+            } else {
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket3));
+            }
+            mCvRedpacket.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mMgr.updateMessageState(messageInfo.getId() + "", 1);
+                    messageInfo.setStatus(1);
+                    notifyDataSetChanged();
+                    Intent intent = new Intent(mContext, TransferDetailsActivity.class);
+                    intent.putExtra("count", messageInfo.getCount());
+                    intent.putExtra("coin", messageInfo.getCoin());
+                    intent.putExtra("time", messageInfo.getTime());
+                    intent.putExtra("type", 1);
+                    mContext.startActivity(intent);
+                }
+            });
+            mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    return false;
+                }
+            });
+        }
+    }
+
+    class FromFileHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.iv_touxiang)
+        ImageView mIvTouxiang;
+        @Bind(R.id.tv_remark)
+        TextView mTvRemark;
+        @Bind(R.id.tv_coin_count)
+        TextView mTvCoinCount;
+        @Bind(R.id.iv_transfer)
+        ImageView mIvTransfer;
+        @Bind(R.id.cv_redpacket)
+        CardView mCvRedpacket;
+        @Bind(R.id.chat_createtime)
+        View tvCreateTime;
+        @Bind(R.id.tv_name)
+        TextView tvName;
+
+        FromFileHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final MessageInfo messageInfo) {
+            setNameAndUrl(mIvTouxiang,messageInfo, tvName);
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
+            goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
+            mTvRemark.setText(messageInfo.getRemark());
+            mTvCoinCount.setText(messageInfo.getCount() + messageInfo.getCoin());
+            if (messageInfo.getStatus() == 0) {
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket));
+                mTvRemark.setText(messageInfo.getRemark());
+            } else {
+                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket3));
+                mTvRemark.setText(mContext.getString(R.string.transfer_took));
+            }
+            mCvRedpacket.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mMgr.updateMessageState(messageInfo.getId() + "", 1);
+                    messageInfo.setStatus(1);
+                    notifyDataSetChanged();
+                    Intent intent = new Intent(mContext, TransferDetailsActivity.class);
+                    intent.putExtra("count", messageInfo.getCount());
+                    intent.putExtra("coin", messageInfo.getCoin());
+                    intent.putExtra("time", messageInfo.getTime());
+                    intent.putExtra("type", 0);
+                    mContext.startActivity(intent);
+                }
+            });
+            mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    return false;
                 }
             });
         }
