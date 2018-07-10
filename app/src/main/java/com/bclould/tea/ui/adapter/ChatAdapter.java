@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bclould.tea.Presenter.GrabRedPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
@@ -52,7 +53,6 @@ import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.ui.widget.MyYAnimation;
 import com.bclould.tea.utils.AnimatorTool;
-import com.bclould.tea.utils.AudioModeManger;
 import com.bclould.tea.utils.ChatTimeUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.CustomLinkMovementMethod;
@@ -67,10 +67,10 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;

@@ -61,9 +61,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
     private final Context mContext;
     private final List<DynamicListInfo.DataBean> mDataList;
     private final DynamicPresenter mDynamicPresenter;
-    private int mLookCount;
     private int mDynamicId;
-
 
     public DynamicRVAdapter(Context context, List<DynamicListInfo.DataBean> dataList, DynamicPresenter dynamicPresenter) {
         mContext = context;
@@ -203,6 +201,8 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         TextView mTvLookAll;
         @Bind(R.id.ll_dynamic_content)
         LinearLayout mLlDynamicContent;
+        @Bind(R.id.rl_comment)
+        RelativeLayout mRlComment;
 
         TextHolder(View view) {
             super(view);
@@ -257,11 +257,11 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     mTvLookAll.setVisibility(View.GONE);
                     if (mDataBean.getReviewList().size() != 0) {
-                        mCommentView.setVisibility(View.VISIBLE);
+                        mRlComment.setVisibility(View.VISIBLE);
                         mCommentView.setList(mDataBean.getReviewList(), mDataBean.getId());
                         mCommentView.notifyDataSetChanged();
                     } else {
-                        mCommentView.setVisibility(View.GONE);
+                        mRlComment.setVisibility(View.GONE);
                     }
                 }
             });
@@ -296,23 +296,23 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 UtilTool.setCircleImg(mContext, R.mipmap.img_nfriend_headshot1, mTouxiang);
             }
             if (dataBean.getReviewList().size() != 0) {
-                mCommentView.setVisibility(View.VISIBLE);
+                mRlComment.setVisibility(View.VISIBLE);
                 if (dataBean.getId() != mDynamicId) {
-                    if(dataBean.getReviewList().size() > 5){
+                    if (dataBean.getReviewList().size() > 5) {
                         mTvLookAll.setVisibility(View.VISIBLE);
                         mCommentView.setList(dataBean.getReviewList().subList(0, 5), dataBean.getId());
-                    }else {
+                    } else {
                         mTvLookAll.setVisibility(View.GONE);
                         mCommentView.setList(dataBean.getReviewList(), dataBean.getId());
                     }
-                }else {
+                } else {
                     mTvLookAll.setVisibility(View.GONE);
                     mCommentView.setList(dataBean.getReviewList(), dataBean.getId());
                 }
                 mCommentView.notifyDataSetChanged();
             } else {
                 mTvLookAll.setVisibility(View.GONE);
-                mCommentView.setVisibility(View.GONE);
+                mRlComment.setVisibility(View.GONE);
             }
             mTvReward.setText(dataBean.getRewardCount() + "");
             mTime.setText(dataBean.getCreated_at());
@@ -361,6 +361,8 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         CommentsView mCommentView;
         @Bind(R.id.tv_look_all)
         TextView mTvLookAll;
+        @Bind(R.id.rl_comment)
+        RelativeLayout mRlComment;
         private DynamicListInfo.DataBean mDataBean;
         private ArrayList<String> mCompressImgList;
         private ArrayList<String> mImgList = new ArrayList<>();
@@ -427,11 +429,11 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     mTvLookAll.setVisibility(View.GONE);
                     if (mDataBean.getReviewList().size() != 0) {
-                        mCommentView.setVisibility(View.VISIBLE);
+                        mRlComment.setVisibility(View.VISIBLE);
                         mCommentView.setList(mDataBean.getReviewList(), mDataBean.getId());
                         mCommentView.notifyDataSetChanged();
                     } else {
-                        mCommentView.setVisibility(View.GONE);
+                        mRlComment.setVisibility(View.GONE);
                     }
                 }
             });
@@ -469,23 +471,23 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 UtilTool.setCircleImg(mContext, R.mipmap.img_nfriend_headshot1, mTouxiang);
             }
             if (dataBean.getReviewList().size() != 0) {
-                mCommentView.setVisibility(View.VISIBLE);
+                mRlComment.setVisibility(View.VISIBLE);
                 if (dataBean.getId() != mDynamicId) {
-                    if(dataBean.getReviewList().size() > 5){
+                    if (dataBean.getReviewList().size() > 5) {
                         mTvLookAll.setVisibility(View.VISIBLE);
                         mCommentView.setList(dataBean.getReviewList().subList(0, 5), dataBean.getId());
-                    }else {
+                    } else {
                         mTvLookAll.setVisibility(View.GONE);
                         mCommentView.setList(dataBean.getReviewList(), dataBean.getId());
                     }
-                }else {
+                } else {
                     mTvLookAll.setVisibility(View.GONE);
                     mCommentView.setList(dataBean.getReviewList(), dataBean.getId());
                 }
                 mCommentView.notifyDataSetChanged();
             } else {
                 mTvLookAll.setVisibility(View.GONE);
-                mCommentView.setVisibility(View.GONE);
+                mRlComment.setVisibility(View.GONE);
             }
             if (dataBean.getKey_compress_urls() != null) {
                 if (dataBean.getKey_compress_urls().size() != 0) {
@@ -538,6 +540,8 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         CommentsView mCommentView;
         @Bind(R.id.tv_look_all)
         TextView mTvLookAll;
+        @Bind(R.id.rl_comment)
+        RelativeLayout mRlComment;
         private NineGridImageViewAdapter<String> mAdapter = new NineGridImageViewAdapter<String>() {
             @Override
             protected void onDisplayImage(Context context, ImageView imageView, String s) {
@@ -627,11 +631,11 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     mTvLookAll.setVisibility(View.GONE);
                     if (mDataBean.getReviewList().size() != 0) {
-                        mCommentView.setVisibility(View.VISIBLE);
+                        mRlComment.setVisibility(View.VISIBLE);
                         mCommentView.setList(mDataBean.getReviewList(), mDataBean.getId());
                         mCommentView.notifyDataSetChanged();
                     } else {
-                        mCommentView.setVisibility(View.GONE);
+                        mRlComment.setVisibility(View.GONE);
                     }
                 }
             });
@@ -669,23 +673,23 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 mIvDelete.setVisibility(View.GONE);
             }
             if (dataBean.getReviewList().size() != 0) {
-                mCommentView.setVisibility(View.VISIBLE);
+                mRlComment.setVisibility(View.VISIBLE);
                 if (dataBean.getId() != mDynamicId) {
-                    if(dataBean.getReviewList().size() > 5){
+                    if (dataBean.getReviewList().size() > 5) {
                         mTvLookAll.setVisibility(View.VISIBLE);
                         mCommentView.setList(dataBean.getReviewList().subList(0, 5), dataBean.getId());
-                    }else {
+                    } else {
                         mTvLookAll.setVisibility(View.GONE);
                         mCommentView.setList(dataBean.getReviewList(), dataBean.getId());
                     }
-                }else {
+                } else {
                     mTvLookAll.setVisibility(View.GONE);
                     mCommentView.setList(dataBean.getReviewList(), dataBean.getId());
                 }
                 mCommentView.notifyDataSetChanged();
             } else {
                 mTvLookAll.setVisibility(View.GONE);
-                mCommentView.setVisibility(View.GONE);
+                mRlComment.setVisibility(View.GONE);
             }
             mTvReward.setText(dataBean.getRewardCount() + "");
             mTvTime.setText(dataBean.getCreated_at());
@@ -761,6 +765,8 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
         CommentsView mCommentView;
         @Bind(R.id.tv_look_all)
         TextView mTvLookAll;
+        @Bind(R.id.rl_comment)
+        RelativeLayout mRlComment;
         private DynamicListInfo.DataBean mDataBean;
         private String mGuessPw;
         private int mGuessId;
@@ -832,11 +838,11 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     mTvLookAll.setVisibility(View.GONE);
                     if (mDataBean.getReviewList().size() != 0) {
-                        mCommentView.setVisibility(View.VISIBLE);
+                        mRlComment.setVisibility(View.VISIBLE);
                         mCommentView.setList(mDataBean.getReviewList(), mDataBean.getId());
                         mCommentView.notifyDataSetChanged();
                     } else {
-                        mCommentView.setVisibility(View.GONE);
+                        mRlComment.setVisibility(View.GONE);
                     }
                 }
             });
@@ -871,23 +877,23 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 UtilTool.setCircleImg(mContext, R.mipmap.img_nfriend_headshot1, mIvTouxiang);
             }
             if (dataBean.getReviewList().size() != 0) {
-                mCommentView.setVisibility(View.VISIBLE);
+                mRlComment.setVisibility(View.VISIBLE);
                 if (dataBean.getId() != mDynamicId) {
-                    if(dataBean.getReviewList().size() > 5){
+                    if (dataBean.getReviewList().size() > 5) {
                         mTvLookAll.setVisibility(View.VISIBLE);
                         mCommentView.setList(dataBean.getReviewList().subList(0, 5), dataBean.getId());
-                    }else {
+                    } else {
                         mTvLookAll.setVisibility(View.GONE);
                         mCommentView.setList(dataBean.getReviewList(), dataBean.getId());
                     }
-                }else {
+                } else {
                     mTvLookAll.setVisibility(View.GONE);
                     mCommentView.setList(dataBean.getReviewList(), dataBean.getId());
                 }
                 mCommentView.notifyDataSetChanged();
             } else {
                 mTvLookAll.setVisibility(View.GONE);
-                mCommentView.setVisibility(View.GONE);
+                mRlComment.setVisibility(View.GONE);
             }
             if (dataBean.getContent().contains(Constants.GUESS_DYNAMIC_SEPARATOR)) {
                 UtilTool.Log("競猜分享", dataBean.getContent());

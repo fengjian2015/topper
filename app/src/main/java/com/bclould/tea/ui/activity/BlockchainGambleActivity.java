@@ -11,7 +11,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -155,19 +154,6 @@ public class BlockchainGambleActivity extends BaseActivity {
 
         mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 6, true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-        // 设置背景颜色变暗
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 0.9f;
-        getWindow().setAttributes(lp);
-        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-
-            @Override
-            public void onDismiss() {
-                WindowManager.LayoutParams lp = getWindow().getAttributes();
-                lp.alpha = 1f;
-                getWindow().setAttributes(lp);
-            }
-        });
         mPopupWindow.showAsDropDown(mXx4, (widthPixels - widthPixels / 100 * 35 - 20), 0);
         popChildClick();
     }

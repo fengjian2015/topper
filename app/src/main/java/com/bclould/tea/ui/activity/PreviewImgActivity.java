@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.base.SwipeActivity;
 import com.bclould.tea.ui.fragment.PreviewImgFragment;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import butterknife.ButterKnife;
  * Created by GA on 2018/5/15.
  */
 
-public class PreviewImgActivity extends FragmentActivity {
+public class PreviewImgActivity extends SwipeActivity {
     @Bind(R.id.images_vp)
     ViewPager mImagesVp;
     @Bind(R.id.tv_number)

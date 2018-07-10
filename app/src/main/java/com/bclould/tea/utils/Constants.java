@@ -12,7 +12,7 @@ import android.support.annotation.RequiresApi;
 public class Constants {
     public static final String ADMINISTRATOR_NAME = "TOPPERCHAT";
     public static int BET_ARR_COUNT = 4;
-    private static final boolean isDebug = false;
+    private static final boolean isDebug = true;
     public static final String BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "https://api.cnblocklink.com/";
     public static String DOMAINNAME3 = isDebug ? "wss://socket.bclould.com:8179/toco_server" : "wss://socket.cnblocklink.com:2087/toco_server";
     public static String MSG_OFFLINE = isDebug ? "wss://socket.bclould.com:8180/users_offline_msg" : "wss://offline.cnblocklink.com:8443/users_offline_msg";

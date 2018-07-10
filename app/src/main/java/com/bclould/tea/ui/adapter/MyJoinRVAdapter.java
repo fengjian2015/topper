@@ -41,6 +41,8 @@ public class MyJoinRVAdapter extends RecyclerView.Adapter {
 
     }
 
+
+
     @Override
     public int getItemCount() {
         if (mDataList.size() != 0) {

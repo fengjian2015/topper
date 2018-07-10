@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
@@ -20,6 +19,7 @@ import android.widget.Toast;
 import com.bclould.tea.Presenter.FindPasswordPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.base.SwipeActivity;
 import com.bclould.tea.utils.AnimatorTool;
 
 import butterknife.Bind;
@@ -31,7 +31,7 @@ import butterknife.OnClick;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class FindPasswordActivity extends AppCompatActivity {
+public class FindPasswordActivity extends SwipeActivity {
 
 
     @Bind(R.id.iv_back)

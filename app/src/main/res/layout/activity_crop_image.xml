@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+              android:background="@color/shallow_gray"
     tools:context="com.bclould.tea.ui.activity.CropImageActivity">
     <RelativeLayout
         android:id="@+id/rl_title"

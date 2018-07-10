@@ -379,19 +379,7 @@ public class FriendListFragment extends Fragment {
 
         mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 4, true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-        // 设置背景颜色变暗
-        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-        lp.alpha = 0.9f;
-        getActivity().getWindow().setAttributes(lp);
-        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
 
-            @Override
-            public void onDismiss() {
-                WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-                lp.alpha = 1f;
-                getActivity().getWindow().setAttributes(lp);
-            }
-        });
         mPopupWindow.showAsDropDown(mXx, (widthPixels - widthPixels / 100 * 35 - 20), 0);
 
         popChildClick();
