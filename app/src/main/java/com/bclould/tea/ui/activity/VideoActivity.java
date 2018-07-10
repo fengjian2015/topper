@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.base.SwipeActivity;
 import com.bclould.tea.ui.widget.VideoPlayer;
 import com.bclould.tea.utils.UtilTool;
 import com.danikula.videocache.HttpProxyCacheServer;
@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class VideoActivity extends AppCompatActivity {
+public class VideoActivity extends SwipeActivity {
 
 
     Handler UIhandler = new Handler() {

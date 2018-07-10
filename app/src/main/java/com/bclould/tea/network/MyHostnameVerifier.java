@@ -20,6 +20,7 @@ public class MyHostnameVerifier {
                         hostname.equalsIgnoreCase("socket.cnblocklink.com") ||
                         hostname.equalsIgnoreCase("offline.cnblocklink.com") ||
                          hostname.equalsIgnoreCase("msg.umengcloud.com")||
+                         hostname.equalsIgnoreCase("toco--bucket.oss-cn-shenzhen.aliyuncs.com")||
                         hostname.equalsIgnoreCase("image.baidu.com")){
                     return true;
                 } else {

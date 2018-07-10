@@ -93,6 +93,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setSwipeEnabled(false);
         mSupportFragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null && savedInstanceState.getBoolean("isMainActivityDestroy", false)) {
             //当activity被系统销毁，获取到之前的fragment，并且移除之前的fragment的状态

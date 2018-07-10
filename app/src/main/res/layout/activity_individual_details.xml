@@ -4,7 +4,7 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/light"
+              android:background="@color/shallow_gray"
               android:orientation="vertical"
               tools:activity="com.bclould.tea.ui.activity.IndividualDetailsActivity">
 

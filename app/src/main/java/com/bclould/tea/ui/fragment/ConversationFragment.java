@@ -21,7 +21,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -39,7 +38,6 @@ import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.QrRedInfo;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.AddFriendActivity;
-import com.bclould.tea.ui.activity.CameraActivity;
 import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tea.ui.activity.ScanQRCodeActivity;
 import com.bclould.tea.ui.activity.SearchActivity;
@@ -288,19 +286,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
         mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 4, true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-        // 设置背景颜色变暗
-        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-        lp.alpha = 0.9f;
-        getActivity().getWindow().setAttributes(lp);
-        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
 
-            @Override
-            public void onDismiss() {
-                WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-                lp.alpha = 1f;
-                getActivity().getWindow().setAttributes(lp);
-            }
-        });
         mPopupWindow.showAsDropDown(mXx, (widthPixels - widthPixels / 100 * 35 - 20), 0);
 
         popChildClick();

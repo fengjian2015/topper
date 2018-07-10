@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -43,7 +42,7 @@ import static com.bclould.tea.ui.activity.SetGesturePWActivity.GESTURE_ANSWER;
  */
 
 @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.N)
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends SwipeActivity {
 
     private static boolean isActive;
     private Dialog mFingerprintdialog;

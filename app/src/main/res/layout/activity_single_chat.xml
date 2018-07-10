@@ -4,7 +4,7 @@
     android:id="@+id/ekb_emoticons_keyboard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#02000000"
+    android:background="@color/shallow_gray"
     android:orientation="vertical">
 
     <LinearLayout

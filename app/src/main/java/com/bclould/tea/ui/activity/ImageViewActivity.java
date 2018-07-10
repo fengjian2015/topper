@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -13,6 +12,7 @@ import android.view.MotionEvent;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.base.SwipeActivity;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.SerMap;
 import com.bclould.tea.ui.fragment.ImageViewFragment;
@@ -26,7 +26,7 @@ import java.util.List;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ImageViewActivity extends FragmentActivity {
+public class ImageViewActivity extends SwipeActivity {
     private ArrayList<String> imageList;
     private List<Fragment> fragList;
     private ViewPager imageVp;

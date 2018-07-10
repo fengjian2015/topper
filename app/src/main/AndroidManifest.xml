@@ -91,6 +91,7 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:launchMode="singleTask"
+            android:theme="@style/Transparent"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
@@ -105,6 +106,7 @@
         <activity
             android:name=".ui.activity.ConversationActivity"
             android:launchMode="singleTask"
+            android:theme="@style/Transparent"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
@@ -121,151 +123,178 @@
 
         <!-- 系统设置页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.SystemSetActivity"
             android:screenOrientation="portrait" />
 
         <!-- 关于我们页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.GuanYuMeActivity"
             android:screenOrientation="portrait" />
 
         <!-- 我的资产页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.MyAssetsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 公告页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.GongGaoActivity"
             android:screenOrientation="portrait" />
 
         <!-- 搜索页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.AddFriendActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 收付款页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.ReceiptPaymentActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 收付款页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.SetMoneyActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 充币页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.InCoinActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 转账页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.TransferAccountsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 期望币种页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.ExpectCoinActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 场外交易页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.OtcActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 提现页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.TiXianActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 银行卡页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.BankCardActivity"
             android:screenOrientation="portrait" />
 
         <!-- 实名验证页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.RealNameC1Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 上传证件页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.UpIdCardActivity"
             android:screenOrientation="portrait" />
 
         <!-- 银行卡绑定页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.BankCardBindingActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <!-- 银行卡绑定页面2 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.BankCardBindingActivity2"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <!-- 银行卡绑定页面3 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.BankCardBindingActivity3"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <!-- 银行卡绑定页面4 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.BankCardBindingActivity4"
             android:screenOrientation="portrait" />
 
         <!-- 账单详情页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.BillDetailsActivity"
             android:screenOrientation="portrait" />
 
         <!-- 身份验证页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.ShenFenVerifyActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 个人信息页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.PersonalDetailsActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <!-- 手机绑定页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.EmailBindingActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 好友资料页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.FriendDataActivity"
             android:screenOrientation="portrait" />
 
         <!-- 备注页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.RemarkActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 备注页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.LoginSetActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 发布动态页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.PublicshDynamicActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
@@ -278,41 +307,49 @@
 
         <!-- 二维码页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.QRCodeActivity"
             android:screenOrientation="portrait" />
 
         <!-- 地址页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.SiteActivity"
             android:screenOrientation="portrait" />
 
         <!-- 昵称页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.NickNameActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 签名页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.SignatureActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 动态设置页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.DynamicSetActivity"
             android:screenOrientation="portrait" />
 
         <!-- 账号安全页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.PrivateRightsActivity"
             android:screenOrientation="portrait" />
 
         <!-- 添加好友设置页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.AddFriendSetActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.LocationActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
@@ -320,17 +357,20 @@
 
         <!-- 账号安全页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.UserSafetyActivity"
             android:screenOrientation="portrait" />
 
         <!-- 设置支付密码页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.PayPasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 重置登录密码页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.LoginPasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
@@ -340,27 +380,32 @@
 
         <!-- 新的好友页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.NewFriendActivity"
             android:screenOrientation="portrait" />
 
         <!-- 验证码页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.VerifyCodeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 来往记录页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.DealRecordActivity"
             android:screenOrientation="portrait" />
 
         <!-- 评论页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.CommentActivity"
             android:screenOrientation="portrait" />
 
         <!-- 问题反馈页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.ProblemFeedBackActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
@@ -376,6 +421,7 @@
 
         <!-- 赞页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.ZanActivity"
             android:screenOrientation="portrait" />
 
@@ -388,63 +434,74 @@
 
         <!-- 发布币种挂售 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.PushBuyingActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 数字货币转入转入页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.OutCoinActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 添加钱包地址 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.OutCoinSiteActivity"
             android:screenOrientation="portrait" />
 
         <!-- 扫描二维码页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.ScanQRCodeActivity"
             android:screenOrientation="portrait" />
 
         <!-- 订阅资产页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.SubscribeCoinActivity"
             android:screenOrientation="portrait" />
 
         <!-- 添加提币地址 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.AddOutCoinSiteActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 谷歌验证页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.GoogleVerificationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 发红包页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.SendRedPacketActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 紅包页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.RedPacketActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 紅包页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.RedPacketRecordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 紅包页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.CreateGroupRoomActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
@@ -456,12 +513,14 @@
 
         <!-- 紅包页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.GroupListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 紅包页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.BuySellActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
@@ -475,84 +534,98 @@
 
         <!-- 广告交易订单详情页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.OrderDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 发送二维码红包页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.SendQRCodeRedActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 二维码红包页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.QRCodeRedActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 二维码红包页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.GrabQRCodeRedActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 二维码红包页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.SearchActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 登录记录页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.LoginRecordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 理财页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.FinancingActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 典当页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.PawnActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 保险页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.SafeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 支付记录页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.PayRecordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 扫码支付页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.PaymentActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 发送转账页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.ChatTransferActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 发送转账页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.TransferDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 币币兑换页面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.CoinExchangeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
@@ -562,36 +635,42 @@
 
         <!-- 扫码支付完成界面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.PayReceiptResultActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 交易关闭界面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.OrderCloseActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 交易記錄詳情界面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.PayDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 區塊鏈競猜界面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.BlockchainGambleActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 競猜詳情界面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.GuessDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 競猜記錄界面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.GuessRecordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
@@ -601,18 +680,21 @@
 
         <!-- 發起競猜界面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.StartGuessActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 我參與的競猜界面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.MyJoinActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 我發起的競猜界面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.MyStartActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
@@ -626,48 +708,56 @@
 
         <!-- 我發佈的廣告界面 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.MyPushAdActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 新聞詳情頁 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.NewsDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- Hash查詢頁 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.WebViewActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 新聞管理頁 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.NewsManagerActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 新聞編輯頁 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.NewsEditActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
         <!-- 公告管理頁 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.GonggaoManagerActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 公告詳情頁 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.GonggaoDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 公告詳情頁 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.SumBuySellActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
@@ -681,12 +771,14 @@
 
         <!-- 個人動態頁 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.PersonageDynamicActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 支付密碼管理頁 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.PayPwSelectorActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
@@ -709,11 +801,13 @@
 
         <!-- 會話詳情 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.ConversationDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <!-- 個人詳情 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.IndividualDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
@@ -726,10 +820,12 @@
             android:process=":msgPush" />
 
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.ConversationRecordFindActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.SelectFriendActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan">
@@ -741,36 +837,43 @@
             android:enabled="true" />
 
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.HTMLActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.ChatLookLocationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.SetGesturePWActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 更新日誌頁 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.UpdateLogActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 競猜分享到動態頁 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.GuessShareDynamicActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 動態打賞頁 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.RewardActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.activity.CameraActivity" />
+        <activity android:name=".ui.activity.CameraActivity"
+                  android:theme="@style/Transparent" />
 
         <!-- 初始頁 -->
         <activity
@@ -796,11 +899,13 @@
 
         <!-- 群聊房間詳情 -->
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.ConversationGroupDetailsActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.ScanQRResultActivty"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
@@ -810,10 +915,12 @@
             android:value="GlideModule" />
 
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.ConversationServerActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.SelectConversationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" >
@@ -826,10 +933,12 @@
             </intent-filter>
         </activity>
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.ModificationNameActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.SelectGroupMemberActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
@@ -844,16 +953,21 @@
             android:value="tt411jjqrgq75xqede14dpwar7nzxqjh" />
 
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.SendRedGroupActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
+            android:theme="@style/Transparent"
             android:name=".ui.activity.GroupMemberActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.activity.LargerImageActivity" />
-        <activity android:name=".ui.activity.SerchImageActivity" />
-        <activity android:name=".ui.activity.CropImageActivity"></activity>
+        <activity android:name=".ui.activity.LargerImageActivity"
+                  android:theme="@style/Transparent" />
+        <activity android:name=".ui.activity.SerchImageActivity"
+                  android:theme="@style/Transparent" />
+        <activity android:name=".ui.activity.CropImageActivity"
+                  android:theme="@style/Transparent"></activity>
     </application>
 
 </manifest>

@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bclould.tea.Presenter.GrabRedPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
@@ -69,6 +70,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+
 import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.io.IOException;

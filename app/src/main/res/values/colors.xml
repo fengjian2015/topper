@@ -7,6 +7,7 @@
     <color name="color_f6">#f6f6f6</color>
     <color name="blue">#64CEF2</color>
     <color name="gray">#50000000</color>
+    <color name="shallow_gray">#EEEEEE</color>
     <color name="ltc">#6C6FFF</color>
     <color name="eth">#FFBF01</color>
     <color name="xmr">#90C552</color>

@@ -36,6 +36,7 @@ public class InitialActivity extends LoginBaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setSwipeEnabled(false);
         setContentView(R.layout.activity_initial);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
