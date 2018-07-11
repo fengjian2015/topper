@@ -1,6 +1,8 @@
 package com.bclould.tea.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by GA on 2017/12/14.
@@ -49,6 +51,16 @@ public class MessageInfo implements Serializable {
     private String msgId;
     //2018-06-15增加用於聊天界面時間顯示
     private String showChatTime;
+    //2018-07-11增加@人員
+    private Map<String, String> atMap;
+
+    public Map<String, String> getAtMap() {
+        return atMap;
+    }
+
+    public void setAtMap(Map<String, String> atMap) {
+        this.atMap = atMap;
+    }
 
     public String getShowChatTime() {
         return showChatTime;

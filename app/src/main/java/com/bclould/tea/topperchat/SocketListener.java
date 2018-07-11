@@ -113,6 +113,7 @@ import static com.bclould.tea.topperchat.WsContans.MSG_STEANGER;
 import static com.bclould.tea.topperchat.WsContans.TYPE;
 import static com.bclould.tea.ui.activity.SystemSetActivity.INFORM;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_CARD_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_FILE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_GUESS_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_IMG_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_LINK_MSG;
@@ -124,6 +125,7 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_VIDEO_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_VOICE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.RED_GET_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_CARD_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.TO_FILE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_GUESS_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_IMG_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_LINK_MSG;
@@ -440,7 +442,6 @@ public class SocketListener {
                     break;
                 case WsContans.MSG_IMAGE:
                     //圖片
-
                     String postfix = null;
                     try {
                         postfix = messageInfo.getKey().substring(messageInfo.getKey().lastIndexOf("."));
@@ -496,7 +497,19 @@ public class SocketListener {
                     }
                     goChat(from, context.getString(R.string.video), roomType);
                     break;
-
+                case WsContans.MSG_FILE:
+                    //文件
+                    url = downFile(messageInfo.getKey());
+                    messageInfo.setKey(messageInfo.getKey());
+                    messageInfo.setMessage(url);
+                    if (isMe) {
+                        msgType = TO_FILE_MSG;
+                    } else {
+                        msgType = FROM_FILE_MSG;
+                    }
+                    redpacket="["+context.getString(R.string.file)+"]";
+                    goChat(from, context.getString(R.string.file), roomType);
+                    break;
                 case WsContans.MSG_LOCATION:
                     //定位
                     redpacket = "[" + context.getString(R.string.location) + "]";
@@ -587,11 +600,16 @@ public class SocketListener {
             messageInfo.setCreateTime(createTime);
             mgr.addMessage(messageInfo);
             int number = mgr.queryNumber(from);
+            String atme = "";
+            if(messageInfo.getAtMap()!=null&&messageInfo.getAtMap().size()>0
+                    &&!StringUtils.isEmpty(messageInfo.getAtMap().get(UtilTool.getTocoId()))){
+                atme=context.getString(R.string.member_at_me);
+            }
             if (mgr.findConversation(from)) {
                 if (!isMe) {
                     number++;
                 }
-                mgr.updateConversation(friend,from, number, mgr.findLastMessageConversation(from), mgr.findLastMessageConversationTime(from), createTime);
+                mgr.updateConversation(friend,from, number, mgr.findLastMessageConversation(from), mgr.findLastMessageConversationTime(from), createTime,atme);
             } else {
                 ConversationInfo info = new ConversationInfo();
                 info.setTime(time);
@@ -604,6 +622,7 @@ public class SocketListener {
                 info.setUser(from);
                 info.setNumber(1);
                 info.setMessage(redpacket);
+                info.setAtme(atme);
                 info.setCreateTime(UtilTool.createChatCreatTime());
                 mgr.addConversation(info);
             }
@@ -1206,7 +1225,7 @@ public class SocketListener {
         mgr.addMessage(messageInfo);
         int number = mgr.queryNumber(from);
         if (mgr.findConversation(from)) {
-            mgr.updateConversation(from,from, number + 1, redpacket, time, messageInfo.getCreateTime());
+            mgr.updateConversation(from,from, number + 1, redpacket, time, messageInfo.getCreateTime(),null);
         } else {
             ConversationInfo info = new ConversationInfo();
             info.setTime(time);

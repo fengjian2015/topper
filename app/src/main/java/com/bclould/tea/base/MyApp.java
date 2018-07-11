@@ -12,6 +12,7 @@ import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.model.StateInfo;
 import com.bclould.tea.network.MyHostnameVerifier;
 import com.bclould.tea.service.ImageUpService;
+import com.bclould.tea.topperchat.RoomMemberManage;
 import com.bclould.tea.topperchat.UmManage;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.GlideImgLoader;
@@ -73,6 +74,8 @@ public class MyApp extends Application {
         UmManage.getInstance().init(this);
 
         registerActivityLifecycleCallbacks(new MyLifecycleHandler());
+
+        RoomMemberManage.getInstance().setContext(this);
     }
 
 

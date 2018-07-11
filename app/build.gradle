@@ -201,4 +201,5 @@ dependencies {
     //    compile 'com.umeng.sdk:push-huawei:1.0.0'
     implementation files('libs/fastjson-1.2.9.jar')
     compile 'com.isseiaoki:simplecropview:1.1.7'
+    compile 'com.leon:lfilepickerlibrary:1.8.0'
 }

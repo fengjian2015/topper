@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -20,7 +21,9 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.Spannable;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -56,6 +59,7 @@ import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.MessageManageListener;
 import com.bclould.tea.xmpp.Room;
 import com.bclould.tea.xmpp.RoomManage;
+import com.leon.lfilepickerlibrary.LFilePicker;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.compress.Luban;
 import com.luck.picture.lib.config.PictureConfig;
@@ -77,8 +81,11 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -110,6 +117,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
 
     private static final int CODE_TAKE_PHOTO_SHOOTING = 100;
     private static final int FILE_SELECT_CODE = 2;
+    public static final int ACTION_SET_AT =101 ;
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.title_name)
@@ -148,6 +156,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
     private String roomType;//房间类型
     private int currentPosition;//記錄刷新位置
     private AudioModeManger audioModeManger;
+    private Map<String, String> atMap = new HashMap<>();//@人的列表
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -169,6 +178,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         initAdapter();//初始化适配器
         initData(null,true);//初始化数据
         mMgr.updateNumber(roomId, 0);//更新未读消息条数
+        mMgr.updateAtme(roomId,"");
         EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));//发送更新未读消息通知
         if (audioModeManger == null) {
             audioModeManger = new AudioModeManger();
@@ -397,6 +407,81 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                 return true;
             }
         });
+        mEkbEmoticonsKeyboard.getEtChat().setFilters(new InputFilter[]{new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                if (source.length() == 1 && source.toString().equals("@")
+                        && RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {//是群聊，输入了单独一个@时
+//                    int index = mEkbEmoticonsKeyboard.getEtChat().getSelectionStart();
+//                    if (index == 0) {//如果第一个字符就会@，让他跳
+                        intentToAt();
+//                        return source;
+//                    }
+//                    Pattern pattern = Pattern.compile("^[A-Za-z0-9]+$");
+//                    String preChar = mEkbEmoticonsKeyboard.getEtChat().getText().toString().charAt(index - 1) + "";
+//                    if (!pattern.matcher(preChar).matches()) {
+//                        intentToAt();
+//                    }
+                    return source;
+                }
+                return source;
+            }
+        }});
+
+        mEkbEmoticonsKeyboard.getEditText().addTextChangedListener(new TextWatcher() {
+            int delIndex = -1;
+            int delLength = 0;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (count > 0 && after == 0) {//说明，是删除
+                    CharSequence temp = mEkbEmoticonsKeyboard.getEditText().getText();
+                    if (temp.charAt(start) == ' ') {
+                        //检查是不是@
+                        checkIsAt(start);
+                    }
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable edi) {
+                if (delIndex >= 0 && delLength > 0) {
+                    int temp1 = delIndex;
+                    int temp2 = delLength;
+                    delIndex = -1;
+                    delLength = 0;
+                    edi.delete(temp1 - temp2, temp1);
+                }
+            }
+            private void checkIsAt(int index) {
+                if (index <= 0) {
+                    return;
+                }
+                String sub =  mEkbEmoticonsKeyboard.getEditText().getText().toString().substring(0, index);
+                if (sub.length() == 0) {//如果子串是空，返回
+                    return;
+                }
+                int atIndex = sub.lastIndexOf('@');
+                if (atIndex < 0) {//如果没有@，返回
+                    return;
+                }
+                if (index - atIndex <= 1) {//空格前面就是@，返回
+                    return;
+                }
+                String name = sub.substring(atIndex + 1, index);//+1是因为去掉@
+                for (String value : atMap.values()) {
+                    if (value.equals(name)) {
+                        delIndex = index;
+                        delLength = name.length() + 1;//+1是因为把@也要删除掉
+                        return;
+                    }
+                }
+            }
+        });
 
         //实例化录音管理类
         recordIndicator = new RecordIndicator(this, new RecordIndicator.CallBack() {
@@ -448,6 +533,13 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(roomId.toString()));
     }
 
+    private void intentToAt() {
+        Intent intent = new Intent(this, SelectGroupMemberActivity.class);
+        intent.putExtra("roomId", roomId);
+        intent.putExtra("type", 3);
+        startActivityForResult(intent, ACTION_SET_AT);
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return super.onKeyDown(keyCode, event);
@@ -457,7 +549,15 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         if (StringUtils.isEmpty(message)) {
             return;
         }
-        roomManage.sendMessage(message);
+        if (atMap.size() <= 0 || !(RoomManage.ROOM_TYPE_MULTI.equals(roomType))) {
+            // 发送消息
+            roomManage.sendMessage(message);
+        } else {
+            //发送At
+            roomManage.sendATMessage(message,atMap);
+            atMap.clear();
+        }
+
     }
 
 
@@ -486,7 +586,6 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         Toast.makeText(this, getString(R.string.cancel_record), Toast.LENGTH_SHORT).show();
     }
 
-
     //界面销毁隐藏软键盘
     @Override
     public void onDestroy() {
@@ -494,18 +593,14 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         mMgr.updataConversationDraft(roomId,draft);
         MySharedPreferences.getInstance().setString(UtilTool.getTocoId()+roomId,draft);
         EventBus.getDefault().post(new MessageEvent(getString(R.string.refresh)));
-        super.onDestroy();
         if (audioModeManger != null)
             audioModeManger.unregister();
         roomManage.removerMessageManageListener(this);
         mediaPlayer.release();
         mediaPlayer = null;
         EventBus.getDefault().unregister(this);
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        boolean isOpen = imm.isActive();//isOpen若返回true，则表示输入法打开
-        if (isOpen) {
-            imm.hideSoftInputFromWindow(mEkbEmoticonsKeyboard.getEtChat().getWindowToken(), 0);
-        }
+        super.onDestroy();
+
     }
 
     //接受通知
@@ -515,6 +610,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         if (msg.equals(getString(R.string.msg_database_update))) {
             initData(event.getId(),false);
             mMgr.updateNumber(roomId, 0);
+            mMgr.updateAtme(roomId,"");
             EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));
         } else if (msg.equals(getString(R.string.send_red_packet_le))) {
             initData(event.getId(),true);
@@ -627,7 +723,12 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == FILE_SELECT_CODE) {
-
+                //如果是文件选择模式，需要获取选择的所有文件的路径集合
+                List<String> list = data.getStringArrayListExtra("paths");
+                Toast.makeText(getApplicationContext(), "选中了" + list.size() + "个文件", Toast.LENGTH_SHORT).show();
+                for(String path:list){
+                    roomManage.uploadFile(path);
+                }
             } else if (requestCode == PictureConfig.CHOOSE_REQUEST) {
                 selectList = PictureSelector.obtainMultipleResult(data);
                 if (selectList.size() != 0) {
@@ -650,28 +751,64 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                 }
                 if (!com.bclould.tea.utils.StringUtils.isEmpty(url))
                     roomManage.Upload(url);
+            }else if(requestCode==ACTION_SET_AT){
+                String tocoid = data.getStringExtra("tocoid");
+                String name = data.getStringExtra("name");
+                int index = mEkbEmoticonsKeyboard.getEtChat().getSelectionStart();
+                Editable editable = mEkbEmoticonsKeyboard.getEtChat().getText();
+                editable.delete(index - 1, index);
+                setAtPartner(tocoid, true);
             }
         }
+    }
+
+    private void setAtPartner(String tocoid, boolean isRepeat) {
+        String partnerName = mDBRoomMember.findMemberName(roomId,tocoid);
+        if (!isRepeat) {
+            String compareStr = "@" + partnerName + " ";
+            String preContent = mEkbEmoticonsKeyboard.getEtChat().getText().toString();
+            if (!StringUtils.isEmpty(preContent) && preContent.contains(compareStr)) {
+                return;
+            }
+        }
+        atMap.put(tocoid, partnerName);
+        String atContentStr;
+        if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
+            atContentStr = "@" + partnerName + " ";
+        } else {
+            atContentStr = partnerName + " ";
+        }
+        int index = mEkbEmoticonsKeyboard.getEtChat().getSelectionStart(); //获取光标所在位置
+        Editable edit_text = mEkbEmoticonsKeyboard.getEtChat().getEditableText();
+        edit_text.insert(index, atContentStr);
     }
 
 
     //调用文件选择软件来选择文件
     private void showFileChooser() {
-        if (Build.VERSION.SDK_INT >= 24) {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setType("*/*");
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            try {
-                startActivityForResult(Intent.createChooser(intent, getString(R.string.selector_file)),
-                        FILE_SELECT_CODE);
-            } catch (ActivityNotFoundException ex) {
-                Toast.makeText(this, getString(R.string.toast_install_file_manage), Toast.LENGTH_SHORT)
-                        .show();
-            }
-        } else {
+////        if (Build.VERSION.SDK_INT >= 24) {
+//            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.setType("*/*");
+//            intent.addCategory(Intent.CATEGORY_OPENABLE);
+//            try {
+//                startActivityForResult(Intent.createChooser(intent, getString(R.string.selector_file)), FILE_SELECT_CODE);
+//            } catch (ActivityNotFoundException ex) {
+//                Toast.makeText(this, getString(R.string.toast_install_file_manage), Toast.LENGTH_SHORT).show();
+//            }
+////        } else {
+////
+////        }
+        new LFilePicker()
+                .withActivity(ConversationActivity.this)
+                .withRequestCode(FILE_SELECT_CODE)
+                .withStartPath( Environment.getExternalStorageDirectory().getAbsolutePath())//指定初始显示路径
+                .withIsGreater(false)//过滤文件大小 小于指定大小的文件
+                .withFileSize(10*1024 * 1024)//指定文件大小为500K
+                .withMaxNum(10)
+                .withMutilyMode(true)
+                .start();
 
-        }
     }
 
     @SuppressLint("HandlerLeak")
@@ -950,7 +1087,6 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                 }
             }
         });
-
     }
 
     @Override
@@ -961,6 +1097,26 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                 for (MessageInfo info : mMessageList) {
                     if (info.getVoice() != null) {
                         if (info.getVoice().equals(newFile2)) {
+                            if (!isSuccess) {
+                                info.setSendStatus(2);
+                                mMgr.updateMessageHint(info.getId(), 2);
+                            }
+                            mChatAdapter.notifyItemChanged(mMessageList.indexOf(info));
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void sendFile(final String msgId, final boolean isSuccess) {
+        ConversationActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for (MessageInfo info : mMessageList) {
+                    if (info.getVoice() != null) {
+                        if (info.getMsgId().equals(msgId)) {
                             if (!isSuccess) {
                                 info.setSendStatus(2);
                                 mMgr.updateMessageHint(info.getId(), 2);

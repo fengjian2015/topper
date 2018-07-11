@@ -143,6 +143,14 @@ public class SingleManage implements Room {
         }
     }
 
+    private void sendFile(String msgId, boolean isSuccess) {
+        if (listeners != null) {
+            for (MessageManageListener messageManageListener : listeners) {
+                messageManageListener.sendFile(msgId, isSuccess);
+            }
+        }
+    }
+
     private void sendError(int id) {
         if (listeners != null) {
             for (MessageManageListener messageManageListener : listeners) {
@@ -172,6 +180,7 @@ public class SingleManage implements Room {
         }
     }
 
+
     private ConversationInfo createConversation(String time, String message, long createTime) {
         ConversationInfo info = new ConversationInfo();
         info.setTime(time);
@@ -189,6 +198,12 @@ public class SingleManage implements Room {
         } else {
             mMgr.addConversation(createConversation(time, message, createTime));
         }
+    }
+
+
+    @Override
+    public void sendATMessage(String message, Map<String, String> atMap) {
+
     }
 
     //发送文本消息
@@ -242,6 +257,111 @@ public class SingleManage implements Room {
             refreshAddData(messageInfo);
             return messageInfo;
         }
+    }
+
+    @Override
+    public void anewUploadFile(MessageInfo messageInfo){
+        mMgr.deleteSingleMessage(mUser, messageInfo.getId() + "");
+        uploadFile(messageInfo.getMessage());
+    }
+
+    @Override
+    public void uploadFile(final String path){
+        final File file = new File(path);//获取文件
+        final String title=file.getName();
+        long mFolderSize = UtilTool.getFolderSize(file);
+        final String size = UtilTool.FormetFileSize(mFolderSize);
+        final String postfixs = UtilTool.getPostfix2(file.getName());
+        final String key = UtilTool.getUserId() + UtilTool.createtFileName() + ".AN." +postfixs;//命名aws文件名
+
+        final MessageInfo messageInfo = sendFileMessage(path, postfixs, key, title,size);
+        OSSClient ossClient = OSSupload.getInstance().visitOSS();
+        PutObjectRequest put = new PutObjectRequest(Constants.BUCKET_NAME2, key, file.getPath());
+        OSSAsyncTask<PutObjectResult> task = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+            @Override
+            public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
+                sendFileAfterMessage(key,messageInfo.getId(),messageInfo.getMsgId(),messageInfo.getCreateTime(),title,size,postfixs);
+            }
+
+            @Override
+            public void onFailure(PutObjectRequest putObjectRequest, ClientException e, ServiceException e1) {
+                UtilTool.Log("aws", "错误");
+                mMgr.updateMessageHint(messageInfo.getId(), 2);
+                sendError(messageInfo.getId());
+            }
+        });
+    }
+
+    private void sendFileAfterMessage(String key, int mId, String msgId, long createTime,String title,String size,String postfixs) {
+        try {
+            MessageInfo sendMessage = new MessageInfo();
+            sendMessage.setKey(key);
+            sendMessage.setCount(title);
+            sendMessage.setContent(postfixs);
+            sendMessage.setTitle(size);
+            int type = WsContans.MSG_FILE;
+            send(mUser, null, JSON.toJSONString(sendMessage), type, msgId, createTime);
+            sendFile(msgId, true);
+            return;
+        } catch (Exception e) {
+            mMgr.updateMessageHint(mId, 2);
+            sendFile(msgId, false);
+        }
+    }
+
+    //发送文件消息
+    public MessageInfo sendFileMessage(String path, String postfix, String key,String title,String size) {
+        MessageInfo messageInfo = new MessageInfo();
+        try {
+            messageInfo.setUsername(mUser);
+            messageInfo.setMessage(path);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setContent(postfix);
+            messageInfo.setTitle(title);
+            messageInfo.setCount(size);
+            messageInfo.setKey(key);
+            messageInfo.setMsgType(TO_FILE_MSG);
+            messageInfo.setSend(UtilTool.getTocoId());
+            String message = "[" + context.getString(R.string.file) + "]";
+            messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            messageInfo.setMsgId(UtilTool.createMsgId(mUser));
+            messageInfo.setSendStatus(0);
+            messageInfo.setId(mMgr.addMessage(messageInfo));
+            changeConversationInfo(time, message, messageInfo.getCreateTime());
+            refreshAddData(messageInfo);
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
+            messageInfo.setUsername(mUser);
+            messageInfo.setMessage(path);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setContent(postfix);
+            messageInfo.setTitle(title);
+            messageInfo.setCount(size);
+            messageInfo.setKey(key);
+            messageInfo.setSendStatus(2);
+            messageInfo.setMsgType(TO_FILE_MSG);
+            messageInfo.setSend(UtilTool.getTocoId());
+            String message = "[" + context.getString(R.string.file) + "]";
+            messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            messageInfo.setMsgId(UtilTool.createMsgId(mUser));
+            messageInfo.setId(mMgr.addMessage(messageInfo));
+            changeConversationInfo(time, message, messageInfo.getCreateTime());
+            refreshAddData(messageInfo);
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+        }
+        return messageInfo;
     }
 
     @Override

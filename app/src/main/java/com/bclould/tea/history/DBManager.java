@@ -554,6 +554,7 @@ public class DBManager {
             values.put("chatType", conversationInfo.getChatType());
             values.put("createTime", conversationInfo.getCreateTime());
             values.put("draft",conversationInfo.getDraft());
+            values.put("atme",conversationInfo.getAtme());
             db.insert("ConversationRecord", null, values);
             DatabaseManager.getInstance().closeWritableDatabase();
         }
@@ -637,7 +638,7 @@ public class DBManager {
         }
     }
 
-    public void updateConversation(String name,String user, int number, String chat, String time,long createTime) {
+    public void updateConversation(String name,String user, int number, String chat, String time,long createTime,String atme) {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
             ContentValues cv = new ContentValues();
@@ -646,6 +647,8 @@ public class DBManager {
             cv.put("message", chat);
             cv.put("createTime", createTime);
             cv.put("friend",name);
+            if(!StringUtils.isEmpty(atme))
+            cv.put("atme",atme);
             db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
             DatabaseManager.getInstance().closeWritableDatabase();
         }
@@ -703,6 +706,21 @@ public class DBManager {
             cursor.close();
             DatabaseManager.getInstance().closeWritableDatabase();
             return draft;
+        }
+    }
+
+    public String findConversationAtme(String user) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
+            String atme = null;
+            Cursor cursor = db.rawQuery("select atme from ConversationRecord where user=? and my_user=?",
+                    new String[]{user, UtilTool.getTocoId()});
+            while (cursor.moveToNext()) {
+                atme = cursor.getString(cursor.getColumnIndex("atme"));
+            }
+            cursor.close();
+            DatabaseManager.getInstance().closeWritableDatabase();
+            return atme;
         }
     }
 
@@ -805,6 +823,16 @@ public class DBManager {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
             ContentValues cv = new ContentValues();
             cv.put("number", number);
+            db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
+    }
+
+    public void updateAtme(String user, String atme) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            ContentValues cv = new ContentValues();
+            cv.put("atme", atme);
             db.update("ConversationRecord", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
             DatabaseManager.getInstance().closeWritableDatabase();
         }

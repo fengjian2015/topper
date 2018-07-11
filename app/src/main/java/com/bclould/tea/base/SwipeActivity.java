@@ -17,9 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 
 import com.bclould.tea.R;
+import com.bclould.tea.ui.activity.ConversationActivity;
 
 /**
  * Created by GA on 2018/7/10.
@@ -327,6 +329,11 @@ public class SwipeActivity extends AppCompatActivity {
                 public void onAnimationEnd(Animator animation) {
                     if (!mActivity.isFinishing()) {
                         swipeFinished = true;
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        boolean isOpen = imm.isActive();//isOpen若返回true，则表示输入法打开
+                        if (isOpen) {
+                            imm.hideSoftInputFromWindow(mActivity.getCurrentFocus().getWindowToken(), 0);
+                        }
                         mActivity.finish();
                     }
                 }

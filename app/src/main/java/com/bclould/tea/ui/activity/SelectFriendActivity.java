@@ -329,6 +329,11 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
         }
     }
 
+    @Override
+    public void sendFile(String msgId, boolean isSuccess) {
+
+    }
+
     private void close() {
         EventBus.getDefault().post(new MessageEvent(getString(R.string.close_activity)));
         SelectFriendActivity.this.finish();

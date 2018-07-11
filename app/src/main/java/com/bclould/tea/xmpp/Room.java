@@ -6,6 +6,7 @@ import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.UserInfo;
 
 import java.util.List;
+import java.util.Map;
 
 public interface Room {
     void addMessageManageListener(MessageManageListener messageManageListener);
@@ -29,4 +30,7 @@ public interface Room {
     void anewSendShareGuess(MessageInfo messageInfo);
     void transmitVideo(MessageInfo messageInfo);
     void sendOTR(String message);
+    void sendATMessage(String message,Map<String, String> atMap);
+    void uploadFile(String path);
+    void anewUploadFile(MessageInfo messageInfo);
 }

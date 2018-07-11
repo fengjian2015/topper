@@ -101,7 +101,7 @@ public class GroupListRVAdapter extends RecyclerView.Adapter {
         public void setData(RoomManageInfo groupInfo) {
             mRoomManageInfo=groupInfo;
             mGroupName.setText(groupInfo.getRoomName());
-            UtilTool.getGroupImage(dbRoomManage,mRoomManageInfo.getRoomId(),mContext,mGroupTouxiang);
+            UtilTool.getGroupImage(dbRoomManage,mRoomManageInfo.getRoomId(), (Activity) mContext,mGroupTouxiang);
         }
     }
 }

@@ -80,6 +80,19 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.github.rockerhieu.emojicon.EmojiconTextView;
+
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_DOC;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_DOCX;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_LOG;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PDF;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PPT;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PPTX;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_RAR;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_RTF;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_TXT;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_XLS;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_XLSX;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_ZIP;
 import static com.bclould.tea.utils.UtilTool.Log;
 
 /**
@@ -214,15 +227,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } else if (viewType == RED_GET_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_chat_red_get, parent, false);
             holder = new ReadGetHolder(view);
-        }
-//        else if (viewType == TO_FILE_MSG) {
-//            view = LayoutInflater.from(mContext).inflate(R.layout.item_to_chat_file, parent, false);
-//            holder = new ToFileHolder(view);
-//        } else if (viewType == FROM_FILE_MSG) {
-//            view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_file, parent, false);
-//            holder = new FromFileHolder(view);
-//        }
-        else {
+        }else if (viewType == TO_FILE_MSG) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_to_chat_file, parent, false);
+            holder = new ToFileHolder(view);
+        } else if (viewType == FROM_FILE_MSG) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_file, parent, false);
+            holder = new FromFileHolder(view);
+        }  else {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_chat_text, parent, false);
             holder = new TextChatHolder(view);
         }
@@ -344,14 +355,14 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 ReadGetHolder readGetHolder = (ReadGetHolder) holder;
                 readGetHolder.setData(mMessageList.get(position));
                 break;
-//            case TO_FILE_MSG:
-//                ToFileHolder toFileHolder = (ToFileHolder) holder;
-//                toFileHolder.setData(mMessageList.get(position));
-//                break;
-//            case FROM_FILE_MSG:
-//                FromFileHolder fromFileHolder = (FromFileHolder) holder;
-//                fromFileHolder.setData(mMessageList.get(position));
-//                break;
+            case TO_FILE_MSG:
+                ToFileHolder toFileHolder = (ToFileHolder) holder;
+                toFileHolder.setData(mMessageList.get(position));
+                break;
+            case FROM_FILE_MSG:
+                FromFileHolder fromFileHolder = (FromFileHolder) holder;
+                fromFileHolder.setData(mMessageList.get(position));
+                break;
             default:
                 TextChatHolder textChatHolder = (TextChatHolder) holder;
                 textChatHolder.setData(mMessageList.get(position));
@@ -1993,16 +2004,20 @@ public class ChatAdapter extends RecyclerView.Adapter {
     class ToFileHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_touxiang)
         ImageView mIvTouxiang;
-        @Bind(R.id.tv_remark)
-        TextView mTvRemark;
-        @Bind(R.id.tv_coin_count)
-        TextView mTvCoinCount;
-        @Bind(R.id.iv_transfer)
-        ImageView mIvTransfer;
         @Bind(R.id.cv_redpacket)
         CardView mCvRedpacket;
         @Bind(R.id.chat_createtime)
         View tvCreateTime;
+        @Bind(R.id.iv_type)
+        ImageView ivType;
+        @Bind(R.id.tv_file_name)
+        TextView tvFileName;
+        @Bind(R.id.tv_file_size)
+        TextView tvFileSize;
+        @Bind(R.id.iv_warning)
+        ImageView mIvWarning;
+        @Bind(R.id.iv_load)
+        ImageView mIvLoad;
 
         ToFileHolder(View view) {
             super(view);
@@ -2013,26 +2028,23 @@ public class ChatAdapter extends RecyclerView.Adapter {
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
-            mTvRemark.setText(messageInfo.getRemark());
-            mTvCoinCount.setText(messageInfo.getCount() + messageInfo.getCoin());
-            if (messageInfo.getStatus() == 0) {
-                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket));
-                mTvRemark.setText(messageInfo.getRemark());
-            } else {
-                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket3));
-            }
+            setMsgState(messageInfo.getSendStatus(), mIvWarning, mIvLoad);
+            tvFileName.setText(messageInfo.getTitle());
+            tvFileSize.setText(messageInfo.getCount());
+            ivType.setImageResource(setImage(messageInfo.getContent()));
+            mIvWarning.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mMessageList.remove(messageInfo);
+                    RoomManage.getInstance().getRoom(mRoomId).anewUploadFile(messageInfo);
+                    notifyDataSetChanged();
+                }
+            });
+            
             mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mMgr.updateMessageState(messageInfo.getId() + "", 1);
-                    messageInfo.setStatus(1);
-                    notifyDataSetChanged();
-                    Intent intent = new Intent(mContext, TransferDetailsActivity.class);
-                    intent.putExtra("count", messageInfo.getCount());
-                    intent.putExtra("coin", messageInfo.getCoin());
-                    intent.putExtra("time", messageInfo.getTime());
-                    intent.putExtra("type", 1);
-                    mContext.startActivity(intent);
+
                 }
             });
             mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
@@ -2048,18 +2060,18 @@ public class ChatAdapter extends RecyclerView.Adapter {
     class FromFileHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_touxiang)
         ImageView mIvTouxiang;
-        @Bind(R.id.tv_remark)
-        TextView mTvRemark;
-        @Bind(R.id.tv_coin_count)
-        TextView mTvCoinCount;
-        @Bind(R.id.iv_transfer)
-        ImageView mIvTransfer;
         @Bind(R.id.cv_redpacket)
         CardView mCvRedpacket;
         @Bind(R.id.chat_createtime)
         View tvCreateTime;
         @Bind(R.id.tv_name)
         TextView tvName;
+        @Bind(R.id.iv_type)
+        ImageView ivType;
+        @Bind(R.id.tv_file_name)
+        TextView tvFileName;
+        @Bind(R.id.tv_file_size)
+        TextView tvFileSize;
 
         FromFileHolder(View view) {
             super(view);
@@ -2070,27 +2082,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
             setNameAndUrl(mIvTouxiang,messageInfo, tvName);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
-            mTvRemark.setText(messageInfo.getRemark());
-            mTvCoinCount.setText(messageInfo.getCount() + messageInfo.getCoin());
-            if (messageInfo.getStatus() == 0) {
-                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket));
-                mTvRemark.setText(messageInfo.getRemark());
-            } else {
-                mCvRedpacket.setCardBackgroundColor(mContext.getResources().getColor(R.color.redpacket3));
-                mTvRemark.setText(mContext.getString(R.string.transfer_took));
-            }
+            tvFileName.setText(messageInfo.getTitle());
+            tvFileSize.setText(messageInfo.getCount());
+            ivType.setImageResource(setImage(messageInfo.getContent()));
             mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mMgr.updateMessageState(messageInfo.getId() + "", 1);
-                    messageInfo.setStatus(1);
-                    notifyDataSetChanged();
-                    Intent intent = new Intent(mContext, TransferDetailsActivity.class);
-                    intent.putExtra("count", messageInfo.getCount());
-                    intent.putExtra("coin", messageInfo.getCoin());
-                    intent.putExtra("time", messageInfo.getTime());
-                    intent.putExtra("type", 0);
-                    mContext.startActivity(intent);
+
                 }
             });
             mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
@@ -2166,5 +2164,31 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 }
             }
         });
+    }
+    /**
+     * 选择FILE_TYPE_xxx中的一种传入
+     *
+     * @param fileType
+     */
+    public int setImage(String fileType) {
+        int resId = -1;
+        if (FILE_TYPE_DOC.equals(fileType) || FILE_TYPE_DOCX.equals(fileType)) {
+            resId = R.mipmap.type_doc;
+        } else if (FILE_TYPE_XLS.equals(fileType) || FILE_TYPE_XLSX.equals(fileType)) {
+            resId = R.mipmap.type_xls;
+        } else if (FILE_TYPE_PPT.equals(fileType) || FILE_TYPE_PPTX.equals(fileType)) {
+            resId = R.mipmap.type_ppt;
+        } else if (FILE_TYPE_PDF.equals(fileType)) {
+            resId = R.mipmap.type_pdf;
+        } else if (FILE_TYPE_TXT.equals(fileType)||FILE_TYPE_LOG.equals(fileType)||FILE_TYPE_RTF.equals(fileType)) {
+            resId = R.mipmap.type_txt;
+        } else if (FILE_TYPE_ZIP.equals(fileType)) {
+            resId = R.mipmap.type_zip;
+        } else if (FILE_TYPE_RAR.equals(fileType)) {
+            resId = R.mipmap.type_rar;
+        } else {
+            resId = R.mipmap.type_unknown;
+        }
+        return resId;
     }
 }

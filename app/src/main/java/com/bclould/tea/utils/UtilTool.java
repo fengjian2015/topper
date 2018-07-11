@@ -67,6 +67,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -786,14 +787,14 @@ public class UtilTool {
         return bitmap;
     }
 
-    public static void getGroupImage(DBRoomManage dbRoomManage,String roomId, Context context, ImageView imageView){
+    public static void getGroupImage(DBRoomManage dbRoomManage,String roomId, Activity context, ImageView imageView){
         String url=dbRoomManage.findRoomUrl(roomId);
         if(!StringUtils.isEmpty(url)){
-            if (Util.isOnMainThread() && context != null) {
+            if (Util.isOnMainThread() && context != null&&!context.isDestroyed()) {
                 Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).dontAnimate().error(R.mipmap.img_group_head)).into(imageView);
             }
         }else{
-            if (Util.isOnMainThread() && context != null) {
+            if (Util.isOnMainThread() && context != null&&!context.isDestroyed()) {
                 Glide.with(context).load(R.mipmap.img_group_head).apply(RequestOptions.bitmapTransform(new CircleCrop()).error(R.mipmap.img_group_head).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
             }
         }
@@ -843,8 +844,25 @@ public class UtilTool {
         }
     }
 
+    public static String getPostfixFile(String fileName) {
+        String postfix = fileName.substring(fileName.lastIndexOf("."));
+        if (postfix.equals(".png") || postfix.equals(".jpg") || postfix.equals(".jpeg") || postfix.equals(".gif") || postfix.equals(".JPEG") || postfix.equals(".PNG") || postfix.equals(".JPG") || postfix.equals(".GIF")) {
+            return "Image";
+        } else if (postfix.equals(".mp4") || postfix.equals(".mov") || postfix.equals(".MP4") || postfix.equals(".MOV")) {
+            return "Video";
+        } else {
+            return "File";
+        }
+    }
+
     public static String getPostfix2(String fileName) {
-        return fileName.substring(fileName.lastIndexOf("."));
+        String pos = "";
+        try {
+            pos=fileName.substring(fileName.lastIndexOf("."));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return pos;
     }
 
     public static String getTitles() {
@@ -1187,5 +1205,24 @@ public class UtilTool {
             }
         }
         return data;
+    }
+
+    public static String getPath(Context context, Uri uri) throws URISyntaxException {
+        if ("content".equalsIgnoreCase(uri.getScheme())) {
+            String[] projection = { "_data" };
+            Cursor cursor = null;
+            try {
+                cursor = context.getContentResolver().query(uri, projection, null, null, null);
+                int column_index = cursor.getColumnIndexOrThrow("_data");
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(column_index);
+                }
+            } catch (Exception e) {
+                // Eat it  Or Log it.
+            }
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+        return null;
     }
 }

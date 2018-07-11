@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 25;
+    private static final int DATABASE_VERSION = 26;
 
     public DBHelper(Context context) {
         //CursorFactory设置为null,使用默认值
@@ -22,7 +22,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table ConversationRecord(id integer primary key autoincrement, my_user varchar, number integer, message varchar, time varchar, user varchar, friend varchar, istop varchar,chatType varchar" +
-                ",createTime integer,draft varchar)");
+                ",createTime integer,draft varchar,atme varchar)");
         db.execSQL("create table MessageRecord(id integer primary key autoincrement, my_user varchar, user varchar, message varchar, time varchar, type integer, coin varchar, count varchar, remark varchar" +
                 ", state integer, redId integer, voice varchar, voiceStatus integer, voiceTime varchar, sendStatus integer, msgType integer" +
                 ", imageType integer,send varchar,lat float,lng float,address varchar,title varchar,headUrl varchar,cardUser varchar,linkUrl varchar" +
@@ -108,6 +108,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE RoomManage ADD allowModify INTEGER");
             case 24:
                 db.execSQL("ALTER TABLE ConversationRecord ADD draft TEXT");
+            case 25:
+                //2018-07-11增加@字段
+                db.execSQL("ALTER TABLE ConversationRecord ADD atme TEXT");
                 break;
         }
 

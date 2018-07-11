@@ -18,7 +18,14 @@
             android:layout_height="match_parent"
             android:padding="@dimen/x20"
             android:src="@mipmap/icon_nav_return"/>
-
+        <ImageView
+            android:id="@+id/iv_finish"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_sh_cancel"
+            android:layout_toRightOf="@+id/bark"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
