@@ -14,6 +14,15 @@ public class ConversationInfo {
     private String chatType;
     private long createTime;
     private String draft;
+    private String atme;
+
+    public String getAtme() {
+        return atme;
+    }
+
+    public void setAtme(String atme) {
+        this.atme = atme;
+    }
 
     public String getDraft() {
         return draft;

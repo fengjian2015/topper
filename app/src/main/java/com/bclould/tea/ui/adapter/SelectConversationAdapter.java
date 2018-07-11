@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -131,7 +132,7 @@ public class SelectConversationAdapter extends RecyclerView.Adapter {
         public void setData(ConversationInfo conversationInfo) {
             mConversationInfo = conversationInfo;
             if(RoomManage.ROOM_TYPE_MULTI.equals(conversationInfo.getChatType())){
-                UtilTool.getGroupImage(mDBRoomManage,conversationInfo.getUser(),mContext,mTab1ItemImg);
+                UtilTool.getGroupImage(mDBRoomManage,conversationInfo.getUser(), (Activity) mContext,mTab1ItemImg);
             }else {
                 setNameAndUrl(mTab1ItemImg,conversationInfo.getUser());
             }

@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -7,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
@@ -24,88 +26,97 @@ import com.bclould.tea.utils.UtilTool;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class SelectGroupMemberActivity extends BaseActivity implements SelectGroupMemberAdapter.OnItemListener{
+public class SelectGroupMemberActivity extends BaseActivity implements SelectGroupMemberAdapter.OnItemListener {
 
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.tv_confirm)
+    TextView mTvConfirm;
     private String roomId;
     private DBRoomMember mDBRoomMember;
-    private ArrayList<RoomMemberInfo> mList=new ArrayList<>();
-    private ArrayList<RoomMemberInfo> oldList=new ArrayList<>();
+    private ArrayList<RoomMemberInfo> mList = new ArrayList<>();
+    private ArrayList<RoomMemberInfo> oldList = new ArrayList<>();
     private SelectGroupMemberAdapter mAdapter;
     private DBManager mDBManager;
     private DBRoomManage mDBRoomManage;
-    private int type=0;//1轉讓群主，2踢人
+    private int type = 0;//1轉讓群主，2踢人 ,3@群成員
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_group_member);
         ButterKnife.bind(this);
-        mDBRoomMember=new DBRoomMember(this);
-        mDBManager=new DBManager(this);
-        mDBRoomManage=new DBRoomManage(this);
+        mDBRoomMember = new DBRoomMember(this);
+        mDBManager = new DBManager(this);
+        mDBRoomManage = new DBRoomManage(this);
         initIntent();
         init();
     }
 
     private void init() {
+        if(type==3){
+            mTvConfirm.setVisibility(View.GONE);
+        }
         mList.addAll(mDBRoomMember.queryAllRequest(roomId));
-        for(RoomMemberInfo roomMemberInfo:mList){
-            if(roomMemberInfo.getJid().equals(UtilTool.getTocoId())){
+        for (RoomMemberInfo roomMemberInfo : mList) {
+            if (roomMemberInfo.getJid().equals(UtilTool.getTocoId())) {
                 mList.remove(roomMemberInfo);
                 break;
             }
         }
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new SelectGroupMemberAdapter(this,mList,mDBManager,mDBRoomMember,type,oldList);
+        mAdapter = new SelectGroupMemberAdapter(this, mList, mDBManager, mDBRoomMember, type, oldList);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.addOnItemListener(this);
     }
 
     private void initIntent() {
-        roomId=getIntent().getStringExtra("roomId");
-        type=getIntent().getIntExtra("type",0);
+        roomId = getIntent().getStringExtra("roomId");
+        type = getIntent().getIntExtra("type", 0);
     }
 
 
-    @OnClick({R.id.bark,R.id.tv_confirm})
+    @OnClick({R.id.bark, R.id.tv_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
             case R.id.tv_confirm:
-                if(oldList.size()<=0){return;}
-                if(type==1){
+                if (oldList.size() <= 0) {
+                    return;
+                }
+                if (type == 1) {
                     transferGroup(oldList.get(0));
-                }else if(type==2){
+                } else if (type == 2) {
                     kickOut();
                 }
                 break;
         }
     }
 
-    private void kickOut(){
-        StringBuffer stringBuffer=new StringBuffer();
-        for (int i=0;i<oldList.size();i++){
-            if(i==oldList.size()-1){
+    private void kickOut() {
+        StringBuffer stringBuffer = new StringBuffer();
+        for (int i = 0; i < oldList.size(); i++) {
+            if (i == oldList.size() - 1) {
                 stringBuffer.append(oldList.get(i).getJid());
-            }else {
+            } else {
                 stringBuffer.append(oldList.get(i).getJid() + ",");
             }
         }
         new GroupPresenter(this).kickOutGroup(Integer.parseInt(roomId), stringBuffer.toString(), new GroupPresenter.CallBack() {
             @Override
             public void send() {
-                for (RoomMemberInfo roomMemberInfo:oldList){
-                    mDBRoomMember.deleteRoomMember(roomId,roomMemberInfo.getJid());
+                for (RoomMemberInfo roomMemberInfo : oldList) {
+                    mDBRoomMember.deleteRoomMember(roomId, roomMemberInfo.getJid());
                 }
-                MessageEvent messageEvent= new MessageEvent(getString(R.string.refresh_group_room));
+                MessageEvent messageEvent = new MessageEvent(getString(R.string.refresh_group_room));
                 messageEvent.setId(roomId);
                 EventBus.getDefault().post(messageEvent);
                 finish();
@@ -114,9 +125,9 @@ public class SelectGroupMemberActivity extends BaseActivity implements SelectGro
     }
 
     private void transferGroup(final RoomMemberInfo roomMemberInfo) {
-        String mName=mDBManager.queryRemark(roomMemberInfo.getJid());
+        String mName = mDBManager.queryRemark(roomMemberInfo.getJid());
         if (StringUtils.isEmpty(mName)) {
-            mName=roomMemberInfo.getName();
+            mName = roomMemberInfo.getName();
         }
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
@@ -136,8 +147,8 @@ public class SelectGroupMemberActivity extends BaseActivity implements SelectGro
                     new GroupPresenter(SelectGroupMemberActivity.this).transferGroup(Integer.parseInt(roomId), roomMemberInfo.getJid(), new GroupPresenter.CallBack() {
                         @Override
                         public void send() {
-                            mDBRoomManage.updateOwner(roomId,roomMemberInfo.getJid());
-                            MessageEvent messageEvent= new MessageEvent(getString(R.string.refresh_group_room));
+                            mDBRoomManage.updateOwner(roomId, roomMemberInfo.getJid());
+                            MessageEvent messageEvent = new MessageEvent(getString(R.string.refresh_group_room));
                             messageEvent.setId(roomId);
                             EventBus.getDefault().post(messageEvent);
                             finish();
@@ -155,20 +166,28 @@ public class SelectGroupMemberActivity extends BaseActivity implements SelectGro
 
     @Override
     public void onItemClick(RoomMemberInfo roomMemberInfo, boolean isCheck) {
-        if(type==1){
-            if(isCheck){
+        if (type == 1) {
+            if (isCheck) {
                 oldList.clear();
                 oldList.add(roomMemberInfo);
-            }else{
+            } else {
                 oldList.remove(roomMemberInfo);
             }
-        }else if(type==2){
-            if(isCheck){
+        } else if (type == 2) {
+            if (isCheck) {
                 oldList.add(roomMemberInfo);
-            }else{
+            } else {
                 oldList.remove(roomMemberInfo);
             }
         }
         mAdapter.notifyDataSetChanged();
+        if(type==3){
+            Intent intent=new Intent();
+            intent.putExtra("name",roomMemberInfo.getName());
+            intent.putExtra("tocoid",roomMemberInfo.getJid());
+            setResult(RESULT_OK, intent);
+            finish();
+        }
+
     }
 }

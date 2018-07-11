@@ -459,6 +459,11 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
         }
     }
 
+    @Override
+    public void sendFile(String msgId, boolean isSuccess) {
+
+    }
+
     //接受通知
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {

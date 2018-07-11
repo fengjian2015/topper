@@ -17,9 +17,11 @@ import com.bclould.tea.model.GroupMemberInfo;
 import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.network.RetrofitUtil;
+import com.bclould.tea.topperchat.RoomMemberManage;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.RoomManage;
@@ -135,7 +137,9 @@ public class GroupPresenter {
                 });
     }
 
-    public void getGroup(final DBRoomMember mDBRoomMember, final DBRoomManage mDBRoomManage, final DBManager dbManager, boolean isShow, final CallBack1 callBack) {
+
+    public synchronized void getGroup(final DBRoomMember mDBRoomMember, final DBRoomManage mDBRoomManage, final DBManager dbManager, boolean isShow, final CallBack1 callBack) {
+        UtilTool.Log("房間","開始存儲");
         if (isShow) showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
@@ -150,7 +154,9 @@ public class GroupPresenter {
 
                     @Override
                     public void onNext(final GroupInfo baseInfo) {
-                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)){
+                            return;
+                        }
                         hideDialog();
                         if (baseInfo.getStatus() == 1) {
                             new Thread(){
@@ -158,7 +164,8 @@ public class GroupPresenter {
                                 public void run() {
                                     mDBRoomMember.deleteAllRoomMember();
                                     List<ConversationInfo> list = dbManager.queryConversationGroup();
-                                    for (GroupInfo.DataBean dataBean : baseInfo.getData()) {
+                                    for(int j=0;j<baseInfo.getData().size();j++){
+                                        GroupInfo.DataBean dataBean = baseInfo.getData().get(j);
                                         RoomManageInfo roomManageInfo = new RoomManageInfo();
                                         roomManageInfo.setRoomName(dataBean.getName());
                                         roomManageInfo.setRoomId(dataBean.getId() + "");
@@ -169,17 +176,10 @@ public class GroupPresenter {
                                         roomManageInfo.setIsRefresh(1);
                                         roomManageInfo.setAllowModify(dataBean.getIs_allow_modify_data());
                                         mDBRoomManage.addRoom(roomManageInfo);
-                                        for (GroupInfo.DataBean.UsersBean usersBean : dataBean.getUsers()) {
-                                            RoomMemberInfo roomMemberInfo = new RoomMemberInfo();
-                                            roomMemberInfo.setRoomId(dataBean.getId() + "");
-                                            roomMemberInfo.setJid(usersBean.getToco_id());
-                                            roomMemberInfo.setImage_url(usersBean.getAvatar());
-                                            roomMemberInfo.setName(usersBean.getName());
-                                            mDBRoomMember.addRoomMember(roomMemberInfo);
-                                        }
                                     }
                                     mDBRoomManage.deleteOldRoom();
                                     mDBRoomManage.updateIsRefresh(baseInfo.getData());
+                                    RoomMemberManage.getInstance().addRoomMember(baseInfo.getData());
                                     for (ConversationInfo conversationInfo : list) {
                                         boolean isExist = false;
                                         A:
@@ -197,6 +197,7 @@ public class GroupPresenter {
                                     ((Activity)mContext).runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
+                                            UtilTool.Log("房間","存儲結束");
                                             EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.refresh_group_room)));
                                             callBack.send(baseInfo);
                                         }
@@ -213,6 +214,7 @@ public class GroupPresenter {
                     public void onError(Throwable e) {
                         if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
                         hideDialog();
+                        callBack.error();
                     }
 
                     @Override

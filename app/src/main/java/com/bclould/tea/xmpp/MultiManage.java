@@ -8,9 +8,7 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.widget.Toast;
-
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.ServiceException;
@@ -19,14 +17,11 @@ import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.bclould.tea.R;
-import com.bclould.tea.crypto.otr.OtrChatListenerManager;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.MessageInfo;
-import com.bclould.tea.model.RoomManageInfo;
-import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.network.OSSupload;
 import com.bclould.tea.topperchat.MessageManage;
 import com.bclould.tea.topperchat.WsConnection;
@@ -40,16 +35,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.greenrobot.eventbus.EventBus;
 import org.msgpack.jackson.dataformat.MessagePackFactory;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
 
 
 import static com.bclould.tea.topperchat.WsContans.MSG_GROUP;
@@ -149,6 +140,14 @@ public class MultiManage implements Room{
         }
     }
 
+    private void sendFile(String msgId, boolean isSuccess) {
+        if (listeners != null) {
+            for (MessageManageListener messageManageListener : listeners) {
+                messageManageListener.sendFile(msgId, isSuccess);
+            }
+        }
+    }
+
     private void sendError(int id) {
         if (listeners != null) {
             for (MessageManageListener messageManageListener : listeners) {
@@ -192,9 +191,62 @@ public class MultiManage implements Room{
 
     private void changeConversationInfo(String time,String message,long createTime){
         if (mMgr.findConversation(roomId)) {
-            mMgr.updateConversation(dbRoomManage.findRoomName(roomId),roomId, 0,  mMgr.findLastMessageConversation(roomId), mMgr.findLastMessageConversationTime(roomId),createTime);
+            mMgr.updateConversation(dbRoomManage.findRoomName(roomId),roomId, 0,  mMgr.findLastMessageConversation(roomId), mMgr.findLastMessageConversationTime(roomId),createTime,null);
         } else {
             mMgr.addConversation(createConversation(time,message,createTime));
+        }
+    }
+
+    //發送@消息
+    @Override
+    public void sendATMessage(String message, Map<String, String> atMap) {
+        try {
+            MessageInfo sendMessage = new MessageInfo();
+            sendMessage.setMessage(message);
+            sendMessage.setAtMap(atMap);
+            String msgId=UtilTool.createMsgId(roomId);
+            long createTime=UtilTool.createChatCreatTime();
+            send(roomId, null, JSON.toJSONString(sendMessage), WsContans.MSG_TEXT,msgId,createTime);
+
+            MessageInfo messageInfo = new MessageInfo();
+            messageInfo.setUsername(roomId);
+            messageInfo.setMessage(message);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setMsgType(TO_TEXT_MSG);
+            messageInfo.setSendStatus(0);
+            messageInfo.setSend(UtilTool.getTocoId());
+            messageInfo.setConverstaion(message);
+            messageInfo.setMsgId(msgId);
+            messageInfo.setCreateTime(createTime);
+            messageInfo.setId(mMgr.addMessage(messageInfo));
+            changeConversationInfo(time,message,createTime);
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            refreshAddData(messageInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
+            MessageInfo messageInfo = new MessageInfo();
+            messageInfo.setUsername(roomId);
+            messageInfo.setMessage(message);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setMsgType(TO_TEXT_MSG);
+            messageInfo.setSendStatus(2);
+            messageInfo.setSend(UtilTool.getTocoId());
+            messageInfo.setConverstaion(message);
+            messageInfo.setMsgId(UtilTool.createMsgId(roomId));
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            messageInfo.setId(mMgr.addMessage(messageInfo));
+            changeConversationInfo(time,message,UtilTool.createChatCreatTime());
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            refreshAddData(messageInfo);
         }
     }
 
@@ -249,6 +301,112 @@ public class MultiManage implements Room{
             refreshAddData(messageInfo);
             return messageInfo;
         }
+    }
+
+    @Override
+    public void anewUploadFile(MessageInfo messageInfo){
+        mMgr.deleteSingleMessage(roomId, messageInfo.getId() + "");
+        uploadFile(messageInfo.getMessage());
+    }
+
+
+    @Override
+    public void uploadFile(final String path){
+        final File file = new File(path);//获取文件
+        final String title=file.getName();
+        long mFolderSize = UtilTool.getFolderSize(file);
+        final String size = UtilTool.FormetFileSize(mFolderSize);
+        final String postfixs = UtilTool.getPostfix2(file.getName());
+        final String key = UtilTool.getUserId() + UtilTool.createtFileName() + ".AN." +postfixs;//命名aws文件名
+
+        final MessageInfo messageInfo = sendFileMessage(path, postfixs, key, title,size);
+        OSSClient ossClient = OSSupload.getInstance().visitOSS();
+        PutObjectRequest put = new PutObjectRequest(Constants.BUCKET_NAME2, key, file.getPath());
+        OSSAsyncTask<PutObjectResult> task = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+            @Override
+            public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
+                sendFileAfterMessage(key,messageInfo.getId(),messageInfo.getMsgId(),messageInfo.getCreateTime(),title,size,postfixs);
+            }
+
+            @Override
+            public void onFailure(PutObjectRequest putObjectRequest, ClientException e, ServiceException e1) {
+                UtilTool.Log("aws", "错误");
+                mMgr.updateMessageHint(messageInfo.getId(), 2);
+                sendError(messageInfo.getId());
+            }
+        });
+    }
+
+    private void sendFileAfterMessage(String key, int mId, String msgId, long createTime,String title,String size,String postfixs) {
+        try {
+            MessageInfo sendMessage = new MessageInfo();
+            sendMessage.setKey(key);
+            sendMessage.setCount(size);
+            sendMessage.setContent(postfixs);
+            sendMessage.setTitle(title);
+            int type = WsContans.MSG_FILE;
+            send(roomId, null, JSON.toJSONString(sendMessage), type, msgId, createTime);
+            sendFile(msgId, true);
+            return;
+        } catch (Exception e) {
+            mMgr.updateMessageHint(mId, 2);
+            sendFile(msgId, false);
+        }
+    }
+
+    //发送文件消息
+    public MessageInfo sendFileMessage(String path, String postfix, String key,String title,String size) {
+        MessageInfo messageInfo = new MessageInfo();
+        try {
+            messageInfo.setUsername(roomId);
+            messageInfo.setMessage(path);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setContent(postfix);
+            messageInfo.setTitle(title);
+            messageInfo.setCount(size);
+            messageInfo.setKey(key);
+            messageInfo.setMsgType(TO_FILE_MSG);
+            messageInfo.setSend(UtilTool.getTocoId());
+            String message = "[" + context.getString(R.string.file) + "]";
+            messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            messageInfo.setMsgId(UtilTool.createMsgId(roomId));
+            messageInfo.setSendStatus(0);
+            messageInfo.setId(mMgr.addMessage(messageInfo));
+            changeConversationInfo(time, message, messageInfo.getCreateTime());
+            refreshAddData(messageInfo);
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
+            messageInfo.setUsername(roomId);
+            messageInfo.setMessage(path);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setContent(postfix);
+            messageInfo.setTitle(title);
+            messageInfo.setCount(size);
+            messageInfo.setKey(key);
+            messageInfo.setSendStatus(2);
+            messageInfo.setMsgType(TO_FILE_MSG);
+            messageInfo.setSend(UtilTool.getTocoId());
+            String message = "[" + context.getString(R.string.file) + "]";
+            messageInfo.setConverstaion("[" + context.getString(R.string.file) + "]");
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            messageInfo.setMsgId(UtilTool.createMsgId(roomId));
+            messageInfo.setId(mMgr.addMessage(messageInfo));
+            changeConversationInfo(time, message, messageInfo.getCreateTime());
+            refreshAddData(messageInfo);
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+        }
+        return messageInfo;
     }
 
     @Override

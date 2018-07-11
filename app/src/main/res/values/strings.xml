@@ -1022,4 +1022,7 @@
     <string name="share_qr_code">分享二維碼</string>
     <string name="apk_underway_update">正在下載</string>
     <string name="install">安裝</string>
+    <string name="member_at_me">[有人@我]</string>
+    <string name="confirm_delete_and_message">確認要刪除會話和聊天記錄</string>
+    <string name="pay">支付</string>
 </resources>

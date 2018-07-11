@@ -13,6 +13,18 @@ public class WsContans {
     public static final String TYPE="type";
     public static final String INDEX="index";
     public static final String TOCO_SERVICE="4ed77e8f9c715";
+    public static final String FILE_TYPE_DOC = ".doc";
+    public static final String FILE_TYPE_DOCX = ".docx";
+    public static final String FILE_TYPE_XLS = ".xls";
+    public static final String FILE_TYPE_XLSX = ".xlsx";
+    public static final String FILE_TYPE_PPT = ".ppt";
+    public static final String FILE_TYPE_PPTX = ".pptx";
+    public static final String FILE_TYPE_PDF = ".pdf";
+    public static final String FILE_TYPE_TXT = ".txt";
+    public static final String FILE_TYPE_LOG = ".log";
+    public static final String FILE_TYPE_ZIP = ".zip";
+    public static final String FILE_TYPE_RAR = ".rar";
+    public static final String FILE_TYPE_RTF = ".rtf";
 
     //文檔定義消息類型
     public static final int MSG_SINGLER=3;//單聊消息
@@ -38,6 +50,7 @@ public class WsContans {
     public static final int MSG_REDBAG=8;//紅包
     public static final int MSG_TRANSFER=9;//轉賬
     public static final int MSG_LOCATION=10;//定位
+    public static final int MSG_FILE=11;//文件
 
     //廣播類型
     public static final int BC_OTC_ORDER=1;//OTC訂單信息

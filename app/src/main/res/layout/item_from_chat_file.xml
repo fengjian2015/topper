@@ -57,10 +57,9 @@
                     android:layout_marginRight="@dimen/x15"/>
                 <TextView
                     android:id="@+id/tv_file_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/x240"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/iv_type"
-                    android:maxWidth="@dimen/x240"
                     android:lines="2"
                     android:textSize="@dimen/x26"
                     android:text="春夏秋詩.mp3"

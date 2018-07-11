@@ -13,4 +13,5 @@ public interface MessageManageListener {
     void sendError(int id);
 
     void sendFileResults(String newFile2,boolean isSuccess);
+    void sendFile(String msgId,boolean isSuccess);
 }

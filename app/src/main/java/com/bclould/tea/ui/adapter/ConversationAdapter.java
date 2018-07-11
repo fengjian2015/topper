@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -152,7 +153,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
            /* Bitmap bitmap = UtilTool.getImage(mMgr, conversationInfo.getUser(), mContext);
             mTab1ItemImg.setImageBitmap(bitmap);*/
            if(RoomManage.ROOM_TYPE_MULTI.equals(conversationInfo.getChatType())){
-               UtilTool.getGroupImage(mDBRoomManage,conversationInfo.getUser(),mContext,mTab1ItemImg);
+               UtilTool.getGroupImage(mDBRoomManage,conversationInfo.getUser(), (Activity) mContext,mTab1ItemImg);
            }else {
                setNameAndUrl(mTab1ItemImg,conversationInfo.getUser());
            }
@@ -163,8 +164,13 @@ public class ConversationAdapter extends RecyclerView.Adapter {
                 mTab1ItemName.setText(conversationInfo.getFriend());
             }
             String draft=mMgr.findConversationDraft(conversationInfo.getUser());
+            String atme=mMgr.findConversationAtme(conversationInfo.getUser());
             if(StringUtils.isEmpty(draft)){
-                mTab1ItemText.setText(conversationInfo.getMessage());
+                if(StringUtils.isEmpty(atme)){
+                    mTab1ItemText.setText(conversationInfo.getMessage());
+                }else{
+                    mTab1ItemText.setText(atme+conversationInfo.getMessage());
+                }
             }else{
                 mTab1ItemText.setText(mContext.getString(R.string.draft)+draft);
             }
@@ -198,7 +204,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
     private void showDeleteDialog(final String user) {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();
-        deleteCacheDialog.setTitle(mContext.getString(R.string.confirm_delete));
+        deleteCacheDialog.setTitle(mContext.getString(R.string.confirm_delete_and_message));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
         Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -212,6 +218,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
             public void onClick(View view) {
                 try {
                     mMgr.deleteConversation(user);
+                    mMgr.deleteMessage(user);
                     EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
                     deleteCacheDialog.dismiss();
                 } catch (Exception e) {
