@@ -1,0 +1,168 @@
+package com.bclould.tea.Presenter;
+
+import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
+import com.alibaba.sdk.android.oss.ClientException;
+import com.alibaba.sdk.android.oss.OSSClient;
+import com.alibaba.sdk.android.oss.ServiceException;
+import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
+import com.alibaba.sdk.android.oss.callback.OSSProgressCallback;
+import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
+import com.alibaba.sdk.android.oss.model.GetObjectRequest;
+import com.alibaba.sdk.android.oss.model.GetObjectResult;
+import com.alibaba.sdk.android.oss.model.Range;
+import com.bclould.tea.network.OSSupload;
+import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.UtilTool;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.RandomAccessFile;
+import java.util.ArrayList;
+
+import static com.bclould.tea.utils.Constants.NEW_APK_SIZE;
+
+/**
+ * Created by GA on 2018/7/11.
+ */
+
+@RequiresApi(api = Build.VERSION_CODES.N)
+public class FileDownloadPresenter {
+
+    private static FileDownloadPresenter instance;
+    private static Context sContext;
+    private long mApk_download_progress;
+    public OSSAsyncTask<GetObjectResult> mTask;
+
+    //单例
+    public static FileDownloadPresenter getInstance(Context context) {
+        if (instance == null) {
+            sContext = context;
+            instance = new FileDownloadPresenter();
+        }
+        return instance;
+    }
+
+
+    public void dowbloadFile(String bucketName, final String key, final File file) {
+        mApk_download_progress = MySharedPreferences.getInstance().getLong(key);
+        GetObjectRequest get = new GetObjectRequest(bucketName, key);
+        if (mApk_download_progress != 0) {
+            get.setRange(new Range(mApk_download_progress, Range.INFINITE));
+        }
+        //设置下载进度回调
+        get.setProgressListener(new OSSProgressCallback<GetObjectRequest>() {
+            @Override
+            public void onProgress(GetObjectRequest request, long currentSize, long totalSize) {
+                onSuccsetProgressListeneress(currentSize, totalSize);
+            }
+        });
+
+        OSSClient ossClient = OSSupload.getInstance().visitOSS();
+        mTask = ossClient.asyncGetObject(get, new OSSCompletedCallback<GetObjectRequest, GetObjectResult>() {
+
+            @Override
+            public void onSuccess(GetObjectRequest request, GetObjectResult result) {
+                try {// 请求成功
+                    InputStream inputStream = result.getObjectContent();
+                    RandomAccessFile raf = null;
+                    FileOutputStream fos = null;
+                    if (file.exists()) {
+                        raf = new RandomAccessFile(file, "rw");
+                        raf.seek(file.length());
+                    } else {
+                        fos = new FileOutputStream(file);
+                    }
+                    byte[] buffer = new byte[2048];
+                    int len;
+                    while ((len = inputStream.read(buffer)) != -1) {
+                        // 处理下载的数据
+                        if (file.exists()) {
+                            raf.write(buffer, 0, len);
+                        } else {
+                            fos.write(buffer, 0, len);
+                        }
+                        MySharedPreferences.getInstance().setLong(key, file.length());
+                    }
+                    inputStream.close();
+                    if (fos != null) {
+                        fos.close();
+                    }
+                    if (raf != null) {
+                        raf.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                UtilTool.Log("下載apk", "下載成功");
+                if (file.length() == MySharedPreferences.getInstance().getLong(NEW_APK_SIZE)) {
+                    onFinish(file);
+                    MySharedPreferences.getInstance().setLong(key, 0);
+                    UtilTool.install(sContext, file);
+                } else {
+                    onError();
+                }
+            }
+
+            @Override
+            public void onFailure(GetObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+                onError();
+                // 请求异常
+                if (clientExcepion != null) {
+                    // 本地异常如网络异常等
+                    clientExcepion.printStackTrace();
+                }
+                if (serviceException != null) {
+                    // 服务异常
+                    UtilTool.Log("ErrorCode", serviceException.getErrorCode());
+                    UtilTool.Log("RequestId", serviceException.getRequestId());
+                    UtilTool.Log("HostId", serviceException.getHostId());
+                    UtilTool.Log("RawMessage", serviceException.getRawMessage());
+                }
+            }
+        });
+    }
+
+    ArrayList<downloadCallback> mListeners = new ArrayList<>();
+
+    public void setOnDownloadCallbackListener(downloadCallback listener) {
+        mListeners.add(listener);
+    }
+
+    public void removeDownloadCallbackListener(downloadCallback downloadCallback) {
+        if (mListeners != null) {
+            mListeners.remove(downloadCallback);
+        }
+    }
+
+    private void onFinish(File file) {
+        for (downloadCallback downloadCallback : mListeners) {
+            downloadCallback.onSuccess(file);
+        }
+    }
+
+    private void onError() {
+        for (downloadCallback downloadCallback : mListeners) {
+            downloadCallback.onFailure();
+        }
+    }
+
+    private void onSuccsetProgressListeneress(long currentSize, long totalSize) {
+        for (downloadCallback downloadCallback : mListeners) {
+            downloadCallback.onSuccsetProgressListeneress(currentSize, totalSize);
+        }
+    }
+
+    //定义接口
+    public interface downloadCallback {
+        void onSuccess(File file);
+
+        void onFailure();
+
+        void onSuccsetProgressListeneress(long currentSize, long totalSize);
+    }
+}

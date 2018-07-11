@@ -80,9 +80,12 @@ public class MyApp extends Application {
 
     private void createDir() {
         File file = new File(Constants.PUBLICDIR);
-
+        File download = new File(Constants.DOWNLOAD);
         if (!file.exists()) {
             file.mkdirs();
+        }
+        if (!download.exists()) {
+            download.mkdirs();
         }
     }
 
@@ -120,7 +123,7 @@ public class MyApp extends Application {
     public void exit(String activityName) {
         for (int i = 0; i < mActivityList.size(); i++) {
             Activity activity = (Activity) mActivityList.get(i);
-            if(activity.getClass().getName().equals(activityName)){
+            if (activity.getClass().getName().equals(activityName)) {
                 activity.finish();
             }
         }

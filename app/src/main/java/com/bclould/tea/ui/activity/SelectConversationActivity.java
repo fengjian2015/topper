@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
@@ -41,15 +42,18 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -81,7 +85,7 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
 
     public static final String TEXT_PLAIN = "text";
     public static final String IMAGE_TYPE = "image";
-    public static final String VIDEO_TYPE= "video";
+    public static final String VIDEO_TYPE = "video";
 
 
     private List<ConversationInfo> showlist = new ArrayList<>();
@@ -99,9 +103,10 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
     private LoadingProgressDialog mProgressDialog;
     private String text;
 
-    private boolean isFinish=true;//由於網頁分享的圖片，傳遞uri后可能打不開，這裡就等Glide加載完畢后關閉頁面
+    private boolean isFinish = true;//由於網頁分享的圖片，傳遞uri后可能打不開，這裡就等Glide加載完畢后關閉頁面
 
     private int type = 0;//默認0 代表外部分享過來， 1表示轉發 2表示內部請求分享 3表示重新打開應用進行分享
+
     //修改本頁面的同時，需要修改SelectFriendActivity頁面
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,26 +116,26 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
         EventBus.getDefault().register(this);//初始化EventBus
         type = getIntent().getIntExtra("type", 0);
         if (type == 0) {
-            MySharedPreferences.getInstance().setBoolean("SHARE",true);
+            MySharedPreferences.getInstance().setBoolean("SHARE", true);
             getShareIntent();
-        }else if(type==3){
+        } else if (type == 3) {
             getMainShare();
         } else {
             getChatIntent();
         }
-        if(!ActivityUtil.isGoStartActivity(this,uri,text,shareType,shareText,isFinish)){
-            MySharedPreferences.getInstance().setBoolean("SHARE",false);
+        if (!ActivityUtil.isGoStartActivity(this, uri, text, shareType, shareText, isFinish)) {
+            MySharedPreferences.getInstance().setBoolean("SHARE", false);
         }
         MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);
         mDBRoomMember = new DBRoomMember(this);
-        mDBRoomManage=new DBRoomManage(this);
+        mDBRoomManage = new DBRoomManage(this);
         initRecylerView();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
-        UtilTool.Log("fengjian","重新走一波");
+        UtilTool.Log("fengjian", "重新走一波");
         super.onNewIntent(intent);
     }
 
@@ -139,14 +144,14 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
         msgType = getIntent().getIntExtra("msgType", 0);
     }
 
-    private void getMainShare(){
-        type=0;
-        Bundle bundle=getIntent().getExtras();
-        text=bundle.getString("text");
-        shareText=bundle.getString("shareText");
-        shareType=bundle.getString("shareType");
-        uri=bundle.getParcelable(Intent.EXTRA_STREAM);
-        setShareData(text,shareType);
+    private void getMainShare() {
+        type = 0;
+        Bundle bundle = getIntent().getExtras();
+        text = bundle.getString("text");
+        shareText = bundle.getString("shareText");
+        shareType = bundle.getString("shareType");
+        uri = bundle.getParcelable(Intent.EXTRA_STREAM);
+        setShareData(text, shareType);
     }
 
     private void getShareIntent() {
@@ -156,20 +161,20 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
         String type = shareIntent.getType();//获取分享来的数据类型，和上面<data android:mimeType="text/plain" />中的一致
         shareText = shareIntent.getStringExtra(Intent.EXTRA_TEXT);
         uri = bundle.getParcelable(Intent.EXTRA_STREAM);
-        setShareData(text,type);
+        setShareData(text, type);
     }
 
-    private void setShareData(String text,String type){
+    private void setShareData(String text, String type) {
         //具体还有其他的类型，请上网参考
         if (Intent.ACTION_SEND.equals(text) && type != null) {
             this.shareType = type;
         }
         if (shareType.contains(IMAGE_TYPE)) {
-            isFinish=false;
+            isFinish = false;
             Glide.with(this).load(uri).listener(new RequestListener<Drawable>() {
                 @Override
                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                    if(MySharedPreferences.getInstance().getBoolean("SHARE")){
+                    if (MySharedPreferences.getInstance().getBoolean("SHARE")) {
                         SelectConversationActivity.this.finish();
                     }
                     return false;
@@ -180,9 +185,9 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
                     new Thread() {
                         @Override
                         public void run() {
-                            filePath = UtilTool.getImgPathFromCache(uri,SelectConversationActivity.this);
-                            MySharedPreferences.getInstance().setString("share_filePath",filePath);
-                            if(MySharedPreferences.getInstance().getBoolean("SHARE")){
+                            filePath = UtilTool.getImgPathFromCache(uri, SelectConversationActivity.this);
+                            MySharedPreferences.getInstance().setString("share_filePath", filePath);
+                            if (MySharedPreferences.getInstance().getBoolean("SHARE")) {
                                 SelectConversationActivity.this.finish();
                             }
                         }
@@ -190,15 +195,15 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
                     return false;
                 }
             }).into(mImage);
-        }else if(shareType.contains(VIDEO_TYPE)){
+        } else if (shareType.contains(VIDEO_TYPE)) {
             //系統分享視頻
-            filePath=UtilTool.getRealFilePath(this,uri);
+            filePath = UtilTool.getRealFilePath(this, uri);
         }
     }
 
     private void initRecylerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mSelectConversationAdapter = new SelectConversationAdapter(this, showlist, mMgr, mDBRoomMember,mDBRoomManage);
+        mSelectConversationAdapter = new SelectConversationAdapter(this, showlist, mMgr, mDBRoomMember, mDBRoomManage);
         mRecyclerView.setAdapter(mSelectConversationAdapter);
         mSelectConversationAdapter.addOnItemListener(this);
         updateData();
@@ -213,10 +218,10 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
     class RefreshList implements Runnable {
         @Override
         public void run() {
-            synchronized (mRecyclerView){
+            synchronized (mRecyclerView) {
                 List<ConversationInfo> conversationInfos = mMgr.queryConversation();
-                for(ConversationInfo conversationInfo:conversationInfos){
-                    if(conversationInfo.getUser().equals(Constants.ADMINISTRATOR_NAME)){
+                for (ConversationInfo conversationInfo : conversationInfos) {
+                    if (conversationInfo.getUser().equals(Constants.ADMINISTRATOR_NAME)) {
                         conversationInfos.remove(conversationInfo);
                         break;
                     }
@@ -229,7 +234,7 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
         }
     }
 
-    Handler mHandler=new Handler(){
+    Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             mSelectConversationAdapter.notifyDataSetChanged();
@@ -277,9 +282,9 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
                 intent.putExtra("type", type);
                 intent.putExtra("msgType", msgType);
                 intent.putExtra("messageInfo", messageInfo);
-                intent.putExtra("shareText",shareText);
-                intent.putExtra("filePath",filePath);
-                intent.putExtra("shareType",shareType);
+                intent.putExtra("shareText", shareText);
+                intent.putExtra("filePath", filePath);
+                intent.putExtra("shareType", shareType);
                 startActivity(intent);
                 break;
         }
@@ -327,22 +332,22 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
                 }
             } else if (shareType.contains(IMAGE_TYPE)) {
 //                showDialog();
-                if(StringUtils.isEmpty(filePath)){
-                    filePath= MySharedPreferences.getInstance().getString("share_filePath");
+                if (StringUtils.isEmpty(filePath)) {
+                    filePath = MySharedPreferences.getInstance().getString("share_filePath");
                 }
-                if(StringUtils.isEmpty(filePath)){
+                if (StringUtils.isEmpty(filePath)) {
                     ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.share_failure));
 //                    hideDialog();
-                    setShareData(text,shareType);
+                    setShareData(text, shareType);
                     return;
                 }
                 mRoom.Upload(filePath);
                 ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.share_complete));
                 MyApp.getInstance().exit(SelectConversationActivity.class.getName());
                 SelectConversationActivity.this.finish();
-            }else if(shareType.contains(VIDEO_TYPE)){
+            } else if (shareType.contains(VIDEO_TYPE)) {
 //                showDialog();
-                if(StringUtils.isEmpty(filePath)){
+                if (StringUtils.isEmpty(filePath)) {
                     ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.share_failure));
 //                    hideDialog();
                     return;
@@ -399,8 +404,13 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
                 } else {
                     ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.send_error));
                 }
+            } else if (msgType == FROM_IMG_MSG || msgType == TO_IMG_MSG) {
+//                showDialog();
+                mRoom.Upload(messageInfo.getVoice());
+                ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.send_succeed));
+                SelectConversationActivity.this.finish();
             }
-        }else {
+        } else {
             finish();
         }
     }

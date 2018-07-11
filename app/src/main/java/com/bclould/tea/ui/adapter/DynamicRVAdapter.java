@@ -500,7 +500,11 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             mTvReward.setText(dataBean.getRewardCount() + "");
             mTime.setText(dataBean.getCreated_at());
             mName.setText(dataBean.getUser_name());
-            mTextContent.setText(dataBean.getContent());
+            if (dataBean.getContent().isEmpty()) {
+                mTextContent.setVisibility(View.GONE);
+            }else {
+                mTextContent.setText(dataBean.getContent());
+            }
             mTvPinglun.setText(dataBean.getReview_count() + "");
             mTvZan.setText(dataBean.getLike_count() + "");
             if (dataBean.getIs_like() == 1) {
@@ -694,7 +698,11 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
             mTvReward.setText(dataBean.getRewardCount() + "");
             mTvTime.setText(dataBean.getCreated_at());
             mTvName.setText(dataBean.getUser_name());
-            mTvContent.setText(dataBean.getContent());
+            if (dataBean.getContent().isEmpty()) {
+                mTvContent.setVisibility(View.GONE);
+            }else {
+                mTvContent.setText(dataBean.getContent());
+            }
             mTvPinglun.setText(dataBean.getReview_count() + "");
             mTvZan.setText(dataBean.getLike_count() + "");
             if (dataBean.getIs_like() == 1) {

@@ -25,7 +25,7 @@ public class MySharedPreferences {
         return instance;
     }
 
-    public SharedPreferences getSp(){
+    public SharedPreferences getSp() {
         return mContext.getSharedPreferences(SETTING, 0);
     }
 
@@ -102,6 +102,30 @@ public class MySharedPreferences {
         SharedPreferences sp = mContext.getSharedPreferences(SETTING, 0);
 
         int i = sp.getInt(value, 0);
+
+        return i;
+
+    }
+
+    //存储整数sp
+    public void setLong(String value, long key) {
+
+        SharedPreferences sp = mContext.getSharedPreferences(SETTING, 0);
+
+        SharedPreferences.Editor edit = sp.edit();
+
+        edit.putLong(value, key);
+
+        edit.commit();
+
+    }
+
+    //取出字符串sp
+    public long getLong(String value) {
+
+        SharedPreferences sp = mContext.getSharedPreferences(SETTING, 0);
+
+        long i = sp.getLong(value, 0);
 
         return i;
 

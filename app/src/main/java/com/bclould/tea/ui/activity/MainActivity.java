@@ -97,8 +97,10 @@ public class MainActivity extends BaseActivity {
         mSupportFragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null && savedInstanceState.getBoolean("isMainActivityDestroy", false)) {
             //当activity被系统销毁，获取到之前的fragment，并且移除之前的fragment的状态
-            for (Fragment fragment : mSupportFragmentManager.getFragments()) {
-                mSupportFragmentManager.beginTransaction().remove(fragment).commit();
+            if (mSupportFragmentManager.getFragments() != null) {
+                for (Fragment fragment : mSupportFragmentManager.getFragments()) {
+                    mSupportFragmentManager.beginTransaction().remove(fragment).commit();
+                }
             }
         }
         setContentView(R.layout.activity_main);
@@ -530,6 +532,6 @@ public class MainActivity extends BaseActivity {
     }
 
     public interface MyOnTouchListener {
-        public boolean onTouch(MotionEvent ev);
+        boolean onTouch(MotionEvent ev);
     }
 }

@@ -84,7 +84,8 @@ public class GuanYuMeActivity extends BaseActivity {
                 String apkName = MySharedPreferences.getInstance().getString(Constants.NEW_APK_NAME);
                 String body = MySharedPreferences.getInstance().getString(Constants.NEW_APK_BODY);
                 if (!url.isEmpty()) {
-                    mUpdateLogPresenter.showDialog(url, apkName, body);
+                    startActivity(new Intent(GuanYuMeActivity.this, VersionsUpdateActivity.class));
+//                    mUpdateLogPresenter.showDialog(url, apkName, body);
                 } else {
                     if (!UtilTool.isFastClick()) {
                         checkVersion();
@@ -102,12 +103,11 @@ public class GuanYuMeActivity extends BaseActivity {
             public void send(int type) {
                 if (type == 1) {
                     mTvNewUpdate.setVisibility(View.VISIBLE);
+                    startActivity(new Intent(GuanYuMeActivity.this, VersionsUpdateActivity.class));
                 } else {
                     mTvNewUpdate.setVisibility(View.GONE);
                 }
             }
         });
     }
-
-
 }

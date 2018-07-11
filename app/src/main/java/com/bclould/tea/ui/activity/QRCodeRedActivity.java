@@ -16,11 +16,16 @@ import android.widget.Toast;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.utils.UtilTool;
+
+import java.io.File;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.bclould.tea.ui.adapter.ChatAdapter.TO_IMG_MSG;
 
 /**
  * Created by GA on 2018/1/23.
@@ -42,6 +47,7 @@ public class QRCodeRedActivity extends BaseActivity {
     Button mBtnSaveQr;
     @Bind(R.id.rl_red)
     RelativeLayout mRlRed;
+    private MessageInfo mMessageInfo = new MessageInfo();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,22 +72,37 @@ public class QRCodeRedActivity extends BaseActivity {
         mTvQrCode.setImageBitmap(bitmap);
     }
 
-    @OnClick({R.id.btn_save_qr, R.id.bark, R.id.tv_redpacket_record})
+    @OnClick({R.id.btn_save_qr, R.id.bark, R.id.tv_redpacket_record, R.id.btn_share})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
+            case R.id.btn_share:
+                goShare();
+                break;
             case R.id.btn_save_qr:
-                if(UtilTool.saveBitmap(mRlRed, this)){
+                if (UtilTool.saveBitmap(mRlRed, this, true) != null) {
                     Toast.makeText(this, getString(R.string.save_success), Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     Toast.makeText(this, getString(R.string.save_error), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.tv_redpacket_record:
                 startActivity(new Intent(this, RedPacketRecordActivity.class));
                 break;
+        }
+    }
+
+    private void goShare() {
+        String path = UtilTool.saveBitmap(mRlRed, this, false);
+        if (path != null) {
+            mMessageInfo.setVoice(path);
+            Intent intent = new Intent(this, SelectConversationActivity.class);
+            intent.putExtra("type", 2);
+            intent.putExtra("msgType", TO_IMG_MSG);
+            intent.putExtra("messageInfo", mMessageInfo);
+            startActivity(intent);
         }
     }
 }

@@ -38,6 +38,7 @@ import com.bclould.tea.model.ModeOfPaymentInfo;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.VirtualKeyboardView;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
@@ -321,14 +322,12 @@ public class PushBuyingActivity extends BaseActivity {
         mCoinPresenter.getCoinPrice(name, new CoinPresenter.CallBack2() {
             @Override
             public void send(BaseInfo.DataBean data) {
-                try {
+                if (ActivityUtil.isActivityOnTop(PushBuyingActivity.this) && data.getUSDT() != null && data.getRate() != null) {
                     double usdt = Double.parseDouble(data.getUSDT());
                     double cny = Double.parseDouble(data.getRate());
                     DecimalFormat df = new DecimalFormat("0.00");
                     String price = df.format(cny * usdt);
                     mEtPrice.setHint(getString(R.string.reference_value) + price);
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
 

@@ -6,8 +6,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,6 +24,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.FileProvider;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -40,7 +39,6 @@ import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.UserInfo;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.FutureTarget;
@@ -351,13 +349,18 @@ public class UtilTool {
     /**
      * 保存View为图片的方法
      */
-    public static boolean saveBitmap(View v, Context context) {
+    public static String saveBitmap(View v, Context context, boolean type) {
         String fileName = "image" + createtFileName() + ".png";
         Bitmap bm = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
                 Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bm);
         v.draw(canvas);
-        File file = new File(Constants.PUBLICDIR, fileName);
+        File file = null;
+        if (type) {
+            file = new File(Constants.ALBUM, fileName);
+        } else {
+            file = new File(Constants.PUBLICDIR, fileName);
+        }
         if (file.exists()) {
             file.delete();
         }
@@ -370,34 +373,34 @@ public class UtilTool {
             Uri uri = Uri.fromFile(file);
             intent.setData(uri);
             context.sendBroadcast(intent);
-            return true;
+            return file.getPath();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 
-    public static boolean saveAlbum(String path,Activity activity){
+    public static boolean saveAlbum(String path, Activity activity) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, options);
         String type = options.outMimeType;
         String newName;
-        if(type!=null&&(type.contains("gif")||type.contains("GIF"))){
+        if (type != null && (type.contains("gif") || type.contains("GIF"))) {
             newName = System.currentTimeMillis() + ".gif";
-        }else{
+        } else {
             newName = System.currentTimeMillis() + ".jpg";
         }
-        String newFileName = Constants.ALBUM+newName;
-        File file=new File(Constants.ALBUM);
+        String newFileName = Constants.ALBUM + newName;
+        File file = new File(Constants.ALBUM);
         if (!file.exists()) {
             file.mkdirs();
         }
-        copyFile(path,newFileName);
-        if(new File(newFileName).exists()){
+        copyFile(path, newFileName);
+        if (new File(newFileName).exists()) {
             activity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + newFileName)));
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -765,7 +768,7 @@ public class UtilTool {
                 if (Util.isOnMainThread() && context != null) {
                     Glide.with(context).load(info.getPath()).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1)).into(imageView);
                 }
-            }else if(!StringUtils.isEmpty(mgr.findStrangerPath(myUser))){
+            } else if (!StringUtils.isEmpty(mgr.findStrangerPath(myUser))) {
                 if (Util.isOnMainThread() && context != null) {
                     Glide.with(context).load(mgr.findStrangerPath(myUser)).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1)).into(imageView);
                 }
@@ -774,11 +777,11 @@ public class UtilTool {
                     Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
                 }
             }
-        }else if(!StringUtils.isEmpty(mgr.findStrangerPath(myUser))){
+        } else if (!StringUtils.isEmpty(mgr.findStrangerPath(myUser))) {
             if (Util.isOnMainThread() && context != null) {
                 Glide.with(context).load(mgr.findStrangerPath(myUser)).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1)).into(imageView);
             }
-        }  else {
+        } else {
             if (Util.isOnMainThread() && context != null) {
                 Glide.with(context).load(R.mipmap.img_nfriend_headshot1).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
             }
@@ -786,29 +789,29 @@ public class UtilTool {
         return bitmap;
     }
 
-    public static void getGroupImage(DBRoomManage dbRoomManage,String roomId, Context context, ImageView imageView){
-        String url=dbRoomManage.findRoomUrl(roomId);
-        if(!StringUtils.isEmpty(url)){
+    public static void getGroupImage(DBRoomManage dbRoomManage, String roomId, Context context, ImageView imageView) {
+        String url = dbRoomManage.findRoomUrl(roomId);
+        if (!StringUtils.isEmpty(url)) {
             if (Util.isOnMainThread() && context != null) {
                 Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).dontAnimate().error(R.mipmap.img_group_head)).into(imageView);
             }
-        }else{
+        } else {
             if (Util.isOnMainThread() && context != null) {
                 Glide.with(context).load(R.mipmap.img_group_head).apply(RequestOptions.bitmapTransform(new CircleCrop()).error(R.mipmap.img_group_head).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
             }
         }
     }
 
-    public static Bitmap getImage(Context context, ImageView imageView, DBRoomMember mDBRoomMember,DBManager dbManager,String user) {
-        String url=mDBRoomMember.findMemberUrl(user);
-        if(StringUtils.isEmpty(url)&&dbManager.findUser(user)){
+    public static Bitmap getImage(Context context, ImageView imageView, DBRoomMember mDBRoomMember, DBManager dbManager, String user) {
+        String url = mDBRoomMember.findMemberUrl(user);
+        if (StringUtils.isEmpty(url) && dbManager.findUser(user)) {
             UserInfo info = dbManager.queryUser(user);
             if (!info.getPath().isEmpty()) {
-                url=info.getPath();
+                url = info.getPath();
             }
         }
-        if(StringUtils.isEmpty(url)){
-            url=dbManager.findStrangerPath(user);
+        if (StringUtils.isEmpty(url)) {
+            url = dbManager.findStrangerPath(user);
         }
 
         Bitmap bitmap = null;
@@ -1071,7 +1074,7 @@ public class UtilTool {
                         size = size + fileList[i].length();
                     }
                 }
-            }else {
+            } else {
                 size = file.length();
             }
         }
@@ -1125,30 +1128,34 @@ public class UtilTool {
         }
         return fileSizeString;
     }
-    public static int parseInt(String number){
+
+    public static int parseInt(String number) {
         try {
             return Integer.parseInt(number);
-        }catch (Exception e){
+        } catch (Exception e) {
             return 0;
         }
     }
 
-    public static double parseDouble(String number){
+    public static double parseDouble(String number) {
         try {
             return Double.parseDouble(number);
-        }catch (Exception e){
+        } catch (Exception e) {
             return 0;
         }
     }
+
     private static long homeTime = 0;
-    public static boolean homeClickTwo(){
-        if(System.currentTimeMillis() - homeTime > 1000) {
+
+    public static boolean homeClickTwo() {
+        if (System.currentTimeMillis() - homeTime > 1000) {
             homeTime = System.currentTimeMillis();
             return false;
         } else {
             return true;
         }
     }
+
     public static String getImgPathFromCache(Object url, Context context) {
         FutureTarget<File> future = Glide.with(context)
                 .load(url)
@@ -1166,26 +1173,43 @@ public class UtilTool {
         return null;
     }
 
-    public static String getRealFilePath( final Context context, final Uri uri ) {
-        if ( null == uri ) return null;
+    public static String getRealFilePath(final Context context, final Uri uri) {
+        if (null == uri) return null;
         final String scheme = uri.getScheme();
         String data = null;
-        if ( scheme == null )
+        if (scheme == null)
             data = uri.getPath();
-        else if ( ContentResolver.SCHEME_FILE.equals( scheme ) ) {
+        else if (ContentResolver.SCHEME_FILE.equals(scheme)) {
             data = uri.getPath();
-        } else if ( ContentResolver.SCHEME_CONTENT.equals( scheme ) ) {
-            Cursor cursor = context.getContentResolver().query( uri, new String[] { MediaStore.Images.ImageColumns.DATA }, null, null, null );
-            if ( null != cursor ) {
-                if ( cursor.moveToFirst() ) {
-                    int index = cursor.getColumnIndex( MediaStore.Images.ImageColumns.DATA );
-                    if ( index > -1 ) {
-                        data = cursor.getString( index );
+        } else if (ContentResolver.SCHEME_CONTENT.equals(scheme)) {
+            Cursor cursor = context.getContentResolver().query(uri, new String[]{MediaStore.Images.ImageColumns.DATA}, null, null, null);
+            if (null != cursor) {
+                if (cursor.moveToFirst()) {
+                    int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+                    if (index > -1) {
+                        data = cursor.getString(index);
                     }
                 }
                 cursor.close();
             }
         }
         return data;
+    }
+
+    public static void install(Context context, File file) {
+        if (Build.VERSION.SDK_INT >= 24) {
+            Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
+            Intent install = new Intent(Intent.ACTION_VIEW);
+            install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//添加这一句表示对目标应用临时授权该Uri所代表的文件
+            install.setDataAndType(uri, "application/vnd.android.package-archive");
+            context.startActivity(install);
+        } else {
+            Uri uri = Uri.fromFile(file);
+            Intent install = new Intent(Intent.ACTION_VIEW);
+            install.setDataAndType(uri, "application/vnd.android.package-archive");
+            install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(install);
+        }
     }
 }

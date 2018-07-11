@@ -8,7 +8,7 @@
         name="ext_root"
         path="/"/>
 
-    <paths>
-        <external-path path="" name="download"/>
-    </paths>
+    <external-path
+        name="external_files"
+        path="."/>
 </resources>

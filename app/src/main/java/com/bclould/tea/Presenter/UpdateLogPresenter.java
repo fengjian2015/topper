@@ -105,14 +105,16 @@ public class UpdateLogPresenter {
                             MySharedPreferences.getInstance().setString(Constants.NEW_APK_URL, Constants.DOWNLOAD_APK_URL);
                             MySharedPreferences.getInstance().setString(Constants.NEW_APK_NAME, baseInfo.getName());
                             MySharedPreferences.getInstance().setString(Constants.NEW_APK_BODY, baseInfo.getBody());
+                            MySharedPreferences.getInstance().setString(Constants.APK_VERSIONS_TAG, baseInfo.getTag_name());
                             callBack2.send(1);
-                            showDialog(Constants.DOWNLOAD_APK_URL, baseInfo.getName(), baseInfo.getBody());
+//                            showDialog(Constants.DOWNLOAD_APK_URL, baseInfo.getName(), baseInfo.getBody());
                             EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.check_new_version)));
                         } else {
                             callBack2.send(2);
                             MySharedPreferences.getInstance().setString(Constants.NEW_APK_URL, "");
                             MySharedPreferences.getInstance().setString(Constants.NEW_APK_NAME, "");
                             MySharedPreferences.getInstance().setString(Constants.NEW_APK_BODY, "");
+                            MySharedPreferences.getInstance().setString(Constants.APK_VERSIONS_TAG, "");
                             if (mContext instanceof GuanYuMeActivity) {
                                 Toast.makeText(mContext, mContext.getString(R.string.already_new_version), Toast.LENGTH_SHORT).show();
                             }

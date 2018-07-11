@@ -241,7 +241,6 @@ public class OtcActivity extends BaseActivity {
         mCloudCircleVp.setAdapter(cloudCircleVPAdapter);
 
         mCloudCircleVp.setOffscreenPageLimit(3);
-
         mCloudCircleVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

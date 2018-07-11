@@ -1019,4 +1019,7 @@
     <string name="is_allow_modify_data">是否允許群員修改頭像、群暱稱</string>
     <string name="draft">[草稿]</string>
     <string name="save_image">保存圖片</string>
+    <string name="share_qr_code">分享二維碼</string>
+    <string name="apk_underway_update">正在下載</string>
+    <string name="install">安裝</string>
 </resources>
