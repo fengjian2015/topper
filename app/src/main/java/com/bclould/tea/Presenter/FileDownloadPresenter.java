@@ -14,6 +14,7 @@ import com.alibaba.sdk.android.oss.model.GetObjectRequest;
 import com.alibaba.sdk.android.oss.model.GetObjectResult;
 import com.alibaba.sdk.android.oss.model.Range;
 import com.bclould.tea.network.OSSupload;
+import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 
@@ -49,7 +50,7 @@ public class FileDownloadPresenter {
 
 
     public void dowbloadFile(String bucketName, final String key, final File file) {
-        mApk_download_progress = MySharedPreferences.getInstance().getLong(key);
+        mApk_download_progress = file.length();
         GetObjectRequest get = new GetObjectRequest(bucketName, key);
         if (mApk_download_progress != 0) {
             get.setRange(new Range(mApk_download_progress, Range.INFINITE));
@@ -71,22 +72,24 @@ public class FileDownloadPresenter {
                     InputStream inputStream = result.getObjectContent();
                     RandomAccessFile raf = null;
                     FileOutputStream fos = null;
+                    boolean isExists;
                     if (file.exists()) {
+                        isExists = true;
                         raf = new RandomAccessFile(file, "rw");
                         raf.seek(file.length());
                     } else {
+                        isExists = false;
                         fos = new FileOutputStream(file);
                     }
                     byte[] buffer = new byte[2048];
                     int len;
                     while ((len = inputStream.read(buffer)) != -1) {
                         // 处理下载的数据
-                        if (file.exists()) {
+                        if (isExists) {
                             raf.write(buffer, 0, len);
                         } else {
                             fos.write(buffer, 0, len);
                         }
-                        MySharedPreferences.getInstance().setLong(key, file.length());
                     }
                     inputStream.close();
                     if (fos != null) {
@@ -99,9 +102,8 @@ public class FileDownloadPresenter {
                     e.printStackTrace();
                 }
                 UtilTool.Log("下載apk", "下載成功");
-                if (file.length() == MySharedPreferences.getInstance().getLong(NEW_APK_SIZE)) {
+                if (file.length() == MySharedPreferences.getInstance().getLong(Constants.NEW_APK_KEY)) {
                     onFinish(file);
-                    MySharedPreferences.getInstance().setLong(key, 0);
                     UtilTool.install(sContext, file);
                 } else {
                     onError();

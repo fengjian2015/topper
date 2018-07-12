@@ -91,19 +91,19 @@ public class VersionsUpdateActivity extends BaseActivity {
         mProgressBar.setMax(100);
         mFile = new File(Constants.DOWNLOAD + "topperchat_" + MySharedPreferences.getInstance().getString(Constants.APK_VERSIONS_TAG) + ".apk");
         if (mFile.exists()) {
-            if (MySharedPreferences.getInstance().getLong(Constants.NEW_APK_SIZE) == mFile.length()) {
+            if (MySharedPreferences.getInstance().getLong(Constants.NEW_APK_KEY) == mFile.length()) {
                 mBtnDownload.setVisibility(View.GONE);
                 mBtnStop.setVisibility(View.GONE);
                 mBtnFinish.setVisibility(View.VISIBLE);
                 mProgressBar.setProgress(100);
             } else {
-                double currentSize = Double.parseDouble(MySharedPreferences.getInstance().getLong(Constants.NEW_APK_KEY) + "");
-                double totleSize = Double.parseDouble(MySharedPreferences.getInstance().getLong(Constants.NEW_APK_SIZE) + "");
-                int progress = (int) (currentSize / totleSize * 100);
-                mProgressBar.setProgress(progress);
-                mBtnDownload.setVisibility(View.VISIBLE);
-                mBtnStop.setVisibility(View.GONE);
-                mBtnFinish.setVisibility(View.GONE);
+                    double currentSize = Double.parseDouble(mFile.length() + "");
+                    double totleSize = Double.parseDouble(MySharedPreferences.getInstance().getLong(Constants.NEW_APK_KEY) + "");
+                    int progress = (int) (currentSize / totleSize * 100);
+                    mProgressBar.setProgress(progress);
+                    mBtnDownload.setVisibility(View.VISIBLE);
+                    mBtnStop.setVisibility(View.GONE);
+                    mBtnFinish.setVisibility(View.GONE);
             }
         } else {
             mBtnDownload.setVisibility(View.VISIBLE);
@@ -122,7 +122,6 @@ public class VersionsUpdateActivity extends BaseActivity {
                 download();
                 break;
             case R.id.btn_finish:
-//                install();
                 UtilTool.install(this, mFile);
                 break;
             case R.id.btn_stop:
@@ -132,26 +131,6 @@ public class VersionsUpdateActivity extends BaseActivity {
                 break;
         }
     }
-
-    /*private void install() {
-        if (Build.VERSION.SDK_INT >= 24) {
-            if (mFile == null) {
-                mFile = new File(Constants.DOWNLOAD + "topperchat_" + MySharedPreferences.getInstance().getString(Constants.APK_VERSIONS_TAG) + ".apk");
-            }
-            Uri uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", mFile);
-            Intent install = new Intent(Intent.ACTION_VIEW);
-            install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//添加这一句表示对目标应用临时授权该Uri所代表的文件
-            install.setDataAndType(uri, "application/vnd.android.package-archive");
-            startActivity(install);
-        } else {
-            Uri uri = Uri.fromFile(mFile);
-            Intent install = new Intent(Intent.ACTION_VIEW);
-            install.setDataAndType(uri, "application/vnd.android.package-archive");
-            install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(install);
-        }
-    }*/
 
     private void download() {
         mBtnDownload.setVisibility(View.GONE);
@@ -174,8 +153,12 @@ public class VersionsUpdateActivity extends BaseActivity {
 
         @Override
         public void onSuccsetProgressListeneress(long currentSize, long totalSize) {
-            if (MySharedPreferences.getInstance().getLong(Constants.NEW_APK_KEY) == 0) {
-                MySharedPreferences.getInstance().setLong(Constants.NEW_APK_SIZE, totalSize);
+            if (!mFile.exists()) {
+                MySharedPreferences.getInstance().setLong(Constants.NEW_APK_KEY, totalSize);
+            }else {
+                if(mFile.length() == 0){
+                    MySharedPreferences.getInstance().setLong(Constants.NEW_APK_KEY, totalSize);
+                }
             }
             Message message = new Message();
             DownloadInfo downloadInfo = new DownloadInfo();
@@ -194,11 +177,16 @@ public class VersionsUpdateActivity extends BaseActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                    DownloadInfo downloadInfo = (DownloadInfo) msg.obj;
-                    int progress = (int) (Double.parseDouble(downloadInfo.getCurrent_size() + MySharedPreferences.getInstance().getLong(Constants.NEW_APK_KEY) + "") / Double.parseDouble(downloadInfo.getTotal_size() + MySharedPreferences.getInstance().getLong(Constants.NEW_APK_KEY) + "") * 100);
-                    UtilTool.Log("下載apk", progress + "");
-                    UtilTool.Log("下載apk", "當前進度：" + downloadInfo.getCurrent_size() + "-----總進度：" + downloadInfo.getTotal_size());
-                    if (mProgressBar != null) {
+                    if (ActivityUtil.isActivityOnTop(VersionsUpdateActivity.this)) {
+                        if(mBtnStop.getVisibility() != View.VISIBLE){
+                            mBtnStop.setVisibility(View.VISIBLE);
+                            mBtnDownload.setVisibility(View.GONE);
+                            mBtnFinish.setVisibility(View.GONE);
+                        }
+                        DownloadInfo downloadInfo = (DownloadInfo) msg.obj;
+                        int progress = (int) (Double.parseDouble(downloadInfo.getCurrent_size() + MySharedPreferences.getInstance().getLong(Constants.NEW_APK_KEY) + "") / Double.parseDouble(downloadInfo.getTotal_size() + MySharedPreferences.getInstance().getLong(Constants.NEW_APK_KEY) + "") * 100);
+                        UtilTool.Log("下載apk", progress + "");
+                        UtilTool.Log("下載apk", "當前進度：" + downloadInfo.getCurrent_size() + "-----總進度：" + downloadInfo.getTotal_size());
                         mProgressBar.setProgress(progress);
                     }
                     break;

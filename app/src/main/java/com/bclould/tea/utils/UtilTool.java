@@ -790,7 +790,7 @@ public class UtilTool {
         return bitmap;
     }
 
-    
+
     public static void getGroupImage(DBRoomManage dbRoomManage,String roomId, Activity context, ImageView imageView){
         String url=dbRoomManage.findRoomUrl(roomId);
         if(!StringUtils.isEmpty(url)){

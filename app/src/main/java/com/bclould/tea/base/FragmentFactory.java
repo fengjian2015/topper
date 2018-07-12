@@ -67,7 +67,7 @@ public class FragmentFactory {
                 fragment = WalletFragment.getInstance();
                 break;
             case 4:// 我的页面
-                fragment = new MyFragment();
+                fragment = MyFragment.getInstance();
                 break;
             default:
                 fragment = ConversationFragment.getInstance();
