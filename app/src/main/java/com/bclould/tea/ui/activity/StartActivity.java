@@ -8,12 +8,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bclould.tea.R;
-import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.LoginBaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BaseInfo;
@@ -49,6 +46,7 @@ public class StartActivity extends LoginBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         ButterKnife.bind(this);
+        setSwipeEnabled(false);
         WsConnection.getInstance().setOutConnection(true);
         new Handler() {
             public void handleMessage(Message msg) {

@@ -116,11 +116,6 @@
         <item name="android:textSize">@dimen/x32</item>
     </style>
 
-    <style name="Theme.AppStartLoadTranslucent" parent="AppTheme">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
-    </style>
-
     <style name="Transparent" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>

@@ -25,7 +25,6 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
-import static com.bclould.tea.utils.Constants.NEW_APK_SIZE;
 
 /**
  * Created by GA on 2018/7/11.

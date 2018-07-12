@@ -14,6 +14,7 @@ public class Constants {
     public static final int BET_ARR_COUNT = 4;
     private static final boolean isDebug = true;
     public static final String BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "https://api.cnblocklink.com/";
+    public static final String NEW_BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "https://www.cnblocklink.com/";
     public static final String DOMAINNAME3 = isDebug ? "wss://socket.bclould.com:8179/toco_server" : "wss://socket.cnblocklink.com:2087/toco_server";
     public static final String MSG_OFFLINE = isDebug ? "wss://socket.bclould.com:8180/users_offline_msg" : "wss://offline.cnblocklink.com:8443/users_offline_msg";
 
@@ -28,7 +29,6 @@ public class Constants {
     public static final String BUCKET_NAME2 = "topper-chat-bucket";
     public static final String APK_BUCKET_NAME = "toco--bucket";
     public static final String NEW_APK_KEY = "topperchat.apk";
-    public static final String NEW_APK_SIZE = "new_apk_size";
     public static final String PUBLICDIR = "/sdcard/tocotalk/tocotalk_images/";
     public static final String LOG_DIR = "/sdcard/tocotalk/log/";
     public static final String ALBUM = "/sdcard/tocotalk/album/";
