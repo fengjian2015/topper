@@ -247,7 +247,7 @@ public class NewsDetailsActivity extends BaseActivity {
             ivShare.setVisibility(View.VISIBLE);
             mTitleName.setText(getString(R.string.news_details));
             //!!更換拼接方式時，修改chatAdapter中的鏈接跳轉
-            mUrl = Constants.BASE_URL + Constants.NEWS_WEB_URL + mId + "/" + UtilTool.getUserId();
+            mUrl = Constants.NEW_BASE_URL + Constants.NEWS_WEB_URL + mId + "/" + UtilTool.getUserId();
             messageInfo.setLinkUrl(mUrl);
         }
     }
