@@ -1025,4 +1025,39 @@
     <string name="member_at_me">[有人@我]</string>
     <string name="confirm_delete_and_message">確認要刪除會話和聊天記錄</string>
     <string name="pay">支付</string>
+    <string name="current_location">當前所在位置:</string>
+    <string name="choose_files">選擇文件</string>
+    <string name="empty_directory">沒有文件</string>
+    <string name="action_select_all">全選</string>
+    <string name="action_deselect">取消選擇</string>
+    <string name="action_invert_selection">反選</string>
+    <string name="im_file_select_size_sum">已選%1$s</string>
+    <string name="send_complete">發送(%1$s)</string>
+    <string name="ys__sort">Sort</string>
+    <string-array name="ys__sorting_types">
+        <item>通過名字，正序</item>
+        <item>通過名字, 倒序</item>
+        <item>通過大小, 正序</item>
+        <item>通過大小, 倒序</item>
+        <item>通過日期, 正序</item>
+        <item>通過日期, 倒序</item>
+    </string-array>
+    <string name="im_file_select_count">已選擇%1$s个文件</string>
+    <string name="long_as_one_can_multiple_files">長按其中一項可以多選文件哦</string>
+    <!--IM文件选择器-->
+    <string-array name="ys__size_units">
+        <item>B</item>
+        <item>KB</item>
+        <item>MB</item>
+        <item>GB</item>
+        <item>TB</item>
+        <item>PB</item>
+    </string-array>
+    <string name="file_preview">文件預覽</string>
+    <string name="open_another_application">用其他應用打開</string>
+    <string name="no_file_open">文件不能打開，請下載相關軟件</string>
+    <string name="update_file_message">更新文件消息</string>
+    <string name="group_chat_invitation_confirmation">群聊邀請確認</string>
+    <string name="group_initation_list">邀請確認列表</string>
+    <string name="initation_list">邀請列表</string>
 </resources>

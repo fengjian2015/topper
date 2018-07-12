@@ -64,26 +64,42 @@ public class GroupMemberActivity extends BaseActivity {
     }
 
     private void setGroupMember(boolean isFirst) {
-        mList.clear();
-        //是群主添加兩個
-        if (isOwner()) {
-            mList.add(new RoomMemberInfo());
+        new GetMember(isFirst).run();
+
+    }
+
+    class GetMember implements Runnable {
+        private boolean isFirst;
+        public GetMember(boolean isFirst){
+            this.isFirst=isFirst;
         }
-        mList.add(new RoomMemberInfo());
-        mList.addAll(mDBRoomMember.queryAllRequest(roomId));
-        if (isFirst) {
-            mAdapter = new GroupDetailsMemberAdapter(this, mList, roomId, mMgr, mDBRoomManage,mDBRoomMember);
-            mPartnerDetialGridview.setAdapter(mAdapter);
-            new GroupPresenter(this).selectGroupMember(Integer.parseInt(roomId), mDBRoomMember, true, mDBRoomManage, mMgr, new GroupPresenter.CallBack() {
+        @Override
+        public void run() {
+            mList.clear();
+            //是群主添加兩個
+            if (isOwner()) {
+                mList.add(new RoomMemberInfo());
+            }
+            mList.add(new RoomMemberInfo());
+            mList.addAll(mDBRoomMember.queryAllRequest(roomId));
+            GroupMemberActivity.this.runOnUiThread(new Runnable() {
                 @Override
-                public void send() {
-                    EventBus.getDefault().post(new MessageEvent(getString(R.string.refresh_group_members)));
+                public void run() {
+                    if (isFirst) {
+                        mAdapter = new GroupDetailsMemberAdapter(GroupMemberActivity.this, mList, roomId, mMgr, mDBRoomManage,mDBRoomMember);
+                        mPartnerDetialGridview.setAdapter(mAdapter);
+//            new GroupPresenter(this).selectGroupMember(Integer.parseInt(roomId), mDBRoomMember, true, mDBRoomManage, mMgr, new GroupPresenter.CallBack() {
+//                @Override
+//                public void send() {
+//                    EventBus.getDefault().post(new MessageEvent(getString(R.string.refresh_group_members)));
+//                }
+//            });
+                    } else {
+                        mAdapter.notifyDataSetChanged();
+                    }
                 }
             });
-        } else {
-            mAdapter.notifyDataSetChanged();
         }
-
     }
 
     //接受通知

@@ -360,6 +360,16 @@ public class DBManager {
         }
     }
 
+    public void updateVoice(String id,String voice) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            ContentValues values = new ContentValues();
+            values.put("voice", voice);
+            db.update("MessageRecord", values, "msgId=?", new String[]{id + ""});
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
+    }
+
     public String findLastMessageConversation(String roomid) {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
@@ -837,6 +847,7 @@ public class DBManager {
             DatabaseManager.getInstance().closeWritableDatabase();
         }
     }
+
 
     public void updataConversationDraft(String user, String draft) {
         synchronized (lock) {

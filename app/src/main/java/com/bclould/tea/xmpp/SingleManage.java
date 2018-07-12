@@ -260,6 +260,12 @@ public class SingleManage implements Room {
     }
 
     @Override
+    public void transmitFile(MessageInfo messageInfo){
+        MessageInfo messageInfo1 = sendFileMessage(messageInfo.getMessage(), messageInfo.getContent(), messageInfo.getKey(), messageInfo.getTitle(),messageInfo.getCount());
+        sendFileAfterMessage(messageInfo1.getKey(),messageInfo.getId(),messageInfo.getMsgId(),messageInfo.getCreateTime(),messageInfo.getTitle(),messageInfo.getCount(),messageInfo.getContent());
+    }
+
+    @Override
     public void anewUploadFile(MessageInfo messageInfo){
         mMgr.deleteSingleMessage(mUser, messageInfo.getId() + "");
         uploadFile(messageInfo.getMessage());
@@ -315,6 +321,7 @@ public class SingleManage implements Room {
         try {
             messageInfo.setUsername(mUser);
             messageInfo.setMessage(path);
+            messageInfo.setVoice(path);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date curDate = new Date(System.currentTimeMillis());
             String time = formatter.format(curDate);
@@ -340,6 +347,7 @@ public class SingleManage implements Room {
             Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
             messageInfo.setUsername(mUser);
             messageInfo.setMessage(path);
+            messageInfo.setVoice(path);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date curDate = new Date(System.currentTimeMillis());
             String time = formatter.format(curDate);

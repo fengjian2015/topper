@@ -44,12 +44,14 @@ import static com.bclould.tea.ui.activity.SelectConversationActivity.IMAGE_TYPE;
 import static com.bclould.tea.ui.activity.SelectConversationActivity.TEXT_PLAIN;
 import static com.bclould.tea.ui.activity.SelectConversationActivity.VIDEO_TYPE;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_CARD_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_FILE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_GUESS_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_IMG_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_LINK_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_TEXT_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_VIDEO_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_CARD_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.TO_FILE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_GUESS_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_IMG_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_LINK_MSG;
@@ -257,6 +259,16 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
                 }
                 ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_success));
                 close();
+            }else if(msgType==FROM_FILE_MSG||msgType==TO_FILE_MSG){
+                if(messageInfo.getVoice()!=null&&!messageInfo.getVoice().startsWith("http")){
+                    mRoom.uploadFile(messageInfo.getVoice());
+                }else if (messageInfo.getMessage().startsWith("http")) {
+                    mRoom.transmitFile(messageInfo);
+                } else {
+                    mRoom.uploadFile(messageInfo.getMessage());
+                }
+                ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_success));
+                SelectFriendActivity.this.finish();
             }
         } else if (type == 2) {
             if (TO_CARD_MSG == msgType || msgType == FROM_CARD_MSG) {

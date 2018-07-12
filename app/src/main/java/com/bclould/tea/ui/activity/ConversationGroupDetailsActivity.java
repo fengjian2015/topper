@@ -89,6 +89,12 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     ImageView mIsAllowModifyData;
     @Bind(R.id.rl_allow_modify_data)
     RelativeLayout mRlAllowModifyData;
+    @Bind(R.id.rl_review)
+    RelativeLayout mRlReview;
+    @Bind(R.id.is_review)
+    ImageView mIsReview;
+    @Bind(R.id.rl_review_list)
+    RelativeLayout mRlReviewList;
 
     private GroupDetailsMemberAdapter mAdapter;
     private List<RoomMemberInfo> mList = new ArrayList<>();
@@ -152,17 +158,33 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         setGroupImage();
         setGroupAnnouncement();
         setAllowModify();
+        setIsReview();
+    }
+
+    private void setIsReview() {
+        if (isOwner()) {
+            mRlReview.setVisibility(View.VISIBLE);
+            mRlReviewList.setVisibility(View.VISIBLE);
+            if (mDBRoomManage.findRoomisReview(roomId) == 1) {
+                mIsReview.setSelected(true);
+            } else {
+                mIsReview.setSelected(false);
+            }
+        } else {
+            mRlReview.setVisibility(View.GONE);
+            mRlReviewList.setVisibility(View.GONE);
+        }
     }
 
     private void setAllowModify() {
-        if(isOwner()){
+        if (isOwner()) {
             mRlAllowModifyData.setVisibility(View.VISIBLE);
             if (mDBRoomManage.findRoomAllowModify(roomId) == 1) {
                 mIsAllowModifyData.setSelected(true);
             } else {
                 mIsAllowModifyData.setSelected(false);
             }
-        }else{
+        } else {
             mRlAllowModifyData.setVisibility(View.GONE);
         }
     }
@@ -201,41 +223,58 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     }
 
     private void setGroupMember(boolean isFirst) {
-        mList.clear();
-        //是群主添加兩個
-        if (isOwner()) {
-            mList.add(new RoomMemberInfo());
-        }
-        mList.add(new RoomMemberInfo());
-        mList.addAll(mDBRoomMember.queryAllRequest(roomId));
-        if (isOwner()) {
-            mTvMemberNumber.setText(getString(R.string.group_member) + "(" + (mList.size() - 2) + "/" + mDBRoomManage.findRoomNumber(roomId) + ")");
-        } else {
-            mTvMemberNumber.setText(getString(R.string.group_member) + "(" + (mList.size() - 1) + "/" + mDBRoomManage.findRoomNumber(roomId) + ")");
-        }
-        if (mList.size() > 6) {
-            List<RoomMemberInfo> memberInfoListView = new ArrayList<>();
-            memberInfoListView.addAll(mList.subList(0, 6));
-            mList.clear();
-            mList.addAll(memberInfoListView);
-        }
-        if (isFirst) {
-            mAdapter = new GroupDetailsMemberAdapter(this, mList, roomId, mMgr, mDBRoomManage, mDBRoomMember);
-            mPartnerDetialGridview.setAdapter(mAdapter);
-            new GroupPresenter(this).selectGroupMember(Integer.parseInt(roomId), mDBRoomMember, true, mDBRoomManage, mMgr, new CallBack() {
-                @Override
-                public void send() {
-                    initView();
-                    EventBus.getDefault().post(new MessageEvent(getString(R.string.refresh_group_members)));
-                    MessageEvent messageEvent = new MessageEvent(getString(R.string.refresh_group_room));
-                    messageEvent.setId(roomId);
-                    EventBus.getDefault().post(messageEvent);
-                }
-            });
-        } else {
-            mAdapter.notifyDataSetChanged();
+        new GetMember(isFirst).run();
+
+    }
+
+    class GetMember implements Runnable {
+        private boolean isFirst;
+
+        public GetMember(boolean isFirst) {
+            this.isFirst = isFirst;
         }
 
+        @Override
+        public void run() {
+            mList.clear();
+            //是群主添加兩個
+            if (isOwner()) {
+                mList.add(new RoomMemberInfo());
+            }
+            mList.add(new RoomMemberInfo());
+            mList.addAll(mDBRoomMember.queryAllRequest(roomId));
+            if (isOwner()) {
+                mTvMemberNumber.setText(getString(R.string.group_member) + "(" + (mList.size() - 2) + "/" + mDBRoomManage.findRoomNumber(roomId) + ")");
+            } else {
+                mTvMemberNumber.setText(getString(R.string.group_member) + "(" + (mList.size() - 1) + "/" + mDBRoomManage.findRoomNumber(roomId) + ")");
+            }
+            if (mList.size() > 6) {
+                List<RoomMemberInfo> memberInfoListView = new ArrayList<>();
+                memberInfoListView.addAll(mList.subList(0, 6));
+                mList.clear();
+                mList.addAll(memberInfoListView);
+            }
+            ConversationGroupDetailsActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (isFirst) {
+                        mAdapter = new GroupDetailsMemberAdapter(ConversationGroupDetailsActivity.this, mList, roomId, mMgr, mDBRoomManage, mDBRoomMember);
+                        mPartnerDetialGridview.setAdapter(mAdapter);
+                        new GroupPresenter(ConversationGroupDetailsActivity.this).selectGroupMember(Integer.parseInt(roomId), mDBRoomMember, true, mDBRoomManage, mMgr, new CallBack() {
+                            @Override
+                            public void send() {
+                                initView();
+                                MessageEvent messageEvent = new MessageEvent(getString(R.string.refresh_group_room));
+                                messageEvent.setId(roomId);
+                                EventBus.getDefault().post(messageEvent);
+                            }
+                        });
+                    } else {
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
+        }
     }
 
     private void setGroupName() {
@@ -257,7 +296,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     }
 
     @OnClick({R.id.bark, R.id.on_off_message_free, R.id.on_off_top, R.id.rl_empty_talk, R.id.btn_brak, R.id.rl_group_qr, R.id.rl_group_name, R.id.rl_member_name, R.id.rl_group_management, R.id.rl_looking_chat
-            , R.id.rl_group_image, R.id.rl_go_memberlist, R.id.rl_announcement, R.id.is_allow_modify_data})
+            , R.id.rl_group_image, R.id.rl_go_memberlist, R.id.rl_announcement, R.id.is_allow_modify_data, R.id.is_review,R.id.rl_review_list})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -310,15 +349,51 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
             case R.id.is_allow_modify_data:
                 changeAllowModify();
                 break;
+            case R.id.is_review:
+                changeReview();
+                break;
+            case R.id.rl_review_list:
+                goReviewList();
+                break;
         }
     }
 
+    private void goReviewList() {
+        Intent intent=new Intent(this,ReviewListActivity.class);
+        intent.putExtra("roomId",roomId);
+        startActivity(intent);
+    }
+
+    private void changeReview() {
+        int isReview = 0;
+        if (mDBRoomManage.findRoomisReview(roomId) == 0) {
+            isReview = 1;
+        }
+        new GroupPresenter(this).setIsReview(Integer.parseInt(roomId), isReview, new GroupPresenter.CallBack1() {
+            @Override
+            public void send(GroupInfo baseInfo) {
+                mDBRoomManage.updateIsReview(roomId, baseInfo.getIs_allow_modify_data());
+                setIsReview();
+            }
+
+            @Override
+            public void error() {
+
+            }
+
+            @Override
+            public void finishRefresh() {
+
+            }
+        });
+    }
+
     private void changeAllowModify() {
-        int is_allow_modify_data=0;
-        if(mDBRoomManage.findRoomAllowModify(roomId)==0) {
+        int is_allow_modify_data = 0;
+        if (mDBRoomManage.findRoomAllowModify(roomId) == 0) {
             is_allow_modify_data = 1;
         }
-        new GroupPresenter(this).setAllowModifyt(Integer.parseInt(roomId),is_allow_modify_data, new GroupPresenter.CallBack1() {
+        new GroupPresenter(this).setAllowModifyt(Integer.parseInt(roomId), is_allow_modify_data, new GroupPresenter.CallBack1() {
             @Override
             public void send(GroupInfo baseInfo) {
                 mDBRoomManage.updateAllowModify(roomId, baseInfo.getIs_allow_modify_data());
@@ -379,7 +454,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                     case 2:
                         menu.dismiss();
                         Intent intent = new Intent(ConversationGroupDetailsActivity.this, SerchImageActivity.class);
-                        intent.putExtra("type",TYPE_GROUP);
+                        intent.putExtra("type", TYPE_GROUP);
                         startActivity(intent);
                         break;
                 }
@@ -479,13 +554,13 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
             if (roomId.equals(event.getId())) {
                 finish();
             }
-        } else if (msg.equals(getString(R.string.refresh_group_members))) {
-            initView();
-            setGroupMember(false);
         } else if (msg.equals(getString(R.string.my_nickname_group))) {
             setMemberName();
         } else if (msg.equals(getString(R.string.modify_group_name))) {
             setGroupName();
+        } else if (msg.equals(getString(R.string.refresh_group_members))) {
+            initView();
+            setGroupMember(false);
         } else if (msg.equals(getString(R.string.refresh_group_room))) {
             if (roomId.equals(event.getId())) {
                 initView();

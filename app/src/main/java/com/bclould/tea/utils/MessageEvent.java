@@ -21,6 +21,15 @@ public class MessageEvent {
     private String filtrate;
     private int number;
     private String name;
+    private String filepath;
+
+    public String getFilepath() {
+        return filepath;
+    }
+
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
+    }
 
     public String getName() {
         return name;

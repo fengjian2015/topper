@@ -1,0 +1,299 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <FrameLayout
+        android:id="@+id/headers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <RelativeLayout
+            android:id="@+id/header1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y96"
+            android:background="@color/white">
+
+            <!--android:background="@drawable/ys__header_buttons_selector"-->
+
+            <ImageView
+                android:id="@+id/menu_to_pre1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/icon_nav_return"
+                android:padding="@dimen/x20"
+                />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_marginRight="@dimen/x32"
+                android:layout_toRightOf="@id/menu_to_pre1"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/current_location"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/gray3"
+                android:textSize="12sp" />
+
+            <!--<ImageButton
+                android:id="@+id/menu_cancel1"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/selector_back_press"
+                android:scaleType="center"
+                android:src="?attr/ys__ic_action_cancel" />-->
+            <TextView
+                android:id="@+id/menu_cancel1"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/y96"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:paddingLeft="@dimen/x20"
+                android:paddingRight="@dimen/x20"
+                android:text="@string/cancel"
+                android:textColor="@color/gray3"
+                android:textSize="@dimen/x36" />
+
+            <View
+                android:layout_alignParentBottom="true"
+                android:id="@+id/xx"
+                style="@style/HCutOffRule"
+                android:layout_below="@+id/rl_title"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/header2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y96"
+            android:background="@color/white"
+            android:visibility="gone"
+            >
+
+            <com.bclould.tea.ui.widget.TextViewDoubleClickable
+                android:id="@+id/tv_choosemode"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/choose_files"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x40" />
+
+            <!--原来↓android:background="@drawable/ys__header_buttons_selector"-->
+            <!--<ImageButton
+                android:id="@+id/menu_ok2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/selector_back_press"
+                android:contentDescription="@android:string/ok"
+                android:scaleType="center"
+                android:src="?attr/ys__ic_action_ok" />-->
+
+            <ImageView
+                android:id="@+id/menu_to_pre2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/icon_nav_return"
+                android:padding="@dimen/x20"/>
+
+            <TextView
+                android:id="@+id/title2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_toRightOf="@id/menu_to_pre2"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="已选择0个文件"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:visibility="invisible" />
+
+            <!--android:background="@drawable/ys__header_buttons_selector"-->
+            <!--<ImageButton
+                android:id="@+id/menu_cancel2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/selector_back_press"
+                android:contentDescription="@android:string/cancel"
+                android:scaleType="center"
+                android:src="?attr/ys__ic_action_cancel" />-->
+
+            <TextView
+                android:id="@+id/menu_cancel2"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/y96"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:contentDescription="@android:string/cancel"
+                android:gravity="center"
+                android:paddingLeft="@dimen/x20"
+                android:paddingRight="@dimen/x20"
+                android:text="@string/cancel"
+                android:textColor="@color/gray3"
+                android:textSize="@dimen/x36" />
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="1px"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/menu_cancel2"
+                android:background="@color/white"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/menu_invert"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@id/view1"
+                android:background="@drawable/header_buttons_selector"
+                android:contentDescription="@string/action_invert_selection"
+                android:scaleType="center"
+                 />
+
+            <ImageButton
+                android:id="@+id/menu_deselect"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@id/menu_invert"
+                android:background="@drawable/header_buttons_selector"
+                android:contentDescription="@string/action_deselect"
+                android:scaleType="center"
+                 />
+
+            <ImageButton
+                android:id="@+id/menu_select_all"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@id/menu_deselect"
+                android:background="@drawable/header_buttons_selector"
+                android:contentDescription="@string/action_select_all"
+                android:scaleType="center"
+                />
+
+            <ImageButton
+                android:id="@+id/menu_sort2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@id/menu_select_all"
+                android:background="@drawable/header_buttons_selector"
+                android:contentDescription="Sort"
+                android:scaleType="center"
+                />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/menu_to_pre2"
+                android:background="@color/white"
+                android:visibility="invisible" />
+
+            <View
+                android:background="#aa5d5d5d"
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+        </RelativeLayout>
+    </FrameLayout>
+    <!--<View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="48dp"
+        android:background="@color/ys__header_line_color" />-->
+
+    <FrameLayout
+        android:id="@+id/fl_footer_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_gravity="top"
+            style="@style/HCutOffRule"
+            android:layout_below="@+id/rl_title"/>
+
+        <TextView
+            android:id="@+id/tv_size_sum"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            android:gravity="center"
+            android:text="@string/im_file_select_size_sum"
+            android:textColor="@color/gray3"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="78dp"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/send_button_shape"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="13dp"
+            android:paddingRight="13dp"
+            android:paddingTop="10dp"
+            android:text="@string/send_complete"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+
+    </FrameLayout>
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/fl_footer_bar"
+        android:layout_below="@id/headers"
+        tools:listitem="@layout/ys__list_item" />
+
+    <GridView
+        android:id="@+id/gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/fl_footer_bar"
+        android:layout_below="@id/headers"
+        android:columnWidth="64dp"
+        android:horizontalSpacing="4dp"
+        android:numColumns="4"
+        android:verticalSpacing="15dp"
+        android:visibility="gone"
+        tools:listitem="@layout/ys__grid_item" />
+
+</RelativeLayout>

@@ -142,17 +142,21 @@ public class VersionsUpdateActivity extends BaseActivity {
 
     FileDownloadPresenter.downloadCallback mDownloadCallback = new FileDownloadPresenter.downloadCallback() {
         @Override
-        public void onSuccess(File file) {
+        public void onSuccess(File file,String key) {
+            if(!Constants.NEW_APK_KEY.equals(key))return;
+            UtilTool.install(VersionsUpdateActivity.this, file);
             mHandler.sendEmptyMessage(2);
         }
 
         @Override
-        public void onFailure() {
+        public void onFailure(String key) {
+            if(!Constants.NEW_APK_KEY.equals(key))return;
             mHandler.sendEmptyMessage(1);
         }
 
         @Override
-        public void onSuccsetProgressListeneress(long currentSize, long totalSize) {
+        public void onSuccsetProgressListeneress(long currentSize, long totalSize,String key) {
+            if(!Constants.NEW_APK_KEY.equals(key))return;
             if (!mFile.exists()) {
                 MySharedPreferences.getInstance().setLong(Constants.NEW_APK_KEY, totalSize);
             }else {

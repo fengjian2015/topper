@@ -14,6 +14,7 @@ import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.GroupCreateInfo;
 import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.GroupMemberInfo;
+import com.bclould.tea.model.ReviewInfo;
 import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.network.RetrofitUtil;
@@ -162,28 +163,12 @@ public class GroupPresenter {
                             new Thread(){
                                 @Override
                                 public void run() {
-                                    mDBRoomMember.deleteAllRoomMember();
                                     List<ConversationInfo> list = dbManager.queryConversationGroup();
-                                    for(int j=0;j<baseInfo.getData().size();j++){
-                                        GroupInfo.DataBean dataBean = baseInfo.getData().get(j);
-                                        RoomManageInfo roomManageInfo = new RoomManageInfo();
-                                        roomManageInfo.setRoomName(dataBean.getName());
-                                        roomManageInfo.setRoomId(dataBean.getId() + "");
-                                        roomManageInfo.setOwner(dataBean.getToco_id());
-                                        roomManageInfo.setRoomNumber(dataBean.getMax_people());
-                                        roomManageInfo.setRoomImage(dataBean.getLogo());
-                                        roomManageInfo.setDescription(dataBean.getDescription());
-                                        roomManageInfo.setIsRefresh(1);
-                                        roomManageInfo.setAllowModify(dataBean.getIs_allow_modify_data());
-                                        mDBRoomManage.addRoom(roomManageInfo);
-                                    }
-                                    mDBRoomManage.deleteOldRoom();
-                                    mDBRoomManage.updateIsRefresh(baseInfo.getData());
+                                    RoomMemberManage.getInstance().addRoomManage(baseInfo.getData());
                                     RoomMemberManage.getInstance().addRoomMember(baseInfo.getData());
                                     for (ConversationInfo conversationInfo : list) {
                                         boolean isExist = false;
-                                        A:
-                                        for (GroupInfo.DataBean dataBean : baseInfo.getData()) {
+                                        A: for (GroupInfo.DataBean dataBean : baseInfo.getData()) {
                                             if (conversationInfo.getUser().equals(dataBean.getId() + "")) {
                                                 dbManager.updateConversationName(dataBean.getId()+"",dataBean.getName());
                                                 isExist = true;
@@ -299,19 +284,23 @@ public class GroupPresenter {
                                     roomManageInfo.setRoomNumber(baseInfo.getData().getMax_people());
                                     roomManageInfo.setDescription(baseInfo.getData().getDescription());
                                     roomManageInfo.setAllowModify(baseInfo.getData().getIs_allow_modify_data());
+                                    roomManageInfo.setIsReview(baseInfo.getData().getIs_review());
                                     mdbRoomManage.addRoom(roomManageInfo);
-                                    dbRoomMember.deleteRoom(group_id + "");
+                                    dbRoomMember.deleteRoom(group_id+"");
                                     dbRoomMember.addRoomMember(baseInfo.getData().getUsers(), group_id + "");
                                     if (manager.findConversation(group_id + "")) {
                                         manager.updateConversationFriend(group_id + "", baseInfo.getData().getName());
                                     }
-
-                                    ((Activity)mContext).runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            callBack.send();
-                                        }
-                                    });
+                                    if(mContext instanceof Activity) {
+                                        ((Activity) mContext).runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                callBack.send();
+                                            }
+                                        });
+                                    }else{
+                                        callBack.send();
+                                    }
                                 }
                             }.start();
                         }
@@ -600,6 +589,121 @@ public class GroupPresenter {
                 });
     }
 
+    public void setIsReview(final int group_id,final int isReview, final CallBack1 callBack) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .setIsReview(UtilTool.getToken(), group_id,isReview)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<GroupInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(GroupInfo baseInfo) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            baseInfo.setIs_allow_modify_data(isReview);
+                            callBack.send(baseInfo);
+                            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.xg_succeed));
+                        } else {
+                            ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void getReviewList(final int group_id, final CallBack3 callBack) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .getReviewList(UtilTool.getToken(), group_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<ReviewInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(ReviewInfo reviewInfo) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        if (reviewInfo.getStatus() == 1) {
+                            callBack.send(reviewInfo);
+                        } else {
+                            ToastShow.showToast2((Activity) mContext, reviewInfo.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        callBack.error();
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void setReview(final int group_id,final int status,final String toco_id, final CallBack callBack) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .setReview(UtilTool.getToken(), group_id,status,toco_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            callBack.send();
+                            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.send_request_succeed));
+                        } else {
+                            ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     //定义接口
     public interface CallBack {
         void send();
@@ -615,5 +719,11 @@ public class GroupPresenter {
     //定义接口
     public interface CallBack2 {
         void send(String group_id);
+    }
+
+    //定义接口
+    public interface CallBack3 {
+        void send(ReviewInfo baseInfo);
+        void error();
     }
 }

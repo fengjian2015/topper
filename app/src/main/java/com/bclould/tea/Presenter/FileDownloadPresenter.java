@@ -59,7 +59,7 @@ public class FileDownloadPresenter {
         get.setProgressListener(new OSSProgressCallback<GetObjectRequest>() {
             @Override
             public void onProgress(GetObjectRequest request, long currentSize, long totalSize) {
-                onSuccsetProgressListeneress(currentSize, totalSize);
+                onSuccsetProgressListeneress(currentSize, totalSize,key);
             }
         });
 
@@ -102,17 +102,17 @@ public class FileDownloadPresenter {
                     e.printStackTrace();
                 }
                 UtilTool.Log("下載apk", "下載成功");
-                if (file.length() == MySharedPreferences.getInstance().getLong(Constants.NEW_APK_KEY)) {
-                    onFinish(file);
-                    UtilTool.install(sContext, file);
+                if (file.length() == MySharedPreferences.getInstance().getLong(key)) {
+                    onFinish(file,key);
+
                 } else {
-                    onError();
+                    onError(key);
                 }
             }
 
             @Override
             public void onFailure(GetObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
-                onError();
+                onError(key);
                 // 请求异常
                 if (clientExcepion != null) {
                     // 本地异常如网络异常等
@@ -141,30 +141,30 @@ public class FileDownloadPresenter {
         }
     }
 
-    private void onFinish(File file) {
+    private void onFinish(File file,String key) {
         for (downloadCallback downloadCallback : mListeners) {
-            downloadCallback.onSuccess(file);
+            downloadCallback.onSuccess(file,key);
         }
     }
 
-    private void onError() {
+    private void onError(String key) {
         for (downloadCallback downloadCallback : mListeners) {
-            downloadCallback.onFailure();
+            downloadCallback.onFailure(key);
         }
     }
 
-    private void onSuccsetProgressListeneress(long currentSize, long totalSize) {
+    private void onSuccsetProgressListeneress(long currentSize, long totalSize,String key) {
         for (downloadCallback downloadCallback : mListeners) {
-            downloadCallback.onSuccsetProgressListeneress(currentSize, totalSize);
+            downloadCallback.onSuccsetProgressListeneress(currentSize, totalSize,key);
         }
     }
 
     //定义接口
     public interface downloadCallback {
-        void onSuccess(File file);
+        void onSuccess(File file,String key);
 
-        void onFailure();
+        void onFailure(String key);
 
-        void onSuccsetProgressListeneress(long currentSize, long totalSize);
+        void onSuccsetProgressListeneress(long currentSize, long totalSize,String key);
     }
 }

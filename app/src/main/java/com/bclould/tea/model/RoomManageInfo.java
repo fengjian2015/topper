@@ -14,6 +14,15 @@ public class RoomManageInfo {
     private String description;
     private int isRefresh;
     private int allowModify;
+    private int isReview;
+
+    public int getIsReview() {
+        return isReview;
+    }
+
+    public void setIsReview(int isReview) {
+        this.isReview = isReview;
+    }
 
     public int getAllowModify() {
         return allowModify;

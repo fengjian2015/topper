@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bright_foreground_disabled_material_dark"
+    android:clickable="true"
+    android:padding="5dp"
+    android:gravity="center"
+    android:text="@string/long_as_one_can_multiple_files"
+    android:textColor="@color/gray3"
+    android:textSize="12sp" />

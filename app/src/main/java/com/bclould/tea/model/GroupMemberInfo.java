@@ -62,7 +62,16 @@ public class GroupMemberInfo {
         private String logo;
         private int max_people;
         private int is_allow_modify_data;
+        private int is_review;
         private List<UsersBean> users;
+
+        public int getIs_review() {
+            return is_review;
+        }
+
+        public void setIs_review(int is_review) {
+            this.is_review = is_review;
+        }
 
         public int getIs_allow_modify_data() {
             return is_allow_modify_data;

@@ -12,6 +12,15 @@ public class RoomMemberInfo {
     private String remark;
     private String my_user;
     private String roomId;
+    private int isRefresh;
+
+    public int getIsRefresh() {
+        return isRefresh;
+    }
+
+    public void setIsRefresh(int isRefresh) {
+        this.isRefresh = isRefresh;
+    }
 
     public int getId() {
         return id;

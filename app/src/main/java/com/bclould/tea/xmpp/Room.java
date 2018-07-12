@@ -33,4 +33,5 @@ public interface Room {
     void sendATMessage(String message,Map<String, String> atMap);
     void uploadFile(String path);
     void anewUploadFile(MessageInfo messageInfo);
+    void transmitFile(MessageInfo messageInfo);
 }

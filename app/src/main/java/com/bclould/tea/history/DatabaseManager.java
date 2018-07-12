@@ -57,7 +57,7 @@ public class DatabaseManager {
             try {
                 if (mWritableOpenCounter.decrementAndGet() == 0) {
                     handler.removeMessages(1);
-                    handler.sendEmptyMessageDelayed(1,5000);
+                    handler.sendEmptyMessageDelayed(1,6*1000);
                 }else {
                     handler.removeMessages(1);
                 }

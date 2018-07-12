@@ -39,6 +39,7 @@ import com.bclould.tea.model.QuestionInfo;
 import com.bclould.tea.model.ReceiptInfo;
 import com.bclould.tea.model.RedRecordInfo;
 import com.bclould.tea.model.RemarkListInfo;
+import com.bclould.tea.model.ReviewInfo;
 import com.bclould.tea.model.ReviewListInfo;
 import com.bclould.tea.model.StateInfo;
 import com.bclould.tea.model.TransRecordInfo;
@@ -1257,6 +1258,35 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("group_id") int group_id,
             @Field("is_allow_modify_data") int is_allow_modify_data
+
+    );
+    //修改群是否要審核
+    @FormUrlEncoded
+    @POST("chat/room/is_review")
+    Observable<GroupInfo> setIsReview(
+            @Header("Authorization") String token,
+            @Field("group_id") int group_id,
+            @Field("is_review") int is_review
+
+    );
+
+    //獲取群邀請列表
+    @FormUrlEncoded
+    @POST("chat/room/review/list")
+    Observable<ReviewInfo> getReviewList(
+            @Header("Authorization") String token,
+            @Field("group_id") int group_id
+
+    );
+
+    //群主同意/拒絕加群
+    @FormUrlEncoded
+    @POST("chat/room/add/update_status")
+    Observable<BaseInfo> setReview(
+            @Header("Authorization") String token,
+            @Field("group_id") int group_id,
+            @Field("status") int status,
+            @Field("toco_id") String toco_id
 
     );
 }

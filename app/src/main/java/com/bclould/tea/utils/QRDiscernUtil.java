@@ -62,34 +62,38 @@ public class QRDiscernUtil {
     }
 
     public void discernQR(final String url){
-        this.url=url;
-        new Thread(){
-            @Override
-            public void run() {
-                Bitmap obmp= BitmapFactory.decodeFile(getImgPathFromCache(url));
-                int width = obmp.getWidth();
-                int height = obmp.getHeight();
-                int[] data = new int[width * height];
-                obmp.getPixels(data, 0, width, 0, 0, width, height);
-                RGBLuminanceSource source = new RGBLuminanceSource(width, height, data);
-                BinaryBitmap bitmap1 = new BinaryBitmap(new HybridBinarizer(source));
-                QRCodeReader reader = new QRCodeReader();
-                try {
-                    re = reader.decode(bitmap1);
-                } catch (Exception e) {
-                    e.printStackTrace();
+        try {
+            this.url=url;
+            new Thread(){
+                @Override
+                public void run() {
+                    Bitmap obmp= BitmapFactory.decodeFile(getImgPathFromCache(url));
+                    int width = obmp.getWidth();
+                    int height = obmp.getHeight();
+                    int[] data = new int[width * height];
+                    obmp.getPixels(data, 0, width, 0, 0, width, height);
+                    RGBLuminanceSource source = new RGBLuminanceSource(width, height, data);
+                    BinaryBitmap bitmap1 = new BinaryBitmap(new HybridBinarizer(source));
+                    QRCodeReader reader = new QRCodeReader();
+                    try {
+                        re = reader.decode(bitmap1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    Message message=new Message();
+                    message.what=1;
+                    if (re != null) {
+                        UtilTool.Log("fengjian","有二維碼"+re.toString());
+                        message.obj=true;
+                    }else {
+                        message.obj=false;
+                    }
+                    mHandler.sendMessage(message);
                 }
-                Message message=new Message();
-                message.what=1;
-                if (re != null) {
-                    UtilTool.Log("fengjian","有二維碼"+re.toString());
-                    message.obj=true;
-                }else {
-                    message.obj=false;
-                }
-                mHandler.sendMessage(message);
-            }
-        }.start();
+            }.start();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -1,7 +1,9 @@
 package com.bclould.tea.ui.activity;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -28,8 +30,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
@@ -37,14 +37,9 @@ import com.bclould.tea.ui.widget.VirtualKeyboardView;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Map;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -79,7 +74,20 @@ public class HTMLActivity extends BaseActivity {
         setContentView(R.layout.activity_html);
         ButterKnife.bind(this);
         MyApp.getInstance().app().addActivity(this);
+        OutsideCalls();
         init();
+    }
+
+    private void OutsideCalls(){
+        Intent intent = getIntent();
+        Uri uri = intent.getData();
+        html5Url = uri.getQueryParameter("url");
+        if (!UtilTool.checkLinkedExe(html5Url)) {
+            html5Url = "http://" + html5Url;
+        }
+        if(!StringUtils.isEmpty(html5Url)){
+            showPWDialog();
+        }
     }
 
     private void init() {

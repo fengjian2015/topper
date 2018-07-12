@@ -42,6 +42,9 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.crypto.otr.OtrChatListenerManager;
+import com.bclould.tea.filepicker.YsFilePicker;
+import com.bclould.tea.filepicker.YsFilePickerActivity;
+import com.bclould.tea.filepicker.YsFilePickerParcelObject;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
@@ -663,6 +666,17 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
             if (roomId.equals(event.getId())){
                 finish();
             }
+        }else if(msg.equals(getString(R.string.update_file_message))){
+            changeMsgFile(event.getId(),event.getFilepath());
+        }
+    }
+
+    private void changeMsgFile(String msgId, String filepath){
+        for (MessageInfo info : mMessageList) {
+            if (info.getMsgId().equals(msgId)) {
+                info.setVoice(filepath);
+                mChatAdapter.notifyItemChanged(mMessageList.indexOf(info));
+            }
         }
     }
 
@@ -723,12 +737,24 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == FILE_SELECT_CODE) {
-                //如果是文件选择模式，需要获取选择的所有文件的路径集合
-                List<String> list = data.getStringArrayListExtra("paths");
-                Toast.makeText(getApplicationContext(), "选中了" + list.size() + "个文件", Toast.LENGTH_SHORT).show();
-                for(String path:list){
-                    roomManage.uploadFile(path);
+                if (data != null) {
+                    YsFilePickerParcelObject object = (YsFilePickerParcelObject) data.getParcelableExtra(YsFilePickerParcelObject.class.getCanonicalName());
+                    if (object.count > 0 && object.count <= 1) {
+                        String path = object.path + object.names.get(0);
+                        roomManage.uploadFile(path);
+                    } else if (object.count > 1) {
+                        for (int i = 0; i < object.count; i++) {
+                            String path = object.path + object.names.get(i);
+                            roomManage.uploadFile(path);
+                        }
+                    }
                 }
+
+//                //如果是文件选择模式，需要获取选择的所有文件的路径集合
+//                List<String> list = data.getStringArrayListExtra("paths");
+//                for(String path:list){
+//                    roomManage.uploadFile(path);
+//                }
             } else if (requestCode == PictureConfig.CHOOSE_REQUEST) {
                 selectList = PictureSelector.obtainMultipleResult(data);
                 if (selectList.size() != 0) {
@@ -786,29 +812,18 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
 
     //调用文件选择软件来选择文件
     private void showFileChooser() {
-////        if (Build.VERSION.SDK_INT >= 24) {
-//            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            intent.setType("*/*");
-//            intent.addCategory(Intent.CATEGORY_OPENABLE);
-//            try {
-//                startActivityForResult(Intent.createChooser(intent, getString(R.string.selector_file)), FILE_SELECT_CODE);
-//            } catch (ActivityNotFoundException ex) {
-//                Toast.makeText(this, getString(R.string.toast_install_file_manage), Toast.LENGTH_SHORT).show();
-//            }
-////        } else {
-////
-////        }
-        new LFilePicker()
-                .withActivity(ConversationActivity.this)
-                .withRequestCode(FILE_SELECT_CODE)
-                .withStartPath( Environment.getExternalStorageDirectory().getAbsolutePath())//指定初始显示路径
-                .withIsGreater(false)//过滤文件大小 小于指定大小的文件
-                .withFileSize(10*1024 * 1024)//指定文件大小为500K
-                .withMaxNum(10)
-                .withMutilyMode(true)
-                .start();
-
+//        new LFilePicker()
+//                .withActivity(ConversationActivity.this)
+//                .withRequestCode(FILE_SELECT_CODE)
+//                .withStartPath( Environment.getExternalStorageDirectory().getAbsolutePath())//指定初始显示路径
+//                .withIsGreater(false)//过滤文件大小 小于指定大小的文件
+//                .withFileSize(10*1024 * 1024)//指定文件大小为10兆
+//                .withMaxNum(10)
+//                .withMutilyMode(true)
+//                .start();
+        Intent intent = new Intent(ConversationActivity.this, YsFilePickerActivity.class);
+        YsFilePicker.initMulti(intent);
+        ConversationActivity.this. startActivityForResult(intent, FILE_SELECT_CODE);
     }
 
     @SuppressLint("HandlerLeak")

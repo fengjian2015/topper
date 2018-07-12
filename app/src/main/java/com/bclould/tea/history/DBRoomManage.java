@@ -48,6 +48,7 @@ public class DBRoomManage {
                 values.put("description", roomManageInfo.getDescription());
                 values.put("isRefresh",roomManageInfo.getIsRefresh());
                 values.put("allowModify",roomManageInfo.getAllowModify());
+                values.put("isReview",roomManageInfo.getIsReview());
                 int id = (int) db.insert("RoomManage", null, values);
                 UtilTool.Log("數據庫", "插入房間");
                 DatabaseManager.getInstance().closeWritableDatabase();
@@ -67,7 +68,19 @@ public class DBRoomManage {
             cv.put("description",roomManageInfo.getDescription());
             cv.put("isRefresh",roomManageInfo.getIsRefresh());
             cv.put("allowModify",roomManageInfo.getAllowModify());
+            cv.put("isReview",roomManageInfo.getIsReview());
             db.update("RoomManage", cv, "roomId=? and my_user=?", new String[]{roomManageInfo.getRoomId(), UtilTool.getTocoId()});
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
+    }
+
+
+    public void updateIsReview(String roomId, int isReview) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            ContentValues cv = new ContentValues();
+            cv.put("isReview", isReview);
+            db.update("RoomManage", cv, "roomId=? and my_user=?", new String[]{roomId, UtilTool.getTocoId()});
             DatabaseManager.getInstance().closeWritableDatabase();
         }
     }
@@ -175,6 +188,21 @@ public class DBRoomManage {
             cursor.close();
             DatabaseManager.getInstance().closeWritableDatabase();
             return description;
+        }
+    }
+
+    public int findRoomisReview(String roomJid){
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
+            int isReview = 0;
+            Cursor cursor = db.rawQuery("select isReview from RoomManage where roomId=? and my_user=?",
+                    new String[]{roomJid, UtilTool.getTocoId()});
+            while (cursor.moveToNext()) {
+                isReview = cursor.getInt(cursor.getColumnIndex("isReview"));
+            }
+            cursor.close();
+            DatabaseManager.getInstance().closeWritableDatabase();
+            return isReview;
         }
     }
 

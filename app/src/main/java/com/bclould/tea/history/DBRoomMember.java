@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.GroupMemberInfo;
 import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.model.RoomMemberInfo;
@@ -45,6 +46,7 @@ public class DBRoomMember {
                 values.put("image_url", roomMemberInfo.getImage_url());
                 values.put("remark", roomMemberInfo.getRemark());
                 values.put("roomId", roomMemberInfo.getRoomId());
+                values.put("isRefresh",roomMemberInfo.getIsRefresh());
                 int id = (int) db.insert("RoomMember", null, values);
                 DatabaseManager.getInstance().closeWritableDatabase();
             }
@@ -63,8 +65,8 @@ public class DBRoomMember {
                     values.put("my_user", UtilTool.getTocoId());
                     values.put("jid", dataBean.getToco_id());
                     values.put("image_url", dataBean.getAvatar());
-                    values.put("remark", "");
                     values.put("roomId", roomId);
+                    values.put("isRefresh",1);
                     db.insert("RoomMember", null, values);
                 }
             }
@@ -220,6 +222,31 @@ public class DBRoomMember {
         }
     }
 
+
+    public void updateIsRefresh1(List<GroupMemberInfo.DataBean.UsersBean> groupMemberInfoList,String roomId) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            for(GroupMemberInfo.DataBean.UsersBean dataBean:groupMemberInfoList){
+                ContentValues cv = new ContentValues();
+                cv.put("isRefresh", 0);
+                db.update("RoomMember", cv, "roomId=? and jid=? and my_user=?", new String[]{roomId,dataBean.getToco_id(), UtilTool.getTocoId()});
+            }
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
+    }
+
+    public void updateIsRefresh(List<GroupInfo.DataBean.UsersBean> dataBeans,String roomId) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            for(GroupInfo.DataBean.UsersBean dataBean:dataBeans){
+                ContentValues cv = new ContentValues();
+                cv.put("isRefresh", 0);
+                db.update("RoomMember", cv, "roomId=? and jid=? and my_user=?", new String[]{roomId,dataBean.getToco_id(), UtilTool.getTocoId()});
+            }
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
+    }
+
     public void updateRoom(RoomMemberInfo roomMemberInfo) {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
@@ -229,6 +256,7 @@ public class DBRoomMember {
             values.put("jid", roomMemberInfo.getJid());
             values.put("image_url", roomMemberInfo.getImage_url());
             values.put("remark", roomMemberInfo.getRemark());
+            values.put("isRefresh",roomMemberInfo.getIsRefresh());
             db.update("RoomMember", values, "roomId=? and my_user=? and jid=?", new String[]{roomMemberInfo.getRoomId(), UtilTool.getTocoId(), roomMemberInfo.getJid()});
             DatabaseManager.getInstance().closeWritableDatabase();
         }
@@ -242,7 +270,7 @@ public class DBRoomMember {
             values.put("my_user", UtilTool.getTocoId());
             values.put("jid", dataBean.getToco_id());
             values.put("image_url", dataBean.getAvatar());
-            values.put("remark", "");
+            values.put("isRefresh",1);
             db.update("RoomMember", values, "roomId=? and my_user=? and jid=?", new String[]{roomid, UtilTool.getTocoId(),dataBean.getToco_id()});
             DatabaseManager.getInstance().closeWritableDatabase();
         }
@@ -273,6 +301,44 @@ public class DBRoomMember {
         }
     }
 
+
+    public ArrayList<RoomMemberInfo> queryAllOldRequest(String roomId) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
+            ArrayList<RoomMemberInfo> addRequestInfos = new ArrayList<>();
+            try {
+                String sql = "select * from RoomMember where my_user=? and roomId = ? and isRefresh=0";
+                Cursor c = db.rawQuery(sql, new String[]{UtilTool.getTocoId(), roomId});
+                while (c.moveToNext()) {
+                    RoomMemberInfo roomMemberInfo = new RoomMemberInfo();
+                    roomMemberInfo.setName(c.getString(c.getColumnIndex("name")));
+                    roomMemberInfo.setJid(c.getString(c.getColumnIndex("jid")));
+                    roomMemberInfo.setImage_url(c.getString(c.getColumnIndex("image_url")));
+                    roomMemberInfo.setRemark(c.getString(c.getColumnIndex("remark")));
+                    roomMemberInfo.setMy_user(c.getString(c.getColumnIndex("my_user")));
+                    roomMemberInfo.setRoomId(c.getString(c.getColumnIndex("roomId")));
+                    roomMemberInfo.setId(c.getInt(c.getColumnIndex("id")));
+                    addRequestInfos.add(roomMemberInfo);
+                }
+                c.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                DatabaseManager.getInstance().closeWritableDatabase();
+            }
+            return addRequestInfos;
+        }
+    }
+
+    public void deleteOldRoomMember(ArrayList<RoomMemberInfo> roomManageInfos,String roomId) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            for(RoomMemberInfo roomManageInfo:roomManageInfos){
+                db.delete("RoomMember", "roomId=? and my_user=? and jid=?", new String[]{roomId, UtilTool.getTocoId(),roomManageInfo.getJid()});
+            }
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
+    }
 
     public void deleteRoom(String roomId) {
         synchronized (lock) {

@@ -7,8 +7,10 @@ import android.support.annotation.RequiresApi;
 import com.bclould.tea.R;
 import com.bclould.tea.crypto.otr.OtrChatListenerManager;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.GroupInfo;
+import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.UtilTool;
@@ -17,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.greenrobot.eventbus.EventBus;
 import org.msgpack.jackson.dataformat.MessagePackFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +40,7 @@ public class RoomMemberManage {
     private static ExecutorService mSingleThreadExecutor = null;
     private Context context;
     private DBRoomMember mDBRoomMember;
+    private DBRoomManage mDBRoomManage;
     public static RoomMemberManage getInstance(){
         if(mInstance == null){
             synchronized (RoomMemberManage.class){
@@ -52,6 +56,7 @@ public class RoomMemberManage {
     public void setContext(Context context){
         this.context=context;
         mDBRoomMember=new DBRoomMember(context);
+        mDBRoomManage=new DBRoomManage(context);
     }
 
    public synchronized void addRoomMember(final List<GroupInfo.DataBean> dataBean){
@@ -67,10 +72,38 @@ public class RoomMemberManage {
                        roomMemberInfo.setJid(usersBean.getToco_id());
                        roomMemberInfo.setImage_url(usersBean.getAvatar());
                        roomMemberInfo.setName(usersBean.getName());
+                       roomMemberInfo.setIsRefresh(1);
                        mDBRoomMember.addRoomMember(roomMemberInfo);
                    }
+                   ArrayList<RoomMemberInfo> roomManageInfos=mDBRoomMember.queryAllOldRequest(data.getId()+"");
+                   mDBRoomMember.deleteOldRoomMember(roomManageInfos,data.getId()+"");
+                   mDBRoomMember.updateIsRefresh(data.getUsers(),data.getId()+"");
                }
            }
        });
    }
+
+    public synchronized void addRoomManage(final List<GroupInfo.DataBean> baseInfo){
+        mSingleThreadExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                for(int j=0;j<baseInfo.size();j++){
+                    GroupInfo.DataBean dataBean = baseInfo.get(j);
+                    RoomManageInfo roomManageInfo = new RoomManageInfo();
+                    roomManageInfo.setRoomName(dataBean.getName());
+                    roomManageInfo.setRoomId(dataBean.getId() + "");
+                    roomManageInfo.setOwner(dataBean.getToco_id());
+                    roomManageInfo.setRoomNumber(dataBean.getMax_people());
+                    roomManageInfo.setRoomImage(dataBean.getLogo());
+                    roomManageInfo.setDescription(dataBean.getDescription());
+                    roomManageInfo.setIsRefresh(1);
+                    roomManageInfo.setAllowModify(dataBean.getIs_allow_modify_data());
+                    roomManageInfo.setIsReview(dataBean.getIs_review());
+                    mDBRoomManage.addRoom(roomManageInfo);
+                }
+                mDBRoomManage.deleteOldRoom();
+                mDBRoomManage.updateIsRefresh(baseInfo);
+            }
+        });
+    }
 }

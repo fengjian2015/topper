@@ -40,12 +40,14 @@ import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.SerMap;
 import com.bclould.tea.ui.activity.ChatLookLocationActivity;
 import com.bclould.tea.ui.activity.ConversationActivity;
+import com.bclould.tea.ui.activity.FileOpenActivity;
 import com.bclould.tea.ui.activity.GuessDetailsActivity;
 import com.bclould.tea.ui.activity.ImageViewActivity;
 import com.bclould.tea.ui.activity.IndividualDetailsActivity;
 import com.bclould.tea.ui.activity.NewsDetailsActivity;
 import com.bclould.tea.ui.activity.RedPacketActivity;
 import com.bclould.tea.ui.activity.SelectConversationActivity;
+import com.bclould.tea.ui.activity.StartActivity;
 import com.bclould.tea.ui.activity.TransferDetailsActivity;
 import com.bclould.tea.ui.activity.VideoActivity;
 import com.bclould.tea.ui.widget.CurrencyDialog;
@@ -2044,13 +2046,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    Intent intent=new Intent(mContext, FileOpenActivity.class);
+                    intent.putExtra("messageInfo", messageInfo);
+                    mContext.startActivity(intent);
                 }
             });
             mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true);
                     return false;
                 }
             });
@@ -2088,13 +2092,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    Intent intent=new Intent(mContext, FileOpenActivity.class);
+                    intent.putExtra("messageInfo", messageInfo);
+                    mContext.startActivity(intent);
                 }
             });
             mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true);
                     return false;
                 }
             });

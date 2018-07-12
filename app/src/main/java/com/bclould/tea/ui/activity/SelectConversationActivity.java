@@ -59,12 +59,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_CARD_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_FILE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_GUESS_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_IMG_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_LINK_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_TEXT_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_VIDEO_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_CARD_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.TO_FILE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_GUESS_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_IMG_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_LINK_MSG;
@@ -378,6 +380,16 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
                     mRoom.transmitVideo(messageInfo);
                 } else {
                     mRoom.Upload(messageInfo.getMessage());
+                }
+                ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.forward_success));
+                SelectConversationActivity.this.finish();
+            }else if(msgType==FROM_FILE_MSG||msgType==TO_FILE_MSG){
+                if(messageInfo.getVoice()!=null&&!messageInfo.getVoice().startsWith("http")){
+                    mRoom.uploadFile(messageInfo.getVoice());
+                }else if (messageInfo.getMessage().startsWith("http")) {
+                    mRoom.transmitFile(messageInfo);
+                } else {
+                    mRoom.uploadFile(messageInfo.getMessage());
                 }
                 ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.forward_success));
                 SelectConversationActivity.this.finish();
