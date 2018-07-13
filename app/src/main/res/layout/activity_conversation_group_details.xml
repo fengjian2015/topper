@@ -233,7 +233,6 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:paddingLeft="@dimen/x20"
-                android:visibility="gone"
                 >
                 <View
                     style="@style/HCutOffRule"

@@ -38,6 +38,8 @@ public class SelectGroupMemberActivity extends BaseActivity implements SelectGro
     RecyclerView mRecyclerView;
     @Bind(R.id.tv_confirm)
     TextView mTvConfirm;
+    @Bind(R.id.tv_title)
+    TextView mTvTitle;
     private String roomId;
     private DBRoomMember mDBRoomMember;
     private ArrayList<RoomMemberInfo> mList = new ArrayList<>();
@@ -60,7 +62,10 @@ public class SelectGroupMemberActivity extends BaseActivity implements SelectGro
     }
 
     private void init() {
-        if(type==3){
+        if(type!=1){
+            mTvTitle.setText(getString(R.string.select_members));
+        }
+        if (type == 3) {
             mTvConfirm.setVisibility(View.GONE);
         }
         mList.addAll(mDBRoomMember.queryAllRequest(roomId));
@@ -181,10 +186,10 @@ public class SelectGroupMemberActivity extends BaseActivity implements SelectGro
             }
         }
         mAdapter.notifyDataSetChanged();
-        if(type==3){
-            Intent intent=new Intent();
-            intent.putExtra("name",roomMemberInfo.getName());
-            intent.putExtra("tocoid",roomMemberInfo.getJid());
+        if (type == 3) {
+            Intent intent = new Intent();
+            intent.putExtra("name", roomMemberInfo.getName());
+            intent.putExtra("tocoid", roomMemberInfo.getJid());
             setResult(RESULT_OK, intent);
             finish();
         }

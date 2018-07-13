@@ -76,6 +76,8 @@ public class DBManager {
             values.put("createTime", messageInfo.getCreateTime());
             values.put("msgId", messageInfo.getMsgId());
             values.put("showChatTime", messageInfo.getShowChatTime());
+            values.put("roomName",messageInfo.getRoomName());
+            values.put("roomId",messageInfo.getRoomId());
             int id = (int) sdb.insert("MessageRecord", null, values);
             UtilTool.Log("日志", "添加成功" + messageInfo.toString());
             DatabaseManager.getInstance().closeWritableDatabase();
@@ -179,6 +181,8 @@ public class DBManager {
             messageInfo.setCreateTime(c.getLong(c.getColumnIndex("createTime")));
             messageInfo.setMsgId(c.getString(c.getColumnIndex("msgId")));
             messageInfo.setShowChatTime(c.getString(c.getColumnIndex("showChatTime")));
+            messageInfo.setRoomId(c.getString(c.getColumnIndex("roomId")));
+            messageInfo.setRoomName(c.getString(c.getColumnIndex("roomName")));
             return messageInfo;
         }
     }

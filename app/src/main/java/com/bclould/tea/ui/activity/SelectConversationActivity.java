@@ -62,6 +62,7 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_CARD_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_FILE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_GUESS_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_IMG_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_INVITE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_LINK_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_TEXT_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_VIDEO_MSG;
@@ -69,6 +70,7 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_CARD_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_FILE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_GUESS_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_IMG_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.TO_INVITE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_LINK_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_TEXT_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_VIDEO_MSG;
@@ -154,6 +156,9 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
         shareType = bundle.getString("shareType");
         uri = bundle.getParcelable(Intent.EXTRA_STREAM);
         setShareData(text, shareType);
+        if (!StringUtils.isEmpty(shareText)&&UtilTool.checkLinkedExe(shareText)) {
+            showDeleteDialog(shareText);
+        }
     }
 
     private void getShareIntent() {
@@ -164,6 +169,9 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
         shareText = shareIntent.getStringExtra(Intent.EXTRA_TEXT);
         uri = bundle.getParcelable(Intent.EXTRA_STREAM);
         setShareData(text, type);
+        if (!StringUtils.isEmpty(shareText)&&UtilTool.checkLinkedExe(shareText)) {
+            showDeleteDialog(shareText);
+        }
     }
 
     private void setShareData(String text, String type) {
@@ -421,6 +429,10 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
                 mRoom.Upload(messageInfo.getVoice());
                 ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.send_succeed));
                 SelectConversationActivity.this.finish();
+            }else if(msgType == FROM_INVITE_MSG || msgType == TO_INVITE_MSG){
+                mRoom.sendInviteGroup(messageInfo);
+                ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.send_succeed));
+                SelectConversationActivity.this.finish();
             }
         } else {
             finish();
@@ -492,5 +504,32 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
         }
         EventBus.getDefault().unregister(this);//初始化EventBus
         super.onDestroy();
+    }
+
+    private void showDeleteDialog(final String url) {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(getString(R.string.whether_collect_this_page));
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent intent=new Intent(SelectConversationActivity.this,AddCollectActivity.class);
+                    intent.putExtra("url",url);
+                    startActivity(intent);
+                    SelectConversationActivity.this.finish();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

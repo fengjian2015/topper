@@ -51,6 +51,7 @@ public class WsContans {
     public static final int MSG_TRANSFER=9;//轉賬
     public static final int MSG_LOCATION=10;//定位
     public static final int MSG_FILE=11;//文件
+    public static final int MSG_INTIVE=12;//群聊邀请
 
     //廣播類型
     public static final int BC_OTC_ORDER=1;//OTC訂單信息

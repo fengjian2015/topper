@@ -59,13 +59,13 @@
 
         <ImageView
             android:id="@+id/iv_load"
-            android:layout_width="@dimen/x60"
-            android:layout_height="@dimen/x60"
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/x20"
             android:layout_toLeftOf="@+id/rl_video"
-            android:background="@drawable/anim_progress"
+            android:background="@drawable/anim_progress_chat"
             android:visibility="visible"/>
     </RelativeLayout>
 </RelativeLayout>

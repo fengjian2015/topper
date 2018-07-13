@@ -41,6 +41,7 @@ import com.bclould.tea.model.SerMap;
 import com.bclould.tea.ui.activity.ChatLookLocationActivity;
 import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.activity.FileOpenActivity;
+import com.bclould.tea.ui.activity.GroupConfirmActivity;
 import com.bclould.tea.ui.activity.GuessDetailsActivity;
 import com.bclould.tea.ui.activity.ImageViewActivity;
 import com.bclould.tea.ui.activity.IndividualDetailsActivity;
@@ -127,6 +128,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public static final int FROM_GUESS_MSG = 26;//接受竞猜分享
     public static final int TO_GUESS_MSG = 27;//發送竞猜分享
     public static final int RED_GET_MSG = 28;//紅包被領取
+    public static final int FROM_INVITE_MSG = 29;//接受群邀请链接
+    public static final int TO_INVITE_MSG = 30;//发送群邀请链接
+
 
     private final Context mContext;
     private final List<MessageInfo> mMessageList;
@@ -235,7 +239,13 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } else if (viewType == FROM_FILE_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_file, parent, false);
             holder = new FromFileHolder(view);
-        }  else {
+        } else if (viewType == TO_INVITE_MSG) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_to_chat_invite, parent, false);
+            holder = new ToInviteHolder(view);
+        } else if (viewType == FROM_INVITE_MSG) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_invite, parent, false);
+            holder = new FromInviteHolder(view);
+        }else {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_chat_text, parent, false);
             holder = new TextChatHolder(view);
         }
@@ -365,6 +375,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 FromFileHolder fromFileHolder = (FromFileHolder) holder;
                 fromFileHolder.setData(mMessageList.get(position));
                 break;
+            case TO_INVITE_MSG:
+                ToInviteHolder toInviteHolder = (ToInviteHolder) holder;
+                toInviteHolder.setData(mMessageList.get(position));
+                break;
+            case FROM_INVITE_MSG:
+                FromInviteHolder fromInviteHolder = (FromInviteHolder) holder;
+                fromInviteHolder.setData(mMessageList.get(position));
+                break;
+
             default:
                 TextChatHolder textChatHolder = (TextChatHolder) holder;
                 textChatHolder.setData(mMessageList.get(position));
@@ -2101,6 +2120,110 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 @Override
                 public boolean onLongClick(View view) {
                     showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true);
+                    return false;
+                }
+            });
+        }
+    }
+
+    class ToInviteHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.iv_touxiang)
+        ImageView mIvTouxiang;
+        @Bind(R.id.cv_redpacket)
+        CardView mCvRedpacket;
+        @Bind(R.id.chat_createtime)
+        View tvCreateTime;
+        @Bind(R.id.iv_type)
+        ImageView ivType;
+        @Bind(R.id.tv_file_size)
+        TextView tvFileSize;
+        @Bind(R.id.iv_warning)
+        ImageView mIvWarning;
+        @Bind(R.id.iv_load)
+        ImageView mIvLoad;
+
+        ToInviteHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
+            goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
+            UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
+            setMsgState(messageInfo.getSendStatus(), mIvWarning, mIvLoad);
+            tvFileSize.setText(messageInfo.getInitiator()+mContext.getString(R.string.intive_group)+messageInfo.getRoomName()+mContext.getString(R.string.click_look));
+            UtilTool.getGroupImage(messageInfo.getHeadUrl(), (Activity) mContext,ivType);
+            mIvWarning.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mMessageList.remove(messageInfo);
+                    RoomManage.getInstance().getRoom(mRoomId).anewUploadFile(messageInfo);
+                    notifyDataSetChanged();
+                }
+            });
+
+            mCvRedpacket.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent(mContext, GroupConfirmActivity.class);
+                    intent.putExtra("roomName",messageInfo.getRoomName());
+                    intent.putExtra("roomId",messageInfo.getRoomId());
+                    intent.putExtra("roomPath",messageInfo.getHeadUrl());
+                    mContext.startActivity(intent);
+                }
+            });
+            mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    return false;
+                }
+            });
+        }
+    }
+
+    class FromInviteHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.iv_touxiang)
+        ImageView mIvTouxiang;
+        @Bind(R.id.cv_redpacket)
+        CardView mCvRedpacket;
+        @Bind(R.id.chat_createtime)
+        View tvCreateTime;
+        @Bind(R.id.tv_name)
+        TextView tvName;
+        @Bind(R.id.iv_type)
+        ImageView ivType;
+        @Bind(R.id.tv_file_name)
+        TextView tvFileName;
+        @Bind(R.id.tv_file_size)
+        TextView tvFileSize;
+
+        FromInviteHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(final MessageInfo messageInfo) {
+            setNameAndUrl(mIvTouxiang,messageInfo, tvName);
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
+            goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
+            tvFileSize.setText(messageInfo.getInitiator()+mContext.getString(R.string.intive_group)+messageInfo.getRoomName()+mContext.getString(R.string.click_look));
+            UtilTool.getGroupImage(messageInfo.getHeadUrl(), (Activity) mContext,ivType);
+            mCvRedpacket.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent(mContext, GroupConfirmActivity.class);
+                    intent.putExtra("roomName",messageInfo.getRoomName());
+                    intent.putExtra("roomId",messageInfo.getRoomId());
+                    intent.putExtra("roomPath",messageInfo.getHeadUrl());
+                    mContext.startActivity(intent);
+                }
+            });
+            mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
                     return false;
                 }
             });

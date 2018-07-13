@@ -48,6 +48,7 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_CARD_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_FILE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_GUESS_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_IMG_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.TO_INVITE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_LINK_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_LOCATION_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_RED_MSG;
@@ -322,7 +323,7 @@ public class MultiManage implements Room{
         final String title=file.getName();
         long mFolderSize = UtilTool.getFolderSize(file);
         final String size = UtilTool.FormetFileSize(mFolderSize);
-        final String postfixs = UtilTool.getPostfix2(file.getName());
+        final String postfixs = UtilTool.getPostfix3(file.getName());
         final String key = UtilTool.getUserId() + UtilTool.createtFileName() + ".AN." +postfixs;//命名aws文件名
 
         final MessageInfo messageInfo = sendFileMessage(path, postfixs, key, title,size);
@@ -1006,6 +1007,51 @@ public class MultiManage implements Room{
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void sendInviteGroup(MessageInfo messageInfo) {
+        String converstaion = "[" + context.getString(R.string.group_intive) + "]";
+        try {
+            String msgId=UtilTool.createMsgId(roomId);
+            long createTime=UtilTool.createChatCreatTime();
+            send(roomId, null, JSON.toJSONString(messageInfo), WsContans.MSG_INTIVE,msgId,createTime);
+            messageInfo.setUsername(roomId);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setMsgType(TO_INVITE_MSG);
+            messageInfo.setSend(UtilTool.getTocoId());
+            messageInfo.setSendStatus(0);
+            messageInfo.setConverstaion(converstaion);
+            messageInfo.setMsgId(msgId);
+            messageInfo.setCreateTime(createTime);
+            messageInfo.setId(mMgr.addMessage(messageInfo));
+            changeConversationInfo(time,converstaion,createTime);
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            refreshAddData(messageInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
+            messageInfo.setUsername(roomId);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(2);
+            messageInfo.setMsgType(TO_INVITE_MSG);
+            messageInfo.setSendStatus(2);
+            messageInfo.setSend(UtilTool.getTocoId());
+            messageInfo.setConverstaion(converstaion);
+            messageInfo.setMsgId(UtilTool.createMsgId(roomId));
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            messageInfo.setId(mMgr.addMessage(messageInfo));
+            changeConversationInfo(time,converstaion,UtilTool.createChatCreatTime());
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            refreshAddData(messageInfo);
         }
     }
 }

@@ -53,6 +53,25 @@ public class MessageInfo implements Serializable {
     private String showChatTime;
     //2018-07-11增加@人員
     private Map<String, String> atMap;
+    //2018-07-13增加邀请群聊人
+    private String roomName;
+    private String roomId;
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
+    }
 
     public Map<String, String> getAtMap() {
         return atMap;

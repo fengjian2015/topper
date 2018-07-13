@@ -315,7 +315,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                 deleteGroup();
                 break;
             case R.id.rl_group_qr:
-                // TODO: 2018/6/20 跳轉二維碼 
+                goGroupQR();
                 break;
             case R.id.rl_group_name:
                 if (mDBRoomManage.findRoomAllowModify(roomId) == 1 || isOwner()) {
@@ -356,6 +356,12 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                 goReviewList();
                 break;
         }
+    }
+
+    private void goGroupQR(){
+        Intent intent=new Intent(this,QRGroupActivity.class);
+        intent.putExtra("roomId",roomId);
+        startActivity(intent);
     }
 
     private void goReviewList() {
