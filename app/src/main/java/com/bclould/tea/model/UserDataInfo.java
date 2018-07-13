@@ -1,4 +1,4 @@
-package com.bclould.tocotalk.model;
+package com.bclould.tea.model;
 
 /**
  * Created by GA on 2018/6/22.

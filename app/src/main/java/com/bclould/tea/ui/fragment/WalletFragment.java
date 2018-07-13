@@ -19,6 +19,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.ui.activity.BankCardActivity;
 import com.bclould.tea.ui.activity.BlockchainGambleActivity;
 import com.bclould.tea.ui.activity.CoinExchangeActivity;
+import com.bclould.tea.ui.activity.CollectActivity;
 import com.bclould.tea.ui.activity.FinancingActivity;
 import com.bclould.tea.ui.activity.MyAssetsActivity;
 import com.bclould.tea.ui.activity.OtcActivity;
@@ -137,7 +138,7 @@ public class WalletFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
-    @OnClick({R.id.ll_blockchain_gamble, R.id.iv_more, R.id.ll_inout, R.id.ll_usdt, R.id.ll_bank_card, R.id.ll_asserts, R.id.ll_exchange, R.id.ll_otc, R.id.ll_financing, R.id.ll_pawn, R.id.ll_safe})
+    @OnClick({R.id.ll_collect, R.id.ll_blockchain_gamble, R.id.iv_more, R.id.ll_inout, R.id.ll_usdt, R.id.ll_bank_card, R.id.ll_asserts, R.id.ll_exchange, R.id.ll_otc, R.id.ll_financing, R.id.ll_pawn, R.id.ll_safe})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_more:
@@ -174,6 +175,9 @@ public class WalletFragment extends Fragment {
                 break;
             case R.id.ll_blockchain_gamble:
                 startActivity(new Intent(getActivity(), BlockchainGambleActivity.class));
+                break;
+            case R.id.ll_collect:
+                startActivity(new Intent(getActivity(), CollectActivity.class));
                 break;
         }
     }

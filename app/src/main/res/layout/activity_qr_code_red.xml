@@ -86,6 +86,7 @@
             android:layout_marginTop="@dimen/y30"
             android:background="@drawable/bg_register_shape"
             android:text="@string/save_qr_code"
+            android:visibility="gone"
             android:textSize="@dimen/x28"/>
 
         <Button
@@ -95,6 +96,7 @@
             android:layout_below="@+id/btn_save_qr"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/y30"
+            android:visibility="gone"
             android:background="@drawable/bg_register_shape"
             android:text="@string/share_qr_code"
             android:textSize="@dimen/x28"/>
