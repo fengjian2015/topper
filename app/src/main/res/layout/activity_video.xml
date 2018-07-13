@@ -90,6 +90,6 @@
         android:layout_width="@dimen/x60"
         android:layout_height="@dimen/y60"
         android:src="@mipmap/ico_dy_delete"
-        android:layout_marginTop="@dimen/y30"
+        android:layout_marginTop="@dimen/y100"
         android:layout_marginLeft="@dimen/x30"/>
 </RelativeLayout>

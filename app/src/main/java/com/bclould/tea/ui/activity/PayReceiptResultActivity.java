@@ -56,11 +56,14 @@ public class PayReceiptResultActivity extends BaseActivity {
         Bundle bundle = getIntent().getExtras();
         String coinName = bundle.getString("coinName");
         String name = bundle.getString("name");
-        String date = bundle.getString("date");
         String number = bundle.getString("number");
         String type = bundle.getString("type");
-        String avatar=bundle.getString("avatar");
+        String avatar = bundle.getString("avatar");
         if (type.equals(Constants.MONEYIN)) {
+            mTvWho.setText(getString(R.string.sk_person));
+            mIvResult.setImageResource(R.mipmap.icon_pay_c1);
+            mTvPayType.setText(getString(R.string.payment_succeed));
+        } else if (type.equals(Constants.COMMERCIAL_TENANT_RECOGNITION_SYMBOL)) {
             mTvWho.setText(getString(R.string.sk_person));
             mIvResult.setImageResource(R.mipmap.icon_pay_c1);
             mTvPayType.setText(getString(R.string.payment_succeed));
@@ -71,7 +74,7 @@ public class PayReceiptResultActivity extends BaseActivity {
         }
         mTvCoinCount.setText(number + coinName);
         mTvName.setText(name);
-        UtilTool.setCircleImg(PayReceiptResultActivity.this,avatar, mTvTouxiang);
+        UtilTool.setCircleImg(PayReceiptResultActivity.this, avatar, mTvTouxiang);
 //        mTvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, PayReceiptResultActivity.this));
     }
 

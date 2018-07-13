@@ -34,10 +34,10 @@ import com.bclould.tea.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
-import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.model.ReceiptInfo;
+import com.bclould.tea.model.UserDataInfo;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.VirtualKeyboardView;
@@ -45,7 +45,6 @@ import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.UtilTool;
-import com.bclould.tea.model.UserDataInfo;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;
@@ -94,6 +93,8 @@ public class PaymentActivity extends BaseActivity {
     ImageView mIv2;
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
+    @Bind(R.id.tv_give)
+    TextView mTvGive;
     private String mUserId;
     private ReceiptPaymentPresenter mReceiptPaymentPresenter;
     private Dialog mBottomDialog;
@@ -111,6 +112,8 @@ public class PaymentActivity extends BaseActivity {
     private String mNumber;
     private String mMark;
     private PersonalDetailsPresenter mPersonalDetailsPresenter;
+    private String mCode;
+    private String mAvatar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,7 +122,6 @@ public class PaymentActivity extends BaseActivity {
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
         mPersonalDetailsPresenter = new PersonalDetailsPresenter(this);
-        initData();
         initIntent();
         mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);
     }
@@ -152,9 +154,9 @@ public class PaymentActivity extends BaseActivity {
 
 
     private void initIntent() {
-        final DBManager mgr = new DBManager(this);
         mType = getIntent().getStringExtra("type");
-        if (mType.equals(Constants.MONEYIN)) {
+        if (mType.equals(Constants.MONEYIN)) {//無數據用戶支付
+            initData();
             mCvWho.setVisibility(View.VISIBLE);
             mUserId = getIntent().getStringExtra("userId");
             final String username = getIntent().getStringExtra("username");
@@ -174,15 +176,27 @@ public class PaymentActivity extends BaseActivity {
                     }
                 }
             });
-        } else if (mType.equals(Constants.MONEYOUT)) {
+        } else if (mType.equals(Constants.MONEYOUT)) {//生成付款碼
             mCvWho.setVisibility(View.GONE);
+            initData();
             mTvTitle.setText(getString(R.string.create_fk_code));
             mBtnPayment.setText(getString(R.string.confirm));
-        } else if (mType.equals(Constants.QRMONEYIN)) {
+        } else if (mType.equals(Constants.QRMONEYIN)) {//生成收款碼
             mCvWho.setVisibility(View.GONE);
             mTvTitle.setText(getString(R.string.create_sk_code));
+            initData();
             mBtnPayment.setText(getString(R.string.confirm));
-        } else {
+        } else if (mType.equals(Constants.COMMERCIAL_TENANT_RECOGNITION_SYMBOL)) {//商戶支付
+            mLlNoSteadfast.setVisibility(View.VISIBLE);
+            mCode = getIntent().getStringExtra("username");
+            mLlError.setVisibility(View.GONE);
+            mTvGive.setText(getString(R.string.payment_give) + getString(R.string.merchant));
+            mCvWho.setVisibility(View.VISIBLE);
+            mRlSelectorCoin.setEnabled(false);
+            getMerchantUser();
+        } else {//有數據用戶支付
+            mLlNoSteadfast.setVisibility(View.VISIBLE);
+            mLlError.setVisibility(View.GONE);
             mCvWho.setVisibility(View.VISIBLE);
             mUserId = getIntent().getStringExtra("userId");
             mCoinId = getIntent().getStringExtra("coinId");
@@ -207,11 +221,38 @@ public class PaymentActivity extends BaseActivity {
                 }
             });
             mTvCoin.setText(mCoinNames);
+            mRlSelectorCoin.setEnabled(false);
             mEtCount.setText(mNumber);
             mEtCount.setKeyListener(null);
             mEtRemark.setText(mMark);
             mEtRemark.setKeyListener(null);
         }
+    }
+
+    private void getMerchantUser() {
+        mPersonalDetailsPresenter.getMerchantUser(mCode, new PersonalDetailsPresenter.CallBack4() {
+            @Override
+            public void send(UserDataInfo.DataBean dataBean) {
+                if (ActivityUtil.isActivityOnTop(PaymentActivity.this)) {
+                    mAvatar = dataBean.getAvatar();
+                    if (!mAvatar.isEmpty()) {
+                        UtilTool.setCircleImg(PaymentActivity.this, mAvatar, mIvTouxiang);
+                    } else {
+                        UtilTool.setCircleImg(PaymentActivity.this, R.mipmap.img_nfriend_headshot1, mIvTouxiang);
+                    }
+                    mTvName.setText(dataBean.getMerchant_name());
+                    mTvCoin.setText(dataBean.getCoin_name());
+                }
+            }
+
+            @Override
+            public void error() {
+                if (ActivityUtil.isActivityOnTop(PaymentActivity.this)) {
+                    mLlNoSteadfast.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     @OnClick({R.id.ll_error, R.id.bark, R.id.btn_payment, R.id.rl_selector_coin})
@@ -221,17 +262,25 @@ public class PaymentActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_error:
-                initData();
+                if (mType.equals(Constants.COMMERCIAL_TENANT_RECOGNITION_SYMBOL)) {
+                    getMerchantUser();
+                } else {
+                    initData();
+                }
                 break;
             case R.id.btn_payment:
                 if (mType.equals(Constants.DATAMONEYIN)) {
                     showPWDialog();
-                } else if (checkEidt()) {
-                    if (mType.equals(Constants.MONEYIN) || mType.equals(Constants.MONEYOUT)) {
+                } else if (mType.equals(Constants.MONEYIN) || mType.equals(Constants.MONEYOUT)) {
+                    if (checkEidt()) {
                         showPWDialog();
-                    } else {
-                        createReceiptQrCode();
                     }
+                } else if (mType.equals(Constants.COMMERCIAL_TENANT_RECOGNITION_SYMBOL)) {
+                    if (checkEidt()) {
+                        showPWDialog();
+                    }
+                } else {
+                    createReceiptQrCode();
                 }
                 break;
             case R.id.rl_selector_coin:
@@ -336,8 +385,34 @@ public class PaymentActivity extends BaseActivity {
                         createQrCode(password);
                     } else if (mType.equals(Constants.DATAMONEYIN)) {
                         payment2(password);
+                    } else if (mType.equals(Constants.COMMERCIAL_TENANT_RECOGNITION_SYMBOL)) {
+                        paymentMerchant(password);
                     }
                 }
+            }
+        });
+    }
+
+    //支付給商家
+    private void paymentMerchant(String password) {
+        final String number = mEtCount.getText().toString().trim();
+        String remark = mEtRemark.getText().toString();
+        final String coin = mTvCoin.getText().toString().trim();
+        final String name = mTvName.getText().toString().trim();
+        mReceiptPaymentPresenter.payMerchant(mCode, number, remark, password, new PersonalDetailsPresenter.CallBack() {
+            @Override
+            public void send() {
+                Intent intent = new Intent(PaymentActivity.this, PayReceiptResultActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("coinName", coin);
+                bundle.putString("name", name);
+                bundle.putString("number", number);
+                bundle.putString("type", Constants.MONEYIN);
+                bundle.putString("avatar", mAvatar);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                Toast.makeText(PaymentActivity.this, getString(R.string.fk_succeed), Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }
@@ -349,7 +424,6 @@ public class PaymentActivity extends BaseActivity {
                 Intent intent = new Intent(PaymentActivity.this, PayReceiptResultActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("coinName", data.getCoin_name());
-                bundle.putString("date", data.getDate());
                 bundle.putString("name", data.getName());
                 bundle.putString("number", data.getNumber());
                 bundle.putString("type", Constants.MONEYIN);
@@ -530,7 +604,6 @@ public class PaymentActivity extends BaseActivity {
                 Intent intent = new Intent(PaymentActivity.this, PayReceiptResultActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("coinName", data.getCoin_name());
-                bundle.putString("date", data.getDate());
                 bundle.putString("name", data.getName());
                 bundle.putString("number", data.getNumber());
                 bundle.putString("type", Constants.MONEYIN);

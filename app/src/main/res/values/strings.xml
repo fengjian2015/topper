@@ -1080,4 +1080,6 @@
     <string name="intive_group">邀请你加入群聊</string>
     <string name="click_look">，点击查看详情</string>
     <string name="group_intive">群聊邀请</string>
+    <string name="check_url_error">識別網址失敗，請手動填寫標題</string>
+    <string name="merchant">商家</string>
 </resources>

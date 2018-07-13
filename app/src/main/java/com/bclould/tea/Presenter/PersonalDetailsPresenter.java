@@ -324,9 +324,9 @@ public class PersonalDetailsPresenter {
     }
 
     //獲取請求列表
-    public void getNewFriendData(boolean isShow,final CallBack5 callBack5) {
-        if(isShow)
-        showDialog();
+    public void getNewFriendData(boolean isShow, final CallBack5 callBack5) {
+        if (isShow)
+            showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .getNewFriendData(UtilTool.getToken())
@@ -360,6 +360,39 @@ public class PersonalDetailsPresenter {
                 });
     }
 
+    public void getMerchantUser(String code, final CallBack4 callBack4) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .getMerchantUser(UtilTool.getToken(), code)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<UserDataInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(UserDataInfo userDataInfo) {
+                        hideDialog();
+                        if (userDataInfo.getStatus() == 1) {
+                            callBack4.send(userDataInfo.getData());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     //定义接口
     public interface CallBack {
         void send();
@@ -368,6 +401,7 @@ public class PersonalDetailsPresenter {
     //定义接口
     public interface CallBack2 {
         void send(List<AuatarListInfo.DataBean> data);
+
         void error();
     }
 

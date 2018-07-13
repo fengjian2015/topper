@@ -799,11 +799,13 @@ public class UtilTool {
 
     public static void setCircleImg(Context context, Object url, ImageView imageView) {
         if (Util.isOnMainThread() && context != null) {
-            if (url instanceof String) {
+            if (url != null && url instanceof String && !((String) url).isEmpty()) {
                 Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).placeholder(R.mipmap.img_nfriend_headshot1)).into(imageView);
             } else {
                 Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).error(R.mipmap.img_nfriend_headshot1).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
             }
+        } else {
+            Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).error(R.mipmap.img_nfriend_headshot1).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
         }
     }
 
@@ -838,14 +840,14 @@ public class UtilTool {
     }
 
 
-    public static void getGroupImage(DBRoomManage dbRoomManage,String roomId, Activity context, ImageView imageView){
-        String url=dbRoomManage.findRoomUrl(roomId);
-        if(!StringUtils.isEmpty(url)){
-            if (Util.isOnMainThread() && context != null&&!context.isDestroyed()) {
+    public static void getGroupImage(DBRoomManage dbRoomManage, String roomId, Activity context, ImageView imageView) {
+        String url = dbRoomManage.findRoomUrl(roomId);
+        if (!StringUtils.isEmpty(url)) {
+            if (Util.isOnMainThread() && context != null && !context.isDestroyed()) {
                 Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).dontAnimate().error(R.mipmap.img_group_head)).into(imageView);
             }
-        }else{
-            if (Util.isOnMainThread() && context != null&&!context.isDestroyed()) {
+        } else {
+            if (Util.isOnMainThread() && context != null && !context.isDestroyed()) {
                 Glide.with(context).load(R.mipmap.img_group_head).apply(RequestOptions.bitmapTransform(new CircleCrop()).error(R.mipmap.img_group_head).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
             }
         }
@@ -922,15 +924,15 @@ public class UtilTool {
     public static String getPostfix2(String fileName) {
         String pos = "";
         try {
-            pos=getFileType(fileName);
-        }catch (Exception e){
+            pos = fileName.substring(fileName.lastIndexOf("."));
+        } catch (Exception e) {
             e.printStackTrace();
         }
         try {
-            if(StringUtils.isEmpty(pos)) {
+            if (StringUtils.isEmpty(pos)) {
                 pos = fileName.substring(fileName.lastIndexOf("."));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return pos;
@@ -1292,27 +1294,27 @@ public class UtilTool {
         }
         return data;
     }
-
-    public static void install(Context context, File file){
-                if (Build.VERSION.SDK_INT >= 24) {
-                    Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
-                    Intent install = new Intent(Intent.ACTION_VIEW);
-                    install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//添加这一句表示对目标应用临时授权该Uri所代表的文件
-                    install.setDataAndType(uri, "application/vnd.android.package-archive");
-                    context.startActivity(install);
-                } else {
-                    Uri uri = Uri.fromFile(file);
-                    Intent install = new Intent(Intent.ACTION_VIEW);
-                    install.setDataAndType(uri, "application/vnd.android.package-archive");
-                    install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(install);
-                }
-            }
+    
+    public static void install(Context context, File file) {
+        if (Build.VERSION.SDK_INT >= 24) {
+            Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
+            Intent install = new Intent(Intent.ACTION_VIEW);
+            install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//添加这一句表示对目标应用临时授权该Uri所代表的文件
+            install.setDataAndType(uri, "application/vnd.android.package-archive");
+            context.startActivity(install);
+        } else {
+            Uri uri = Uri.fromFile(file);
+            Intent install = new Intent(Intent.ACTION_VIEW);
+            install.setDataAndType(uri, "application/vnd.android.package-archive");
+            install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(install);
+        }
+    }
 
     public static String getPath(Context context, Uri uri) throws URISyntaxException {
         if ("content".equalsIgnoreCase(uri.getScheme())) {
-            String[] projection = { "_data" };
+            String[] projection = {"_data"};
             Cursor cursor = null;
             try {
                 cursor = context.getContentResolver().query(uri, projection, null, null, null);
@@ -1329,16 +1331,16 @@ public class UtilTool {
         return null;
     }
 
-    public static String getFileType(String path){
+    public static String getFileType(String path) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, options);
         String type = options.outMimeType;
         try {
-            type="."+type.substring(type.lastIndexOf("/")+1,type.length());
-        }catch (Exception e){
+            type = "." + type.substring(type.lastIndexOf("/") + 1, type.length());
+        } catch (Exception e) {
             e.printStackTrace();
-            type="";
+            type = "";
         }
         return type;
     }
