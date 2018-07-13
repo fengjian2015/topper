@@ -15,7 +15,7 @@ import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.UtilTool;
-import com.bclould.tocotalk.model.UserDataInfo;
+import com.bclould.tea.model.UserDataInfo;
 
 import java.util.List;
 

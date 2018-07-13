@@ -45,7 +45,7 @@ import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.UtilTool;
-import com.bclould.tocotalk.model.UserDataInfo;
+import com.bclould.tea.model.UserDataInfo;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;

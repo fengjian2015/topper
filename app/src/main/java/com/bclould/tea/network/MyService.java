@@ -7,6 +7,7 @@ import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.BetInfo;
 import com.bclould.tea.model.CardListInfo;
 import com.bclould.tea.model.CoinListInfo;
+import com.bclould.tea.model.CollectInfo;
 import com.bclould.tea.model.DealListInfo;
 import com.bclould.tea.model.DynamicListInfo;
 import com.bclould.tea.model.ExchangeOrderInfo;
@@ -46,7 +47,7 @@ import com.bclould.tea.model.TransRecordInfo;
 import com.bclould.tea.model.TransferInfo;
 import com.bclould.tea.model.TransferListInfo;
 import com.bclould.tea.model.UpdateLogInfo;
-import com.bclould.tocotalk.model.UserDataInfo;
+import com.bclould.tea.model.UserDataInfo;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -1287,6 +1288,28 @@ public interface MyService {
             @Field("group_id") int group_id,
             @Field("status") int status,
             @Field("toco_id") String toco_id
+    );
 
+    //收藏列表
+    @POST("api/collect/list")
+    Observable<CollectInfo> CollectList(
+            @Header("Authorization") String token
+    );
+
+    //收藏列表
+    @FormUrlEncoded
+    @POST("api/collect/del")
+    Observable<BaseInfo> deleteCollect(
+            @Header("Authorization") String token,
+            @Field("coll_id") int coll_id
+    );
+
+    //收藏列表
+    @FormUrlEncoded
+    @POST("api/collect/add")
+    Observable<BaseInfo> addCollect(
+            @Header("Authorization") String token,
+            @Field("title") String title,
+            @Field("url") String url
     );
 }

@@ -76,6 +76,7 @@ public class VideoActivity extends SwipeActivity {
             HttpProxyCacheServer proxy = MyApp.getInstance().getProxy(this);
             String proxyUrl = proxy.getProxyUrl(uri);
             mVideoPlayer.setVideoPath(proxyUrl);
+
 //            mVideoPlayer.setVideoURI(Uri.parse(uri));
         } else {
             mVideoPlayer.setVideoPath(uri);

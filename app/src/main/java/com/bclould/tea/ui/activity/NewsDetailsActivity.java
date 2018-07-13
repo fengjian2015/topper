@@ -94,7 +94,7 @@ public class NewsDetailsActivity extends BaseActivity {
         mLlLoadError.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mWebView.loadUrl(Constants.BASE_URL + Constants.NEWS_WEB_URL + mId + "/" + UtilTool.getUserId());
+                mWebView.loadUrl( mUrl);
             }
         });
     }

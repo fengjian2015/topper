@@ -1060,4 +1060,12 @@
     <string name="group_chat_invitation_confirmation">群聊邀請確認</string>
     <string name="group_initation_list">邀請確認列表</string>
     <string name="initation_list">邀請列表</string>
+    <string name="collect">收藏</string>
+    <string name="my_collect">我的收藏</string>
+    <string name="no_collect_hint">沒有任何收藏....</string>
+    <string name="delete_collect_hint">確定要刪除這條收藏？</string>
+    <string name="add_collect">添加收藏</string>
+    <string name="et_url">輸入網址</string>
+    <string name="toast_url">網址不能為空</string>
+    <string name="no_delete_collect_hint">不能刪除這條收藏</string>
 </resources>
