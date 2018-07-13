@@ -24,8 +24,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.IOException;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -100,10 +98,12 @@ public class AddCollectActivity extends BaseActivity {
                         if (!doc.title().isEmpty()) {
                             Message message = new Message();
                             message.obj = doc.title();
+                            message.what = 0;
                             mHandler.sendMessage(message);
                         }
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
+                       mHandler.sendEmptyMessage(1);
                     }
                 }
             }).start();
@@ -117,8 +117,15 @@ public class AddCollectActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            String title = (String) msg.obj;
-            addCollect(title);
+            switch (msg.what) {
+                case 0:
+                    String title = (String) msg.obj;
+                    addCollect(title);
+                    break;
+                case 1:
+                    ToastShow.showToast2(AddCollectActivity.this, getString(R.string.check_url_error));
+                    break;
+            }
         }
     };
 

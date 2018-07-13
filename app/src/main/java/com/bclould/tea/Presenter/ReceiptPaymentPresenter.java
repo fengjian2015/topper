@@ -1,5 +1,6 @@
 package com.bclould.tea.Presenter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -18,6 +19,7 @@ import com.bclould.tea.ui.activity.PaymentActivity;
 import com.bclould.tea.ui.activity.RealNameC1Activity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 
 import java.util.List;
@@ -267,6 +269,41 @@ public class ReceiptPaymentPresenter {
                     public void onError(Throwable e) {
                         hideDialog();
                         UtilTool.Log("错误", e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void payMerchant(String code, String number, String remark, String password, final PersonalDetailsPresenter.CallBack callBack) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .payMerchant(UtilTool.getToken(), code, number, password, remark)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            callBack.send();
+                        }else {
+                            ToastShow.showToast2((Activity)mContext, baseInfo.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
                     }
 
                     @Override

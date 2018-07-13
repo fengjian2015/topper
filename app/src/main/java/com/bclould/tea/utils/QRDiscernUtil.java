@@ -1,7 +1,6 @@
 package com.bclould.tea.utils;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 
 import com.bclould.tea.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tea.R;
-import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.QrCardInfo;
 import com.bclould.tea.model.QrPaymentInfo;
 import com.bclould.tea.model.QrReceiptInfo;
@@ -27,9 +25,7 @@ import com.bclould.tea.ui.activity.IndividualDetailsActivity;
 import com.bclould.tea.ui.activity.PayReceiptResultActivity;
 import com.bclould.tea.ui.activity.PaymentActivity;
 import com.bclould.tea.ui.activity.ProblemFeedBackActivity;
-import com.bclould.tea.ui.activity.ScanQRCodeActivity;
 import com.bclould.tea.ui.activity.ScanQRResultActivty;
-import com.bclould.tea.ui.activity.SelectConversationActivity;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
@@ -40,11 +36,13 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
 import static com.bclould.tea.utils.Constants.REDPACKAGE;
 
 /**
@@ -55,19 +53,20 @@ import static com.bclould.tea.utils.Constants.REDPACKAGE;
 public class QRDiscernUtil {
     private Activity mContext;
     private String url;
-    private  Result re;
+    private Result re;
     private MenuListPopWindow menu;
-    public QRDiscernUtil(Activity context){
-        this.mContext=context;
+
+    public QRDiscernUtil(Activity context) {
+        this.mContext = context;
     }
 
-    public void discernQR(final String url){
+    public void discernQR(final String url) {
         try {
-            this.url=url;
-            new Thread(){
+            this.url = url;
+            new Thread() {
                 @Override
                 public void run() {
-                    Bitmap obmp= BitmapFactory.decodeFile(getImgPathFromCache(url));
+                    Bitmap obmp = BitmapFactory.decodeFile(getImgPathFromCache(url));
                     int width = obmp.getWidth();
                     int height = obmp.getHeight();
                     int[] data = new int[width * height];
@@ -80,24 +79,25 @@ public class QRDiscernUtil {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    Message message=new Message();
-                    message.what=1;
+                    Message message = new Message();
+                    message.what = 1;
                     if (re != null) {
-                        UtilTool.Log("fengjian","有二維碼"+re.toString());
-                        message.obj=true;
-                    }else {
-                        message.obj=false;
+                        UtilTool.Log("fengjian", "有二維碼" + re.toString());
+                        message.obj = true;
+                    } else {
+                        message.obj = false;
                     }
                     mHandler.sendMessage(message);
                 }
             }.start();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * 获取glide之前缓存过的图片地址
+     *
      * @param url 网络图片的地址
      * @return
      */
@@ -108,7 +108,7 @@ public class QRDiscernUtil {
         try {
             File cacheFile = future.get();
             String absolutePath = cacheFile.getAbsolutePath();
-            UtilTool.Log("fengjian","圖片地址："+absolutePath);
+            UtilTool.Log("fengjian", "圖片地址：" + absolutePath);
             return absolutePath;
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -119,7 +119,7 @@ public class QRDiscernUtil {
     }
 
     //解析二维码图片,返回结果封装在Result对象中
-    private Result  parseQRcodeBitmap(String bitmapPath){
+    private Result parseQRcodeBitmap(String bitmapPath) {
         //解析转换类型UTF-8
         Hashtable<DecodeHintType, String> hints = new Hashtable<DecodeHintType, String>();
         hints.put(DecodeHintType.CHARACTER_SET, "utf-8");
@@ -129,11 +129,11 @@ public class QRDiscernUtil {
         //并不会真的返回一个Bitmap给你，它仅仅会把它的宽，高取回来给你
         options.inJustDecodeBounds = true;
         //此时的bitmap是null，这段代码之后，options.outWidth 和 options.outHeight就是我们想要的宽和高了
-        Bitmap bitmap = BitmapFactory.decodeFile(bitmapPath,options);
+        Bitmap bitmap = BitmapFactory.decodeFile(bitmapPath, options);
         //我们现在想取出来的图片的边长（二维码图片是正方形的）设置为400像素
         //以上这种做法，虽然把bitmap限定到了我们要的大小，但是并没有节约内存，如果要节约内存，我们还需要使用inSimpleSize这个属性
         options.inSampleSize = options.outHeight / 400;
-        if(options.inSampleSize <= 0){
+        if (options.inSampleSize <= 0) {
             options.inSampleSize = 1; //防止其值小于或等于0
         }
         options.inJustDecodeBounds = false;
@@ -158,20 +158,20 @@ public class QRDiscernUtil {
         return result;
     }
 
-    Handler mHandler=new Handler(){
+    Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case 1:
-                    boolean isShowQr= (boolean) msg.obj;
+                    boolean isShowQr = (boolean) msg.obj;
                     showDialog(isShowQr);
                     break;
                 case 2:
-                    String filePath= (String) msg.obj;
-                    if(UtilTool.saveAlbum(filePath,mContext)){
-                        ToastShow.showToast2(mContext,mContext.getString(R.string.save_success));
-                    }else{
-                        ToastShow.showToast2(mContext,mContext.getString(R.string.save_error));
+                    String filePath = (String) msg.obj;
+                    if (UtilTool.saveAlbum(filePath, mContext)) {
+                        ToastShow.showToast2(mContext, mContext.getString(R.string.save_success));
+                    } else {
+                        ToastShow.showToast2(mContext, mContext.getString(R.string.save_error));
                     }
                     menu.dismiss();
                     break;
@@ -179,27 +179,27 @@ public class QRDiscernUtil {
         }
     };
 
-    private void showDialog(boolean isShowQr){
+    private void showDialog(boolean isShowQr) {
         List<String> list = new ArrayList<>();
         list.add(mContext.getString(R.string.save_image));
-        if(isShowQr)
-        list.add(mContext.getString(R.string.discern_qr));
+        if (isShowQr)
+            list.add(mContext.getString(R.string.discern_qr));
         menu = new MenuListPopWindow(mContext, list);
         menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
             @Override
             public void onclickitem(int position) {
-                switch (position){
+                switch (position) {
                     case 0:
                         menu.dismiss();
                         break;
                     case 1:
-                        new Thread(){
+                        new Thread() {
                             @Override
                             public void run() {
                                 String filePath = UtilTool.getImgPathFromCache(url, mContext);
-                                Message message=new Message();
-                                message.what=2;
-                                message.obj=filePath;
+                                Message message = new Message();
+                                message.what = 2;
+                                message.obj = filePath;
                                 mHandler.sendMessage(message);
                             }
                         }.start();
@@ -207,11 +207,11 @@ public class QRDiscernUtil {
                         break;
                     case 2:
                         menu.dismiss();
-                        if(re!=null){
+                        if (re != null) {
                             goActivity(re.toString());
                         }
 //                        Result result= parseQRcodeBitmap(url);
-                        UtilTool.Log("fengjian",re.toString());
+                        UtilTool.Log("fengjian", re.toString());
                         break;
                 }
             }
@@ -220,11 +220,11 @@ public class QRDiscernUtil {
         menu.showAtLocation();
     }
 
-    public void goActivity(String result){
+    public void goActivity(String result) {
         if (result != null && !result.isEmpty()) {
             if (result.contains(Constants.BUSINESSCARD)) {
                 String base64 = result.substring(Constants.BUSINESSCARD.length(), result.length());
-                String jsonresult = new String(Base64.decode(base64,Base64.DEFAULT));
+                String jsonresult = new String(Base64.decode(base64, Base64.DEFAULT));
                 UtilTool.Log("日志", jsonresult);
 
                 Gson gson = new Gson();
@@ -239,7 +239,7 @@ public class QRDiscernUtil {
             } else if (result.contains(Constants.MONEYIN)) {
                 try {
                     String base64 = result.substring(Constants.MONEYIN.length(), result.length());
-                    String jsonresult =new String(Base64.decode(base64,Base64.DEFAULT));
+                    String jsonresult = new String(Base64.decode(base64, Base64.DEFAULT));
                     UtilTool.Log("日志", jsonresult);
                     Gson gson = new Gson();
                     QrReceiptInfo qrReceiptInfo = gson.fromJson(jsonresult, QrReceiptInfo.class);
@@ -268,7 +268,7 @@ public class QRDiscernUtil {
             } else if (result.contains(Constants.MONEYOUT)) {
                 try {
                     String base64 = result.substring(Constants.MONEYOUT.length(), result.length());
-                    String jsonresult = new String(Base64.decode(base64,Base64.DEFAULT));
+                    String jsonresult = new String(Base64.decode(base64, Base64.DEFAULT));
                     UtilTool.Log("日志", jsonresult);
                     Gson gson = new Gson();
                     QrPaymentInfo qrPaymentInfo = gson.fromJson(jsonresult, QrPaymentInfo.class);
@@ -302,7 +302,7 @@ public class QRDiscernUtil {
                     Toast.makeText(mContext, mContext.getString(R.string.scan_qr_code_error), Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
-            } else if(result.contains(REDPACKAGE)){
+            } else if (result.contains(REDPACKAGE)) {
                 String base64 = result.substring(Constants.REDPACKAGE.length(), result.length());
                 byte[] bytes = Base64.decode(base64, Base64.DEFAULT);
                 String jsonresult = new String(bytes);
@@ -314,7 +314,14 @@ public class QRDiscernUtil {
                 intent.putExtra("type", true);
                 mContext.startActivity(intent);
                 mContext.finish();
-            }else{
+            } else if (result.startsWith(Constants.COMMERCIAL_TENANT_RECOGNITION_SYMBOL)) {
+                String replace = result.replace(Constants.COMMERCIAL_TENANT_RECOGNITION_SYMBOL, "");
+                Intent intent = new Intent(mContext, PaymentActivity.class);
+                intent.putExtra("type", Constants.COMMERCIAL_TENANT_RECOGNITION_SYMBOL);
+                intent.putExtra("username", replace);
+                mContext.startActivity(intent);
+                mContext.finish();
+            } else {
                 Intent intent = new Intent(mContext, ScanQRResultActivty.class);
                 intent.putExtra("result", result);
                 mContext.startActivity(intent);

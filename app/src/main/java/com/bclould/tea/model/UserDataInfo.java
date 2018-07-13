@@ -6,13 +6,23 @@ package com.bclould.tea.model;
 
 public class UserDataInfo {
 
+
     /**
      * status : 1
-     * data : {"avatar":"http://toco--bucket.oss-cn-shenzhen.aliyuncs.com/TOCO41Avatar.png?time=1529575170","remark":"廖矮子"}
+     * data : {"merchant_name":"习红卫","avatar":"http://toco--bucket.oss-cn-shenzhen.aliyuncs.com/MERCHANT4Avatar.png?time=1529669655","coin_name":"TPC"}
      */
 
     private int status;
+    private String message;
     private DataBean data;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public int getStatus() {
         return status;
@@ -32,12 +42,31 @@ public class UserDataInfo {
 
     public static class DataBean {
         /**
-         * avatar : http://toco--bucket.oss-cn-shenzhen.aliyuncs.com/TOCO41Avatar.png?time=1529575170
-         * remark : 廖矮子
+         * merchant_name : 习红卫
+         * avatar : http://toco--bucket.oss-cn-shenzhen.aliyuncs.com/MERCHANT4Avatar.png?time=1529669655
+         * coin_name : TPC
          */
 
+        private String merchant_name;
         private String avatar;
+        private String coin_name;
         private String remark;
+
+        public String getRemark() {
+            return remark;
+        }
+
+        public void setRemark(String remark) {
+            this.remark = remark;
+        }
+
+        public String getMerchant_name() {
+            return merchant_name;
+        }
+
+        public void setMerchant_name(String merchant_name) {
+            this.merchant_name = merchant_name;
+        }
 
         public String getAvatar() {
             return avatar;
@@ -47,12 +76,12 @@ public class UserDataInfo {
             this.avatar = avatar;
         }
 
-        public String getRemark() {
-            return remark;
+        public String getCoin_name() {
+            return coin_name;
         }
 
-        public void setRemark(String remark) {
-            this.remark = remark;
+        public void setCoin_name(String coin_name) {
+            this.coin_name = coin_name;
         }
     }
 }

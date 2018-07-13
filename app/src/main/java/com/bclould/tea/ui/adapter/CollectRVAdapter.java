@@ -55,13 +55,13 @@ public class CollectRVAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        if(mDataList.size() != 0){
+        if (mDataList.size() != 0) {
             return mDataList.size();
         }
         return 0;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.tv_title)
         TextView mTvTitle;
         private CollectInfo.DataBean mDataBean;
@@ -82,8 +82,9 @@ public class CollectRVAdapter extends RecyclerView.Adapter {
                 public boolean onLongClick(View view) {
                     if (mDataBean.getUser_id() != 0) {
                         showDialog(mDataBean);
-                    }else {
-                        ToastShow.showToast2((Activity)mContext, mContext.getString(R.string.no_delete_collect_hint));
+                    } else {
+                        ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.no_delete_collect_hint));
+                        return true;
                     }
                     return false;
                 }

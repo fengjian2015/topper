@@ -7,7 +7,6 @@ import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -17,23 +16,15 @@ import com.bclould.tea.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
-import com.bclould.tea.model.QrCardInfo;
-import com.bclould.tea.model.QrPaymentInfo;
-import com.bclould.tea.model.QrReceiptInfo;
-import com.bclould.tea.model.ReceiptInfo;
-import com.bclould.tea.ui.fragment.ConversationFragment;
 import com.bclould.tea.ui.fragment.FriendListFragment;
-import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.QRDiscernUtil;
 import com.bclould.tea.utils.UtilTool;
-import com.google.gson.Gson;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
-
-import static com.bclould.tea.utils.Constants.REDPACKAGE;
 
 
 /**

@@ -1171,7 +1171,7 @@ public interface MyService {
     @POST("api/user/profile/by_id")
     Observable<UserDataInfo> getUserData(
             @Header("Authorization") String token,
-            @Field("user_id") int group_id
+            @Field("user_id") int user_id
     );
 
     //修改群名稱
@@ -1311,5 +1311,24 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("title") String title,
             @Field("url") String url
+    );
+
+    //商戶信息
+    @FormUrlEncoded
+    @POST("api/offline/pay/info")
+    Observable<UserDataInfo> getMerchantUser(
+            @Header("Authorization") String token,
+            @Field("code") String code
+    );
+
+    //支付給商家
+    @FormUrlEncoded
+    @POST("api/offline/pay/action")
+    Observable<BaseInfo> payMerchant(
+            @Header("Authorization") String token,
+            @Field("code") String code,
+            @Field("number") String number,
+            @Field("second_password") String second_password,
+            @Field("remark") String remark
     );
 }

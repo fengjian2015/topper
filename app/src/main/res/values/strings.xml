@@ -1068,4 +1068,6 @@
     <string name="et_url">輸入網址</string>
     <string name="toast_url">網址不能為空</string>
     <string name="no_delete_collect_hint">不能刪除這條收藏</string>
+    <string name="check_url_error">識別網址失敗，請手動填寫標題</string>
+    <string name="merchant">商家</string>
 </resources>

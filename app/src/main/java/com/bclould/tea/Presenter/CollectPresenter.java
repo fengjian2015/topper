@@ -68,7 +68,7 @@ public class CollectPresenter {
                         hideDialog();
                         if (collectInfo.getStatus() == 1) {
                             callBack.send(collectInfo.getData());
-                        }else {
+                        } else {
                             callBack.finishRefresh();
                         }
 
@@ -88,6 +88,7 @@ public class CollectPresenter {
     }
 
     public void deleteCollect(int id, final CallBack2 callBack2) {
+        showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .deleteCollect(UtilTool.getToken(), id)
@@ -101,14 +102,16 @@ public class CollectPresenter {
 
                     @Override
                     public void onNext(BaseInfo baseInfo) {
-                        ToastShow.showToast2((Activity)mContext, baseInfo.getMessage());
-                        if(baseInfo.getStatus() == 1){
+                        hideDialog();
+                        ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
+                        if (baseInfo.getStatus() == 1) {
                             callBack2.send();
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                     }
 
                     @Override
@@ -119,6 +122,7 @@ public class CollectPresenter {
     }
 
     public void addCollect(String title, String url, final CallBack2 callBack2) {
+        showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .addCollect(UtilTool.getToken(), title, url)
@@ -132,14 +136,16 @@ public class CollectPresenter {
 
                     @Override
                     public void onNext(BaseInfo baseInfo) {
-                        ToastShow.showToast2((Activity)mContext, baseInfo.getMessage());
-                        if(baseInfo.getStatus() == 1){
+                        hideDialog();
+                        ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
+                        if (baseInfo.getStatus() == 1) {
                             callBack2.send();
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                     }
 
                     @Override
@@ -152,7 +158,9 @@ public class CollectPresenter {
     //定义接口
     public interface CallBack {
         void send(List<CollectInfo.DataBean> data);
+
         void error();
+
         void finishRefresh();
     }
 
