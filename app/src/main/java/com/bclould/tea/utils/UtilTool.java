@@ -383,6 +383,33 @@ public class UtilTool {
         return null;
     }
 
+    public static String saveBitmap(Bitmap bitmap, Context context, boolean type) {
+        String fileName = "image" + createtFileName() + ".png";
+        File file = null;
+        if (type) {
+            file = new File(Constants.ALBUM, fileName);
+        } else {
+            file = new File(Constants.PUBLICDIR, fileName);
+        }
+        if (file.exists()) {
+            file.delete();
+        }
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.flush();
+            out.close();
+            Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            Uri uri = Uri.fromFile(file);
+            intent.setData(uri);
+            context.sendBroadcast(intent);
+            return file.getPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static boolean saveAlbum(String path, Activity activity) {
         String type = getFileType(path);
         String newName;
@@ -747,6 +774,11 @@ public class UtilTool {
         return prefix + str;
     }
 
+    public static String base64ToJson(Context context, String prefix, String json) {
+        String str = Base64.encodeToString(json.getBytes(), Base64.DEFAULT);
+        return prefix + str;
+    }
+
     public static String base64PetToJson2(String prefix, String key, String value, String key2, String value2, String key3, String value3, String key4, String value4, String key5, String value5, String key6, String value6) {
         String jsonresult = "";//定义返回字符串
         JSONObject object = new JSONObject();//创建一个总的对象，这个对象对整个json串
@@ -808,6 +840,19 @@ public class UtilTool {
 
     public static void getGroupImage(DBRoomManage dbRoomManage,String roomId, Activity context, ImageView imageView){
         String url=dbRoomManage.findRoomUrl(roomId);
+        if(!StringUtils.isEmpty(url)){
+            if (Util.isOnMainThread() && context != null&&!context.isDestroyed()) {
+                Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).dontAnimate().error(R.mipmap.img_group_head)).into(imageView);
+            }
+        }else{
+            if (Util.isOnMainThread() && context != null&&!context.isDestroyed()) {
+                Glide.with(context).load(R.mipmap.img_group_head).apply(RequestOptions.bitmapTransform(new CircleCrop()).error(R.mipmap.img_group_head).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
+            }
+        }
+    }
+
+
+    public static void getGroupImage(String url, Activity context, ImageView imageView){
         if(!StringUtils.isEmpty(url)){
             if (Util.isOnMainThread() && context != null&&!context.isDestroyed()) {
                 Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).dontAnimate().error(R.mipmap.img_group_head)).into(imageView);
@@ -885,6 +930,16 @@ public class UtilTool {
             if(StringUtils.isEmpty(pos)) {
                 pos = fileName.substring(fileName.lastIndexOf("."));
             }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return pos;
+    }
+
+    public static String getPostfix3(String fileName) {
+        String pos = "";
+        try {
+            pos = fileName.substring(fileName.lastIndexOf("."));
         }catch (Exception e){
             e.printStackTrace();
         }

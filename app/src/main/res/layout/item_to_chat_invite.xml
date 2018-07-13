@@ -19,22 +19,52 @@
             android:layout_alignParentRight="true"
             android:scaleType="fitXY"
             android:src="@mipmap/img_nfriend_headshot1"/>
+
+
         <android.support.v7.widget.CardView
             android:id="@+id/cv_redpacket"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/x20"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x30"
             android:layout_toLeftOf="@+id/iv_touxiang"
-            android:layout_below="@+id/tv_name"
+            app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="@dimen/x20">
-            <ImageView
-                android:id="@+id/iv_img"
-                android:layout_width="@dimen/x190"
-                android:layout_height="@dimen/y280"
-                android:adjustViewBounds="true"
-                android:maxHeight="@dimen/y800"
-                android:maxWidth="@dimen/x480"
-                android:scaleType="centerInside"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/x30"
+                android:paddingLeft="@dimen/x30"
+                android:paddingTop="@dimen/y20"
+                android:paddingBottom="@dimen/y20"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/iv_type"
+                    android:layout_width="@dimen/x100"
+                    android:layout_height="@dimen/y100"
+                    android:layout_marginRight="@dimen/x15"/>
+                <TextView
+                    android:id="@+id/tv_file_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/iv_type"
+                    android:textSize="@dimen/x26"
+                    android:text="@string/intive_group"
+                    android:singleLine="true"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/tv_file_size"
+                    android:layout_width="@dimen/x300"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/iv_type"
+                    android:layout_below="@+id/tv_file_name"
+                    android:lines="2"
+                    android:textSize="@dimen/x24"
+                    android:text=""/>
+
+            </RelativeLayout>
         </android.support.v7.widget.CardView>
         <ImageView
             android:id="@+id/iv_warning"

@@ -1,7 +1,11 @@
 package com.bclould.tea.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +13,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -31,6 +36,9 @@ import com.bclould.tea.utils.UtilTool;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -68,6 +76,7 @@ public class FileOpenActivity extends BaseActivity {
     private File mFile;
     private String key;
     private DBManager mDBManager;
+    private boolean isSuccess=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,56 +133,40 @@ public class FileOpenActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_open:
-                openFile(mFile);
+                if(isSuccess){
+                    openFile(mFile);
+                }else{
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    mBtnOpen.setVisibility(View.GONE);
+                    mFileDownloadPresenter.dowbloadFile(Constants.BUCKET_NAME2, key, mFile);
+                }
                 break;
         }
     }
 
-    /**
-     * 打开文件
-     * @param file
-     */
-    private void openFile(File file){
-        try {
-            Intent intent = new Intent();
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            //设置intent的Action属性
-            intent.setAction(Intent.ACTION_VIEW);
-            //获取文件file的MIME类型
-            String type = getMIMEType(file);
-            //设置intent的data和Type属性。
-            intent.setDataAndType(/*uri*/Uri.fromFile(file), type);
-            //跳转
-            startActivity(intent);
-        }catch (Exception e){
-            ToastShow.showToast2(FileOpenActivity.this,getString(R.string.no_file_open));
-        }
+//    /**
+//     * 打开文件
+//     * @param file
+//     */
+//    private void openFile(File file){
+//        try {
+//            Intent intent = new Intent();
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            //设置intent的Action属性
+//            intent.setAction(Intent.ACTION_VIEW);
+//            //获取文件file的MIME类型
+//            String type = getMIMEType(file);
+//            //设置intent的data和Type属性。
+//            intent.setDataAndType(/*uri*/Uri.fromFile(file), type);
+//            //跳转
+//            startActivity(intent);
+//        }catch (Exception e){
+//            ToastShow.showToast2(FileOpenActivity.this,getString(R.string.no_file_open));
+//        }
+//
+//    }
 
-    }
 
-    /**
-     * 根据文件后缀名获得对应的MIME类型。
-     * @param file
-     */
-    private String getMIMEType(File file) {
-
-        String type="*/*";
-        String fName = file.getName();
-        //获取后缀名前的分隔符"."在fName中的位置。
-        int dotIndex = fName.lastIndexOf(".");
-        if(dotIndex < 0){
-            return type;
-        }
-    /* 获取文件的后缀名 */
-        String end=fName.substring(dotIndex,fName.length()).toLowerCase();
-        if(end=="")return type;
-        //在MIME和文件类型的匹配表中找到对应的MIME类型。
-        for(int i=0;i<MIME_MapTable.length;i++){ //MIME_MapTable??在这里你一定有疑问，这个MIME_MapTable是什么？
-            if(end.equals(MIME_MapTable[i][0]))
-                type = MIME_MapTable[i][1];
-        }
-        return type;
-    }
 
     FileDownloadPresenter.downloadCallback mDownloadCallback = new FileDownloadPresenter.downloadCallback() {
         @Override
@@ -225,14 +218,18 @@ public class FileOpenActivity extends BaseActivity {
                     break;
                 case 1:
                     if (ActivityUtil.isActivityOnTop(FileOpenActivity.this)) {
-                        mProgressBar.setVisibility(View.VISIBLE);
-                        mBtnOpen.setVisibility(View.GONE);
+                        isSuccess=false;
+                        mProgressBar.setVisibility(View.GONE);
+                        mBtnOpen.setVisibility(View.VISIBLE);
+                        mBtnOpen.setText(getString(R.string.down_fail_click));
                     }
                     break;
                 case 2:
                     if (ActivityUtil.isActivityOnTop(FileOpenActivity.this)) {
+                        isSuccess=true;
                         mProgressBar.setVisibility(View.GONE);
                         mBtnOpen.setVisibility(View.VISIBLE);
+                        mBtnOpen.setText(getString(R.string.open_another_application));
                         mDBManager.updateVoice(mMessageInfo.getMsgId(),mFile.getAbsolutePath());
                         MessageEvent messageEvent=new MessageEvent(getString(R.string.update_file_message));
                         messageEvent.setId(mMessageInfo.getMsgId());
@@ -278,73 +275,137 @@ public class FileOpenActivity extends BaseActivity {
         return resId;
     }
 
-    private String[][] MIME_MapTable={
-            //{后缀名， MIME类型}
-            {".3gp",    "video/3gpp"},
-            {".apk",    "application/vnd.android.package-archive"},
-            {".asf",    "video/x-ms-asf"},
-            {".avi",    "video/x-msvideo"},
-            {".bin",    "application/octet-stream"},
-            {".bmp",    "image/bmp"},
-            {".c",  "text/plain"},
-            {".class",  "application/octet-stream"},
-            {".conf",   "text/plain"},
-            {".cpp",    "text/plain"},
-            {".doc",    "application/msword"},
-            {".docx",   "application/vnd.openxmlformats-officedocument.wordprocessingml.document"},
-            {".xls",    "application/vnd.ms-excel"},
-            {".xlsx",   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
-            {".exe",    "application/octet-stream"},
-            {".gif",    "image/gif"},
-            {".gtar",   "application/x-gtar"},
-            {".gz", "application/x-gzip"},
-            {".h",  "text/plain"},
-            {".htm",    "text/html"},
-            {".html",   "text/html"},
-            {".jar",    "application/java-archive"},
-            {".java",   "text/plain"},
-            {".jpeg",   "image/jpeg"},
-            {".jpg",    "image/jpeg"},
-            {".js", "application/x-javascript"},
-            {".log",    "text/plain"},
-            {".m3u",    "audio/x-mpegurl"},
-            {".m4a",    "audio/mp4a-latm"},
-            {".m4b",    "audio/mp4a-latm"},
-            {".m4p",    "audio/mp4a-latm"},
-            {".m4u",    "video/vnd.mpegurl"},
-            {".m4v",    "video/x-m4v"},
-            {".mov",    "video/quicktime"},
-            {".mp2",    "audio/x-mpeg"},
-            {".mp3",    "audio/x-mpeg"},
-            {".mp4",    "video/mp4"},
-            {".mpc",    "application/vnd.mpohun.certificate"},
-            {".mpe",    "video/mpeg"},
-            {".mpeg",   "video/mpeg"},
-            {".mpg",    "video/mpeg"},
-            {".mpg4",   "video/mp4"},
-            {".mpga",   "audio/mpeg"},
-            {".msg",    "application/vnd.ms-outlook"},
-            {".ogg",    "audio/ogg"},
-            {".pdf",    "application/pdf"},
-            {".png",    "image/png"},
-            {".pps",    "application/vnd.ms-powerpoint"},
-            {".ppt",    "application/vnd.ms-powerpoint"},
-            {".pptx",   "application/vnd.openxmlformats-officedocument.presentationml.presentation"},
-            {".prop",   "text/plain"},
-            {".rc", "text/plain"},
-            {".rmvb",   "audio/x-pn-realaudio"},
-            {".rtf",    "application/rtf"},
-            {".sh", "text/plain"},
-            {".tar",    "application/x-tar"},
-            {".tgz",    "application/x-compressed"},
-            {".txt",    "text/plain"},
-            {".wav",    "audio/x-wav"},
-            {".wma",    "audio/x-ms-wma"},
-            {".wmv",    "audio/x-ms-wmv"},
-            {".wps",    "application/vnd.ms-works"},
-            {".xml",    "text/plain"},
-            {".z",  "application/x-compress"},
-            {".zip",    "application/x-zip-compressed"},
-            {"",        "*/*"}
-    };
+    /**
+     * 使用系统的应用 打开文件
+     * 见 FILE_TYPE_WORD 等类型
+     * @return
+     */
+    public void openFile(File file) {
+        boolean toOpenOrNot = true;
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri uri = Uri.fromFile(file);
+        String mimeStr = "";
+        String postfixs = getFileExtension(file.getName());
+        if ("doc".equalsIgnoreCase(postfixs)||"docx".equalsIgnoreCase(postfixs)) {
+            intent.setDataAndType(uri, "application/msword");
+            intent.setDataAndType(uri, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+            mimeStr = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        } else if ("ppt".equalsIgnoreCase(postfixs)||"pptx".equalsIgnoreCase(postfixs)) {
+            intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
+            intent.setDataAndType(uri, "application/vnd.openxmlformats-officedocument.presentationml.presentation");
+            mimeStr = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+        } else if ("xls".equalsIgnoreCase(postfixs)||"xlsx".equalsIgnoreCase(postfixs)) {
+            intent.setDataAndType(uri, "application/vnd.ms-excel");
+            intent.setDataAndType(uri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            mimeStr = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        } else if ("pdf".equalsIgnoreCase(postfixs)) {
+            intent.setDataAndType(uri, "application/pdf");
+            mimeStr = "application/pdf";
+        } else if ("txt".equalsIgnoreCase(postfixs)||"log".equalsIgnoreCase(postfixs)) {
+            intent.setDataAndType(uri, "text/plain");
+            mimeStr = "text/plain";
+        } else if ("zip".equalsIgnoreCase(postfixs)) {
+            intent.setDataAndType(uri, "application/x-zip-compressed");
+            mimeStr = "application/x-zip-compressed";
+        } else if ("rar".equalsIgnoreCase(postfixs)) {
+            intent.setDataAndType(uri, "application/x-rar-compressed");
+            mimeStr = "application/x-rar-compressed";
+        } else if ("rtf".equalsIgnoreCase(postfixs)) {
+            intent.setDataAndType(uri, "application/rtf");
+            mimeStr = "application/rtf";
+        } else {
+            mimeStr = getMimeType(file);
+            intent.setDataAndType(uri, mimeStr);
+        }
+
+        if (toOpenOrNot) {
+            try {
+                //可能会导致直接打开qq发送的bug
+//                startActivity(intent);
+                //也可能会导致直接打开qq发送的bug
+//                startActivity(Intent.createChooser(intent, "请选择能够打开该文件的应用"));
+                //解决↓--------------------------
+                List<String> allpackages = getAllpackages(FileOpenActivity.this, uri, mimeStr);
+                //移除需要剔除的包名
+                allpackages = removeSomePackages(allpackages);
+                if (allpackages.size() > 0) {
+                    startActivity(Intent.createChooser(intent, "请选择能够打开该文件的应用"));
+//                    startActivity(intent);
+                } else {
+                    ToastShow.showToast2(FileOpenActivity.this,getString(R.string.no_file_open));
+                }
+            } catch (ActivityNotFoundException anfe) {
+                ToastShow.showToast2(FileOpenActivity.this,getString(R.string.no_file_open));
+//                ToastShow.showToast2(IMFileShowAndDownloadActivity.this, "暂时没有应用能够打开该文件!");
+            }
+        } else {
+            ToastShow.showToast2(FileOpenActivity.this,getString(R.string.no_file_open));
+//            ToastShow.showToast2(IMFileShowAndDownloadActivity.this, "暂时没有应用能够打开该文件!");
+        }
+    }
+    /**
+     * 获取文件的mime类型
+     *
+     * @param file
+     * @return
+     */
+    public static String getMimeType(final File file) {
+        String extension = getFileExtension(file.getName());
+        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+    }
+    /**
+     * 不包括点
+     *
+     * @param fileName
+     * @return
+     */
+    public static String getFileExtension(String fileName) {
+        int index = fileName.lastIndexOf(".");
+        if (index == -1) return "";
+        return fileName.substring(index + 1, fileName.length()).toLowerCase(Locale.getDefault());
+    }
+
+    /**
+     * 获取所有文件管理器功能的软件
+     *
+     * @param context
+     * @return
+     */
+    public static List<String> getAllpackages(Context context, Uri uri, String mimeStr) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.setDataAndType(uri, mimeStr);
+//        intent.setType(mimeStr);
+        PackageManager pm = context.getPackageManager();
+        List<ResolveInfo> infos = pm.queryIntentActivities(intent, 0);
+        List<String> infosTmp = new ArrayList<>();
+        for (int i = 0; i < infos.size(); i++) {
+            infosTmp.add(infos.get(i).activityInfo.packageName);
+        }
+        return infosTmp;
+    }
+
+    private String[] packageTsoExclude = {"com.tencent.mobileqq"};
+    private List<String> removeSomePackages(List<String> allpackages) {
+        List<String> indexToExclude = new ArrayList<>();
+        if (allpackages.size() > 0) {
+            for (int i = 0; i < allpackages.size(); i++) {
+                String s = allpackages.get(i);
+                for (String s1 : packageTsoExclude) {
+                    if (s.equalsIgnoreCase(s1)) {
+                        indexToExclude.add(allpackages.get(i));
+                    }
+                }
+            }
+            for (int i = 0; i < indexToExclude.size(); i++) {
+                allpackages.remove(indexToExclude.get(i));
+            }
+            return allpackages;
+        } else {
+            return allpackages;
+        }
+    }
+
 }

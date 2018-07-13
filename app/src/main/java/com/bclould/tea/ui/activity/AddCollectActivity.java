@@ -102,7 +102,7 @@ public class AddCollectActivity extends BaseActivity {
                             message.obj = doc.title();
                             mHandler.sendMessage(message);
                         }
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }

@@ -24,6 +24,7 @@ import com.bclould.tea.model.QrReceiptInfo;
 import com.bclould.tea.model.QrRedInfo;
 import com.bclould.tea.model.ReceiptInfo;
 import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
+import com.bclould.tea.ui.activity.GroupConfirmActivity;
 import com.bclould.tea.ui.activity.IndividualDetailsActivity;
 import com.bclould.tea.ui.activity.PayReceiptResultActivity;
 import com.bclould.tea.ui.activity.PaymentActivity;
@@ -48,6 +49,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_IMG_MSG;
+import static com.bclould.tea.utils.Constants.GROUPCARD;
 import static com.bclould.tea.utils.Constants.REDPACKAGE;
 
 /**
@@ -350,6 +352,18 @@ public class QRDiscernUtil {
                 intent.putExtra("type", true);
                 mContext.startActivity(intent);
                 mContext.finish();
+            }else if(result.contains(GROUPCARD)){
+                String base64 = result.substring(Constants.GROUPCARD.length(), result.length());
+                String jsonresult = new String(Base64.decode(base64,Base64.DEFAULT));
+                UtilTool.Log("日志", jsonresult);
+                Gson gson = new Gson();
+                QrCardInfo qrCardInfo = gson.fromJson(jsonresult, QrCardInfo.class);
+                Intent intent=new Intent(mContext, GroupConfirmActivity.class);
+                intent.putExtra("roomName",qrCardInfo.getRoomName());
+                intent.putExtra("roomId",qrCardInfo.getRoomId());
+                intent.putExtra("roomPath",qrCardInfo.getRoomPath());
+                mContext.startActivity(intent);
+
             }else{
                 Intent intent = new Intent(mContext, ScanQRResultActivty.class);
                 intent.putExtra("result", result);

@@ -34,4 +34,5 @@ public interface Room {
     void uploadFile(String path);
     void anewUploadFile(MessageInfo messageInfo);
     void transmitFile(MessageInfo messageInfo);
+    void sendInviteGroup(MessageInfo messageInfo);
 }
