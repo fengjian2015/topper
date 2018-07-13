@@ -52,6 +52,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.luck.picture.lib.permissions.RxPermissions;
 import com.luck.picture.lib.tools.PictureFileUtils;
+import com.umeng.commonsdk.debug.E;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,6 +72,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.TimeZone;
@@ -382,16 +384,29 @@ public class UtilTool {
     }
 
     public static boolean saveAlbum(String path, Activity activity) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, options);
-        String type = options.outMimeType;
+        String type = getFileType(path);
         String newName;
         if (type != null && (type.contains("gif") || type.contains("GIF"))) {
             newName = System.currentTimeMillis() + ".gif";
         } else {
             newName = System.currentTimeMillis() + ".jpg";
         }
+        String newFileName = Constants.ALBUM + newName;
+        File file = new File(Constants.ALBUM);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        copyFile(path, newFileName);
+        if (new File(newFileName).exists()) {
+            activity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + newFileName)));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean saveAlbumVideo(String path, Activity activity) {
+        String newName = System.currentTimeMillis() + ".mp4";
         String newFileName = Constants.ALBUM + newName;
         File file = new File(Constants.ALBUM);
         if (!file.exists()) {
@@ -838,7 +853,7 @@ public class UtilTool {
     }
 
     public static String getPostfix(String fileName) {
-        String postfix = fileName.substring(fileName.lastIndexOf("."));
+        String postfix = UtilTool.getPostfix2(fileName);
         if (postfix.equals(".png") || postfix.equals(".jpg") || postfix.equals(".jpeg") || postfix.equals(".gif") || postfix.equals(".JPEG") || postfix.equals(".PNG") || postfix.equals(".JPG") || postfix.equals(".GIF")) {
             return "Image";
         } else if (postfix.equals(".mp4") || postfix.equals(".mov") || postfix.equals(".MP4") || postfix.equals(".MOV")) {
@@ -862,7 +877,14 @@ public class UtilTool {
     public static String getPostfix2(String fileName) {
         String pos = "";
         try {
-            pos=fileName.substring(fileName.lastIndexOf("."));
+            pos=getFileType(fileName);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        try {
+            if(StringUtils.isEmpty(pos)) {
+                pos = fileName.substring(fileName.lastIndexOf("."));
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -1181,6 +1203,7 @@ public class UtilTool {
                 .downloadOnly(400, 400);
         try {
             File cacheFile = future.get();
+
             String absolutePath = cacheFile.getAbsolutePath();
             UtilTool.Log("fengjian", "圖片地址：" + absolutePath);
             return absolutePath;
@@ -1231,6 +1254,7 @@ public class UtilTool {
                     context.startActivity(install);
                 }
             }
+
     public static String getPath(Context context, Uri uri) throws URISyntaxException {
         if ("content".equalsIgnoreCase(uri.getScheme())) {
             String[] projection = { "_data" };
@@ -1249,4 +1273,19 @@ public class UtilTool {
         }
         return null;
     }
+
+    public static String getFileType(String path){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+        String type = options.outMimeType;
+        try {
+            type="."+type.substring(type.lastIndexOf("/")+1,type.length());
+        }catch (Exception e){
+            e.printStackTrace();
+            type="";
+        }
+        return type;
+    }
+
 }

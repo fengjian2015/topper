@@ -315,6 +315,7 @@ public class WsConnection {
             ws.end();
             ws=null;
         }
+        setIsConnection(false);
         setIsLogin(false);
     }
 

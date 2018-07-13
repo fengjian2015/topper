@@ -37,8 +37,8 @@ android {
         applicationId "com.bclould.tea"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 67
-        versionName "0.67"
+        versionCode 68
+        versionName "0.68"
         multiDexEnabled = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
@@ -76,6 +76,7 @@ configurations.all {
         }
     }
 }
+
 
 
 

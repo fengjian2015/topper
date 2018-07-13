@@ -176,6 +176,7 @@ public class ConversationDetailsActivity extends BaseActivity {
 
     private void goRecord() {
         Intent intent=new Intent(this,ConversationRecordFindActivity.class);
+        intent.putExtra("roomId",roomId);
         intent.putExtra("user",mUser);
         intent.putExtra("name",mName);
         startActivity(intent);

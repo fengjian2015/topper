@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBRoomManage;
+import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.activity.ConversationRecordFindActivity;
@@ -48,11 +50,15 @@ public class MessageRecordAdapter extends RecyclerView.Adapter {
     private List<MessageInfo> messageInfoList;
     private int type;
     private DBManager mMdb;
+    private DBRoomMember mDBRoomMember;
+    private String roomId;
 
-    public MessageRecordAdapter(Context context, List<MessageInfo> messageInfoList, DBManager mMdb) {
+    public MessageRecordAdapter(Context context, List<MessageInfo> messageInfoList, DBManager mMdb, DBRoomMember mDBRoomMember, String roomId) {
         this.context = context;
         this.messageInfoList = messageInfoList;
         this.mMdb = mMdb;
+        this.mDBRoomMember=mDBRoomMember;
+        this.roomId=roomId;
     }
 
     public void setType(int type) {
@@ -120,12 +126,17 @@ public class MessageRecordAdapter extends RecyclerView.Adapter {
         if(!StringUtils.isEmpty(remark)){
             ((TextViewHolder) holder).tvName.setText(remark);
         }else {
-            ((TextViewHolder) holder).tvName.setText(send.split("@")[0]);
+            remark=mDBRoomMember.findMemberName(roomId,send);
+            if(!StringUtils.isEmpty(remark)){
+                ((TextViewHolder) holder).tvName.setText(remark);
+            }else{
+                ((TextViewHolder) holder).tvName.setText(send);
+            }
         }
         ((TextViewHolder) holder).tvContent.setText(messageInfoList.get(position).getMessage());
         ((TextViewHolder) holder).tvTime.setText(messageInfoList.get(position).getTime());
 
-        UtilTool.getImage(mMdb, send, context, ((TextViewHolder)holder).ivHead);
+        UtilTool.getImage(context,((TextViewHolder)holder).ivHead,mDBRoomMember,mMdb,send);
         /*Bitmap bitmap=UtilTool.getImage(mMdb, send, context);
         ((TextViewHolder) holder).ivHead.setImageBitmap(bitmap);*/
         ((TextViewHolder) holder).rlCache.setOnClickListener(new View.OnClickListener() {
@@ -150,16 +161,26 @@ public class MessageRecordAdapter extends RecyclerView.Adapter {
         if (StringUtils.isEmpty(from)){
             from="";
         }
-        String mToName = send.split("@")[0];
-        String fromName=from.split("@")[0] ;
+        String mToName = send;
+        String fromName=from;
 
         String toRemark=mMdb.queryRemark(send);
         if(!StringUtils.isEmpty(toRemark)){
             mToName=toRemark;
+        }else {
+            toRemark=mDBRoomMember.findMemberName(roomId,send);
+            if(!StringUtils.isEmpty(toRemark)){
+                mToName=toRemark;
+            }
         }
         String fromRemark=mMdb.queryRemark(from);
         if(!StringUtils.isEmpty(fromRemark)){
             fromName=fromRemark;
+        }else {
+            fromRemark=mDBRoomMember.findMemberName(roomId,from);
+            if(!StringUtils.isEmpty(fromRemark)){
+                fromName=fromRemark;
+            }
         }
 
         if (msgtype == TO_TRANSFER_MSG) {

@@ -302,9 +302,9 @@ public class SingleManage implements Room {
         try {
             MessageInfo sendMessage = new MessageInfo();
             sendMessage.setKey(key);
-            sendMessage.setCount(title);
+            sendMessage.setCount(size);
             sendMessage.setContent(postfixs);
-            sendMessage.setTitle(size);
+            sendMessage.setTitle(title);
             int type = WsContans.MSG_FILE;
             send(mUser, null, JSON.toJSONString(sendMessage), type, msgId, createTime);
             sendFile(msgId, true);
@@ -393,7 +393,7 @@ public class SingleManage implements Room {
         }
         //缩略图储存路径
         final File newFile = new File(Constants.PUBLICDIR + key);
-        String postfixs = file.getName().substring(file.getName().lastIndexOf("."));
+        String postfixs =UtilTool.getPostfix2(file.getName());
         if (!".gif".equals(postfixs) && !".GIF".equals(postfixs)) {
             UtilTool.comp(bitmap, newFile);//压缩图片
         } else {
