@@ -556,7 +556,7 @@
         <activity
             android:name=".ui.activity.VideoActivity"
             android:launchMode="singleTop"
-            android:theme="@style/Transparent" />
+            android:theme="@style/TranslucentTheme" />
 
         <!-- 紅包页面 -->
         <activity

@@ -1239,7 +1239,7 @@ public class UtilTool {
         }
         return data;
     }
-    
+
     public static void install(Context context, File file) {
         if (Build.VERSION.SDK_INT >= 24) {
             Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
