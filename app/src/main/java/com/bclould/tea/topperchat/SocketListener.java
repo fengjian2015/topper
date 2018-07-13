@@ -913,10 +913,11 @@ public class SocketListener {
         if (mdbRoomManage.findRoom(roomId)){
             new GroupPresenter(context).selectGroupMember(Integer.parseInt(roomId), mdbRoomMember, false,mdbRoomManage,mgr, new GroupPresenter.CallBack() {
                 @Override
-                public void send() {}
+                public void send() {
+                    EventBus.getDefault().post(new MessageEvent(context.getString(R.string.refresh_group_members)));
+                }
             });
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.refresh_group_members)));
             return;
         }
         createConversation(roomId,roomName);
@@ -924,7 +925,6 @@ public class SocketListener {
 
     /**
      * 紅包被領取通知
-     *
      * @param messageMap
      */
     private void redGet(Map<Object, Object> messageMap) {

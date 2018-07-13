@@ -438,7 +438,7 @@ public class MultiManage implements Room{
         }
         //缩略图储存路径
         final File newFile = new File(Constants.PUBLICDIR + key);
-        String postfixs = file.getName().substring(file.getName().lastIndexOf("."));
+        String postfixs = UtilTool.getPostfix2(file.getName());
         if (!".gif".equals(postfixs) && !".GIF".equals(postfixs)) {
             UtilTool.comp(bitmap, newFile);//压缩图片
         } else {

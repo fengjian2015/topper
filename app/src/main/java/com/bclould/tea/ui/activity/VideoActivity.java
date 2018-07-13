@@ -1,5 +1,7 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,21 +9,35 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.base.SwipeActivity;
+import com.bclould.tea.model.MessageInfo;
+import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.ui.widget.VideoPlayer;
+import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.danikula.videocache.HttpProxyCacheServer;
+import com.umeng.commonsdk.debug.E;
+
+import java.io.File;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+import static com.bclould.tea.ui.adapter.ChatAdapter.TO_VIDEO_MSG;
 
 
 /**
@@ -60,7 +76,10 @@ public class VideoActivity extends SwipeActivity {
     ProgressBar mProgressBar;
     @Bind(R.id.videoPlayer)
     VideoPlayer mVideoPlayer;
-
+    @Bind(R.id.rl_title)
+    RelativeLayout mRlTitle;
+    private MenuListPopWindow menu;
+    private String uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +87,7 @@ public class VideoActivity extends SwipeActivity {
         setContentView(R.layout.activity_video);
         ButterKnife.bind(this);
         setDimension();
-        String uri = getIntent().getStringExtra("url");
+        uri = getIntent().getStringExtra("url");
         UtilTool.Log("日志", uri);
         //实现缓存加载
 
@@ -155,7 +174,7 @@ public class VideoActivity extends SwipeActivity {
         mVideoPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                finish();
+                mVideoPlayer.pause();
             }
         });
 
@@ -167,6 +186,13 @@ public class VideoActivity extends SwipeActivity {
                 } else {
                     mVideoPlayer.start();
                 }
+            }
+        });
+        mRlTitle.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                showDialog();
+                return false;
             }
         });
     }
@@ -204,7 +230,7 @@ public class VideoActivity extends SwipeActivity {
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
         int screenHeight = getResources().getDisplayMetrics().heightPixels;
         float screenProportion = (float) screenHeight / (float) screenWidth;
-        android.view.ViewGroup.LayoutParams lp = mVideoPlayer.getLayoutParams();
+        ViewGroup.LayoutParams lp = mVideoPlayer.getLayoutParams();
 
         if (videoProportion < screenProportion) {
             lp.height = screenHeight;
@@ -219,4 +245,74 @@ public class VideoActivity extends SwipeActivity {
     private float getVideoProportion() {
         return 1.5f;
     }
+
+    @OnClick({R.id.iv_back})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
+        }
+    }
+
+    private void showDialog() {
+        List<String> list = new ArrayList<>();
+        list.add(getString(R.string.save_video));
+        list.add(getString(R.string.transmit));
+        menu = new MenuListPopWindow(this, list);
+        menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
+            @Override
+            public void onclickitem(int position) {
+                switch (position) {
+                    case 0:
+                        menu.dismiss();
+                        break;
+                    case 1:
+                        try {
+                            //保存
+                            String filePath;
+                            if (uri.startsWith("https://") || uri.startsWith("http://")) {
+                                HttpProxyCacheServer proxy = MyApp.getInstance().getProxy(VideoActivity.this);
+                                filePath = new File(new URI(proxy.getProxyUrl(uri))).getAbsolutePath();
+                            } else {
+                                filePath = uri;
+                            }
+                            if (UtilTool.saveAlbumVideo(filePath, VideoActivity.this)) {
+                                ToastShow.showToast2(VideoActivity.this, VideoActivity.this.getString(R.string.save_success));
+                            } else {
+                                ToastShow.showToast2(VideoActivity.this, VideoActivity.this.getString(R.string.save_error));
+                            }
+                            menu.dismiss();
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        break;
+                    case 2:
+                        //轉發
+                        try{
+                            Intent intent = new Intent(VideoActivity.this, SelectConversationActivity.class);
+                            intent.putExtra("type", 1);
+                            intent.putExtra("msgType", TO_VIDEO_MSG);
+                            MessageInfo messageInfo = new MessageInfo();
+                            if (uri.startsWith("https://") || uri.startsWith("http://")) {
+                                HttpProxyCacheServer proxy = MyApp.getInstance().getProxy(VideoActivity.this);
+                                String proxyUrl = new File(new URI(proxy.getProxyUrl(uri))).getAbsolutePath();
+                                messageInfo.setMessage(proxyUrl);
+                            } else {
+                                messageInfo.setMessage(uri);
+                            }
+                            intent.putExtra("messageInfo", messageInfo);
+                            startActivity(intent);
+                            menu.dismiss();
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        break;
+                }
+            }
+        });
+        menu.setColor(Color.BLACK);
+        menu.showAtLocation();
+    }
+
 }

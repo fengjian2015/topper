@@ -18,6 +18,8 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBRoomManage;
+import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.adapter.MessageRecordAdapter;
 import com.bclould.tea.ui.adapter.MessageRecordSelectAdapter;
@@ -79,10 +81,12 @@ public class ConversationRecordFindActivity extends BaseActivity implements Mess
     public static final int TEXT_SELECT = 6;//文本輸入
 
     private DBManager mMdb;
+    private DBRoomMember mDBRoomMember;
     private String user;
     private int mOffset = 1;
     private int type=TEXT_SELECT;
     private boolean changeIntupType = false;
+    private String roomId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,8 +99,10 @@ public class ConversationRecordFindActivity extends BaseActivity implements Mess
     }
 
     private void init() {
+        roomId=getIntent().getStringExtra("roomId");
         user = getIntent().getStringExtra("user");
         mMdb = new DBManager(this);
+        mDBRoomMember=new DBRoomMember(this);
 //        selectList.add(DATE_MSG);
         selectList.add(IMAGE_MSG);
         selectList.add(VIDEO_MSG);
@@ -109,7 +115,7 @@ public class ConversationRecordFindActivity extends BaseActivity implements Mess
         selectAdapter.addOnItemClickListener(this);
 
         //初始化結果適配器
-        recordAdapter = new MessageRecordAdapter(this, messageInfoList, mMdb);
+        recordAdapter = new MessageRecordAdapter(this, messageInfoList, mMdb,mDBRoomMember,roomId);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(recordAdapter);
 

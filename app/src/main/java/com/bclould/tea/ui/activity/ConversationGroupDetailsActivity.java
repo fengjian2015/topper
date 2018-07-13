@@ -525,6 +525,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
 
     private void goRecord() {
         Intent intent = new Intent(this, ConversationRecordFindActivity.class);
+        intent.putExtra("roomId",roomId);
         intent.putExtra("user", roomId);
         intent.putExtra("name", roomName);
         startActivity(intent);

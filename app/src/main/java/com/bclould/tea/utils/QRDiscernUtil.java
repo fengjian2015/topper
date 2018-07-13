@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.bclould.tea.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tea.R;
+import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.QrCardInfo;
 import com.bclould.tea.model.QrPaymentInfo;
 import com.bclould.tea.model.QrReceiptInfo;
@@ -26,6 +27,7 @@ import com.bclould.tea.ui.activity.PayReceiptResultActivity;
 import com.bclould.tea.ui.activity.PaymentActivity;
 import com.bclould.tea.ui.activity.ProblemFeedBackActivity;
 import com.bclould.tea.ui.activity.ScanQRResultActivty;
+import com.bclould.tea.ui.activity.SelectConversationActivity;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
@@ -43,6 +45,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static com.bclould.tea.ui.adapter.ChatAdapter.TO_IMG_MSG;
 import static com.bclould.tea.utils.Constants.REDPACKAGE;
 
 /**
@@ -168,11 +171,30 @@ public class QRDiscernUtil {
                     break;
                 case 2:
                     String filePath = (String) msg.obj;
-                    if (UtilTool.saveAlbum(filePath, mContext)) {
-                        ToastShow.showToast2(mContext, mContext.getString(R.string.save_success));
-                    } else {
-                        ToastShow.showToast2(mContext, mContext.getString(R.string.save_error));
+                    if(StringUtils.isEmpty(filePath)){
+                        ToastShow.showToast2(mContext,mContext.getString(R.string.picture_is_not_loaded));
+                        return;
                     }
+                    if(UtilTool.saveAlbum(filePath,mContext)){
+                        ToastShow.showToast2(mContext,mContext.getString(R.string.save_success));
+                    }else{
+                        ToastShow.showToast2(mContext,mContext.getString(R.string.save_error));
+                    }
+                    menu.dismiss();
+                    break;
+                case 3:
+                    String filePath1= (String) msg.obj;
+                    if(StringUtils.isEmpty(filePath1)){
+                        ToastShow.showToast2(mContext,mContext.getString(R.string.picture_is_not_loaded));
+                        return;
+                    }
+                    Intent intent = new Intent(mContext, SelectConversationActivity.class);
+                    intent.putExtra("type", 1);
+                    intent.putExtra("msgType", TO_IMG_MSG);
+                    MessageInfo messageInfo=new MessageInfo();
+                    messageInfo.setVoice(filePath1);
+                    intent.putExtra("messageInfo", messageInfo);
+                    mContext.startActivity(intent);
                     menu.dismiss();
                     break;
             }
@@ -182,7 +204,8 @@ public class QRDiscernUtil {
     private void showDialog(boolean isShowQr) {
         List<String> list = new ArrayList<>();
         list.add(mContext.getString(R.string.save_image));
-        if (isShowQr)
+        list.add(mContext.getString(R.string.transmit));
+        if(isShowQr)
             list.add(mContext.getString(R.string.discern_qr));
         menu = new MenuListPopWindow(mContext, list);
         menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
@@ -203,9 +226,22 @@ public class QRDiscernUtil {
                                 mHandler.sendMessage(message);
                             }
                         }.start();
-
                         break;
                     case 2:
+                        //轉發
+                        new Thread(){
+                            @Override
+                            public void run() {
+                                String filePath = UtilTool.getImgPathFromCache(url, mContext);
+                                Message message=new Message();
+                                message.what=3;
+                                message.obj=filePath;
+                                mHandler.sendMessage(message);
+                            }
+                        }.start();
+                        break;
+                    case 3:
+                        //識別
                         menu.dismiss();
                         if (re != null) {
                             goActivity(re.toString());

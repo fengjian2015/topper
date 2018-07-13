@@ -71,8 +71,8 @@
 
         <!-- 登录页面 -->
         <activity
-            android:launchMode="singleTop"
             android:name=".ui.activity.StartActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"
             android:windowSoftInputMode="stateHidden|adjustPan">
@@ -84,23 +84,23 @@
         </activity>
         <activity
             android:name=".ui.activity.LoginActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"
-            android:launchMode="singleTop"
             android:windowSoftInputMode="stateHidden|adjustPan|adjustResize" />
 
         <!-- 主页面 -->
         <activity
             android:name=".ui.activity.MainActivity"
             android:launchMode="singleTask"
-            android:theme="@style/Transparent"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 注册页面 -->
         <activity
-            android:launchMode="singleTop"
             android:name=".ui.activity.RegisterActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
@@ -108,9 +108,9 @@
         <!-- 会话界面 -->
         <activity
             android:name=".ui.activity.ConversationActivity"
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -126,281 +126,281 @@
 
         <!-- 系统设置页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.SystemSetActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 关于我们页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.GuanYuMeActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 我的资产页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.MyAssetsActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 公告页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.GongGaoActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 搜索页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.AddFriendActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 收付款页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.ReceiptPaymentActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 收付款页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.SetMoneyActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 充币页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.InCoinActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 转账页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.TransferAccountsActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 期望币种页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.ExpectCoinActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 场外交易页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.OtcActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 提现页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.TiXianActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 银行卡页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.BankCardActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 实名验证页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.RealNameC1Activity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 上传证件页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.UpIdCardActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 银行卡绑定页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.BankCardBindingActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <!-- 银行卡绑定页面2 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.BankCardBindingActivity2"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 账单详情页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.BillDetailsActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 身份验证页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.ShenFenVerifyActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 个人信息页面 -->
         <activity
-            android:theme="@style/Transparent"
             android:name=".ui.activity.PersonalDetailsActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 手机绑定页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.EmailBindingActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 好友资料页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.FriendDataActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 备注页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.RemarkActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 备注页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.LoginSetActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 发布动态页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.PublicshDynamicActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 选择国家区号页面 -->
         <activity
-            android:launchMode="singleTop"
             android:name=".ui.activity.SelectorStateActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme" />
 
         <!-- 二维码页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.QRCodeActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 地址页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.SiteActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 昵称页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.NickNameActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 签名页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.SignatureActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 动态设置页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.DynamicSetActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 账号安全页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.PrivateRightsActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 添加好友设置页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.AddFriendSetActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:launchMode="singleTop"
-            android:theme="@style/Transparent"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
+        <activity
             android:name=".ui.activity.LocationActivity"
             android:configChanges="orientation|screenSize"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="adjustPan" />
 
         <!-- 账号安全页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.UserSafetyActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 设置支付密码页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.PayPasswordActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 重置登录密码页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.LoginPasswordActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 功能设置页面 -->
@@ -408,39 +408,39 @@
 
         <!-- 新的好友页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.NewFriendActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 验证码页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.VerifyCodeActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 来往记录页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.DealRecordActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 评论页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.CommentActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 问题反馈页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.ProblemFeedBackActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 动态详情页面 -->
@@ -454,244 +454,244 @@
 
         <!-- 赞页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.ZanActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 找回密码页面 -->
         <activity
-            android:launchMode="singleTop"
             android:name=".ui.activity.FindPasswordActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 发布币种挂售 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.PushBuyingActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 数字货币转入转入页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.OutCoinActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 添加钱包地址 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.OutCoinSiteActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 扫描二维码页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.ScanQRCodeActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 订阅资产页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.SubscribeCoinActivity"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent" />
 
         <!-- 添加提币地址 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.AddOutCoinSiteActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 谷歌验证页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.GoogleVerificationActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 发红包页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.SendRedPacketActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 紅包页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.RedPacketActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 紅包页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.RedPacketRecordActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 紅包页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.CreateGroupRoomActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 视频播放页面 -->
         <activity
-            android:launchMode="singleTop"
             android:name=".ui.activity.VideoActivity"
+            android:launchMode="singleTop"
             android:theme="@style/Transparent" />
 
         <!-- 紅包页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.GroupListActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 紅包页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.BuySellActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 聊天查看圖片頁 -->
         <activity
-            android:launchMode="singleTop"
             android:name=".ui.activity.ImageViewActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 广告交易订单详情页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.OrderDetailsActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 发送二维码红包页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.SendQRCodeRedActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 二维码红包页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.QRCodeRedActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 二维码红包页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.GrabQRCodeRedActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 二维码红包页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.SearchActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 登录记录页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.LoginRecordActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 理财页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.FinancingActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 典当页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.PawnActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 保险页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.SafeActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 支付记录页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.PayRecordActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 扫码支付页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.PaymentActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 发送转账页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.ChatTransferActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 发送转账页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.TransferDetailsActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 币币兑换页面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.CoinExchangeActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 问题详情页面 -->
@@ -699,170 +699,170 @@
 
         <!-- 扫码支付完成界面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.PayReceiptResultActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 交易关闭界面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.OrderCloseActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 交易記錄詳情界面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.PayDetailsActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 區塊鏈競猜界面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.BlockchainGambleActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 競猜詳情界面 -->
         <activity
-            android:launchMode="singleTask"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.GuessDetailsActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 競猜記錄界面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.GuessRecordActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 發起競猜界面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.StartGuessActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 我參與的競猜界面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.MyJoinActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 我發起的競猜界面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.MyStartActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 交易关闭界面 -->
         <activity
-            android:launchMode="singleTop"
             android:name=".ui.activity.ServiceAgreementActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 我發佈的廣告界面 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.MyPushAdActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 新聞詳情頁 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.NewsDetailsActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- Hash查詢頁 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.WebViewActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 新聞管理頁 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.NewsManagerActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 新聞編輯頁 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.NewsEditActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden" />
 
         <!-- 公告管理頁 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.GonggaoManagerActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 公告詳情頁 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.GonggaoDetailActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 公告詳情頁 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.SumBuySellActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 動態圖片預覽頁 -->
         <activity
-            android:launchMode="singleTop"
             android:name=".ui.activity.PreviewImgActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 個人動態頁 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.PersonageDynamicActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 支付密碼管理頁 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.PayPwSelectorActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 監聽系統語言切換 -->
@@ -883,17 +883,17 @@
 
         <!-- 會話詳情 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.ConversationDetailsActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <!-- 個人詳情 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.IndividualDetailsActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <service
@@ -904,67 +904,68 @@
             android:process=":msgPush" />
 
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.ConversationRecordFindActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.SelectFriendActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan">
-
-        </activity>
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
 
         <service
             android:name=".service.ImageUpService"
             android:enabled="true" />
 
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.HTMLActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
-            android:launchMode="singleTop"
             android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+
+        </activity>
+        <activity
             android:name=".ui.activity.ChatLookLocationActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.SetGesturePWActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 更新日誌頁 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.UpdateLogActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 競猜分享到動態頁 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.GuessShareDynamicActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 動態打賞頁 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.RewardActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.activity.CameraActivity"
+        <activity
+            android:name=".ui.activity.CameraActivity"
             android:launchMode="singleTop"
             android:theme="@style/Transparent" />
 
@@ -978,8 +979,8 @@
 
         <!-- 注册页面 -->
         <activity
-            android:launchMode="singleTop"
             android:name=".ui.activity.RegisterActivity2"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
@@ -993,16 +994,16 @@
 
         <!-- 群聊房間詳情 -->
         <activity
-            android:theme="@style/Transparent"
             android:name=".ui.activity.ConversationGroupDetailsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.ScanQRResultActivty"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <meta-data
@@ -1010,36 +1011,38 @@
             android:value="GlideModule" />
 
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.ConversationServerActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.SelectConversationActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" >
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
                 <data android:mimeType="image/*" />
                 <data android:mimeType="video/*" />
             </intent-filter>
         </activity>
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.ModificationNameActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.SelectGroupMemberActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <!-- 友盟推送 -->
@@ -1052,33 +1055,36 @@
             android:value="tt411jjqrgq75xqede14dpwar7nzxqjh" />
 
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.SendRedGroupActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.GroupMemberActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.activity.LargerImageActivity"
+        <activity
+            android:name=".ui.activity.LargerImageActivity"
             android:launchMode="singleTop"
             android:theme="@style/Transparent" />
-        <activity android:name=".ui.activity.SerchImageActivity"
+        <activity
+            android:name=".ui.activity.SerchImageActivity"
             android:launchMode="singleTop"
             android:theme="@style/Transparent" />
-        <activity android:name=".ui.activity.CropImageActivity"
+        <activity
+            android:name=".ui.activity.CropImageActivity"
             android:launchMode="singleTop"
-            android:theme="@style/Transparent"></activity>
+            android:theme="@style/Transparent" />
 
         <!-- 版本更新頁 -->
         <activity
-            android:launchMode="singleTop"
-            android:theme="@style/Transparent"
             android:name=".ui.activity.VersionsUpdateActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:launchMode="singleTop"
@@ -1092,7 +1098,24 @@
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        
+
+        <activity android:name=".ui.activity.PayOutsideCallsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="tocotalk_html"
+                    android:scheme="applinks" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:launchMode="singleTop"
             android:name=".ui.activity.ReviewListActivity"
