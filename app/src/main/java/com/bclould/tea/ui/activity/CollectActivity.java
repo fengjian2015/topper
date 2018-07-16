@@ -122,15 +122,19 @@ public class CollectActivity extends BaseActivity {
 
             @Override
             public void error() {
-                mRefreshLayout.finishRefresh();
-                mRecyclerView.setVisibility(View.GONE);
-                mLlNoData.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
+                if (ActivityUtil.isActivityOnTop(CollectActivity.this)) {
+                    mRefreshLayout.finishRefresh();
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
             public void finishRefresh() {
-                mRefreshLayout.finishRefresh();
+                if (ActivityUtil.isActivityOnTop(CollectActivity.this)) {
+                    mRefreshLayout.finishRefresh();
+                }
             }
         });
     }

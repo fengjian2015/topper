@@ -1082,4 +1082,8 @@
     <string name="group_intive">群聊邀请</string>
     <string name="check_url_error">識別網址失敗，請手動填寫標題</string>
     <string name="merchant">商家</string>
+    <string name="you_withdrew_a_message">你撤回了一條消息</string>
+    <string name="withdrew_a_message">撤回了一條消息</string>
+    <string name="withdrew">撤回</string>
+    <string name="the_pulice">公眾號</string>
 </resources>

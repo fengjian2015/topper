@@ -130,7 +130,35 @@
 
             <TextView
                 style="@style/HCutOffRule"/>
+            <RelativeLayout
+                android:id="@+id/my_public"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y120"
+                android:layout_marginLeft="@dimen/x20"
+                android:orientation="horizontal"
+                android:visibility="visible">
 
+                <ImageView
+                    android:id="@+id/iv2"
+                    android:layout_width="@dimen/x80"
+                    android:layout_height="@dimen/x80"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/icon_thepublic"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_toRightOf="@+id/iv2"
+                    android:text="@string/the_pulice"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x32"/>
+
+            </RelativeLayout>
+
+            <TextView
+                style="@style/HCutOffRule"/>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

@@ -42,6 +42,7 @@ import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
+import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.gjiazhe.wavesidebar.WaveSideBar;
 import com.google.gson.Gson;
@@ -348,7 +349,7 @@ public class FriendListFragment extends Fragment {
     }
 
 
-    @OnClick({R.id.iv_more, R.id.iv_search, R.id.news_friend, R.id.my_group})
+    @OnClick({R.id.iv_more, R.id.iv_search, R.id.news_friend, R.id.my_group,R.id.my_public})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_more:
@@ -366,6 +367,9 @@ public class FriendListFragment extends Fragment {
             case R.id.my_group:
                 startActivity(new Intent(getActivity(), GroupListActivity.class));
 //                ToastShow.showToast2(getActivity(), getString(R.string.hint_unfinished));
+                break;
+            case R.id.my_public:
+                ToastShow.showToast2(getActivity(), getString(R.string.hint_unfinished));
                 break;
         }
     }

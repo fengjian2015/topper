@@ -26,11 +26,15 @@ import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.telephony.TelephonyManager;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bclould.tea.R;
@@ -877,7 +881,9 @@ public class UtilTool {
         if (StringUtils.isEmpty(url)) {
             url = dbManager.findStrangerPath(user);
         }
-
+        if(StringUtils.isEmpty(url)){
+            url=dbManager.findUserPath(user);
+        }
         Bitmap bitmap = null;
         if (!StringUtils.isEmpty(url)) {
             if (Util.isOnMainThread() && context != null) {
@@ -1343,6 +1349,15 @@ public class UtilTool {
             type = "";
         }
         return type;
+    }
+
+    //改變部分字體顏色
+    public static void changeTextColor(TextView view, String content, int start, int end,int color){
+        SpannableStringBuilder builder = new SpannableStringBuilder(content);
+        //ForegroundColorSpan 为文字前景色，BackgroundColorSpan为文字背景色
+        ForegroundColorSpan span = new ForegroundColorSpan(color);
+        builder.setSpan(span, start,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        view.setText(builder);
     }
 
 }

@@ -130,6 +130,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public static final int RED_GET_MSG = 28;//紅包被領取
     public static final int FROM_INVITE_MSG = 29;//接受群邀请链接
     public static final int TO_INVITE_MSG = 30;//发送群邀请链接
+    public static final int FROM_WITHDRAW_MSG = 31;//發送回撤消息
+    public static final int TO_WITHDRAW_MSG = 32;//接受回撤消息
 
 
     private final Context mContext;
@@ -245,6 +247,12 @@ public class ChatAdapter extends RecyclerView.Adapter {
         } else if (viewType == FROM_INVITE_MSG) {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_from_chat_invite, parent, false);
             holder = new FromInviteHolder(view);
+        } else if (viewType == TO_WITHDRAW_MSG) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_chat_text, parent, false);
+            holder = new WithdrawChatHolder(view);
+        } else if (viewType == FROM_WITHDRAW_MSG) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_chat_text, parent, false);
+            holder = new WithdrawChatHolder(view);
         }else {
             view = LayoutInflater.from(mContext).inflate(R.layout.item_chat_text, parent, false);
             holder = new TextChatHolder(view);
@@ -383,7 +391,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 FromInviteHolder fromInviteHolder = (FromInviteHolder) holder;
                 fromInviteHolder.setData(mMessageList.get(position));
                 break;
-
+            case TO_WITHDRAW_MSG:
+            case FROM_WITHDRAW_MSG:
+                WithdrawChatHolder withdrawChatHolder= (WithdrawChatHolder) holder;
+                withdrawChatHolder.setData(mMessageList.get(position));
+                break;
             default:
                 TextChatHolder textChatHolder = (TextChatHolder) holder;
                 textChatHolder.setData(mMessageList.get(position));
@@ -434,52 +446,56 @@ public class ChatAdapter extends RecyclerView.Adapter {
         });
     }
 
-    private void showCopyDialog(final int msgtype, final MessageInfo messageInfo, final boolean isCopy, boolean isTransmit) {
-        List<String> list = new ArrayList<>();
+    private void showCopyDialog(final int msgtype, final MessageInfo messageInfo, final boolean isCopy, boolean isTransmit,boolean isWithdraw) {
+        final List<String> list = new ArrayList<>();
         list.add(mContext.getString(R.string.delete));
         if (isCopy)
             list.add(mContext.getString(R.string.copy));
         if (isTransmit)
             list.add(mContext.getString(R.string.transmit));
-
+        if(isWithdraw&&messageInfo.getSendStatus()==1){
+            list.add(mContext.getString(R.string.withdrew));
+        }
         final MenuListPopWindow menu = new MenuListPopWindow(mContext, list);
         menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
             @Override
             public void onclickitem(int position) {
-                switch (position) {
-                    case 0:
-                        menu.dismiss();
-                        break;
-                    case 1:
-                        menu.dismiss();
-                        showDeleteDialog(messageInfo);
-                        break;
-                    case 2:
-                        menu.dismiss();
-                        if (isCopy) {
-                            //获取剪贴板管理器：
-                            ClipboardManager cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-                            // 创建普通字符型ClipData
-                            ClipData mClipData = ClipData.newPlainText("Label", messageInfo.getMessage());
-                            // 将ClipData内容放到系统剪贴板里。
-                            cm.setPrimaryClip(mClipData);
-                            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.copy_succeed));
-                        } else {
-                            Intent intent = new Intent(mContext, SelectConversationActivity.class);
-                            intent.putExtra("type", 1);
-                            intent.putExtra("msgType", msgtype);
-                            intent.putExtra("messageInfo", messageInfo);
-                            mContext.startActivity(intent);
-                        }
-                        break;
-                    case 3:
-                        menu.dismiss();
-                        Intent intent = new Intent(mContext, SelectConversationActivity.class);
-                        intent.putExtra("type", 1);
-                        intent.putExtra("msgType", msgtype);
-                        intent.putExtra("messageInfo", messageInfo);
-                        mContext.startActivity(intent);
-                        break;
+                position=position-1;
+                if(position<0){
+                    menu.dismiss();
+                }else if(mContext.getString(R.string.delete).equals(list.get(position))){
+                    menu.dismiss();
+                    showDeleteDialog(messageInfo);
+                }else  if(mContext.getString(R.string.copy).equals(list.get(position))){
+                    menu.dismiss();
+                    //获取剪贴板管理器：
+                    ClipboardManager cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                    // 创建普通字符型ClipData
+                    ClipData mClipData = ClipData.newPlainText("Label", messageInfo.getMessage());
+                    // 将ClipData内容放到系统剪贴板里。
+                    cm.setPrimaryClip(mClipData);
+                    ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.copy_succeed));
+                }else  if(mContext.getString(R.string.transmit).equals(list.get(position))){
+                    menu.dismiss();
+                    Intent intent = new Intent(mContext, SelectConversationActivity.class);
+                    intent.putExtra("type", 1);
+                    intent.putExtra("msgType", msgtype);
+                    intent.putExtra("messageInfo", messageInfo);
+                    mContext.startActivity(intent);
+                } else if(mContext.getString(R.string.withdrew).equals(list.get(position))){
+                    menu.dismiss();
+                    MessageInfo messageInfo1=new MessageInfo();
+                    messageInfo1.setMessage(mContext.getString(R.string.you_withdrew_a_message));
+                    messageInfo1.setBetId(messageInfo.getMsgId());
+                    messageInfo1.setInitiator(UtilTool.getUser());
+                    if(RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)){
+                        messageInfo1.setRoomId(mRoomId);
+                    }else{
+                        messageInfo1.setRoomId(UtilTool.getTocoId());
+                    }
+                    RoomManage.getInstance().getRoom(mRoomId).sendWithdraw(messageInfo1);
+                }else {
+                    menu.dismiss();
                 }
             }
         });
@@ -584,7 +600,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mTvMessamge.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, true, true);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, true, true,true);
                     return false;
                 }
             });
@@ -629,7 +645,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mTvMessamge.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, true, true);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, true, true,false);
                     return false;
                 }
             });
@@ -723,7 +739,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false,false);
                     return false;
                 }
             });
@@ -824,7 +840,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false,false);
                     return false;
                 }
             });
@@ -864,7 +880,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         name.setText(mName);
         tvRemark.setText(messageInfo.getRemark());
 //        touxiang.setImageBitmap(mFromBitmap);
-        UtilTool.getImage(mMgr, mUser, mContext, touxiang);
+        UtilTool.getImage(mContext,touxiang,mDBRoomMember,mMgr,mUser);
         bark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -959,7 +975,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mRlVoice.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false,true);
                     return false;
                 }
             });
@@ -1144,7 +1160,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mRlVoice.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false,false);
                     return false;
                 }
             });
@@ -1221,7 +1237,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mIvImg.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true,true);
                     return false;
                 }
             });
@@ -1308,7 +1324,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mIvImg.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true,false);
                     return false;
                 }
             });
@@ -1362,7 +1378,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mRlVideo.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true,true);
                     return false;
                 }
             });
@@ -1404,7 +1420,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mRlVideo.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true,false);
                     return false;
                 }
             });
@@ -1465,7 +1481,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             rlLocation.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false,true);
                     return false;
                 }
             });
@@ -1514,7 +1530,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             rlLocation.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false,false);
                     return false;
                 }
             });
@@ -1560,7 +1576,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             rlCard.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false,true);
                     return false;
                 }
             });
@@ -1605,7 +1621,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             rlCard.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false,false);
                     return false;
                 }
             });
@@ -1665,7 +1681,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             rlLink.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false,true);
                     return false;
                 }
             });
@@ -1723,7 +1739,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             rlLink.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false,false);
                     return false;
                 }
             });
@@ -1794,7 +1810,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             rlGuess.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false,true);
                     return false;
                 }
             });
@@ -1853,7 +1869,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             rlGuess.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false,false);
                     return false;
                 }
             });
@@ -1928,7 +1944,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false,false);
                     return false;
                 }
             });
@@ -1986,7 +2002,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false,false);
                     return false;
                 }
             });
@@ -2073,7 +2089,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true,true);
                     return false;
                 }
             });
@@ -2119,7 +2135,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true,false);
                     return false;
                 }
             });
@@ -2176,7 +2192,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false,true);
                     return false;
                 }
             });
@@ -2223,10 +2239,45 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mCvRedpacket.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false,false);
                     return false;
                 }
             });
+        }
+    }
+
+
+    class WithdrawChatHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.chat_createtime)
+        View tvCreateTime;
+        @Bind(R.id.tv_content)
+        TextView tvContent;
+        @Bind(R.id.rl_title)
+        RelativeLayout rlTitle;
+        public WithdrawChatHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+
+        public void setData(MessageInfo messageInfo) {
+            setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
+            tvContent.setText(messageInfo.getMessage());
+            if(messageInfo.getMsgType()==TO_WITHDRAW_MSG&&messageInfo.getSendStatus()!=1){
+                rlTitle.setVisibility(View.GONE);
+            }else{
+                rlTitle.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    class TextChatHolder extends RecyclerView.ViewHolder {
+
+        public TextChatHolder(View itemView) {
+            super(itemView);
+        }
+
+        public void setData(MessageInfo messageInfo) {
+
         }
     }
 
@@ -2255,16 +2306,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
         });
     }
 
-    class TextChatHolder extends RecyclerView.ViewHolder {
-
-        public TextChatHolder(View itemView) {
-            super(itemView);
-        }
-
-        public void setData(MessageInfo messageInfo) {
-
-        }
-    }
 
     private void showPWDialog(final MessageInfo messageInfo) {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_command, mContext, R.style.dialog);

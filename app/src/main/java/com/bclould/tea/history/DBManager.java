@@ -354,6 +354,33 @@ public class DBManager {
         }
     }
 
+    public int deleteSingleMessageMsgId(String msgId){
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            MessageInfo messageInfo = null;
+            Cursor cursor = db.rawQuery("select * from MessageRecord where msgId=? and my_user=?", new String[]{ msgId, UtilTool.getTocoId()});
+            if (cursor.moveToLast()) {
+                String showChatTime = cursor.getString(cursor.getColumnIndex("showChatTime"));
+                long createTime = cursor.getLong(cursor.getColumnIndex("createTime"));
+                cursor.close();
+                if (!StringUtils.isEmpty(showChatTime)) {
+                    Cursor cursor1 = db.rawQuery("select * from MessageRecord where createTime > ? and my_user=? ORDER BY createTime asc", new String[]{createTime + "", UtilTool.getTocoId()});
+                    if (cursor1.moveToFirst()) {
+                        String msgId1 = cursor1.getString(cursor1.getColumnIndex("msgId"));
+                        long showTime = cursor1.getLong(cursor1.getColumnIndex("createTime"));
+                        messageInfo = addMessage(cursor1);
+                        messageInfo.setShowChatTime(showTime + "");
+                        updateShowTimeMessage(msgId1, showTime + "");
+                    }
+                    cursor1.close();
+                }
+            }
+            int numm= db.delete("MessageRecord", "my_user=? and msgId=?", new String[]{ UtilTool.getTocoId(), msgId});
+            DatabaseManager.getInstance().closeWritableDatabase();
+            return numm;
+        }
+    }
+
     public void updateShowTimeMessage(String id,String showChatTime) {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
@@ -1080,6 +1107,21 @@ public class DBManager {
         }
     }
 
+    public String findUserPath(String user) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
+            String path = null;
+            Cursor cursor = db.rawQuery("select path from UserImage where user=? and my_user=?",
+                    new String[]{user, UtilTool.getTocoId()});
+            while (cursor.moveToNext()) {
+                path = cursor.getString(cursor.getColumnIndex("path"));
+            }
+            cursor.close();
+            DatabaseManager.getInstance().closeWritableDatabase();
+            return path;
+        }
+    }
+
     public String findUserName(String user) {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
@@ -1206,12 +1248,13 @@ public class DBManager {
         }
     }
 
-    public void addMessageMsgId(String msgId) {
+    public void addMessageMsgId(String msgId,String  roomId) {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
             ContentValues values = new ContentValues();
             values.put("msgId", msgId);
             values.put("msgTime",System.currentTimeMillis());
+            values.put("roomId",roomId);
             db.insert("MessageState", null, values);
             DatabaseManager.getInstance().closeWritableDatabase();
         }
@@ -1245,15 +1288,19 @@ public class DBManager {
         }
     }
 
-    public List<String> queryAllMsgId() {
+    public List<MessageInfo> queryAllMsgId() {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
-            List<String> userInfos = new ArrayList<>();
+            List<MessageInfo> userInfos = new ArrayList<>();
             try {
                 Cursor c = db.rawQuery("select * from MessageState", null);
                 while (c.moveToNext()) {
+                    MessageInfo messageInfo=new MessageInfo();
                     String msgId = c.getString(c.getColumnIndex("msgId"));
-                    userInfos.add(msgId);
+                    String roomId = c.getString(c.getColumnIndex("roomId"));
+                    messageInfo.setMsgId(msgId);
+                    messageInfo.setRoomId(roomId);
+                    userInfos.add(messageInfo);
                 }
                 c.close();
             } catch (Exception e) {
@@ -1262,6 +1309,21 @@ public class DBManager {
                 DatabaseManager.getInstance().closeWritableDatabase();
             }
             return userInfos;
+        }
+    }
+
+    public String findIsWithdraw(String msgId) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
+            String roomId = null;
+            Cursor cursor = db.rawQuery("select roomId from MessageState where msgId=?",
+                    new String[]{msgId});
+            while (cursor.moveToNext()) {
+                roomId = cursor.getString(cursor.getColumnIndex("roomId"));
+            }
+            cursor.close();
+            DatabaseManager.getInstance().closeWritableDatabase();
+            return roomId;
         }
     }
 

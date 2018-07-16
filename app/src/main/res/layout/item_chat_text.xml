@@ -1,24 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    >
 
-    <LinearLayout
-        android:id="@+id/ll_red_expried_msg"
+    >
+    <RelativeLayout
+        android:id="@+id/rl_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/x30">
-
+        android:padding="@dimen/x20"
+        >
+        <include android:id="@+id/chat_createtime"
+            layout="@layout/item_chat_time"
+            />
         <TextView
+            android:id="@+id/tv_content"
+            android:layout_below="@+id/chat_createtime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:background="@drawable/bg_black4_shape"
+            android:paddingTop="@dimen/y10"
+            android:paddingBottom="@dimen/y10"
+            android:textColor="@color/white"
+            android:paddingRight="@dimen/x20"
+            android:paddingLeft="@dimen/x20"
             android:text="@string/please_update_version"
+            android:layout_centerHorizontal="true"
             android:textSize="@dimen/x26"/>
-    </LinearLayout>
 
-</LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

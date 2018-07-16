@@ -8,6 +8,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.crypto.otr.OtrChatListenerManager;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -76,12 +77,20 @@ public class MessageManage {
                         sendMap.put("type", MSG_STEANGER);
                     }
                     sendMap.put("content", objectMapper.writeValueAsBytes(contentMap));
-                    mMgr.addMessageMsgId(msgId);
                     UtilTool.Log("fengjian","發送單聊");
                     WsConnection.getInstance().sendMessage(objectMapper.writeValueAsBytes(sendMap));
                 }catch (Exception e){
                     mMgr.updateMessageStatus(msgId, 2);
-                    EventBus.getDefault().post(new MessageEvent(context.getString(R.string.msg_database_update)));
+                    if(!StringUtils.isEmpty(mMgr.findIsWithdraw(msgId))) {
+                        mMgr.deleteSingleMessageMsgId(msgId);
+                        MessageEvent messageEvent = new MessageEvent(context.getString(R.string.withdrew_a_message));
+                        messageEvent.setId(msgId);
+                        EventBus.getDefault().post(messageEvent);
+                    }else{
+                        MessageEvent messageEvent = new MessageEvent(context.getString(R.string.change_msg_state));
+                        messageEvent.setId(msgId);
+                        EventBus.getDefault().post(messageEvent);
+                    }
                     e.printStackTrace();
                 }
             }
@@ -115,10 +124,12 @@ public class MessageManage {
                     Map<Object, Object> sendMap = new HashMap<>();
                     sendMap.put("type", MSG_GROUP);
                     sendMap.put("content", objectMapper.writeValueAsBytes(contentMap));
-                    mMgr.addMessageMsgId(msgId);
                     WsConnection.getInstance().sendMessage(objectMapper.writeValueAsBytes(sendMap));
                 }catch (Exception e){
                     mMgr.updateMessageStatus(msgId, 2);
+                    if(!StringUtils.isEmpty(mMgr.findIsWithdraw(msgId))) {
+                        mMgr.deleteSingleMessageMsgId(msgId);
+                    }
                     EventBus.getDefault().post(new MessageEvent(context.getString(R.string.msg_database_update)));
                     e.printStackTrace();
                 }

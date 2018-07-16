@@ -169,7 +169,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
                 if(StringUtils.isEmpty(atme)){
                     mTab1ItemText.setText(conversationInfo.getMessage());
                 }else{
-                    mTab1ItemText.setText(atme+conversationInfo.getMessage());
+                    UtilTool.changeTextColor(mTab1ItemText,atme+conversationInfo.getMessage(),0,atme.length(),Color.RED);
                 }
             }else{
                 mTab1ItemText.setText(mContext.getString(R.string.draft)+draft);

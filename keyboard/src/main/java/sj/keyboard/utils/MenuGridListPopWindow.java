@@ -103,6 +103,7 @@ public class MenuGridListPopWindow extends Dialog {
         mAppBeanList.add(new AppInfo(R.drawable.icon_tail_red_envelope, context.getString(R.string.red_package)));
         mAppBeanList.add(new AppInfo(R.drawable.icon_tail_position, context.getString(R.string.location)));
         mAppBeanList.add(new AppInfo(R.drawable.icon_tail_file,context.getString(R.string.file)));
+        mAppBeanList.add(new AppInfo(R.drawable.icon_collect,context.getString(R.string.collect)));
     }
 
     public void showAtLocation(){

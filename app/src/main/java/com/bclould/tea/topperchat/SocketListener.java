@@ -124,6 +124,7 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_TEXT_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_TRANSFER_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_VIDEO_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_VOICE_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_WITHDRAW_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.RED_GET_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_CARD_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_FILE_MSG;
@@ -137,6 +138,7 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_TEXT_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_TRANSFER_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_VIDEO_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_VOICE_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.TO_WITHDRAW_MSG;
 import static com.bclould.tea.ui.adapter.ChatServerAdapter.ADMINISTRATOR_AUTH_STATUS_MSG;
 import static com.bclould.tea.ui.adapter.ChatServerAdapter.ADMINISTRATOR_EXCEPTIONAL_MSG;
 import static com.bclould.tea.ui.adapter.ChatServerAdapter.ADMINISTRATOR_IN_COIN_MSG;
@@ -268,12 +270,20 @@ public class SocketListener {
 
     private void changeMsgState(Map<Object, Object> content) {
         UtilTool.Log("fengjian", "接受到消息反饋" + content.toString());
-        MessageEvent messageEvent = new MessageEvent(context.getString(R.string.change_msg_state));
         String id = (String) content.get("id");
+        String roomId=mgr.findIsWithdraw(id);
+        if(!StringUtils.isEmpty(roomId)){
+            //表示是撤回消息
+            MessageInfo messageInfo=mgr.queryMessageMsg(id);
+            mgr.deleteSingleMessageMsgId(messageInfo.getBetId());
+            MessageEvent messageEvent = new MessageEvent(context.getString(R.string.withdrew_a_message));
+            messageEvent.setId(messageInfo.getBetId());
+            EventBus.getDefault().post(messageEvent);
+        }
+
+        MessageEvent messageEvent = new MessageEvent(context.getString(R.string.change_msg_state));
         messageEvent.setId(id);
         mgr.updateMessageStatus(id, 1);
-//        String time=content.get("Time")+"";//
-//        mgr.updateMessageCreateTime(id, UtilTool.stringToLong(time));
         mgr.deleteSingleMsgId(id);
         EventBus.getDefault().post(messageEvent);
     }
@@ -588,7 +598,24 @@ public class SocketListener {
                     } else {
                         msgType = FROM_INVITE_MSG;
                     }
-                    goChat(from, messageInfo.getRemark(), roomType);
+                    goChat(from,context.getString(R.string.group_intive), roomType);
+                    break;
+                case WsContans.MSG_WITHDRAW:
+                    //撤回消息
+                    messageInfo.setMessage("\""+messageInfo.getInitiator()+"\""+context.getString(R.string.withdrew_a_message));
+                    redpacket=messageInfo.getMessage();
+                    mgr.deleteSingleMessageMsgId(messageInfo.getBetId());
+                    if (isMe) {
+                        msgType = TO_WITHDRAW_MSG;
+                    } else {
+                        msgType = FROM_WITHDRAW_MSG;
+                    }
+                    goChat(from,redpacket,roomType);
+
+                    MessageEvent messageEvent = new MessageEvent(context.getString(R.string.withdrew_a_message));
+                    messageEvent.setId(messageInfo.getBetId());
+                    messageEvent.setRoomId(messageInfo.getRoomId());
+                    EventBus.getDefault().post(messageEvent);
                     break;
                 default:
                     goChat(from, messageInfo.getMessage(), roomType);

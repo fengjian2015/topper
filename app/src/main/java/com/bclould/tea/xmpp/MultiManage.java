@@ -56,6 +56,7 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_TEXT_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_TRANSFER_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_VIDEO_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_VOICE_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.TO_WITHDRAW_MSG;
 
 /**
  * Created by GIjia on 2018/5/23.
@@ -87,6 +88,14 @@ public class MultiManage implements Room{
 
 
     private synchronized boolean send(String to, byte[] attachment, String body, int msgType,String msgId,long time) throws Exception {
+        mMgr.addMessageMsgId(msgId,null);
+        MessageManage.getInstance().sendMulti(to,attachment,body,msgType,msgId,time,roomId,mMgr,context);
+        return true;
+    }
+
+    private synchronized boolean sendWithdraw(String to, byte[] attachment, MessageInfo messageInfo, int msgType,String msgId,long time) throws Exception {
+        String body=JSON.toJSONString(messageInfo);
+        mMgr.addMessageMsgId(msgId,messageInfo.getRoomId());
         MessageManage.getInstance().sendMulti(to,attachment,body,msgType,msgId,time,roomId,mMgr,context);
         return true;
     }
@@ -108,7 +117,7 @@ public class MultiManage implements Room{
         Map<Object, Object> sendMap = new HashMap<>();
         sendMap.put("type", MSG_GROUP);
         sendMap.put("content", objectMapper.writeValueAsBytes(contentMap));
-        mMgr.addMessageMsgId(msgId);
+        mMgr.addMessageMsgId(msgId,null);
         WsConnection.getInstance().sendMessage(objectMapper.writeValueAsBytes(sendMap));
         return true;
     }
@@ -1043,6 +1052,51 @@ public class MultiManage implements Room{
             messageInfo.setTime(time);
             messageInfo.setType(2);
             messageInfo.setMsgType(TO_INVITE_MSG);
+            messageInfo.setSendStatus(2);
+            messageInfo.setSend(UtilTool.getTocoId());
+            messageInfo.setConverstaion(converstaion);
+            messageInfo.setMsgId(UtilTool.createMsgId(roomId));
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            messageInfo.setId(mMgr.addMessage(messageInfo));
+            changeConversationInfo(time,converstaion,UtilTool.createChatCreatTime());
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            refreshAddData(messageInfo);
+        }
+    }
+
+    @Override
+    public void sendWithdraw(MessageInfo messageInfo) {
+        String converstaion =messageInfo.getMessage() ;
+        try {
+            String msgId=UtilTool.createMsgId(roomId);
+            long createTime=UtilTool.createChatCreatTime();
+            sendWithdraw(roomId, null, messageInfo, WsContans.MSG_WITHDRAW,msgId,createTime);
+            messageInfo.setUsername(roomId);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setMsgType(TO_WITHDRAW_MSG);
+            messageInfo.setSend(UtilTool.getTocoId());
+            messageInfo.setSendStatus(0);
+            messageInfo.setConverstaion(converstaion);
+            messageInfo.setMsgId(msgId);
+            messageInfo.setCreateTime(createTime);
+            messageInfo.setId(mMgr.addMessage(messageInfo));
+            changeConversationInfo(time,converstaion,createTime);
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            refreshAddData(messageInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
+            messageInfo.setUsername(roomId);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(2);
+            messageInfo.setMsgType(TO_WITHDRAW_MSG);
             messageInfo.setSendStatus(2);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
