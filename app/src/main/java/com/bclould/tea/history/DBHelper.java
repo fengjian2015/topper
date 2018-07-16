@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 29;
+    private static final int DATABASE_VERSION = 28;
 
     public DBHelper(Context context) {
         //CursorFactory设置为null,使用默认值
@@ -114,7 +114,7 @@ public class DBHelper extends SQLiteOpenHelper {
             case 26:
                 //2018-07-12增加isReview字段
                 db.execSQL("ALTER TABLE RoomManage ADD isReview INTEGER");
-            case 28:
+            case 27:
                 db.execSQL("ALTER TABLE MessageRecord ADD roomName TEXT");
                 db.execSQL("ALTER TABLE MessageRecord ADD roomId TEXT");
                 break;

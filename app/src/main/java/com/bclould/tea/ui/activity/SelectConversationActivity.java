@@ -156,7 +156,7 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
         shareType = bundle.getString("shareType");
         uri = bundle.getParcelable(Intent.EXTRA_STREAM);
         setShareData(text, shareType);
-        if (!StringUtils.isEmpty(shareText)&&UtilTool.checkLinkedExe(shareText)) {
+        if (!StringUtils.isEmpty(shareText) && UtilTool.checkLinkedExe(shareText)) {
             showDeleteDialog(shareText);
         }
     }
@@ -169,7 +169,7 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
         shareText = shareIntent.getStringExtra(Intent.EXTRA_TEXT);
         uri = bundle.getParcelable(Intent.EXTRA_STREAM);
         setShareData(text, type);
-        if (!StringUtils.isEmpty(shareText)&&UtilTool.checkLinkedExe(shareText)) {
+        if (!StringUtils.isEmpty(shareText) && UtilTool.checkLinkedExe(shareText)) {
             showDeleteDialog(shareText);
         }
     }
@@ -391,10 +391,10 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
                 }
                 ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.forward_success));
                 SelectConversationActivity.this.finish();
-            }else if(msgType==FROM_FILE_MSG||msgType==TO_FILE_MSG){
-                if(messageInfo.getVoice()!=null&&!messageInfo.getVoice().startsWith("http")){
+            } else if (msgType == FROM_FILE_MSG || msgType == TO_FILE_MSG) {
+                if (messageInfo.getVoice() != null && !messageInfo.getVoice().startsWith("http")) {
                     mRoom.uploadFile(messageInfo.getVoice());
-                }else if (messageInfo.getMessage().startsWith("http")) {
+                } else if (messageInfo.getMessage().startsWith("http")) {
                     mRoom.transmitFile(messageInfo);
                 } else {
                     mRoom.uploadFile(messageInfo.getMessage());
@@ -429,10 +429,19 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
                 mRoom.Upload(messageInfo.getVoice());
                 ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.send_succeed));
                 SelectConversationActivity.this.finish();
-            }else if(msgType == FROM_INVITE_MSG || msgType == TO_INVITE_MSG){
+            } else if (msgType == FROM_INVITE_MSG || msgType == TO_INVITE_MSG) {
                 mRoom.sendInviteGroup(messageInfo);
                 ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.send_succeed));
                 SelectConversationActivity.this.finish();
+            } else if (msgType == TO_TEXT_MSG || msgType == FROM_TEXT_MSG) {
+                String message = messageInfo.getMessage();
+                messageInfo = mRoom.sendMessage(message);
+                if (messageInfo != null) {
+                    ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.send_succeed));
+                    SelectConversationActivity.this.finish();
+                } else {
+                    ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.send_error));
+                }
             }
         } else {
             finish();
@@ -522,8 +531,8 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
             @Override
             public void onClick(View view) {
                 try {
-                    Intent intent=new Intent(SelectConversationActivity.this,AddCollectActivity.class);
-                    intent.putExtra("url",url);
+                    Intent intent = new Intent(SelectConversationActivity.this, AddCollectActivity.class);
+                    intent.putExtra("url", url);
                     startActivity(intent);
                     SelectConversationActivity.this.finish();
                 } catch (Exception e) {

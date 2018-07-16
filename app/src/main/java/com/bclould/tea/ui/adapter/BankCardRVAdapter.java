@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.bclould.tea.Presenter.BankCardPresenter;
 import com.bclould.tea.R;
+import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.CardListInfo;
 import com.bclould.tea.ui.activity.BankCardActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
@@ -56,7 +57,7 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.setData(mCardList.get(position));
+        viewHolder.setData(mCardList.get(position), position);
     }
 
     //条目数量
@@ -82,6 +83,7 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
         @Bind(R.id.rl_card)
         RelativeLayout mRlCard;
         private CardListInfo.DataBean mData;
+        private int mPosition;
 
         ViewHolder(View view) {
             super(view);
@@ -89,12 +91,13 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showDialog(mData, 1);
+                    showDialog(mData, 1,mPosition);
                 }
             });
         }
 
-        public void setData(final CardListInfo.DataBean data) {
+        public void setData(final CardListInfo.DataBean data, final int position) {
+            mPosition = position;
             mData = data;
             String bankName = data.getBank_name();
             String[] split = bankName.split("-");
@@ -111,14 +114,14 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
             mIvDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showDialog(data, 0);
+                    showDialog(data, 0, position);
                 }
             });
 
         }
     }
 
-    private void showDialog(final CardListInfo.DataBean data, final int type) {
+    private void showDialog(final CardListInfo.DataBean data, final int type, final int position) {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mActivity, R.style.dialog);
         deleteCacheDialog.show();
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
@@ -146,21 +149,21 @@ public class BankCardRVAdapter extends RecyclerView.Adapter {
                 if (type == 0) {
                     mBankCardPresenter.unBindBankCard(data.getId(), new BankCardPresenter.CallBack3() {
                         @Override
-                        public void send(int status) {
-                            if (status == 1) {
+                        public void send(BaseInfo data) {
+                            if (data.getStatus() == 1) {
                                 Toast.makeText(mActivity, mActivity.getString(R.string.unbinding_succeed), Toast.LENGTH_SHORT).show();
-                                mCardList.remove(data);
-                                notifyDataSetChanged();
+                                mCardList.remove(position);
+                                notifyItemRemoved(position);
                             } else {
-                                Toast.makeText(mActivity, mActivity.getString(R.string.unbinding_error), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mActivity, data.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
                 } else {
                     mBankCardPresenter.setDefaultBankCard(data.getId(), new BankCardPresenter.CallBack3() {
                         @Override
-                        public void send(int status) {
-                            if (status == 1) {
+                        public void send(BaseInfo data) {
+                            if (data.getStatus() == 1) {
                                 EventBus.getDefault().post(new MessageEvent(mActivity.getString(R.string.set_the_default_bank_card)));
                             }
                         }

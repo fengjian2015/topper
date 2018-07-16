@@ -121,11 +121,45 @@ public class CollectPresenter {
                 });
     }
 
-    public void addCollect(String title, String url, final CallBack2 callBack2) {
+    public void addCollect(String title, String url, String iconUrl, final CallBack2 callBack2) {
         showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .addCollect(UtilTool.getToken(), title, url)
+                .addCollect(UtilTool.getToken(), title, url, iconUrl)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        hideDialog();
+                        ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
+                        if (baseInfo.getStatus() == 1) {
+                            callBack2.send();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void saveSequence(String sequenceStr, final CallBack2 callBack2) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .saveSequence(UtilTool.getToken(), sequenceStr)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<BaseInfo>() {

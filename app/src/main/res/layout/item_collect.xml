@@ -2,21 +2,39 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="@dimen/y120">
+    android:layout_height="@dimen/y120"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="@dimen/x60"
+        android:layout_height="@dimen/x60"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_centerVertical="true"/>
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/iv_icon"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
-        android:layout_height="wrap_content"/>
+        android:layout_toLeftOf="@+id/iv_delete"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x28"/>
+
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:padding="@dimen/x20"
+        android:src="@mipmap/ico_dy_delete"/>
 
     <TextView
-        android:layout_alignParentBottom="true"
-        style="@style/HCutOffRule"/>
+        style="@style/HCutOffRule"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

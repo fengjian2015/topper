@@ -17,6 +17,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BankCardInfo;
+import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.MessageEvent;
 
@@ -36,8 +37,8 @@ public class BankCardBindingActivity2 extends BaseActivity {
 
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.tv_card_type)
-    TextView mTvCardType;
+    @Bind(R.id.et_card_type)
+    EditText mEtCardType;
     @Bind(R.id.et_opening_bank)
     EditText mEtOpeningBank;
     @Bind(R.id.tv_cardholder)
@@ -51,6 +52,8 @@ public class BankCardBindingActivity2 extends BaseActivity {
     private BankCardPresenter mBankCardPresenter;
 
     public static BankCardBindingActivity2 instance = null;
+    private int mState_id;
+
     public static BankCardBindingActivity2 getInstance() {
         if (instance == null) {
             instance = new BankCardBindingActivity2();
@@ -72,9 +75,13 @@ public class BankCardBindingActivity2 extends BaseActivity {
         Intent intent = getIntent();
         mData = (BankCardInfo.DataBean) intent.getSerializableExtra("data");
         mCardNumber = intent.getStringExtra("cardNumber");
+        mState_id = intent.getIntExtra("country_id", 0);
         mTvCardholder.setText(mData.getTruename());
         mTvCardNumber.setText(mData.getCard_number());
-        mTvCardType.setText(mData.getBank());
+        if (!mData.getBank().isEmpty()) {
+            mEtCardType.setText(mData.getBank());
+            mEtCardType.setKeyListener(null);
+        }
     }
 
     @OnClick({R.id.bark, R.id.btn_next})
@@ -93,10 +100,10 @@ public class BankCardBindingActivity2 extends BaseActivity {
 
     private void submit() {
         String openingBank = mEtOpeningBank.getText().toString().trim();
-        mBankCardPresenter.bindBankCard(mData.getTruename(), mData.getBank(), openingBank, mCardNumber, new BankCardPresenter.CallBack3() {
+        mBankCardPresenter.bindBankCard(mData.getTruename(), mData.getBank(), openingBank, mCardNumber, mState_id, new BankCardPresenter.CallBack3() {
             @Override
-            public void send(int status) {
-                if (status == 1) {
+            public void send(BaseInfo data) {
+                if (data.getStatus() == 1) {
                     finish();
                     Toast.makeText(BankCardBindingActivity2.this, getString(R.string.binding_succeed), Toast.LENGTH_SHORT).show();
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.bank_binding_unbinding)));
@@ -111,7 +118,7 @@ public class BankCardBindingActivity2 extends BaseActivity {
         if (mEtOpeningBank.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, getString(R.string.toast_open_bank), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtOpeningBank);
-        }else {
+        } else {
             return true;
         }
         return false;

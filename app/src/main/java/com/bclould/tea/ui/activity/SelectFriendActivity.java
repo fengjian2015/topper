@@ -303,6 +303,15 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
                 mRoom.sendInviteGroup(messageInfo);
                 ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
                 close();
+            }else if (msgType == TO_TEXT_MSG || msgType == FROM_TEXT_MSG) {
+                String message = messageInfo.getMessage();
+                messageInfo = mRoom.sendMessage(message);
+                if (messageInfo != null) {
+                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
+                    SelectFriendActivity.this.finish();
+                } else {
+                    ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_error));
+                }
             }
         }
     }

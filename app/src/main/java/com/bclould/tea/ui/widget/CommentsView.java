@@ -94,6 +94,16 @@ public class CommentsView extends LinearLayout {
         textView.setTextSize(15);
         textView.setTextColor(0xff686868);
 
+        /*LinearLayout linearLayout = new LinearLayout(mContext);
+        ImageView imageView = new ImageView(mContext);
+        Glide.with(mContext).load(item.getUrl()).into(imageView);
+        LayoutParams layoutParams = new LayoutParams(200, 200);
+        LayoutParams layoutParams2 = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        layoutParams2.setMargins(0, 10, 0, 0);
+        linearLayout.addView(textView, layoutParams2);
+        linearLayout.addView(imageView, layoutParams);
+        return linearLayout;*/
+
         SpannableStringBuilder builder = new SpannableStringBuilder();
         DynamicListInfo.DataBean.ReviewListBean.UsersBean commentsUser = item.getCommentsUser();
         String commentsName = commentsUser.getUser_name();

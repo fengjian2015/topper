@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.model.StateInfo;
+import com.bclould.tea.ui.activity.BankCardBindingActivity;
 import com.bclould.tea.ui.activity.OtcActivity;
 import com.bclould.tea.ui.activity.RealNameC1Activity;
 
@@ -74,6 +75,9 @@ public class BottomDialogRVAdapter3 extends RecyclerView.Adapter {
                         activity.hideDialog(mDataBean.getId(), mDataBean.getName_zh());
                     } else if (mContext instanceof OtcActivity) {
                         OtcActivity activity = (OtcActivity) mContext;
+                        activity.hideDialog2(mDataBean.getId(), mDataBean.getName_zh());
+                    }else if (mContext instanceof BankCardBindingActivity) {
+                        BankCardBindingActivity activity = (BankCardBindingActivity) mContext;
                         activity.hideDialog2(mDataBean.getId(), mDataBean.getName_zh());
                     }
                 }
