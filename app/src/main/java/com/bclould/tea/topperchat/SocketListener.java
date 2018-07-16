@@ -614,7 +614,6 @@ public class SocketListener {
 
                     MessageEvent messageEvent = new MessageEvent(context.getString(R.string.withdrew_a_message));
                     messageEvent.setId(messageInfo.getBetId());
-                    messageEvent.setRoomId(messageInfo.getRoomId());
                     EventBus.getDefault().post(messageEvent);
                     break;
                 default:
