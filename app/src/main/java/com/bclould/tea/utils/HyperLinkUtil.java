@@ -90,23 +90,23 @@ public class HyperLinkUtil {
                 return spanStr;
             }
         }
-        final int finalStart = start;
-        new Thread(){
-            @Override
-            public void run() {
-                try {
-                    Document doc = Jsoup.connect(html5Url).get();
-                    if(!StringUtils.isEmpty(doc.title())) {
-                        String oldString=spanStr.toString();
-                        spanStr.insert(finalStart, "\n" + doc.title() + "\n");
-                        dbManager.updateMessage(messageId,spanStr.toString());
-                        mOnChangeLinkListener.changeLink(spanStr.toString(),oldString);
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }.start();
+//        final int finalStart = start;
+//        new Thread(){
+//            @Override
+//            public void run() {
+//                try {
+//                    Document doc = Jsoup.connect(html5Url).get();
+//                    if(!StringUtils.isEmpty(doc.title())) {
+//                        String oldString=spanStr.toString();
+//                        spanStr.insert(finalStart, "\n" + doc.title() + "\n");
+//                        dbManager.updateMessage(messageId,spanStr.toString());
+//                        mOnChangeLinkListener.changeLink(spanStr.toString(),oldString);
+//                    }
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                }
+//            }
+//        }.start();
         return spanStr;
     }
 

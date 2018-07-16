@@ -22,6 +22,15 @@ public class MessageEvent {
     private int number;
     private String name;
     private String filepath;
+    private String roomId;
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
+    }
 
     public String getFilepath() {
         return filepath;

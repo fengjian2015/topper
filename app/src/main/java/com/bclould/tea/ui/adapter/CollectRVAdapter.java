@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -18,6 +19,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.model.CollectInfo;
 import com.bclould.tea.ui.activity.HTMLActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.xmpp.RoomManage;
 import com.bumptech.glide.Glide;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
@@ -37,11 +39,15 @@ public class CollectRVAdapter extends RecyclerView.Adapter {
     private final Context mContext;
     private final CollectPresenter mCollectPresenter;
     private OnItemLongClickListener mOnItemLongClickListener;
+    private int intentType;
+    private String roomId;
 
-    public CollectRVAdapter(Context context, List<CollectInfo.DataBean> dataList, CollectPresenter collectPresenter) {
+    public CollectRVAdapter(Context context, List<CollectInfo.DataBean> dataList, CollectPresenter collectPresenter, int intentType, String roomId) {
         mDataList = dataList;
         mContext = context;
         mCollectPresenter = collectPresenter;
+        this.intentType = intentType;
+        this.roomId = roomId;
     }
 
     @Override
@@ -84,24 +90,32 @@ public class CollectRVAdapter extends RecyclerView.Adapter {
             mRlItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, HTMLActivity.class);
-                    intent.putExtra("html5Url", mDataBean.getUrl());
-                    mContext.startActivity(intent);
-                }
-            });
-            mRlItem.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    boolean isLong = mOnItemLongClickListener.onLongClick(mPosition);
-                    return isLong;
-                }
-            });
-            mBtnDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
                     showDeleteDialog(mPosition, mSwipeView);
+                    if (intentType == 1) {
+                        RoomManage.getInstance().getRoom(roomId).sendMessage(mDataBean.getUrl());
+                        ((Activity) mContext).finish();
+                    } else {
+                        Intent intent = new Intent(mContext, HTMLActivity.class);
+                        intent.putExtra("html5Url", mDataBean.getUrl());
+                        mContext.startActivity(intent);
+                    }
                 }
             });
+            if (intentType != 1) {
+                mRlItem.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        boolean isLong = mOnItemLongClickListener.onLongClick(mPosition);
+                        return isLong;
+                    }
+                });
+                mBtnDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showDeleteDialog(mPosition, mSwipeView);
+                    }
+                });
+            }
         }
 
         public void setData(CollectInfo.DataBean dataBean, int position) {
@@ -112,11 +126,15 @@ public class CollectRVAdapter extends RecyclerView.Adapter {
                 mSwipeView.setSwipeEnable(false);
             } else {
                 mSwipeView.setSwipeEnable(true);
-            }
-            if (!dataBean.getIcon().isEmpty()) {
-                Glide.with(mContext).load(dataBean.getIcon()).into(mIvIcon);
+                if (intentType == 1) {
+                    mSwipeView.setSwipeEnable(false);
+                }
+                if (!dataBean.getIcon().isEmpty()) {
+                    Glide.with(mContext).load(dataBean.getIcon()).into(mIvIcon);
+                }
             }
         }
+
     }
 
     public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {

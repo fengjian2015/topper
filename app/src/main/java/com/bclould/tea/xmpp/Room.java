@@ -35,4 +35,5 @@ public interface Room {
     void anewUploadFile(MessageInfo messageInfo);
     void transmitFile(MessageInfo messageInfo);
     void sendInviteGroup(MessageInfo messageInfo);
+    void sendWithdraw(MessageInfo messageInfo);
 }

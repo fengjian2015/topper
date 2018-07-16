@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 28;
+    private static final int DATABASE_VERSION = 29;
 
     public DBHelper(Context context) {
         //CursorFactory设置为null,使用默认值
@@ -33,7 +33,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("create table RoomManage(id integer primary key autoincrement, roomImage varchar, roomId varchar, roomName varchar, roomNumber integer,my_user varchar,owner varchar,description varchar,isRefresh integer" +
                 ",allowModify integer,isReview integer)");
         db.execSQL("create table RoomMember(id integer primary key autoincrement, name varchar, jid varchar, image_url varchar, remark varchar,my_user varchar,roomId varchar,isRefresh integer)");
-        db.execSQL("create table MessageState(id integer primary key autoincrement, msgId varchar,msgTime integer)");
+        db.execSQL("create table MessageState(id integer primary key autoincrement, msgId varchar,msgTime integer,roomId varchar)");
         db.execSQL("create table UserCodeDB(id integer primary key autoincrement, email varchar,password varchar)");
         db.execSQL("create table UserInfo(id integer primary key autoincrement, user varchar,path varchar,userName varchar)");//保存陌生人的信息
     }
@@ -117,6 +117,9 @@ public class DBHelper extends SQLiteOpenHelper {
             case 27:
                 db.execSQL("ALTER TABLE MessageRecord ADD roomName TEXT");
                 db.execSQL("ALTER TABLE MessageRecord ADD roomId TEXT");
+            case 28:
+                //2018-07-16增加roomId字段,用於記錄撤回消息的房間，根據roomid判斷是否有撤回消息
+                db.execSQL("ALTER TABLE MessageState ADD roomId TEXT");
                 break;
         }
 

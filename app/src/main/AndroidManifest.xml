@@ -1131,8 +1131,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.activity.QRGroupActivity" />
-        <activity android:name=".ui.activity.GroupConfirmActivity"></activity>
+        <activity android:name=".ui.activity.QRGroupActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".ui.activity.GroupConfirmActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
     </application>
 
 </manifest>

@@ -12,6 +12,7 @@ import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.service.IMCoreService;
 import com.bclould.tea.service.IMService;
 import com.bclould.tea.ui.activity.MainActivity;
@@ -275,10 +276,13 @@ public class WsConnection {
         if(mManager==null){
             mManager=new DBManager(mContext);
         }
-        List<String> list = mManager.queryAllMsgId();
+        List<MessageInfo> list = mManager.queryAllMsgId();
         if (list != null && list.size() > 0) {
-            for (String string : list) {
-                mManager.updateMessageStatus(string, 2);
+            for (MessageInfo messageInfo : list) {
+                mManager.updateMessageStatus(messageInfo.getMsgId(), 2);
+                if(!StringUtils.isEmpty(messageInfo.getRoomId())){
+                    mManager.deleteSingleMessageMsgId(messageInfo.getMsgId());
+                }
             }
             EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.msg_database_update)));
         }

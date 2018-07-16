@@ -246,6 +246,11 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                     startActivity(intent);
                 }else if(getString(R.string.shooting).equals(name)){
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.open_shooting)));
+                }else if(getString(R.string.collect).equals(name)){
+                    Intent intent=new Intent(ConversationActivity.this,CollectActivity.class);
+                    intent.putExtra("type",1);
+                    intent.putExtra("roomId",roomId);
+                    startActivity(intent);
                 }
             }
         });
@@ -668,6 +673,18 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
             }
         }else if(msg.equals(getString(R.string.update_file_message))){
             changeMsgFile(event.getId(),event.getFilepath());
+        }else if(msg.equals(getString(R.string.withdrew_a_message))){
+            deleteMsg(event.getId());
+        }
+    }
+
+    private void deleteMsg(String msgId){
+        for (MessageInfo info : mMessageList) {
+            if (info.getMsgId().equals(msgId)) {
+                mMessageList.remove(info);
+                mChatAdapter.notifyDataSetChanged();
+                break;
+            }
         }
     }
 

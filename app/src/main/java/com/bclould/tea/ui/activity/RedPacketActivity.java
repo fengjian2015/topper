@@ -18,6 +18,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.GrabRedInfo;
 import com.bclould.tea.ui.adapter.RedPacketRVAdapter;
 import com.bclould.tea.ui.widget.ChangeTextSpaceView;
@@ -65,6 +66,7 @@ public class RedPacketActivity extends BaseActivity {
     private String mName;
 //    private Bitmap mBitmap;
     private DBManager mMgr;
+    private DBRoomMember mDBRoomMember;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,6 +74,7 @@ public class RedPacketActivity extends BaseActivity {
         getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket4));
         setContentView(R.layout.activity_red_packet);
         mMgr = new DBManager(this);
+        mDBRoomMember=new DBRoomMember(this);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
         initData();
@@ -115,7 +118,7 @@ public class RedPacketActivity extends BaseActivity {
             mTvRemark.setText(mRemark);
             mTvName.setText(mName);
 //            mIvTouxiang.setImageBitmap(mBitmap);
-            UtilTool.getImage(mMgr, mUser, this, mIvTouxiang);
+            UtilTool.getImage(this,mIvTouxiang,mDBRoomMember,mMgr,mUser);
             if(grabRedInfo.getStatus()==2){
                 mTvHint.setText(getString(R.string.red_envelope_been_robbed));
             }

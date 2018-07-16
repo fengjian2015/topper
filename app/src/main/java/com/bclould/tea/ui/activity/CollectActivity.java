@@ -80,6 +80,9 @@ public class CollectActivity extends BaseActivity {
     private ItemTouchHelper mItemTouchHelper;
     private List<CollectInfo.DataBean> mDataList2 = new ArrayList<>();
 
+    private int intentType=0;//1表示聊天界面進入
+    private String roomId;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,8 +92,23 @@ public class CollectActivity extends BaseActivity {
             EventBus.getDefault().register(this);
         }
         mCollectPresenter = new CollectPresenter(this);
+        initIntent();
         initRecyclerView();
         initData();
+        initView();
+    }
+
+    private void initView() {
+        if(intentType==1){
+            mTvAdd.setVisibility(View.GONE);
+            mTvEdit.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void initIntent() {
+        intentType=getIntent().getIntExtra("type",0);
+        roomId=getIntent().getStringExtra("roomId");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -102,7 +120,7 @@ public class CollectActivity extends BaseActivity {
     }
 
     private void initRecyclerView() {
-        mCollectRVAdapter = new CollectRVAdapter(this, mDataList, mCollectPresenter);
+        mCollectRVAdapter = new CollectRVAdapter(this, mDataList, mCollectPresenter,intentType,roomId);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mCollectRVAdapter);
         mItemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
@@ -193,6 +211,11 @@ public class CollectActivity extends BaseActivity {
 
             @Override
             public void error() {
+                if (ActivityUtil.isActivityOnTop(CollectActivity.this)) {
+                    mRecyclerView.setVisibility(View.GONE);
+                    mLlNoData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
                 mRecyclerView.setVisibility(View.GONE);
                 mLlNoData.setVisibility(View.GONE);
                 mLlError.setVisibility(View.VISIBLE);
@@ -200,6 +223,7 @@ public class CollectActivity extends BaseActivity {
 
             @Override
             public void finishRefresh() {
+
             }
         });
     }
