@@ -121,13 +121,11 @@ public class MainActivity extends BaseActivity {
     }
 
     private void isGoSelectConversation() {
-        if (mBundle != null) {
-            if (MySharedPreferences.getInstance().getBoolean("SHARE") && !WsConnection.getInstance().getOutConnection()) {
-                Intent intent = new Intent(this, SelectConversationActivity.class);
-                intent.putExtra("type", 3);
-                intent.putExtras(mBundle);
-                startActivity(intent);
-            }
+        if (mBundle != null&&MySharedPreferences.getInstance().getBoolean("SHARE") && !WsConnection.getInstance().getOutConnection()) {
+            Intent intent = new Intent(this, SelectConversationActivity.class);
+            intent.putExtra("type", 3);
+            intent.putExtras(mBundle);
+            startActivity(intent);
         }
     }
 
