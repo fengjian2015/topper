@@ -11,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -23,7 +22,6 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.model.CollectInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.adapter.CollectRVAdapter;
-import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.ToastShow;
@@ -158,8 +156,7 @@ public class CollectActivity extends BaseActivity {
         });
         mCollectRVAdapter.setOnItemLongClickListener(new CollectRVAdapter.OnItemLongClickListener() {
             @Override
-            public boolean onLongClick(View view) {
-                int position = mRecyclerView.getChildAdapterPosition(view);
+            public boolean onLongClick(int position) {
                 if (!isEdit) {
                     Intent intent = new Intent(CollectActivity.this, SelectConversationActivity.class);
                     MessageInfo messageInfo = new MessageInfo();
@@ -209,11 +206,14 @@ public class CollectActivity extends BaseActivity {
 
     boolean isEdit = false;
 
-    @OnClick({R.id.bark, R.id.tv_add, R.id.tv_edit, R.id.tv_cancel, R.id.tv_confirm})
+    @OnClick({R.id.bark, R.id.tv_add, R.id.tv_edit, R.id.tv_cancel, R.id.tv_confirm, R.id.ll_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.ll_error:
+                initData();
                 break;
             case R.id.tv_cancel:
                 mTvEdit.setVisibility(View.VISIBLE);

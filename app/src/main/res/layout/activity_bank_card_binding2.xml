@@ -63,8 +63,8 @@
 
             <EditText
                 android:id="@+id/et_card_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:background="@android:color/transparent"
                 android:hint="@string/et_bank_card_type"
@@ -100,8 +100,8 @@
 
             <EditText
                 android:id="@+id/et_opening_bank"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:background="@android:color/transparent"
                 android:hint="@string/et_opening_bank"

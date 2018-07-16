@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tea.Presenter.CollectPresenter;
@@ -18,6 +19,7 @@ import com.bclould.tea.model.CollectInfo;
 import com.bclould.tea.ui.activity.HTMLActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bumptech.glide.Glide;
+import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import java.util.List;
 
@@ -67,15 +69,19 @@ public class CollectRVAdapter extends RecyclerView.Adapter {
         ImageView mIvIcon;
         @Bind(R.id.tv_title)
         TextView mTvTitle;
-        @Bind(R.id.iv_delete)
-        ImageView mIvDelete;
+        @Bind(R.id.rl_item)
+        RelativeLayout mRlItem;
+        @Bind(R.id.btn_delete)
+        Button mBtnDelete;
+        @Bind(R.id.swipe_view)
+        SwipeMenuLayout mSwipeView;
         private CollectInfo.DataBean mDataBean;
         private int mPosition;
 
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            view.setOnClickListener(new View.OnClickListener() {
+            mRlItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, HTMLActivity.class);
@@ -83,17 +89,17 @@ public class CollectRVAdapter extends RecyclerView.Adapter {
                     mContext.startActivity(intent);
                 }
             });
-            view.setOnLongClickListener(new View.OnLongClickListener() {
+            mRlItem.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    boolean isLong = mOnItemLongClickListener.onLongClick(view);
+                    boolean isLong = mOnItemLongClickListener.onLongClick(mPosition);
                     return isLong;
                 }
             });
-            mIvDelete.setOnClickListener(new View.OnClickListener() {
+            mBtnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showDeleteDialog(mPosition);
+                    showDeleteDialog(mPosition, mSwipeView);
                 }
             });
         }
@@ -102,10 +108,10 @@ public class CollectRVAdapter extends RecyclerView.Adapter {
             mDataBean = dataBean;
             mPosition = position;
             mTvTitle.setText(dataBean.getTitle());
-            if(dataBean.getUser_id() == 0){
-                mIvDelete.setVisibility(View.INVISIBLE);
-            }else {
-                mIvDelete.setVisibility(View.VISIBLE);
+            if (dataBean.getUser_id() == 0) {
+                mSwipeView.setSwipeEnable(false);
+            } else {
+                mSwipeView.setSwipeEnable(true);
             }
             if (!dataBean.getIcon().isEmpty()) {
                 Glide.with(mContext).load(dataBean.getIcon()).into(mIvIcon);
@@ -118,10 +124,10 @@ public class CollectRVAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemLongClickListener {
-        boolean onLongClick(View view);
+        boolean onLongClick(int position);
     }
 
-    private void showDeleteDialog(final int position) {
+    private void showDeleteDialog(final int position, final SwipeMenuLayout swipeView) {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(mContext.getString(R.string.delete_collect_hint));
@@ -146,6 +152,7 @@ public class CollectRVAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View view) {
                 deleteCacheDialog.dismiss();
+                swipeView.quickClose();
             }
         });
     }

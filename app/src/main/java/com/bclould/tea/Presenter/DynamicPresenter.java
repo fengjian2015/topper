@@ -95,7 +95,7 @@ public class DynamicPresenter {
 
     public void dynamicList(final int page, int pageSize, String userList, final CallBack2 callBack2) {
         UtilTool.Log("动态", userList);
-//            showDialog();
+            showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .dynamicList(UtilTool.getToken(), page, pageSize, userList)
@@ -108,7 +108,7 @@ public class DynamicPresenter {
 
                     @Override
                     public void onNext(DynamicListInfo dynamicListInfo) {
-//                            hideDialog();
+                            hideDialog();
                         if (dynamicListInfo.getStatus() == 1) {
                             if (page == 1) {
                                 Gson gson = new Gson();
@@ -124,6 +124,7 @@ public class DynamicPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (page == 1) {
                             SharedPreferences sp = MySharedPreferences.getInstance().getSp();
                             if (sp.contains(DYNAMIC_JSON)) {
@@ -146,7 +147,7 @@ public class DynamicPresenter {
     }
 
     public void taDynamicList(int page, int pageSize, String user, final CallBack2 callBack2) {
-//            showDialog();
+            showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .taDynamicList(UtilTool.getToken(), page, pageSize, user)
@@ -159,7 +160,7 @@ public class DynamicPresenter {
 
                     @Override
                     public void onNext(DynamicListInfo dynamicListInfo) {
-//                            hideDialog();
+                            hideDialog();
                         if (dynamicListInfo.getStatus() == 1) {
                             callBack2.send(dynamicListInfo.getData());
                         } else {
@@ -170,7 +171,7 @@ public class DynamicPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-//                            hideDialog();
+                            hideDialog();
                         UtilTool.Log("動態", e.getMessage());
                         Toast.makeText(mContext, mContext.getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
                     }

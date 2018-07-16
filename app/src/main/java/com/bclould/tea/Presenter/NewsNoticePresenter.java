@@ -1,6 +1,5 @@
 package com.bclould.tea.Presenter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -12,7 +11,7 @@ import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.GonggaoListInfo;
 import com.bclould.tea.model.NewsListInfo;
 import com.bclould.tea.network.RetrofitUtil;
-import com.bclould.tea.utils.ActivityUtil;
+import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -37,13 +36,30 @@ public class NewsNoticePresenter {
 
     private static final String NEWS_JSON = UtilTool.getTocoId() + "news_json";
     private final Context mContext;
+    private LoadingProgressDialog mProgressDialog;
 
     public NewsNoticePresenter(Context context) {
         mContext = context;
     }
 
-    public void getNewsList(final int page, int pageSize, final CallBack callBack) {
+    private void showDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = LoadingProgressDialog.createDialog(mContext);
+            mProgressDialog.setMessage(mContext.getString(R.string.loading));
+        }
 
+        mProgressDialog.show();
+    }
+
+    private void hideDialog() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
+    }
+
+    public void getNewsList(final int page, int pageSize, final CallBack callBack) {
+showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .getNewsList(UtilTool.getToken(), page, pageSize)
@@ -57,6 +73,7 @@ public class NewsNoticePresenter {
 
                     @Override
                     public void onNext(NewsListInfo newsListInfo) {
+                        hideDialog();
                         if (newsListInfo.getStatus() == 1) {
                             if (page == 1) {
                                 Gson gson = new Gson();
@@ -70,6 +87,7 @@ public class NewsNoticePresenter {
                     }
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         if (page == 1) {
                             SharedPreferences sp = MySharedPreferences.getInstance().getSp();
                             if (sp.contains(NEWS_JSON)) {
@@ -90,6 +108,7 @@ public class NewsNoticePresenter {
     }
 
     public void getMyNewsList(String filtrate, int page, int pageSize, final CallBack2 callBack2) {
+        showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .myNewsList(UtilTool.getToken(), page, pageSize, Integer.parseInt(filtrate))
@@ -103,6 +122,7 @@ public class NewsNoticePresenter {
 
                     @Override
                     public void onNext(GonggaoListInfo gonggaoListInfo) {
+                        hideDialog();
                         if (gonggaoListInfo.getStatus() == 1) {
                             callBack2.send(gonggaoListInfo.getData());
                         }else{
@@ -112,6 +132,7 @@ public class NewsNoticePresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         callBack2.error();
                         UtilTool.Log("新聞", e.getMessage());
                     }
@@ -124,6 +145,7 @@ public class NewsNoticePresenter {
     }
 
     public void getBrowseRecord(int page, int pageSize, final CallBack2 callBack2) {
+        showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .NewsHistoryList(UtilTool.getToken(), page, pageSize)
@@ -137,6 +159,7 @@ public class NewsNoticePresenter {
 
                     @Override
                     public void onNext(GonggaoListInfo gonggaoListInfo) {
+                        hideDialog();
                         if (gonggaoListInfo.getStatus() == 1) {
                             callBack2.send(gonggaoListInfo.getData());
                         }else {
@@ -146,6 +169,7 @@ public class NewsNoticePresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         callBack2.error();
                         UtilTool.Log("新聞", e.getMessage());
                     }
@@ -158,6 +182,7 @@ public class NewsNoticePresenter {
     }
 
     public void getDraftList(int page, int pageSize, final CallBack2 callBack2) {
+        showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .NewsDraftList(UtilTool.getToken(), page, pageSize)
@@ -171,6 +196,7 @@ public class NewsNoticePresenter {
 
                     @Override
                     public void onNext(GonggaoListInfo gonggaoListInfo) {
+                        hideDialog();
                         if (gonggaoListInfo.getStatus() == 1) {
                             callBack2.send(gonggaoListInfo.getData());
                         }else {
@@ -180,6 +206,7 @@ public class NewsNoticePresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         callBack2.error();
                     }
 
@@ -261,6 +288,7 @@ public class NewsNoticePresenter {
     }
 
     public void getGonggaoList(int page, int pageSize, int status, final CallBack2 callBack2) {
+        showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .GonggaoList(UtilTool.getToken(), page, pageSize, status)
@@ -274,6 +302,7 @@ public class NewsNoticePresenter {
 
                     @Override
                     public void onNext(GonggaoListInfo gonggaoListInfo) {
+                        hideDialog();
                         if (gonggaoListInfo.getStatus() == 1) {
                             callBack2.send(gonggaoListInfo.getData());
                         }else {
@@ -283,6 +312,7 @@ public class NewsNoticePresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         callBack2.error();
                     }
 

@@ -100,7 +100,8 @@ public class BankCardBindingActivity2 extends BaseActivity {
 
     private void submit() {
         String openingBank = mEtOpeningBank.getText().toString().trim();
-        mBankCardPresenter.bindBankCard(mData.getTruename(), mData.getBank(), openingBank, mCardNumber, mState_id, new BankCardPresenter.CallBack3() {
+        String bankType = mEtCardType.getText().toString().trim();
+        mBankCardPresenter.bindBankCard(mData.getTruename(), bankType, openingBank, mCardNumber, mState_id, new BankCardPresenter.CallBack3() {
             @Override
             public void send(BaseInfo data) {
                 if (data.getStatus() == 1) {
@@ -118,6 +119,9 @@ public class BankCardBindingActivity2 extends BaseActivity {
         if (mEtOpeningBank.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, getString(R.string.toast_open_bank), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtOpeningBank);
+        }else if (mEtCardType.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this, getString(R.string.toast_card_type), Toast.LENGTH_SHORT).show();
+            AnimatorTool.getInstance().editTextAnimator(mEtCardType);
         } else {
             return true;
         }

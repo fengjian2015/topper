@@ -207,4 +207,6 @@ dependencies {
     implementation files('libs/fastjson-1.2.9.jar')
     compile 'com.isseiaoki:simplecropview:1.1.7'
     compile 'com.leon:lfilepickerlibrary:1.8.0'
+    //側滑刪除
+    compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
 }
