@@ -58,7 +58,7 @@ public class RegisterActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register2);
         ButterKnife.bind(this);
-        mTimer.schedule(new TimerTask() {
+        /*mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
 
@@ -80,7 +80,7 @@ public class RegisterActivity2 extends AppCompatActivity {
                     }
                 });
             }
-        }, 1000, 1000);
+        }, 1000, 1000);*/
         MyApp.getInstance().addActivity(this);
         mRegisterPresenter = new RegisterPresenter(this);
         initIntent();
@@ -113,7 +113,7 @@ public class RegisterActivity2 extends AppCompatActivity {
     }
 
     private void sendVcode() {
-        mRegisterPresenter.signUpValidator(mEmail, mUsername, new RegisterPresenter.CallBack2() {
+        mRegisterPresenter.sendRegcode(mEmail, new RegisterPresenter.CallBack() {
             @Override
             public void send() {
                 mRecLen = 60;

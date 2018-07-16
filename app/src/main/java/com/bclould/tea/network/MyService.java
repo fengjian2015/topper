@@ -500,7 +500,8 @@ public interface MyService {
             @Field("truename") String truename,
             @Field("bank_name") String bank_name,
             @Field("bank_site") String bank_site,
-            @Field("bank_number") String bank_number
+            @Field("bank_number") String bank_number,
+            @Field("country_id") int country_id
     );
 
     //银行卡列表
@@ -643,7 +644,8 @@ public interface MyService {
     @FormUrlEncoded
     Observable<BankCardInfo> bankCardInfo(
             @Header("Authorization") String token,
-            @Field("bank_number") String bank_number
+            @Field("bank_number") String bank_number,
+            @Field("country_id") int country_id
     );
 
     //获取支付记录
@@ -1310,7 +1312,8 @@ public interface MyService {
     Observable<BaseInfo> addCollect(
             @Header("Authorization") String token,
             @Field("title") String title,
-            @Field("url") String url
+            @Field("url") String url,
+            @Field("icon") String icon
     );
 
     //商戶信息
@@ -1330,5 +1333,13 @@ public interface MyService {
             @Field("number") String number,
             @Field("second_password") String second_password,
             @Field("remark") String remark
+    );
+
+    //商戶信息
+    @FormUrlEncoded
+    @POST("api/collect/updateOrderBy")
+    Observable<BaseInfo> saveSequence(
+            @Header("Authorization") String token,
+            @Field("orderby") String orderby
     );
 }

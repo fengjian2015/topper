@@ -45,6 +45,54 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y20"
+        app:cardCornerRadius="@dimen/x15">
+
+        <RelativeLayout
+            android:id="@+id/rl_selector_state"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120">
+
+            <TextView
+                android:id="@+id/tv3"
+                android:layout_width="@dimen/x150"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x30"
+                android:text="@string/state_district"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x28"/>
+
+            <TextView
+                android:id="@+id/tv_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x20"
+                android:layout_toRightOf="@+id/tv3"
+                android:hint="@string/selector_nationality"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x28"/>
+
+            <ImageView
+                android:id="@+id/iv_jiantou2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x30"
+                android:src="@mipmap/iocn_more_down"/>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y20"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
         app:cardCornerRadius="@dimen/x15">
 
         <LinearLayout
@@ -52,7 +100,7 @@
             android:layout_height="@dimen/y120">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/x150"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x30"
@@ -66,7 +114,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:layout_marginLeft="@dimen/x50"
                 android:background="@color/transparent"
                 android:hint="@string/et_bank_card_number"
                 android:inputType="number"

@@ -40,12 +40,12 @@
         android:textColor="@color/black"
         android:textSize="@dimen/x28"/>
 
-
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y20"
         app:cardCornerRadius="@dimen/x15">
 
         <LinearLayout
@@ -61,12 +61,15 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 
-            <TextView
-                android:id="@+id/tv_card_type"
+            <EditText
+                android:id="@+id/et_card_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text=""
+                android:background="@android:color/transparent"
+                android:hint="@string/et_bank_card_type"
+                android:paddingRight="@dimen/x20"
+                android:singleLine="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 
@@ -99,11 +102,11 @@
                 android:id="@+id/et_opening_bank"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
                 android:layout_gravity="center_vertical"
                 android:background="@android:color/transparent"
                 android:hint="@string/et_opening_bank"
                 android:paddingRight="@dimen/x20"
+                android:singleLine="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x28"/>
 

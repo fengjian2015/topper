@@ -50,6 +50,7 @@ public class RegisterPresenter {
     }
 
     public void sendRegcode(final String email, final CallBack callBack) {
+        showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .sendRegcode(email)
@@ -132,12 +133,7 @@ public class RegisterPresenter {
                     @Override
                     public void onNext(@NonNull BaseInfo baseInfo) {
                         if (baseInfo.getStatus() == 1) {
-                            sendRegcode(email, new CallBack() {
-                                @Override
-                                public void send() {
-                                    callBack2.send();
-                                }
-                            });
+                            callBack2.send();
                         } else {
                             hideDialog();
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();

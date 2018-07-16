@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bclould.tea.Presenter.CollectPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.model.TitleIConInfo;
 import com.bclould.tea.ui.widget.ClearEditText;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.MessageEvent;
@@ -23,6 +24,8 @@ import com.bclould.tea.utils.UtilTool;
 import org.greenrobot.eventbus.EventBus;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -89,27 +92,44 @@ public class AddCollectActivity extends BaseActivity {
         if (!UtilTool.checkLinkedExe(mUrl)) {
             mUrl = "http://" + mUrl;
         }
-        String title = mEtTitles.getText().toString();
+        final String title = mEtTitles.getText().toString();
         if (title.isEmpty()) {
-            new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        Document doc = Jsoup.connect(mUrl).get();
-                        if (!doc.title().isEmpty()) {
-                            Message message = new Message();
-                            message.obj = doc.title();
-                            message.what = 0;
-                            mHandler.sendMessage(message);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                       mHandler.sendEmptyMessage(1);
-                    }
-                }
-            }).start();
+            startCheck("");
         } else {
-            addCollect(title);
+            startCheck(title);
+//            addCollect(title, );
         }
+    }
+
+    private void startCheck(final String title) {
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Document doc = Jsoup.connect(mUrl).get();
+                    Message message = new Message();
+                    TitleIConInfo titleIConInfo = new TitleIConInfo();
+                    if (title.isEmpty()) {
+                        titleIConInfo.setTitle(doc.title());
+                    } else {
+                        titleIConInfo.setTitle(title);
+                    }
+                    Elements link = doc.head().getElementsByTag("link");
+                    for (int i = 0; i < link.size(); i++) {
+                        Element element = link.get(i);
+                        String type = element.attr("type");
+                        if ("image/x-icon".equals(type)) {
+                            titleIConInfo.setIconUrl(element.baseUri() + element.attr("href"));
+                        }
+                    }
+                    message.obj = titleIConInfo;
+                    message.what = 0;
+                    mHandler.sendMessage(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mHandler.sendEmptyMessage(1);
+                }
+            }
+        }).start();
     }
 
     @SuppressLint("HandlerLeak")
@@ -119,8 +139,8 @@ public class AddCollectActivity extends BaseActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                    String title = (String) msg.obj;
-                    addCollect(title);
+                    TitleIConInfo info = (TitleIConInfo) msg.obj;
+                    addCollect(info.getTitle(), info.getIconUrl());
                     break;
                 case 1:
                     ToastShow.showToast2(AddCollectActivity.this, getString(R.string.check_url_error));
@@ -129,8 +149,8 @@ public class AddCollectActivity extends BaseActivity {
         }
     };
 
-    private void addCollect(String title) {
-        mCollectPresenter.addCollect(title, mUrl, new CollectPresenter.CallBack2() {
+    private void addCollect(String title, String iconUrl) {
+        mCollectPresenter.addCollect(title, mUrl, iconUrl, new CollectPresenter.CallBack2() {
             @Override
             public void send() {
                 finish();

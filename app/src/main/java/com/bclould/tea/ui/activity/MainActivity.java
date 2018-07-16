@@ -105,7 +105,7 @@ public class MainActivity extends BaseActivity {
         }
         setContentView(R.layout.activity_main);
         mCoinPresenter = new CoinPresenter(this);
-        mBundle=getIntent().getExtras();
+        mBundle = getIntent().getExtras();
         ButterKnife.bind(this);
         mMgr = new DBManager(this);
         if (!EventBus.getDefault().isRegistered(this))
@@ -121,11 +121,13 @@ public class MainActivity extends BaseActivity {
     }
 
     private void isGoSelectConversation() {
-        if(MySharedPreferences.getInstance().getBoolean("SHARE")&&!WsConnection.getInstance().getOutConnection()){
-            Intent intent=new Intent(this,SelectConversationActivity.class);
-            intent.putExtra("type",3);
-            intent.putExtras(mBundle);
-            startActivity(intent);
+        if (mBundle != null) {
+            if (MySharedPreferences.getInstance().getBoolean("SHARE") && !WsConnection.getInstance().getOutConnection()) {
+                Intent intent = new Intent(this, SelectConversationActivity.class);
+                intent.putExtra("type", 3);
+                intent.putExtras(mBundle);
+                startActivity(intent);
+            }
         }
     }
 
@@ -425,8 +427,8 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void converstonTop(int index){
-        if(index==0&&mMainBottomMenu.getChildAt(index).isSelected()&&UtilTool.homeClickTwo()){
+    private void converstonTop(int index) {
+        if (index == 0 && mMainBottomMenu.getChildAt(index).isSelected() && UtilTool.homeClickTwo()) {
             EventBus.getDefault().post(new MessageEvent(getString(R.string.home_msg_click_two)));
         }
     }

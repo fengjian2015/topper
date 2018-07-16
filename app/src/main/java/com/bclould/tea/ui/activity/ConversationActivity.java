@@ -247,7 +247,10 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                 }else if(getString(R.string.shooting).equals(name)){
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.open_shooting)));
                 }else if(getString(R.string.collect).equals(name)){
-                    ToastShow.showToast2(ConversationActivity.this, getString(R.string.hint_unfinished));
+                    Intent intent=new Intent(ConversationActivity.this,CollectActivity.class);
+                    intent.putExtra("type",1);
+                    intent.putExtra("roomId",roomId);
+                    startActivity(intent);
                 }
             }
         });

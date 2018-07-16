@@ -1,7 +1,6 @@
 package com.bclould.tea.ui.activity;
 
 import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -56,8 +56,6 @@ import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_TXT;
 import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_XLS;
 import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_XLSX;
 import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_ZIP;
-import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_FILE_MSG;
-import static com.bclould.tea.ui.adapter.ChatAdapter.TO_FILE_MSG;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class FileOpenActivity extends BaseActivity {
@@ -76,13 +74,14 @@ public class FileOpenActivity extends BaseActivity {
     private File mFile;
     private String key;
     private DBManager mDBManager;
-    private boolean isSuccess=true;
+    private boolean isSuccess = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_open);
         ButterKnife.bind(this);
-        mDBManager=new DBManager(this);
+        mDBManager = new DBManager(this);
         mFileDownloadPresenter = FileDownloadPresenter.getInstance(this);
         mFileDownloadPresenter.setOnDownloadCallbackListener(mDownloadCallback);
         getintent();
@@ -91,19 +90,19 @@ public class FileOpenActivity extends BaseActivity {
 
     private void init() {
         mTvType.setImageResource(setImage(mMessageInfo.getContent()));
-        String path=mMessageInfo.getVoice();
-        key=mMessageInfo.getKey();
+        String path = mMessageInfo.getVoice();
+        key = mMessageInfo.getKey();
 
         mProgressBar.setMax(100);
-        mFile= new File(Constants.DOWNLOAD +System.currentTimeMillis()+mMessageInfo.getTitle());
-        if(StringUtils.isEmpty(path)){
+        mFile = new File(Constants.DOWNLOAD + System.currentTimeMillis() + mMessageInfo.getTitle());
+        if (StringUtils.isEmpty(path)) {
             mBtnOpen.setVisibility(View.GONE);
             mProgressBar.setVisibility(View.VISIBLE);
             mFileDownloadPresenter.dowbloadFile(Constants.BUCKET_NAME2, key, mFile);
-        }else{
-            mFile=new File(path);
+        } else {
+            mFile = new File(path);
             if (mFile.exists()) {
-                if (MySharedPreferences.getInstance().getLong(key) == mFile.length()||(MySharedPreferences.getInstance().getLong(key)==0&&mFile.length()!=0)) {
+                if (MySharedPreferences.getInstance().getLong(key) == mFile.length() || (MySharedPreferences.getInstance().getLong(key) == 0 && mFile.length() != 0)) {
                     mBtnOpen.setVisibility(View.VISIBLE);
                     mProgressBar.setVisibility(View.GONE);
                 } else {
@@ -133,9 +132,9 @@ public class FileOpenActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_open:
-                if(isSuccess){
+                if (isSuccess) {
                     openFile(mFile);
-                }else{
+                } else {
                     mProgressBar.setVisibility(View.VISIBLE);
                     mBtnOpen.setVisibility(View.GONE);
                     mFileDownloadPresenter.dowbloadFile(Constants.BUCKET_NAME2, key, mFile);
@@ -167,27 +166,26 @@ public class FileOpenActivity extends BaseActivity {
 //    }
 
 
-
     FileDownloadPresenter.downloadCallback mDownloadCallback = new FileDownloadPresenter.downloadCallback() {
         @Override
-        public void onSuccess(File file,String key) {
-            if(!key.equals(key))return;
+        public void onSuccess(File file, String key) {
+            if (!key.equals(key)) return;
             mHandler.sendEmptyMessage(2);
         }
 
         @Override
         public void onFailure(String key) {
-            if(!key.equals(key))return;
+            if (!key.equals(key)) return;
             mHandler.sendEmptyMessage(1);
         }
 
         @Override
-        public void onSuccsetProgressListeneress(long currentSize, long totalSize,String key) {
-            if(!key.equals(key))return;
+        public void onSuccsetProgressListeneress(long currentSize, long totalSize, String key) {
+            if (!key.equals(key)) return;
             if (!mFile.exists()) {
                 MySharedPreferences.getInstance().setLong(key, totalSize);
-            }else {
-                if(mFile.length() == 0){
+            } else {
+                if (mFile.length() == 0) {
                     MySharedPreferences.getInstance().setLong(key, totalSize);
                 }
             }
@@ -218,7 +216,7 @@ public class FileOpenActivity extends BaseActivity {
                     break;
                 case 1:
                     if (ActivityUtil.isActivityOnTop(FileOpenActivity.this)) {
-                        isSuccess=false;
+                        isSuccess = false;
                         mProgressBar.setVisibility(View.GONE);
                         mBtnOpen.setVisibility(View.VISIBLE);
                         mBtnOpen.setText(getString(R.string.down_fail_click));
@@ -226,12 +224,12 @@ public class FileOpenActivity extends BaseActivity {
                     break;
                 case 2:
                     if (ActivityUtil.isActivityOnTop(FileOpenActivity.this)) {
-                        isSuccess=true;
+                        isSuccess = true;
                         mProgressBar.setVisibility(View.GONE);
                         mBtnOpen.setVisibility(View.VISIBLE);
                         mBtnOpen.setText(getString(R.string.open_another_application));
-                        mDBManager.updateVoice(mMessageInfo.getMsgId(),mFile.getAbsolutePath());
-                        MessageEvent messageEvent=new MessageEvent(getString(R.string.update_file_message));
+                        mDBManager.updateVoice(mMessageInfo.getMsgId(), mFile.getAbsolutePath());
+                        MessageEvent messageEvent = new MessageEvent(getString(R.string.update_file_message));
                         messageEvent.setId(mMessageInfo.getMsgId());
                         messageEvent.setFilepath(mFile.getAbsolutePath());
                         EventBus.getDefault().post(messageEvent);
@@ -251,6 +249,7 @@ public class FileOpenActivity extends BaseActivity {
 
     /**
      * 选择FILE_TYPE_xxx中的一种传入
+     *
      * @param fileType
      */
     public int setImage(String fileType) {
@@ -263,7 +262,7 @@ public class FileOpenActivity extends BaseActivity {
             resId = R.mipmap.type_ppt;
         } else if (FILE_TYPE_PDF.equals(fileType)) {
             resId = R.mipmap.type_pdf;
-        } else if (FILE_TYPE_TXT.equals(fileType)||FILE_TYPE_LOG.equals(fileType)||FILE_TYPE_RTF.equals(fileType)) {
+        } else if (FILE_TYPE_TXT.equals(fileType) || FILE_TYPE_LOG.equals(fileType) || FILE_TYPE_RTF.equals(fileType)) {
             resId = R.mipmap.type_txt;
         } else if (FILE_TYPE_ZIP.equals(fileType)) {
             resId = R.mipmap.type_zip;
@@ -278,32 +277,41 @@ public class FileOpenActivity extends BaseActivity {
     /**
      * 使用系统的应用 打开文件
      * 见 FILE_TYPE_WORD 等类型
+     *
      * @return
      */
     public void openFile(File file) {
         boolean toOpenOrNot = true;
+        Uri uri = null;
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.addCategory(Intent.CATEGORY_DEFAULT);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Uri uri = Uri.fromFile(file);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", file);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        } else {
+            intent.setDataAndType(Uri.fromFile(file), getApplicationContext().getPackageName() + ".provider");
+        }
+
+//        Uri uri = Uri.fromFile(file);
         String mimeStr = "";
         String postfixs = getFileExtension(file.getName());
-        if ("doc".equalsIgnoreCase(postfixs)||"docx".equalsIgnoreCase(postfixs)) {
+        if ("doc".equalsIgnoreCase(postfixs) || "docx".equalsIgnoreCase(postfixs)) {
             intent.setDataAndType(uri, "application/msword");
             intent.setDataAndType(uri, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
             mimeStr = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-        } else if ("ppt".equalsIgnoreCase(postfixs)||"pptx".equalsIgnoreCase(postfixs)) {
+        } else if ("ppt".equalsIgnoreCase(postfixs) || "pptx".equalsIgnoreCase(postfixs)) {
             intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
             intent.setDataAndType(uri, "application/vnd.openxmlformats-officedocument.presentationml.presentation");
             mimeStr = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
-        } else if ("xls".equalsIgnoreCase(postfixs)||"xlsx".equalsIgnoreCase(postfixs)) {
+        } else if ("xls".equalsIgnoreCase(postfixs) || "xlsx".equalsIgnoreCase(postfixs)) {
             intent.setDataAndType(uri, "application/vnd.ms-excel");
             intent.setDataAndType(uri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             mimeStr = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         } else if ("pdf".equalsIgnoreCase(postfixs)) {
             intent.setDataAndType(uri, "application/pdf");
             mimeStr = "application/pdf";
-        } else if ("txt".equalsIgnoreCase(postfixs)||"log".equalsIgnoreCase(postfixs)) {
+        } else if ("txt".equalsIgnoreCase(postfixs) || "log".equalsIgnoreCase(postfixs)) {
             intent.setDataAndType(uri, "text/plain");
             mimeStr = "text/plain";
         } else if ("zip".equalsIgnoreCase(postfixs)) {
@@ -334,17 +342,18 @@ public class FileOpenActivity extends BaseActivity {
                     startActivity(Intent.createChooser(intent, "请选择能够打开该文件的应用"));
 //                    startActivity(intent);
                 } else {
-                    ToastShow.showToast2(FileOpenActivity.this,getString(R.string.no_file_open));
+                    ToastShow.showToast2(FileOpenActivity.this, getString(R.string.no_file_open));
                 }
-            } catch (ActivityNotFoundException anfe) {
-                ToastShow.showToast2(FileOpenActivity.this,getString(R.string.no_file_open));
+            } catch (Exception anfe) {
+                ToastShow.showToast2(FileOpenActivity.this, getString(R.string.no_file_open));
 //                ToastShow.showToast2(IMFileShowAndDownloadActivity.this, "暂时没有应用能够打开该文件!");
             }
         } else {
-            ToastShow.showToast2(FileOpenActivity.this,getString(R.string.no_file_open));
+            ToastShow.showToast2(FileOpenActivity.this, getString(R.string.no_file_open));
 //            ToastShow.showToast2(IMFileShowAndDownloadActivity.this, "暂时没有应用能够打开该文件!");
         }
     }
+
     /**
      * 获取文件的mime类型
      *
@@ -355,6 +364,7 @@ public class FileOpenActivity extends BaseActivity {
         String extension = getFileExtension(file.getName());
         return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
     }
+
     /**
      * 不包括点
      *
@@ -388,6 +398,7 @@ public class FileOpenActivity extends BaseActivity {
     }
 
     private String[] packageTsoExclude = {"com.tencent.mobileqq"};
+
     private List<String> removeSomePackages(List<String> allpackages) {
         List<String> indexToExclude = new ArrayList<>();
         if (allpackages.size() > 0) {

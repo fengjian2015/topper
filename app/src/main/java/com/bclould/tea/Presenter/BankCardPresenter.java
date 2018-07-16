@@ -52,11 +52,11 @@ public class BankCardPresenter {
         }
     }
 
-    public void bankCardInfo(String cardNumber, final CallBack callBack) {
+    public void bankCardInfo(String cardNumber, int stateId, final CallBack callBack) {
         showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .bankCardInfo(UtilTool.getToken(), cardNumber)
+                .bankCardInfo(UtilTool.getToken(), cardNumber, stateId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<BankCardInfo>() {
@@ -87,11 +87,11 @@ public class BankCardPresenter {
                 });
     }
 
-    public void bindBankCard(String truename, String bank, String openingBank, String cardNumber, final CallBack3 callBack3) {
+    public void bindBankCard(String truename, String bank, String openingBank, String cardNumber, int state_id, final CallBack3 callBack3) {
         showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .bindBankCard(UtilTool.getToken(), truename, bank, openingBank, cardNumber)
+                .bindBankCard(UtilTool.getToken(), truename, bank, openingBank, cardNumber, state_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<BaseInfo>() {
@@ -103,7 +103,7 @@ public class BankCardPresenter {
                     @Override
                     public void onNext(@NonNull BaseInfo baseInfo) {
                         hideDialog();
-                        callBack3.send(baseInfo.getStatus());
+                        callBack3.send(baseInfo);
 
                     }
 
@@ -166,7 +166,7 @@ public class BankCardPresenter {
                     @Override
                     public void onNext(@NonNull BaseInfo baseInfo) {
                         hideDialog();
-                        callBack3.send(baseInfo.getStatus());
+                        callBack3.send(baseInfo);
                     }
 
                     @Override
@@ -195,7 +195,7 @@ public class BankCardPresenter {
 
                     @Override
                     public void onNext(@NonNull BaseInfo baseInfo) {
-                        callBack3.send(baseInfo.getStatus());
+                        callBack3.send(baseInfo);
                     }
 
                     @Override
@@ -216,7 +216,7 @@ public class BankCardPresenter {
 
     //定义接口
     public interface CallBack3 {
-        void send(int status);
+        void send(BaseInfo data);
     }
 
 
