@@ -80,7 +80,7 @@ public class PayOutsideCallsActivity extends BaseActivity {
         mRedDialog.setContentView(contentView);
         mRedDialog.show();
         mRedDialog.setCanceledOnTouchOutside(false);
-        initDialog("TPC","30");
+        initDialog("D0GE","100");
     }
 
     private void initDialog(String coins,String mCount) {

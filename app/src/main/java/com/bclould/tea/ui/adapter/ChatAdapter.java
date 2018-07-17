@@ -453,9 +453,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
             list.add(mContext.getString(R.string.copy));
         if (isTransmit)
             list.add(mContext.getString(R.string.transmit));
-        if(isWithdraw&&messageInfo.getSendStatus()==1){
-            list.add(mContext.getString(R.string.withdrew));
-        }
+//        if(isWithdraw&&messageInfo.getSendStatus()==1&&
+//                (messageInfo.getCreateTime()+(3*60*1000)>System.currentTimeMillis())){
+//            list.add(mContext.getString(R.string.withdrew));
+//        }
         final MenuListPopWindow menu = new MenuListPopWindow(mContext, list);
         menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
             @Override
@@ -980,6 +981,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 }
             });
         }
+    }
+
+    public void stopVoicePlay(){
+        if(mAnim!=null){
+            mAnim.selectDrawable(0);
+            mAnim.stop();
+        }
+        mMediaPlayer.stop();
+        mMediaPlayer.reset();
     }
 
     public void playVoice(MediaPlayer mediaPlayer, String fileName, final AnimationDrawable anim, final int position) {

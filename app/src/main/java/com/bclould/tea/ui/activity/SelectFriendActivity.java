@@ -308,7 +308,7 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
                 messageInfo = mRoom.sendMessage(message);
                 if (messageInfo != null) {
                     ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
-                    SelectFriendActivity.this.finish();
+                    close();
                 } else {
                     ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_error));
                 }

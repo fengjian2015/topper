@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-              android:background="@color/shallow_gray"
+    android:background="@color/shallow_gray"
     android:orientation="vertical"
     tools:activity="com.bclould.tea.ui.activity.ConversationGroupDetailsActivity">
     <RelativeLayout
@@ -292,6 +292,34 @@
                     />
                 <ImageView
                     android:id="@+id/iv_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x30"
+                    android:src="@mipmap/iocn_person_turn"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_group_red"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingLeft="@dimen/x20"
+                >
+                <View
+                    style="@style/HCutOffRule"
+                    ></View>
+                <TextView
+                    android:id="@+id/tv15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/iv_inform"
+                    android:text="@string/unclaimed_red"
+                    android:paddingTop="@dimen/x25"
+                    android:paddingBottom="@dimen/x25"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x30"/>
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"

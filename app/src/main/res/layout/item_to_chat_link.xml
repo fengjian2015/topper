@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/x20">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="@dimen/x20">
     <include android:id="@+id/chat_createtime"
         layout="@layout/item_chat_time"
         />
@@ -18,45 +19,51 @@
             android:layout_alignParentRight="true"
             android:scaleType="fitXY"
             android:src="@mipmap/img_nfriend_headshot1"/>
-
-        <RelativeLayout
-            android:id="@+id/rl_link"
-            android:layout_width="@dimen/x450"
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_redpacket"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/x20"
             android:layout_toLeftOf="@+id/iv_touxiang"
-            android:background="@color/white"
-            android:padding="@dimen/y20">
-
-            <ImageView
-                android:id="@+id/iv_head"
-                android:layout_width="@dimen/x100"
-                android:layout_height="@dimen/y100"
-                android:scaleType="fitXY"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="@dimen/y10"
-                android:layout_marginBottom="@dimen/y10"
-                />
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/y40"
-                android:textColor="@color/black"
-                android:layout_marginRight="@dimen/x120"
-                android:singleLine="true"
-                android:textSize="@dimen/x32"/>
-            <TextView
-                android:id="@+id/tv_content"
-                android:layout_width="wrap_content"
+            app:cardBackgroundColor="@color/white"
+            android:layout_below="@+id/tv_name"
+            app:cardCornerRadius="@dimen/x20">
+            <RelativeLayout
+                android:id="@+id/rl_link"
+                android:layout_width="@dimen/x450"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:layout_below="@+id/tv_title"
-                android:layout_marginRight="@dimen/x100"
-                android:layout_marginTop="@dimen/y10"
-                android:maxLines="2"
-                android:textSize="@dimen/x24"/>
-        </RelativeLayout>
+                android:background="@color/white"
+                android:padding="@dimen/y20">
 
+                <ImageView
+                    android:id="@+id/iv_head"
+                    android:layout_width="@dimen/x100"
+                    android:layout_height="@dimen/y100"
+                    android:scaleType="fitXY"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/y10"
+                    android:layout_marginBottom="@dimen/y10"
+                    />
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/y40"
+                    android:textColor="@color/black"
+                    android:layout_marginRight="@dimen/x120"
+                    android:singleLine="true"
+                    android:textSize="@dimen/x32"/>
+                <TextView
+                    android:id="@+id/tv_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_below="@+id/tv_title"
+                    android:layout_marginRight="@dimen/x100"
+                    android:layout_marginTop="@dimen/y10"
+                    android:maxLines="2"
+                    android:textSize="@dimen/x24"/>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
         <ImageView
             android:id="@+id/iv_warning"
             android:layout_width="@dimen/x60"
@@ -64,7 +71,7 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/x20"
-            android:layout_toLeftOf="@+id/rl_link"
+            android:layout_toLeftOf="@+id/cv_redpacket"
             android:src="@mipmap/icon_fail"
             android:visibility="visible"/>
 
@@ -75,7 +82,7 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/x20"
-            android:layout_toLeftOf="@+id/rl_link"
+            android:layout_toLeftOf="@+id/cv_redpacket"
             android:background="@drawable/anim_progress_chat"
             android:visibility="visible"/>
     </RelativeLayout>

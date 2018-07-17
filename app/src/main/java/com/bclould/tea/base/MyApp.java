@@ -14,6 +14,7 @@ import com.bclould.tea.network.MyHostnameVerifier;
 import com.bclould.tea.service.ImageUpService;
 import com.bclould.tea.topperchat.RoomMemberManage;
 import com.bclould.tea.topperchat.UmManage;
+import com.bclould.tea.topperchat.XGManage;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.GlideImgLoader;
 import com.bclould.tea.utils.MyLifecycleHandler;
@@ -72,6 +73,7 @@ public class MyApp extends Application {
         createDir();
 
         UmManage.getInstance().init(this);
+        XGManage.getInstance().init(this);
 
         registerActivityLifecycleCallbacks(new MyLifecycleHandler());
 

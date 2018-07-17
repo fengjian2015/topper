@@ -17,6 +17,7 @@ import com.bclould.tea.model.GroupMemberInfo;
 import com.bclould.tea.model.ReviewInfo;
 import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.model.RoomMemberInfo;
+import com.bclould.tea.model.UnclaimedRedInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.topperchat.RoomMemberManage;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
@@ -704,6 +705,44 @@ public class GroupPresenter {
                 });
     }
 
+    public void getUnclaimedRed(final int group_id ,final CallBack4 callBack) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .getUnclaimedRed(UtilTool.getToken(), group_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<UnclaimedRedInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(UnclaimedRedInfo unclaimedRedInfo) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        if (unclaimedRedInfo.getStatus() == 1) {
+                            callBack.send(unclaimedRedInfo);
+                        }else {
+                            ToastShow.showToast2((Activity) mContext, unclaimedRedInfo.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        callBack.error();
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     //定义接口
     public interface CallBack {
         void send();
@@ -724,6 +763,12 @@ public class GroupPresenter {
     //定义接口
     public interface CallBack3 {
         void send(ReviewInfo baseInfo);
+        void error();
+    }
+
+    //定义接口
+    public interface CallBack4 {
+        void send(UnclaimedRedInfo baseInfo);
         void error();
     }
 }

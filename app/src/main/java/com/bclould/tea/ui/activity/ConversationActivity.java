@@ -575,6 +575,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
             recordUtil = new RecordUtil(this);
         }
         recordUtil.start();
+        mChatAdapter.stopVoicePlay();
     }
 
     //完成了录音

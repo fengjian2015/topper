@@ -305,6 +305,7 @@ public class SocketListener {
         new PingThread(context).start();
         new PingThreadRequest(context).start();
         UmManage.getInstance().setAlias();
+        XGManage.getInstance().setAlias();
     }
 
     private String OTRCrypt(String from, String chatmesssage, boolean crypt){
@@ -410,11 +411,6 @@ public class SocketListener {
                 }
             }
             int msgType;
-            if (isMe) {
-                msgType = TO_TEXT_MSG;
-            } else {
-                msgType = FROM_TEXT_MSG;
-            }
             String time = UtilTool.createChatTime();
             String friend;
             if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
@@ -616,9 +612,16 @@ public class SocketListener {
                     messageEvent.setId(messageInfo.getBetId());
                     EventBus.getDefault().post(messageEvent);
                     break;
-                default:
+                case WsContans.MSG_TEXT:
+                    if (isMe) {
+                        msgType = TO_TEXT_MSG;
+                    } else {
+                        msgType = FROM_TEXT_MSG;
+                    }
                     goChat(from, messageInfo.getMessage(), roomType);
                     break;
+                default:
+                    return;
             }
             //添加数据库from
             //添加数据库from

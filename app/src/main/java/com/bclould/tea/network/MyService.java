@@ -46,6 +46,7 @@ import com.bclould.tea.model.StateInfo;
 import com.bclould.tea.model.TransRecordInfo;
 import com.bclould.tea.model.TransferInfo;
 import com.bclould.tea.model.TransferListInfo;
+import com.bclould.tea.model.UnclaimedRedInfo;
 import com.bclould.tea.model.UpdateLogInfo;
 import com.bclould.tea.model.UserDataInfo;
 
@@ -1341,5 +1342,13 @@ public interface MyService {
     Observable<BaseInfo> saveSequence(
             @Header("Authorization") String token,
             @Field("orderby") String orderby
+    );
+
+    //待领取的红包
+    @FormUrlEncoded
+    @POST("chat/room/red_packet/un_receive")
+    Observable<UnclaimedRedInfo> getUnclaimedRed(
+            @Header("Authorization") String token,
+            @Field("group_id") int group_id
     );
 }

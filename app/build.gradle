@@ -49,6 +49,15 @@ android {
                 includeCompileClasspath true
             }
         }
+        ndk {
+            //选择要添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+            manifestPlaceholders = [
+                    XG_ACCESS_ID : "2100299788",
+                    XG_ACCESS_KEY: "AC144HB7D4QH",
+            ]
+        }
     }
     sourceSets {
         main {
@@ -64,6 +73,7 @@ android {
     }
     productFlavors {
     }
+
 }
 
 configurations.all {
@@ -76,6 +86,7 @@ configurations.all {
         }
     }
 }
+
 
 
 
@@ -193,20 +204,17 @@ dependencies {
 
     //PushSDK
     compile 'com.umeng.sdk:push:4.2.0'
-
-    //友盟统计
-
-    //    compile 'com.umeng.sdk:common:latest.integration'
-
-    //    compile 'com.umeng.sdk:analytics:latest.integration'
     compile 'com.github.andy6804tw:ZoomImageView-lib:0.0.1'
 
     //華為通道
-
-    //    compile 'com.umeng.sdk:push-huawei:1.0.0'
     implementation files('libs/fastjson-1.2.9.jar')
     compile 'com.isseiaoki:simplecropview:1.1.7'
     compile 'com.leon:lfilepickerlibrary:1.8.0'
     //側滑刪除
     compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
+
+    //信鸽
+    compile 'com.tencent.xinge:xinge:3.2.4-beta'
+    compile 'com.tencent.wup:wup:1.0.0.E-alpha'
+    compile 'com.tencent.mid:mid:3.9.0-alpha'
 }

@@ -242,6 +242,7 @@ public class CollectActivity extends BaseActivity {
             case R.id.tv_cancel:
                 mTvEdit.setVisibility(View.VISIBLE);
                 mRlEdit.setVisibility(View.GONE);
+                isEdit = false;
                 mItemTouchHelper.attachToRecyclerView(null);
                 ToastShow.showToast2(CollectActivity.this, getString(R.string.long_click_share));
                 mDataList.clear();
@@ -256,6 +257,7 @@ public class CollectActivity extends BaseActivity {
                 mDataList2.addAll(mDataList);
                 mTvEdit.setVisibility(View.GONE);
                 mRlEdit.setVisibility(View.VISIBLE);
+                isEdit =true;
                 mItemTouchHelper.attachToRecyclerView(mRecyclerView);
                 ToastShow.showToast2(CollectActivity.this, getString(R.string.long_click_haul));
                 break;

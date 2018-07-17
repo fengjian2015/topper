@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/x20">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="@dimen/x20">
     <include android:id="@+id/chat_createtime"
         layout="@layout/item_chat_time"
         />
@@ -18,56 +19,62 @@
             android:layout_alignParentRight="true"
             android:scaleType="fitXY"
             android:src="@mipmap/img_nfriend_headshot1"/>
-
-        <RelativeLayout
-            android:id="@+id/rl_guess"
-            android:layout_width="@dimen/x500"
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_redpacket"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/x20"
             android:layout_toLeftOf="@+id/iv_touxiang"
-            android:background="@color/white"
-            android:padding="@dimen/y20">
-            <ImageView
-                android:id="@+id/iv_logo"
-                android:layout_width="@dimen/x120"
-                android:layout_height="@dimen/x120"
-                android:src="@mipmap/img_tocotalk1"/>
-            <LinearLayout
-                android:layout_width="wrap_content"
+            app:cardBackgroundColor="@color/white"
+            android:layout_below="@+id/tv_name"
+            app:cardCornerRadius="@dimen/x20">
+            <RelativeLayout
+                android:id="@+id/rl_guess"
+                android:layout_width="@dimen/x500"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/iv_logo"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/tv_title"
+                android:background="@color/white"
+                android:padding="@dimen/y20">
+                <ImageView
+                    android:id="@+id/iv_logo"
+                    android:layout_width="@dimen/x120"
+                    android:layout_height="@dimen/x120"
+                    android:src="@mipmap/img_tocotalk1"/>
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x32"
-                    android:textStyle="bold"/>
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_toRightOf="@+id/iv_logo"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/x32"
+                        android:textStyle="bold"/>
 
-                <TextView
-                    android:id="@+id/tv_who"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/y10"
-                    android:textColor="@color/black"
-                    android:singleLine="true"
-                    android:textSize="@dimen/x28"/>
+                    <TextView
+                        android:id="@+id/tv_who"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/y10"
+                        android:textColor="@color/black"
+                        android:singleLine="true"
+                        android:textSize="@dimen/x28"/>
 
-                <TextView
-                    android:id="@+id/tv_coin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/y10"
-                    android:singleLine="true"
-                    android:textSize="@dimen/x26"/>
-            </LinearLayout>
-        </RelativeLayout>
-
+                    <TextView
+                        android:id="@+id/tv_coin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/y10"
+                        android:singleLine="true"
+                        android:textSize="@dimen/x26"/>
+                </LinearLayout>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
         <ImageView
             android:id="@+id/iv_warning"
             android:layout_width="@dimen/x60"
@@ -75,7 +82,7 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/x20"
-            android:layout_toLeftOf="@+id/rl_guess"
+            android:layout_toLeftOf="@+id/cv_redpacket"
             android:src="@mipmap/icon_fail"
             android:visibility="visible"/>
 
@@ -86,7 +93,7 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/x20"
-            android:layout_toLeftOf="@+id/rl_guess"
+            android:layout_toLeftOf="@+id/cv_redpacket"
             android:background="@drawable/anim_progress_chat"
             android:visibility="visible"/>
     </RelativeLayout>

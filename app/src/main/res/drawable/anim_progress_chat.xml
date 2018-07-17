@@ -39,8 +39,5 @@
     <item
         android:drawable="@mipmap/loading12"
         android:duration="100"/>
-    <item
-        android:drawable="@mipmap/loading1"
-        android:duration="100"/>
 
 </animation-list>
