@@ -78,69 +78,98 @@
     </LinearLayout>
 
     <TextView
-        android:layout_centerHorizontal="true"
         android:id="@+id/tv_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ll_apk_name"
+        android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y40"
         android:textColor="@color/black"
         android:textSize="@dimen/x32"/>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y15"
-        android:layout_above="@+id/rl_btn"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y20"
-        android:progressDrawable="@drawable/bg_progress_bar"/>
-
-    <RelativeLayout
-        android:id="@+id/rl_btn"
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_no_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/y200"
-        android:layout_marginTop="@dimen/y60">
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/y100"
+        android:text="@string/already_new_version"
+        android:textSize="@dimen/x32"/>
 
-        <Button
-            android:id="@+id/btn_download"
-            android:layout_width="@dimen/x500"
-            android:layout_height="@dimen/y80"
-            android:background="@drawable/btn_blue_selector"
-            android:text="@string/download"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="@dimen/x32"
-            android:visibility="visible"/>
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/rl_update"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/btn_stop"
-            android:layout_width="@dimen/x500"
-            android:layout_height="@dimen/y80"
-            android:background="@drawable/btn_blue_selector"
-            android:text="@string/stop"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="@dimen/x32"
-            android:visibility="gone"/>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y15"
+            android:layout_above="@+id/tv_progress"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_marginTop="@dimen/y20"
+            android:progressDrawable="@drawable/bg_progress_bar"/>
 
-        <Button
-            android:id="@+id/btn_finish"
-            android:layout_width="@dimen/x500"
-            android:layout_height="@dimen/y80"
-            android:background="@drawable/btn_blue_selector"
-            android:text="@string/install"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="@dimen/x32"
-            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/tv_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/rl_btn"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y10"
+            android:textSize="@dimen/x26"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/y200"
+            android:layout_marginTop="@dimen/y60">
+
+            <Button
+                android:id="@+id/btn_download"
+                android:layout_width="@dimen/x500"
+                android:layout_height="@dimen/y80"
+                android:background="@drawable/btn_blue_selector"
+                android:text="@string/download"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x32"
+                android:visibility="visible"/>
+
+            <Button
+                android:id="@+id/btn_stop"
+                android:layout_width="@dimen/x500"
+                android:layout_height="@dimen/y80"
+                android:background="@drawable/btn_blue_selector"
+                android:text="@string/stop"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x32"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/btn_finish"
+                android:layout_width="@dimen/x500"
+                android:layout_height="@dimen/y80"
+                android:background="@drawable/btn_blue_selector"
+                android:text="@string/install"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/x32"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

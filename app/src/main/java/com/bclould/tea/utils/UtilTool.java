@@ -464,6 +464,27 @@ public class UtilTool {
         return versionCode;
     }
 
+    public static boolean compareVersion(Context mContext) {
+        String versionStr = getVersionCode(mContext);
+        float version = Float.parseFloat(versionStr);
+        String tag_version = "";
+        String versionsTag = MySharedPreferences.getInstance().getString(Constants.APK_VERSIONS_TAG);
+        if (versionsTag.isEmpty()) {
+            return false;
+        }
+        if (versionsTag.contains("v")) {
+            tag_version = versionsTag.replace("v", "");
+        } else {
+            tag_version = versionsTag;
+        }
+        float tag = Float.parseFloat(tag_version);
+        if (version < tag) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static void getPermissions(final Activity activity, String permission, String permission2, final String toast) {
         RxPermissions permissions = new RxPermissions(activity);
         if (permission2.isEmpty()) {
@@ -858,13 +879,13 @@ public class UtilTool {
     }
 
 
-    public static void getGroupImage(String url, Activity context, ImageView imageView){
-        if(!StringUtils.isEmpty(url)){
-            if (Util.isOnMainThread() && context != null&&!context.isDestroyed()) {
+    public static void getGroupImage(String url, Activity context, ImageView imageView) {
+        if (!StringUtils.isEmpty(url)) {
+            if (Util.isOnMainThread() && context != null && !context.isDestroyed()) {
                 Glide.with(context).load(url).apply(RequestOptions.bitmapTransform(new CircleCrop()).dontAnimate().error(R.mipmap.img_group_head)).into(imageView);
             }
-        }else{
-            if (Util.isOnMainThread() && context != null&&!context.isDestroyed()) {
+        } else {
+            if (Util.isOnMainThread() && context != null && !context.isDestroyed()) {
                 Glide.with(context).load(R.mipmap.img_group_head).apply(RequestOptions.bitmapTransform(new CircleCrop()).error(R.mipmap.img_group_head).diskCacheStrategy(DiskCacheStrategy.NONE)).into(imageView);
             }
         }
@@ -881,8 +902,8 @@ public class UtilTool {
         if (StringUtils.isEmpty(url)) {
             url = dbManager.findStrangerPath(user);
         }
-        if(StringUtils.isEmpty(url)){
-            url=dbManager.findUserPath(user);
+        if (StringUtils.isEmpty(url)) {
+            url = dbManager.findUserPath(user);
         }
         Bitmap bitmap = null;
         if (!StringUtils.isEmpty(url)) {
@@ -948,7 +969,7 @@ public class UtilTool {
         String pos = "";
         try {
             pos = fileName.substring(fileName.lastIndexOf("."));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return pos;
@@ -1352,11 +1373,11 @@ public class UtilTool {
     }
 
     //改變部分字體顏色
-    public static void changeTextColor(TextView view, String content, int start, int end,int color){
+    public static void changeTextColor(TextView view, String content, int start, int end, int color) {
         SpannableStringBuilder builder = new SpannableStringBuilder(content);
         //ForegroundColorSpan 为文字前景色，BackgroundColorSpan为文字背景色
         ForegroundColorSpan span = new ForegroundColorSpan(color);
-        builder.setSpan(span, start,end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setSpan(span, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         view.setText(builder);
     }
 

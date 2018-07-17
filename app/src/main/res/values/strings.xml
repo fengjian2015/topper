@@ -1090,4 +1090,5 @@
     <string name="long_click_share">退出編輯，長按可分享</string>
     <string name="et_bank_card_type">請輸入銀行卡類型</string>
     <string name="toast_card_type">卡類型不能為空</string>
+    <string name="delete_default_collect_hint">這條收藏為系統默認收藏不能刪除</string>
 </resources>

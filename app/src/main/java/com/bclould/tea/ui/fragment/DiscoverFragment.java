@@ -9,7 +9,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -131,7 +130,7 @@ public class DiscoverFragment extends Fragment {
         } else {
             mCloudCircleVp.setCurrentItem(1);
         }
-        mTouchListener = new MainActivity.MyOnTouchListener() {
+        /*mTouchListener = new MainActivity.MyOnTouchListener() {
             private float mDownY;
 
             @Override
@@ -162,7 +161,7 @@ public class DiscoverFragment extends Fragment {
             }
         };
         // 将myTouchListener注册到分发列表
-        ((MainActivity) this.getActivity()).registerMyOnTouchListener(mTouchListener);
+        ((MainActivity) this.getActivity()).registerMyOnTouchListener(mTouchListener);*/
     }
 
     private void initFragmentList() {
@@ -329,6 +328,6 @@ public class DiscoverFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         // 将myTouchListener注册到分发列表
-        ((MainActivity) this.getActivity()).unregisterMyOnTouchListener(mTouchListener);
+//        ((MainActivity) this.getActivity()).unregisterMyOnTouchListener(mTouchListener);
     }
 }

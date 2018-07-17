@@ -240,6 +240,7 @@ public class CollectActivity extends BaseActivity {
                 initData();
                 break;
             case R.id.tv_cancel:
+                isEdit = false;
                 mTvEdit.setVisibility(View.VISIBLE);
                 mRlEdit.setVisibility(View.GONE);
                 mItemTouchHelper.attachToRecyclerView(null);
@@ -252,6 +253,7 @@ public class CollectActivity extends BaseActivity {
                 saveSequence();
                 break;
             case R.id.tv_edit:
+                isEdit = true;
                 mDataList2.clear();
                 mDataList2.addAll(mDataList);
                 mTvEdit.setVisibility(View.GONE);

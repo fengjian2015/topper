@@ -16,6 +16,8 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.model.TitleIConInfo;
 import com.bclould.tea.ui.widget.ClearEditText;
+import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.ToastShow;
@@ -47,6 +49,7 @@ public class AddCollectActivity extends BaseActivity {
     ClearEditText mEtUrl;
     private CollectPresenter mCollectPresenter;
     private String mUrl;
+    private LoadingProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,11 +100,11 @@ public class AddCollectActivity extends BaseActivity {
             startCheck("");
         } else {
             startCheck(title);
-//            addCollect(title, );
         }
     }
 
     private void startCheck(final String title) {
+        showDialog();
         new Thread(new Runnable() {
             public void run() {
                 try {
@@ -116,9 +119,26 @@ public class AddCollectActivity extends BaseActivity {
                     Elements link = doc.head().getElementsByTag("link");
                     for (int i = 0; i < link.size(); i++) {
                         Element element = link.get(i);
+                        /*URL url = new URL(element.baseUri());
+                        String host = url.getHost();
+                        String iconUrl = null;
+                        if (element.baseUri().startsWith("https://")) {
+                            iconUrl = "https://" + host + "/favicon.ico";
+                        }else {
+                            iconUrl = "http://" + host + "/favicon.ico";
+                        }
+                        titleIConInfo.setIconUrl(iconUrl);
+                        UtilTool.Log("連接", iconUrl);*/
                         String type = element.attr("type");
-                        if ("image/x-icon".equals(type)) {
-                            titleIConInfo.setIconUrl(element.baseUri() + element.attr("href"));
+                        String rel = element.attr("rel");
+                        if ("image/x-icon".equals(type) || "SHORTCUT ICON".equals(rel) ||"shortcut icon".equals(rel)||"apple-touch-icon-precomposed".equals(rel)) {
+                            if (!element.attr("href").startsWith("http") && !element.attr("href").startsWith("//")) {
+                                titleIConInfo.setIconUrl(element.baseUri() + element.attr("href"));
+                            }else if(element.attr("href").startsWith("//")){
+                                titleIConInfo.setIconUrl("https:" + element.attr("href"));
+                            }else {
+                                titleIConInfo.setIconUrl(element.attr("href"));
+                            }
                         }
                     }
                     message.obj = titleIConInfo;
@@ -127,6 +147,7 @@ public class AddCollectActivity extends BaseActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                     mHandler.sendEmptyMessage(1);
+                    EventBus.getDefault().post(new MessageEvent(""));
                 }
             }
         }).start();
@@ -148,6 +169,25 @@ public class AddCollectActivity extends BaseActivity {
             }
         }
     };
+
+    private void showDialog() {
+        if (ActivityUtil.isActivityOnTop(this)) {
+            if (mProgressDialog == null) {
+                mProgressDialog = LoadingProgressDialog.createDialog(this);
+                mProgressDialog.setMessage(getString(R.string.loading));
+            }
+            mProgressDialog.show();
+        }
+    }
+
+    public void hideDialog() {
+        if (ActivityUtil.isActivityOnTop(this)) {
+            if (mProgressDialog != null) {
+                mProgressDialog.dismiss();
+                mProgressDialog = null;
+            }
+        }
+    }
 
     private void addCollect(String title, String iconUrl) {
         mCollectPresenter.addCollect(title, mUrl, iconUrl, new CollectPresenter.CallBack2() {

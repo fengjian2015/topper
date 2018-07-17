@@ -63,6 +63,14 @@ public class VersionsUpdateActivity extends BaseActivity {
     Button mBtnStop;
     @Bind(R.id.btn_finish)
     Button mBtnFinish;
+    @Bind(R.id.tv_progress)
+    TextView mTvProgress;
+    @Bind(R.id.rl_btn)
+    RelativeLayout mRlBtn;
+    @Bind(R.id.tv_no_update)
+    TextView mTvNoUpdate;
+    @Bind(R.id.rl_update)
+    RelativeLayout mRlUpdate;
     private String mUrl;
     private String mApkName;
     private String mBody;
@@ -81,6 +89,13 @@ public class VersionsUpdateActivity extends BaseActivity {
     }
 
     private void initData() {
+        if (UtilTool.compareVersion(this)) {
+            mRlUpdate.setVisibility(View.VISIBLE);
+            mTvNoUpdate.setVisibility(View.GONE);
+        } else {
+            mRlUpdate.setVisibility(View.GONE);
+            mTvNoUpdate.setVisibility(View.VISIBLE);
+        }
         mUrl = MySharedPreferences.getInstance().getString(Constants.NEW_APK_URL);
         mApkName = MySharedPreferences.getInstance().getString(Constants.NEW_APK_NAME);
         mBody = MySharedPreferences.getInstance().getString(Constants.NEW_APK_BODY);
@@ -96,14 +111,16 @@ public class VersionsUpdateActivity extends BaseActivity {
                 mBtnStop.setVisibility(View.GONE);
                 mBtnFinish.setVisibility(View.VISIBLE);
                 mProgressBar.setProgress(100);
+                mTvProgress.setText(100 + "%");
             } else {
-                    double currentSize = Double.parseDouble(mFile.length() + "");
-                    double totleSize = Double.parseDouble(MySharedPreferences.getInstance().getLong(Constants.NEW_APK_KEY) + "");
-                    int progress = (int) (currentSize / totleSize * 100);
-                    mProgressBar.setProgress(progress);
-                    mBtnDownload.setVisibility(View.VISIBLE);
-                    mBtnStop.setVisibility(View.GONE);
-                    mBtnFinish.setVisibility(View.GONE);
+                double currentSize = Double.parseDouble(mFile.length() + "");
+                double totleSize = Double.parseDouble(MySharedPreferences.getInstance().getLong(Constants.NEW_APK_KEY) + "");
+                int progress = (int) (currentSize / totleSize * 100);
+                mProgressBar.setProgress(progress);
+                mTvProgress.setText(progress + "%");
+                mBtnDownload.setVisibility(View.VISIBLE);
+                mBtnStop.setVisibility(View.GONE);
+                mBtnFinish.setVisibility(View.GONE);
             }
         } else {
             mBtnDownload.setVisibility(View.VISIBLE);
@@ -142,25 +159,25 @@ public class VersionsUpdateActivity extends BaseActivity {
 
     FileDownloadPresenter.downloadCallback mDownloadCallback = new FileDownloadPresenter.downloadCallback() {
         @Override
-        public void onSuccess(File file,String key) {
-            if(!Constants.NEW_APK_KEY.equals(key))return;
+        public void onSuccess(File file, String key) {
+            if (!Constants.NEW_APK_KEY.equals(key)) return;
             UtilTool.install(VersionsUpdateActivity.this, file);
             mHandler.sendEmptyMessage(2);
         }
 
         @Override
         public void onFailure(String key) {
-            if(!Constants.NEW_APK_KEY.equals(key))return;
+            if (!Constants.NEW_APK_KEY.equals(key)) return;
             mHandler.sendEmptyMessage(1);
         }
 
         @Override
-        public void onSuccsetProgressListeneress(long currentSize, long totalSize,String key) {
-            if(!Constants.NEW_APK_KEY.equals(key))return;
+        public void onSuccsetProgressListeneress(long currentSize, long totalSize, String key) {
+            if (!Constants.NEW_APK_KEY.equals(key)) return;
             if (!mFile.exists()) {
                 MySharedPreferences.getInstance().setLong(Constants.NEW_APK_KEY, totalSize);
-            }else {
-                if(mFile.length() == 0){
+            } else {
+                if (mFile.length() == 0) {
                     MySharedPreferences.getInstance().setLong(Constants.NEW_APK_KEY, totalSize);
                 }
             }
@@ -182,7 +199,7 @@ public class VersionsUpdateActivity extends BaseActivity {
             switch (msg.what) {
                 case 0:
                     if (ActivityUtil.isActivityOnTop(VersionsUpdateActivity.this)) {
-                        if(mBtnStop.getVisibility() != View.VISIBLE){
+                        if (mBtnStop.getVisibility() != View.VISIBLE) {
                             mBtnStop.setVisibility(View.VISIBLE);
                             mBtnDownload.setVisibility(View.GONE);
                             mBtnFinish.setVisibility(View.GONE);
@@ -192,6 +209,7 @@ public class VersionsUpdateActivity extends BaseActivity {
                         UtilTool.Log("下載apk", progress + "");
                         UtilTool.Log("下載apk", "當前進度：" + downloadInfo.getCurrent_size() + "-----總進度：" + downloadInfo.getTotal_size());
                         mProgressBar.setProgress(progress);
+                        mTvProgress.setText(progress + "%");
                     }
                     break;
                 case 1:

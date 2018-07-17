@@ -19,9 +19,7 @@ import com.bclould.tea.ui.activity.GuanYuMeActivity;
 import com.bclould.tea.ui.activity.PersonalDetailsActivity;
 import com.bclould.tea.ui.activity.SystemSetActivity;
 import com.bclould.tea.ui.activity.UserSafetyActivity;
-import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -83,11 +81,6 @@ public class MyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_my, container, false);
         ButterKnife.bind(this, view);
-        if (!MySharedPreferences.getInstance().getString(Constants.NEW_APK_URL).isEmpty()) {
-            mTvNewUpdate.setVisibility(View.VISIBLE);
-        } else {
-            mTvNewUpdate.setVisibility(View.GONE);
-        }
         EventBus.getDefault().register(this);
         init();
         return view;
@@ -103,7 +96,7 @@ public class MyFragment extends Fragment {
                 mIvTouxiang.setImageBitmap(bitmap);*/
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), getContext(), mIvTouxiang);
         } else if (msg.equals(getString(R.string.check_new_version))) {
-            mTvNewUpdate.setVisibility(View.VISIBLE);
+            init();
         } else if (msg.equals(getString(R.string.refresh_the_interface))) {
             init();
         }
@@ -116,9 +109,16 @@ public class MyFragment extends Fragment {
     }
 
     private void init() {
+        if (UtilTool.compareVersion(getContext())) {
+            mTvNewUpdate.setVisibility(View.VISIBLE);
+        } else {
+            mTvNewUpdate.setVisibility(View.GONE);
+        }
         mTvName.setText(UtilTool.getUser());
         mTvTocoid.setText(getString(R.string.id) + UtilTool.getTocoId());
-        mMgr = new DBManager(getContext());
+        if (mMgr == null) {
+            mMgr = new DBManager(getContext());
+        }
         UtilTool.getImage(mMgr, UtilTool.getTocoId(), getContext(), mIvTouxiang);
     }
 
