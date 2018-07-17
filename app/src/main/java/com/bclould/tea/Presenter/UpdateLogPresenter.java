@@ -93,7 +93,7 @@ public class UpdateLogPresenter {
                     @Override
                     public void onNext(GitHubInfo baseInfo) {
                         //判断是否需要更新
-                        float version = Float.parseFloat(UtilTool.getVersionCode(mContext));
+                        /*float version = Float.parseFloat(UtilTool.getVersionCode(mContext));
                         String tag_version = "";
                         if (baseInfo.getTag_name().contains("v")) {
                             tag_version = baseInfo.getTag_name().replace("v", "");
@@ -101,15 +101,14 @@ public class UpdateLogPresenter {
                             tag_version = baseInfo.getTag_name();
                         }
                         float tag = Float.parseFloat(tag_version);
-                        if (version < tag) {
-                            MySharedPreferences.getInstance().setString(Constants.NEW_APK_URL, Constants.DOWNLOAD_APK_URL);
-                            MySharedPreferences.getInstance().setString(Constants.NEW_APK_NAME, baseInfo.getName());
-                            MySharedPreferences.getInstance().setString(Constants.NEW_APK_BODY, baseInfo.getBody());
-                            MySharedPreferences.getInstance().setString(Constants.APK_VERSIONS_TAG, baseInfo.getTag_name());
-                            callBack2.send(1);
-//                            showDialog(Constants.DOWNLOAD_APK_URL, baseInfo.getName(), baseInfo.getBody());
-                            EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.check_new_version)));
-                        } else {
+                        if (version < tag) {*/
+                        MySharedPreferences.getInstance().setString(Constants.NEW_APK_URL, Constants.DOWNLOAD_APK_URL);
+                        MySharedPreferences.getInstance().setString(Constants.NEW_APK_NAME, baseInfo.getName());
+                        MySharedPreferences.getInstance().setString(Constants.NEW_APK_BODY, baseInfo.getBody());
+                        MySharedPreferences.getInstance().setString(Constants.APK_VERSIONS_TAG, baseInfo.getTag_name());
+                        callBack2.send(1);
+                        EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.check_new_version)));
+                        /* }else {
                             callBack2.send(2);
                             MySharedPreferences.getInstance().setString(Constants.NEW_APK_URL, "");
                             MySharedPreferences.getInstance().setString(Constants.NEW_APK_NAME, "");
@@ -118,7 +117,7 @@ public class UpdateLogPresenter {
                             if (mContext instanceof GuanYuMeActivity) {
                                 Toast.makeText(mContext, mContext.getString(R.string.already_new_version), Toast.LENGTH_SHORT).show();
                             }
-                        }
+                        }*/
                     }
 
                     @Override

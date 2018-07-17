@@ -9,7 +9,9 @@ import com.bclould.tea.R;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.CollectInfo;
 import com.bclould.tea.network.RetrofitUtil;
+import com.bclould.tea.ui.activity.AddCollectActivity;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 
@@ -35,18 +37,21 @@ public class CollectPresenter {
     }
 
     private void showDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = LoadingProgressDialog.createDialog(mContext);
-            mProgressDialog.setMessage(mContext.getString(R.string.loading));
+        if (ActivityUtil.isActivityOnTop((Activity) mContext)) {
+            if (mProgressDialog == null) {
+                mProgressDialog = LoadingProgressDialog.createDialog(mContext);
+                mProgressDialog.setMessage(mContext.getString(R.string.loading));
+            }
+            mProgressDialog.show();
         }
-
-        mProgressDialog.show();
     }
 
     private void hideDialog() {
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
+        if (ActivityUtil.isActivityOnTop((Activity) mContext)) {
+            if (mProgressDialog != null) {
+                mProgressDialog.dismiss();
+                mProgressDialog = null;
+            }
         }
     }
 
@@ -122,7 +127,6 @@ public class CollectPresenter {
     }
 
     public void addCollect(String title, String url, String iconUrl, final CallBack2 callBack2) {
-        showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .addCollect(UtilTool.getToken(), title, url, iconUrl)
@@ -136,7 +140,8 @@ public class CollectPresenter {
 
                     @Override
                     public void onNext(BaseInfo baseInfo) {
-                        hideDialog();
+                        AddCollectActivity activity = (AddCollectActivity) mContext;
+                        activity.hideDialog();
                         ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
                         if (baseInfo.getStatus() == 1) {
                             callBack2.send();
@@ -145,7 +150,8 @@ public class CollectPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        hideDialog();
+                        AddCollectActivity activity = (AddCollectActivity) mContext;
+                        activity.hideDialog();
                     }
 
                     @Override

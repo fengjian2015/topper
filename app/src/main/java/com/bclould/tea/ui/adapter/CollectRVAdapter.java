@@ -19,6 +19,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.model.CollectInfo;
 import com.bclould.tea.ui.activity.HTMLActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.xmpp.RoomManage;
 import com.bumptech.glide.Glide;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
@@ -90,7 +91,6 @@ public class CollectRVAdapter extends RecyclerView.Adapter {
             mRlItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showDeleteDialog(mPosition, mSwipeView);
                     if (intentType == 1) {
                         RoomManage.getInstance().getRoom(roomId).sendMessage(mDataBean.getUrl());
                         ((Activity) mContext).finish();
@@ -112,7 +112,12 @@ public class CollectRVAdapter extends RecyclerView.Adapter {
                 mBtnDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        showDeleteDialog(mPosition, mSwipeView);
+                        if (mDataBean.getUser_id() != 0) {
+                            showDeleteDialog(mPosition, mSwipeView);
+                        } else {
+                            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.delete_default_collect_hint));
+                            mSwipeView.quickClose();
+                        }
                     }
                 });
             }
@@ -121,20 +126,21 @@ public class CollectRVAdapter extends RecyclerView.Adapter {
         public void setData(CollectInfo.DataBean dataBean, int position) {
             mDataBean = dataBean;
             mPosition = position;
-            mTvTitle.setText(dataBean.getTitle());
-            if (dataBean.getUser_id() == 0) {
-                mSwipeView.setSwipeEnable(false);
+            if (!dataBean.getTitle().isEmpty()) {
+                mTvTitle.setText(dataBean.getTitle());
             } else {
-                mSwipeView.setSwipeEnable(true);
-                if (intentType == 1) {
-                    mSwipeView.setSwipeEnable(false);
-                }
-                if (!dataBean.getIcon().isEmpty()) {
-                    Glide.with(mContext).load(dataBean.getIcon()).into(mIvIcon);
-                }
+                mTvTitle.setText(dataBean.getUrl());
+            }
+            mSwipeView.setSwipeEnable(true);
+            if (intentType == 1) {
+                mSwipeView.setSwipeEnable(false);
+            }
+            if (dataBean.getIcon() != null && !dataBean.getIcon().isEmpty()) {
+                Glide.with(mContext).load(dataBean.getIcon()).into(mIvIcon);
+            } else {
+                mIvIcon.setImageDrawable(null);
             }
         }
-
     }
 
     public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
@@ -159,8 +165,9 @@ public class CollectRVAdapter extends RecyclerView.Adapter {
                 mCollectPresenter.deleteCollect(mDataList.get(position).getId(), new CollectPresenter.CallBack2() {
                     @Override
                     public void send() {
+                        swipeView.quickClose();
                         mDataList.remove(position);
-                        notifyItemRemoved(position);
+                        notifyDataSetChanged();
                     }
                 });
             }

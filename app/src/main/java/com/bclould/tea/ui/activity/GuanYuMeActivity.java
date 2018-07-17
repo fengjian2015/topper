@@ -54,19 +54,19 @@ public class GuanYuMeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guanyu_me);
         ButterKnife.bind(this);
-        if (!MySharedPreferences.getInstance().getString(Constants.NEW_APK_URL).isEmpty()) {
+        if (UtilTool.compareVersion(this)) {
             mTvNewUpdate.setVisibility(View.VISIBLE);
         } else {
             mTvNewUpdate.setVisibility(View.GONE);
         }
-        if(MySharedPreferences.getInstance().getInteger(IS_UPDATE) == 1){
+        if (MySharedPreferences.getInstance().getInteger(IS_UPDATE) == 1) {
             mCvCheckUpdate.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             mCvCheckUpdate.setVisibility(View.GONE);
         }
         mUpdateLogPresenter = new UpdateLogPresenter(this);
         String versionCode = UtilTool.getVersionCode(this);
-        mTvVersion.setText(getString(R.string.app_name) + " V" + versionCode);
+        mTvVersion.setText(getString(R.string.app_name) + " v" + versionCode);
         MyApp.getInstance().addActivity(this);
     }
 
@@ -80,19 +80,19 @@ public class GuanYuMeActivity extends BaseActivity {
                 startActivity(new Intent(this, UpdateLogActivity.class));
                 break;
             case R.id.rl_new:
-                String url = MySharedPreferences.getInstance().getString(Constants.NEW_APK_URL);
+                startActivity(new Intent(GuanYuMeActivity.this, VersionsUpdateActivity.class));
+                /*String url = MySharedPreferences.getInstance().getString(Constants.NEW_APK_URL);
                 String apkName = MySharedPreferences.getInstance().getString(Constants.NEW_APK_NAME);
                 String body = MySharedPreferences.getInstance().getString(Constants.NEW_APK_BODY);
                 if (!url.isEmpty()) {
                     startActivity(new Intent(GuanYuMeActivity.this, VersionsUpdateActivity.class));
-//                    mUpdateLogPresenter.showDialog(url, apkName, body);
                 } else {
                     if (!UtilTool.isFastClick()) {
                         checkVersion();
                     } else {
                         Toast.makeText(this, getString(R.string.toast_after_time), Toast.LENGTH_SHORT).show();
                     }
-                }
+                }*/
                 break;
         }
     }
@@ -103,7 +103,6 @@ public class GuanYuMeActivity extends BaseActivity {
             public void send(int type) {
                 if (type == 1) {
                     mTvNewUpdate.setVisibility(View.VISIBLE);
-                    startActivity(new Intent(GuanYuMeActivity.this, VersionsUpdateActivity.class));
                 } else {
                     mTvNewUpdate.setVisibility(View.GONE);
                 }
