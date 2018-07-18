@@ -1,18 +1,15 @@
-package com.bclould.tea.service;
+package com.bclould.tea.Presenter;
 
 import android.annotation.SuppressLint;
-import android.app.Service;
-import android.content.Intent;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
@@ -24,7 +21,6 @@ import com.alibaba.sdk.android.oss.callback.OSSProgressCallback;
 import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
-import com.bclould.tea.Presenter.DynamicPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.network.OSSupload;
 import com.bclould.tea.utils.Constants;
@@ -33,84 +29,52 @@ import com.bclould.tea.utils.UtilTool;
 import com.iceteck.silicompressorr.SiliCompressor;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by GA on 2018/5/18.
+ * Created by GA on 2018/7/18.
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ImageUpService extends Service {
+public class FileUploadingPresenter {
+
+    private final Context mContext;
     private String mText;
-    private DynamicPresenter mDynamicPresenter;
-    private List<String> mPathList = new ArrayList<>();
-    private boolean mType;
     private String mLocation;
-    private OSSAsyncTask<PutObjectResult> mTask;
+    private boolean mType;
+    private ArrayList<String> mPathList;
     private OSSClient mOssClient;
     private Thread mThread;
+    private OSSAsyncTask<PutObjectResult> mTask;
+    private DynamicPresenter mDynamicPresenter;
+    private static FileUploadingPresenter instance;
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+    public FileUploadingPresenter(Context context) {
+        mContext = context;
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+    //单例
+    public static FileUploadingPresenter getInstance(Context context) {
+        if (instance == null) {
+            instance = new FileUploadingPresenter(context);
+        }
+        return instance;
     }
 
-    //接受通知
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEvent event) {
-        String msg = event.getMsg();
-        if (msg.equals(getString(R.string.connect_oss_error))) {
-            stopSelf();
-        }
+    public boolean isUploading = false;
+    public void setData(String text, String location, boolean type, ArrayList<String> pathList) {
+        isUploading = true;
+        mDynamicPresenter = new DynamicPresenter(mContext);
+        EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.start_service)));
+        mText = text;
+        mLocation = location;
+        mType = type;
+        mPathList = pathList;
+        checkFile();
     }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        UtilTool.Log("發佈動態", "啟動服務");
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
-        EventBus.getDefault().post(new MessageEvent(getString(R.string.start_service)));
-        mPathList.clear();
-        mDynamicPresenter = new DynamicPresenter(this);
-        Bundle bundle = null;
-        if (intent != null) {
-            bundle = intent.getExtras();
-        } else {
-            onDestroy();
-        }
-        if (bundle != null) {
-            if (bundle.containsKey("imageList")) {
-                mPathList = bundle.getStringArrayList("imageList");
-            }
-            if (bundle.containsKey("text")) {
-                mText = bundle.getString("text");
-            }
-            if (bundle.containsKey("type")) {
-                mType = bundle.getBoolean("type", false);
-            }
-            if (bundle.containsKey("location")) {
-                mLocation = bundle.getString("location");
-            }
-            checkFile();
-        } else {
-            onDestroy();
-        }
-        return super.onStartCommand(intent, flags, startId);
-    }
-
 
     private void checkFile() {
         try {
@@ -131,7 +95,7 @@ public class ImageUpService extends Service {
                             @Override
                             public void run() {
                                 try {
-                                    String filePath = SiliCompressor.with(ImageUpService.this).compressVideo(file.getPath(), Constants.PUBLICDIR);
+                                    String filePath = SiliCompressor.with(mContext).compressVideo(file.getPath(), Constants.PUBLICDIR);
                                     Message message = new Message();
                                     Bundle bundle = new Bundle();
                                     bundle.putString("key", key);
@@ -139,13 +103,14 @@ public class ImageUpService extends Service {
                                     message.obj = bundle;
                                     message.what = 0;
                                     handler.sendMessage(message);
-                                } catch (URISyntaxException e) {
+                                } catch (Exception e) {
+                                    onDestroy();
                                 }
                             }
                         });
                         mThread.start();
                     } else if (UtilTool.getFolderSize(file) > (1048576 * 20)) {
-                        Toast.makeText(this, getString(R.string.video_big_hint), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, mContext.getString(R.string.video_big_hint), Toast.LENGTH_SHORT).show();
                     } else {
                         upVoide(key, file, true, mOssClient);
                     }
@@ -166,9 +131,75 @@ public class ImageUpService extends Service {
             }
         } catch (Exception e) {
             UtilTool.Log("錯誤", e.getMessage());
-            Toast.makeText(ImageUpService.this, getString(R.string.up_error), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, mContext.getString(R.string.up_error), Toast.LENGTH_SHORT).show();
             onDestroy();
             e.printStackTrace();
+        }
+    }
+
+    String mKeyList = "";
+    String mkeyCompressList = "";
+    private int count = 0;
+    private int keyCount = 0;
+    private int keyCompress = 0;
+    @SuppressLint("HandlerLeak")
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    Bundle bundle = (Bundle) msg.obj;
+                    String key = bundle.getString("key");
+                    String file = bundle.getString("file");
+                    upVoide(key, new File(file), true, mOssClient);
+                    break;
+                case 2:
+                    Toast.makeText(mContext, mContext.getString(R.string.up_error), Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
+
+
+    private void upImage(final String key, final File file, final boolean type, OSSClient ossClient) {
+        synchronized (FileUploadingPresenter.class) {
+            UtilTool.Log("動態", key);
+            if (type) {
+                keyCount++;
+                if (keyCount >= 2)
+                    mKeyList += "," + key;
+                else
+                    mKeyList = key;
+            } else {
+                keyCompress++;
+                if (keyCompress >= 2)
+                    mkeyCompressList += "," + key;
+                else
+                    mkeyCompressList = key;
+            }
+            PutObjectRequest put = new PutObjectRequest(Constants.BUCKET_NAME, key, file.getPath());
+            put.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
+                @Override
+                public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
+                    onSuccsetProgressListeneress(currentSize, totalSize);
+                }
+            });
+            mTask = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+                @Override
+                public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
+                    onFinish();
+                    count++;
+                    if (count == mPathList.size() * 2) {
+                        publicshDynamic("1");
+                    }
+                }
+
+                @Override
+                public void onFailure(PutObjectRequest putObjectRequest, ClientException e, ServiceException e1) {
+                    handler.sendEmptyMessage(2);
+                    onDestroy();
+                }
+            });
         }
     }
 
@@ -178,49 +209,13 @@ public class ImageUpService extends Service {
         mDynamicPresenter.publicsh(mText, type, mKeyList, mkeyCompressList, mLocation, new DynamicPresenter.CallBack6() {
             @Override
             public void send(int status) {
-                EventBus.getDefault().post(new MessageEvent(getString(R.string.publish_dynamic)));
-                UtilTool.Log("發佈動態", "發佈成功");
-                onDestroy();
-            }
-        });
-    }
-
-    private void upImage(final String key, File file, final boolean type, OSSClient ossClient) {
-        UtilTool.Log("動態", key);
-        PutObjectRequest put = new PutObjectRequest(Constants.BUCKET_NAME, key, file.getPath());
-        put.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
-            @Override
-            public void onProgress(PutObjectRequest request, long currentSize, long totalSize) {
-                onSuccsetProgressListeneress(currentSize, totalSize);
-            }
-        });
-        mTask = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
-            @Override
-            public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
-                onFinish();
-                String key = putObjectRequest.getObjectKey();
-                count++;
-                if (type) {
-                    keyCount++;
-                    if (keyCount >= 2)
-                        mKeyList += "," + key;
-                    else
-                        mKeyList = key;
+                if (status == 1) {
+                    Toast.makeText(mContext, mContext.getString(R.string.publish_succeed), Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.publish_dynamic)));
+                    UtilTool.Log("發佈動態", "發佈成功");
                 } else {
-                    keyCompress++;
-                    if (keyCompress >= 2)
-                        mkeyCompressList += "," + key;
-                    else
-                        mkeyCompressList = key;
+                    Toast.makeText(mContext, mContext.getString(R.string.publish_error), Toast.LENGTH_SHORT).show();
                 }
-                if (count == mPathList.size() * 2) {
-                    publicshDynamic("1");
-                }
-            }
-
-            @Override
-            public void onFailure(PutObjectRequest putObjectRequest, ClientException e, ServiceException e1) {
-                handler.sendEmptyMessage(2);
                 onDestroy();
             }
         });
@@ -260,32 +255,8 @@ public class ImageUpService extends Service {
         });
     }
 
-    String mKeyList = "";
-    String mkeyCompressList = "";
-    private int count = 0;
-    private int keyCount = 0;
-    private int keyCompress = 0;
-    @SuppressLint("HandlerLeak")
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0:
-                    Bundle bundle = (Bundle) msg.obj;
-                    String key = bundle.getString("key");
-                    String file = bundle.getString("file");
-                    upVoide(key, new File(file), true, mOssClient);
-                    break;
-                case 2:
-                    Toast.makeText(ImageUpService.this, getString(R.string.up_error), Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    };
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+    private void onDestroy() {
+        isUploading = false;
         onError();
         if (mTask != null) {
             mTask.cancel();
@@ -299,29 +270,22 @@ public class ImageUpService extends Service {
         keyCount = 0;
         keyCompress = 0;
         mListeners.clear();
-        EventBus.getDefault().post(new MessageEvent(getString(R.string.destroy_service)));
+        EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.destroy_service)));
         UtilTool.Log("發佈動態", "銷毀掉服務");
         EventBus.getDefault().unregister(this);
-        stopSelf();
     }
 
     ArrayList<UploadingCallback> mListeners = new ArrayList<>();
 
     public void setOnUploadingCallbackListener(UploadingCallback listener) {
         mListeners.add(listener);
-        listener.onStart(mText, mPathList);
+        listener.onStart(mText, mPathList, mType);
     }
 
 
     public void removeDownloadCallbackListener(UploadingCallback downloadCallback) {
         if (mListeners != null) {
             mListeners.remove(downloadCallback);
-        }
-    }
-
-    private void onStart(String text, List<String> pathList) {
-        for (UploadingCallback uploadingCallback : mListeners) {
-            uploadingCallback.onStart(text, pathList);
         }
     }
 
@@ -348,7 +312,7 @@ public class ImageUpService extends Service {
 
         void onSuccess();
 
-        void onStart(String text, List<String> pathList);
+        void onStart(String text, List<String> pathList, boolean type);
 
         void onSuccsetProgressListeneress(long currentSize, long totalSize);
 

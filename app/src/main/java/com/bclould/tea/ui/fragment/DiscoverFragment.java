@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.topperchat.WsConnection;
+import com.bclould.tea.ui.activity.FileUploadingActivity;
 import com.bclould.tea.ui.activity.GonggaoManagerActivity;
 import com.bclould.tea.ui.activity.InitialActivity;
 import com.bclould.tea.ui.activity.MainActivity;
@@ -27,7 +28,6 @@ import com.bclould.tea.ui.activity.PersonageDynamicActivity;
 import com.bclould.tea.ui.activity.PublicshDynamicActivity;
 import com.bclould.tea.ui.adapter.CloudMessageVPAdapter;
 import com.bclould.tea.utils.MessageEvent;
-import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -119,7 +119,7 @@ public class DiscoverFragment extends Fragment {
 
     //初始化界面
     public void initInterface() {
-        if(mLlGonggao==null)return;
+        if (mLlGonggao == null) return;
         mLlGonggao.setVisibility(View.VISIBLE);
         initTopMenu();
         initFragmentList();
@@ -296,7 +296,8 @@ public class DiscoverFragment extends Fragment {
                 }
                 break;
             case R.id.rl_push_dynamic_status:
-                ToastShow.showToast2(getActivity(), getString(R.string.toast_uploading_dynamic));
+                startActivity(new Intent(getActivity(), FileUploadingActivity.class));
+//                ToastShow.showToast2(getActivity(), getString(R.string.toast_uploading_dynamic));
                 break;
             case R.id.iv_news_manager:
                 if (mFragmentList.size() > 2) {

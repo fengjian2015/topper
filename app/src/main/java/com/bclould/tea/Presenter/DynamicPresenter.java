@@ -57,7 +57,7 @@ public class DynamicPresenter {
         }
     }
 
-    public void publicsh(String text, String type, String keyList, String keyCompressList, String position, final CallBack callBack) {
+    public void publicsh(String text, String type, String keyList, String keyCompressList, String position, final CallBack6 callBack6) {
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .publishDynamic(UtilTool.getToken(), text, type, keyList, keyCompressList, position)
@@ -71,18 +71,20 @@ public class DynamicPresenter {
 
                     @Override
                     public void onNext(BaseInfo baseInfo) {
-                        if (baseInfo.getStatus() == 1) {
+                        callBack6.send(baseInfo.getStatus());
+                      /*  if (baseInfo.getStatus() == 1) {
                             callBack.send();
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
                         } else {
                             EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.connect_oss_error)));
                             Toast.makeText(mContext, baseInfo.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                        }*/
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         hideDialog();
+                        callBack6.send(2);
                         EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.connect_oss_error)));
                     }
 
@@ -453,7 +455,7 @@ public class DynamicPresenter {
 
     //定义接口
     public interface CallBack6 {
-        void send();
+        void send(int status);
     }
 
 }

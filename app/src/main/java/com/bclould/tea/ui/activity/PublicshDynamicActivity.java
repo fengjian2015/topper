@@ -18,13 +18,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bclould.tea.Presenter.DynamicPresenter;
+import com.bclould.tea.Presenter.FileUploadingPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.service.ImageUpService;
 import com.bclould.tea.ui.adapter.PublicshDynamicGVAdapter;
-import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.FullyGridLayoutManager;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
@@ -74,15 +73,14 @@ public class PublicshDynamicActivity extends BaseActivity {
     private List<LocalMedia> selectList = new ArrayList<>();
     private PublicshDynamicGVAdapter adapter;
     private int maxSelectNum = 9;
-    private DynamicPresenter mDynamicPresenter;
-    private boolean mType = false;
-    private LoadingProgressDialog mProgressDialog;
+    private FileUploadingPresenter mFileUploadingPresenter;
+    private boolean mType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish_dynamic);
-        mDynamicPresenter = new DynamicPresenter(this);
+        mFileUploadingPresenter = FileUploadingPresenter.getInstance(MyApp.getInstance().app());
         ButterKnife.bind(this);
         initRecyclerView();
         MyApp.getInstance().addActivity(this);
@@ -247,11 +245,7 @@ public class PublicshDynamicActivity extends BaseActivity {
             case R.id.publish:
                 String text = mTextEt.getText().toString().trim();
                 if (selectList.size() != 0 || !text.isEmpty()) {
-                    try {
-                        checkFile();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    checkFile();
                 } else {
                     Toast.makeText(this, getString(R.string.no_null), Toast.LENGTH_SHORT).show();
                 }
@@ -282,7 +276,13 @@ public class PublicshDynamicActivity extends BaseActivity {
                 }
             }
         }
-        if (!UtilTool.isServiceRunning(this, "com.bclould.tea.service.ImageUpService")) {
+        if (!mFileUploadingPresenter.isUploading) {
+            mFileUploadingPresenter.setData(text, location, mType, mPathList);
+            finish();
+        } else {
+            ToastShow.showToast2(this, getString(R .string.dynamic_underway_uploading));
+        }
+        /*if (!UtilTool.isServiceRunning(this, "com.bclould.tea.service.ImageUpService")) {
             bundle.putStringArrayList("imageList", mPathList);
             bundle.putString("text", text);
             bundle.putString("location", location);
@@ -292,6 +292,6 @@ public class PublicshDynamicActivity extends BaseActivity {
             finish();
         } else {
             ToastShow.showToast2(this, getString(R.string.dynamic_underway_uploading));
-        }
+        }*/
     }
 }

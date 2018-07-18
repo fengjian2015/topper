@@ -138,6 +138,7 @@ public class MyApp extends Application {
     public void onTerminate() {
         super.onTerminate();
         stopService(new Intent(this, ImageUpService.class));
+        exit();
     }
 
     @Override

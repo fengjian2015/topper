@@ -1161,6 +1161,14 @@
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan">
         </activity>
+
+        <!--文件上傳界面-->
+        <activity android:name=".ui.activity.FileUploadingActivity"
+                  android:launchMode="singleTop"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/Transparent"
+                  android:windowSoftInputMode="stateHidden|adjustPan">
+        </activity>
     </application>
 
 </manifest>

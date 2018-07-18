@@ -1097,4 +1097,6 @@
     <string name="my_look">我正在看【</string>
     <string name="share_with_you">】，分享給你一起看吧</string>
     <string name="cannot_open">無法打開頁面</string>
+    <string name="dynamic_uploading">動態上傳</string>
+    <string name="publish_error">發佈失敗</string>
 </resources>

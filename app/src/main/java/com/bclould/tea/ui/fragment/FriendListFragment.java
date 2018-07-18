@@ -16,7 +16,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -25,7 +24,6 @@ import android.widget.TextView;
 import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
-import com.bclould.tea.model.AddRequestInfo;
 import com.bclould.tea.model.AuatarListInfo;
 import com.bclould.tea.model.NewFriendInfo;
 import com.bclould.tea.model.QrRedInfo;
@@ -38,6 +36,7 @@ import com.bclould.tea.ui.activity.ScanQRCodeActivity;
 import com.bclould.tea.ui.activity.SearchActivity;
 import com.bclould.tea.ui.activity.SendQRCodeRedActivity;
 import com.bclould.tea.ui.adapter.FriendListRVAdapter;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -207,7 +206,7 @@ public class FriendListFragment extends Fragment {
             updateData();
         } else if (msg.equals(getString(R.string.receive_add_request))) {
             sendHandler();
-        }else if(msg.equals(getString(R.string.refresh_the_interface))){
+        } else if (msg.equals(getString(R.string.refresh_the_interface))) {
             updateData();
             initData();
         }
@@ -222,7 +221,7 @@ public class FriendListFragment extends Fragment {
     Map<String, Integer> mMap = new HashMap<>();
 
     private void updateData() {
-        if(mFriendListRVAdapter==null){
+        if (mFriendListRVAdapter == null) {
             return;
         }
         mUsers.clear();
@@ -282,25 +281,27 @@ public class FriendListFragment extends Fragment {
         });
     }
 
-    private void showNumber(){
-        new PersonalDetailsPresenter(getActivity()).getNewFriendData(false,new PersonalDetailsPresenter.CallBack5() {
+    private void showNumber() {
+        new PersonalDetailsPresenter(getActivity()).getNewFriendData(false, new PersonalDetailsPresenter.CallBack5() {
             @Override
             public void send(NewFriendInfo listdata) {
-                mMgr.deleteRequest();
-                int number=0;
-                for(int i=0;i<listdata.getData().size();i++){
-                    mMgr.addRequest(listdata.getData().get(i).getToco_id(),listdata.getData().get(i).getStatus(),listdata.getData().get(i).getName());
-                    if(!listdata.getData().get(i).getToco_id().equals(UtilTool.getTocoId())&&
-                            listdata.getData().get(i).getStatus()==1){
-                        number++;
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    mMgr.deleteRequest();
+                    int number = 0;
+                    for (int i = 0; i < listdata.getData().size(); i++) {
+                        mMgr.addRequest(listdata.getData().get(i).getToco_id(), listdata.getData().get(i).getStatus(), listdata.getData().get(i).getName());
+                        if (!listdata.getData().get(i).getToco_id().equals(UtilTool.getTocoId()) &&
+                                listdata.getData().get(i).getStatus() == 1) {
+                            number++;
+                        }
                     }
-                }
-                MySharedPreferences.getInstance().setInteger(NEWFRIEND,number);
-                if (number > 0) {
-                    mNumber.setText(number + "");
-                    mNumber.setVisibility(View.VISIBLE);
-                } else {
-                    mNumber.setVisibility(View.GONE);
+                    MySharedPreferences.getInstance().setInteger(NEWFRIEND, number);
+                    if (number > 0) {
+                        mNumber.setText(number + "");
+                        mNumber.setVisibility(View.VISIBLE);
+                    } else {
+                        mNumber.setVisibility(View.GONE);
+                    }
                 }
             }
         });
@@ -349,7 +350,7 @@ public class FriendListFragment extends Fragment {
     }
 
 
-    @OnClick({R.id.iv_more, R.id.iv_search, R.id.news_friend, R.id.my_group,R.id.my_public})
+    @OnClick({R.id.iv_more, R.id.iv_search, R.id.news_friend, R.id.my_group, R.id.my_public})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_more:
