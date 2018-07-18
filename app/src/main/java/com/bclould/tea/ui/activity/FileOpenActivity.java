@@ -216,6 +216,12 @@ public class FileOpenActivity extends BaseActivity {
                     break;
                 case 1:
                     if (ActivityUtil.isActivityOnTop(FileOpenActivity.this)) {
+                        mFile.delete();
+                        if (StringUtils.isEmpty(mMessageInfo.getVoice())) {
+                            mFile = new File(Constants.DOWNLOAD + System.currentTimeMillis() + mMessageInfo.getTitle());
+                        }else{
+                            mFile = new File(mMessageInfo.getVoice());
+                        }
                         isSuccess = false;
                         mProgressBar.setVisibility(View.GONE);
                         mBtnOpen.setVisibility(View.VISIBLE);

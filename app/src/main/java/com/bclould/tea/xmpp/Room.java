@@ -36,4 +36,6 @@ public interface Room {
     void transmitFile(MessageInfo messageInfo);
     void sendInviteGroup(MessageInfo messageInfo);
     void sendWithdraw(MessageInfo messageInfo);
+    void sendHtml(MessageInfo messageInfo);
+    void anewSendHtml(MessageInfo messageInfo);
 }

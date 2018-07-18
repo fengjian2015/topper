@@ -479,6 +479,16 @@ public class DBManager {
         }
     }
 
+    public void updateImageVoice(String id, String voice) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            ContentValues values = new ContentValues();
+            values.put("voice", voice);
+            db.update("MessageRecord", values, "id=?", new String[]{id});
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
+    }
+
     public int addRequest(String user, int type,String userName) {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
@@ -1213,6 +1223,18 @@ public class DBManager {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
             ContentValues values = new ContentValues();
             values.put("sendStatus", status);
+            db.update("MessageRecord", values, "msgId=?", new String[]{msgId});
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
+    }
+
+    public void updateMessageContentUrlTitle(String msgId,String content,String headUrl,String title) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            ContentValues values = new ContentValues();
+            values.put("content", content);
+            values.put("headUrl", headUrl);
+            values.put("title",title);
             db.update("MessageRecord", values, "msgId=?", new String[]{msgId});
             DatabaseManager.getInstance().closeWritableDatabase();
         }

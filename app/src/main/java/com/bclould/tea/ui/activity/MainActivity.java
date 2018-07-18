@@ -37,8 +37,10 @@ import com.bclould.tea.model.AuatarListInfo;
 import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.IndividualInfo;
 import com.bclould.tea.service.IMCoreService;
+import com.bclould.tea.service.IMService;
 import com.bclould.tea.topperchat.AddFriendReceiver;
 import com.bclould.tea.topperchat.WsConnection;
+import com.bclould.tea.topperchat.WsContans;
 import com.bclould.tea.ui.fragment.DiscoverFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.MessageEvent;
@@ -141,6 +143,30 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    private void resumeRelogin(){
+        if (!WsConnection.getInstance().getOutConnection()) {
+            if(!WsConnection.isServiceWork(this, IMCoreService.CORE_SERVICE_NAME)){
+                ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
+                Intent intent1 = new Intent(this, IMCoreService.class);
+                startService(intent1);
+            }else if(!WsConnection.isServiceWork(this, IMCoreService.SERVICE_NAME)){
+                ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
+                stopService(new Intent(this, IMService.class));
+                Intent startIntent = new Intent(this, IMService.class);
+                startService(startIntent);
+            }
+        }else{
+            ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.DISCONNECT);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        resumeRelogin();
+
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -173,7 +199,6 @@ public class MainActivity extends BaseActivity {
                 showLoginOut();
             }
         }
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

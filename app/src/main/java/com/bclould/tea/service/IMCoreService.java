@@ -22,7 +22,7 @@ import com.bclould.tea.utils.UtilTool;
 public class IMCoreService extends Service {
     private final static int time = 15 * 1000;
     public final static String CORE_SERVICE_NAME="com.bclould.tea.service.IMCoreService";
-    private final static String SERVICE_NAME = "com.bclould.tea.service.IMService";
+    public final static String SERVICE_NAME = "com.bclould.tea.service.IMService";
     public final static String ACTION_LOGIN = "com.bclould.tea.action.ACTION_LOGIN";
     public final static String ACTION_LOGOUT = "com.bclould.tea.action.ACTION_LOGOUT";
     public final static String ACTION_STOP = "com.bclould.tea.action.ACTION_STOP";

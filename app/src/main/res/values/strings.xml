@@ -892,7 +892,7 @@
     <string name="denied">已拒絕</string>
     <string name="exchange_underway">兌換中</string>
     <string name="official_email">topperchat@outlook.com</string>
-    <string name="initial_hint">Power by topperchat</string>
+    <string name="initial_hint">Powerd by topperchat</string>
     <string name="toast_email_format">電郵格式不正確</string>
     <string name="tag">標籤</string>
     <string name="et_tag">輸入標籤</string>
@@ -1092,4 +1092,9 @@
     <string name="toast_card_type">卡類型不能為空</string>
     <string name="unclaimed_red">待领取红包</string>
     <string name="delete_default_collect_hint">這條收藏為系統默認收藏不能刪除</string>
+    <string name="no_red_envelope_record">暫無紅包記錄</string>
+    <string name="url">鏈接</string>
+    <string name="my_look">我正在看【</string>
+    <string name="share_with_you">】，分享給你一起看吧</string>
+    <string name="cannot_open">無法打開頁面</string>
 </resources>

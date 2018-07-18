@@ -51,6 +51,7 @@ import static com.bclould.tea.topperchat.WsContans.MSG_SINGLER;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_CARD_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_FILE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_GUESS_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.TO_HTML_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_IMG_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_INVITE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_LINK_MSG;
@@ -450,14 +451,14 @@ public class SingleManage implements Room {
     //僅僅是url鏈接
     @Override
     public void transmitVideo(MessageInfo messageInfo) {
-        MessageInfo messageInfo1 = sendFileMessage(messageInfo.getMessage(), "Video", "", messageInfo.getVoice());
-        sendFileAfterMessage(messageInfo.getMessage(), "Video", messageInfo.getVoice(), messageInfo1.getId(), messageInfo1.getMsgId(), messageInfo1.getCreateTime());
+        MessageInfo messageInfo1 = sendFileMessage(messageInfo.getMessage(), "Video", messageInfo.getKey(), messageInfo.getVoice());
+        sendFileAfterMessage(messageInfo.getKey(), "Video", messageInfo.getVoice(), messageInfo1.getId(), messageInfo1.getMsgId(), messageInfo1.getCreateTime());
     }
 
     private void sendFileAfterMessage(String key, String postfix, String newFile, int mId, String msgId, long createTime) {
         try {
             String postfixs = key.substring(key.lastIndexOf("."));
-            byte[] bytes;
+            byte[] bytes=null;
             if (".gif".equals(postfixs) || ".GIF".equals(postfixs)) {
                 Bitmap bitmap= BitmapFactory.decodeFile(newFile);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1069,5 +1070,56 @@ public class SingleManage implements Room {
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
             refreshAddData(messageInfo);
         }
+    }
+
+    @Override
+    public void sendHtml(MessageInfo messageInfo) {
+        String converstaion ="["+context.getString(R.string.url)+"]";
+        try {
+            String msgId = UtilTool.createMsgId(mUser);
+            long createTime = UtilTool.createChatCreatTime();
+            send(mUser, null, JSON.toJSONString(messageInfo), WsContans.MSG_HTML, msgId, createTime);
+            messageInfo.setUsername(mUser);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setMsgType(TO_HTML_MSG);
+            messageInfo.setSendStatus(0);
+            messageInfo.setSend(UtilTool.getTocoId());
+            messageInfo.setConverstaion(converstaion);
+            messageInfo.setMsgId(msgId);
+            messageInfo.setCreateTime(createTime);
+            messageInfo.setId(mMgr.addMessage(messageInfo));
+            changeConversationInfo(time, converstaion, createTime);
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            refreshAddData(messageInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
+            messageInfo.setUsername(mUser);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date curDate = new Date(System.currentTimeMillis());
+            String time = formatter.format(curDate);
+            messageInfo.setTime(time);
+            messageInfo.setType(0);
+            messageInfo.setMsgType(TO_HTML_MSG);
+            messageInfo.setSendStatus(2);
+            messageInfo.setSend(UtilTool.getTocoId());
+            messageInfo.setConverstaion(converstaion);
+            messageInfo.setMsgId(UtilTool.createMsgId(mUser));
+            messageInfo.setCreateTime(UtilTool.createChatCreatTime());
+            messageInfo.setId(mMgr.addMessage(messageInfo));
+            changeConversationInfo(time, converstaion, UtilTool.createChatCreatTime());
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            refreshAddData(messageInfo);
+        }
+    }
+
+    @Override
+    public void anewSendHtml(MessageInfo messageInfo) {
+        mMgr.deleteSingleMessage(mUser, messageInfo.getId() + "");
+        sendHtml(messageInfo);
     }
 }

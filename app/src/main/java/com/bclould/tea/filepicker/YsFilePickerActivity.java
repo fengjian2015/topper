@@ -48,6 +48,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.ui.widget.PoppyViewHelper;
 import com.bclould.tea.ui.widget.TextViewDoubleClickable;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 
@@ -556,7 +557,7 @@ public class YsFilePickerActivity extends BaseActivity implements OnLongClickLis
                 if (mOptChoiceType == YsFilePicker.CHOICE_TYPE_DIRECTORIES && !files[i].isDirectory())
                     continue;
                 if (files[i].isFile()) {
-                    String extension = getFileExtension(files[i].getName());
+                    String extension = getFileExtension(files[i]);
                     if (TextUtils.isEmpty(extension.trim())) continue;//如果是那种没有后缀名字的文件
                     //if (mOptFilterListed != null && !mOptFilterListed.contains(extension)) continue;
                     if (mOptFilterExclude != null && mOptFilterExclude.contains(extension))
@@ -738,7 +739,7 @@ public class YsFilePickerActivity extends BaseActivity implements OnLongClickLis
                                                                         File[] files = file1.listFiles();
                                                                         for (int i = 0; i < files.length; i++) {
                                                                             File file = files[i];
-                                                                            if (file.isFile()&&!(Arrays.asList(mImagesExtensions).contains(getFileExtension(file.getName())))) tmpList.add(file);
+                                                                            if (file.isFile()&&!(Arrays.asList(mImagesExtensions).contains(getFileExtension(file)))) tmpList.add(file);
                                                                         }
                                                                         mFilesList = tmpList;
                                                                     }
@@ -813,9 +814,11 @@ public class YsFilePickerActivity extends BaseActivity implements OnLongClickLis
     }
 
     @SuppressLint("DefaultLocale")
-    private String getFileExtension(String fileName) {
+    private String getFileExtension(File file) {
+        String fileName=file.getName();
         int index = fileName.lastIndexOf(".");
         if (index == -1) return "";
+        if(index==0&&!file.isDirectory()) return "";
         return fileName.substring(index + 1, fileName.length()).toLowerCase(Locale.getDefault());
     }
 
@@ -959,7 +962,7 @@ public class YsFilePickerActivity extends BaseActivity implements OnLongClickLis
                     if (DEBUG) UtilTool.Log("fengjian",file.getAbsolutePath());
                     try {
                         ContentResolver crThumb = getContentResolver();
-                        if (Arrays.asList(mVideoExtensions).contains(getFileExtension(file.getName()))) {
+                        if (Arrays.asList(mVideoExtensions).contains(getFileExtension(file))) {
                             if (DEBUG) UtilTool.Log("fengjian","Video");
                             Cursor cursor = crThumb.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, new String[]{MediaStore.Video.Media._ID}, MediaStore.Video.Media.DATA + "='" + file.getAbsolutePath() + "'", null, null);
                             if (cursor != null) {
@@ -971,7 +974,7 @@ public class YsFilePickerActivity extends BaseActivity implements OnLongClickLis
                                 }
                                 cursor.close();
                             }
-                        } else if (Arrays.asList(mImagesExtensions).contains(getFileExtension(file.getName()))) {
+                        } else if (Arrays.asList(mImagesExtensions).contains(getFileExtension(file))) {
                             if (DEBUG) UtilTool.Log("fengjian","Image");
                             Cursor cursor = crThumb.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{MediaStore.Images.Media._ID}, MediaStore.Images.Media.DATA + "='" + file.getAbsolutePath() + "'", null, null);
                             if (cursor != null) {

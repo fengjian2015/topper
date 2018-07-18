@@ -296,7 +296,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     }
 
     @OnClick({R.id.bark, R.id.on_off_message_free, R.id.on_off_top, R.id.rl_empty_talk, R.id.btn_brak, R.id.rl_group_qr, R.id.rl_group_name, R.id.rl_member_name, R.id.rl_group_management, R.id.rl_looking_chat
-            , R.id.rl_group_image, R.id.rl_go_memberlist, R.id.rl_announcement, R.id.is_allow_modify_data, R.id.is_review,R.id.rl_review_list,R.id.rl_group_red})
+            , R.id.rl_group_image, R.id.rl_go_memberlist, R.id.rl_announcement, R.id.is_allow_modify_data, R.id.is_review,R.id.rl_review_list,R.id.rl_group_red,R.id.rl_redpacket_record})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -358,7 +358,14 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
             case R.id.rl_group_red:
                 goUnclaimedRed();
                 break;
+            case R.id.rl_redpacket_record:
+                goRedpacketRecord();
+                break;
         }
+    }
+
+    private void goRedpacketRecord() {
+        startActivity(new Intent(this, RedPacketRecordActivity.class));
     }
 
     private void goUnclaimedRed() {

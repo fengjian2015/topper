@@ -232,7 +232,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     @Override
     public void onStateChange(int serviceState) {
         if (serviceState == -1 || mTvTitle == null) return;
-
+        onChangeChatState(serviceState);
         if (imState == serviceState) {
             return;
         } else {
@@ -247,7 +247,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         } else if (serviceState == ConnectStateChangeListenerManager.RECEIVING) {//收取中
             mHandler.sendEmptyMessage(1);
         }
-        onChangeChatState(serviceState);
     }
 
 

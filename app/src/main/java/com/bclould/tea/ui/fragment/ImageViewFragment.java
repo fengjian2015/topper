@@ -77,8 +77,10 @@ public class ImageViewFragment extends Fragment {
                                 mArtworkMaster.setVisibility(View.GONE);
                                 loadBar.setVisibility(View.GONE);
                                 mMgr.updateImageType(mId + "", 1);
+                                mMgr.updateImageVoice(mId+"",mBigImgUrl);
                                 MessageEvent messageEvent = new MessageEvent(getString(R.string.look_original));
                                 messageEvent.setId(mId + "");
+                                messageEvent.setFilepath(mBigImgUrl);
                                 EventBus.getDefault().post(messageEvent);
                             }
                             return false;

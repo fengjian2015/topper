@@ -633,10 +633,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
             showFileChooser();
         } else if (msg.equals(getString(R.string.look_original))) {
             String id = event.getId();
-            for (MessageInfo info : mMessageList) {
-                info.setImageType(1);
-                mChatAdapter.notifyItemRangeChanged(0,mMessageList.size());
-            }
+            changeUrl(id,event.getFilepath());
         } else if (msg.equals(getString(R.string.otr_isopen))) {
             mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(roomId.toString()));
         } else if (msg.equals(getString(R.string.delete_friend))) {
@@ -685,6 +682,15 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                 mMessageList.remove(info);
                 mChatAdapter.notifyDataSetChanged();
                 break;
+            }
+        }
+    }
+
+    private void changeUrl(String id, String url){
+        for (MessageInfo info : mMessageList) {
+            if (info.getId()==UtilTool.parseInt(id)) {
+                info.setVoice(url);
+                mChatAdapter.notifyItemChanged(mMessageList.indexOf(info));
             }
         }
     }

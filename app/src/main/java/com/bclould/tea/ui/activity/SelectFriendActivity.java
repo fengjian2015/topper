@@ -42,10 +42,12 @@ import butterknife.OnClick;
 
 import static com.bclould.tea.ui.activity.SelectConversationActivity.IMAGE_TYPE;
 import static com.bclould.tea.ui.activity.SelectConversationActivity.TEXT_PLAIN;
+import static com.bclould.tea.ui.activity.SelectConversationActivity.TYPE_HTML;
 import static com.bclould.tea.ui.activity.SelectConversationActivity.VIDEO_TYPE;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_CARD_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_FILE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_GUESS_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_HTML_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_IMG_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_INVITE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_LINK_MSG;
@@ -54,6 +56,7 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_VIDEO_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_CARD_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_FILE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_GUESS_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.TO_HTML_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_IMG_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_INVITE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_LINK_MSG;
@@ -236,6 +239,12 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
                 mRoom.Upload(filePath);
                 ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_complete));
                 close();
+            }else if(shareType.contains(TYPE_HTML)){
+                MessageInfo messageInfo=new MessageInfo();
+                messageInfo.setMessage(shareText);
+                mRoom.sendHtml(messageInfo);
+                ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.share_complete));
+                close();
             }
         } else if (type == 1) {
             if (msgType == TO_TEXT_MSG || msgType == FROM_TEXT_MSG) {
@@ -271,6 +280,10 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
                 }
                 ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_success));
                 SelectFriendActivity.this.finish();
+            }else if(msgType==TO_HTML_MSG||msgType==FROM_HTML_MSG){
+                mRoom.sendHtml(messageInfo);
+                ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_success));
+                close();
             }
         } else if (type == 2) {
             if (TO_CARD_MSG == msgType || msgType == FROM_CARD_MSG) {
@@ -312,6 +325,10 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
                 } else {
                     ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_error));
                 }
+            }else if(msgType==TO_HTML_MSG||msgType==FROM_HTML_MSG){
+                mRoom.sendHtml(messageInfo);
+                ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.send_succeed));
+                close();
             }
         }
     }

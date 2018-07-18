@@ -226,6 +226,7 @@ public class WsConnection {
 
     public synchronized void send(byte[] bytes) throws Exception{
         if(ws==null||!ws.isOpen()||!isLogin){
+            ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
             get(mContext);
             throw new NullPointerException();
         }

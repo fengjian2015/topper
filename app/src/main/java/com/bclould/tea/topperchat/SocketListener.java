@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.sdk.android.oss.OSSClient;
+import com.alibaba.sdk.android.oss.model.GetObjectRequest;
 import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
@@ -115,6 +116,7 @@ import static com.bclould.tea.ui.activity.SystemSetActivity.INFORM;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_CARD_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_FILE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_GUESS_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_HTML_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_IMG_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_INVITE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_LINK_MSG;
@@ -129,6 +131,7 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.RED_GET_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_CARD_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_FILE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_GUESS_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.TO_HTML_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_IMG_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_INVITE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_LINK_MSG;
@@ -450,14 +453,7 @@ public class SocketListener {
                     break;
                 case WsContans.MSG_IMAGE:
                     //圖片
-                    String postfix = null;
-                    try {
-                        postfix = messageInfo.getKey().substring(messageInfo.getKey().lastIndexOf("."));
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
                     String url = downFile(messageInfo.getKey());
-                    messageInfo.setKey(messageInfo.getKey());
                     messageInfo.setMessage(url);
                     redpacket = "[" + context.getString(R.string.image) + "]";
                     if (isMe) {
@@ -465,21 +461,7 @@ public class SocketListener {
                     } else {
                         msgType = FROM_IMG_MSG;
                     }
-                    if(StringUtils.isEmpty(postfix)){
-                        fileName = UtilTool.createtFileName() + ".jpg";
-                    }else{
-                        if(postfix.contains("gif")||postfix.contains("GIF"))
-                            fileName=UtilTool.createtFileName()+".gif";
-                        else
-                            fileName = UtilTool.createtFileName() + ".jpg";
-                    }
-
-                    path = context.getFilesDir().getAbsolutePath() + File.separator
-                            + "images";
-                    file = saveFile((byte[]) messageMap.get("attachment"), fileName, path);
-                    if (file != null) {
-                        messageInfo.setVoice(file.getAbsolutePath());
-                    }
+                    messageInfo.setVoice(downFileCompress(url));
                     goChat(from, context.getString(R.string.image), roomType);
                     break;
                 case WsContans.MSG_VIDEO:
@@ -497,12 +479,7 @@ public class SocketListener {
                     } else {
                         msgType = FROM_VIDEO_MSG;
                     }
-                    fileName = UtilTool.createtFileName() + ".mp4";
-                    path = context.getFilesDir().getAbsolutePath() + File.separator + "images";
-                    file = saveFile((byte[]) messageMap.get("attachment"), fileName, path);
-                    if (file != null) {
-                        messageInfo.setVoice(file.getAbsolutePath());
-                    }
+                    messageInfo.setVoice(url+"?x-oss-process=video/snapshot,t_0,f_jpg,w_300,h_260,m_fast");
                     goChat(from, context.getString(R.string.video), roomType);
                     break;
                 case WsContans.MSG_FILE:
@@ -620,6 +597,16 @@ public class SocketListener {
                     }
                     goChat(from, messageInfo.getMessage(), roomType);
                     break;
+                case WsContans.MSG_HTML:
+                    //純鏈接分享
+                    redpacket = "[" + context.getString(R.string.url) + "]";
+                    if (isMe) {
+                        msgType = TO_HTML_MSG;
+                    } else {
+                        msgType = FROM_HTML_MSG;
+                    }
+                    goChat(from,redpacket,roomType);
+                    break;
                 default:
                     return;
             }
@@ -682,6 +669,10 @@ public class SocketListener {
         String url = null;
         url = ossClient.presignPublicObjectURL(Constants.BUCKET_NAME2, key);
         return url;
+    }
+
+    private String downFileCompress(String url){
+        return url+"?x-oss-process=image/resize,p_20";
     }
 
     private File saveFile(byte[] attachment, String fileName, String path) throws IOException {

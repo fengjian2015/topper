@@ -53,6 +53,7 @@ public class WsContans {
     public static final int MSG_FILE=11;//文件
     public static final int MSG_INTIVE=12;//群聊邀请
     public static final int MSG_WITHDRAW=13;//撤回消息
+    public static final int MSG_HTML=14;//HTML消息
 
     //廣播類型
     public static final int BC_OTC_ORDER=1;//OTC訂單信息

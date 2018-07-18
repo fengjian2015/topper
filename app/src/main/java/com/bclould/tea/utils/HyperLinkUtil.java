@@ -67,6 +67,21 @@ public class HyperLinkUtil {
         return spanStr;
     }
 
+    public String getHtmlUrl(String spanStr){
+        if (spanStr == null || spanStr.length() == 0) {
+            return "";
+        }
+        Matcher m = UtilTool.searchUrl().matcher(spanStr);
+        String html5Url="";
+        while (m.find()) {
+            html5Url=m.group();
+            if (!UtilTool.checkLinkedExe(html5Url)) {
+                html5Url = "http://" + html5Url;
+            }
+        }
+        return html5Url;
+    }
+
     private  SpannableStringBuilder getTitleText(final String html5Url, int start, final SpannableStringBuilder spanStr, final int messageId, final DBManager dbManager, boolean isChatLeft) {
         String oldString=spanStr.toString().substring(0,start);
         int lastRight=oldString.lastIndexOf("\n");

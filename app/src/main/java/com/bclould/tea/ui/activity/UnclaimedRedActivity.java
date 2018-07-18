@@ -1,9 +1,8 @@
 package com.bclould.tea.ui.activity;
 
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,9 +14,7 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomMember;
-import com.bclould.tea.model.ReviewInfo;
 import com.bclould.tea.model.UnclaimedRedInfo;
-import com.bclould.tea.ui.adapter.ReviewListAdapter;
 import com.bclould.tea.ui.adapter.UnclaimedRedListAdapter;
 
 import java.util.ArrayList;
@@ -32,12 +29,15 @@ public class UnclaimedRedActivity extends BaseActivity {
     RecyclerView mRecyclerView;
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
+    @Bind(R.id.ll_no_data)
+    LinearLayout mLlNoData;
 
     private UnclaimedRedListAdapter mUnclaimedRedListAdapter;
     private String roomId;
-    private ArrayList<UnclaimedRedInfo.DataBean> mArrayList=new ArrayList<>();
+    private ArrayList<UnclaimedRedInfo.DataBean> mArrayList = new ArrayList<>();
     private DBRoomMember mDBRoomMember;
     private DBManager mDBManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +45,8 @@ public class UnclaimedRedActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         ButterKnife.bind(this);
         roomId = getIntent().getStringExtra("roomId");
-        mDBRoomMember=new DBRoomMember(this);
-        mDBManager=new DBManager(this);
+        mDBRoomMember = new DBRoomMember(this);
+        mDBManager = new DBManager(this);
         initRecyclerView();
     }
 
@@ -60,15 +60,22 @@ public class UnclaimedRedActivity extends BaseActivity {
         new GroupPresenter(this).getUnclaimedRed(Integer.parseInt(roomId), new GroupPresenter.CallBack4() {
             @Override
             public void send(UnclaimedRedInfo baseInfo) {
-                mRecyclerView.setVisibility(View.VISIBLE);
                 mLlError.setVisibility(View.GONE);
                 mArrayList.clear();
                 mArrayList.addAll(baseInfo.getData());
+                if(mArrayList.size()==0){
+                    mLlNoData.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.GONE);
+                }else{
+                    mLlNoData.setVisibility(View.GONE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                }
                 mUnclaimedRedListAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void error() {
+                mLlNoData.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.GONE);
                 mLlError.setVisibility(View.VISIBLE);
             }
@@ -77,7 +84,7 @@ public class UnclaimedRedActivity extends BaseActivity {
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mUnclaimedRedListAdapter = new UnclaimedRedListAdapter(this, mArrayList,mDBManager,mDBRoomMember,roomId);
+        mUnclaimedRedListAdapter = new UnclaimedRedListAdapter(this, mArrayList, mDBManager, mDBRoomMember, roomId);
         mRecyclerView.setAdapter(mUnclaimedRedListAdapter);
     }
 

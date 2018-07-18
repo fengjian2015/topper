@@ -61,6 +61,7 @@ import butterknife.OnClick;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_CARD_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_FILE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_GUESS_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_HTML_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_IMG_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_INVITE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_LINK_MSG;
@@ -69,6 +70,7 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_VIDEO_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_CARD_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_FILE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_GUESS_MSG;
+import static com.bclould.tea.ui.adapter.ChatAdapter.TO_HTML_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_IMG_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_INVITE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_LINK_MSG;
@@ -90,6 +92,7 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
     public static final String TEXT_PLAIN = "text";
     public static final String IMAGE_TYPE = "image";
     public static final String VIDEO_TYPE = "video";
+    public static final String TYPE_HTML ="html";
 
 
     private List<ConversationInfo> showlist = new ArrayList<>();
@@ -171,6 +174,7 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
         setShareData(text, type);
         if (!StringUtils.isEmpty(shareText) && UtilTool.checkLinkedExe(shareText)) {
             showDeleteDialog(shareText);
+            shareType=TYPE_HTML;
         }
     }
 
@@ -366,6 +370,13 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
                 ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.share_complete));
                 MyApp.getInstance().exit(SelectConversationActivity.class.getName());
                 SelectConversationActivity.this.finish();
+            }else if(shareType.contains(TYPE_HTML)){
+                MessageInfo messageInfo=new MessageInfo();
+                messageInfo.setMessage(shareText);
+                mRoom.sendHtml(messageInfo);
+                ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.share_complete));
+                MyApp.getInstance().exit(SelectConversationActivity.class.getName());
+                SelectConversationActivity.this.finish();
             }
         } else if (type == 1) {
             if (msgType == TO_TEXT_MSG || msgType == FROM_TEXT_MSG) {
@@ -400,6 +411,11 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
                     mRoom.uploadFile(messageInfo.getMessage());
                 }
                 ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.forward_success));
+                SelectConversationActivity.this.finish();
+            }else if(msgType==TO_HTML_MSG||msgType==FROM_HTML_MSG){
+                mRoom.sendHtml(messageInfo);
+                ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.forward_success));
+                MyApp.getInstance().exit(SelectConversationActivity.class.getName());
                 SelectConversationActivity.this.finish();
             }
         } else if (type == 2) {
@@ -442,6 +458,11 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
                 } else {
                     ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.send_error));
                 }
+            }else if(msgType==TO_HTML_MSG||msgType==FROM_HTML_MSG){
+                mRoom.sendHtml(messageInfo);
+                ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.share_complete));
+                MyApp.getInstance().exit(SelectConversationActivity.class.getName());
+                SelectConversationActivity.this.finish();
             }
         } else {
             finish();

@@ -39,6 +39,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tea.ui.adapter.ChatAdapter.TO_HTML_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_TEXT_MSG;
 
 /**
@@ -180,7 +181,7 @@ public class CollectActivity extends BaseActivity {
                     MessageInfo messageInfo = new MessageInfo();
                     messageInfo.setMessage(mDataList.get(position).getUrl());
                     intent.putExtra("type", 2);
-                    intent.putExtra("msgType", TO_TEXT_MSG);
+                    intent.putExtra("msgType", TO_HTML_MSG);
                     intent.putExtra("messageInfo", messageInfo);
                     startActivity(intent);
                 }
@@ -216,9 +217,6 @@ public class CollectActivity extends BaseActivity {
                     mLlNoData.setVisibility(View.GONE);
                     mLlError.setVisibility(View.VISIBLE);
                 }
-                mRecyclerView.setVisibility(View.GONE);
-                mLlNoData.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
             }
 
             @Override

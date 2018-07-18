@@ -327,7 +327,34 @@
                     android:layout_marginRight="@dimen/x30"
                     android:src="@mipmap/iocn_person_turn"/>
             </RelativeLayout>
-
+            <RelativeLayout
+                android:id="@+id/rl_redpacket_record"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingLeft="@dimen/x20"
+                >
+                <View
+                    style="@style/HCutOffRule"
+                    ></View>
+                <TextView
+                    android:id="@+id/tv16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/iv_inform"
+                    android:text="@string/red_package_record"
+                    android:paddingTop="@dimen/x25"
+                    android:paddingBottom="@dimen/x25"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x30"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x30"
+                    android:src="@mipmap/iocn_person_turn"/>
+            </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/rl_looking_chat"
                 android:layout_width="match_parent"
