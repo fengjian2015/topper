@@ -224,16 +224,19 @@ public class BaseActivity extends SwipeActivity {
         @Override
         public void onSupportFailed() {
             Toast.makeText(BaseActivity.this, getString(R.string.nonsupport_fingerprint), Toast.LENGTH_SHORT).show();
+            FingerprintUtil.cancel();
         }
 
         @Override
         public void onInsecurity() {
             Toast.makeText(BaseActivity.this, getString(R.string.insecurity), Toast.LENGTH_SHORT).show();
+            FingerprintUtil.cancel();
         }
 
         @Override
         public void onEnrollFailed() {
             Toast.makeText(BaseActivity.this, getString(R.string.no_set_fingerprint), Toast.LENGTH_SHORT).show();
+            FingerprintUtil.cancel();
         }
 
         @Override

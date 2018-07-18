@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bclould.tea.Presenter.DynamicPresenter;
 import com.bclould.tea.R;
@@ -102,11 +103,16 @@ public class GuessShareDynamicActivity extends BaseActivity {
             content = text + Constants.GUESS_DYNAMIC_SEPARATOR + mTitle + Constants.GUESS_DYNAMIC_SEPARATOR + mName + Constants.GUESS_DYNAMIC_SEPARATOR + mCoin_name + Constants.GUESS_DYNAMIC_SEPARATOR + mGuess_id + Constants.GUESS_DYNAMIC_SEPARATOR + mPeriod_aty;
         }
         UtilTool.Log("競猜分享", content);
-        mDynamicPresenter.publicsh(content, 4 + "", "", "", "", new DynamicPresenter.CallBack() {
+        mDynamicPresenter.publicsh(content, 4 + "", "", "", "", new DynamicPresenter.CallBack6() {
             @Override
-            public void send() {
-                finish();
-                EventBus.getDefault().post(new MessageEvent(getString(R.string.publish_dynamic)));
+            public void send(int status) {
+                if (status == 1) {
+                    finish();
+                    Toast.makeText(GuessShareDynamicActivity.this, getString(R.string.publish_succeed), Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.publish_dynamic)));
+                }else {
+                    Toast.makeText(GuessShareDynamicActivity.this, getString(R.string.publish_error), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

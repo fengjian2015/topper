@@ -132,19 +132,19 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         }*/
         ButterKnife.bind(this, view);
         mgr = new DBManager(getActivity());
-        mDBRoomMember=new DBRoomMember(getActivity());
-        mDBRoomManage=new DBRoomManage(getActivity());
-        mRefreshList=new RefreshList();
+        mDBRoomMember = new DBRoomMember(getActivity());
+        mDBRoomManage = new DBRoomManage(getActivity());
+        mRefreshList = new RefreshList();
         createFile();
         return view;
     }
 
-    private void createFile(){
+    private void createFile() {
         File cacheDir1 = new File(Constants.PUBLICDIR);
         if (!cacheDir1.exists())
             cacheDir1.mkdirs();
-        File nomedia1 = new File(Constants.PUBLICDIR+ ".nomedia" );
-        if (! nomedia1.exists())
+        File nomedia1 = new File(Constants.PUBLICDIR + ".nomedia");
+        if (!nomedia1.exists())
             try {
                 nomedia1.createNewFile();
             } catch (Exception e) {
@@ -153,8 +153,8 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         File cacheDir = new File(getActivity().getFilesDir().getAbsolutePath() + "/images");
         if (!cacheDir.exists())
             cacheDir.mkdirs();
-        File nomedia = new File(getActivity().getFilesDir().getAbsolutePath() + "/images" + "/.nomedia" );
-        if (! nomedia.exists())
+        File nomedia = new File(getActivity().getFilesDir().getAbsolutePath() + "/images" + "/.nomedia");
+        if (!nomedia.exists())
             try {
                 nomedia.createNewFile();
             } catch (Exception e) {
@@ -201,9 +201,9 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
     private void initRelogin() {
         ConnectStateChangeListenerManager.get().registerStateChangeListener(this);
-        if ((WsConnection.getInstance().get(getContext())!=null&&WsConnection.getInstance().get(getContext()).isOpen())|| WsConnection.getInstance().isLogin()) {
+        if ((WsConnection.getInstance().get(getContext()) != null && WsConnection.getInstance().get(getContext()).isOpen()) || WsConnection.getInstance().isLogin()) {
             ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTED);
-        }else {
+        } else {
             ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
         }
     }
@@ -389,27 +389,28 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
             initData();
         } else if (msg.equals(getString(R.string.delete_friend))) {
             initData();
-        }else if(msg.equals(getString(R.string.quit_group))){
+        } else if (msg.equals(getString(R.string.quit_group))) {
             initData();
-        }else if(msg.equals(getString(R.string.refresh_the_interface))){
+        } else if (msg.equals(getString(R.string.refresh_the_interface))) {
             initData();
-        }else if(msg.equals(getString(R.string.modify_group_name))){
+        } else if (msg.equals(getString(R.string.modify_group_name))) {
             initData();
-        }else if(msg.equals(getString(R.string.refresh_group_room))){
+        } else if (msg.equals(getString(R.string.refresh_group_room))) {
             initData();
-        }else if(msg.equals(getString(R.string.kick_out_success))){
+        } else if (msg.equals(getString(R.string.kick_out_success))) {
             initData();
-        }else if(msg.equals(getString(R.string.home_msg_click_two))){
+        } else if (msg.equals(getString(R.string.home_msg_click_two))) {
             unNumbertopList();
-        }else if(msg.equals(getString(R.string.refresh))){
+        } else if (msg.equals(getString(R.string.refresh))) {
             mConversationAdapter.notifyDataSetChanged();
         }
     }
 
     private void unNumbertopList() {
-        A:for(int i=0;i<showlist.size();i++){
-            if(showlist.get(i).getNumber()>0){
-                linearLayoutManager.scrollToPositionWithOffset(i,0);
+        A:
+        for (int i = 0; i < showlist.size(); i++) {
+            if (showlist.get(i).getNumber() > 0) {
+                linearLayoutManager.scrollToPositionWithOffset(i, 0);
                 break A;
             }
         }
@@ -421,9 +422,11 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
             public void send(GroupInfo baseInfo) {
                 // TODO: 2018/6/11 獲取群聊房間塞入數據庫
             }
+
             @Override
             public void error() {
             }
+
             @Override
             public void finishRefresh() {
             }
@@ -446,7 +449,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     class RefreshList implements Runnable {
         @Override
         public void run() {
-            synchronized (mRecyclerView){
+            synchronized (mRecyclerView) {
                 List<ConversationInfo> conversationInfos = mgr.queryConversation();
                 if (conversationInfos.size() == 0) {
                     mLlNoData.setVisibility(View.VISIBLE);
@@ -464,8 +467,8 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     }
 
     private void initRecyclerView() {
-        if(mRecyclerView==null)return;
-        mConversationAdapter = new ConversationAdapter( getActivity(), getSimpleData(), mgr, mRlTitle, mDBRoomMember,mDBRoomManage);
+        if (mRecyclerView == null) return;
+        mConversationAdapter = new ConversationAdapter(getActivity(), getSimpleData(), mgr, mRlTitle, mDBRoomMember, mDBRoomManage);
         linearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(mConversationAdapter);
@@ -479,6 +482,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 
     private void sort() {

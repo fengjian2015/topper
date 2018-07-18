@@ -121,7 +121,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void isGoSelectConversation() {
-        if (mBundle != null&&MySharedPreferences.getInstance().getBoolean("SHARE") && !WsConnection.getInstance().getOutConnection()) {
+        if (mBundle != null && MySharedPreferences.getInstance().getBoolean("SHARE") && !WsConnection.getInstance().getOutConnection()) {
             Intent intent = new Intent(this, SelectConversationActivity.class);
             intent.putExtra("type", 3);
             intent.putExtras(mBundle);
@@ -464,7 +464,8 @@ public class MainActivity extends BaseActivity {
 
             ft.show(fragment);
 
-            ft.commit();
+            ft.commitAllowingStateLoss();
+            mSupportFragmentManager.executePendingTransactions();
         }
         lastIndex = index;
     }

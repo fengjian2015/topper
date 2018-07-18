@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.view.Gravity;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bclould.tea.R;
 
@@ -64,12 +63,12 @@ public class LoadingProgressDialog extends Dialog {
      * @return
      */
     public LoadingProgressDialog setMessage(String strMessage) {
-        TextView tvMsg = (TextView) sLoadingProgressDialog.findViewById(R.id.tv_loading);
+        /*TextView tvMsg = (TextView) sLoadingProgressDialog.findViewById(R.id.tv_loading);
 
         if (tvMsg != null) {
             tvMsg.setText(strMessage);
         }
-
+*/
         return sLoadingProgressDialog;
     }
 }
