@@ -1406,18 +1406,23 @@ public class ChatAdapter extends RecyclerView.Adapter {
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
-            Glide.with(mContext).load(messageInfo.getVoice()).listener(new RequestListener<Drawable>() {
-                @Override
-                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                    return false;
-                }
 
-                @Override
-                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                    mIvVideo.setImageDrawable(resource);
-                    return false;
-                }
-            }).apply(requestOptions).into(mIvVideo);
+            if(messageInfo.getVoice().startsWith("http")) {
+                Glide.with(mContext).load(messageInfo.getVoice()).listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        mIvVideo.setImageDrawable(resource);
+                        return false;
+                    }
+                }).apply(requestOptions).into(mIvVideo);
+            }else {
+                mIvVideo.setImageBitmap(BitmapFactory.decodeFile(messageInfo.getVoice()));
+            }
             setMsgState(messageInfo.getSendStatus(), mIvWarning, mIvLoad);
             mIvWarning.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1468,18 +1473,22 @@ public class ChatAdapter extends RecyclerView.Adapter {
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
-            Glide.with(mContext).load(messageInfo.getVoice()).listener(new RequestListener<Drawable>() {
-                @Override
-                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                    return false;
-                }
+            if(messageInfo.getVoice().startsWith("http")) {
+                Glide.with(mContext).load(messageInfo.getVoice()).listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        return false;
+                    }
 
-                @Override
-                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                    mIvVideo.setImageDrawable(resource);
-                    return false;
-                }
-            }).apply(requestOptions).into(mIvVideo);
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        mIvVideo.setImageDrawable(resource);
+                        return false;
+                    }
+                }).apply(requestOptions).into(mIvVideo);
+            }else {
+                mIvVideo.setImageBitmap(BitmapFactory.decodeFile(messageInfo.getVoice()));
+            }
             mRlVideo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
