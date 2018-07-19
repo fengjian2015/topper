@@ -57,22 +57,28 @@ public class RedPacketActivity extends BaseActivity {
     LinearLayout mLlDetails;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.tv_property)
+    TextView mTvProperty;
+    @Bind(R.id.tv_content)
+    TextView mTvContent;
+    @Bind(R.id.view_line)
+    TextView mViewLine;
     private String mCoin;
     private String mCount;
     private String mRemark;
     private String mUser;
     private String mName;
-//    private Bitmap mBitmap;
+    //    private Bitmap mBitmap;
     private DBManager mMgr;
     private DBRoomMember mDBRoomMember;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket4));
+        getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket5));
         setContentView(R.layout.activity_red_packet);
         mMgr = new DBManager(this);
-        mDBRoomMember=new DBRoomMember(this);
+        mDBRoomMember = new DBRoomMember(this);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
         initData();
@@ -91,10 +97,10 @@ public class RedPacketActivity extends BaseActivity {
             Bundle bundle = intent.getExtras();
 //            byte[] bytes = bundle.getByteArray("image");
             mUser = bundle.getString("user");
-            mName=bundle.getString("name");
+            mName = bundle.getString("name");
             GrabRedInfo grabRedInfo = (GrabRedInfo) bundle.getSerializable("grabRedInfo");
-            int who = intent.getIntExtra("who", 0);
-
+//            int who = intent.getIntExtra("who", 0);
+            mTvContent.setText(grabRedInfo.getData().getDesc());
             mCount = grabRedInfo.getData().getTotal_money();
             mCoin = grabRedInfo.getData().getCoin_name();
             mRemark = grabRedInfo.getData().getIntro();
@@ -108,15 +114,25 @@ public class RedPacketActivity extends BaseActivity {
 //            } else if (who == 1) {
 //                mTvHint.setText(getString(R.string.red_packet_hint));
 //            }
-            initRecylerView(mLogBeanList,grabRedInfo.getData());
+            initRecylerView(mLogBeanList, grabRedInfo.getData());
 //            mBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             mTvCoin.setText(mCoin);
-            mTvCount.setText(mCount);
-            mTvCount.setSpacing(2);
+            if (UtilTool.parseDouble(grabRedInfo.getData().getMoney()) <= 0) {
+                mTvProperty.setVisibility(View.GONE);
+                mTvCount.setVisibility(View.GONE);
+                mTvCoin.setVisibility(View.GONE);
+            } else {
+                mTvProperty.setText(grabRedInfo.getData().getAssets_notice());
+                mTvCount.setText(grabRedInfo.getData().getMoney());
+                mTvCount.setSpacing(2);
+                mTvProperty.setVisibility(View.VISIBLE);
+                mTvCount.setVisibility(View.VISIBLE);
+                mTvCoin.setVisibility(View.VISIBLE);
+            }
             mTvRemark.setText(mRemark);
-            mTvName.setText(mName+getString(R.string.red_envelope));
+            mTvName.setText(mName + getString(R.string.red_envelope));
 //            mIvTouxiang.setImageBitmap(mBitmap);
-            UtilTool.getImage(this,mIvTouxiang,mDBRoomMember,mMgr,mUser);
+            UtilTool.getImage(this, mIvTouxiang, mDBRoomMember, mMgr, mUser);
 //            if(grabRedInfo.getStatus()==2){
 //                mTvHint.setText(getString(R.string.red_envelope_been_robbed));
 //            }
@@ -130,14 +146,24 @@ public class RedPacketActivity extends BaseActivity {
                 public void send(GrabRedInfo grabRedInfo) {
                     GrabRedInfo.DataBean data = grabRedInfo.getData();
                     List<GrabRedInfo.DataBean.LogBean> logBeanList = data.getLog();
-                    mCoin=data.getCoin_name();
+                    mCoin = data.getCoin_name();
                     mTvCoin.setText(data.getCoin_name());
-                    mTvCount.setText(data.getTotal_money());
-                    mTvCount.setSpacing(2);
+                    mTvContent.setText(grabRedInfo.getData().getDesc());
+                    if (UtilTool.parseDouble(grabRedInfo.getData().getMoney()) <= 0) {
+                        mTvProperty.setVisibility(View.GONE);
+                        mTvCount.setVisibility(View.GONE);
+                        mTvCoin.setVisibility(View.GONE);
+                    } else {
+                        mTvCount.setText(grabRedInfo.getData().getMoney());
+                        mTvCount.setSpacing(2);
+                        mTvProperty.setText(grabRedInfo.getData().getAssets_notice());
+                        mTvProperty.setVisibility(View.VISIBLE);
+                    }
+
                     mTvRemark.setText(data.getIntro());
                     mTvName.setText(data.getSend_rp_user_name());
-                    initRecylerView(logBeanList,data);
-                    UtilTool.setCircleImg(RedPacketActivity.this,data.getAvatar(), mIvTouxiang);
+                    initRecylerView(logBeanList, data);
+                    UtilTool.setCircleImg(RedPacketActivity.this, data.getAvatar(), mIvTouxiang);
                     //                    mIvTouxiang.setImageBitmap(UtilTool.getImage(mMgr, jid, RedPacketActivity.this));
 
                 }
@@ -145,12 +171,15 @@ public class RedPacketActivity extends BaseActivity {
         }
     }
 
-    private void initRecylerView(List<GrabRedInfo.DataBean.LogBean> mLogBeanList,GrabRedInfo.DataBean data) {
-        boolean isShowBestLuck=false;
-        if(data.getRp_number()==mLogBeanList.size()){
-               isShowBestLuck=true;
+    private void initRecylerView(List<GrabRedInfo.DataBean.LogBean> mLogBeanList, GrabRedInfo.DataBean data) {
+        boolean isShowBestLuck = false;
+        if (data.getRp_number() == mLogBeanList.size()) {
+            isShowBestLuck = true;
         }
-        RedPacketRVAdapter redPacketRVAdapter = new RedPacketRVAdapter(this, mLogBeanList, mMgr,mCoin,isShowBestLuck);
+        if(mLogBeanList==null||mLogBeanList.size()==0){
+            mViewLine.setVisibility(View.GONE);
+        }
+        RedPacketRVAdapter redPacketRVAdapter = new RedPacketRVAdapter(this, mLogBeanList, mMgr, mCoin, isShowBestLuck);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(redPacketRVAdapter);
     }

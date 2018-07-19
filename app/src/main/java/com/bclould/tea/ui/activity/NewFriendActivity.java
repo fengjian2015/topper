@@ -17,7 +17,6 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.AddRequestInfo;
-import com.bclould.tea.model.AuatarListInfo;
 import com.bclould.tea.model.NewFriendInfo;
 import com.bclould.tea.ui.adapter.NewFriendRVAdapter;
 
@@ -46,12 +45,14 @@ public class NewFriendActivity extends BaseActivity {
     private DBManager mMgr;
     List<AddRequestInfo> mAddRequestInfos = new ArrayList<>();
     private NewFriendRVAdapter mNewFriendRVAdapter;
+    private PersonalDetailsPresenter mPersonalDetailsPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_friend);
         ButterKnife.bind(this);
+        mPersonalDetailsPresenter = new PersonalDetailsPresenter(this);
         mMgr = new DBManager(this);
         initRecyclerView();
         initData();
@@ -70,8 +71,7 @@ public class NewFriendActivity extends BaseActivity {
 //                userList += "," + info.getUser();
 //            }
 //        }
-        PersonalDetailsPresenter personalDetailsPresenter = new PersonalDetailsPresenter(this);
-        personalDetailsPresenter.getNewFriendData(true,new PersonalDetailsPresenter.CallBack5() {
+        mPersonalDetailsPresenter.getNewFriendData(true,new PersonalDetailsPresenter.CallBack5() {
             @Override
             public void send(NewFriendInfo listdata) {
                 mMgr.deleteRequest();
@@ -81,6 +81,7 @@ public class NewFriendActivity extends BaseActivity {
                     addRequestInfo.setUrl(listdata.getData().get(i).getAvatar());
                     addRequestInfo.setUser(listdata.getData().get(i).getToco_id());
                     addRequestInfo.setUserName(listdata.getData().get(i).getName());
+                    addRequestInfo.setId(listdata.getData().get(i).getId());
                     mAddRequestInfos.add(addRequestInfo);
                     mMgr.addRequest(listdata.getData().get(i).getToco_id(),listdata.getData().get(i).getStatus(),listdata.getData().get(i).getName());
                 }
@@ -93,7 +94,7 @@ public class NewFriendActivity extends BaseActivity {
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mNewFriendRVAdapter = new NewFriendRVAdapter(this, mAddRequestInfos, mMgr);
+        mNewFriendRVAdapter = new NewFriendRVAdapter(this, mAddRequestInfos, mMgr, mPersonalDetailsPresenter);
         mRecyclerView.setAdapter(mNewFriendRVAdapter);
     }
 

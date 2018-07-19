@@ -13,6 +13,7 @@
     <color name="xmr">#90C552</color>
     <color name="usdt">#7A82AC</color>
     <color name="rmbx">#FA8294</color>
+    <color name="gray4">#1Ac8e9f9</color>
 
     <color name="color_69">#999999</color>
     <color name="image_overlay_true">#80000000</color>
@@ -40,6 +41,7 @@
     <color name="redpacket2">#FE5419</color>
     <color name="redpacket3">#FBC795</color>
     <color name="redpacket4">#EC3431</color>
+    <color name="redpacket5">#eb5a46</color>
     <color name="transfer">#FBA588</color>
     <color name="dark_blue">#243042</color>
     <color name="darkgrey">#E5E5E5</color>
@@ -51,5 +53,5 @@
     <color name="ashen">#8C929B</color>
     <color name="blue3">#1F6BFF</color>
     <color name="white1">#80ffffff</color>
-    <color name="red_envelope">#EACD99</color>
+    <color name="red_envelope">#f9bc77</color>
 </resources>

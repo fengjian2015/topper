@@ -3,7 +3,6 @@ package com.bclould.tea.base;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
@@ -11,7 +10,6 @@ import com.bclould.tea.listener.CrashHandler;
 import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.model.StateInfo;
 import com.bclould.tea.network.MyHostnameVerifier;
-import com.bclould.tea.service.ImageUpService;
 import com.bclould.tea.topperchat.RoomMemberManage;
 import com.bclould.tea.topperchat.XGManage;
 import com.bclould.tea.utils.Constants;
@@ -135,7 +133,6 @@ public class MyApp extends Application {
     @Override
     public void onTerminate() {
         super.onTerminate();
-        stopService(new Intent(this, ImageUpService.class));
         exit();
     }
 

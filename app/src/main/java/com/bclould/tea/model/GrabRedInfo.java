@@ -60,6 +60,33 @@ public class GrabRedInfo implements Serializable {
         private int rp_number;
         private List<LogBean> log;
         private String avatar;
+        private String money;
+        private String desc;
+        private String assets_notice;
+
+        public String getAssets_notice() {
+            return assets_notice;
+        }
+
+        public void setAssets_notice(String assets_notice) {
+            this.assets_notice = assets_notice;
+        }
+
+        public String getMoney() {
+            return money;
+        }
+
+        public void setMoney(String money) {
+            this.money = money;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
 
         public String getAvatar() {
             return avatar;

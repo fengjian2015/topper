@@ -14,11 +14,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.AddRequestInfo;
 import com.bclould.tea.ui.activity.ConversationActivity;
+import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
@@ -40,11 +42,13 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
     private final Context mContext;
     private final List<AddRequestInfo> mAddRequestInfos;
     private final DBManager mMgr;
+    private final PersonalDetailsPresenter mPersonalDetailsPresenter;
 
-    public NewFriendRVAdapter(Context context, List<AddRequestInfo> addRequestInfos, DBManager mgr) {
+    public NewFriendRVAdapter(Context context, List<AddRequestInfo> addRequestInfos, DBManager mgr, PersonalDetailsPresenter personalDetailsPresenter) {
         mContext = context;
         mAddRequestInfos = addRequestInfos;
         mMgr = mgr;
+        mPersonalDetailsPresenter = personalDetailsPresenter;
     }
 
     @Override
@@ -61,7 +65,7 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
         if (mAddRequestInfos.size() != 0 )
-            viewHolder.setData(mAddRequestInfos.get(position));
+            viewHolder.setData(mAddRequestInfos.get(position), position);
     }
 
     @Override
@@ -81,6 +85,7 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
         @Bind(R.id.btn_consent)
         Button mBtnConsent;
         private AddRequestInfo mAddRequestInfo;
+        private int mPosition;
 
         ViewHolder(View view) {
             super(view);
@@ -98,6 +103,13 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
                         }else {
                             ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.add_friends_first));
                         }
+                    }
+                });
+                view.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        showDeleteDialog(mPosition);
+                        return false;
                     }
                 });
             mBtnConsent.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +134,8 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
             });
         }
 
-        public void setData(AddRequestInfo addRequestInfo) {
+        public void setData(AddRequestInfo addRequestInfo, int position) {
+            mPosition = position;
             mBtnConsent.setVisibility(View.VISIBLE);
             mAddRequestInfo = addRequestInfo;
             if (addRequestInfo.getUrl().isEmpty()) {
@@ -155,5 +168,34 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
                 mBtnConsent.setEnabled(false);
             }
         }
+    }
+
+    private void showDeleteDialog(final int position) {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(mContext.getString(R.string.delete_friend_request_hint));
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        confirm.setTextColor(mContext.getResources().getColor(R.color.red));
+        confirm.setText(mContext.getString(R.string.delete));
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                mPersonalDetailsPresenter.deleteReview(mAddRequestInfos.get(position).getId(), new GroupPresenter.CallBack() {
+                    @Override
+                    public void send() {
+                        mAddRequestInfos.remove(position);
+                        notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
     }
 }

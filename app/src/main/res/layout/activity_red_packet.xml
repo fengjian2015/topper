@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
         android:layout_alignParentTop="true"
-        android:background="@color/redpacket4">
+        android:background="#eb5a46">
 
         <ImageView
             android:id="@+id/bark"
@@ -78,7 +78,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y130">
+                android:layout_marginTop="@dimen/y150">
 
                 <com.bclould.tea.ui.widget.ChangeTextSpaceView
                     android:id="@+id/tv_count"
@@ -86,7 +86,6 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/x80"
                     android:textColor="@color/red_envelope"
-                    android:text="8.88"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -95,7 +94,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x10"
                     android:textColor="@color/red_envelope"
-                    android:text="BTC"
                     android:textSize="@dimen/x35"/>
 
             </LinearLayout>
@@ -104,20 +102,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/red_envelope"
-                android:textSize="@dimen/x35"
-                android:text="@string/have_deposited_my_assets"/>
+                android:textSize="@dimen/x28"
+                />
             <TextView
                 android:id="@+id/tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/x28"
+                android:textSize="@dimen/x26"
                 android:textColor="@color/white"
-                android:text="ssssssss"
                 android:paddingBottom="@dimen/y20"
                 android:paddingTop="@dimen/y20"
                 android:paddingLeft="@dimen/x30"
                 android:paddingRight="@dimen/x30"/>
         </LinearLayout>
+        <TextView
+            android:id="@+id/view_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y1"
+            android:background="@color/gray4"
+            ></TextView>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"

@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/tv_red_type_hint"
-                android:text="@string/qr_code_red_packet"
+                android:text="@string/qr_code_red_package"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x26"/>
 

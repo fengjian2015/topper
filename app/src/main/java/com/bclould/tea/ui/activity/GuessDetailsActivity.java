@@ -431,6 +431,7 @@ public class GuessDetailsActivity extends BaseActivity {
                         mLlGuessCount.setVisibility(View.GONE);
                         mLlBet.setVisibility(View.GONE);
                         mCvTime.setVisibility(View.GONE);
+                        mBtnBet.setVisibility(View.GONE);
                         mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
                         mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
                     }

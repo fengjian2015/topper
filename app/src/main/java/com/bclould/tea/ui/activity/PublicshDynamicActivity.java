@@ -22,7 +22,6 @@ import com.bclould.tea.Presenter.FileUploadingPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
-import com.bclould.tea.service.ImageUpService;
 import com.bclould.tea.ui.adapter.PublicshDynamicGVAdapter;
 import com.bclould.tea.utils.FullyGridLayoutManager;
 import com.bclould.tea.utils.ToastShow;
@@ -258,8 +257,8 @@ public class PublicshDynamicActivity extends BaseActivity {
     private void checkFile() {
         String text = mTextEt.getText().toString();
         String location = mTvLocation.getText().toString();
-        Intent intent = new Intent(this, ImageUpService.class);
-        Bundle bundle = new Bundle();
+        /*Intent intent = new Intent(this, ImageUpService.class);
+        Bundle bundle = new Bundle();*/
         if (selectList.size() != 0) {
             for (LocalMedia localMedia : selectList) {
                 if (UtilTool.getPostfix(selectList.get(0).getPath()).equals("Image")) {
