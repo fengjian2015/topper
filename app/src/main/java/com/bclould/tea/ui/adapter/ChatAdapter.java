@@ -153,7 +153,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private final MediaPlayer mMediaPlayer;
     private int voicePosition;
     ArrayList<String> mImageList = new ArrayList<>();
-    private CurrencyDialog mCurrencyDialog;
     private String mFileName;
     private AnimationDrawable mAnim;
     private final String mRoomId;
@@ -161,6 +160,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private String mName;
     private RelativeLayout mrlTitle;
     private DBRoomMember mDBRoomMember;
+    private CurrencyDialog mCurrencyDialog;
 
     public ChatAdapter(Context context, List<MessageInfo> messageList, String roomId, DBManager mgr, MediaPlayer mediaPlayer, String name, String roomType, RelativeLayout rlTitle, DBRoomMember mDBRoomMember
     ) {
@@ -729,14 +729,18 @@ public class ChatAdapter extends RecyclerView.Adapter {
                             mGrabRedPresenter.grabRedPacket(true, messageInfo.getRedId(), new GrabRedPresenter.CallBack() {
                                 @Override
                                 public void send(GrabRedInfo info) {
-                                    if (info.getStatus() == 4) {
-                                        Toast.makeText(mContext, info.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
                                     mMgr.updateMessageState(messageInfo.getId() + "", 1);
                                     messageInfo.setStatus(1);
                                     notifyDataSetChanged();
-//                            skip(info, mToBitmap, UtilTool.getTocoId(), 0);
-                                    skip(info, UtilTool.getTocoId(), 0, info.getData().getSend_rp_user_name());
+                                    if (info.getStatus() == 4) {
+                                        Toast.makeText(mContext, info.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }else if(info.getStatus()==2){
+                                        showDialog(messageInfo,true,false,info);
+                                    }else if(info.getStatus()==5){
+                                        showDialog(messageInfo,false,true,info);
+                                    }else{
+                                        skip(info, UtilTool.getTocoId(), 1, info.getData().getSend_rp_user_name());
+                                    }
                                 }
 
                                 @Override
@@ -750,7 +754,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                             mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    showDialog(messageInfo);
+                                    showDialog(messageInfo,false,false,null);
                                 }
                             });
                         }
@@ -758,14 +762,18 @@ public class ChatAdapter extends RecyclerView.Adapter {
                         mGrabRedPresenter.grabRedPacket(true, messageInfo.getRedId(), new GrabRedPresenter.CallBack() {
                             @Override
                             public void send(GrabRedInfo info) {
-                                if (info.getStatus() == 4) {
-                                    Toast.makeText(mContext, info.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
                                 mMgr.updateMessageState(messageInfo.getId() + "", 1);
                                 messageInfo.setStatus(1);
                                 notifyDataSetChanged();
-//                            skip(info, mToBitmap, UtilTool.getTocoId(), 0);
-                                skip(info, UtilTool.getTocoId(), 0, info.getData().getSend_rp_user_name());
+                                if (info.getStatus() == 4) {
+                                    Toast.makeText(mContext, info.getMessage(), Toast.LENGTH_SHORT).show();
+                                } else if(info.getStatus()==2){
+                                    showDialog(messageInfo,true,false,info);
+                                }else if(info.getStatus()==5){
+                                    showDialog(messageInfo,false,true,info);
+                                }else{
+                                    skip(info, UtilTool.getTocoId(), 0, info.getData().getSend_rp_user_name());
+                                }
                             }
 
                             @Override
@@ -854,12 +862,14 @@ public class ChatAdapter extends RecyclerView.Adapter {
                                 notifyDataSetChanged();
                                 if (info.getStatus() == 4) {
                                     Toast.makeText(mContext, info.getMessage(), Toast.LENGTH_SHORT).show();
-                                } else {
-//                                    skip(info, mFromBitmap, mUser, 1);
+                                } else if(info.getStatus()==2){
+                                    showDialog(messageInfo,true,false,info);
+                                }else if(info.getStatus()==5){
+                                    showDialog(messageInfo,false,true,info);
+                                }else{
                                     skip(info, finalMUser, 1, info.getData().getSend_rp_user_name());
                                 }
                             }
-
                             @Override
                             public void error() {
 
@@ -873,7 +883,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        showDialog(messageInfo);
+                        showDialog(messageInfo,false,false,null);
                     }
                 });
             }
@@ -887,8 +897,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
     }
 
+    ImageView touxiang ;
+    TextView tvDetail;
+    TextView from ;
+    TextView name ;
+    TextView tvRemark;
+    ImageView bark ;
+    Button open;
     //显示币种弹框
-    private void showDialog(final MessageInfo messageInfo) {
+    private void showDialog(final MessageInfo messageInfo, boolean isGrabThe, boolean isOverdue, final GrabRedInfo grabRedInfo) {
         //暫無群聊，所以沒有考慮群聊情況
         String mUser = messageInfo.getSend();
         if (StringUtils.isEmpty(mUser))
@@ -903,22 +920,45 @@ public class ChatAdapter extends RecyclerView.Adapter {
         if (StringUtils.isEmpty(mName)) {
             mName = mUser;
         }
-        mCurrencyDialog = new CurrencyDialog(R.layout.dialog_redpacket, mContext, R.style.dialog);
-        Window window = mCurrencyDialog.getWindow();
-        window.setWindowAnimations(R.style.CustomDialog);
-        mCurrencyDialog.show();
-        mCurrencyDialog.setCanceledOnTouchOutside(false);
-        ImageView touxiang = (ImageView) mCurrencyDialog.findViewById(R.id.iv_touxiang);
-        TextView from = (TextView) mCurrencyDialog.findViewById(R.id.tv_from);
-        TextView name = (TextView) mCurrencyDialog.findViewById(R.id.tv_name);
-        TextView tvRemark = (TextView) mCurrencyDialog.findViewById(R.id.tv_remark);
-        ImageView bark = (ImageView) mCurrencyDialog.findViewById(R.id.iv_bark);
-        final Button open = (Button) mCurrencyDialog.findViewById(R.id.btn_open);
+        if(mCurrencyDialog==null){
+            mCurrencyDialog = new CurrencyDialog(R.layout.dialog_redpacket, mContext, R.style.dialog);
+            Window window = mCurrencyDialog.getWindow();
+            window.setWindowAnimations(R.style.CustomDialog);
+            mCurrencyDialog.show();
+            mCurrencyDialog.setCanceledOnTouchOutside(false);
+            touxiang = (ImageView) mCurrencyDialog.findViewById(R.id.iv_touxiang);
+            tvDetail= (TextView) mCurrencyDialog.findViewById(R.id.tv_detail);
+            from = (TextView) mCurrencyDialog.findViewById(R.id.tv_from);
+            name = (TextView) mCurrencyDialog.findViewById(R.id.tv_name);
+            tvRemark = (TextView) mCurrencyDialog.findViewById(R.id.tv_remark);
+            bark = (ImageView) mCurrencyDialog.findViewById(R.id.iv_bark);
+            open = (Button) mCurrencyDialog.findViewById(R.id.btn_open);
+        }else{
+            mCurrencyDialog.show();
+            mCurrencyDialog.setCanceledOnTouchOutside(false);
+        }
+        if(isGrabThe){
+            from.setVisibility(View.GONE);
+            open.setVisibility(View.GONE);
+            tvRemark.setText(mContext.getString(R.string.hand_slow_red_envelope_over));
+            tvDetail.setVisibility(View.VISIBLE);
+        }else if(isOverdue){
+            open.setVisibility(View.GONE);
+            from.setVisibility(View.GONE);
+            tvRemark.setText(mContext.getString(R.string.red_envelope_expired));
+            tvDetail.setVisibility(View.VISIBLE);
+        }else{
+            from.setVisibility(View.VISIBLE);
+            open.setVisibility(View.VISIBLE);
+            tvRemark.setText(messageInfo.getRemark());
+            tvDetail.setVisibility(View.GONE);
+        }
+
         final MyYAnimation myYAnimation = new MyYAnimation();
         myYAnimation.setRepeatCount(Animation.INFINITE);
         from.setText(mContext.getString(R.string.red_package_hint) + messageInfo.getCoin() + mContext.getString(R.string.red_package));
         name.setText(mName);
-        tvRemark.setText(messageInfo.getRemark());
+
 //        touxiang.setImageBitmap(mFromBitmap);
         UtilTool.getImage(mContext, touxiang, mDBRoomMember, mMgr, mUser);
         bark.setOnClickListener(new View.OnClickListener() {
@@ -936,18 +976,24 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 mGrabRedPresenter.grabRedPacket(false, messageInfo.getRedId(), new GrabRedPresenter.CallBack() {
                     @Override
                     public void send(GrabRedInfo info) {
-
+                        open.clearAnimation();
                         myYAnimation.cancel();
                         mMgr.updateMessageState(messageInfo.getId() + "", 1);
                         messageInfo.setStatus(1);
                         notifyDataSetChanged();
                         if (info.getStatus() == 4) {
+                            mCurrencyDialog.dismiss();
                             Toast.makeText(mContext, info.getMessage(), Toast.LENGTH_SHORT).show();
-                        } else {
+                        }  else if(info.getStatus()==2){
+                            showDialog(messageInfo,true,false,info);
+                        }else if(info.getStatus()==5){
+                            showDialog(messageInfo,false,true,info);
+                        }else {
+                            mCurrencyDialog.dismiss();
 //                            skip(info, mFromBitmap, mUser, 1);
                             skip(info, finalMUser, 1, finalMName);
                         }
-                        mCurrencyDialog.dismiss();
+
                     }
 
                     @Override
@@ -956,6 +1002,17 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     }
                 });
 
+            }
+        });
+        tvDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (RoomManage.ROOM_TYPE_SINGLE.equals(mRoomType)&&messageInfo.getMsgType()==TO_RED_MSG) {
+                    skip(grabRedInfo, finalMUser, 0, finalMName);
+                }else{
+                    skip(grabRedInfo, finalMUser, 1, finalMName);
+                }
+                mCurrencyDialog.dismiss();
             }
         });
     }
@@ -2551,7 +2608,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     }
 
     private void getHtmlContent(final MessageInfo messageInfo,final int position){
-        if(!StringUtils.isEmpty(messageInfo.getHeadUrl())&&!StringUtils.isEmpty(messageInfo.getContent())&&!StringUtils.isEmpty(messageInfo.getTitle())){
+        if(!StringUtils.isEmpty(messageInfo.getContent())&&!StringUtils.isEmpty(messageInfo.getTitle())){
             return;
         }
         new Thread(){

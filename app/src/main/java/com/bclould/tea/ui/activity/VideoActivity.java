@@ -26,8 +26,6 @@ import com.bclould.tea.ui.widget.VideoPlayer;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.danikula.videocache.HttpProxyCacheServer;
-import com.umeng.commonsdk.debug.E;
-
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;

@@ -347,7 +347,6 @@ public class WsConnection {
         LoginThread.isStartExReconnect = false;
         WsOfflineConnection.getInstance().closeConnection();
         UtilTool.Log("fengjian", "关闭连接");
-        UmManage.getInstance().deleteAlias();
         XGManage.getInstance().deleteAlias();
     }
 

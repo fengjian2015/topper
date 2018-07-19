@@ -4,12 +4,17 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bclould.tea.utils.UtilTool;
 import com.tencent.android.tpush.XGPushBaseReceiver;
 import com.tencent.android.tpush.XGPushClickedResult;
 import com.tencent.android.tpush.XGPushRegisterResult;
 import com.tencent.android.tpush.XGPushShowedResult;
 import com.tencent.android.tpush.XGPushTextMessage;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by GIjia on 2018/7/17.
@@ -40,6 +45,13 @@ public class XGReceiver extends XGPushBaseReceiver {
     @Override
     public void onTextMessage(Context context, XGPushTextMessage xgPushTextMessage) {
         UtilTool.Log("fengjian","onTextMessage:"+xgPushTextMessage.getContent()+"   "+xgPushTextMessage.getCustomContent()+"    "+xgPushTextMessage.getTitle());
+        try {
+            Map<String,String> jsonMap= JSON.parseObject(xgPushTextMessage.getCustomContent(),Map.class);
+            SocketListener.getInstance(context).umengFriendRequest(jsonMap);
+        }catch (Exception e){
+            UtilTool.Log("fengjian","解析錯誤");
+            e.printStackTrace();
+        }
     }
 
     @Override

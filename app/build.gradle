@@ -101,6 +101,7 @@ configurations.all {
 
 
 
+
 dependencies {
     implementation 'com.android.support:design:26.1.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -195,18 +196,8 @@ dependencies {
     compile 'org.msgpack:jackson-dataformat-msgpack:0.8.16'
     compile 'com.koushikdutta.async:androidasync:2.+'
     compile 'com.iceteck.silicompressorr:silicompressor:2.1'
-
-    //PushSDK必须依赖基础组件库，所以需要加入对应依赖
-    compile 'com.umeng.sdk:common:1.5.3'
-
-    //PushSDK必须依赖utdid库，所以需要加入对应依赖
-    compile 'com.umeng.sdk:utdid:1.1.5.3'
-
-    //PushSDK
-    compile 'com.umeng.sdk:push:4.2.0'
     compile 'com.github.andy6804tw:ZoomImageView-lib:0.0.1'
 
-    //華為通道
     implementation files('libs/fastjson-1.2.9.jar')
     compile 'com.isseiaoki:simplecropview:1.1.7'
     compile 'com.leon:lfilepickerlibrary:1.8.0'

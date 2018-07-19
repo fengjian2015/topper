@@ -251,6 +251,10 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                     intent.putExtra("type",1);
                     intent.putExtra("roomId",roomId);
                     startActivity(intent);
+                }else if(getString(R.string.business_card).equals(name)){
+                    Intent intent=new Intent(ConversationActivity.this,SelectFriendGetActivity.class);
+                    intent.putExtra("roomId",roomId);
+                    startActivity(intent);
                 }
             }
         });
@@ -408,7 +412,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         mEkbEmoticonsKeyboard.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                if (actionId == EditorInfo.IME_ACTION_SEND||actionId==EditorInfo.IME_NULL) {
                     sendMessage(mEkbEmoticonsKeyboard.getEtChat().getText().toString());
                     mEkbEmoticonsKeyboard.getEtChat().setText("");
                 }

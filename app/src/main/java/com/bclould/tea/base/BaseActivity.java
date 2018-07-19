@@ -30,8 +30,6 @@ import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.FingerprintUtil;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
-import com.umeng.message.PushAgent;
-
 import java.util.List;
 
 import static com.bclould.tea.ui.activity.PayPwSelectorActivity.FINGERPRINT_PW_SELE;
@@ -54,7 +52,6 @@ public class BaseActivity extends SwipeActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PushAgent.getInstance(this).onAppStart();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             getWindow().setStatusBarColor(getResources().getColor(R.color.white));
@@ -118,7 +115,6 @@ public class BaseActivity extends SwipeActivity {
             }
             UtilTool.Log("ACTIVITY", "程序从后台唤醒");
         }
-//        UmManage.getInstance().mobclickAgent.onResume(this);
     }
 
     private void showGestureDialog() {
@@ -186,7 +182,6 @@ public class BaseActivity extends SwipeActivity {
     @Override
     public void onPause() {
         super.onPause();
-//        UmManage.getInstance().mobclickAgent.onPause(this);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,17 +26,22 @@ import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.AuatarListInfo;
+import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.NewFriendInfo;
 import com.bclould.tea.model.QrRedInfo;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.activity.AddFriendActivity;
+import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tea.ui.activity.GroupListActivity;
 import com.bclould.tea.ui.activity.NewFriendActivity;
+import com.bclould.tea.ui.activity.RemarkActivity;
 import com.bclould.tea.ui.activity.ScanQRCodeActivity;
 import com.bclould.tea.ui.activity.SearchActivity;
+import com.bclould.tea.ui.activity.SelectConversationActivity;
 import com.bclould.tea.ui.activity.SendQRCodeRedActivity;
 import com.bclould.tea.ui.adapter.FriendListRVAdapter;
+import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
@@ -66,14 +72,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static android.app.Activity.RESULT_OK;
+import static com.bclould.tea.ui.adapter.ChatAdapter.TO_CARD_MSG;
 
 /**
  * Created by GA on 2017/9/19.
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class FriendListFragment extends Fragment {
-
+public class FriendListFragment extends Fragment implements FriendListRVAdapter.OnclickListener{
 
     public static final String NEWFRIEND = "new_friend";
     public static FriendListFragment instance = null;
@@ -332,7 +338,8 @@ public class FriendListFragment extends Fragment {
 
     private void initRecylerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mFriendListRVAdapter = new FriendListRVAdapter(getContext(), mUsers, mMgr, mRlTitle);
+        mFriendListRVAdapter = new FriendListRVAdapter(getContext(), mUsers, mMgr);
+        mFriendListRVAdapter.setOnClickListener(this);
         mRecyclerView.setAdapter(mFriendListRVAdapter);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -446,5 +453,65 @@ public class FriendListFragment extends Fragment {
                 }
             });
         }
+    }
+
+    @Override
+    public void onclick(int position) {
+        Intent intent = new Intent(getContext(), ConversationActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("name",mUsers.get(position).getUserName());
+        bundle.putString("user", mUsers.get(position).getUser());
+        intent.putExtras(bundle);
+        mMgr.updateNumber(mUsers.get(position).getUser(), 0);
+        EventBus.getDefault().post(new MessageEvent(getContext().getString(R.string.dispose_unread_msg)));
+        getContext().startActivity(intent);
+    }
+
+    @Override
+    public void onLongClick(int position) {
+        String remark=mUsers.get(position).getRemark();
+        if(StringUtils.isEmpty(remark)){
+            remark=mUsers.get(position).getUserName();
+        }
+        showRemarkDialog(mUsers.get(position).getUserName(), remark, mUsers.get(position).getUser());
+    }
+
+    private void showRemarkDialog(final String name, final String remark, final String user) {
+        List<String> list = Arrays.asList(new String[]{getContext().getString(R.string.updata_remark),getContext().getString(R.string.send_card)});
+        final MenuListPopWindow menu = new MenuListPopWindow(getContext(), list);
+        menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
+            @Override
+            public void onclickitem(int position) {
+                Intent intent;
+                switch (position){
+                    case 0:
+                        menu.dismiss();
+                        break;
+                    case 1:
+                        menu.dismiss();
+                        intent=new Intent(getContext(), RemarkActivity.class);
+                        intent.putExtra("name",name);
+                        intent.putExtra("remark",remark);
+                        intent.putExtra("user",user);
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        menu.dismiss();
+                        UserInfo info = mMgr.queryUser(user);
+                        intent = new Intent(getContext(), SelectConversationActivity.class);
+                        intent.putExtra("type", 2);
+                        MessageInfo messageInfo=new MessageInfo();
+                        messageInfo.setHeadUrl(info.getPath());
+                        messageInfo.setMessage(name);
+                        messageInfo.setCardUser(user);
+                        intent.putExtra("msgType",TO_CARD_MSG);
+                        intent.putExtra("messageInfo", messageInfo);
+                        startActivity(intent);
+                        break;
+                }
+            }
+        });
+        menu.setColor(Color.BLACK);
+        menu.showAtLocation();
     }
 }

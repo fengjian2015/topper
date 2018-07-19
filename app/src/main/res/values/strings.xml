@@ -1099,4 +1099,10 @@
     <string name="cannot_open">無法打開頁面</string>
     <string name="dynamic_uploading">動態上傳</string>
     <string name="publish_error">發佈失敗</string>
+    <string name="view_collection_details">查看領取詳情</string>
+    <string name="hand_slow_red_envelope_over">手慢了，紅包派完了</string>
+    <string name="red_envelope_expired">該紅包已超過24小時。如已領取，可在“我的資產”中查看</string>
+    <string name="please_choose">請選擇</string>
+    <string name="red_envelope">的紅包</string>
+    <string name="have_deposited_my_assets">已存入我的資產，可用於交易</string>
 </resources>

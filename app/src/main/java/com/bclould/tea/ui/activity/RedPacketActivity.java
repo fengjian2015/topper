@@ -57,8 +57,6 @@ public class RedPacketActivity extends BaseActivity {
     LinearLayout mLlDetails;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
-    @Bind(R.id.tv_hint)
-    TextView mTvHint;
     private String mCoin;
     private String mCount;
     private String mRemark;
@@ -101,30 +99,30 @@ public class RedPacketActivity extends BaseActivity {
             mCoin = grabRedInfo.getData().getCoin_name();
             mRemark = grabRedInfo.getData().getIntro();
             List<GrabRedInfo.DataBean.LogBean> mLogBeanList = grabRedInfo.getData().getLog();
-            if (who == 0) {
-                if (mLogBeanList.size() == 0) {
-                    mTvHint.setText(getString(R.string.wait_get_red));
-                } else {
-                    mTvHint.setText(getString(R.string.ta_already_received));
-                }
-            } else if (who == 1) {
-                mTvHint.setText(getString(R.string.red_packet_hint));
-            }
+//            if (who == 0) {
+//                if (mLogBeanList.size() == 0) {
+//                    mTvHint.setText(getString(R.string.wait_get_red));
+//                } else {
+//                    mTvHint.setText(getString(R.string.ta_already_received));
+//                }
+//            } else if (who == 1) {
+//                mTvHint.setText(getString(R.string.red_packet_hint));
+//            }
             initRecylerView(mLogBeanList,grabRedInfo.getData());
 //            mBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             mTvCoin.setText(mCoin);
             mTvCount.setText(mCount);
             mTvCount.setSpacing(2);
             mTvRemark.setText(mRemark);
-            mTvName.setText(mName);
+            mTvName.setText(mName+getString(R.string.red_envelope));
 //            mIvTouxiang.setImageBitmap(mBitmap);
             UtilTool.getImage(this,mIvTouxiang,mDBRoomMember,mMgr,mUser);
-            if(grabRedInfo.getStatus()==2){
-                mTvHint.setText(getString(R.string.red_envelope_been_robbed));
-            }
-            mTvHint.setVisibility(View.VISIBLE);
+//            if(grabRedInfo.getStatus()==2){
+//                mTvHint.setText(getString(R.string.red_envelope_been_robbed));
+//            }
+//            mTvHint.setVisibility(View.VISIBLE);
         } else {
-            mTvHint.setVisibility(View.GONE);
+//            mTvHint.setVisibility(View.GONE);
             String id = intent.getStringExtra("id");
             RedRecordPresenter redRecordPresenter = new RedRecordPresenter(this);
             redRecordPresenter.signRpLog(Integer.parseInt(id), new RedRecordPresenter.CallBack2() {

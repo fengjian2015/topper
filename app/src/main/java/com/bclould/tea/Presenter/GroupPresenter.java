@@ -164,9 +164,11 @@ public class GroupPresenter {
                             new Thread(){
                                 @Override
                                 public void run() {
-                                    List<ConversationInfo> list = dbManager.queryConversationGroup();
+
                                     RoomMemberManage.getInstance().addRoomManage(baseInfo.getData());
                                     RoomMemberManage.getInstance().addRoomMember(baseInfo.getData());
+
+                                    List<ConversationInfo> list = dbManager.queryConversationGroup();
                                     for (ConversationInfo conversationInfo : list) {
                                         boolean isExist = false;
                                         A: for (GroupInfo.DataBean dataBean : baseInfo.getData()) {

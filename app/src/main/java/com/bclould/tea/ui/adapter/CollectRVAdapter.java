@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.bclould.tea.Presenter.CollectPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.model.CollectInfo;
+import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.activity.HTMLActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.ToastShow;
@@ -92,7 +93,9 @@ public class CollectRVAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     if (intentType == 1) {
-                        RoomManage.getInstance().getRoom(roomId).sendMessage(mDataBean.getUrl());
+                        MessageInfo messageInfo = new MessageInfo();
+                        messageInfo.setMessage(mDataBean.getUrl());
+                        RoomManage.getInstance().getRoom(roomId).sendHtml(messageInfo);
                         ((Activity) mContext).finish();
                     } else {
                         Intent intent = new Intent(mContext, HTMLActivity.class);

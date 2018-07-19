@@ -26,15 +26,9 @@ import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.Arrays;
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
-import static com.bclould.tea.ui.adapter.ChatAdapter.TO_CARD_MSG;
 
 /**
  * Created by GA on 2017/9/29.
@@ -46,12 +40,11 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
     private final Context mContext;
     private final List<UserInfo> mUsers;
     private final DBManager mMgr;
-    private RelativeLayout mRlTitle;
-    public FriendListRVAdapter(Context context, List<UserInfo> users, DBManager mgr, RelativeLayout mRlTitle) {
+    private OnclickListener mOnclickListener;
+    public FriendListRVAdapter(Context context, List<UserInfo> users, DBManager mgr) {
         mContext = context;
         mUsers = users;
         mMgr = mgr;
-        this.mRlTitle=mRlTitle;
     }
 
     /**
@@ -98,7 +91,7 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
         UserInfo mUserInfo;
         private String mUser;
         private String mName;
-
+        private  int position;
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -106,26 +99,24 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, ConversationActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("name", mName);
-                    bundle.putString("user", mUser);
-                    intent.putExtras(bundle);
-                    mMgr.updateNumber(mUser, 0);
-                    EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
-                    mContext.startActivity(intent);
+                    if(mOnclickListener!=null){
+                        mOnclickListener.onclick(position);
+                    }
                 }
             });
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showRemarkDialog( mName,mFriendChildName.getText().toString(),mUser);
+                    if(mOnclickListener!=null){
+                        mOnclickListener.onLongClick(position);
+                    }
                     return false;
                 }
             });
         }
 
         public void setData(UserInfo userInfo, int position) {
+            this.position=position;
             mUserInfo = userInfo;
             mUser = userInfo.getUser();
             mName= userInfo.getUserName();
@@ -150,42 +141,12 @@ public class FriendListRVAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private void showRemarkDialog(final String name, final String remark, final String user) {
-        List<String> list = Arrays.asList(new String[]{mContext.getString(R.string.updata_remark),mContext.getString(R.string.send_card)});
-        final MenuListPopWindow menu = new MenuListPopWindow(mContext, list);
-        menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
-            @Override
-            public void onclickitem(int position) {
-                Intent intent;
-                switch (position){
-                    case 0:
-                        menu.dismiss();
-                        break;
-                    case 1:
-                        menu.dismiss();
-                        intent=new Intent(mContext, RemarkActivity.class);
-                        intent.putExtra("name",name);
-                        intent.putExtra("remark",remark);
-                        intent.putExtra("user",user);
-                        mContext.startActivity(intent);
-                        break;
-                    case 2:
-                        menu.dismiss();
-                        UserInfo info = mMgr.queryUser(user);
-                        intent = new Intent(mContext, SelectConversationActivity.class);
-                        intent.putExtra("type", 2);
-                        MessageInfo messageInfo=new MessageInfo();
-                        messageInfo.setHeadUrl(info.getPath());
-                        messageInfo.setMessage(name);
-                        messageInfo.setCardUser(user);
-                        intent.putExtra("msgType",TO_CARD_MSG);
-                        intent.putExtra("messageInfo", messageInfo);
-                        mContext.startActivity(intent);
-                        break;
-                }
-            }
-        });
-        menu.setColor(Color.BLACK);
-        menu.showAtLocation();
+    public void setOnClickListener(OnclickListener onClickListener){
+        this.mOnclickListener=onClickListener;
+    }
+
+    public interface OnclickListener{
+        void onclick(int position);
+        void onLongClick(int position);
     }
 }

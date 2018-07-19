@@ -27,4 +27,5 @@
     <string name="location">位置</string>
     <string name="shooting">拍攝</string>
     <string name="collect">收藏</string>
+    <string name="business_card">名片</string>
 </resources>

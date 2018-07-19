@@ -18,17 +18,19 @@
             android:id="@+id/btn_otr_text"
             android:layout_width="@dimen/x68"
             android:layout_height="@dimen/y68"
-            android:layout_alignParentTop="true"
             android:layout_marginLeft="@dimen/x24"
-            android:src="@drawable/icon_encrypt_no"/>
+            android:src="@drawable/icon_encrypt_no"
+            android:layout_alignBottom="@+id/rl_input"
+            android:visibility="gone"
+            />
         <!-- 语音/文字切换-->
         <ImageView
             android:id="@+id/btn_voice_or_text"
             android:layout_width="@dimen/x68"
             android:layout_height="@dimen/y68"
-            android:layout_alignParentTop="true"
             android:layout_toRightOf="@id/btn_otr_text"
             android:layout_marginLeft="@dimen/x24"
+            android:layout_alignBottom="@+id/rl_input"
             android:src="@drawable/btn_voice_or_text" />
 
         <!--语音输入-->
@@ -45,7 +47,8 @@
             android:focusableInTouchMode="true"
             android:text="@string/long_click_record"
             android:textColor="#727272"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            />
 
         <RelativeLayout
             android:id="@+id/rl_input"
@@ -74,7 +77,6 @@
                 android:maxLines="4"
                 android:paddingLeft="@dimen/x16"
                 android:imeOptions="actionSend"
-                android:singleLine="true"
                 android:textSize="@dimen/x32"/>
 
             <!--表情-->
@@ -83,9 +85,10 @@
                 android:layout_width="@dimen/x48"
                 android:layout_height="@dimen/y48"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/x20"
-                android:src="@drawable/icon_face_nomal"/>
+                android:src="@drawable/icon_face_nomal"
+                android:layout_alignBottom="@+id/et_chat"
+                />
         </RelativeLayout>
 
         <RelativeLayout
@@ -93,8 +96,8 @@
             android:layout_width="@dimen/x116"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:focusableInTouchMode="true"
+            android:layout_alignBottom="@+id/rl_input"
             android:orientation="horizontal">
 
             <!--apps 功能-->

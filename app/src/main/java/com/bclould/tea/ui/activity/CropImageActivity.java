@@ -9,16 +9,12 @@ import android.support.annotation.RequiresApi;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
-
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
-import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.UtilTool;
 import com.isseiaoki.simplecropview.CropImageView;
-import com.umeng.commonsdk.debug.E;
 
 import java.io.File;
 

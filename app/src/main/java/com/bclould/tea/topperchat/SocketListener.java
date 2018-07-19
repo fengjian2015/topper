@@ -55,7 +55,6 @@ import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tea.xmpp.RoomManage;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.umeng.message.UTrack;
 
 import org.greenrobot.eventbus.EventBus;
 import org.msgpack.jackson.dataformat.MessagePackFactory;
@@ -307,7 +306,6 @@ public class SocketListener {
         WsConnection.getInstance().setLoginConnection(false);
         new PingThread(context).start();
         new PingThreadRequest(context).start();
-        UmManage.getInstance().setAlias();
         XGManage.getInstance().setAlias();
     }
 

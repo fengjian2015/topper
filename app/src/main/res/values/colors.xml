@@ -50,5 +50,6 @@
     <color name="blueberry">#243042</color>
     <color name="ashen">#8C929B</color>
     <color name="blue3">#1F6BFF</color>
-
+    <color name="white1">#80ffffff</color>
+    <color name="red_envelope">#EACD99</color>
 </resources>

@@ -9,12 +9,9 @@ import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.GroupMemberInfo;
-import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.utils.UtilTool;
-import com.umeng.commonsdk.debug.E;
-
 import java.util.ArrayList;
 import java.util.List;
 

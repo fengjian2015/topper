@@ -145,6 +145,7 @@ public class UnclaimedRedListAdapter extends RecyclerView.Adapter {
         mCurrencyDialog.show();
         mCurrencyDialog.setCanceledOnTouchOutside(false);
         ImageView touxiang = (ImageView) mCurrencyDialog.findViewById(R.id.iv_touxiang);
+        TextView tvDetail=mCurrencyDialog.findViewById(R.id.tv_detail);
         TextView from = (TextView) mCurrencyDialog.findViewById(R.id.tv_from);
         TextView name = (TextView) mCurrencyDialog.findViewById(R.id.tv_name);
         TextView tvRemark = (TextView) mCurrencyDialog.findViewById(R.id.tv_remark);

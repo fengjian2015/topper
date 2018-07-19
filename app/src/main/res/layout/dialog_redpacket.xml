@@ -1,66 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/x600"
     android:layout_height="@dimen/y900"
     android:layout_gravity="center"
     android:background="@mipmap/img_redpacket_bg"
-    android:orientation="vertical">
-
-    <ImageView
-        android:id="@+id/iv_bark"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/x30"
-        android:src="@mipmap/icon_topbar_cancel"/>
-
-    <ImageView
-        android:id="@+id/iv_touxiang"
-        android:layout_width="@dimen/x100"
-        android:layout_height="@dimen/x100"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y30"/>
-
+    >
     <TextView
-        android:id="@+id/tv_name"
+        android:id="@+id/tv_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y30"
         android:textColor="#EACD99"
-        android:textSize="@dimen/x30"/>
+        android:textSize="@dimen/x30"
+        android:text="@string/view_collection_details"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="@dimen/y30"
+        android:drawablePadding="@dimen/x5"
+        android:drawableRight="@mipmap/icon_redpecket_arrowright"
+        android:visibility="gone"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/iv_bark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/x30"
+            android:src="@mipmap/icon_topbar_cancel"/>
 
-    <TextView
-        android:id="@+id/tv_from"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y20"
-        android:textColor="#EACD99"
-        android:textSize="@dimen/x30"/>
+        <ImageView
+            android:id="@+id/iv_touxiang"
+            android:layout_width="@dimen/x100"
+            android:layout_height="@dimen/x100"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y30"/>
 
-    <TextView
-        android:id="@+id/tv_remark"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y50"
-        android:textColor="#EACD99"
-        android:singleLine="true"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:textSize="@dimen/x45"/>
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y30"
+            android:textColor="@color/red_envelope"
+            android:textSize="@dimen/x30"/>
 
-    <Button
-        android:id="@+id/btn_open"
-        android:layout_width="@dimen/x180"
-        android:layout_height="@dimen/x180"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y50"
-        android:background="@mipmap/ixon_open_redpacket"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x80"/>
+        <TextView
+            android:id="@+id/tv_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y20"
+            android:textColor="@color/red_envelope"
+            android:textSize="@dimen/x30"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tv_remark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y50"
+            android:textColor="@color/red_envelope"
+            android:maxLines="2"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:textSize="@dimen/x40"/>
+
+        <Button
+            android:id="@+id/btn_open"
+            android:layout_width="@dimen/x180"
+            android:layout_height="@dimen/x180"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y50"
+            android:background="@mipmap/ixon_open_redpacket"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x80"/>
+    </LinearLayout>
+
+</RelativeLayout>
