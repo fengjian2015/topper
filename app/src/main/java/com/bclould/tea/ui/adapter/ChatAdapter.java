@@ -2551,7 +2551,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     }
 
     private void getHtmlContent(final MessageInfo messageInfo,final int position){
-        if(!StringUtils.isEmpty(messageInfo.getHeadUrl())&&!StringUtils.isEmpty(messageInfo.getContent())&&!StringUtils.isEmpty(messageInfo.getTitle())){
+        if(!StringUtils.isEmpty(messageInfo.getContent())&&!StringUtils.isEmpty(messageInfo.getTitle())){
             return;
         }
         new Thread(){

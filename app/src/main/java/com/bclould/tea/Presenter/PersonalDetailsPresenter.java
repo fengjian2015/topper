@@ -11,11 +11,12 @@ import com.bclould.tea.model.AuatarListInfo;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.NewFriendInfo;
 import com.bclould.tea.model.RemarkListInfo;
+import com.bclould.tea.model.UserDataInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.ActivityUtil;
+import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
-import com.bclould.tea.model.UserDataInfo;
 
 import java.util.List;
 
@@ -379,6 +380,40 @@ public class PersonalDetailsPresenter {
                         if (userDataInfo.getStatus() == 1) {
                             callBack4.send(userDataInfo.getData());
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void deleteReview(int id, final GroupPresenter.CallBack callBack) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .deleteReview(UtilTool.getToken(), id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            callBack.send();
+                        }
+                        ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
                     }
 
                     @Override

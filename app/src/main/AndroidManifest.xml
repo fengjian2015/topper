@@ -928,10 +928,6 @@
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
-        <service
-            android:name=".service.ImageUpService"
-            android:enabled="true" />
-
         <activity
             android:name=".ui.activity.HTMLActivity"
             android:launchMode="singleTask"
@@ -944,6 +940,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
+
         <activity
             android:name=".ui.activity.SetGesturePWActivity"
             android:launchMode="singleTop"

@@ -40,6 +40,8 @@ public class FileUploadingActivity extends BaseActivity {
     TextView mTvTitle;
     @Bind(R.id.progressBar)
     ProgressBar mProgressBar;
+    @Bind(R.id.tv_progress)
+    TextView mTvProgress;
     private FileUploadingPresenter mFileUploadingPresenter;
 
     @Override
@@ -81,6 +83,7 @@ public class FileUploadingActivity extends BaseActivity {
             int progress = (int) (Double.parseDouble(currentSize + "") / Double.parseDouble(totalSize + "") * 100);
             UtilTool.Log("動態", "當前進度：" + currentSize + "===總進度：" + totalSize);
             mProgressBar.setProgress(progress);
+            mTvProgress.setText(progress + "%");
         }
 
         @Override

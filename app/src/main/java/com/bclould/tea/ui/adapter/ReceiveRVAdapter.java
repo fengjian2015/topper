@@ -136,7 +136,7 @@ public class ReceiveRVAdapter extends RecyclerView.Adapter {
                         mTvName.setText(mContext.getString(R.string.lucky_red_packets));
                     }
                 } else {
-                    mTvName.setText(mContext.getString(R.string.qr_code_red_packet));
+                    mTvName.setText(mContext.getString(R.string.qr_code_red_package));
                 }
             }
         }

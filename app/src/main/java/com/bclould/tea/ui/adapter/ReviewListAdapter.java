@@ -10,12 +10,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.model.ReviewInfo;
+import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.UtilTool;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -26,13 +30,15 @@ import butterknife.ButterKnife;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class ReviewListAdapter extends RecyclerView.Adapter {
 
+    private final GroupPresenter mGroupPresenter;
     private  Context mContext;
     private  List<ReviewInfo.DataBean> reviewInfos;
 
 
-    public ReviewListAdapter(Context reviewListActivity, ArrayList<ReviewInfo.DataBean> reviewInfos) {
+    public ReviewListAdapter(Context reviewListActivity, ArrayList<ReviewInfo.DataBean> reviewInfos, GroupPresenter groupPresenter) {
         this.mContext=reviewListActivity;
         this.reviewInfos=reviewInfos;
+        mGroupPresenter = groupPresenter;
     }
 
     @Override
@@ -49,7 +55,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
         if (reviewInfos.size() != 0 )
-            viewHolder.setData(reviewInfos.get(position));
+            viewHolder.setData(reviewInfos.get(position), position);
     }
 
     @Override
@@ -69,6 +75,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter {
         @Bind(R.id.btn_consent)
         Button mBtnConsent;
         private ReviewInfo.DataBean mAddRequestInfo;
+        private int mPosition;
 
         ViewHolder(View view) {
             super(view);
@@ -93,9 +100,17 @@ public class ReviewListAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showDeleteDialog(mPosition);
+                    return false;
+                }
+            });
         }
 
-        public void setData(ReviewInfo.DataBean addRequestInfo) {
+        public void setData(ReviewInfo.DataBean addRequestInfo, int position) {
+            mPosition = position;
             mBtnConsent.setVisibility(View.VISIBLE);
             mAddRequestInfo = addRequestInfo;
             if (addRequestInfo.getTo_avatar().isEmpty()) {
@@ -116,5 +131,34 @@ public class ReviewListAdapter extends RecyclerView.Adapter {
                 mBtnConsent.setEnabled(false);
             }
         }
+    }
+
+    private void showDeleteDialog(final int position) {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(mContext.getString(R.string.delete_group_request_hint));
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        confirm.setTextColor(mContext.getResources().getColor(R.color.red));
+        confirm.setText(mContext.getString(R.string.delete));
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+                mGroupPresenter.deleteGroupReview(reviewInfos.get(position).getId(), reviewInfos.get(position).getGroup_id(), new GroupPresenter.CallBack() {
+                    @Override
+                    public void send() {
+                        reviewInfos.remove(position);
+                        notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
     }
 }

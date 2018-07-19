@@ -1351,4 +1351,21 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("group_id") int group_id
     );
+
+    //刪除加群請求
+    @FormUrlEncoded
+    @POST("chat/room/review/del")
+    Observable<BaseInfo> deleteGroupReview(
+            @Header("Authorization") String token,
+            @Field("id") int id,
+            @Field("group_id") int group_id
+    );
+
+    //刪除添加好友請求
+    @FormUrlEncoded
+    @POST("chat/new/friend/del")
+    Observable<BaseInfo> deleteReview(
+            @Header("Authorization") String token,
+            @Field("id") int id
+    );
 }

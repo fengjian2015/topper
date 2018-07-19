@@ -31,6 +31,7 @@ public class ReviewListActivity extends BaseActivity {
     private ArrayList<ReviewInfo.DataBean> mReviewInfos = new ArrayList<>();
     private ReviewListAdapter mReviewListAdapter;
     private String roomId;
+    private GroupPresenter mGroupPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +39,14 @@ public class ReviewListActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         setContentView(R.layout.activity_review_list);
         ButterKnife.bind(this);
+        mGroupPresenter = new GroupPresenter(this);
         roomId = getIntent().getStringExtra("roomId");
         initRecyclerView();
         initData();
     }
 
     private void initData() {
-        new GroupPresenter(this).getReviewList(Integer.parseInt(roomId), new GroupPresenter.CallBack3() {
+        mGroupPresenter.getReviewList(Integer.parseInt(roomId), new GroupPresenter.CallBack3() {
             @Override
             public void send(ReviewInfo baseInfo) {
                 mRecyclerView.setVisibility(View.VISIBLE);
@@ -65,7 +67,7 @@ public class ReviewListActivity extends BaseActivity {
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mReviewListAdapter = new ReviewListAdapter(this, mReviewInfos);
+        mReviewListAdapter = new ReviewListAdapter(this, mReviewInfos,mGroupPresenter );
         mRecyclerView.setAdapter(mReviewListAdapter);
     }
 

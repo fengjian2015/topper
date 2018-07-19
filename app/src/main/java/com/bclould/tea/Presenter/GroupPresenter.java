@@ -16,14 +16,12 @@ import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.GroupMemberInfo;
 import com.bclould.tea.model.ReviewInfo;
 import com.bclould.tea.model.RoomManageInfo;
-import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.model.UnclaimedRedInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.topperchat.RoomMemberManage;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
-import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.RoomManage;
@@ -733,6 +731,42 @@ public class GroupPresenter {
                     public void onError(Throwable e) {
                         if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
                         callBack.error();
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void deleteGroupReview(int id, int group_id, final CallBack callBack) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .deleteGroupReview(UtilTool.getToken(), id, group_id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            callBack.send();
+                        }
+                        ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
                         hideDialog();
                     }
 

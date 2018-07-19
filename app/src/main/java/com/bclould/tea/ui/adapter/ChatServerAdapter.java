@@ -237,7 +237,7 @@ public class ChatServerAdapter extends RecyclerView.Adapter {
             if (messageInfo.getStatus() == 1) {
                 mTvRedType.setText(mContext.getString(R.string.ordinary_red_packet));
             } else if (messageInfo.getStatus() == 2) {
-                mTvRedType.setText(mContext.getString(R.string.qr_code_red_packet));
+                mTvRedType.setText(mContext.getString(R.string.qr_code_red_package));
             }
             mLlRedExpriedMsg.setOnClickListener(new View.OnClickListener() {
                 @Override
