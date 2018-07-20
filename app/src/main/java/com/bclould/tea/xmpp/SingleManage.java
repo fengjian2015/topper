@@ -464,7 +464,7 @@ public class SingleManage implements Room {
     private void sendFileAfterMessage(String key, String postfix, String newFile, int mId, String msgId, long createTime) {
         try {
             String postfixs = key.substring(key.lastIndexOf("."));
-            byte[] bytes=null;
+            byte[] bytes=new byte[]{};
 //            if (".gif".equals(postfixs) || ".GIF".equals(postfixs)) {
 //                Bitmap bitmap= BitmapFactory.decodeFile(newFile);
 //                ByteArrayOutputStream baos = new ByteArrayOutputStream();

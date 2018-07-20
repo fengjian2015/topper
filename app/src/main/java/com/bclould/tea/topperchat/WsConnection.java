@@ -100,9 +100,18 @@ public class WsConnection {
                                 return;
                             }
                             if(mWebSocketArrayList.size()>0){
+                                //這種情況必定會被踢出，全部斷開
                                 ws=mWebSocketArrayList.get(0);
+                                if (ws != null) {
+                                    // 移除连接监听
+                                    ws.close();
+                                    ws.end();
+                                    ws=null;
+                                }
+                                ws=webSocket;
                                 closeConnection();
                                 mWebSocketArrayList.clear();
+                                return;
                             }
                             ws = webSocket;
                             mWebSocketArrayList.add(ws);
