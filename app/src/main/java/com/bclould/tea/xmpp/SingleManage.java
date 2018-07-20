@@ -465,14 +465,14 @@ public class SingleManage implements Room {
         try {
             String postfixs = key.substring(key.lastIndexOf("."));
             byte[] bytes=null;
-            if (".gif".equals(postfixs) || ".GIF".equals(postfixs)) {
-                Bitmap bitmap= BitmapFactory.decodeFile(newFile);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                bytes=baos.toByteArray();
-            }else{
-                bytes = UtilTool.readStream(newFile);
-            }
+//            if (".gif".equals(postfixs) || ".GIF".equals(postfixs)) {
+//                Bitmap bitmap= BitmapFactory.decodeFile(newFile);
+//                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+//                bytes=baos.toByteArray();
+//            }else{
+//                bytes = UtilTool.readStream(newFile);
+//            }
             MessageInfo sendMessage = new MessageInfo();
             sendMessage.setKey(key);
             int type = 0;

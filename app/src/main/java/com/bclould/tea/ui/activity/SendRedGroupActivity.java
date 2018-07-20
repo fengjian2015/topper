@@ -105,7 +105,7 @@ public class SendRedGroupActivity extends BaseActivity {
     private double singleMoney;
     private String mCoin;
     private DBRoomMember mDBRoomMember;
-
+    private String logo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -288,7 +288,7 @@ public class SendRedGroupActivity extends BaseActivity {
         } else {
             mCount = Double.parseDouble(mEtMoney.getText().toString()) * Double.parseDouble(mEtNumber.getText().toString());
         }
-        pwdDialog.showDialog(UtilTool.removeZero(mCount + ""),coins,coins+getString(R.string.red_package),null,null);
+        pwdDialog.showDialog(UtilTool.removeZero(mCount + ""),coins,coins+getString(R.string.red_package),logo,null);
     }
 
     private void sendRed(String password) {
@@ -394,6 +394,7 @@ public class SendRedGroupActivity extends BaseActivity {
         mTvCurrency.setText(name);
         mTvCoin.setText(name);
         Glide.with(this).load(logo).into(mImageLogo);
+        this.logo=logo;
     }
 
 }

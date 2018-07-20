@@ -93,7 +93,7 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
                         activity.hideDialog(mData);
                     } else if (mContext instanceof PushBuyingActivity) {
                         PushBuyingActivity activity = (PushBuyingActivity) mContext;
-                        activity.hideDialog2(mName, mId, mServiceCharge);
+                        activity.hideDialog2(mName, mId, mServiceCharge,mLogo);
                     } else if (mContext instanceof StartGuessActivity) {
                         StartGuessActivity activity = (StartGuessActivity) mContext;
                         activity.hideDialog2(mData);
@@ -102,16 +102,16 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
                         activity.hideDialog(mName,mLogo);
                     } else if (mContext instanceof PaymentActivity) {
                         PaymentActivity activity = (PaymentActivity) mContext;
-                        activity.hideDialog(mName, mId);
+                        activity.hideDialog(mName, mId,mLogo);
                     } else if (mContext instanceof ChatTransferActivity) {
                         ChatTransferActivity activity = (ChatTransferActivity) mContext;
-                        activity.hideDialog(mName, mId);
+                        activity.hideDialog(mName, mId,mLogo);
                     } else if (mContext instanceof SendQRCodeRedActivity) {
                         SendQRCodeRedActivity activity = (SendQRCodeRedActivity) mContext;
                         activity.hideDialog(mName, mId,mLogo);
                     } else if (mContext instanceof RewardActivity) {
                         RewardActivity activity = (RewardActivity) mContext;
-                        activity.hideDialog(mName, mId);
+                        activity.hideDialog(mName, mId,mLogo);
                     }else if(mContext instanceof SendRedGroupActivity){
                         SendRedGroupActivity activity = (SendRedGroupActivity) mContext;
                         activity.hideDialog(mName,mLogo);

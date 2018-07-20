@@ -103,7 +103,7 @@ public class RewardActivity extends BaseActivity {
     private String mName;
     private int mDynamic_id;
     private PWDDialog pwdDialog;
-
+    private String logo;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -204,7 +204,7 @@ public class RewardActivity extends BaseActivity {
             }
         });
         String count = mEtCount.getText().toString();
-        pwdDialog.showDialog(count,mCoinName,mCoinName + getString(R.string.reward),null,null);
+        pwdDialog.showDialog(count,mCoinName,mCoinName + getString(R.string.reward),logo,null);
     }
 
     private void reward(String password) {
@@ -259,7 +259,8 @@ public class RewardActivity extends BaseActivity {
         tvTitle.setText(getString(R.string.selector_coin));
     }
 
-    public void hideDialog(String name, int id) {
+    public void hideDialog(String name, int id, String logo) {
+        this.logo=logo;
         mId = id;
         mCoinName = name;
         mBottomDialog.dismiss();

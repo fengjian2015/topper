@@ -76,7 +76,6 @@
                     android:layout_width="@dimen/x60"
                     android:layout_height="@dimen/x60"
                     android:layout_toLeftOf="@+id/tv_currency"
-                    android:layout_marginRight="@dimen/x20"
                     android:layout_centerVertical="true"/>
                 <ImageView
                     android:id="@+id/iv"

@@ -103,7 +103,6 @@ public class StartGuessActivity extends BaseActivity {
     private Dialog mBottomDialog;
     private int mId;
     private PWDDialog pwdDialog;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

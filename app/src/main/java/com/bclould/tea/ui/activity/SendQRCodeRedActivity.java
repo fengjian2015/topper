@@ -96,7 +96,7 @@ public class SendQRCodeRedActivity extends BaseActivity {
     private ArrayList<Map<String, String>> valueList;
     private RedPacketPresenter mRedPacketPresenter;
     private Dialog mBottomDialog;
-
+    private String logo;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -209,7 +209,7 @@ public class SendQRCodeRedActivity extends BaseActivity {
         });
         String coins = mTvCurrency.getText().toString();
         double count =UtilTool.parseDouble(mEtRedCount.getText().toString()) *UtilTool.parseDouble(mEtMoneyCount.getText().toString());
-        pwdDialog.showDialog(UtilTool.removeZero(count + ""),coins,coins+getString(R.string.red_package),null,null);
+        pwdDialog.showDialog(UtilTool.removeZero(count + ""),coins,coins+getString(R.string.red_package),logo,null);
     }
 
     private void showDialog() {
@@ -258,6 +258,7 @@ public class SendQRCodeRedActivity extends BaseActivity {
     }
 
     public void hideDialog(String name, int id, String logo) {
+        this.logo=logo;
         mBottomDialog.dismiss();
         mTvCoin.setText(name);
         mTvCurrency.setText(name);

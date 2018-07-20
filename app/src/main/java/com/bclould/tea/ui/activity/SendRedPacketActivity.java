@@ -100,6 +100,7 @@ public class SendRedPacketActivity extends BaseActivity {
     private double mCount;
     private String mCoin;
     private PWDDialog pwdDialog;
+    private String logo;
 //    List<CoinInfo.DataBean> mCoinList = new ArrayList<>();
 
     @Override
@@ -195,7 +196,7 @@ public class SendRedPacketActivity extends BaseActivity {
         });
         String coins = mTvCurrency.getText().toString();
         String count = mEtCount.getText().toString();
-        pwdDialog.showDialog(count,coins,coins + getString(R.string.red_package),null,null);
+        pwdDialog.showDialog(count,coins,coins + getString(R.string.red_package),logo,null);
     }
 
 
@@ -289,6 +290,7 @@ public class SendRedPacketActivity extends BaseActivity {
 
     public void hideDialog(String name, String logo) {
         mBottomDialog.dismiss();
+        this.logo=logo;
         mTvCurrency.setText(name);
         mTvCoin.setText(name);
         Glide.with(this).load(logo).into(mImageLogo);

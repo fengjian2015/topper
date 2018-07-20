@@ -110,6 +110,7 @@ public class PaymentActivity extends BaseActivity {
     private String mCode;
     private String mAvatar;
     private PWDDialog pwdDialog;
+    private String logo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -313,7 +314,7 @@ public class PaymentActivity extends BaseActivity {
         }
         String count = mEtCount.getText().toString();
         String coinName = mTvCoin.getText().toString();
-        pwdDialog.showDialog(count,coinName,desc,null,null);
+        pwdDialog.showDialog(count,coinName,desc,logo,null);
     }
 
     //支付給商家
@@ -459,8 +460,9 @@ public class PaymentActivity extends BaseActivity {
         tvTitle.setText(getString(R.string.selector_coin));
     }
 
-    public void hideDialog(String name, int id) {
+    public void hideDialog(String name, int id, String logo) {
         mId = id;
+        this.logo=logo;
         mCoinName = name;
         mBottomDialog.dismiss();
         mTvCoin.setText(name);

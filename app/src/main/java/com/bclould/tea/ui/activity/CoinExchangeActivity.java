@@ -117,6 +117,7 @@ public class CoinExchangeActivity extends BaseActivity {
     private String mPrice = "";
     private String mServiceCharge;
     private PWDDialog pwdDialog;
+    private String logo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -361,7 +362,7 @@ public class CoinExchangeActivity extends BaseActivity {
         });
         String coins = mTvCoin.getText().toString();
         String count = mEtCount.getText().toString();
-        pwdDialog.showDialog(count,coins,coins + getString(R.string.exchange) + getString(R.string.usdt),null,getString(R.string.service_fee_hint) + Double.parseDouble(mServiceCharge) * 100 + "%" + getString(R.string.sxf));
+        pwdDialog.showDialog(count,coins,coins + getString(R.string.exchange) + getString(R.string.usdt),logo,getString(R.string.service_fee_hint) + Double.parseDouble(mServiceCharge) * 100 + "%" + getString(R.string.sxf));
     }
 
     private void exchange(String password) {
@@ -442,6 +443,7 @@ public class CoinExchangeActivity extends BaseActivity {
     }
 
     public void hideDialog(String name, int id, String logo, String coin_over, String serviceCharge) {
+        this.logo=logo;
         mCoin.clear();
         mCoin.add(name);
         initListData(name);

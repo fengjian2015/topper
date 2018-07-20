@@ -513,12 +513,12 @@ public class MultiManage implements Room{
         try {
             String postfixs = key.substring(key.lastIndexOf("."));
             byte[] bytes=null;
-            if (".gif".equals(postfixs) || ".GIF".equals(postfixs)) {
-                Bitmap bitmap= BitmapFactory.decodeFile(newFile);
-                bytes=UtilTool.comp(bitmap);
-            }else{
-                bytes = UtilTool.readStream(newFile);
-            }
+//            if (".gif".equals(postfixs) || ".GIF".equals(postfixs)) {
+//                Bitmap bitmap= BitmapFactory.decodeFile(newFile);
+//                bytes=UtilTool.comp(bitmap);
+//            }else{
+//                bytes = UtilTool.readStream(newFile);
+//            }
             MessageInfo sendMessage = new MessageInfo();
             sendMessage.setKey(key);
             int type = 0;

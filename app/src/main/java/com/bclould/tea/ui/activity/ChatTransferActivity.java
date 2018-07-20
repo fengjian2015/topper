@@ -97,6 +97,7 @@ public class ChatTransferActivity extends BaseActivity {
     private String mCoin;
     private DBRoomManage mdbRoomManage;
     private PWDDialog pwdDialog;
+    private String logo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -203,7 +204,7 @@ public class ChatTransferActivity extends BaseActivity {
         });
         String coins = mTvCoin.getText().toString();
         String count = mEtCount.getText().toString();
-        pwdDialog.showDialog(count,coins,coins + getString(R.string.transfer),null,null);
+        pwdDialog.showDialog(count,coins,coins + getString(R.string.transfer),logo,null);
     }
 
     private void transfer(String password) {
@@ -284,9 +285,10 @@ public class ChatTransferActivity extends BaseActivity {
 
     }
 
-    public void hideDialog(String name, int id) {
+    public void hideDialog(String name, int id, String logo) {
         mBottomDialog.dismiss();
         mTvCoin.setText(name);
+        this.logo=logo;
     }
 
     public void sendMessage() {

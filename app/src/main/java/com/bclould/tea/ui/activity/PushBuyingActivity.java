@@ -193,6 +193,7 @@ public class PushBuyingActivity extends BaseActivity {
     private String mServiceCharge = "";
     private String mServiceCharge2 = "";
     private PWDDialog pwdDialog;
+    private String logo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -475,7 +476,7 @@ public class PushBuyingActivity extends BaseActivity {
             desc=getString(R.string.push_buy) + coins + getString(R.string.msg);
         else
             desc=getString(R.string.push_sell) + coins + getString(R.string.msg);
-        pwdDialog.showDialog(count,coins,desc,null,null);
+        pwdDialog.showDialog(count,coins,desc,logo,null);
     }
 
     private void pushing(String password) {
@@ -607,8 +608,9 @@ public class PushBuyingActivity extends BaseActivity {
     }
 
 
-    public void hideDialog2(String name, int id, String serviceCharge) {
+    public void hideDialog2(String name, int id, String serviceCharge, String logo) {
         mBottomDialog.dismiss();
+        this.logo=logo;
         mCoinName = name;
         initData(name);
         UtilTool.Log("手續費", serviceCharge);

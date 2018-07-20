@@ -261,6 +261,7 @@ public class PersonalDetailsPresenter {
 
     //刪除好友
     public void deleteFriend(String toco_id, final CallBack callBack) {
+        showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .deleteFriend(UtilTool.getToken(), toco_id)
@@ -274,6 +275,8 @@ public class PersonalDetailsPresenter {
 
                     @Override
                     public void onNext(BaseInfo baseInfo) {
+                        if(!ActivityUtil.isActivityOnTop((Activity) mContext))return;
+                        hideDialog();
                         if (baseInfo.getStatus() == 1) {
                             Toast.makeText(mContext, mContext.getString(R.string.delete_succeed), Toast.LENGTH_SHORT).show();
                             callBack.send();
