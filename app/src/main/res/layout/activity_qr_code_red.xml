@@ -2,14 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/redpacket4"
+              android:background="@color/shallow_gray"
               android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:background="@color/redpacket5">
 
         <ImageView
             android:id="@+id/bark"
@@ -22,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/create_qr_code_red"
+            android:text="@string/send_red_envelope"
             android:textColor="@color/white"
             android:textSize="@dimen/x32"/>
 
@@ -42,65 +43,61 @@
     <TextView
         style="@style/HCutOffRule"/>
 
-    <RelativeLayout
-        android:id="@+id/rl_red"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y60"
-        android:background="@mipmap/img_red1">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/rl_red"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="@dimen/x30"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginTop="@dimen/y60"
+                android:paddingLeft="@dimen/x30"
+                android:paddingRight="@dimen/x30"
+                android:paddingTop="@dimen/y40"
+                android:paddingBottom="@dimen/y40"
+                android:background="@mipmap/img_redpacket_bg">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/y70"
-            android:text="抢"
-            android:textColor="@color/white"
-            android:textSize="@dimen/x150"/>
+                <TextView
+                    android:id="@+id/tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/qe_code_red_explain"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_marginRight="@dimen/x20"
+                    android:textSize="@dimen/x30"/>
 
-        <ImageView
-            android:id="@+id/tv_qr_code"
-            android:layout_width="@dimen/x300"
-            android:layout_height="@dimen/x300"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/y366"/>
+                <ImageView
+                    android:id="@+id/tv_qr_code"
+                    android:layout_width="@dimen/x600"
+                    android:layout_height="@dimen/y600"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/tv"
+                    android:layout_marginTop="@dimen/y50"/>
 
-        <TextView
-            android:id="@+id/tv_hint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_qr_code"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/y60"
-            android:text="@string/qr_code_red_hint"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/x28"/>
-
-        <Button
-            android:id="@+id/btn_save_qr"
-            android:layout_width="@dimen/x200"
-            android:layout_height="@dimen/y60"
-            android:layout_below="@+id/tv_hint"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/y30"
-            android:background="@drawable/bg_register_shape"
-            android:text="@string/save_qr_code"
-            android:visibility="gone"
-            android:textSize="@dimen/x28"/>
-
-        <Button
-            android:id="@+id/btn_share"
-            android:layout_width="@dimen/x200"
-            android:layout_height="@dimen/y60"
-            android:layout_below="@+id/btn_save_qr"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/y30"
-            android:visibility="gone"
-            android:background="@drawable/bg_register_shape"
-            android:text="@string/share_qr_code"
-            android:textSize="@dimen/x28"/>
-
-    </RelativeLayout>
+            </RelativeLayout>
+            <Button
+                android:id="@+id/btn_save_qr"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y100"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginRight="@dimen/x30"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/y40"
+                android:background="@drawable/bg_red_shape1"
+                android:text="@string/save_to_photo_album"
+                android:textSize="@dimen/x32"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

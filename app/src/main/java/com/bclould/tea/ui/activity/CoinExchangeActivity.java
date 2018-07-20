@@ -41,6 +41,7 @@ import com.bclould.tea.model.ExchangeOrderInfo;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tea.ui.adapter.CoinExchangeRVAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.ui.widget.VirtualKeyboardView;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
@@ -112,15 +113,11 @@ public class CoinExchangeActivity extends BaseActivity {
     LinearLayout mLlError;
     private CoinPresenter mCoinPresenter;
     private Dialog mBottomDialog;
-    private Animation mEnterAnim;
-    private Animation mExitAnim;
-    private Dialog mRedDialog;
-    private MNPasswordEditText mEtPassword;
-    private ArrayList<Map<String, String>> valueList;
-    private GridView mGridView;
     private CoinExchangeRVAdapter mCoinExchangeRVAdapter;
     private String mPrice = "";
     private String mServiceCharge;
+    private PWDDialog pwdDialog;
+    private String logo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -356,94 +353,16 @@ public class CoinExchangeActivity extends BaseActivity {
     }
 
     private void showPWDialog() {
-        mEnterAnim = AnimationUtils.loadAnimation(this, R.anim.dialog_enter);
-        mExitAnim = AnimationUtils.loadAnimation(this, R.anim.dialog_exit);
-        mRedDialog = new Dialog(this, R.style.BottomDialog2);
-        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_passwrod, null);
-        //获得dialog的window窗口
-        Window window = mRedDialog.getWindow();
-        window.getDecorView().setPadding(0, 0, 0, 0);
-        //获得window窗口的属性
-        WindowManager.LayoutParams lp = window.getAttributes();
-        //设置窗口宽度为充满全屏
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        //将设置好的属性set回去
-        window.setAttributes(lp);
-        window.setGravity(Gravity.CENTER);
-        window.setWindowAnimations(BottomDialog);
-        mRedDialog.setContentView(contentView);
-        mRedDialog.show();
-        mRedDialog.setCanceledOnTouchOutside(false);
-        initDialog();
-    }
-
-    private void initDialog() {
+        pwdDialog=new PWDDialog(this);
+        pwdDialog.setOnPWDresult(new PWDDialog.OnPWDresult() {
+            @Override
+            public void success(String password) {
+                exchange(password);
+            }
+        });
         String coins = mTvCoin.getText().toString();
         String count = mEtCount.getText().toString();
-        TextView coin = (TextView) mRedDialog.findViewById(R.id.tv_coin);
-        TextView countCoin = (TextView) mRedDialog.findViewById(R.id.tv_count_coin);
-        TextView hint = (TextView) mRedDialog.findViewById(R.id.tv_hint);
-        hint.setVisibility(View.VISIBLE);
-        mEtPassword = (MNPasswordEditText) mRedDialog.findViewById(R.id.et_password);
-        // 设置不调用系统键盘
-        if (Build.VERSION.SDK_INT <= 10) {
-            mEtPassword.setInputType(InputType.TYPE_NULL);
-        } else {
-            this.getWindow().setSoftInputMode(
-                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-            try {
-                Class<EditText> cls = EditText.class;
-                Method setShowSoftInputOnFocus;
-                setShowSoftInputOnFocus = cls.getMethod("setShowSoftInputOnFocus",
-                        boolean.class);
-                setShowSoftInputOnFocus.setAccessible(true);
-                setShowSoftInputOnFocus.invoke(mEtPassword, false);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        final VirtualKeyboardView virtualKeyboardView = (VirtualKeyboardView) mRedDialog.findViewById(R.id.virtualKeyboardView);
-        ImageView bark = (ImageView) mRedDialog.findViewById(R.id.bark);
-        bark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mRedDialog.dismiss();
-                mEtPassword.setText("");
-            }
-        });
-        valueList = virtualKeyboardView.getValueList();
-        countCoin.setText(count + coins);
-        coin.setText(coins + getString(R.string.exchange) + getString(R.string.usdt));
-        hint.setText(getString(R.string.service_fee_hint) + Double.parseDouble(mServiceCharge) * 100 + "%" + getString(R.string.sxf));
-        virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                virtualKeyboardView.startAnimation(mExitAnim);
-                virtualKeyboardView.setVisibility(View.GONE);
-            }
-        });
-        mGridView = virtualKeyboardView.getGridView();
-        mGridView.setOnItemClickListener(onItemClickListener);
-        mEtPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                virtualKeyboardView.setFocusable(true);
-                virtualKeyboardView.setFocusableInTouchMode(true);
-                virtualKeyboardView.startAnimation(mEnterAnim);
-                virtualKeyboardView.setVisibility(View.VISIBLE);
-            }
-        });
-
-        mEtPassword.setOnPasswordChangeListener(new MNPasswordEditText.OnPasswordChangeListener() {
-            @Override
-            public void onPasswordChange(String password) {
-                if (password.length() == 6) {
-                    mRedDialog.dismiss();
-                    mEtPassword.setText("");
-                    exchange(password);
-                }
-            }
-        });
+        pwdDialog.showDialog(count,coins,coins + getString(R.string.exchange) + getString(R.string.usdt),logo,getString(R.string.service_fee_hint) + Double.parseDouble(mServiceCharge) * 100 + "%" + getString(R.string.sxf));
     }
 
     private void exchange(String password) {
@@ -468,46 +387,6 @@ public class CoinExchangeActivity extends BaseActivity {
             }
         });
     }
-
-    private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-            if (position < 11 && position != 9) {    //点击0~9按钮
-
-                String amount = mEtPassword.getText().toString().trim();
-                amount = amount + valueList.get(position).get("name");
-
-                mEtPassword.setText(amount);
-
-                Editable ea = mEtPassword.getText();
-                mEtPassword.setSelection(ea.length());
-            } else {
-
-                if (position == 9) {      //点击退格键
-                    String amount = mEtPassword.getText().toString().trim();
-                    if (!amount.contains(".")) {
-                        amount = amount + valueList.get(position).get("name");
-                        mEtPassword.setText(amount);
-
-                        Editable ea = mEtPassword.getText();
-                        mEtPassword.setSelection(ea.length());
-                    }
-                }
-
-                if (position == 11) {      //点击退格键
-                    String amount = mEtPassword.getText().toString().trim();
-                    if (amount.length() > 0) {
-                        amount = amount.substring(0, amount.length() - 1);
-                        mEtPassword.setText(amount);
-
-                        Editable ea = mEtPassword.getText();
-                        mEtPassword.setSelection(ea.length());
-                    }
-                }
-            }
-        }
-    };
 
     private boolean checkEidt() {
         if (mEtCount.getText().toString().isEmpty()) {
@@ -564,6 +443,7 @@ public class CoinExchangeActivity extends BaseActivity {
     }
 
     public void hideDialog(String name, int id, String logo, String coin_over, String serviceCharge) {
+        this.logo=logo;
         mCoin.clear();
         mCoin.add(name);
         initListData(name);

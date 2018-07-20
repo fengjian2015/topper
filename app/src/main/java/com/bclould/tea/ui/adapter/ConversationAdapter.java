@@ -154,15 +154,22 @@ public class ConversationAdapter extends RecyclerView.Adapter {
             mTab1ItemImg.setImageBitmap(bitmap);*/
            if(RoomManage.ROOM_TYPE_MULTI.equals(conversationInfo.getChatType())){
                UtilTool.getGroupImage(mDBRoomManage,conversationInfo.getUser(), (Activity) mContext,mTab1ItemImg);
+               String roomName = mDBRoomManage.findRoomName(conversationInfo.getUser());
+               if (StringUtils.isEmpty(roomName)) {
+                   mTab1ItemName.setText(conversationInfo.getFriend());
+               } else {
+                   mTab1ItemName.setText(roomName);
+               }
            }else {
                setNameAndUrl(mTab1ItemImg,conversationInfo.getUser());
+               String remark = mMgr.queryRemark(conversationInfo.getUser());
+               if (!StringUtils.isEmpty(remark)) {
+                   mTab1ItemName.setText(remark);
+               } else {
+                   mTab1ItemName.setText(conversationInfo.getFriend());
+               }
            }
-            String remark = mMgr.queryRemark(conversationInfo.getUser());
-            if (!StringUtils.isEmpty(remark)) {
-                mTab1ItemName.setText(remark);
-            } else {
-                mTab1ItemName.setText(conversationInfo.getFriend());
-            }
+
             String draft=mMgr.findConversationDraft(conversationInfo.getUser());
             String atme=mMgr.findConversationAtme(conversationInfo.getUser());
             if(StringUtils.isEmpty(draft)){

@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,11 +36,13 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.ui.widget.VirtualKeyboardView;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.UtilTool;
+import com.bumptech.glide.Glide;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;
@@ -60,26 +63,29 @@ import static com.bclould.tea.R.style.BottomDialog;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class SendQRCodeRedActivity extends BaseActivity {
 
+
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.tv_redpacket_record)
     TextView mTvRedpacketRecord;
     @Bind(R.id.title)
     RelativeLayout mTitle;
-    @Bind(R.id.tv_coin)
-    TextView mTvCoin;
-    @Bind(R.id.rl_selector_coin)
-    RelativeLayout mRlSelectorCoin;
+    @Bind(R.id.tv_currency)
+    TextView mTvCurrency;
+    @Bind(R.id.image_logo)
+    ImageView mImageLogo;
     @Bind(R.id.et_money_count)
     EditText mEtMoneyCount;
     @Bind(R.id.et_red_count)
     EditText mEtRedCount;
+    @Bind(R.id.tv_coin)
+    TextView mTvCoin;
+    @Bind(R.id.tv_allmoney)
+    TextView mTvAllmoney;
     @Bind(R.id.btn_send)
     Button mBtnSend;
     @Bind(R.id.ll_data)
     LinearLayout mLlData;
-    @Bind(R.id.iv2)
-    ImageView mIv2;
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
     private Dialog mRedDialog;
@@ -90,17 +96,19 @@ public class SendQRCodeRedActivity extends BaseActivity {
     private ArrayList<Map<String, String>> valueList;
     private RedPacketPresenter mRedPacketPresenter;
     private Dialog mBottomDialog;
-
+    private String logo;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_qr_code_red);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
-        getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket4));
+        getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket5));
         mRedPacketPresenter = new RedPacketPresenter(this);
         initData();
+        setOnClick();
     }
+
 
     private void initData() {
         MyApp.getInstance().mRedCoinList.clear();
@@ -128,8 +136,7 @@ public class SendQRCodeRedActivity extends BaseActivity {
         }
     }
 
-
-    @OnClick({R.id.ll_error,R.id.bark, R.id.tv_redpacket_record, R.id.rl_selector_coin, R.id.btn_send})
+    @OnClick({R.id.ll_error, R.id.bark, R.id.tv_redpacket_record, R.id.rl_selector_currency, R.id.btn_send})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -141,7 +148,7 @@ public class SendQRCodeRedActivity extends BaseActivity {
             case R.id.tv_redpacket_record:
                 startActivity(new Intent(this, RedPacketRecordActivity.class));
                 break;
-            case R.id.rl_selector_coin:
+            case R.id.rl_selector_currency:
                 showDialog();
                 break;
             case R.id.btn_send:
@@ -151,134 +158,59 @@ public class SendQRCodeRedActivity extends BaseActivity {
         }
     }
 
+
+    private void setOnClick() {
+        mEtMoneyCount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                changeAllMoney();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        mEtRedCount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                changeAllMoney();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
+
+    private void changeAllMoney(){
+        double mCount =UtilTool.parseDouble(mEtRedCount.getText().toString()) *UtilTool.parseDouble(mEtMoneyCount.getText().toString());
+        mTvAllmoney.setText(UtilTool.removeZero(mCount + ""));
+    }
+
     private void showPWDialog() {
-        mEnterAnim = AnimationUtils.loadAnimation(this, R.anim.dialog_enter);
-        mExitAnim = AnimationUtils.loadAnimation(this, R.anim.dialog_exit);
-        mRedDialog = new Dialog(this, R.style.BottomDialog2);
-        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_passwrod, null);
-        //获得dialog的window窗口
-        Window window = mRedDialog.getWindow();
-        window.getDecorView().setPadding(0, 0, 0, 0);
-        //获得window窗口的属性
-        WindowManager.LayoutParams lp = window.getAttributes();
-        //设置窗口宽度为充满全屏
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        //将设置好的属性set回去
-        window.setAttributes(lp);
-        window.setGravity(Gravity.CENTER);
-        window.setWindowAnimations(BottomDialog);
-        mRedDialog.setContentView(contentView);
-        mRedDialog.show();
-        mRedDialog.setCanceledOnTouchOutside(false);
-        initDialog();
+        PWDDialog pwdDialog=new PWDDialog(this);
+        pwdDialog.setOnPWDresult(new PWDDialog.OnPWDresult() {
+            @Override
+            public void success(String password) {
+                sendRed(password);
+            }
+        });
+        String coins = mTvCurrency.getText().toString();
+        double count =UtilTool.parseDouble(mEtRedCount.getText().toString()) *UtilTool.parseDouble(mEtMoneyCount.getText().toString());
+        pwdDialog.showDialog(UtilTool.removeZero(count + ""),coins,coins+getString(R.string.red_package),logo,null);
     }
-
-    private void initDialog() {
-        String coins = mTvCoin.getText().toString();
-        String count = mEtMoneyCount.getText().toString();
-        TextView coin = (TextView) mRedDialog.findViewById(R.id.tv_coin);
-        TextView countCoin = (TextView) mRedDialog.findViewById(R.id.tv_count_coin);
-        mEtPassword = (MNPasswordEditText) mRedDialog.findViewById(R.id.et_password);
-        // 设置不调用系统键盘
-        if (Build.VERSION.SDK_INT <= 10) {
-            mEtPassword.setInputType(InputType.TYPE_NULL);
-        } else {
-            this.getWindow().setSoftInputMode(
-                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-            try {
-                Class<EditText> cls = EditText.class;
-                Method setShowSoftInputOnFocus;
-                setShowSoftInputOnFocus = cls.getMethod("setShowSoftInputOnFocus",
-                        boolean.class);
-                setShowSoftInputOnFocus.setAccessible(true);
-                setShowSoftInputOnFocus.invoke(mEtPassword, false);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        final VirtualKeyboardView virtualKeyboardView = (VirtualKeyboardView) mRedDialog.findViewById(R.id.virtualKeyboardView);
-        ImageView bark = (ImageView) mRedDialog.findViewById(R.id.bark);
-        bark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mRedDialog.dismiss();
-                mEtPassword.setText("");
-            }
-        });
-        valueList = virtualKeyboardView.getValueList();
-        countCoin.setText(count + coins);
-        coin.setText(coins + getString(R.string.red_package));
-        virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                virtualKeyboardView.startAnimation(mExitAnim);
-                virtualKeyboardView.setVisibility(View.GONE);
-            }
-        });
-        mGridView = virtualKeyboardView.getGridView();
-        mGridView.setOnItemClickListener(onItemClickListener);
-        mEtPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                virtualKeyboardView.setFocusable(true);
-                virtualKeyboardView.setFocusableInTouchMode(true);
-                virtualKeyboardView.startAnimation(mEnterAnim);
-                virtualKeyboardView.setVisibility(View.VISIBLE);
-            }
-        });
-
-        mEtPassword.setOnPasswordChangeListener(new MNPasswordEditText.OnPasswordChangeListener() {
-            @Override
-            public void onPasswordChange(String password) {
-                if (password.length() == 6) {
-                    mRedDialog.dismiss();
-                    mEtPassword.setText("");
-                    sendRed(password);
-                }
-            }
-        });
-    }
-
-    private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-            if (position < 11 && position != 9) {    //点击0~9按钮
-
-                String amount = mEtPassword.getText().toString().trim();
-                amount = amount + valueList.get(position).get("name");
-
-                mEtPassword.setText(amount);
-
-                Editable ea = mEtPassword.getText();
-                mEtPassword.setSelection(ea.length());
-            } else {
-
-                if (position == 9) {      //点击退格键
-                    String amount = mEtPassword.getText().toString().trim();
-                    if (!amount.contains(".")) {
-                        amount = amount + valueList.get(position).get("name");
-                        mEtPassword.setText(amount);
-
-                        Editable ea = mEtPassword.getText();
-                        mEtPassword.setSelection(ea.length());
-                    }
-                }
-
-                if (position == 11) {      //点击退格键
-                    String amount = mEtPassword.getText().toString().trim();
-                    if (amount.length() > 0) {
-                        amount = amount.substring(0, amount.length() - 1);
-                        mEtPassword.setText(amount);
-
-                        Editable ea = mEtPassword.getText();
-                        mEtPassword.setSelection(ea.length());
-                    }
-                }
-            }
-        }
-    };
-
 
     private void showDialog() {
         mBottomDialog = new Dialog(this, R.style.BottomDialog2);
@@ -325,9 +257,12 @@ public class SendQRCodeRedActivity extends BaseActivity {
         }
     }
 
-    public void hideDialog(String name, int id) {
+    public void hideDialog(String name, int id, String logo) {
+        this.logo=logo;
         mBottomDialog.dismiss();
         mTvCoin.setText(name);
+        mTvCurrency.setText(name);
+        Glide.with(this).load(logo).into(mImageLogo);
     }
 
     private void sendRed(String password) {

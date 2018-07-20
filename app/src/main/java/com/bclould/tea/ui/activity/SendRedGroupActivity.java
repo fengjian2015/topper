@@ -12,6 +12,7 @@ import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -42,10 +43,12 @@ import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.ui.widget.VirtualKeyboardView;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.RoomManage;
+import com.bumptech.glide.Glide;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import java.lang.reflect.Method;
@@ -84,13 +87,15 @@ public class SendRedGroupActivity extends BaseActivity {
     LinearLayout mLlData;
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
+    @Bind(R.id.tv_allmoney)
+    TextView mTvAllmoney;
+    @Bind(R.id.image_logo)
+    ImageView mImageLogo;
+    @Bind(R.id.tv_coin)
+    TextView mTvCoin;
 
     private Dialog mBottomDialog;
-    private Animation mEnterAnim;
-    private Animation mExitAnim;
-    private MNPasswordEditText mEtPassword;
-    private Dialog mRedDialog;
-    private GridView mGridView;
+    private PWDDialog pwdDialog;
 
     private DBManager mMgr;
     private String roomId;
@@ -100,11 +105,11 @@ public class SendRedGroupActivity extends BaseActivity {
     private double singleMoney;
     private String mCoin;
     private DBRoomMember mDBRoomMember;
-
+    private String logo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket4));
+        getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket5));
         setContentView(R.layout.activity_send_red_group);
         ButterKnife.bind(this);
         mMgr = new DBManager(this);
@@ -112,17 +117,63 @@ public class SendRedGroupActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         init();
         initData();
+        setOnClick();
+    }
+
+    private void setOnClick() {
+        mEtMoney.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                changeAllMoney();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        mEtNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                changeAllMoney();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
+
+    private void changeAllMoney(){
+        if (isluckyRed) {
+            mCount =UtilTool.parseDouble(mEtMoney.getText().toString());
+        } else {
+            mCount =UtilTool.parseDouble(mEtMoney.getText().toString()) *UtilTool.parseDouble(mEtNumber.getText().toString());
+        }
+        mTvAllmoney.setText(UtilTool.removeZero(mCount + ""));
     }
 
     private void init() {
         roomId = getIntent().getStringExtra("roomId");
-        mTvGroupNumber.setText(getString(R.string.group_member1) + mDBRoomMember.queryAllRequest(roomId).size() + getString(R.string.individual));
+        mTvGroupNumber.setText(getString(R.string.members_of_the_group) + mDBRoomMember.queryAllRequest(roomId).size() + getString(R.string.person1));
         mEtMoney.setSelection(mEtMoney.getText().length());
         mEtNumber.setSelection(mEtNumber.getText().length());
         changeRed();
     }
 
     private void changeRed() {
+
         if (isluckyRed) {
             CharSequence str = getText(R.string.lucky_red_common_red);
             SpannableString spannableString = new SpannableString(str);
@@ -131,6 +182,7 @@ public class SendRedGroupActivity extends BaseActivity {
                 public void onClick(View widget) {
                     isluckyRed = false;
                     changeRed();
+                    changeAllMoney();
                 }
             }, str.length() - 6, str.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.blue2)), str.length() - 6, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -145,6 +197,7 @@ public class SendRedGroupActivity extends BaseActivity {
                 public void onClick(View widget) {
                     isluckyRed = true;
                     changeRed();
+                    changeAllMoney();
                 }
             }, str.length() - 7, str.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.blue2)), str.length() - 7, str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -222,100 +275,20 @@ public class SendRedGroupActivity extends BaseActivity {
             Toast.makeText(this, getString(R.string.group_red_min_money), Toast.LENGTH_SHORT).show();
             return;
         }
-
-        showPWDialog();
-    }
-
-    private void showPWDialog() {
-        mEnterAnim = AnimationUtils.loadAnimation(this, R.anim.dialog_enter);
-        mExitAnim = AnimationUtils.loadAnimation(this, R.anim.dialog_exit);
-        mRedDialog = new Dialog(this, R.style.BottomDialog2);
-        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_passwrod, null);
-        //获得dialog的window窗口
-        Window window = mRedDialog.getWindow();
-        window.getDecorView().setPadding(0, 0, 0, 0);
-        //获得window窗口的属性
-        WindowManager.LayoutParams lp = window.getAttributes();
-        //设置窗口宽度为充满全屏
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        //将设置好的属性set回去
-        window.setAttributes(lp);
-        window.setGravity(Gravity.CENTER);
-        window.setWindowAnimations(BottomDialog);
-        mRedDialog.setContentView(contentView);
-        mRedDialog.show();
-        mRedDialog.setCanceledOnTouchOutside(false);
-        initDialog();
-    }
-
-    private void initDialog() {
+        pwdDialog=new PWDDialog(this);
+        pwdDialog.setOnPWDresult(new PWDDialog.OnPWDresult() {
+            @Override
+            public void success(String password) {
+                sendRed(password);
+            }
+        });
         String coins = mTvCurrency.getText().toString();
         if (isluckyRed) {
             mCount = Double.parseDouble(mEtMoney.getText().toString());
         } else {
             mCount = Double.parseDouble(mEtMoney.getText().toString()) * Double.parseDouble(mEtNumber.getText().toString());
         }
-        TextView coin = (TextView) mRedDialog.findViewById(R.id.tv_coin);
-        TextView countCoin = (TextView) mRedDialog.findViewById(R.id.tv_count_coin);
-        mEtPassword = (MNPasswordEditText) mRedDialog.findViewById(R.id.et_password);
-        // 设置不调用系统键盘
-        if (Build.VERSION.SDK_INT <= 10) {
-            mEtPassword.setInputType(InputType.TYPE_NULL);
-        } else {
-            this.getWindow().setSoftInputMode(
-                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-            try {
-                Class<EditText> cls = EditText.class;
-                Method setShowSoftInputOnFocus;
-                setShowSoftInputOnFocus = cls.getMethod("setShowSoftInputOnFocus",
-                        boolean.class);
-                setShowSoftInputOnFocus.setAccessible(true);
-                setShowSoftInputOnFocus.invoke(mEtPassword, false);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        final VirtualKeyboardView virtualKeyboardView = (VirtualKeyboardView) mRedDialog.findViewById(R.id.virtualKeyboardView);
-        ImageView bark = (ImageView) mRedDialog.findViewById(R.id.bark);
-        bark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mRedDialog.dismiss();
-                mEtPassword.setText("");
-            }
-        });
-        valueList = virtualKeyboardView.getValueList();
-        countCoin.setText(UtilTool.removeZero(mCount + "") + coins);
-        coin.setText(coins + getString(R.string.red_package));
-        virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                virtualKeyboardView.startAnimation(mExitAnim);
-                virtualKeyboardView.setVisibility(View.GONE);
-            }
-        });
-        mGridView = virtualKeyboardView.getGridView();
-        mGridView.setOnItemClickListener(onItemClickListener);
-        mEtPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                virtualKeyboardView.setFocusable(true);
-                virtualKeyboardView.setFocusableInTouchMode(true);
-                virtualKeyboardView.startAnimation(mEnterAnim);
-                virtualKeyboardView.setVisibility(View.VISIBLE);
-            }
-        });
-
-        mEtPassword.setOnPasswordChangeListener(new MNPasswordEditText.OnPasswordChangeListener() {
-            @Override
-            public void onPasswordChange(String password) {
-                if (password.length() == 6) {
-                    mRedDialog.dismiss();
-                    mEtPassword.setText("");
-                    sendRed(password);
-                }
-            }
-        });
+        pwdDialog.showDialog(UtilTool.removeZero(mCount + ""),coins,coins+getString(R.string.red_package),logo,null);
     }
 
     private void sendRed(String password) {
@@ -347,46 +320,6 @@ public class SendRedGroupActivity extends BaseActivity {
         finish();
     }
 
-    private ArrayList<Map<String, String>> valueList;
-    private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-            if (position < 11 && position != 9) {    //点击0~9按钮
-
-                String amount = mEtPassword.getText().toString().trim();
-                amount = amount + valueList.get(position).get("name");
-
-                mEtPassword.setText(amount);
-
-                Editable ea = mEtPassword.getText();
-                mEtPassword.setSelection(ea.length());
-            } else {
-
-                if (position == 9) {      //点击退格键
-                    String amount = mEtPassword.getText().toString().trim();
-                    if (!amount.contains(".")) {
-                        amount = amount + valueList.get(position).get("name");
-                        mEtPassword.setText(amount);
-
-                        Editable ea = mEtPassword.getText();
-                        mEtPassword.setSelection(ea.length());
-                    }
-                }
-
-                if (position == 11) {      //点击退格键
-                    String amount = mEtPassword.getText().toString().trim();
-                    if (amount.length() > 0) {
-                        amount = amount.substring(0, amount.length() - 1);
-                        mEtPassword.setText(amount);
-
-                        Editable ea = mEtPassword.getText();
-                        mEtPassword.setSelection(ea.length());
-                    }
-                }
-            }
-        }
-    };
 
     private void showDialog() {
         mBottomDialog = new Dialog(this, R.style.BottomDialog2);
@@ -444,7 +377,7 @@ public class SendRedGroupActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 deleteCacheDialog.dismiss();
-                mRedDialog.show();
+                pwdDialog.show();
             }
         });
         findPassword.setOnClickListener(new View.OnClickListener() {
@@ -456,10 +389,12 @@ public class SendRedGroupActivity extends BaseActivity {
         });
     }
 
-    public void hideDialog(String name) {
+    public void hideDialog(String name, String logo) {
         mBottomDialog.dismiss();
         mTvCurrency.setText(name);
-//        mTvCoin.setText(name);
+        mTvCoin.setText(name);
+        Glide.with(this).load(logo).into(mImageLogo);
+        this.logo=logo;
     }
 
 }

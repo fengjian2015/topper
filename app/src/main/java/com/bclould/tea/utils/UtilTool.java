@@ -77,6 +77,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
@@ -197,7 +198,7 @@ public class UtilTool {
     }
 
     public static void comp(Bitmap image, File file) {
-
+        if(image==null)return;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         if (baos.toByteArray().length / 1024 > 1024) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
@@ -412,6 +413,7 @@ public class UtilTool {
         return null;
     }
 
+
     public static boolean saveAlbum(String path, Activity activity) {
         String type = getFileType(path);
         String newName;
@@ -569,6 +571,55 @@ public class UtilTool {
         }
         return null;
     }
+
+    /**
+     * 二維碼中間加圖標
+     * @param src
+     * @param logo
+     * @return
+     */
+    public static Bitmap addLogo(Bitmap src, Bitmap logo) {
+        if (src == null) {
+            return null;
+        }
+
+        if (logo == null) {
+            return src;
+        }
+
+        // 获取图片的宽高
+        int srcWidth = src.getWidth();
+        int srcHeight = src.getHeight();
+        int logoWidth = logo.getWidth();
+        int logoHeight = logo.getHeight();
+
+        if (srcWidth == 0 || srcHeight == 0) {
+            return null;
+        }
+
+        if (logoWidth == 0 || logoHeight == 0) {
+            return src;
+        }
+
+        // logo大小为二维码整体大小的1/5
+        float scaleFactor = srcWidth * 1.0f / 5 / logoWidth;
+        Bitmap bitmap = Bitmap.createBitmap(srcWidth, srcHeight, Bitmap.Config.ARGB_8888);
+        try {
+            Canvas canvas = new Canvas(bitmap);
+            canvas.drawBitmap(src, 0, 0, null);
+            canvas.scale(scaleFactor, scaleFactor, srcWidth / 2, srcHeight / 2);
+            canvas.drawBitmap(logo, (srcWidth - logoWidth) / 2, (srcHeight - logoHeight) / 2, null);
+
+            canvas.save(Canvas.ALL_SAVE_FLAG);
+            canvas.restore();
+        } catch (Exception e) {
+            bitmap = null;
+            e.getStackTrace();
+        }
+
+        return bitmap;
+    }
+
 
     public static Bitmap setDefaultimage(Context context) {
         Drawable drawable = context.getDrawable(R.mipmap.img_nfriend_headshot1);

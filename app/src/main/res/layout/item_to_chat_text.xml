@@ -51,7 +51,7 @@
             android:background="@drawable/img_chat_bg"
             android:lineSpacingExtra="@dimen/y10"
             android:maxWidth="@dimen/x500"
-            android:text="哈喽！"
+            android:text="！"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"
             android:visibility="visible"

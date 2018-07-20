@@ -2077,7 +2077,7 @@
         
     <string name="long_as_one_can_multiple_files">长按其中一项可以多选文件哦</string>
         <!--IM文件选择器-->
-        
+     
     <string-array name="ys__size_units">
                 
         <item>B</item>
@@ -2205,4 +2205,10 @@
     <string name="follow_the_system">跟随系统</string>
     <string name="simplified_chinese">简体中文</string>
     <string name="chinese_traditional">繁体中文</string>
+    <string name="person1">人</string>
+    <string name="members_of_the_group">本群成员共</string>
+    <string name="Generate_qr_code_red_envelope">生成二维码红包</string>
+    <string name="save_to_photo_album">保存到相冊</string>
+    <string name="qe_code_red_explain">你的二维码红包已经生成，toopperchat用户可以扫一扫领红包啦！ </string>
+    <string name="topperchat_red">topperchat红包</string>
 </resources>

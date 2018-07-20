@@ -17,6 +17,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -34,6 +35,7 @@ import com.bclould.tea.ui.activity.AddFriendActivity;
 import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tea.ui.activity.GroupListActivity;
+import com.bclould.tea.ui.activity.IndividualDetailsActivity;
 import com.bclould.tea.ui.activity.NewFriendActivity;
 import com.bclould.tea.ui.activity.RemarkActivity;
 import com.bclould.tea.ui.activity.ScanQRCodeActivity;
@@ -41,6 +43,7 @@ import com.bclould.tea.ui.activity.SearchActivity;
 import com.bclould.tea.ui.activity.SelectConversationActivity;
 import com.bclould.tea.ui.activity.SendQRCodeRedActivity;
 import com.bclould.tea.ui.adapter.FriendListRVAdapter;
+import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
@@ -477,7 +480,7 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
     }
 
     private void showRemarkDialog(final String name, final String remark, final String user) {
-        List<String> list = Arrays.asList(new String[]{getContext().getString(R.string.updata_remark),getContext().getString(R.string.send_card)});
+        List<String> list = Arrays.asList(new String[]{getContext().getString(R.string.updata_remark),getContext().getString(R.string.send_card),getContext().getString(R.string.delete_friend)});
         final MenuListPopWindow menu = new MenuListPopWindow(getContext(), list);
         menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
             @Override
@@ -508,10 +511,47 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
                         intent.putExtra("messageInfo", messageInfo);
                         startActivity(intent);
                         break;
+                    case 3:
+                        menu.dismiss();
+                        showDeleteDialog(remark,user,user);
+                        break;
                 }
             }
         });
         menu.setColor(Color.BLACK);
         menu.showAtLocation();
+    }
+
+    private void showDeleteDialog(String mName, final String mUser, final String roomId) {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, getActivity(), R.style.dialog);
+        deleteCacheDialog.show();
+        deleteCacheDialog.setTitle(getString(R.string.confirm_delete) + " " + mName + " " + getString(R.string.what));
+        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    new PersonalDetailsPresenter(getActivity()).deleteFriend(mUser, new PersonalDetailsPresenter.CallBack() {
+                        @Override
+                        public void send() {
+                            mMgr.deleteConversation(roomId);
+                            mMgr.deleteMessage(roomId);
+                            mMgr.deleteUser(mUser);
+                            EventBus.getDefault().post(new MessageEvent(getString(R.string.delete_friend)));
+                        }
+                    });
+                    deleteCacheDialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

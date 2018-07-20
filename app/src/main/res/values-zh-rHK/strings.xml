@@ -1111,4 +1111,11 @@
     <string name="follow_the_system">跟隨系統</string>
     <string name="simplified_chinese">簡體中文</string>
     <string name="chinese_traditional">繁體中文</string>
+    <string name="send_red_envelope">發紅包</string>
+    <string name="person1">人</string>
+    <string name="members_of_the_group">本群成員共</string>
+    <string name="Generate_qr_code_red_envelope">生成二維碼紅包</string>
+    <string name="save_to_photo_album">保存到相冊</string>
+    <string name="qe_code_red_explain">你的二維碼紅包已經生成，toopperchat用戶可以掃一掃領紅包啦！</string>
+    <string name="topperchat_red">topperchat紅包</string>
 </resources>
