@@ -26,6 +26,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Locale;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -81,6 +83,7 @@ public class MyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_my, container, false);
         ButterKnife.bind(this, view);
+        if(!EventBus.getDefault().isRegistered(this))
         EventBus.getDefault().register(this);
         init();
         return view;
@@ -105,10 +108,13 @@ public class MyFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        ButterKnife.unbind(this);
         EventBus.getDefault().unregister(this);
     }
 
     private void init() {
+        Locale locale = getResources().getConfiguration().locale;
+        String country = locale.getCountry();
         if (UtilTool.compareVersion(getContext())) {
             mTvNewUpdate.setVisibility(View.VISIBLE);
         } else {
@@ -126,6 +132,7 @@ public class MyFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 
     @OnClick({R.id.rl_personal_data, R.id.rl_security_center, R.id.rl_system_set, R.id.rl_concern_we})

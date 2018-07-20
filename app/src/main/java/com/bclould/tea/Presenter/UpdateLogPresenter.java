@@ -1,5 +1,6 @@
 package com.bclould.tea.Presenter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -13,8 +14,9 @@ import com.bclould.tea.model.GitHubInfo;
 import com.bclould.tea.model.UpdateLogInfo;
 import com.bclould.tea.network.DownLoadApk;
 import com.bclould.tea.network.RetrofitUtil;
-import com.bclould.tea.ui.activity.GuanYuMeActivity;
+import com.bclould.tea.ui.activity.VersionsUpdateActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -39,9 +41,26 @@ import static com.bclould.tea.ui.activity.PayPwSelectorActivity.GESTURE_PW_SELE;
 public class UpdateLogPresenter {
 
     private final Context mContext;
+    private LoadingProgressDialog mProgressDialog;
 
     public UpdateLogPresenter(Context context) {
         mContext = context;
+    }
+
+    private void showDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = LoadingProgressDialog.createDialog(mContext);
+            mProgressDialog.setMessage(mContext.getString(R.string.loading));
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideDialog() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
     }
 
     public void getUpdateLogList(int type, final UpdateLogPresenter.CallBack callBack) {
@@ -79,6 +98,9 @@ public class UpdateLogPresenter {
 
     //检测版本更新
     public void checkVersion(final CallBack2 callBack2) {
+       if(mContext instanceof VersionsUpdateActivity){
+           showDialog();
+       }
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .checkVersion(Constants.VERSION_UPDATE_URL)//githua获取版本更新
@@ -92,36 +114,18 @@ public class UpdateLogPresenter {
 
                     @Override
                     public void onNext(GitHubInfo baseInfo) {
-                        //判断是否需要更新
-                        /*float version = Float.parseFloat(UtilTool.getVersionCode(mContext));
-                        String tag_version = "";
-                        if (baseInfo.getTag_name().contains("v")) {
-                            tag_version = baseInfo.getTag_name().replace("v", "");
-                        } else {
-                            tag_version = baseInfo.getTag_name();
-                        }
-                        float tag = Float.parseFloat(tag_version);
-                        if (version < tag) {*/
+                        hideDialog();
                         MySharedPreferences.getInstance().setString(Constants.NEW_APK_URL, Constants.DOWNLOAD_APK_URL);
                         MySharedPreferences.getInstance().setString(Constants.NEW_APK_NAME, baseInfo.getName());
                         MySharedPreferences.getInstance().setString(Constants.NEW_APK_BODY, baseInfo.getBody());
                         MySharedPreferences.getInstance().setString(Constants.APK_VERSIONS_TAG, baseInfo.getTag_name());
                         callBack2.send(1);
-                        EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.check_new_version)));
-                        /* }else {
-                            callBack2.send(2);
-                            MySharedPreferences.getInstance().setString(Constants.NEW_APK_URL, "");
-                            MySharedPreferences.getInstance().setString(Constants.NEW_APK_NAME, "");
-                            MySharedPreferences.getInstance().setString(Constants.NEW_APK_BODY, "");
-                            MySharedPreferences.getInstance().setString(Constants.APK_VERSIONS_TAG, "");
-                            if (mContext instanceof GuanYuMeActivity) {
-                                Toast.makeText(mContext, mContext.getString(R.string.already_new_version), Toast.LENGTH_SHORT).show();
-                            }
-                        }*/
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        callBack2.error();
+                        hideDialog();
                         UtilTool.Log("日志", e.getMessage());
                     }
 
@@ -133,7 +137,7 @@ public class UpdateLogPresenter {
     }
 
 
-    public void showDialog(final String url, final String apkName, final String body) {
+    /*public void showDialog(final String url, final String apkName, final String body) {
         //显示更新dialog
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, mContext, R.style.dialog);
         deleteCacheDialog.show();
@@ -154,7 +158,7 @@ public class UpdateLogPresenter {
                 deleteCacheDialog.dismiss();
             }
         });
-    }
+    }*/
 
     public void setFingerprint(String password, int status, final CallBack2 callBack2) {
         RetrofitUtil.getInstance(mContext)
@@ -236,5 +240,6 @@ public class UpdateLogPresenter {
     //定义接口
     public interface CallBack2 {
         void send(int type);
+        void error();
     }
 }

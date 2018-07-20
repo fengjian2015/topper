@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
@@ -31,8 +30,10 @@ import com.bclould.tea.ui.widget.MyAutoCompleteTextView;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -213,7 +214,9 @@ public class LoginActivity extends LoginBaseActivity {
         String email = mEtEmily.getText().toString();
         String password = mEtPassword.getText().toString();
         LoginPresenter loginPresenter = new LoginPresenter(this);
-        loginPresenter.Login(email, password, "",mDBUserCode);
+        Locale locale = getResources().getConfiguration().locale;
+        String language = (locale.getLanguage() + "-" + locale.getCountry()).toLowerCase();
+        loginPresenter.Login(email, password, "",mDBUserCode, language);
     }
 
     //验证手机号和密码

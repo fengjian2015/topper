@@ -81,11 +81,11 @@ public class LoginPresenter {
         }
     }
 
-    public void Login(final String email, final String password, final String code, final DBUserCode dbUserCode) {
+    public void Login(final String email, final String password, final String code, final DBUserCode dbUserCode, final String language) {
         showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .login(email, password, code, 1)
+                .login(email, password, code, 1, language)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<LoginInfo>() {
@@ -101,9 +101,9 @@ public class LoginPresenter {
                             if (baseInfo.getData() != null) {
                                 if (baseInfo.getData().getValidate_type() == 1) {
                                     sendVcode(email);
-                                    showEmailDialog(email, password, dbUserCode);
+                                    showEmailDialog(email, password, dbUserCode, language);
                                 } else {
-                                    showGoogleDialog(email, password, dbUserCode);
+                                    showGoogleDialog(email, password, dbUserCode, language);
                                 }
                             } else {
                                 if (baseInfo.getType() == 7) {
@@ -210,7 +210,7 @@ public class LoginPresenter {
                 });
     }
 
-    private void showGoogleDialog(final String email, final String password, final DBUserCode dbUserCode) {
+    private void showGoogleDialog(final String email, final String password, final DBUserCode dbUserCode, final String language) {
         DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_google_code, mContext, R.style.dialog);
         deleteCacheDialog.show();
         final EditText etGoogle = (EditText) deleteCacheDialog.findViewById(R.id.et_google_code);
@@ -222,13 +222,13 @@ public class LoginPresenter {
                 if (googleCode.isEmpty()) {
                     Toast.makeText(mContext, mContext.getString(R.string.toast_vcode), Toast.LENGTH_SHORT).show();
                 } else {
-                    Login(email, password, googleCode, dbUserCode);
+                    Login(email, password, googleCode, dbUserCode, language);
                 }
             }
         });
     }
 
-    private void showEmailDialog(final String email, final String password, final DBUserCode dbUserCode) {
+    private void showEmailDialog(final String email, final String password, final DBUserCode dbUserCode, final String language) {
         DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_google_code, mContext, R.style.dialog);
         deleteCacheDialog.show();
         final EditText etGoogle = (EditText) deleteCacheDialog.findViewById(R.id.et_google_code);
@@ -243,14 +243,13 @@ public class LoginPresenter {
                 if (googleCode.isEmpty()) {
                     Toast.makeText(mContext, mContext.getString(R.string.toast_vcode), Toast.LENGTH_SHORT).show();
                 } else {
-                    Login(email, password, googleCode, dbUserCode);
+                    Login(email, password, googleCode, dbUserCode, language);
                 }
             }
         });
     }
 
     public void loginRecord(final CallBack callBack) {
-
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .loginRecord(UtilTool.getToken())
@@ -322,6 +321,35 @@ public class LoginPresenter {
                 });
     }
 
+    public void postLanguage(String language, final CallBack3 callBack3) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .postLanguage(UtilTool.getToken(), language)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        callBack3.send();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callBack3.send();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     //定义接口
     public interface CallBack {
         void send(List<LoginRecordInfo.DataBean> data);
@@ -332,5 +360,10 @@ public class LoginPresenter {
     //定义接口
     public interface CallBack2 {
         void send(List<LoginRecordInfo.DataBean> data);
+    }
+
+    //定义接口
+    public interface CallBack3 {
+        void send();
     }
 }

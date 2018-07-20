@@ -40,7 +40,6 @@ import com.bclould.tea.service.IMCoreService;
 import com.bclould.tea.service.IMService;
 import com.bclould.tea.topperchat.AddFriendReceiver;
 import com.bclould.tea.topperchat.WsConnection;
-import com.bclould.tea.topperchat.WsContans;
 import com.bclould.tea.ui.fragment.DiscoverFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.MessageEvent;
@@ -406,6 +405,11 @@ public class MainActivity extends BaseActivity {
         updateLogPresenter.checkVersion(new UpdateLogPresenter.CallBack2() {
             @Override
             public void send(int type) {
+            }
+
+            @Override
+            public void error() {
+
             }
         });
     }

@@ -16,13 +16,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tea.Presenter.FileDownloadPresenter;
+import com.bclould.tea.Presenter.UpdateLogPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.model.DownloadInfo;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
@@ -71,12 +75,19 @@ public class VersionsUpdateActivity extends BaseActivity {
     TextView mTvNoUpdate;
     @Bind(R.id.rl_update)
     RelativeLayout mRlUpdate;
+    @Bind(R.id.iv2)
+    ImageView mIv2;
+    @Bind(R.id.ll_error)
+    LinearLayout mLlError;
+    @Bind(R.id.rl_data)
+    RelativeLayout mRlData;
     private String mUrl;
     private String mApkName;
     private String mBody;
     private String mVersions_tag;
     private FileDownloadPresenter mFileDownloadPresenter;
     private File mFile;
+    private UpdateLogPresenter mUpdateLogPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,13 +95,32 @@ public class VersionsUpdateActivity extends BaseActivity {
         setContentView(R.layout.activity_versions_update);
         ButterKnife.bind(this);
         mFileDownloadPresenter = FileDownloadPresenter.getInstance(this);
+        mUpdateLogPresenter = new UpdateLogPresenter(this);
         mFileDownloadPresenter.setOnDownloadCallbackListener(mDownloadCallback);
-        initData();
+        checkVersion();
+    }
+
+    private void checkVersion() {
+        mUpdateLogPresenter.checkVersion(new UpdateLogPresenter.CallBack2() {
+            @Override
+            public void send(int type) {
+                mRlData.setVisibility(View.VISIBLE);
+                mLlError.setVisibility(View.GONE);
+                initData();
+            }
+
+            @Override
+            public void error() {
+                mRlData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private void initData() {
         if (UtilTool.compareVersion(this)) {
             mRlUpdate.setVisibility(View.VISIBLE);
+            EventBus.getDefault().post(new MessageEvent(getString(R.string.check_new_version)));
             mTvNoUpdate.setVisibility(View.GONE);
         } else {
             mRlUpdate.setVisibility(View.GONE);
@@ -129,11 +159,14 @@ public class VersionsUpdateActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.bark, R.id.btn_download, R.id.btn_finish, R.id.btn_stop})
+    @OnClick({R.id.bark, R.id.btn_download, R.id.btn_finish, R.id.btn_stop,R.id.ll_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+                case R.id.ll_error:
+                checkVersion();
                 break;
             case R.id.btn_download:
                 download();

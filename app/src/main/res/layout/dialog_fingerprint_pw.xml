@@ -5,46 +5,66 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
-    <ImageView
-        android:id="@+id/iv_fingerprint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y30"
-        android:src="@mipmap/img_zhiwen"/>
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="@dimen/x150"
+            android:layout_height="@dimen/x150"
+            android:layout_above="@+id/tv_app_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y30"
+            android:src="@mipmap/logo"/>
 
-    <TextView
-        android:id="@+id/tv_check"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/iv_fingerprint"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/y30"
-        android:text="@string/check_fingerprint_hint"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
+        <TextView
+            android:id="@+id/tv_app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/iv_fingerprint"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y20"
+            android:text="@string/app_name"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
 
-    <TextView
-        android:id="@+id/xx"
-        style="@style/HCutOffRule"
-        android:layout_above="@+id/tv_cancel"
-        android:layout_marginTop="@dimen/y30"/>
+        <ImageView
+            android:id="@+id/iv_fingerprint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y200"
+            android:src="@mipmap/img_zhiwen"/>
 
-    <TextView
-        android:id="@+id/tv_cancel"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:text="@string/cancel"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x32"/>
+        <TextView
+            android:id="@+id/tv_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_fingerprint"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/y30"
+            android:text="@string/check_fingerprint_hint"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x28"/>
+
+        <TextView
+            android:id="@+id/xx"
+            style="@style/HCutOffRule"
+            android:layout_above="@+id/tv_cancel"
+            android:layout_marginTop="@dimen/y30"/>
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
 
     </RelativeLayout>
 
