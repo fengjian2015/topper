@@ -10,6 +10,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
+import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.InputType;
 import android.view.Gravity;
@@ -82,6 +83,8 @@ public class PayPwSelectorActivity extends BaseActivity {
     RelativeLayout mRlFingerprintPw;
     public static final String GESTURE_PW_SELE = "gesture_pw_sele";
     public static final String FINGERPRINT_PW_SELE = "fingerprint_pw_sele";
+    @Bind(R.id.cv_fingerprint_pw)
+    CardView mCvFingerprintPw;
     private ArrayList<Map<String, String>> valueList;
     private Animation mEnterAnim;
     private Animation mExitAnim;
@@ -99,9 +102,19 @@ public class PayPwSelectorActivity extends BaseActivity {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+        init();
         MyApp.getInstance().addActivity(this);
         mUpdateLogPresenter = new UpdateLogPresenter(this);
         initSp();
+    }
+
+    private void init() {
+        FingerprintManagerCompat managerCompat = FingerprintManagerCompat.from(MyApp.getInstance().app());
+        if (!managerCompat.isHardwareDetected()) { //判断设备是否支持
+            mCvFingerprintPw.setVisibility(View.GONE);
+        } else {
+            mCvFingerprintPw.setVisibility(View.VISIBLE);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -396,7 +409,7 @@ public class PayPwSelectorActivity extends BaseActivity {
     }
 
     private void closeGesture(String password) {
-        mUpdateLogPresenter.setGesture(password, 0, "",new UpdateLogPresenter.CallBack2() {
+        mUpdateLogPresenter.setGesture(password, 0, "", new UpdateLogPresenter.CallBack2() {
             @Override
             public void send(int status) {
                 if (status == 0) {

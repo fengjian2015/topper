@@ -63,4 +63,5 @@ public class Constants {
     public static final String VERSION_UPDATE_URL = "https://api.github.com/repos/bclould/tocotalk/releases/latest";
     public static final String DOWNLOAD_APK_URL = "https://toco--bucket.oss-cn-shenzhen.aliyuncs.com/topperchat.apk";
     public static final String COMMERCIAL_TENANT_RECOGNITION_SYMBOL = "offline-pay";
+    public static final String LANGUAGE = "language";
 }

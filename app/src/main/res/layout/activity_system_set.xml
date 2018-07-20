@@ -32,7 +32,6 @@
         style="@style/HCutOffRule"/>
 
 
-
     <android.support.v7.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -138,6 +137,60 @@
                 android:padding="@dimen/x25"
                 android:src="@drawable/set_disturb_seletor"/>
 
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y30"
+        app:cardCornerRadius="@dimen/x15">
+
+        <RelativeLayout
+            android:id="@+id/rl_language"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120">
+
+            <ImageView
+                android:id="@+id/iv_language"
+                android:layout_width="@dimen/x40"
+                android:layout_height="@dimen/x40"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:src="@mipmap/icon_help"/>
+
+            <TextView
+                android:id="@+id/tv_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/iv_language"
+                android:text="@string/language"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x30"/>
+
+            <TextView
+                android:id="@+id/tv_language_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x50"
+                android:layout_toRightOf="@+id/tv_language"
+                android:text="@string/follow_the_system"
+                android:textSize="@dimen/x26"/>
+
+            <ImageView
+                android:layout_width="@dimen/x15"
+                android:layout_height="@dimen/x25"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x25"
+                android:src="@mipmap/iocn_person_turninto"/>
 
         </RelativeLayout>
 

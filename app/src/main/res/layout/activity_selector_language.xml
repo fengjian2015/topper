@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/shallow_gray"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/system_set"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+
+        <TextView
+            android:id="@+id/tv_save"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:paddingRight="@dimen/x20"
+            android:text="@string/save"
+            android:textColor="@color/blue2"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_follow_system"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:background="@color/white"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x30"
+            android:text="@string/follow_the_system"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+
+        <CheckBox
+            android:id="@+id/cb_system"
+            style="@style/CustomCheckboxTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x30"
+            android:clickable="false"/>
+
+    </RelativeLayout>
+
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_simplified_chinese"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:background="@color/white"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x30"
+            android:text="@string/simplified_chinese"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+
+        <CheckBox
+            android:id="@+id/cb_simplified"
+            style="@style/CustomCheckboxTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x30"
+            android:clickable="false"/>
+
+    </RelativeLayout>
+
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_chinese_traditional"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:background="@color/white"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x30"
+            android:text="@string/chinese_traditional"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x30"/>
+
+
+        <CheckBox
+            android:id="@+id/cb_traditional"
+            style="@style/CustomCheckboxTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x30"
+            android:clickable="false"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HCutOffRule"/>
+
+</LinearLayout>

@@ -72,6 +72,14 @@ public class SystemSetActivity extends BaseActivity {
     RelativeLayout mRlCache;
     @Bind(R.id.btn_brak)
     Button mBtnBrak;
+    @Bind(R.id.iv_language)
+    ImageView mIvLanguage;
+    @Bind(R.id.tv_language)
+    TextView mTvLanguage;
+    @Bind(R.id.tv_language_hint)
+    TextView mTvLanguageHint;
+    @Bind(R.id.rl_language)
+    RelativeLayout mRlLanguage;
 
     private long mFolderSize;
 
@@ -146,11 +154,14 @@ public class SystemSetActivity extends BaseActivity {
     boolean isOnOff = false;
     boolean isOnOff2 = false;
 
-    @OnClick({R.id.btn_brak, R.id.bark, R.id.rl_inform, R.id.rl_private, R.id.rl_help, R.id.rl_cache})
+    @OnClick({R.id.btn_brak, R.id.bark, R.id.rl_inform, R.id.rl_private, R.id.rl_help, R.id.rl_cache, R.id.rl_language})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_brak:
                 showDialog();
+                break;
+            case R.id.rl_language:
+                startActivity(new Intent(this, SelectorLanguageActivity.class));
                 break;
             case R.id.bark:
                 finish();
