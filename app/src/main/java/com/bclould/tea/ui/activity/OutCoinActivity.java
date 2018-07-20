@@ -31,9 +31,11 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.InCoinInfo;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.ui.widget.VirtualKeyboardView;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
+import com.bclould.tea.utils.UtilTool;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
@@ -95,15 +97,10 @@ public class OutCoinActivity extends BaseActivity {
 
     private int mId;
     private int mSiteId;
-    private Animation mEnterAnim;
-    private Animation mExitAnim;
-    private Dialog mRedDialog;
-    private GridView mGridView;
-    private MNPasswordEditText mEtPassword;
     private String mCoinName;
     private String mOver;
-    private ArrayList<Map<String, String>> valueList;
     private String mSite;
+    private PWDDialog pwdDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -194,131 +191,16 @@ public class OutCoinActivity extends BaseActivity {
     }
 
     private void showPWDialog() {
-        mEnterAnim = AnimationUtils.loadAnimation(this, R.anim.dialog_enter);
-        mExitAnim = AnimationUtils.loadAnimation(this, R.anim.dialog_exit);
-        mRedDialog = new Dialog(this, R.style.BottomDialog2);
-        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_passwrod, null);
-        //获得dialog的window窗口
-        Window window = mRedDialog.getWindow();
-        window.getDecorView().setPadding(0, 0, 0, 0);
-        //获得window窗口的属性
-        WindowManager.LayoutParams lp = window.getAttributes();
-        //设置窗口宽度为充满全屏
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        //将设置好的属性set回去
-        window.setAttributes(lp);
-        window.setGravity(Gravity.CENTER);
-        window.setWindowAnimations(BottomDialog);
-        mRedDialog.setContentView(contentView);
-        mRedDialog.show();
-        mRedDialog.setCanceledOnTouchOutside(false);
-        initDialog();
-    }
-
-    private void initDialog() {
+        pwdDialog=new PWDDialog(this);
+        pwdDialog.setOnPWDresult(new PWDDialog.OnPWDresult() {
+            @Override
+            public void success(String password) {
+                outCoin(password);
+            }
+        });
         String count = mEtCoinCount.getText().toString();
-        TextView coin = (TextView) mRedDialog.findViewById(R.id.tv_coin);
-        TextView countCoin = (TextView) mRedDialog.findViewById(R.id.tv_count_coin);
-        mEtPassword = (MNPasswordEditText) mRedDialog.findViewById(R.id.et_password);
-        // 设置不调用系统键盘
-        if (Build.VERSION.SDK_INT <= 10) {
-            mEtPassword.setInputType(InputType.TYPE_NULL);
-        } else {
-            this.getWindow().setSoftInputMode(
-                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-            try {
-                Class<EditText> cls = EditText.class;
-                Method setShowSoftInputOnFocus;
-                setShowSoftInputOnFocus = cls.getMethod("setShowSoftInputOnFocus",
-                        boolean.class);
-                setShowSoftInputOnFocus.setAccessible(true);
-                setShowSoftInputOnFocus.invoke(mEtPassword, false);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        final VirtualKeyboardView virtualKeyboardView = (VirtualKeyboardView) mRedDialog.findViewById(R.id.virtualKeyboardView);
-        ImageView bark = (ImageView) mRedDialog.findViewById(R.id.bark);
-        bark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mRedDialog.dismiss();
-                mEtPassword.setText("");
-            }
-        });
-        valueList = virtualKeyboardView.getValueList();
-        countCoin.setText(count + mCoinName);
-        coin.setText(mCoinName + "提币");
-        virtualKeyboardView.getLayoutBack().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                virtualKeyboardView.startAnimation(mExitAnim);
-                virtualKeyboardView.setVisibility(View.GONE);
-            }
-        });
-        mGridView = virtualKeyboardView.getGridView();
-        mGridView.setOnItemClickListener(onItemClickListener);
-        mEtPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                virtualKeyboardView.setFocusable(true);
-                virtualKeyboardView.setFocusableInTouchMode(true);
-                virtualKeyboardView.startAnimation(mEnterAnim);
-                virtualKeyboardView.setVisibility(View.VISIBLE);
-            }
-        });
-
-        mEtPassword.setOnPasswordChangeListener(new MNPasswordEditText.OnPasswordChangeListener() {
-            @Override
-            public void onPasswordChange(String password) {
-                if (password.length() == 6) {
-                    mRedDialog.dismiss();
-                    mEtPassword.setText("");
-                    outCoin(password);
-                }
-            }
-        });
+        pwdDialog.showDialog(count,mCoinName,mCoinName + "提币",null,null);
     }
-
-    private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-            if (position < 11 && position != 9) {    //点击0~9按钮
-
-                String amount = mEtPassword.getText().toString().trim();
-                amount = amount + valueList.get(position).get("name");
-
-                mEtPassword.setText(amount);
-
-                Editable ea = mEtPassword.getText();
-                mEtPassword.setSelection(ea.length());
-            } else {
-
-                if (position == 9) {      //点击退格键
-                    String amount = mEtPassword.getText().toString().trim();
-                    if (!amount.contains(".")) {
-                        amount = amount + valueList.get(position).get("name");
-                        mEtPassword.setText(amount);
-
-                        Editable ea = mEtPassword.getText();
-                        mEtPassword.setSelection(ea.length());
-                    }
-                }
-
-                if (position == 11) {      //点击退格键
-                    String amount = mEtPassword.getText().toString().trim();
-                    if (amount.length() > 0) {
-                        amount = amount.substring(0, amount.length() - 1);
-                        mEtPassword.setText(amount);
-
-                        Editable ea = mEtPassword.getText();
-                        mEtPassword.setSelection(ea.length());
-                    }
-                }
-            }
-        }
-    };
 
     public void showHintDialog() {
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_pw_hint, this, R.style.dialog);
@@ -330,7 +212,7 @@ public class OutCoinActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 deleteCacheDialog.dismiss();
-                mRedDialog.show();
+                pwdDialog.show();
             }
         });
         findPassword.setOnClickListener(new View.OnClickListener() {

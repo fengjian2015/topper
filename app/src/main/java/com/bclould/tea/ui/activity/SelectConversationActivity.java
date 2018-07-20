@@ -498,19 +498,29 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
 
     @Override
     public void sendError(int id) {
-        hideDialog();
-        ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.forward_failure));
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                hideDialog();
+                ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.forward_failure));
+            }
+        });
     }
 
     @Override
-    public void sendFileResults(String newFile2, boolean isSuccess) {
-        hideDialog();
-        if (isSuccess) {
-            ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.forward_success));
-            SelectConversationActivity.this.finish();
-        } else {
-            ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.forward_failure));
-        }
+    public void sendFileResults(String newFile2, final boolean isSuccess) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                hideDialog();
+                if (isSuccess) {
+                    ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.forward_success));
+                    SelectConversationActivity.this.finish();
+                } else {
+                    ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.forward_failure));
+                }
+            }
+        });
     }
 
     @Override

@@ -62,10 +62,10 @@ public class RoomMemberManage {
     }
 
    public synchronized void addRoomMember(final List<GroupInfo.DataBean> dataBean){
-//        if(isLoadMember){
-//            UtilTool.Log("fengjian","已經在加載群成員，暫不讓繼續加載");
-//            return;
-//        }
+        if(isLoadMember){
+            UtilTool.Log("fengjian","已經在加載群成員，暫不讓繼續加載");
+            return;
+        }
        UtilTool.Log("fengjian","加載成員");
        mSingleThreadExecutor.execute(new Runnable() {
            @Override
@@ -93,10 +93,10 @@ public class RoomMemberManage {
    }
 
     public synchronized void addRoomManage(final List<GroupInfo.DataBean> baseInfo){
-//       if (isLoadManage){
-//           UtilTool.Log("fengjian","已經在加載房間信息，暫不讓繼續加載");
-//           return;
-//       }
+       if (isLoadManage){
+           UtilTool.Log("fengjian","已經在加載房間信息，暫不讓繼續加載");
+           return;
+       }
         UtilTool.Log("fengjian","加載房間信息");
         mSingleThreadExecutor.execute(new Runnable() {
             @Override

@@ -2,6 +2,7 @@ package com.bclould.tea.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.utils.UtilTool;
 
@@ -41,21 +43,21 @@ public class QRCodeRedActivity extends BaseActivity {
     RelativeLayout mTitle;
     @Bind(R.id.tv_qr_code)
     ImageView mTvQrCode;
-    @Bind(R.id.tv_hint)
-    TextView mTvHint;
     @Bind(R.id.btn_save_qr)
     Button mBtnSaveQr;
     @Bind(R.id.rl_red)
     RelativeLayout mRlRed;
     private MessageInfo mMessageInfo = new MessageInfo();
-
+    private Bitmap bitmap;
+    private DBManager mDBManager;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_code_red);
-        getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket4));
+        getWindow().setStatusBarColor(getResources().getColor(R.color.redpacket5));
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
+        mDBManager=new DBManager(this);
         init();
     }
 
@@ -68,23 +70,34 @@ public class QRCodeRedActivity extends BaseActivity {
         } else {
             mTvRedpacketRecord.setVisibility(View.GONE);
         }
-        Bitmap bitmap = UtilTool.createQRImage(code);
-        mTvQrCode.setImageBitmap(bitmap);
+        bitmap = UtilTool.createQRImage(code);
+        new Thread(){
+            @Override
+            public void run() {
+                String url=UtilTool.getImgPathFromCache(mDBManager.findUserPath(UtilTool.getTocoId()),QRCodeRedActivity.this);
+                Bitmap logo= BitmapFactory.decodeFile(url);
+                bitmap=UtilTool.addLogo(bitmap,logo);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mTvQrCode.setImageBitmap(bitmap);
+                    }
+                });
+            }
+        }.start();
     }
 
-    @OnClick({R.id.btn_save_qr, R.id.bark, R.id.tv_redpacket_record, R.id.btn_share})
+    @OnClick({R.id.btn_save_qr, R.id.bark, R.id.tv_redpacket_record})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.btn_share:
-                goShare();
-                break;
             case R.id.btn_save_qr:
-                if (UtilTool.saveBitmap(mRlRed, this, true) != null) {
+                String path= UtilTool.saveBitmap(bitmap,this,false);
+                if(UtilTool.saveAlbum(path,this)){
                     Toast.makeText(this, getString(R.string.save_success), Toast.LENGTH_SHORT).show();
-                } else {
+                }else{
                     Toast.makeText(this, getString(R.string.save_error), Toast.LENGTH_SHORT).show();
                 }
                 break;

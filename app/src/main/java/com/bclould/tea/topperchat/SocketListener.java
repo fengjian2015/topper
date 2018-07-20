@@ -1249,17 +1249,28 @@ public class SocketListener {
     private void addMessage(MessageInfo messageInfo) {
         //添加数据库from
         String from = messageInfo.getSend();
+        String friend= mgr.queryRemark(from);
+        if(StringUtils.isEmpty(friend)){
+            friend=mgr.findUserName(from);
+        }
+        if(StringUtils.isEmpty(friend)){
+            friend=mdbRoomManage.findRoomName(friend);
+        }
+        if(StringUtils.isEmpty(friend)){
+            friend=from;
+        }
+
         String redpacket = messageInfo.getConverstaion();
         String time = messageInfo.getTime();
         messageInfo.setCreateTime(UtilTool.createChatCreatTime());
         mgr.addMessage(messageInfo);
         int number = mgr.queryNumber(from);
         if (mgr.findConversation(from)) {
-            mgr.updateConversation(from,from, number + 1, redpacket, time, messageInfo.getCreateTime(),null);
+            mgr.updateConversation(friend,from, number + 1, redpacket, time, messageInfo.getCreateTime(),null);
         } else {
             ConversationInfo info = new ConversationInfo();
             info.setTime(time);
-            info.setFriend(from);
+            info.setFriend(friend);
             info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
             info.setUser(from);
             info.setNumber(1);

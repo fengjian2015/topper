@@ -99,7 +99,7 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
                         activity.hideDialog2(mData);
                     } else if (mContext instanceof SendRedPacketActivity) {
                         SendRedPacketActivity activity = (SendRedPacketActivity) mContext;
-                        activity.hideDialog(mName);
+                        activity.hideDialog(mName,mLogo);
                     } else if (mContext instanceof PaymentActivity) {
                         PaymentActivity activity = (PaymentActivity) mContext;
                         activity.hideDialog(mName, mId);
@@ -108,13 +108,13 @@ public class BottomDialogRVAdapter4 extends RecyclerView.Adapter {
                         activity.hideDialog(mName, mId);
                     } else if (mContext instanceof SendQRCodeRedActivity) {
                         SendQRCodeRedActivity activity = (SendQRCodeRedActivity) mContext;
-                        activity.hideDialog(mName, mId);
+                        activity.hideDialog(mName, mId,mLogo);
                     } else if (mContext instanceof RewardActivity) {
                         RewardActivity activity = (RewardActivity) mContext;
                         activity.hideDialog(mName, mId);
                     }else if(mContext instanceof SendRedGroupActivity){
                         SendRedGroupActivity activity = (SendRedGroupActivity) mContext;
-                        activity.hideDialog(mName);
+                        activity.hideDialog(mName,mLogo);
                     }
                 }
             });

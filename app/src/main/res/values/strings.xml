@@ -1,5 +1,5 @@
 <resources>
-        <string name="app_name">TopperChat</string>
+    <string name="app_name">TopperChat</string>
         <string name="toast_network_error">服务器繁忙，请稍后重试</string>
         <string name="email">电邮</string>
         <string name="password">密码</string>
@@ -111,7 +111,7 @@
         <string name="max">最大成交额</string>
         <string name="payment">付款</string>
         <string name="push">发布</string>
-        <string name="set_login_pw">设置登录密码</string>
+    <string name="set_login_pw">设置登录密码</string>
         <string name="login_pw">登录密码</string>
         <string name="payment_pw">PIN密码</string>
         <string name="set_payment_pw">设置PIN密码</string>
@@ -211,7 +211,7 @@
         <string name="discover">发现</string>
         <string name="wallet">钱包</string>
         <string name="assets">资产</string>
-        <string name="et_coin_name">请输入币种名称</string>
+    <string name="et_coin_name">请输入币种名称</string>
         <string name="new_friend">新的好友</string>
         <string name="no_receipt_in_coin_record">没有充币记录</string>
         <string name="no_receipt_out_coin_record">没有提币记录</string>
@@ -306,7 +306,7 @@
         <string name="up_id_card">上传身份证</string>
         <string name="fill_in_the_information">填写资料</string>
         <string name="zhengmian_hint">上传身份证正面照面</string>
-        <string name="zhengmian_hint2">请保持照片中身份证显示完整</string>
+    <string name="zhengmian_hint2">请保持照片中身份证显示完整</string>
         <string name="zhengmian_hint3">字体清晰可见，亮度均匀</string>
         <string name="fanmian_hint">上传身份证反面照片</string>
         <string name="shouchi_hint">上传手持身份证照片</string>
@@ -395,7 +395,7 @@
         <string name="binding_error">绑定失败</string>
         <string name="toast_open_bank">开户行不能为空</string>
         <string name="no_less_than_the_limit">不能低于限额</string>
-        <string name="no_exceed_than_the_limit">不能高于限额</string>
+    <string name="no_exceed_than_the_limit">不能高于限额</string>
         <string name="deal">交易</string>
         <string name="sell_count">售出数量</string>
         <string name="work_off">售出</string>
@@ -452,7 +452,7 @@
         <string name="out_coin_hint3">是否确认放行？ </string>
         <string name="confirm_fb">确认放行</string>
         <string name="deal_finish">交易完成</string>
-        <string name="fen">分</string>
+    <string name="fen">分</string>
         <string name="order_timeout">订单超时</string>
         <string name="payment_method">付款方式</string>
         <string name="dengdai_fk">等待付款</string>
@@ -516,7 +516,7 @@
         <string name="scan_qr_code_pay_hint">扫描二维码向我付款</string>
         <string name="gg_set">更改设置</string>
         <string name="qr_coder_pay">出示付款码，向对方付款</string>
-        <string name="send_request_succeed">发送请求成功</string>
+    <string name="send_request_succeed">发送请求成功</string>
         <string name="have_friend">已在好友列表</string>
         <string name="send_request_error">发送请求失败</string>
         <string name="scan_qr_code_error">扫描二维码失败</string>
@@ -585,7 +585,7 @@
         <string name="auth_succeed">认证成功</string>
         <string name="auth_error_hint">认证失败，请重新认证</string>
         <string name="ordinary_red_packet">普通红包</string>
-        <string name="pending">待处理</string>
+    <string name="pending">待处理</string>
         <string name="pay_inform">付款通知</string>
         <string name="default_state">中国 - 大陆</string>
         <string name="pay_count">支付数量</string>
@@ -657,7 +657,7 @@
         <string name="single_insert_count">单笔投币数量</string>
         <string name="usdt">USDT</string>
         <string name="dqky">当前可用 </string>
-        <string name="publish_succeed">发布成功</string>
+    <string name="publish_succeed">发布成功</string>
         <string name="hr">小时</string>
         <string name="kaijiang_count_down">开奖倒计时(天时分秒):</string>
         <string name="et_phone">输入手机号码</string>
@@ -723,7 +723,7 @@
         <string name="start_guess_type2">口令竞猜</string>
         <string name="toast_guess_type">竞猜类型不能为空</string>
         <string name="toast_count_ling">投注次数不能低于1次</string>
-        <string name="toast_count_max">投注次数不能超过5次</string>
+    <string name="toast_count_max">投注次数不能超过5次</string>
         <string name="shijikouchu">实际扣除</string>
         <string name="push_ad_hint2">发布买币广告需收取</string>
         <string name="freeze">冻结</string>
@@ -789,7 +789,7 @@
         <string name="sum_deal_count">交易次数</string>
         <string name="shouqi">收起</string>
         <string name="chat_content">聊天内容</string>
-        <string name="date">日期</string>
+    <string name="date">日期</string>
         <string name="a_transfer">发起转账</string>
         <string name="send_a_red_envelope">发了一个红包</string>
         <string name="red_envelopes_collected">红包已被领取</string>
@@ -853,7 +853,7 @@
         <string name="news_browse_record_null_hint">没有浏览记录</string>
         <string name="stick">置顶</string>
         <string name="cancel_the_top">取消置顶</string>
-        <string name="ad_manager">广告管理</string>
+    <string name="ad_manager">广告管理</string>
         <string name="ad_edit">广告编辑</string>
         <string name="updata_remark">修改备注</string>
         <string name="person_business_card">个人名片</string>
@@ -938,7 +938,7 @@
         <string name="exceptional_coin_time">打赏时间</string>
         <string name="exceptional_inform">打赏通知</string>
         <string name="exceptional_inform_hint">您有一个新打赏消息,点击查看详情</string>
-        <string name="state_district">国家或地区</string>
+    <string name="state_district">国家或地区</string>
         <string name="choose_a_chat">选择一个聊天</string>
         <string name="close_activity">关闭界面</string>
         <string name="group_management">群主管理权转让</string>
@@ -1022,7 +1022,7 @@
         <string name="share_qr_code">分享二维码</string>
         <string name="apk_underway_update">正在下载</string>
         <string name="install">安装</string>
-        <string name="member_at_me">[有人@我]</string>
+    <string name="member_at_me">[有人@我]</string>
         <string name="confirm_delete_and_message">确认要删除会话和聊天记录</string>
         <string name="pay">支付</string>
         <string name="current_location">当前所在位置:</string>
@@ -1108,4 +1108,11 @@
         <string name="please_choose">请选择</string>
         <string name="red_envelope">的红包</string>
         <string name="have_deposited_my_assets">已存入我的资产，可用于交易</string>
+    <string name="send_red_envelope">发红包</string>
+    <string name="person1">人</string>
+    <string name="members_of_the_group">本群成员共</string>
+    <string name="Generate_qr_code_red_envelope">生成二维码红包</string>
+    <string name="save_to_photo_album">保存到相冊</string>
+    <string name="qe_code_red_explain">你的二维码红包已经生成，toopperchat用户可以扫一扫领红包啦！ </string>
+    <string name="topperchat_red">topperchat红包</string>
 </resources>

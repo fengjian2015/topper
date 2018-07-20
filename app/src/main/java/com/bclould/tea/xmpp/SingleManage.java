@@ -75,13 +75,14 @@ public class SingleManage implements Room {
     private String mName;
     private String url;
     private ArrayList<MessageManageListener> listeners = new ArrayList<>();
-
+    private static ExecutorService mSingleThreadExecutor = null;
 
     public SingleManage(DBManager mMgr, String mUser, Context context, String name) {
         this.mMgr = mMgr;
         this.mUser = mUser;
         this.context = context;
         this.mName = name;
+        mSingleThreadExecutor = Executors.newSingleThreadExecutor();// 每次只执行一个线程任务的线程池
         if (StringUtils.isEmpty(mName)) {
             this.mName = mMgr.findUserName(mUser);
         }
@@ -391,61 +392,66 @@ public class SingleManage implements Room {
 
     //上传文件到aws
     public void Upload(final String path) {
-        final File file = new File(path);//获取文件
-        final String postfix = UtilTool.getPostfix(file.getName());//获取文件后缀
-        final String key = UtilTool.getUserId() + UtilTool.createtFileName() + ".AN." + UtilTool.getPostfix2(file.getName());//命名aws文件名
-        Bitmap bitmap = null;
-        //获取发送图片或视频第一帧的bitmap
-        if (postfix.equals("Video")) {
-            bitmap = ThumbnailUtils.createVideoThumbnail(path
-                    , MediaStore.Video.Thumbnails.MINI_KIND);
-        } else {
-            bitmap = BitmapFactory.decodeFile(path);
-        }
-        //缩略图储存路径
-        final File newFile = new File(Constants.PUBLICDIR + key);
-        String postfixs =UtilTool.getPostfix2(file.getName());
-        if (!".gif".equals(postfixs) && !".GIF".equals(postfixs)) {
-            UtilTool.comp(bitmap, newFile);//压缩图片
-        } else {
-            UtilTool.copyFile(file.getAbsolutePath(), newFile.getAbsolutePath());
-        }
-        //上传视频到aws
-        if (postfix.equals("Video")) {
-            final MessageInfo messageInfo = sendFileMessage(path, postfix, key, newFile.getPath());
-            OSSClient ossClient = OSSupload.getInstance().visitOSS();
-            PutObjectRequest put = new PutObjectRequest(Constants.BUCKET_NAME2, key, file.getPath());
-            OSSAsyncTask<PutObjectResult> task = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
-                @Override
-                public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
-                    sendFileAfterMessage(key, postfix, newFile.getPath(), messageInfo.getId(), messageInfo.getMsgId(), messageInfo.getCreateTime());
+        mSingleThreadExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                final File file = new File(path);//获取文件
+                final String postfix = UtilTool.getPostfix(file.getName());//获取文件后缀
+                final String key = UtilTool.getUserId() + UtilTool.createtFileName() + ".AN." + UtilTool.getPostfix2(file.getName());//命名aws文件名
+                Bitmap bitmap = null;
+                //获取发送图片或视频第一帧的bitmap
+                if (postfix.equals("Video")) {
+                    bitmap = ThumbnailUtils.createVideoThumbnail(path
+                            , MediaStore.Video.Thumbnails.MINI_KIND);
+                } else {
+                    bitmap = BitmapFactory.decodeFile(path);
                 }
+                //缩略图储存路径
+                final File newFile = new File(Constants.PUBLICDIR + key);
+                String postfixs =UtilTool.getPostfix2(file.getName());
+                if (!".gif".equals(postfixs) && !".GIF".equals(postfixs)) {
+                    UtilTool.comp(bitmap, newFile);//压缩图片
+                } else {
+                    UtilTool.copyFile(file.getAbsolutePath(), newFile.getAbsolutePath());
+                }
+                //上传视频到aws
+                if (postfix.equals("Video")) {
+                    final MessageInfo messageInfo = sendFileMessage(path, postfix, key, newFile.getPath());
+                    OSSClient ossClient = OSSupload.getInstance().visitOSS();
+                    PutObjectRequest put = new PutObjectRequest(Constants.BUCKET_NAME2, key, file.getPath());
+                    OSSAsyncTask<PutObjectResult> task = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+                        @Override
+                        public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
+                            sendFileAfterMessage(key, postfix, newFile.getPath(), messageInfo.getId(), messageInfo.getMsgId(), messageInfo.getCreateTime());
+                        }
 
-                @Override
-                public void onFailure(PutObjectRequest putObjectRequest, ClientException e, ServiceException e1) {
-                    UtilTool.Log("aws", "错误");
-                    mMgr.updateMessageHint(messageInfo.getId(), 2);
-                    sendError(messageInfo.getId());
-                }
-            });
-        } else {
-            final MessageInfo messageInfo = sendFileMessage(path, postfix, key, newFile.getPath());
-            OSSClient ossClient = OSSupload.getInstance().visitOSS();
-            PutObjectRequest put = new PutObjectRequest(Constants.BUCKET_NAME2, key, file.getPath());
-            OSSAsyncTask<PutObjectResult> task = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
-                @Override
-                public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
-                    sendFileAfterMessage(key, postfix, newFile.getPath(), messageInfo.getId(), messageInfo.getMsgId(), messageInfo.getCreateTime());
-                }
+                        @Override
+                        public void onFailure(PutObjectRequest putObjectRequest, ClientException e, ServiceException e1) {
+                            UtilTool.Log("aws", "错误");
+                            mMgr.updateMessageHint(messageInfo.getId(), 2);
+                            sendError(messageInfo.getId());
+                        }
+                    });
+                } else {
+                    final MessageInfo messageInfo = sendFileMessage(path, postfix, key, newFile.getPath());
+                    OSSClient ossClient = OSSupload.getInstance().visitOSS();
+                    PutObjectRequest put = new PutObjectRequest(Constants.BUCKET_NAME2, key, file.getPath());
+                    OSSAsyncTask<PutObjectResult> task = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+                        @Override
+                        public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
+                            sendFileAfterMessage(key, postfix, newFile.getPath(), messageInfo.getId(), messageInfo.getMsgId(), messageInfo.getCreateTime());
+                        }
 
-                @Override
-                public void onFailure(PutObjectRequest putObjectRequest, ClientException e, ServiceException e1) {
-                    UtilTool.Log("aws", "错误");
-                    mMgr.updateMessageHint(messageInfo.getId(), 2);
-                    sendError(messageInfo.getId());
+                        @Override
+                        public void onFailure(PutObjectRequest putObjectRequest, ClientException e, ServiceException e1) {
+                            UtilTool.Log("aws", "错误");
+                            mMgr.updateMessageHint(messageInfo.getId(), 2);
+                            sendError(messageInfo.getId());
+                        }
+                    });
                 }
-            });
-        }
+            }
+        });
     }
 
     //僅僅是url鏈接
