@@ -10,15 +10,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bclould.tea.Presenter.UpdateLogPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
-import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -54,6 +57,8 @@ public class GuanYuMeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guanyu_me);
         ButterKnife.bind(this);
+        if(!EventBus.getDefault().isRegistered(this))
+        EventBus.getDefault().register(this);
         if (UtilTool.compareVersion(this)) {
             mTvNewUpdate.setVisibility(View.VISIBLE);
         } else {
@@ -70,6 +75,14 @@ public class GuanYuMeActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+       if (msg.equals(getString(R.string.check_new_version))) {
+           mCvCheckUpdate.setVisibility(View.VISIBLE);
+        }
+    }
+
     @OnClick({R.id.bark, R.id.rl_new, R.id.rl_update_log})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -81,32 +94,14 @@ public class GuanYuMeActivity extends BaseActivity {
                 break;
             case R.id.rl_new:
                 startActivity(new Intent(GuanYuMeActivity.this, VersionsUpdateActivity.class));
-                /*String url = MySharedPreferences.getInstance().getString(Constants.NEW_APK_URL);
-                String apkName = MySharedPreferences.getInstance().getString(Constants.NEW_APK_NAME);
-                String body = MySharedPreferences.getInstance().getString(Constants.NEW_APK_BODY);
-                if (!url.isEmpty()) {
-                    startActivity(new Intent(GuanYuMeActivity.this, VersionsUpdateActivity.class));
-                } else {
-                    if (!UtilTool.isFastClick()) {
-                        checkVersion();
-                    } else {
-                        Toast.makeText(this, getString(R.string.toast_after_time), Toast.LENGTH_SHORT).show();
-                    }
-                }*/
                 break;
         }
     }
 
-    private void checkVersion() {
-        mUpdateLogPresenter.checkVersion(new UpdateLogPresenter.CallBack2() {
-            @Override
-            public void send(int type) {
-                if (type == 1) {
-                    mTvNewUpdate.setVisibility(View.VISIBLE);
-                } else {
-                    mTvNewUpdate.setVisibility(View.GONE);
-                }
-            }
-        });
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 }

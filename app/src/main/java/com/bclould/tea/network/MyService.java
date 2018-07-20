@@ -73,7 +73,8 @@ public interface MyService {
             @Field("email") String email,
             @Field("password") String password,
             @Field("code") String code,
-            @Field("device") int device
+            @Field("device") int device,
+            @Field("lang") String lang
     );
 
     //图形验证码
@@ -1236,6 +1237,7 @@ public interface MyService {
             @Field("group_id") int group_id,
             @Field("bulletin") String bulletin
     );
+
     //設置手勢密碼
     @FormUrlEncoded
     @POST("api/user/setGesture")
@@ -1264,6 +1266,7 @@ public interface MyService {
             @Field("is_allow_modify_data") int is_allow_modify_data
 
     );
+
     //修改群是否要審核
     @FormUrlEncoded
     @POST("chat/room/is_review")
@@ -1368,4 +1371,14 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("id") int id
     );
+
+    //上傳當前語言環境
+    @FormUrlEncoded
+    @POST("chat/update/lang")
+    Observable<BaseInfo> postLanguage(
+            @Header("Authorization") String token,
+            @Field("lang") String lang
+    );
+
+
 }

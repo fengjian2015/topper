@@ -165,6 +165,11 @@ public class SetGesturePWActivity extends BaseActivity {
                     MySharedPreferences.getInstance().setString(GESTURE_ANSWER, mGesturePW);
                 }
             }
+
+            @Override
+            public void error() {
+
+            }
         });
     }
 

@@ -324,6 +324,11 @@ public class PayPwSelectorActivity extends BaseActivity {
                     Toast.makeText(PayPwSelectorActivity.this, getString(R.string.close_gesture), Toast.LENGTH_SHORT).show();
                 }
             }
+
+            @Override
+            public void error() {
+
+            }
         });
     }
 
@@ -340,6 +345,11 @@ public class PayPwSelectorActivity extends BaseActivity {
                 }
                 mOnOffFingerprint.setSelected(isFingerprint);
                 MySharedPreferences.getInstance().setBoolean(FINGERPRINT_PW_SELE, isFingerprint);
+            }
+
+            @Override
+            public void error() {
+
             }
         });
     }

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.LoginBaseActivity;
 import com.bclould.tea.base.MyApp;
@@ -32,6 +33,7 @@ public class InitialActivity extends LoginBaseActivity {
     @Bind(R.id.tv_version)
     TextView mTvVersion;
     private Thread mThread;
+    private LoginPresenter mLoginPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class InitialActivity extends LoginBaseActivity {
 
     private void init() {
         String versionCode = UtilTool.getVersionCode(this);
-        mTvVersion.setText("V" + versionCode);
+        mTvVersion.setText("v" + versionCode);
         mThread = new Thread(new Runnable() {
             @Override
             public void run() {
