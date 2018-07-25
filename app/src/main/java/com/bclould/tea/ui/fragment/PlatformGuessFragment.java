@@ -63,8 +63,7 @@ public class PlatformGuessFragment extends Fragment {
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
-    private int end = 0;
-    private int mPage = 1;
+    private int mPage_id = 0;
     private int mPageSize = 10;
     private String mUser = "";
     private GuessListRVAdapter mGuessListRVAdapter;
@@ -108,6 +107,7 @@ public class PlatformGuessFragment extends Fragment {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
+                if (isFinish)
                 initData(mUser, PULL_DOWN);
             }
         });
@@ -131,48 +131,43 @@ public class PlatformGuessFragment extends Fragment {
 
     private void initData(String user, final int type) {
         if (type == PULL_DOWN) {
-            mPage = 1;
-            end = 0;
+            mPage_id = 0;
         }
         isFinish = false;
-        mBlockchainGuessPresenter.getGuessList(mPage, mPageSize, 2, user, new BlockchainGuessPresenter.CallBack() {
+        mBlockchainGuessPresenter.getGuessList(mPage_id, mPageSize, 2, user, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
-                if (mRecyclerView != null) {
-                    if (type == PULL_DOWN) {
-                        mRefreshLayout.finishRefresh();
-                    }else{
-                        mRefreshLayout.finishLoadMore();
-                    }
-                    if (mDataList.size() != 0 || data.size() != 0) {
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    if (mRecyclerView != null) {
+                        if (type == PULL_DOWN) {
+                            mRefreshLayout.finishRefresh();
+                        } else {
+                            mRefreshLayout.finishLoadMore();
+                        }
                         isFinish = true;
-                        if (type == PULL_UP) {
-                            if (data.size() == mPageSize) {
-                                mPage++;
-                                mDataList.addAll(data);
-                                mGuessListRVAdapter.notifyDataSetChanged();
-                            } else {
-                                if (end == 0) {
-                                    end++;
-                                    mDataList.addAll(data);
-                                    mGuessListRVAdapter.notifyDataSetChanged();
+                        if (mDataList.size() != 0 || data.size() != 0) {
+                            mRecyclerView.setVisibility(View.VISIBLE);
+                            mLlNoData.setVisibility(View.GONE);
+                            mLlError.setVisibility(View.GONE);
+                            if (type == PULL_DOWN) {
+                                if (data.size() == 0) {
+                                    mRecyclerView.setVisibility(View.GONE);
+                                    mLlNoData.setVisibility(View.VISIBLE);
+                                    mLlError.setVisibility(View.GONE);
+                                } else {
+                                    mDataList.clear();
                                 }
                             }
-                        } else {
-                            if (mPage == 1) {
-                                mPage++;
-                            }
-                            mDataList.clear();
                             mDataList.addAll(data);
+                            if (mDataList.size() != 0) {
+                                mPage_id = mDataList.get(mDataList.size() - 1).getId();
+                            }
                             mGuessListRVAdapter.notifyDataSetChanged();
+                        } else {
+                            mRecyclerView.setVisibility(View.GONE);
+                            mLlNoData.setVisibility(View.VISIBLE);
+                            mLlError.setVisibility(View.GONE);
                         }
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        mLlNoData.setVisibility(View.GONE);
-                        mLlError.setVisibility(View.GONE);
-                    } else {
-                        mRecyclerView.setVisibility(View.GONE);
-                        mLlNoData.setVisibility(View.VISIBLE);
-                        mLlError.setVisibility(View.GONE);
                     }
                 }
             }

@@ -335,6 +335,8 @@ public class ReceiptPaymentPresenter {
         void send(List<TransferListInfo.DataBean> data);
 
         void error();
+
+        void finishRefresh();
     }
 
     //定义接口

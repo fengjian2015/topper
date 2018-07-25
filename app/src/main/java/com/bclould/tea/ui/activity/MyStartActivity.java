@@ -70,8 +70,7 @@ public class MyStartActivity extends BaseActivity {
 
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
-    private int end = 0;
-    private int mPage = 1;
+    private int mPage_id = 0;
     private int mPageSize = 10;
     private GuessListRVAdapter mGuessListRVAdapter;
     private Dialog mBottomDialog;
@@ -103,12 +102,14 @@ public class MyStartActivity extends BaseActivity {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
+                if (isFinish)
                 initData(mType, PULL_DOWN);
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
+                if (isFinish)
                 initData(mType, PULL_UP);
             }
         });
@@ -126,53 +127,43 @@ public class MyStartActivity extends BaseActivity {
 
     private void initData(int status, final int type) {
         if (type == PULL_DOWN) {
-            mPage = 1;
-            end = 0;
+            mPage_id = 0;
         }
         isFinish = false;
-        mBlockchainGuessPresenter.getMyStart(mPage, mPageSize, status, new BlockchainGuessPresenter.CallBack() {
+        mBlockchainGuessPresenter.getMyStart(mPage_id, mPageSize, status, new BlockchainGuessPresenter.CallBack() {
             @Override
             public void send(List<GuessListInfo.DataBean> data) {
-                if (mRecyclerView != null) {
-                    if (type == PULL_DOWN) {
-                        mRefreshLayout.finishRefresh();
-                    }else{
-                        mRefreshLayout.finishLoadMore();
-                    }
-                    if (mDataList.size() != 0 || data.size() != 0) {
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        mLlNoData.setVisibility(View.GONE);
-                        isFinish = true;
-                        if (type == PULL_UP) {
-                            if (data.size() == mPageSize) {
-                                mPage++;
-                                mDataList.addAll(data);
-                                mGuessListRVAdapter.notifyDataSetChanged();
-                            } else {
-                                if (end == 0) {
-                                    end++;
-                                    mDataList.addAll(data);
-                                    mGuessListRVAdapter.notifyDataSetChanged();
-                                }
-                            }
+                if (ActivityUtil.isActivityOnTop(MyStartActivity.this)) {
+                    if (mRecyclerView != null) {
+                        if (type == PULL_DOWN) {
+                            mRefreshLayout.finishRefresh();
                         } else {
-                            if (data.size() == 0) {
-                                mRecyclerView.setVisibility(View.GONE);
-                                mLlNoData.setVisibility(View.VISIBLE);
-                                mLlError.setVisibility(View.GONE);
-                            } else {
-                                if (mPage == 1) {
-                                    mPage++;
-                                }
-                                mDataList.clear();
-                                mDataList.addAll(data);
-                                mGuessListRVAdapter.notifyDataSetChanged();
-                            }
+                            mRefreshLayout.finishLoadMore();
                         }
-                    } else {
-                        mRecyclerView.setVisibility(View.GONE);
-                        mLlNoData.setVisibility(View.VISIBLE);
-                        mLlError.setVisibility(View.GONE);
+                        isFinish = true;
+                        if (mDataList.size() != 0 || data.size() != 0) {
+                            mRecyclerView.setVisibility(View.VISIBLE);
+                            mLlNoData.setVisibility(View.GONE);
+                            mLlError.setVisibility(View.GONE);
+                            if (type == PULL_DOWN) {
+                                if (data.size() == 0) {
+                                    mRecyclerView.setVisibility(View.GONE);
+                                    mLlNoData.setVisibility(View.VISIBLE);
+                                    mLlError.setVisibility(View.GONE);
+                                } else {
+                                    mDataList.clear();
+                                }
+                            }
+                            mDataList.addAll(data);
+                            if (mDataList.size() != 0) {
+                                mPage_id = mDataList.get(mDataList.size() - 1).getId();
+                            }
+                            mGuessListRVAdapter.notifyDataSetChanged();
+                        } else {
+                            mRecyclerView.setVisibility(View.GONE);
+                            mLlNoData.setVisibility(View.VISIBLE);
+                            mLlError.setVisibility(View.GONE);
+                        }
                     }
                 }
             }
@@ -182,7 +173,7 @@ public class MyStartActivity extends BaseActivity {
                 if (ActivityUtil.isActivityOnTop(MyStartActivity.this)) {
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();
-                    }else{
+                    } else {
                         mRefreshLayout.finishLoadMore();
                     }
                     if (type == PULL_DOWN) {
@@ -198,7 +189,7 @@ public class MyStartActivity extends BaseActivity {
             public void finishRefresh() {
                 if (type == PULL_DOWN) {
                     mRefreshLayout.finishRefresh();
-                }else{
+                } else {
                     mRefreshLayout.finishLoadMore();
                 }
             }

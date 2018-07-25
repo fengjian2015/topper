@@ -330,7 +330,7 @@ public interface MyService {
             @Field("type") int type,
             @Field("coin_name") String coin_name,
             @Field("country") String country,
-            @Field("page") int page,
+            @Field("page_id") int page_id,
             @Field("page_size") int page_size
     );
 
@@ -401,7 +401,7 @@ public interface MyService {
             @Field("coin_name") String coin_name,
             @Field("status") String status,
             @Field("user_name") String user_name,
-            @Field("page") int page,
+            @Field("page_id") int page_id,
             @Field("page_size") int page_size
     );
 
@@ -537,7 +537,7 @@ public interface MyService {
     @FormUrlEncoded
     Observable<DynamicListInfo> dynamicList(
             @Header("Authorization") String token,
-            @Field("page") int page,
+            @Field("page_id") int page_id,
             @Field("page_size") int page_size,
             @Field("friends") String friends
     );
@@ -547,7 +547,7 @@ public interface MyService {
     @FormUrlEncoded
     Observable<DynamicListInfo> taDynamicList(
             @Header("Authorization") String token,
-            @Field("page") int page,
+            @Field("page_id") int page_id,
             @Field("page_size") int page_size,
             @Field("toco_id") String toco_id
     );
@@ -655,7 +655,7 @@ public interface MyService {
     @FormUrlEncoded
     Observable<TransferListInfo> getTransRecord(
             @Header("Authorization") String token,
-            @Field("page") int page,
+            @Field("page_id") int page_id,
             @Field("page_size") int page_size,
             @Field("type") String type,
             @Field("date") String date
@@ -736,8 +736,8 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("market_coin_name") String market_coin_name,
             @Field("trade_coin_name") String trade_coin_name,
-            @Field("page") String page,
-            @Field("page_size") String page_size
+            @Field("page_id") int page_id,
+            @Field("page_size") int page_size
     );
 
     //币种兑换
@@ -837,7 +837,7 @@ public interface MyService {
     @FormUrlEncoded
     Observable<GuessListInfo> GuessList(
             @Header("Authorization") String token,
-            @Field("page") int page,
+            @Field("page_id") int page_id,
             @Field("page_size") int page_size,
             @Field("type") int type,
             @Field("user_name") String user_name
@@ -889,7 +889,7 @@ public interface MyService {
     @FormUrlEncoded
     Observable<GuessListInfo> getMyStart(
             @Header("Authorization") String token,
-            @Field("page") int page,
+            @Field("page_id") int page_id,
             @Field("page_size") int page_size,
             @Field("status") int status
     );
@@ -899,7 +899,7 @@ public interface MyService {
     @FormUrlEncoded
     Observable<GuessListInfo> getMyJoin(
             @Header("Authorization") String token,
-            @Field("page") int page,
+            @Field("page_id") int page_id,
             @Field("page_size") int page_size,
             @Field("status") int status
     );
@@ -911,7 +911,7 @@ public interface MyService {
     Observable<MyAdListInfo> getMyAdList(
             @Header("Authorization") String token,
             @Field("type") int type,
-            @Field("page") int page,
+            @Field("page_id") int page_id,
             @Field("page_size") int page_size,
             @Field("coin_name") String coin_name,
             @Field("status") int status
@@ -922,7 +922,7 @@ public interface MyService {
     @FormUrlEncoded
     Observable<GuessListInfo> getGuessHistory(
             @Header("Authorization") String token,
-            @Field("page") int page,
+            @Field("page_id") int page_id,
             @Field("page_size") int page_size
     );
 
@@ -931,7 +931,7 @@ public interface MyService {
     @FormUrlEncoded
     Observable<NewsListInfo> getNewsList(
             @Header("Authorization") String token,
-            @Field("page") int page,
+            @Field("page_id") int page_id,
             @Field("page_size") int page_size
     );
 
@@ -940,7 +940,7 @@ public interface MyService {
     @FormUrlEncoded
     Observable<GonggaoListInfo> myNewsList(
             @Header("Authorization") String token,
-            @Field("page") int page,
+            @Field("page_id") int page_id,
             @Field("page_size") int page_size,
             @Field("status") int status
     );
@@ -950,7 +950,7 @@ public interface MyService {
     @FormUrlEncoded
     Observable<GonggaoListInfo> NewsDraftList(
             @Header("Authorization") String token,
-            @Field("page") int page,
+            @Field("page_id") int page_id,
             @Field("page_size") int page_size
     );
 
@@ -967,7 +967,7 @@ public interface MyService {
     @FormUrlEncoded
     Observable<GonggaoListInfo> GonggaoList(
             @Header("Authorization") String token,
-            @Field("page") int page,
+            @Field("page_id") int page_id,
             @Field("page_size") int page_size,
             @Field("status") int status
     );
@@ -977,7 +977,7 @@ public interface MyService {
     @FormUrlEncoded
     Observable<GonggaoListInfo> NewsHistoryList(
             @Header("Authorization") String token,
-            @Field("page") int page,
+            @Field("page_id") int page_id,
             @Field("page_size") int page_size
     );
 
@@ -1020,7 +1020,7 @@ public interface MyService {
     Observable<OrderListInfo> getMyOrderList(
             @Header("Authorization") String token,
             @Field("type") int type,
-            @Field("page") int page,
+            @Field("page_id") int page_id,
             @Field("page_size") int page_size,
             @Field("coin_name") String coin_name
     );

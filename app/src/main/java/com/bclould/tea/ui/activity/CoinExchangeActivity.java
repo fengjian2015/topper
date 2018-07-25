@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -18,13 +17,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -42,20 +37,16 @@ import com.bclould.tea.ui.adapter.BottomDialogRVAdapter4;
 import com.bclould.tea.ui.adapter.CoinExchangeRVAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.PWDDialog;
-import com.bclould.tea.ui.widget.VirtualKeyboardView;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 import com.bumptech.glide.Glide;
-import com.maning.pswedittextlibrary.MNPasswordEditText;
 
-import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -262,13 +253,13 @@ public class CoinExchangeActivity extends BaseActivity {
         });
     }
 
-    String mPageSize = "100";
-    String mPage = "1";
+    int mPageSize = 100;
+    int mPage_id = 0;
     List<ExchangeOrderInfo.DataBeanX.DataBean> mExchangeOrderList = new ArrayList<>();
 
     private void initListData(String name) {
         mExchangeOrderList.clear();
-        mCoinPresenter.exchangeOrder("USDT", name, mPage, mPageSize, new CoinPresenter.CallBack3() {
+        mCoinPresenter.exchangeOrder("USDT", name, mPage_id, mPageSize, new CoinPresenter.CallBack3() {
             @Override
             public void send(ExchangeOrderInfo.DataBeanX data) {
                 mCount++;

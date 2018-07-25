@@ -79,8 +79,7 @@ public class OrderFormFragment extends Fragment {
     private BuySellPresenter mBuySellPresenter;
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
-    private int end = 0;
-    private int mPage = 1;
+    private int mPage_id = 0;
     private int mPageSize = 10;
 
     @Nullable
@@ -156,6 +155,7 @@ public class OrderFormFragment extends Fragment {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
+                if (isFinish)
                 initData(mCoinName, mFiltrate, "", PULL_DOWN);
             }
         });
@@ -194,52 +194,39 @@ public class OrderFormFragment extends Fragment {
 
     private void initData(String coinName, String filtrate, String user, final int type) {
         if (type == PULL_DOWN) {
-            mPage = 1;
-            end = 0;
+            mPage_id = 0;
         }
         isFinish = false;
-        UtilTool.Log("分頁", mPage + "");
-        mBuySellPresenter.getOrderList(mPage, mPageSize, coinName, filtrate, user, new BuySellPresenter.CallBack3() {
+        UtilTool.Log("分頁", mPage_id + "");
+        mBuySellPresenter.getOrderList(mPage_id, mPageSize, coinName, filtrate, user, new BuySellPresenter.CallBack3() {
             @Override
             public void send(List<OrderListInfo.DataBean> data) {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
                     if (mRecyclerView != null) {
                         if (type == PULL_DOWN) {
                             mRefreshLayout.finishRefresh();
-                        }else{
+                        } else {
                             mRefreshLayout.finishLoadMore();
                         }
+                        isFinish = true;
                         if (mDataList.size() != 0 || data.size() != 0) {
                             mRecyclerView.setVisibility(View.VISIBLE);
                             mLlNoData.setVisibility(View.GONE);
                             mLlError.setVisibility(View.GONE);
-                            isFinish = true;
-                            if (type == PULL_UP) {
-                                if (data.size() == mPageSize) {
-                                    mPage++;
-                                    mDataList.addAll(data);
-                                    mOrderRVAdapter.notifyDataSetChanged();
-                                } else {
-                                    if (end == 0) {
-                                        end++;
-                                        mDataList.addAll(data);
-                                        mOrderRVAdapter.notifyDataSetChanged();
-                                    }
-                                }
-                            } else {
+                            if (type == PULL_DOWN) {
                                 if (data.size() == 0) {
                                     mRecyclerView.setVisibility(View.GONE);
                                     mLlNoData.setVisibility(View.VISIBLE);
                                     mLlError.setVisibility(View.GONE);
                                 } else {
-                                    if (mPage == 1) {
-                                        mPage++;
-                                    }
                                     mDataList.clear();
-                                    mDataList.addAll(data);
-                                    mOrderRVAdapter.notifyDataSetChanged();
                                 }
                             }
+                            mDataList.addAll(data);
+                            if (mDataList.size() != 0) {
+                                mPage_id = mDataList.get(mDataList.size() - 1).getId();
+                            }
+                            mOrderRVAdapter.notifyDataSetChanged();
                         } else {
                             mRecyclerView.setVisibility(View.GONE);
                             mLlNoData.setVisibility(View.VISIBLE);
@@ -254,7 +241,7 @@ public class OrderFormFragment extends Fragment {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();
-                    }else{
+                    } else {
                         mRefreshLayout.finishLoadMore();
                     }
                     if (type == PULL_DOWN) {
@@ -269,7 +256,7 @@ public class OrderFormFragment extends Fragment {
             public void finishRefresh() {
                 if (type == PULL_DOWN) {
                     mRefreshLayout.finishRefresh();
-                }else{
+                } else {
                     mRefreshLayout.finishLoadMore();
                 }
             }

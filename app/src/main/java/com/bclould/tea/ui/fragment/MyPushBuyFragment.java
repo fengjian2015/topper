@@ -21,6 +21,7 @@ import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.greenrobot.eventbus.EventBus;
@@ -55,10 +56,13 @@ public class MyPushBuyFragment extends Fragment {
     LinearLayout mLlError;
     private BuySellPresenter mBuySellPresenter;
     private MyPushAdRVAdapter mMyPushAdRVAdapter;
-    private int mPage = 1;
+    private int mPage_id = 0;
     private int mPage_size = 1000;
     private int mType = 1;
     private int mStatus = 2;
+    private int PULL_UP = 0;
+    private int PULL_DOWN = 1;
+    private boolean isFinish = true;
 
     public MyPushBuyFragment(String coinName) {
         mCoinName = coinName;
@@ -79,7 +83,7 @@ public class MyPushBuyFragment extends Fragment {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.my_ad_filtrate))) {
             mStatus = event.getNumber();
-            initData();
+            initData(PULL_DOWN);
         }
     }
 
@@ -89,7 +93,7 @@ public class MyPushBuyFragment extends Fragment {
         initListener();
         mBuySellPresenter = new BuySellPresenter(getContext());
         initRecyclerView();
-        initData();
+        initData(PULL_DOWN);
     }
 
     private void initRecyclerView() {
@@ -102,30 +106,60 @@ public class MyPushBuyFragment extends Fragment {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                initData();
+                if (isFinish)
+                    initData(PULL_DOWN);
+            }
+        });
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                if (isFinish)
+                    initData(PULL_UP);
             }
         });
     }
 
     List<MyAdListInfo.DataBean> mDataList = new ArrayList<>();
 
-    private void initData() {
-        mBuySellPresenter.getUserAdList(mType, mPage, mPage_size, mStatus, mCoinName, new BuySellPresenter.CallBack5() {
+    private void initData(final int type) {
+        if (type == PULL_DOWN) {
+            mPage_id = 0;
+        }
+        isFinish = false;
+        mBuySellPresenter.getUserAdList(mType, mPage_id, mPage_size, mStatus, mCoinName, new BuySellPresenter.CallBack5() {
             @Override
             public void send(List<MyAdListInfo.DataBean> data) {
-                mRefreshLayout.finishRefresh();
-                if (mRecyclerView != null) {
-                    if (data.size() != 0) {
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        mLlNoData.setVisibility(View.GONE);
-                        mLlError.setVisibility(View.GONE);
-                        mDataList.clear();
-                        mDataList.addAll(data);
-                        mMyPushAdRVAdapter.notifyDataSetChanged();
-                    } else {
-                        mRecyclerView.setVisibility(View.GONE);
-                        mLlNoData.setVisibility(View.VISIBLE);
-                        mLlError.setVisibility(View.GONE);
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    if (mRecyclerView != null) {
+                        if (type == PULL_DOWN) {
+                            mRefreshLayout.finishRefresh();
+                        } else {
+                            mRefreshLayout.finishLoadMore();
+                        }
+                        isFinish = true;
+                        if (mDataList.size() != 0 || data.size() != 0) {
+                            mRecyclerView.setVisibility(View.VISIBLE);
+                            mLlNoData.setVisibility(View.GONE);
+                            mLlError.setVisibility(View.GONE);
+                            if (type == PULL_DOWN) {
+                                if (data.size() == 0) {
+                                    mRecyclerView.setVisibility(View.GONE);
+                                    mLlNoData.setVisibility(View.VISIBLE);
+                                    mLlError.setVisibility(View.GONE);
+                                } else {
+                                    mDataList.clear();
+                                }
+                            }
+                            mDataList.addAll(data);
+                            if (mDataList.size() != 0) {
+                                mPage_id = mDataList.get(mDataList.size() - 1).getId();
+                            }
+                            mMyPushAdRVAdapter.notifyDataSetChanged();
+                        } else {
+                            mRecyclerView.setVisibility(View.GONE);
+                            mLlNoData.setVisibility(View.VISIBLE);
+                            mLlError.setVisibility(View.GONE);
+                        }
                     }
                 }
             }
@@ -133,7 +167,11 @@ public class MyPushBuyFragment extends Fragment {
             @Override
             public void error() {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
-                    mRefreshLayout.finishRefresh();
+                    if (type == PULL_UP) {
+                        mRefreshLayout.finishLoadMore();
+                    } else {
+                        mRefreshLayout.finishRefresh();
+                    }
                     mRecyclerView.setVisibility(View.GONE);
                     mLlNoData.setVisibility(View.GONE);
                     mLlError.setVisibility(View.VISIBLE);
@@ -142,7 +180,11 @@ public class MyPushBuyFragment extends Fragment {
 
             @Override
             public void finishRefresh() {
-                mRefreshLayout.finishRefresh();
+                if (type == PULL_UP) {
+                    mRefreshLayout.finishLoadMore();
+                } else {
+                    mRefreshLayout.finishRefresh();
+                }
             }
         });
     }
