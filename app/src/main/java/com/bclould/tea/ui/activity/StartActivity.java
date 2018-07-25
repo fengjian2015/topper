@@ -47,10 +47,10 @@ public class StartActivity extends LoginBaseActivity {
         setContentView(R.layout.activity_start);
         ButterKnife.bind(this);
         setSwipeEnabled(false);
-        WsConnection.getInstance().setOutConnection(true);
         new Handler() {
             public void handleMessage(Message msg) {
-                if(StringUtils.isEmpty(UtilTool.getTocoId())){
+                if(StringUtils.isEmpty(UtilTool.getTocoId())||StringUtils.isEmpty(UtilTool.getToken())){
+                    WsConnection.getInstance().setOutConnection(true) ;
                     MySharedPreferences.getInstance().setString(TOKEN, "");
                     startMain();
                     finish();

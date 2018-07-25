@@ -333,6 +333,7 @@ public class WsConnection {
         }
         setIsConnection(false);
         setIsLogin(false);
+        setLoginConnection(false);
     }
 
     public void goMainActivity(){

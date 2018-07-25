@@ -2205,10 +2205,12 @@
     <string name="follow_the_system">跟随系统</string>
     <string name="simplified_chinese">简体中文</string>
     <string name="chinese_traditional">繁体中文</string>
+    <string name="send_red_envelope">发红包</string>
     <string name="person1">人</string>
     <string name="members_of_the_group">本群成员共</string>
     <string name="Generate_qr_code_red_envelope">生成二维码红包</string>
     <string name="save_to_photo_album">保存到相冊</string>
     <string name="qe_code_red_explain">你的二维码红包已经生成，toopperchat用户可以扫一扫领红包啦！ </string>
     <string name="topperchat_red">topperchat红包</string>
+    <string name="conversation_backgound">​​设置聊天背景</string>
 </resources>

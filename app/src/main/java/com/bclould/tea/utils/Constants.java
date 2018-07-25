@@ -12,7 +12,7 @@ import android.support.annotation.RequiresApi;
 public class Constants {
     public static final String ADMINISTRATOR_NAME = "TOPPERCHAT";
     public static final int BET_ARR_COUNT = 4;
-    private static final boolean isDebug = false;
+    private static final boolean isDebug = true;
     public static final String BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "https://api.cnblocklink.com/";
     public static final String NEW_BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "https://www.cnblocklink.com/";
     public static final String DOMAINNAME3 = isDebug ? "wss://socket.bclould.com:8179/toco_server" : "wss://socket.cnblocklink.com:2087/toco_server";
@@ -32,6 +32,7 @@ public class Constants {
     public static final String NEW_APK_KEY = "topperchat.apk";
     public static final String PUBLICDIR = "/sdcard/tocotalk/tocotalk_images/";
     public static final String LOG_DIR = "/sdcard/tocotalk/log/";
+    public static final String BACKGOUND = "/sdcard/tocotalk/background/";
     public static final String ALBUM = "/sdcard/tocotalk/album/";
     public static final String DOWNLOAD = "/sdcard/tocotalk/download/";
     public static final String QRMONEYIN = "qrMoneyIn";

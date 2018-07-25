@@ -451,20 +451,27 @@ public class SocketListener {
                     break;
                 case WsContans.MSG_IMAGE:
                     //圖片
-                    String url = downFile(messageInfo.getKey());
-                    messageInfo.setMessage(url);
+                    String key1 = messageInfo.getKey();
+                    String url1 ;
+                    if (key1.startsWith("http")) {
+                        url1 = key1;
+                    } else {
+                        url1 = downFile(key1);
+                    }
+                    messageInfo.setMessage(url1);
                     redpacket = "[" + context.getString(R.string.image) + "]";
                     if (isMe) {
                         msgType = TO_IMG_MSG;
                     } else {
                         msgType = FROM_IMG_MSG;
                     }
-                    messageInfo.setVoice(downFileCompress(url));
+                    messageInfo.setVoice(downFileCompress(url1));
                     goChat(from, context.getString(R.string.image), roomType);
                     break;
                 case WsContans.MSG_VIDEO:
                     //視頻
                     String key = messageInfo.getKey();
+                    String url;
                     if (key.startsWith("http")) {
                         url = key;
                     } else {

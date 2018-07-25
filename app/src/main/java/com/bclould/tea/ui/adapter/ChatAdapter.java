@@ -1301,18 +1301,16 @@ public class ChatAdapter extends RecyclerView.Adapter {
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             UtilTool.getImage(mMgr, UtilTool.getTocoId(), mContext, mIvTouxiang);
             goIndividualDetails(mIvTouxiang, UtilTool.getTocoId(), UtilTool.getUser(), messageInfo);
-            Glide.with(mContext).load(new File(messageInfo.getVoice())).listener(new RequestListener<Drawable>() {
-                @Override
-                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                    return false;
+            String postfixs=UtilTool.getPostfix3(messageInfo.getKey());
+            if (".gif".equals(postfixs) || ".GIF".equals(postfixs)) {
+                setTypeImage(null,messageInfo.getMessage(),mIvImg);
+            }else {
+                if(messageInfo.getVoice().startsWith("http")){
+                    setTypeImage(null,messageInfo.getVoice(),mIvImg);
+                }else{
+                    setTypeImage(new File(messageInfo.getVoice()),"",mIvImg);
                 }
-
-                @Override
-                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                    mIvImg.setImageDrawable(resource);//必須加上，不然動圖會出現不播放情況
-                    return false;
-                }
-            }).apply(requestOptions).into(mIvImg);
+            }
             setMsgState(messageInfo.getSendStatus(), mIvWarning, mIvLoad);
             mIvWarning.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1351,6 +1349,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
     }
 
+
     class FromImgHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_touxiang)
         ImageView mIvTouxiang;
@@ -1370,38 +1369,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
-            String postfixs = "";
-            try {
-                postfixs = messageInfo.getKey().substring(messageInfo.getKey().lastIndexOf("."));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            String postfixs=UtilTool.getPostfix3(messageInfo.getKey());
             if (".gif".equals(postfixs) || ".GIF".equals(postfixs)) {
-                Glide.with(mContext).load(messageInfo.getMessage()).listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        mIvImg.setImageDrawable(resource);
-                        return false;
-                    }
-                }).apply(requestOptions).into(mIvImg);
-            } else {
-                Glide.with(mContext).load(messageInfo.getVoice()).listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        mIvImg.setImageDrawable(resource);
-                        return false;
-                    }
-                }).apply(requestOptions).into(mIvImg);
+                setTypeImage(null,messageInfo.getMessage(),mIvImg);
+            }else {
+                if(messageInfo.getVoice().startsWith("http")){
+                    setTypeImage(null,messageInfo.getVoice(),mIvImg);
+                }else{
+                    setTypeImage(new File(messageInfo.getVoice()),"",mIvImg);
+                }
             }
             mIvImg.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -2694,5 +2670,35 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 }
             }
         }.start();
+    }
+
+    private void setTypeImage(File file, String url, final ImageView mIvImg){
+        if(file==null) {
+            Glide.with(mContext).load(url).listener(new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    mIvImg.setImageDrawable(resource);//必須加上，不然動圖會出現不播放情況
+                    return false;
+                }
+            }).apply(requestOptions).into(mIvImg);
+        }else{
+            Glide.with(mContext).load(file).listener(new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    mIvImg.setImageDrawable(resource);//必須加上，不然動圖會出現不播放情況
+                    return false;
+                }
+            }).apply(requestOptions).into(mIvImg);
+        }
     }
 }

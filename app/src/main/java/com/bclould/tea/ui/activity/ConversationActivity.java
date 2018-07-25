@@ -53,6 +53,7 @@ import com.bclould.tea.ui.adapter.ChatAdapter;
 import com.bclould.tea.ui.widget.SimpleAppsGridView;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AudioModeManger;
+import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.RecordUtil;
@@ -62,6 +63,13 @@ import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.MessageManageListener;
 import com.bclould.tea.xmpp.Room;
 import com.bclould.tea.xmpp.RoomManage;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.leon.lfilepickerlibrary.LFilePicker;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.compress.Luban;
@@ -81,6 +89,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -180,6 +189,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         MyApp.getInstance().addActivity(this);//打开添加activity
         initAdapter();//初始化适配器
         initData(null,true);//初始化数据
+        setBackgound();
         mMgr.updateNumber(roomId, 0);//更新未读消息条数
         mMgr.updateAtme(roomId,"");
         EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));//发送更新未读消息通知
@@ -1031,6 +1041,20 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                 handler.sendMessage(message);
             }
         });
+    }
+
+    private void setBackgound(){
+        String url=MySharedPreferences.getInstance().getString("backgroundurl"+UtilTool.getTocoId());
+        String key=MySharedPreferences.getInstance().getString("backgroundukey"+UtilTool.getTocoId());
+        if(!StringUtils.isEmpty(key)){
+            Glide.with(this).load(new File(Constants.BACKGOUND+key)).into(new SimpleTarget<Drawable>() {
+                @Override
+                public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                    mRefreshLayout.setBackground(resource);
+                }
+            });
+        }
+
     }
 
     public View getItemView(int position){

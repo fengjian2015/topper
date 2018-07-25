@@ -390,7 +390,11 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
                 }
             } else if (msgType == FROM_IMG_MSG || msgType == TO_IMG_MSG) {
 //                showDialog();
-                mRoom.Upload(messageInfo.getVoice());
+                if (messageInfo.getMessage().startsWith("http")) {
+                    mRoom.transmitImage(messageInfo);
+                }else {
+                    mRoom.Upload(messageInfo.getVoice());
+                }
                 ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.forward_success));
                 SelectConversationActivity.this.finish();
             } else if (msgType == FROM_VIDEO_MSG || msgType == TO_VIDEO_MSG) {

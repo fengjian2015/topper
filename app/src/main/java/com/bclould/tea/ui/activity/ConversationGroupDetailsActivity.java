@@ -15,6 +15,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.sdk.android.oss.ClientException;
+import com.alibaba.sdk.android.oss.OSSClient;
+import com.alibaba.sdk.android.oss.ServiceException;
+import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
+import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
+import com.alibaba.sdk.android.oss.model.PutObjectRequest;
+import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
@@ -25,6 +32,7 @@ import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.RoomMemberInfo;
+import com.bclould.tea.network.OSSupload;
 import com.bclould.tea.ui.adapter.GroupDetailsMemberAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
@@ -95,6 +103,8 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     ImageView mIsReview;
     @Bind(R.id.rl_review_list)
     RelativeLayout mRlReviewList;
+
+    private final int BACKGROUND=111;
 
     private GroupDetailsMemberAdapter mAdapter;
     private List<RoomMemberInfo> mList = new ArrayList<>();
@@ -296,7 +306,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     }
 
     @OnClick({R.id.bark, R.id.on_off_message_free, R.id.on_off_top, R.id.rl_empty_talk, R.id.btn_brak, R.id.rl_group_qr, R.id.rl_group_name, R.id.rl_member_name, R.id.rl_group_management, R.id.rl_looking_chat
-            , R.id.rl_group_image, R.id.rl_go_memberlist, R.id.rl_announcement, R.id.is_allow_modify_data, R.id.is_review,R.id.rl_review_list,R.id.rl_group_red,R.id.rl_redpacket_record})
+            , R.id.rl_group_image, R.id.rl_go_memberlist, R.id.rl_announcement, R.id.is_allow_modify_data, R.id.is_review,R.id.rl_review_list,R.id.rl_group_red,R.id.rl_redpacket_record,R.id.rl_change_background})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -360,6 +370,9 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                 break;
             case R.id.rl_redpacket_record:
                 goRedpacketRecord();
+                break;
+            case R.id.rl_change_background:
+                showBackgoundDialog();
                 break;
         }
     }
@@ -471,7 +484,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                         break;
                     case 1:
                         menu.dismiss();
-                        goImage();
+                        goImage(PictureConfig.CHOOSE_REQUEST);
                         break;
                     case 2:
                         menu.dismiss();
@@ -486,7 +499,36 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         menu.showAtLocation();
     }
 
-    private void goImage() {
+    private void showBackgoundDialog() {
+        List<String> list = new ArrayList<>();
+        list.add(getString(R.string.image));
+//        list.add(getString(R.string.network_image));
+        final MenuListPopWindow menu = new MenuListPopWindow(this, list);
+        menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
+            @Override
+            public void onclickitem(int position) {
+                switch (position) {
+                    case 0:
+                        menu.dismiss();
+                        break;
+                    case 1:
+                        menu.dismiss();
+                        goImage(BACKGROUND);
+                        break;
+                    case 2:
+                        menu.dismiss();
+                        Intent intent = new Intent(ConversationGroupDetailsActivity.this, SerchImageActivity.class);
+                        intent.putExtra("type", TYPE_GROUP);
+                        startActivity(intent);
+                        break;
+                }
+            }
+        });
+        menu.setColor(Color.BLACK);
+        menu.showAtLocation();
+    }
+
+    private void goImage(int code) {
         PictureSelector.create(this)
                 .openGallery(ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()
 //                        .theme(R.style.picture_white_style)
@@ -516,7 +558,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                 .selectionMedia(selectList)// 是否传入已选图片 List<LocalMedia> list
                 .rotateEnabled(true) // 裁剪是否可旋转图片 true or false
                 .scaleEnabled(true)// 裁剪是否可放大缩小图片 true or false
-                .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
+                .forResult(code);//结果回调onActivityResult code
     }
 
 
@@ -695,6 +737,36 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
 
     }
 
+    private void upload(String path){
+        File file = new File(path);
+        final String key = UtilTool.getUserId() + UtilTool.createtFileName() + "background_android" + UtilTool.getPostfix2(file.getName());
+        final File newFile = new File(Constants.BACKGOUND + key);
+        UtilTool.copyFile(file.getAbsolutePath(), newFile.getAbsolutePath());
+
+//        Bitmap cutImg = BitmapFactory.decodeFile(path);
+//        UtilTool.comp(cutImg, newFile);
+
+        OSSClient ossClient = OSSupload.getInstance().visitOSS();
+        PutObjectRequest put = new PutObjectRequest(Constants.BUCKET_NAME2, key, newFile.getPath());
+        ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+            @Override
+            public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
+                OSSClient ossClient = OSSupload.getInstance().visitOSS();
+                String url = null;
+                url = ossClient.presignPublicObjectURL(Constants.BUCKET_NAME2, key);
+                MySharedPreferences.getInstance().setString("backgroundurl"+UtilTool.getTocoId(),url);
+                MySharedPreferences.getInstance().setString("backgroundukey"+UtilTool.getTocoId(),key);
+                UtilTool.Log("aws", "成功:"+url);
+            }
+
+            @Override
+            public void onFailure(PutObjectRequest putObjectRequest, ClientException e, ServiceException e1) {
+                UtilTool.Log("aws", "错误");
+
+            }
+        });
+    }
+
 
     //拿到选择的图片
     @Override
@@ -708,6 +780,14 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                         selectList = PictureSelector.obtainMultipleResult(data);
                         upImage(selectList.get(0).getCutPath());
                     } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case BACKGROUND:
+                    try {
+                        selectList = PictureSelector.obtainMultipleResult(data);
+                        upload(selectList.get(0).getPath());
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;

@@ -38,4 +38,5 @@ public interface Room {
     void sendWithdraw(MessageInfo messageInfo);
     void sendHtml(MessageInfo messageInfo);
     void anewSendHtml(MessageInfo messageInfo);
+    void transmitImage(MessageInfo messageInfo);
 }

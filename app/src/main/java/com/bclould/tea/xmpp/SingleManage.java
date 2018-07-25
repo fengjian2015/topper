@@ -461,6 +461,12 @@ public class SingleManage implements Room {
         sendFileAfterMessage(messageInfo.getKey(), "Video", messageInfo.getVoice(), messageInfo1.getId(), messageInfo1.getMsgId(), messageInfo1.getCreateTime());
     }
 
+    @Override
+    public void transmitImage(MessageInfo messageInfo){
+        MessageInfo messageInfo1 = sendFileMessage(messageInfo.getMessage(), "Image", messageInfo.getKey(), messageInfo.getVoice());
+        sendFileAfterMessage(messageInfo.getKey(), "Image", messageInfo.getVoice(), messageInfo1.getId(),messageInfo1.getMsgId(),messageInfo1.getCreateTime());
+    }
+
     private void sendFileAfterMessage(String key, String postfix, String newFile, int mId, String msgId, long createTime) {
         try {
             String postfixs = key.substring(key.lastIndexOf("."));

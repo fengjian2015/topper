@@ -140,6 +140,17 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     }
 
     private void createFile() {
+        File cacheDir2 = new File(Constants.BACKGOUND);
+        if (!cacheDir2.exists())
+            cacheDir2.mkdirs();
+        File nomedia2 = new File(Constants.BACKGOUND + ".nomedia");
+        if (!nomedia2.exists())
+            try {
+                nomedia2.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         File cacheDir1 = new File(Constants.PUBLICDIR);
         if (!cacheDir1.exists())
             cacheDir1.mkdirs();

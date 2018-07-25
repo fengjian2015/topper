@@ -258,7 +258,11 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
                 }
             } else if (msgType == FROM_IMG_MSG || msgType == TO_IMG_MSG) {
 //                showDialog();
-                mRoom.Upload(messageInfo.getVoice());
+                if (messageInfo.getMessage().startsWith("http")) {
+                    mRoom.transmitImage(messageInfo);
+                }else {
+                    mRoom.Upload(messageInfo.getVoice());
+                }
                 ToastShow.showToast2(SelectFriendActivity.this, getString(R.string.forward_success));
                 close();
             } else if (msgType == FROM_VIDEO_MSG || msgType == TO_VIDEO_MSG) {
