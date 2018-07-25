@@ -92,7 +92,6 @@ public class LogoutPresenter {
     }
 
     public void imLogout(final String message) {
-        WsConnection.getInstance().logoutService(mActivity);
         UtilTool.Log("fengjian", "退出成功");
         Toast.makeText(mActivity,message, Toast.LENGTH_SHORT).show();
 //            MyApp.getInstance().exit();

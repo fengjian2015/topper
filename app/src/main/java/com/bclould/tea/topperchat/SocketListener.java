@@ -298,7 +298,7 @@ public class SocketListener {
     private void LoginFeedback(byte[] binary) throws IOException {
         if (WsConnection.getInstance().getOutConnection()) {
             UtilTool.Log("fengjian", "已經退出登錄，斷開鏈接");
-            WsConnection.getInstance().logoutService(context);
+            WsConnection.getInstance().goMainActivity();
         }
         WsConnection.getInstance().setIsLogin(true);
         UtilTool.Log("fengjian", "登錄成功");

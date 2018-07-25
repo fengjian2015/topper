@@ -151,8 +151,9 @@ public class MainActivity extends BaseActivity {
             }else if(!WsConnection.isServiceWork(this, IMCoreService.SERVICE_NAME)){
                 ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
                 stopService(new Intent(this, IMService.class));
-                Intent startIntent = new Intent(this, IMService.class);
-                startService(startIntent);
+                Intent intent = new Intent();
+                intent.setAction(IMCoreService.ACTION_START_IMSERVICE);
+                sendBroadcast(intent);
             }
         }else{
             ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.DISCONNECT);

@@ -11,18 +11,12 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v7.widget.CardView;
-import android.text.Editable;
-import android.text.InputType;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -36,27 +30,22 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.PWDDialog;
-import com.bclould.tea.ui.widget.VirtualKeyboardView;
 import com.bclould.tea.utils.FingerprintUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.ToastShow;
-import com.bclould.tea.utils.UtilTool;
 import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.bclould.tea.R.style.BottomDialog;
 
 /**
  * Created by GA on 2018/5/17.
@@ -261,7 +250,7 @@ public class PayPwSelectorActivity extends BaseActivity {
                     window.getDecorView().setPadding(0, 0, 0, 0);
                     //获得window窗口的属性
                     WindowManager.LayoutParams lp = window.getAttributes();
-                    //设置窗口宽度为充满全屏
+                    //设置窗口宽度为充满全屏+
                     lp.width = WindowManager.LayoutParams.MATCH_PARENT;
                     //将设置好的属性set回去
                     window.setAttributes(lp);

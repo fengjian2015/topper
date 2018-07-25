@@ -1,6 +1,7 @@
 package com.bclould.tea.topperchat;
 
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
@@ -100,6 +101,7 @@ public class WsConnection {
                                 return;
                             }
                             if(mWebSocketArrayList.size()>0){
+                                UtilTool.Log("fengjian","服务连接数大于0");
                                 //這種情況必定會被踢出，全部斷開
                                 ws=mWebSocketArrayList.get(0);
                                 if (ws != null) {
@@ -349,6 +351,9 @@ public class WsConnection {
 
     //退出登錄用
     public void logoutService(Context context) {
+        if(context instanceof Activity){
+            UtilTool.Log("fengjian",((Activity)context).getClass().getName());
+        }
         closeConnection();
         setOutConnection(true);
         stopAllIMCoreService(context);

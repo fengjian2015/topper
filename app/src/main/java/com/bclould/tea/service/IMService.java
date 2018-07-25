@@ -16,10 +16,11 @@ import com.bclould.tea.xmpp.RoomManage;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class IMService extends Service{
-    private final static int RELOGIN = 0;
     private final static int EXLOGIN = 1;
+    private final static int SERVER_HANDLER = 2;
     private Handler handler = null;
     Thread thread1;
+    private boolean isRun=false;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -31,6 +32,7 @@ public class IMService extends Service{
             instanceHandler();
         }
         loginIM();
+        serverReconnect();
     }
 
     @Override
@@ -42,8 +44,8 @@ public class IMService extends Service{
     public void onDestroy() {
         super.onDestroy();
         UtilTool.Log("fengjian","----Service onDestroy");
-        handler.removeMessages(RELOGIN);
         handler.removeMessages(EXLOGIN);
+        handler.removeMessages(SERVER_HANDLER);
         handler = null;
     }
 
@@ -80,29 +82,29 @@ public class IMService extends Service{
         handler.sendEmptyMessageDelayed(EXLOGIN, delayMillis);
     }
 
+    private void serverReconnect(){
+        handler.sendEmptyMessageDelayed(SERVER_HANDLER, 5*1000);
+    }
+
+
     private Handler instanceHandler(){
         handler = new Handler(getMainLooper()) {
             public void handleMessage(android.os.Message msg) {
                 switch (msg.what) {
-                    case RELOGIN:
-                        if(!IMLogin.isNetworkActivity(IMService.this)){
-                            ConnectStateChangeListenerManager.get().notifyListener(
-                                    ConnectStateChangeListenerManager.DISCONNECT);
-                        }
-                        if (IMLogin.isNetworkActivity(IMService.this)
-                                && !WsConnection.getInstance().isLogin()) {
-                            ConnectStateChangeListenerManager.get().notifyListener(
-                                    ConnectStateChangeListenerManager.CONNECTING);
-                            fistlogIm();
-                        } else {
-                            this.sendEmptyMessageDelayed(RELOGIN, 5 * 1000);
+                    case SERVER_HANDLER:
+                        if(isRun){
+                            isRun=false;
+                        }else{
+                            handler.removeMessages(EXLOGIN);
+                            exReconnect(1*1000);
                         }
                         break;
                     case EXLOGIN: {
                         synchronized (this) {
+                            isRun=true;
                             if (WsConnection.getInstance().getOutConnection()) {
-                                WsConnection.getInstance().close();
-                                WsOfflineConnection.getInstance().closeConnection();
+                                UtilTool.Log("fengjian","检测到未登录");
+                                WsConnection.getInstance().goMainActivity();
                                 break;
                             }
                             WsOfflineConnection.getInstance().get(IMService.this);
@@ -116,14 +118,14 @@ public class IMService extends Service{
                                         != ConnectStateChangeListenerManager.CONNECTED && ConnectStateChangeListenerManager.get().getCurrentState()
                                         != ConnectStateChangeListenerManager.RECEIVING&&
                                         !WsConnection.getInstance().getLoginConnection()) {
-                                    disconnect();
                                     UtilTool.Log("fengjian","目前登錄狀態不符合："+ConnectStateChangeListenerManager.get().getCurrentState()+"    "+WsConnection.getInstance().get(IMService.this).isOpen());
+                                    disconnect();
                                     exReconnect(2000);
                                     break;
                                 }
                                 if(!WsConnection.getInstance().isLogin()&&!WsConnection.getInstance().getLoginConnection()){
-                                    disconnect();
                                     UtilTool.Log("fengjian","目前登錄狀態不符合："+WsConnection.getInstance().isLogin());
+                                    disconnect();
                                 }
                                 exReconnect(2000);
                                 break;
@@ -156,6 +158,9 @@ public class IMService extends Service{
         return handler;
     }
 
+    public boolean getHandlerMessage(){
+        return handler.hasMessages(EXLOGIN);
+    }
 
     private void disconnect(){
         new Thread(){
@@ -182,7 +187,11 @@ public class IMService extends Service{
     private void exloginIM() {
         synchronized (this) {
             if (WsConnection.getInstance().getOutConnection()) {
-                this.stopService(new Intent(this, IMService.class));
+                UtilTool.Log("fengjian","检测到未登录");
+                WsConnection.getInstance().goMainActivity();
+//                WsConnection.getInstance().close();
+//                WsOfflineConnection.getInstance().closeConnection();
+//                this.stopService(new Intent(this, IMService.class));
                 return;
             }
             UtilTool.Log("---------","重連："+WsConnection.getInstance().get(IMService.this).isOpen()+"   "+
@@ -204,7 +213,7 @@ public class IMService extends Service{
                 exReconnect(1000);
                 e.printStackTrace();
             }
-            if (!WsConnection.getInstance().get(IMService.this).isOpen()) {
+            if (WsConnection.getInstance().get(IMService.this)==null||!WsConnection.getInstance().get(IMService.this).isOpen()) {
                 UtilTool.Log("fengjian","----未連接");
                 exReconnect(1000);
                 return;
