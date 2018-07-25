@@ -170,7 +170,6 @@ public class BaseActivity extends SwipeActivity {
                     UtilTool.Log("手勢", "onUnmatchedExceedBoundary");
                     if (mCount == 0) {
                         mGestureDialog.dismiss();
-                        WsConnection.getInstance().logoutService(BaseActivity.this);
                         WsConnection.getInstance().goMainActivity();
                     }
                 }
@@ -279,7 +278,6 @@ public class BaseActivity extends SwipeActivity {
                     AnimatorTool.getInstance().editTextAnimator(mCheck);
                 } else {
                     mFingerprintdialog.dismiss();
-                    WsConnection.getInstance().logoutService(BaseActivity.this);
                     WsConnection.getInstance().goMainActivity();
                     mCount = 5;
                 }
@@ -297,7 +295,6 @@ public class BaseActivity extends SwipeActivity {
                     AnimatorTool.getInstance().editTextAnimator(mCheck);
                 } else {
                     mFingerprintdialog.dismiss();
-                    WsConnection.getInstance().logoutService(BaseActivity.this);
                     WsConnection.getInstance().goMainActivity();
                     mCount = 5;
                 }
@@ -343,7 +340,6 @@ public class BaseActivity extends SwipeActivity {
                 deleteCacheDialog.dismiss();
                 FingerprintUtil.cancel();
                 mFingerprintdialog.dismiss();
-                WsConnection.getInstance().logoutService(BaseActivity.this);
                 WsConnection.getInstance().goMainActivity();
             }
         });
