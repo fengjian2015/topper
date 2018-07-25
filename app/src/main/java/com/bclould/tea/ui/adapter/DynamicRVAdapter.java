@@ -385,6 +385,7 @@ public class DynamicRVAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, VideoActivity.class);
                     intent.putExtra("url", mImgList.get(0));
+                    intent.putExtra("compressUrl",(String) mDataBean.getKey_compress_urls().get(0));
                     mContext.startActivity(intent);
                 }
             });

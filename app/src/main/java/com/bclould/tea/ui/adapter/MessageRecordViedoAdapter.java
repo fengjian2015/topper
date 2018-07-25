@@ -107,6 +107,7 @@ public class MessageRecordViedoAdapter extends RecyclerView.Adapter {
             public void onClick(View view) {
                 Intent intent = new Intent(context, VideoActivity.class);
                 intent.putExtra("url", messageInfoList.get(position).getMessage());
+                intent.putExtra("compressUrl",messageInfoList.get(position).getVoice());
                 context.startActivity(intent);
             }
         });

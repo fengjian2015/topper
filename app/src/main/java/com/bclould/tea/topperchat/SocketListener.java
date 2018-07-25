@@ -645,6 +645,7 @@ public class SocketListener {
                     info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
                 }
                 info.setFriend(friend);
+                info.setChatType(roomType);
                 info.setUser(from);
                 info.setNumber(1);
                 info.setMessage(redpacket);

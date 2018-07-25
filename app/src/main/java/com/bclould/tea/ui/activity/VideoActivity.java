@@ -1,15 +1,19 @@
 package com.bclould.tea.ui.activity;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
@@ -23,9 +27,16 @@ import com.bclould.tea.base.SwipeActivity;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.ui.widget.VideoPlayer;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.danikula.videocache.HttpProxyCacheServer;
+
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
@@ -76,8 +87,11 @@ public class VideoActivity extends SwipeActivity {
     VideoPlayer mVideoPlayer;
     @Bind(R.id.rl_title)
     RelativeLayout mRlTitle;
+    @Bind(R.id.iv_image)
+    ImageView mIvImage;
     private MenuListPopWindow menu;
     private String uri;
+    private String compressUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +100,7 @@ public class VideoActivity extends SwipeActivity {
         ButterKnife.bind(this);
         setDimension();
         uri = getIntent().getStringExtra("url");
+        compressUrl=getIntent().getStringExtra("compressUrl");
         UtilTool.Log("日志", uri);
         //实现缓存加载
 
@@ -103,6 +118,8 @@ public class VideoActivity extends SwipeActivity {
         mVideoPlayer.setZOrderMediaOverlay(true);
 
         mProgressBar.setVisibility(View.VISIBLE);
+        mIvImage.setVisibility(View.VISIBLE);
+        setCompressUrl();
 
         MediaController mediaController = new MediaController(this);
         mediaController.setVisibility(View.GONE);
@@ -115,6 +132,7 @@ public class VideoActivity extends SwipeActivity {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 mProgressBar.setVisibility(View.GONE);
+                mIvImage.setVisibility(View.GONE);
                 changeTime(mTvDuration, mVideoPlayer.getDuration());//显示video总时长的文本
                 mItemTime.setMax(mVideoPlayer.getDuration());//设置seekbar最大值为video的时长
 
@@ -193,6 +211,15 @@ public class VideoActivity extends SwipeActivity {
                 return false;
             }
         });
+    }
+
+    private void setCompressUrl(){
+        if(StringUtils.isEmpty(compressUrl))return;
+        if(compressUrl.startsWith("http")) {
+            Glide.with(this).load(compressUrl).into(mIvImage);
+        }else {
+            mIvImage.setImageBitmap(BitmapFactory.decodeFile(compressUrl));
+        }
     }
 
 
@@ -281,13 +308,13 @@ public class VideoActivity extends SwipeActivity {
                                 ToastShow.showToast2(VideoActivity.this, VideoActivity.this.getString(R.string.save_error));
                             }
                             menu.dismiss();
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                         break;
                     case 2:
                         //轉發
-                        try{
+                        try {
                             Intent intent = new Intent(VideoActivity.this, SelectConversationActivity.class);
                             intent.putExtra("type", 1);
                             intent.putExtra("msgType", TO_VIDEO_MSG);
@@ -302,7 +329,7 @@ public class VideoActivity extends SwipeActivity {
                             intent.putExtra("messageInfo", messageInfo);
                             startActivity(intent);
                             menu.dismiss();
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                         break;

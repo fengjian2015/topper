@@ -495,6 +495,7 @@ public class MainActivity extends BaseActivity {
             ft.show(fragment);
 
             ft.commitAllowingStateLoss();
+            if(mSupportFragmentManager!=null)
             mSupportFragmentManager.executePendingTransactions();
         }
         lastIndex = index;

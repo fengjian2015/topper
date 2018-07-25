@@ -27,14 +27,30 @@
             android:layout_toLeftOf="@+id/iv_touxiang"
             android:layout_below="@+id/tv_name"
             app:cardCornerRadius="@dimen/x20">
-            <ImageView
-                android:id="@+id/iv_img"
-                android:layout_width="@dimen/x190"
-                android:layout_height="@dimen/y280"
-                android:adjustViewBounds="true"
-                android:maxHeight="@dimen/y800"
-                android:maxWidth="@dimen/x480"
-                android:scaleType="centerInside"/>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+                <ImageView
+                    android:id="@+id/iv_img"
+                    android:layout_width="@dimen/x190"
+                    android:layout_height="@dimen/y280"
+                    android:adjustViewBounds="true"
+                    android:maxHeight="@dimen/y800"
+                    android:maxWidth="@dimen/x480"
+                    android:scaleType="centerInside"
+                    />
+                <ImageView
+                    android:id="@+id/iv_load"
+                    android:layout_width="@dimen/x40"
+                    android:layout_height="@dimen/x40"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/x20"
+                    android:background="@drawable/anim_progress_chat"
+                    android:visibility="visible"/>
+            </RelativeLayout>
         </android.support.v7.widget.CardView>
         <ImageView
             android:id="@+id/iv_warning"
@@ -47,15 +63,6 @@
             android:src="@mipmap/icon_fail"
             android:visibility="visible"/>
 
-        <ImageView
-            android:id="@+id/iv_load"
-            android:layout_width="@dimen/x40"
-            android:layout_height="@dimen/x40"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/x20"
-            android:layout_toLeftOf="@+id/cv_redpacket"
-            android:background="@drawable/anim_progress_chat"
-            android:visibility="visible"/>
+
     </RelativeLayout>
 </RelativeLayout>

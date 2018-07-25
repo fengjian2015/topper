@@ -81,7 +81,7 @@ public class StartActivity extends LoginBaseActivity {
                                             startMain();
                                             finish();
                                         } else {
-                                            MySharedPreferences.getInstance().setString(TOKEN, "");
+//                                            MySharedPreferences.getInstance().setString(TOKEN, "");
                                             startMain();
                                             finish();
                                         }
@@ -89,7 +89,7 @@ public class StartActivity extends LoginBaseActivity {
 
                                     @Override
                                     public void onError(@NonNull Throwable e) {
-                                        MySharedPreferences.getInstance().setString(TOKEN, "");
+//                                        MySharedPreferences.getInstance().setString(TOKEN, "");
                                         startMain();
                                         UtilTool.Log("日志", e.getMessage());
                                         finish();
@@ -106,7 +106,7 @@ public class StartActivity extends LoginBaseActivity {
                         } else {
                            startMain();
                         }*/
-                        MySharedPreferences.getInstance().setString(TOKEN, "");
+//                        MySharedPreferences.getInstance().setString(TOKEN, "");
                         startMain();
                         finish();
                     }
