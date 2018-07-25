@@ -84,6 +84,7 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -1494,6 +1495,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, VideoActivity.class);
                     intent.putExtra("url", messageInfo.getMessage());
+                    intent.putExtra("compressUrl",messageInfo.getVoice());
                     mContext.startActivity(intent);
                 }
             });
@@ -1551,6 +1553,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, VideoActivity.class);
                     intent.putExtra("url", messageInfo.getMessage());
+                    intent.putExtra("compressUrl",messageInfo.getVoice());
                     mContext.startActivity(intent);
                 }
             });
@@ -1818,7 +1821,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             rlLink.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false, true,false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true, true,false);
                     return false;
                 }
             });
@@ -1876,7 +1879,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             rlLink.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, false, false,false);
+                    showCopyDialog(messageInfo.getMsgType(), messageInfo, false, true, false,false);
                     return false;
                 }
             });
@@ -2425,6 +2428,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         ImageView mIvLoad;
         @Bind(R.id.chat_createtime)
         View tvCreateTime;
+        @Bind(R.id.iv_loading)
+        ImageView mIvLoading;
 
         ToHTMLHolder(View view) {
             super(view);
@@ -2446,6 +2451,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 }
             });
             Glide.with(mContext).load(messageInfo.getHeadUrl()).apply(requestOptions).into(ivHead);
+            if(StringUtils.isEmpty(messageInfo.getTitle())){
+                mIvLoading.setVisibility(View.VISIBLE);
+                AnimationDrawable animationDrawable = (AnimationDrawable) mIvLoading.getBackground();
+                animationDrawable.start();
+            }else{
+                mIvLoading.setVisibility(View.GONE);
+                AnimationDrawable animationDrawable = (AnimationDrawable) mIvLoading.getBackground();
+                animationDrawable.stop();
+            }
             tvTitle.setText(messageInfo.getTitle());
             tvContent.setText(messageInfo.getContent());
             rlLink.setOnLongClickListener(new View.OnLongClickListener() {
@@ -2481,6 +2495,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         RelativeLayout rlLink;
         @Bind(R.id.chat_createtime)
         View tvCreateTime;
+        @Bind(R.id.iv_loading)
+        ImageView mIvLoading;
 
         FromHTMLHolder(View view) {
             super(view);
@@ -2492,6 +2508,15 @@ public class ChatAdapter extends RecyclerView.Adapter {
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
+            if(StringUtils.isEmpty(messageInfo.getTitle())){
+                mIvLoading.setVisibility(View.VISIBLE);
+                AnimationDrawable animationDrawable = (AnimationDrawable) mIvLoading.getBackground();
+                animationDrawable.start();
+            }else{
+                mIvLoading.setVisibility(View.GONE);
+                AnimationDrawable animationDrawable = (AnimationDrawable) mIvLoading.getBackground();
+                animationDrawable.stop();
+            }
             tvTitle.setText(messageInfo.getTitle());
             tvContent.setText(messageInfo.getContent());
             Glide.with(mContext).load(messageInfo.getHeadUrl()).apply(requestOptions).into(ivHead);
@@ -2651,7 +2676,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
                         }
                     });
                     return;
-                }catch (ConnectException e){
+                }catch (SocketTimeoutException e){
+                    e.printStackTrace();
+                }catch (Exception e){
                     if(StringUtils.isEmpty(messageInfo.getTitle())||StringUtils.isEmpty(messageInfo.getContent())) {
                         messageInfo.setTitle(mContext.getString(R.string.cannot_open));
                         messageInfo.setContent(mContext.getString(R.string.my_look)+mContext.getString(R.string.cannot_open)+mContext.getString(R.string.share_with_you));
@@ -2664,8 +2691,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
                             }
                         });
                     }
-                }catch (Exception e){
-                    e.printStackTrace();
                 }
             }
         }.start();

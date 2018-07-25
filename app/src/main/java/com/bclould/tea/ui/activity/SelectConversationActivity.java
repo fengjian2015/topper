@@ -417,6 +417,11 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
                 ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.forward_success));
                 MyApp.getInstance().exit(SelectConversationActivity.class.getName());
                 SelectConversationActivity.this.finish();
+            }else if(msgType==FROM_LINK_MSG||msgType==TO_LINK_MSG){
+                mRoom.sendShareLink(messageInfo);
+                ToastShow.showToast2(SelectConversationActivity.this, getString(R.string.forward_success));
+                MyApp.getInstance().exit(SelectConversationActivity.class.getName());
+                SelectConversationActivity.this.finish();
             }
         } else if (type == 2) {
             if (TO_CARD_MSG == msgType || msgType == FROM_CARD_MSG) {

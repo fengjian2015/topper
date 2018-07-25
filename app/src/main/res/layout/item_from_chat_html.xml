@@ -63,7 +63,6 @@
                     android:textColor="@color/black"
                     android:maxLines="2"
                     android:lineSpacingExtra="@dimen/y5"
-                    android:text="范德薩飛機撒"
                     android:textSize="@dimen/x32"/>
                 <TextView
                     android:id="@+id/tv_content"
@@ -75,8 +74,17 @@
                     android:lineSpacingExtra="@dimen/y5"
                     android:layout_marginRight="@dimen/x100"
                     android:lines="3"
-                    android:text="范德薩飛機撒大口徑發來撒大家過來送達公司就打過來看的撒個薩達噶是個撒個少時誦詩書所所所所"
                     android:textSize="@dimen/x24"/>
+                <ImageView
+                    android:id="@+id/iv_loading"
+                    android:layout_width="@dimen/x40"
+                    android:layout_height="@dimen/x40"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/x20"
+                    android:background="@drawable/anim_progress_chat"
+                    android:visibility="visible"/>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
     </RelativeLayout>

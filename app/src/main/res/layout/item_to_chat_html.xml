@@ -63,6 +63,16 @@
                     android:layout_marginRight="@dimen/x100"
                     android:lines="3"
                     android:textSize="@dimen/x24"/>
+                <ImageView
+                    android:id="@+id/iv_loading"
+                    android:layout_width="@dimen/x40"
+                    android:layout_height="@dimen/x40"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/x20"
+                    android:background="@drawable/anim_progress_chat"
+                    android:visibility="visible"/>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
         <ImageView
