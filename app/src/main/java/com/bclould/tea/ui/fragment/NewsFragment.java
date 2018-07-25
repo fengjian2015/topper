@@ -68,12 +68,11 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
     private NewsRVAdapter mNewsRVAdapter;
-    private int mPage = 1;
+    private int mPage_id = 0;
     private int mPageSize = 10;
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
     private NewsNoticePresenter mNewsNoticePresenter;
-    private int end = 0;
     public LinearLayoutManager mLinearLayoutManager;
 
     @Nullable
@@ -99,7 +98,8 @@ public class NewsFragment extends Fragment implements OnBannerListener {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
-                initData(PULL_DOWN);
+                if (isFinish)
+                    initData(PULL_DOWN);
             }
         });
 
@@ -118,46 +118,37 @@ public class NewsFragment extends Fragment implements OnBannerListener {
 
     private void initData(final int type) {
         if (type == PULL_DOWN) {
-            mPage = 1;
-            end = 0;
+            mPage_id = 0;
         }
         isFinish = false;
-        UtilTool.Log("分頁", mPage + "");
-        mNewsNoticePresenter.getNewsList(mPage, mPageSize, new NewsNoticePresenter.CallBack() {
+        UtilTool.Log("分頁", mPage_id + "");
+        mNewsNoticePresenter.getNewsList(mPage_id, mPageSize, new NewsNoticePresenter.CallBack() {
             @Override
             public void send(List<NewsListInfo.ListsBean> lists, List<NewsListInfo.TopBean> top) {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();
-                    }else{
+                    } else {
                         mRefreshLayout.finishLoadMore();
                     }
+                    isFinish = true;
                     if (lists != null || top != null) {
                         if (lists.size() != 0 || mNewsList.size() != 0 || top.size() != 0 || mTopList.size() != 0) {
                             mRecyclerView.setVisibility(View.VISIBLE);
                             mLlNoData.setVisibility(View.GONE);
                             mLlError.setVisibility(View.GONE);
-                            isFinish = true;
                             if (type == PULL_UP) {
-                                if (lists.size() == mPageSize) {
-                                    mPage++;
-                                    mNewsList.addAll(lists);
-                                    mNewsRVAdapter.notifyDataSetChanged();
-                                } else {
-                                    if (end == 0) {
-                                        end++;
-                                        mNewsList.addAll(lists);
-                                        mNewsRVAdapter.notifyDataSetChanged();
-                                    }
-                                }
+                                mNewsList.addAll(lists);
+                                if (mNewsList.size() != 0)
+                                    mPage_id = mNewsList.get(mNewsList.size() - 1).getId();
+                                mNewsRVAdapter.notifyDataSetChanged();
                             } else {
-                                if (mPage == 1) {
-                                    mPage++;
-                                }
                                 mNewsList.clear();
                                 mTopList.clear();
                                 mNewsList.addAll(lists);
                                 mTopList.addAll(top);
+                                if (mNewsList.size() != 0)
+                                    mPage_id = mNewsList.get(mNewsList.size() - 1).getId();
                                 mNewsRVAdapter.notifyDataSetChanged();
                                 List<String> imgList = new ArrayList<>();
                                 List<String> titleList = new ArrayList<>();
@@ -181,7 +172,7 @@ public class NewsFragment extends Fragment implements OnBannerListener {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();
-                    }else{
+                    } else {
                         mRefreshLayout.finishLoadMore();
                     }
                     mRecyclerView.setVisibility(View.GONE);
@@ -194,7 +185,7 @@ public class NewsFragment extends Fragment implements OnBannerListener {
             public void finishRefresh() {
                 if (type == PULL_DOWN) {
                     mRefreshLayout.finishRefresh();
-                }else{
+                } else {
                     mRefreshLayout.finishLoadMore();
                 }
             }

@@ -21,6 +21,7 @@ import com.bclould.tea.ui.adapter.OrderRVAdapter;
 import com.bclould.tea.utils.ActivityUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
@@ -57,8 +58,11 @@ public class SumBuySellActivity extends BaseActivity {
     private DBManager mMgr;
     private OrderRVAdapter mOrderRVAdapter;
     private BuySellPresenter mBuySellPresenter;
-    private int mPage = 1;
-    private int mPageSize = 1000;
+    private int PULL_UP = 0;
+    private int PULL_DOWN = 1;
+    private int mPage_id = 0;
+    private int mPageSize = 10;
+    boolean isFinish = true;
     private int mType = 0;
     private String mCoinName;
 
@@ -72,7 +76,7 @@ public class SumBuySellActivity extends BaseActivity {
         mBuySellPresenter = new BuySellPresenter(this);
         initIntent();
         initRecyclerView();
-        initData();
+        initData(PULL_DOWN);
         initListener();
     }
 
@@ -90,30 +94,60 @@ public class SumBuySellActivity extends BaseActivity {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
-                initData();
+                if(isFinish)
+                initData(PULL_DOWN);
+            }
+        });
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                if(isFinish)
+                initData(PULL_UP);
             }
         });
     }
 
     List<OrderListInfo.DataBean> mDataList = new ArrayList<>();
 
-    private void initData() {
-        mBuySellPresenter.getMyOrderList(mCoinName, mType, mPage, mPageSize, new BuySellPresenter.CallBack3() {
+    private void initData(final int type) {
+        if (type == PULL_DOWN) {
+            mPage_id = 0;
+        }
+        isFinish = false;
+        mBuySellPresenter.getMyOrderList(mCoinName, mType, mPage_id, mPageSize, new BuySellPresenter.CallBack3() {
             @Override
             public void send(List<OrderListInfo.DataBean> data) {
-                if (mRecyclerView != null) {
-                    mRefreshLayout.finishRefresh();
-                    if (data.size() != 0) {
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        mLlNoData.setVisibility(View.GONE);
-                        mLlError.setVisibility(View.GONE);
-                        mDataList.clear();
-                        mDataList.addAll(data);
-                        mOrderRVAdapter.notifyDataSetChanged();
-                    } else {
-                        mRecyclerView.setVisibility(View.GONE);
-                        mLlNoData.setVisibility(View.VISIBLE);
-                        mLlError.setVisibility(View.GONE);
+                if (ActivityUtil.isActivityOnTop(SumBuySellActivity.this)) {
+                    if (mRecyclerView != null) {
+                        if (type == PULL_DOWN) {
+                            mRefreshLayout.finishRefresh();
+                        } else {
+                            mRefreshLayout.finishLoadMore();
+                        }
+                        isFinish = true;
+                        if (mDataList.size() != 0 || data.size() != 0) {
+                            mRecyclerView.setVisibility(View.VISIBLE);
+                            mLlNoData.setVisibility(View.GONE);
+                            mLlError.setVisibility(View.GONE);
+                            if (type == PULL_DOWN) {
+                                if (data.size() == 0) {
+                                    mRecyclerView.setVisibility(View.GONE);
+                                    mLlNoData.setVisibility(View.VISIBLE);
+                                    mLlError.setVisibility(View.GONE);
+                                } else {
+                                    mDataList.clear();
+                                }
+                            }
+                            mDataList.addAll(data);
+                            if (mDataList.size() != 0) {
+                                mPage_id = mDataList.get(mDataList.size() - 1).getId();
+                            }
+                            mOrderRVAdapter.notifyDataSetChanged();
+                        } else {
+                            mRecyclerView.setVisibility(View.GONE);
+                            mLlNoData.setVisibility(View.VISIBLE);
+                            mLlError.setVisibility(View.GONE);
+                        }
                     }
                 }
             }
@@ -121,7 +155,11 @@ public class SumBuySellActivity extends BaseActivity {
             @Override
             public void error() {
                 if (ActivityUtil.isActivityOnTop(SumBuySellActivity.this)) {
-                    mRefreshLayout.finishRefresh();
+                    if (type == PULL_UP) {
+                        mRefreshLayout.finishLoadMore();
+                    } else {
+                        mRefreshLayout.finishRefresh();
+                    }
                     mRecyclerView.setVisibility(View.GONE);
                     mLlNoData.setVisibility(View.GONE);
                     mLlError.setVisibility(View.VISIBLE);
@@ -130,10 +168,12 @@ public class SumBuySellActivity extends BaseActivity {
 
             @Override
             public void finishRefresh() {
-                mRefreshLayout.finishRefresh();
+                if (type == PULL_UP) {
+                    mRefreshLayout.finishLoadMore();
+                } else {
+                    mRefreshLayout.finishRefresh();
+                }
             }
-
-
         });
     }
 
@@ -157,7 +197,7 @@ public class SumBuySellActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_error:
-                initData();
+                initData(PULL_DOWN);
                 break;
         }
     }

@@ -30,6 +30,7 @@ import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.FingerprintUtil;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
+
 import java.util.List;
 
 import static com.bclould.tea.ui.activity.PayPwSelectorActivity.FINGERPRINT_PW_SELE;
@@ -61,7 +62,7 @@ public class BaseActivity extends SwipeActivity {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            if(this.getClass().getName().equals(ConversationActivity.class.getName()))
+            if (this.getClass().getName().equals(ConversationActivity.class.getName()))
                 return super.dispatchTouchEvent(ev);
             View v = getCurrentFocus();
             if (isShouldHideInput(v, ev)) {
@@ -144,38 +145,41 @@ public class BaseActivity extends SwipeActivity {
                 arr[i] = Character.getNumericValue(mAnswerstr.charAt(i));
             }
             mGestureView.setAnswer(arr);
-            mGestureView.setOnGestureLockViewListener(new GestureLockViewGroup.OnGestureLockViewListener() {
-
-                public int mCount = 5;
-
-                @Override
-                public void onBlockSelected(int position) {
-
-                }
-
-                @Override
-                public void onGestureEvent(boolean matched) {
-                    if (matched) {
-                        mGestureDialog.dismiss();
-                        mCount = 5;
-                    } else {
-                        mCount--;
-                        mTvHint.setText(getString(R.string.set_gesture_hint5) + getString(R.string.hai_sheng) + mCount + getString(R.string.chance));
-                        mTvHint.setTextColor(getResources().getColor(R.color.red));
-                    }
-                }
-
-                @Override
-                public void onUnmatchedExceedBoundary() {
-                    UtilTool.Log("手勢", "onUnmatchedExceedBoundary");
-                    if (mCount == 0) {
-                        mGestureDialog.dismiss();
-                        WsConnection.getInstance().goMainActivity();
-                    }
-                }
-            });
+            mGestureView.setOnGestureLockViewListener(mOnGestureLockViewListener);
         }
     }
+
+    GestureLockViewGroup.OnGestureLockViewListener mOnGestureLockViewListener = new GestureLockViewGroup.OnGestureLockViewListener() {
+
+        public int mCount = 5;
+
+        @Override
+        public void onBlockSelected(int position) {
+
+        }
+
+        @Override
+        public void onGestureEvent(boolean matched) {
+            if (matched) {
+                mGestureDialog.dismiss();
+                mCount = 5;
+            } else {
+                mCount--;
+                mTvHint.setText(getString(R.string.set_gesture_hint5) + getString(R.string.hai_sheng) + mCount + getString(R.string.chance));
+                mTvHint.setTextColor(getResources().getColor(R.color.red));
+            }
+        }
+
+        @Override
+        public void onUnmatchedExceedBoundary() {
+            UtilTool.Log("手勢", "onUnmatchedExceedBoundary");
+            if (mCount == 0) {
+
+                mGestureDialog.dismiss();
+                WsConnection.getInstance().goMainActivity();
+            }
+        }
+    };
 
 
     @Override

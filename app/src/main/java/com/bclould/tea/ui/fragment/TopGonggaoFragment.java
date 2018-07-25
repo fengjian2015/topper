@@ -21,6 +21,7 @@ import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.SpaceItemDecoration;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
@@ -48,9 +49,12 @@ public class TopGonggaoFragment extends Fragment {
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
     private GonggaoManagerRVAdapter mGonggaoManagerRVAdapter;
-    private int mPage = 1;
+    private int PULL_UP = 0;
+    private int PULL_DOWN = 1;
+    private int mPage_id = 0;
+    private int mPageSize = 10;
+    boolean isFinish = true;
     private int mStatus = 2;
-    private int mPageSize = 1000;
     private NewsNoticePresenter mNewsNoticePresenter;
 
     @Nullable
@@ -67,37 +71,67 @@ public class TopGonggaoFragment extends Fragment {
         mNewsNoticePresenter = new NewsNoticePresenter(getContext());
         initListener();
         initRecyclerView();
-        initData();
+        initData(PULL_DOWN);
     }
 
     private void initListener() {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
-                initData();
+                if(isFinish)
+                initData(PULL_DOWN);
+            }
+        });
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                if(isFinish)
+                initData(PULL_UP);
             }
         });
     }
 
     List<GonggaoListInfo.DataBean> mDataList = new ArrayList<>();
 
-    private void initData() {
-        mNewsNoticePresenter.getGonggaoList(mPage, mPageSize, mStatus, new NewsNoticePresenter.CallBack2() {
+    private void initData(final int type) {
+        if (type == PULL_DOWN) {
+            mPage_id = 0;
+        }
+        isFinish = false;
+        mNewsNoticePresenter.getGonggaoList(mPage_id, mPageSize, mStatus, new NewsNoticePresenter.CallBack2() {
             @Override
             public void send(List<GonggaoListInfo.DataBean> data) {
-                if (mRecyclerView != null) {
-                    mRefreshLayout.finishRefresh();
-                    if (data.size() != 0) {
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        mLlNoData.setVisibility(View.GONE);
-                        mLlError.setVisibility(View.GONE);
-                        mDataList.clear();
-                        mDataList.addAll(data);
-                        mGonggaoManagerRVAdapter.notifyDataSetChanged();
-                    } else {
-                        mRecyclerView.setVisibility(View.GONE);
-                        mLlNoData.setVisibility(View.VISIBLE);
-                        mLlError.setVisibility(View.GONE);
+                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                    if (mRecyclerView != null) {
+                        if (type == PULL_DOWN) {
+                            mRefreshLayout.finishRefresh();
+                        } else {
+                            mRefreshLayout.finishLoadMore();
+                        }
+                        isFinish = true;
+                        if (mDataList.size() != 0 || data.size() != 0) {
+                            mRecyclerView.setVisibility(View.VISIBLE);
+                            mLlNoData.setVisibility(View.GONE);
+                            mLlError.setVisibility(View.GONE);
+                            if (type == PULL_DOWN) {
+                                if (data.size() == 0) {
+                                    mRecyclerView.setVisibility(View.GONE);
+                                    mLlNoData.setVisibility(View.VISIBLE);
+                                    mLlError.setVisibility(View.GONE);
+                                } else {
+                                    mDataList.clear();
+                                }
+                            }
+                            mDataList.addAll(data);
+                            if (mDataList.size() != 0) {
+                                mPage_id = mDataList.get(mDataList.size() - 1).getId();
+                            }
+                            mGonggaoManagerRVAdapter.notifyDataSetChanged();
+                        } else {
+                            mRecyclerView.setVisibility(View.GONE);
+                            mLlNoData.setVisibility(View.VISIBLE);
+                            mLlError.setVisibility(View.GONE);
+                        }
                     }
                 }
             }
@@ -105,7 +139,11 @@ public class TopGonggaoFragment extends Fragment {
             @Override
             public void error() {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
-                    mRefreshLayout.finishRefresh();
+                    if (type == PULL_UP) {
+                        mRefreshLayout.finishLoadMore();
+                    } else {
+                        mRefreshLayout.finishRefresh();
+                    }
                     mRecyclerView.setVisibility(View.GONE);
                     mLlNoData.setVisibility(View.GONE);
                     mLlError.setVisibility(View.VISIBLE);
@@ -114,7 +152,11 @@ public class TopGonggaoFragment extends Fragment {
 
             @Override
             public void finishRefresh() {
-                mRefreshLayout.finishRefresh();
+                if (type == PULL_UP) {
+                    mRefreshLayout.finishLoadMore();
+                } else {
+                    mRefreshLayout.finishRefresh();
+                }
             }
         });
     }

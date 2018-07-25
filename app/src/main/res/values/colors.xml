@@ -54,4 +54,11 @@
     <color name="blue3">#1F6BFF</color>
     <color name="white1">#80ffffff</color>
     <color name="red_envelope">#f9bc77</color>
+
+    <!--2.0版本主要顏色-->
+    <color name="app_bg_color">#242f43</color>
+    <color name="btn_bg_color">#07a7f3</color>
+    <color name="main_text_color">#e9eff8</color>
+    <color name="secondary_text_color">#aaacb2</color>
+    <color name="boundary_color">#c8e9f9</color>
 </resources>

@@ -66,9 +66,8 @@ public class SellFragment extends BaseFragment {
     private BuySellPresenter mBuySellPresenter;
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
-    private int mPage = 1;
+    private int mPage_id = 0;
     private int mPageSize = 10;
-    private int end = 0;
 
 
     @Nullable
@@ -81,7 +80,7 @@ public class SellFragment extends BaseFragment {
         }
         if (MySharedPreferences.getInstance().getSp().contains(STATE)) {
             mState = MySharedPreferences.getInstance().getString(STATE);
-        }else {
+        } else {
             mState = getString(R.string.china_mainland);
         }
         ButterKnife.bind(this, mView);
@@ -135,7 +134,8 @@ public class SellFragment extends BaseFragment {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                initData(mCoinName, mState, PULL_DOWN);
+                if (isFinish)
+                    initData(mCoinName, mState, PULL_DOWN);
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -150,45 +150,38 @@ public class SellFragment extends BaseFragment {
 
     private void initData(String coinName, String state, final int type) {
         if (type == PULL_DOWN) {
-            mPage = 1;
-            end = 0;
+            mPage_id = 0;
         }
         isFinish = false;
-        mBuySellPresenter.getDealList(mPage, mPageSize, 2, coinName, state, new BuySellPresenter.CallBack() {
+        mBuySellPresenter.getDealList(mPage_id, mPageSize, 2, coinName, state, new BuySellPresenter.CallBack() {
             @Override
             public void send(List<DealListInfo.DataBean> dataBean, String coin) {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
                     if (mRecyclerView != null) {
                         if (type == PULL_DOWN) {
                             mRefreshLayout.finishRefresh();
-                        }else{
+                        } else {
                             mRefreshLayout.finishLoadMore();
                         }
+                        isFinish = true;
                         if (mDataList.size() != 0 || dataBean.size() != 0) {
-                            isFinish = true;
-                            if (type == PULL_UP) {
-                                if (dataBean.size() == mPageSize) {
-                                    mPage++;
-                                    mDataList.addAll(dataBean);
-                                    mBuySellRVAdapter.notifyDataSetChanged();
-                                } else {
-                                    if (end == 0) {
-                                        end++;
-                                        mDataList.addAll(dataBean);
-                                        mBuySellRVAdapter.notifyDataSetChanged();
-                                    }
-                                }
-                            } else {
-                                if (mPage == 1) {
-                                    mPage++;
-                                }
-                                mDataList.clear();
-                                mDataList.addAll(dataBean);
-                                mBuySellRVAdapter.notifyDataSetChanged();
-                            }
                             mRecyclerView.setVisibility(View.VISIBLE);
                             mLlNoData.setVisibility(View.GONE);
                             mLlError.setVisibility(View.GONE);
+                            if (type == PULL_DOWN) {
+                                if (dataBean.size() == 0) {
+                                    mRecyclerView.setVisibility(View.GONE);
+                                    mLlNoData.setVisibility(View.VISIBLE);
+                                    mLlError.setVisibility(View.GONE);
+                                } else {
+                                    mDataList.clear();
+                                }
+                            }
+                            mDataList.addAll(dataBean);
+                            if (mDataList.size() != 0) {
+                                mPage_id = mDataList.get(mDataList.size() - 1).getId();
+                            }
+                            mBuySellRVAdapter.notifyDataSetChanged();
                         } else {
                             mRecyclerView.setVisibility(View.GONE);
                             mLlNoData.setVisibility(View.VISIBLE);
@@ -203,7 +196,7 @@ public class SellFragment extends BaseFragment {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();
-                    }else{
+                    } else {
                         mRefreshLayout.finishLoadMore();
                     }
                     if (type == PULL_DOWN) {
@@ -218,7 +211,7 @@ public class SellFragment extends BaseFragment {
             public void finishRefresh() {
                 if (type == PULL_DOWN) {
                     mRefreshLayout.finishRefresh();
-                }else{
+                } else {
                     mRefreshLayout.finishLoadMore();
                 }
             }

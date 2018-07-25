@@ -65,8 +65,7 @@ public class PersonageDynamicActivity extends BaseActivity {
     private DynamicPresenter mDynamicPresenter;
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
-    private int end = 0;
-    private int mPage = 1;
+    private int mPage_id = 0;
     private int mPageSize = 10;
     private DynamicRVAdapter mDynamicRVAdapter;
 
@@ -107,6 +106,7 @@ public class PersonageDynamicActivity extends BaseActivity {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
+                if (isFinish)
                 initData(PULL_DOWN);
             }
         });
@@ -124,48 +124,43 @@ public class PersonageDynamicActivity extends BaseActivity {
 
     private void initData(final int type) {
         if (type == PULL_DOWN) {
-            mPage = 1;
-            end = 0;
+            mPage_id = 0;
         }
         isFinish = false;
-        mDynamicPresenter.taDynamicList(mPage, mPageSize, mUser, new DynamicPresenter.CallBack2() {
+        mDynamicPresenter.taDynamicList(mPage_id, mPageSize, mUser, new DynamicPresenter.CallBack2() {
             @Override
             public void send(List<DynamicListInfo.DataBean> data) {
-                if (mRecyclerView != null) {
-                    if (type == PULL_DOWN) {
-                        mRefreshLayout.finishRefresh();
-                    }else{
-                        mRefreshLayout.finishLoadMore();
-                    }
-                    if (mDataList.size() != 0 || data.size() != 0) {
+                if (ActivityUtil.isActivityOnTop(PersonageDynamicActivity.this)) {
+                    if (mRecyclerView != null) {
+                        if (type == PULL_DOWN) {
+                            mRefreshLayout.finishRefresh();
+                        } else {
+                            mRefreshLayout.finishLoadMore();
+                        }
                         isFinish = true;
-                        if (type == PULL_UP) {
-                            if (data.size() == mPageSize) {
-                                mPage++;
-                                mDataList.addAll(data);
-                                mDynamicRVAdapter.notifyDataSetChanged();
-                            } else {
-                                if (end == 0) {
-                                    end++;
-                                    mDataList.addAll(data);
-                                    mDynamicRVAdapter.notifyDataSetChanged();
+                        if (mDataList.size() != 0 || data.size() != 0) {
+                            mRecyclerView.setVisibility(View.VISIBLE);
+                            mLlNoData.setVisibility(View.GONE);
+                            mLlError.setVisibility(View.GONE);
+                            if (type == PULL_DOWN) {
+                                if (data.size() == 0) {
+                                    mRecyclerView.setVisibility(View.GONE);
+                                    mLlNoData.setVisibility(View.VISIBLE);
+                                    mLlError.setVisibility(View.GONE);
+                                } else {
+                                    mDataList.clear();
                                 }
                             }
-                        } else {
-                            if (mPage == 1) {
-                                mPage++;
-                            }
-                            mDataList.clear();
                             mDataList.addAll(data);
+                            if (mDataList.size() != 0) {
+                                mPage_id = mDataList.get(mDataList.size() - 1).getId();
+                            }
                             mDynamicRVAdapter.notifyDataSetChanged();
+                        } else {
+                            mRecyclerView.setVisibility(View.GONE);
+                            mLlNoData.setVisibility(View.VISIBLE);
+                            mLlError.setVisibility(View.GONE);
                         }
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        mLlNoData.setVisibility(View.GONE);
-                        mLlError.setVisibility(View.GONE);
-                    } else {
-                        mRecyclerView.setVisibility(View.GONE);
-                        mLlNoData.setVisibility(View.VISIBLE);
-                        mLlError.setVisibility(View.GONE);
                     }
                 }
             }
@@ -175,7 +170,7 @@ public class PersonageDynamicActivity extends BaseActivity {
                 if (ActivityUtil.isActivityOnTop(PersonageDynamicActivity.this)) {
                     if (type == PULL_DOWN) {
                         mRefreshLayout.finishRefresh();
-                    }else{
+                    } else {
                         mRefreshLayout.finishLoadMore();
                     }
                     mRecyclerView.setVisibility(View.GONE);
@@ -188,7 +183,7 @@ public class PersonageDynamicActivity extends BaseActivity {
             public void finishRefresh() {
                 if (type == PULL_DOWN) {
                     mRefreshLayout.finishRefresh();
-                }else{
+                } else {
                     mRefreshLayout.finishLoadMore();
                 }
             }

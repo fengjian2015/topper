@@ -93,8 +93,7 @@ public class DynamicFragment extends Fragment {
     private DBManager mMgr;
     private int PULL_UP = 0;
     private int PULL_DOWN = 1;
-    private int end = 0;
-    private int mPage = 1;
+    private int mPage_id = 0;
     private int mPageSize = 10;
     public LinearLayoutManager mLinearLayoutManager;
     private MainActivity.MyOnTouchListener mTouchListener;
@@ -246,45 +245,37 @@ public class DynamicFragment extends Fragment {
             }
         }
         if (type == PULL_DOWN) {
-            mPage = 1;
-            end = 0;
+            mPage_id = 0;
         }
         isFinish = false;
-        mDynamicPresenter.dynamicList(mPage, mPageSize, userList, new DynamicPresenter.CallBack2() {
+        mDynamicPresenter.dynamicList(mPage_id, mPageSize, userList, new DynamicPresenter.CallBack2() {
             @Override
             public void send(List<DynamicListInfo.DataBean> data) {
                 if (ActivityUtil.isActivityOnTop(getActivity())) {
-                    if (type == PULL_UP) {
-                        mRefreshLayout.finishLoadMore();
-                    } else {
-                        mRefreshLayout.finishRefresh();
-                    }
                     if (mRecyclerView != null) {
+                        if (type == PULL_DOWN) {
+                            mRefreshLayout.finishRefresh();
+                        } else {
+                            mRefreshLayout.finishLoadMore();
+                        }
+                        isFinish = true;
                         if (mDataList.size() != 0 || data.size() != 0) {
-                            isFinish = true;
-                            if (type == PULL_UP) {
-                                if (data.size() == mPageSize) {
-                                    mPage++;
-                                    mDataList.addAll(data);
-                                    mDynamicRVAdapter.notifyDataSetChanged();
-                                } else {
-                                    if (end == 0) {
-                                        end++;
-                                        mDataList.addAll(data);
-                                        mDynamicRVAdapter.notifyDataSetChanged();
-                                    }
-                                }
-                            } else {
-                                if (mPage == 1) {
-                                    mPage++;
-                                }
-                                mDataList.clear();
-                                mDataList.addAll(data);
-                                mDynamicRVAdapter.notifyDataSetChanged();
-                            }
                             mRecyclerView.setVisibility(View.VISIBLE);
                             mLlNoData.setVisibility(View.GONE);
                             mLlError.setVisibility(View.GONE);
+                            if (type == PULL_DOWN) {
+                                if (data.size() == 0) {
+                                    mRecyclerView.setVisibility(View.GONE);
+                                    mLlNoData.setVisibility(View.VISIBLE);
+                                    mLlError.setVisibility(View.GONE);
+                                } else {
+                                    mDataList.clear();
+                                }
+                            }
+                            mDataList.addAll(data);
+                            if (mDataList.size() != 0)
+                                mPage_id = mDataList.get(mDataList.size() - 1).getId();
+                            mDynamicRVAdapter.notifyDataSetChanged();
                         } else {
                             mRecyclerView.setVisibility(View.GONE);
                             mLlNoData.setVisibility(View.VISIBLE);
@@ -366,7 +357,8 @@ public class DynamicFragment extends Fragment {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                initData(PULL_DOWN);
+                if (isFinish)
+                    initData(PULL_DOWN);
             }
         });
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {

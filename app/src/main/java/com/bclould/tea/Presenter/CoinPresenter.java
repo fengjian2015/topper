@@ -222,7 +222,7 @@ public class CoinPresenter {
                 });
     }
 
-    public void exchangeOrder(String market_coin_nam, String trade_coin_name, String page, String pageSize, final CallBack3 callBack3) {
+    public void exchangeOrder(String market_coin_nam, String trade_coin_name, int page, int pageSize, final CallBack3 callBack3) {
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .exchangeOrders(UtilTool.getToken(), market_coin_nam, trade_coin_name, page, pageSize)
