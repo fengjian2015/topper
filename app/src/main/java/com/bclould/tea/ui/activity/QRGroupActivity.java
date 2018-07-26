@@ -1,14 +1,9 @@
 package com.bclould.tea.ui.activity;
 
-import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -20,18 +15,15 @@ import android.widget.Toast;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
-import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
-import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
-import com.bclould.tea.xmpp.RoomManage;
 
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +55,11 @@ public class QRGroupActivity extends BaseActivity {
         mDBRoomManage=new DBRoomManage(this);
         getInitent();
         init();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void init() {

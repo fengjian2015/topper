@@ -1,40 +1,17 @@
 package com.bclould.tea.ui.activity;
 
-import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.InputType;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.ui.widget.PWDDialog;
-import com.bclould.tea.ui.widget.VirtualKeyboardView;
-import com.bclould.tea.utils.StringUtils;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.UtilTool;
-import com.maning.pswedittextlibrary.MNPasswordEditText;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Map;
-
-import static com.bclould.tea.R.style.BottomDialog;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class PayOutsideCallsActivity extends BaseActivity {
@@ -72,6 +49,10 @@ public class PayOutsideCallsActivity extends BaseActivity {
         pwdDialog.showDialog(UtilTool.removeZero(mCount + ""),coins,coins + getString(R.string.pay),null,null);
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+    }
 
     private void sendHttp(){
         Intent intent=new Intent(PayOutsideCallsActivity.this,PayReceiptResultActivity.class);

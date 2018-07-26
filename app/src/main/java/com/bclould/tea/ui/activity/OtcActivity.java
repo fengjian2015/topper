@@ -2,6 +2,7 @@ package com.bclould.tea.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ import com.bclould.tea.ui.fragment.OrderFormFragment;
 import com.bclould.tea.ui.fragment.SellFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.ActivityUtil;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -134,6 +136,11 @@ public class OtcActivity extends BaseActivity {
         mFiltrateList.add(getString(R.string.off_the_stocks));
         mFiltrateList.add(getString(R.string.exception));
         init();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

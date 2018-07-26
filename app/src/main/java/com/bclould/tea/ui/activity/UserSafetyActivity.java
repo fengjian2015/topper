@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.RelativeLayout;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.utils.AppLanguageUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -61,6 +63,11 @@ public class UserSafetyActivity extends BaseActivity {
         setContentView(R.layout.activity_user_safety);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     @OnClick({R.id.rl_app_look, R.id.rl_autonym_attestation, R.id.bark, R.id.rl_login_password, R.id.rl_pay_password, R.id.rl_google, R.id.rl_login_set, R.id.rl_login_record})

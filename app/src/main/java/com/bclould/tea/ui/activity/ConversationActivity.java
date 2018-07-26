@@ -50,6 +50,7 @@ import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.adapter.ChatAdapter;
 import com.bclould.tea.ui.widget.SimpleAppsGridView;
 import com.bclould.tea.utils.ActivityUtil;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.AudioModeManger;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
@@ -195,6 +196,10 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
 
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+    }
 
     @Override
     protected void onNewIntent(Intent intent) {

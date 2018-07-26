@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +20,7 @@ import com.bclould.tea.ui.widget.ClearEditText;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
@@ -58,6 +60,11 @@ public class AddCollectActivity extends BaseActivity {
         ButterKnife.bind(this);
         mCollectPresenter = new CollectPresenter(this);
         initIntent();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initIntent() {

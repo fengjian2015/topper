@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.topperchat.WsConnection;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
@@ -114,6 +116,11 @@ public class StartActivity extends LoginBaseActivity {
             }
         }.sendEmptyMessageDelayed(0, 2000);
         MyApp.getInstance().addActivity(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void startMain(){

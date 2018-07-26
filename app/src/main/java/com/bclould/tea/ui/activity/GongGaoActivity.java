@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,10 +14,11 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.adapter.GongGaoRVAdapter;
+import com.bclould.tea.utils.AppLanguageUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,6 +47,11 @@ public class GongGaoActivity extends BaseActivity {
         ButterKnife.bind(this);
         initListView();
         MyApp.getInstance().addActivity(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     //初始化条目

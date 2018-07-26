@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.bclould.tea.model.TransferInfo;
 import com.bclould.tea.ui.adapter.BillDataRVAapter;
 import com.bclould.tea.ui.adapter.InOutDataRVAapter;
 import com.bclould.tea.utils.ActivityUtil;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.UtilTool;
 
 import java.util.ArrayList;
@@ -85,6 +87,11 @@ public class BillDetailsActivity extends BaseActivity {
             mInOutDataRVAapter = new InOutDataRVAapter(this, mInOutList, mType, mCoinName);
             mRecyclerView.setAdapter(mInOutDataRVAapter);
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initData() {

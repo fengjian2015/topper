@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,9 +12,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
+import com.bclould.tea.utils.AppLanguageUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,6 +43,11 @@ public class NickNameActivity extends BaseActivity {
         ButterKnife.bind(this);
         listenerEditText();
         MyApp.getInstance().addActivity(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     //监听输入框

@@ -11,8 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.R;
+import com.bclould.tea.base.MyApp;
+import com.bclould.tea.utils.AppLanguageUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,6 +42,11 @@ public class SelectorStateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_selector_state);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     @Override

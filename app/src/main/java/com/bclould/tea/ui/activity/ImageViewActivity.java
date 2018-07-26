@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.bclould.tea.base.SwipeActivity;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.SerMap;
 import com.bclould.tea.ui.fragment.ImageViewFragment;
+import com.bclould.tea.utils.AppLanguageUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,6 +62,11 @@ public class ImageViewActivity extends SwipeActivity {
         setContentView(R.layout.activity_images_view);
         findView();
         init();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void init() {

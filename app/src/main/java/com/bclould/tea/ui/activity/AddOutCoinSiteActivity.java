@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.InCoinInfo;
 import com.bclould.tea.utils.AnimatorTool;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -60,6 +62,11 @@ public class AddOutCoinSiteActivity extends BaseActivity {
         ButterKnife.bind(this);
         initInterface();
         MyApp.getInstance().addActivity(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initInterface() {

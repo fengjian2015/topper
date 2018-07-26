@@ -1,24 +1,14 @@
 package com.bclould.tea.ui.activity;
 
-import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.text.Editable;
-import android.text.InputType;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,20 +19,12 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.PWDDialog;
-import com.bclould.tea.ui.widget.VirtualKeyboardView;
 import com.bclould.tea.utils.AnimatorTool;
-import com.bclould.tea.utils.UtilTool;
-import com.maning.pswedittextlibrary.MNPasswordEditText;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Map;
+import com.bclould.tea.utils.AppLanguageUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.bclould.tea.R.style.BottomDialog;
 
 
 /**
@@ -84,6 +66,11 @@ public class TransferAccountsActivity extends BaseActivity {
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
         initIntent();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initIntent() {

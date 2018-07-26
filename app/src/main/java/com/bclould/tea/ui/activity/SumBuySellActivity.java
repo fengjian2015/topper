@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.OrderListInfo;
 import com.bclould.tea.ui.adapter.OrderRVAdapter;
 import com.bclould.tea.utils.ActivityUtil;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -78,6 +80,11 @@ public class SumBuySellActivity extends BaseActivity {
         initRecyclerView();
         initData(PULL_DOWN);
         initListener();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initIntent() {

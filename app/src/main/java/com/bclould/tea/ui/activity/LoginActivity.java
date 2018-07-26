@@ -28,6 +28,7 @@ import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.adapter.EmailCodeAdapter;
 import com.bclould.tea.ui.widget.MyAutoCompleteTextView;
 import com.bclould.tea.utils.AnimatorTool;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 
@@ -90,6 +91,11 @@ public class LoginActivity extends LoginBaseActivity {
             UtilTool.Log("fengjian",WsConnection.getInstance().ws.isOpen()+"   ");
         }
         UtilTool.Log("fengjian",WsConnection.getInstance().ws+"   ");
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initUserCodeList() {

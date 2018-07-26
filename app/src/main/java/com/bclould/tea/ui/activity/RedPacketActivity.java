@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.GrabRedInfo;
 import com.bclould.tea.ui.adapter.RedPacketRVAdapter;
 import com.bclould.tea.ui.widget.ChangeTextSpaceView;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.UtilTool;
 
 import java.util.List;
@@ -82,6 +84,11 @@ public class RedPacketActivity extends BaseActivity {
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
         initData();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initData() {

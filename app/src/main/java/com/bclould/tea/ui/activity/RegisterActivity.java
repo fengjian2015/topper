@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -21,6 +20,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.LoginBaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.AnimatorTool;
+import com.bclould.tea.utils.AppLanguageUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,6 +52,11 @@ public class RegisterActivity extends LoginBaseActivity {
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
         mRegisterPresenter = new RegisterPresenter(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,7 +8,6 @@ import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.GridView;
 
-import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
@@ -16,9 +16,8 @@ import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.ui.adapter.GroupDetailsMemberAdapter;
-import com.bclould.tea.ui.widget.MyGridView;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
-import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,6 +55,11 @@ public class GroupMemberActivity extends BaseActivity {
         mDBRoomManage=new DBRoomManage(this);
         initIntent();
         setGroupMember(true);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initIntent() {

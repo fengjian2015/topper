@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.bclould.tea.Presenter.RegisterPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 
 import butterknife.Bind;
@@ -63,6 +65,10 @@ public class ServiceAgreementActivity extends AppCompatActivity {
         mPassword = intent.getStringExtra("password");
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+    }
 
     @OnClick(R.id.tv_consent)
     public void onViewClicked() {

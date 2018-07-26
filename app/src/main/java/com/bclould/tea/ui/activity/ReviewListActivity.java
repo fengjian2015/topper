@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -14,6 +15,7 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.ReviewInfo;
 import com.bclould.tea.ui.adapter.ReviewListAdapter;
+import com.bclould.tea.utils.AppLanguageUtils;
 
 import java.util.ArrayList;
 
@@ -43,6 +45,11 @@ public class ReviewListActivity extends BaseActivity {
         roomId = getIntent().getStringExtra("roomId");
         initRecyclerView();
         initData();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initData() {

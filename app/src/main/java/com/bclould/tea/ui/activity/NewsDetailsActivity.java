@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -29,6 +30,7 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.topperchat.WsConnection;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
@@ -88,6 +90,11 @@ public class NewsDetailsActivity extends BaseActivity {
         initIntent();
         initWebView();
         initView();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initView() {

@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.bclould.tea.model.TransferListInfo;
 import com.bclould.tea.ui.adapter.PayManageGVAdapter;
 import com.bclould.tea.ui.adapter.PayRecordRVAdapter;
 import com.bclould.tea.utils.ActivityUtil;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
@@ -105,6 +107,11 @@ public class PayRecordActivity extends BaseActivity {
         initMap();
         initData(PULL_DOWN);
         initListener();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initListener() {

@@ -26,6 +26,7 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.ui.adapter.AddFriendAdapter;
 import com.bclould.tea.ui.widget.ClearEditText;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
@@ -77,6 +78,11 @@ public class AddFriendActivity extends BaseActivity {
         initListener();
         initRecyclerView();
         initQR();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initQR() {

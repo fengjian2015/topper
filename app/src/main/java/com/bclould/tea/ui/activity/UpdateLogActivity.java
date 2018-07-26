@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.UpdateLogInfo;
 import com.bclould.tea.ui.adapter.UpdateLogRVAdapter;
+import com.bclould.tea.utils.AppLanguageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +54,11 @@ public class UpdateLogActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         initRecyclerView();
         initData();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     List<UpdateLogInfo.DataBean> mDataList = new ArrayList<>();

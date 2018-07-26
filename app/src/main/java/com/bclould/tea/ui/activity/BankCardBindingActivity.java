@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.bclould.tea.model.BankCardInfo;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter3;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.AnimatorTool;
+import com.bclould.tea.utils.AppLanguageUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -69,6 +71,11 @@ public class BankCardBindingActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         mBankCardPresenter = new BankCardPresenter(this);
         initData();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initData() {

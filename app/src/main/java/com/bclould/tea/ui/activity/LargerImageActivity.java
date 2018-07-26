@@ -1,7 +1,6 @@
 package com.bclould.tea.ui.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -12,16 +11,10 @@ import com.andy6804tw.zoomimageviewlibrary.ZoomImageView;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
-import com.bclould.tea.utils.ActivityUtil;
-import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.QRDiscernUtil;
-import com.bclould.tea.utils.ToastShow;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,6 +35,11 @@ public class LargerImageActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         initgetIntent();
         init();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void init() {

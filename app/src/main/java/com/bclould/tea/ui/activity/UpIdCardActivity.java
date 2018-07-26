@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -27,6 +28,7 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.network.OSSupload;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.UtilTool;
 import com.luck.picture.lib.PictureSelector;
@@ -101,6 +103,11 @@ public class UpIdCardActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         initIntent();
         initMap();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initMap() {

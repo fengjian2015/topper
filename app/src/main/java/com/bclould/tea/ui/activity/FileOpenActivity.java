@@ -26,6 +26,7 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.DownloadInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.utils.ActivityUtil;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -86,6 +87,11 @@ public class FileOpenActivity extends BaseActivity {
         mFileDownloadPresenter.setOnDownloadCallbackListener(mDownloadCallback);
         getintent();
         init();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void init() {

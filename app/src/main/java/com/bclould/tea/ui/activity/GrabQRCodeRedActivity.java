@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.GrabRedInfo;
 import com.bclould.tea.ui.widget.ChangeTextSpaceView;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.UtilTool;
 
 import butterknife.Bind;
@@ -66,6 +68,11 @@ public class GrabQRCodeRedActivity extends BaseActivity {
             mTvRedpacketRecord.setVisibility(View.GONE);
         }
         initData();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initData() {

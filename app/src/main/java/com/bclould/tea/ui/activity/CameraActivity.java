@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.cjt2325.cameralibrary.JCameraView;
 import com.cjt2325.cameralibrary.listener.JCameraListener;
@@ -90,6 +92,11 @@ public class CameraActivity extends AppCompatActivity {
             file.createNewFile();
         }
         return size;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     /**

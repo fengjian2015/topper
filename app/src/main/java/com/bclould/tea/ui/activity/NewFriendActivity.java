@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.AddRequestInfo;
 import com.bclould.tea.model.NewFriendInfo;
 import com.bclould.tea.ui.adapter.NewFriendRVAdapter;
+import com.bclould.tea.utils.AppLanguageUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,6 +59,11 @@ public class NewFriendActivity extends BaseActivity {
         initRecyclerView();
         initData();
         MyApp.getInstance().addActivity(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initData() {

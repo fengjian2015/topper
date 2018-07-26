@@ -2,6 +2,7 @@ package com.bclould.tea.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.PWDDialog;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.FingerprintUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -85,6 +87,7 @@ public class PayPwSelectorActivity extends BaseActivity {
     private BankCardPresenter mBankCardPresenter;
     private PWDDialog pwdDialog;
     private UpdateLogPresenter mUpdateLogPresenter;
+    private int mCode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,7 +103,13 @@ public class PayPwSelectorActivity extends BaseActivity {
         initSp();
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+    }
+
     private void init() {
+        mCode = getIntent().getIntExtra("code", 0);
         FingerprintManagerCompat managerCompat = FingerprintManagerCompat.from(MyApp.getInstance().app());
         if (!managerCompat.isHardwareDetected()) { //判断设备是否支持
             mCvFingerprintPw.setVisibility(View.GONE);
@@ -310,7 +319,7 @@ public class PayPwSelectorActivity extends BaseActivity {
     }
 
     private void showPWDialog(final int type) {
-        pwdDialog=new PWDDialog(this);
+        pwdDialog = new PWDDialog(this);
         pwdDialog.setOnPWDresult(new PWDDialog.OnPWDresult() {
             @Override
             public void success(String password) {
@@ -321,7 +330,7 @@ public class PayPwSelectorActivity extends BaseActivity {
                 }
             }
         });
-        pwdDialog.showDialog(getString(R.string.verify_pay_pw),null,null,null,null);
+        pwdDialog.showDialog(getString(R.string.verify_pay_pw), null, null, null, null);
     }
 
 
@@ -330,6 +339,10 @@ public class PayPwSelectorActivity extends BaseActivity {
             @Override
             public void send(int status) {
                 if (status == 0) {
+                    if (mCode != 0) {
+                        setResult(RESULT_OK);
+                        finish();
+                    }
                     Toast.makeText(PayPwSelectorActivity.this, getString(R.string.close_gesture), Toast.LENGTH_SHORT).show();
                 }
             }

@@ -1,21 +1,11 @@
 package com.bclould.tea.ui.activity;
 
-import android.app.Dialog;
-import android.content.Intent;
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.text.Editable;
-import android.text.InputType;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -24,9 +14,6 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -34,20 +21,13 @@ import android.widget.TextView;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
-import com.bclould.tea.ui.widget.VirtualKeyboardView;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
-import com.maning.pswedittextlibrary.MNPasswordEditText;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.bclould.tea.R.style.BottomDialog;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class HTMLActivity extends BaseActivity {
@@ -71,6 +51,11 @@ public class HTMLActivity extends BaseActivity {
         ButterKnife.bind(this);
         MyApp.getInstance().app().addActivity(this);
         init();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void init() {

@@ -1,10 +1,10 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -16,6 +16,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.base.SwipeActivity;
 import com.bclould.tea.ui.fragment.PreviewImgFragment;
+import com.bclould.tea.utils.AppLanguageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,11 @@ public class PreviewImgActivity extends SwipeActivity {
         MyApp.getInstance().addActivity(this);
         initIntent();
         init();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initIntent() {

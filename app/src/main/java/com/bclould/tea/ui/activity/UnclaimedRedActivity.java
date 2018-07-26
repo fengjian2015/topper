@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -16,6 +17,7 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.UnclaimedRedInfo;
 import com.bclould.tea.ui.adapter.UnclaimedRedListAdapter;
+import com.bclould.tea.utils.AppLanguageUtils;
 
 import java.util.ArrayList;
 
@@ -48,6 +50,11 @@ public class UnclaimedRedActivity extends BaseActivity {
         mDBRoomMember = new DBRoomMember(this);
         mDBManager = new DBManager(this);
         initRecyclerView();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     @Override

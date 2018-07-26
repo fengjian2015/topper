@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -21,6 +22,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.adapter.BlockchainGambleVPAdapter;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 
 import butterknife.Bind;
@@ -69,6 +71,11 @@ public class BlockchainGambleActivity extends BaseActivity {
         setSelector(0);
         initTopMenu();
         initViewPager();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initTopMenu() {

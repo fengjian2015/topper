@@ -1,10 +1,10 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,12 +18,12 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
-import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.adapter.MessageRecordAdapter;
 import com.bclould.tea.ui.adapter.MessageRecordSelectAdapter;
 import com.bclould.tea.ui.adapter.MessageRecordViedoAdapter;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.FullyGridLayoutManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -96,6 +96,11 @@ public class ConversationRecordFindActivity extends BaseActivity implements Mess
         MyApp.getInstance().addActivity(this);
         init();
         pullToRefresh();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void init() {

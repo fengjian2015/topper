@@ -30,11 +30,11 @@ import com.bclould.tea.ui.widget.CurrencyDialog;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 import com.bumptech.glide.Glide;
 
-import java.io.File;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -113,6 +113,11 @@ public class GoogleVerificationActivity extends BaseActivity {
         mRegisterPresenter = new RegisterPresenter(this);
         MyApp.getInstance().addActivity(this);
         initInterface();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initInterface() {

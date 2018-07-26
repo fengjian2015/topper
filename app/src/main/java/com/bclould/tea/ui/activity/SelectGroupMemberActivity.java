@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.ui.adapter.SelectGroupMemberAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
@@ -59,6 +61,11 @@ public class SelectGroupMemberActivity extends BaseActivity implements SelectGro
         mDBRoomManage = new DBRoomManage(this);
         initIntent();
         init();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void init() {

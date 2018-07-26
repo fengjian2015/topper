@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
@@ -122,6 +124,11 @@ public class CoinExchangeActivity extends BaseActivity {
         boolean aBoolean = MySharedPreferences.getInstance().getBoolean(Constants.EXCHANGE_DISCLAIMER);
         if (!aBoolean)
             showDisclaimerDialog();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     boolean isCheckBox = false;

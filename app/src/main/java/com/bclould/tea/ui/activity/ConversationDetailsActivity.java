@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,6 +26,7 @@ import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
@@ -98,6 +100,11 @@ public class ConversationDetailsActivity extends BaseActivity {
         EventBus.getDefault().register(this);//初始化EventBus
         initIntent();
         init();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initIntent() {

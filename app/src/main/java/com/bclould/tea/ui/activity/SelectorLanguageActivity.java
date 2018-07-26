@@ -1,12 +1,12 @@
 package com.bclould.tea.ui.activity;
 
-import android.content.res.Configuration;
-import android.content.res.Resources;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -15,7 +15,8 @@ import android.widget.RelativeLayout;
 import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
-import com.bclould.tea.utils.Constants;
+import com.bclould.tea.base.MyApp;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
 
 import java.util.Locale;
@@ -51,25 +52,34 @@ public class SelectorLanguageActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selector_language);
         ButterKnife.bind(this);
+        MySharedPreferences.getInstance().getSp().registerOnSharedPreferenceChangeListener(mPreferenceChangeListener);
         init();
     }
 
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+    }
+
     private void init() {
-        mLanguageKind = MySharedPreferences.getInstance().getString(Constants.LANGUAGE);
+
+        mLanguageKind = MySharedPreferences.getInstance().getString(getString(R.string.language_pref_key));
         if (mLanguageKind.isEmpty()) {
             mCbSystem.setChecked(true);
             mCbSimplified.setChecked(false);
             mCbTraditional.setChecked(false);
-        } else if ("zh-cn".equals(mLanguageKind)) {
+        } else if ("zh".equals(mLanguageKind)) {
             mCbSystem.setChecked(false);
             mCbSimplified.setChecked(true);
             mCbTraditional.setChecked(false);
-        } else if ("zh-hk".equals(mLanguageKind)) {
+        } else if ("zh-hant".equals(mLanguageKind)) {
             mCbSystem.setChecked(false);
             mCbSimplified.setChecked(false);
             mCbTraditional.setChecked(true);
         }
     }
+
 
     @OnClick({R.id.bark, R.id.rl_follow_system, R.id.rl_simplified_chinese, R.id.rl_chinese_traditional, R.id.tv_save})
     public void onViewClicked(View view) {
@@ -78,7 +88,7 @@ public class SelectorLanguageActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_save:
-                changeLanguage();
+                saveSettings();
                 break;
             case R.id.rl_follow_system:
                 mLanguageKind = "";
@@ -87,13 +97,13 @@ public class SelectorLanguageActivity extends BaseActivity {
                 mCbTraditional.setChecked(false);
                 break;
             case R.id.rl_simplified_chinese:
-                mLanguageKind = "zh-cn";
+                mLanguageKind = "zh";
                 mCbSystem.setChecked(false);
                 mCbSimplified.setChecked(true);
                 mCbTraditional.setChecked(false);
                 break;
             case R.id.rl_chinese_traditional:
-                mLanguageKind = "zh-hk";
+                mLanguageKind = "zh-hant";
                 mCbSystem.setChecked(false);
                 mCbSimplified.setChecked(false);
                 mCbTraditional.setChecked(true);
@@ -101,26 +111,45 @@ public class SelectorLanguageActivity extends BaseActivity {
         }
     }
 
-
-    private void changeLanguage() {
-        new LoginPresenter(this).postLanguage(mLanguageKind, new LoginPresenter.CallBack3() {
+    private void saveSettings() {
+        String language = null;
+        if (mLanguageKind.equals("zh-hant")) {
+            language = "zh-hk";
+        } else if (mLanguageKind.equals("zh")) {
+            language = "zh-cn";
+        } else if (mLanguageKind.equals("")) {
+            Locale locale = getResources().getConfiguration().locale;
+            language = (locale.getLanguage() + "-" + locale.getCountry()).toLowerCase();
+        }
+        new LoginPresenter(this).postLanguage(language, new LoginPresenter.CallBack3() {
             @Override
             public void send() {
-                finish();
-                Resources resources = getResources();
-                Configuration configuration = resources.getConfiguration();
-
-                Locale locale = new Locale("values-zh-rHK");
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    configuration.setLocale(locale);
-                } else {
-                    configuration.locale = locale;
-                }
-                DisplayMetrics dm = resources.getDisplayMetrics();
-                resources.updateConfiguration(configuration, dm);
-                MySharedPreferences.getInstance().setString(Constants.LANGUAGE, mLanguageKind);
+                MySharedPreferences.getInstance().setString(getString(R.string.language_pref_key), mLanguageKind);
             }
         });
+    }
+
+    private final SharedPreferences.OnSharedPreferenceChangeListener mPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (getString(R.string.language_pref_key).equals(key)) {
+                String language = MySharedPreferences.getInstance().getString(getString(R.string.language_pref_key));
+                onChangeAppLanguage(language.toString());
+            }
+        }
+    };
+
+    private void onChangeAppLanguage(String newLanguage) {
+        AppLanguageUtils.changeAppLanguage(this, newLanguage);
+        AppLanguageUtils.changeAppLanguage(MyApp.getInstance().app(), newLanguage);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MySharedPreferences.getInstance().getSp().unregisterOnSharedPreferenceChangeListener(mPreferenceChangeListener);
     }
 }

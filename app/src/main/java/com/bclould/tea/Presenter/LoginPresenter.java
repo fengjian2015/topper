@@ -22,6 +22,7 @@ import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.LoginActivity;
 import com.bclould.tea.ui.activity.LoginSetActivity;
 import com.bclould.tea.ui.activity.MainActivity;
+import com.bclould.tea.ui.activity.SelectorLanguageActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.MessageEvent;
@@ -322,6 +323,10 @@ public class LoginPresenter {
     }
 
     public void postLanguage(String language, final CallBack3 callBack3) {
+        UtilTool.Log("語言", "app语言切换===" + language);
+        if (mContext instanceof SelectorLanguageActivity) {
+            showDialog();
+        }
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .postLanguage(UtilTool.getToken(), language)
@@ -335,11 +340,13 @@ public class LoginPresenter {
 
                     @Override
                     public void onNext(BaseInfo baseInfo) {
+                        hideDialog();
                         callBack3.send();
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        hideDialog();
                         callBack3.send();
                     }
 

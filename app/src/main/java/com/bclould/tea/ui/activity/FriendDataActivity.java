@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -15,9 +16,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.R;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.adapter.FriendDataVPAdapter;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StatusBarCompat;
 
@@ -67,6 +69,11 @@ public class FriendDataActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initInterface();
         MyApp.getInstance().addActivity(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     //初始化界面

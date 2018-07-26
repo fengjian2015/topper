@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,13 +8,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,29 +23,23 @@ import com.alibaba.fastjson.JSONObject;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
-import com.bclould.tea.ui.adapter.ChatAdapter;
 import com.bclould.tea.ui.adapter.SearchImageRVAdapter;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
-import com.bclould.tea.utils.UtilTool;
-import com.google.gson.Gson;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.litesuits.android.async.AsyncExecutor.handler;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class SerchImageActivity extends BaseActivity {
@@ -79,6 +72,11 @@ public class SerchImageActivity extends BaseActivity {
         ButterKnife.bind(this);
         init();
         initAdapter();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void init() {

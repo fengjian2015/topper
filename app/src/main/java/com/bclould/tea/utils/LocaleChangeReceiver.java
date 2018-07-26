@@ -7,6 +7,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.Presenter.LoginPresenter;
+import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 
 import java.util.Locale;
@@ -21,15 +22,17 @@ public class LocaleChangeReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         if (intent.getAction().equals(Intent.ACTION_LOCALE_CHANGED)) {
-            Locale locale = context.getResources().getConfiguration().locale;
-            String language = (locale.getLanguage() + "-" + locale.getCountry()).toLowerCase();
-            UtilTool.Log("語言", "监听到系统语言切换===" + language);
-            new LoginPresenter(context).postLanguage(language, new LoginPresenter.CallBack3() {
-                @Override
-                public void send() {
-                    MyApp.getInstance().RestartApp();
-                }
-            });
+            if (MySharedPreferences.getInstance().getString(context.getString(R.string.language_pref_key)).isEmpty()) {
+                Locale locale = context.getResources().getConfiguration().locale;
+                String language = (locale.getLanguage() + "-" + locale.getCountry()).toLowerCase();
+                UtilTool.Log("語言", "监听到系统语言切换===" + language);
+                new LoginPresenter(context).postLanguage(language, new LoginPresenter.CallBack3() {
+                    @Override
+                    public void send() {
+                        MyApp.getInstance().RestartApp();
+                    }
+                });
+            }
         }
     }
 }
