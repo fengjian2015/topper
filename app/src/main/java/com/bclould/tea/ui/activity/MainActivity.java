@@ -42,15 +42,19 @@ import com.bclould.tea.topperchat.AddFriendReceiver;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.fragment.DiscoverFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
+import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -156,7 +160,7 @@ public class MainActivity extends BaseActivity {
                 sendBroadcast(intent);
             }
         }else{
-            ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.DISCONNECT);
+            ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
         }
     }
 
@@ -189,6 +193,7 @@ public class MainActivity extends BaseActivity {
 //            getGroup();
             getMyImage();
             getFriends();
+            getChatBackGround();
         } else if (2 == whence || 3 == whence) {
             DiscoverFragment discoverFragment = DiscoverFragment.getInstance();
             discoverFragment.initInterface();
@@ -322,6 +327,7 @@ public class MainActivity extends BaseActivity {
             getGroup();
             getMyImage();
             getFriends();
+            getChatBackGround();
         }
         //初始化底部菜单
         initBottomMenu();
@@ -379,6 +385,49 @@ public class MainActivity extends BaseActivity {
                 }
             });
         }
+    }
+
+    private void getChatBackGround(){
+        new GroupPresenter(this).getBackgound(new GroupPresenter.CallBack2() {
+            @Override
+            public void send(String url) {
+                String urls=MySharedPreferences.getInstance().getString("backgroundu_url"+UtilTool.getTocoId());
+                String filePath= MySharedPreferences.getInstance().getString("backgroundu_file"+UtilTool.getTocoId());
+                if(!StringUtils.isEmpty(UtilTool.getPostfix3(urls))&&url.equals(urls)){
+                    File file=new File(filePath);
+                    if(!file.exists()){
+                         String key = UtilTool.getUserId() + UtilTool.createtFileName() +  ".png";
+                        MySharedPreferences.getInstance().setString("backgroundu_file"+UtilTool.getTocoId(),key);
+                         downBackGround(url,Constants.BACKGOUND + key);
+                        EventBus.getDefault().post(new MessageEvent(getString(R.string.conversation_backgound)));
+                    }
+                }else{
+                    String key = UtilTool.getUserId() + UtilTool.createtFileName() +  ".png";
+                    MySharedPreferences.getInstance().setString("backgroundu_url"+UtilTool.getTocoId(),url);
+                    MySharedPreferences.getInstance().setString("backgroundu_file"+UtilTool.getTocoId(),key);
+                    downBackGround(url,Constants.BACKGOUND + key);
+                    EventBus.getDefault().post(new MessageEvent(getString(R.string.conversation_backgound)));
+                }
+            }
+        });
+    }
+
+    private void downBackGround(final String url, final String filepath){
+        new Thread(){
+            @Override
+            public void run() {
+                try {
+                    File file = Glide.with(MainActivity.this)
+                            .load(url)
+                            .downloadOnly(500, 500)
+                            .get();
+                    UtilTool.copyFile(file.getAbsolutePath(),filepath);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+
     }
 
     private void getFriends() {

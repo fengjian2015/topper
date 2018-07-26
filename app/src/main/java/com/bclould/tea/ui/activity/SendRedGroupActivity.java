@@ -255,6 +255,7 @@ public class SendRedGroupActivity extends BaseActivity {
     private void sendGroupRed() {
         int number = UtilTool.parseInt(mEtNumber.getText().toString());
         double money = UtilTool.parseDouble(mEtMoney.getText().toString());
+        String coins = mTvCurrency.getText().toString();
         if (number == 0 || money == 0) {
             Toast.makeText(this, getString(R.string.toast_count_and_money), Toast.LENGTH_SHORT).show();
             return;
@@ -275,6 +276,10 @@ public class SendRedGroupActivity extends BaseActivity {
             Toast.makeText(this, getString(R.string.group_red_min_money), Toast.LENGTH_SHORT).show();
             return;
         }
+        if (getString(R.string.please_choose).equals(coins)){
+            Toast.makeText(this, getString(R.string.toast_coin), Toast.LENGTH_SHORT).show();
+            return;
+        }
         pwdDialog=new PWDDialog(this);
         pwdDialog.setOnPWDresult(new PWDDialog.OnPWDresult() {
             @Override
@@ -282,7 +287,6 @@ public class SendRedGroupActivity extends BaseActivity {
                 sendRed(password);
             }
         });
-        String coins = mTvCurrency.getText().toString();
         if (isluckyRed) {
             mCount = Double.parseDouble(mEtMoney.getText().toString());
         } else {

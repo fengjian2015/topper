@@ -22,6 +22,7 @@ import com.bclould.tea.ui.adapter.SelectFriendAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.MessageManageListener;
@@ -277,7 +278,7 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
             }else if(msgType==FROM_FILE_MSG||msgType==TO_FILE_MSG){
                 if(messageInfo.getVoice()!=null&&!messageInfo.getVoice().startsWith("http")){
                     mRoom.uploadFile(messageInfo.getVoice());
-                }else if (messageInfo.getMessage().startsWith("http")) {
+                }else if (!StringUtils.isEmpty(messageInfo.getMessage())&&messageInfo.getMessage().startsWith("http")) {
                     mRoom.transmitFile(messageInfo);
                 } else {
                     mRoom.uploadFile(messageInfo.getMessage());

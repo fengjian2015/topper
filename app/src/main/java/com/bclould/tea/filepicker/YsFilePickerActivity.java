@@ -160,6 +160,7 @@ public class YsFilePickerActivity extends BaseActivity implements OnLongClickLis
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder alert = new AlertDialog.Builder(YsFilePickerActivity.this);
+                    alert.show();
                     alert.setTitle(R.string.date);
                     alert.setItems(R.array.ys__sorting_types, new DialogInterface.OnClickListener() {
                         @Override
@@ -188,7 +189,7 @@ public class YsFilePickerActivity extends BaseActivity implements OnLongClickLis
                             sort();
                         }
                     });
-                    alert.show();
+
                 }
             };
             sort2.setOnClickListener(listener);

@@ -484,7 +484,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                         break;
                     case 1:
                         menu.dismiss();
-                        goImage(PictureConfig.CHOOSE_REQUEST);
+                        goImage(PictureConfig.CHOOSE_REQUEST,true);
                         break;
                     case 2:
                         menu.dismiss();
@@ -513,7 +513,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                         break;
                     case 1:
                         menu.dismiss();
-                        goImage(BACKGROUND);
+                        goImage(BACKGROUND,false);
                         break;
                     case 2:
                         menu.dismiss();
@@ -528,7 +528,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         menu.showAtLocation();
     }
 
-    private void goImage(int code) {
+    private void goImage(int code,boolean enableCrop) {
         PictureSelector.create(this)
                 .openGallery(ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()
 //                        .theme(R.style.picture_white_style)
@@ -543,7 +543,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                 .sizeMultiplier(0.5f)// glide 加载图片大小 0~1之间 如设置 .glideOverride()无效
                 .setOutputCameraPath("/CustomPath")// 自定义拍照保存路径,可不填
-                .enableCrop(true)// 是否裁剪 true or false
+                .enableCrop(enableCrop)// 是否裁剪 true or false
                 .compress(true)// 是否压缩 true or false
                 .compressMode(PictureConfig.SYSTEM_COMPRESS_MODE)//系统自带 or 鲁班压缩 PictureConfig.SYSTEM_COMPRESS_MODE or LUBAN_COMPRESS_MODE
                 .glideOverride(160, 160)// int glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
@@ -738,31 +738,27 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     }
 
     private void upload(String path){
-        File file = new File(path);
-        final String key = UtilTool.getUserId() + UtilTool.createtFileName() + "background_android" + UtilTool.getPostfix2(file.getName());
+        final File file = new File(path);
+        final String key = UtilTool.getUserId() + UtilTool.createtFileName() +  UtilTool.getPostfix2(file.getName());
         final File newFile = new File(Constants.BACKGOUND + key);
-        UtilTool.copyFile(file.getAbsolutePath(), newFile.getAbsolutePath());
-
-//        Bitmap cutImg = BitmapFactory.decodeFile(path);
-//        UtilTool.comp(cutImg, newFile);
-
-        OSSClient ossClient = OSSupload.getInstance().visitOSS();
-        PutObjectRequest put = new PutObjectRequest(Constants.BUCKET_NAME2, key, newFile.getPath());
-        ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
+        Bitmap cutImg = BitmapFactory.decodeFile(path);
+        UtilTool.comp1(cutImg, newFile);
+        final Bitmap bitmap = BitmapFactory.decodeFile(newFile.getAbsolutePath());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] bytes = UtilTool.getFileToByte(newFile);
+        String Base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+        UtilTool.Log("編碼", Base64Image.length() + "");
+        new GroupPresenter(this).changeBackgound(Base64Image, new GroupPresenter.CallBack2() {
             @Override
-            public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
-                OSSClient ossClient = OSSupload.getInstance().visitOSS();
-                String url = null;
-                url = ossClient.presignPublicObjectURL(Constants.BUCKET_NAME2, key);
-                MySharedPreferences.getInstance().setString("backgroundurl"+UtilTool.getTocoId(),url);
-                MySharedPreferences.getInstance().setString("backgroundukey"+UtilTool.getTocoId(),key);
-                UtilTool.Log("aws", "成功:"+url);
-            }
-
-            @Override
-            public void onFailure(PutObjectRequest putObjectRequest, ClientException e, ServiceException e1) {
-                UtilTool.Log("aws", "错误");
-
+            public void send(String url) {
+                String fileurl=  MySharedPreferences.getInstance().getString("backgroundu_file"+UtilTool.getTocoId());
+                if(!StringUtils.isEmpty(fileurl)&&new File(fileurl).exists()){
+                    new File(fileurl).delete();
+                }
+                MySharedPreferences.getInstance().setString("backgroundu_url"+UtilTool.getTocoId(),url);
+                MySharedPreferences.getInstance().setString("backgroundu_file"+UtilTool.getTocoId(),key);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.conversation_backgound)));
             }
         });
     }

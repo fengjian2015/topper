@@ -104,12 +104,7 @@ public class WsConnection {
                                 UtilTool.Log("fengjian","服务连接数大于0");
                                 //這種情況必定會被踢出，全部斷開
                                 ws=mWebSocketArrayList.get(0);
-                                if (ws != null) {
-                                    // 移除连接监听
-                                    ws.close();
-                                    ws.end();
-                                    ws=null;
-                                }
+                                close();
                                 ws=webSocket;
                                 closeConnection();
                                 mWebSocketArrayList.clear();
@@ -136,20 +131,17 @@ public class WsConnection {
                                 @Override
                                 public void onCompleted(Exception ex) {
                                     UtilTool.Log("fengjian", "断开连接");
-                                    setIsConnection(false);
                                     mWebSocketArrayList.remove(webSocket);
-                                    setIsLogin(false);
-                                    setLoginConnection(false);
+                                    closeConnection();
+
                                 }
                             });
                             webSocket.setEndCallback(new CompletedCallback() {
                                 @Override
                                 public void onCompleted(Exception ex) {
                                     UtilTool.Log("fengjian", "断开连接");
-                                    setIsConnection(false);
                                     mWebSocketArrayList.remove(webSocket);
-                                    setIsLogin(false);
-                                    setLoginConnection(false);
+                                    closeConnection();
                                 }
                             });
                             webSocket.setPongCallback(new WebSocket.PongCallback() {
@@ -317,7 +309,7 @@ public class WsConnection {
     /**
      * 关闭连接
      */
-    public void closeConnection(){
+    public synchronized void closeConnection(){
         senLogout();
         try {
             Thread.sleep(1000);
@@ -325,12 +317,7 @@ public class WsConnection {
             e.printStackTrace();
         }
         LoginThread.isStartExReconnect = false;
-        if (ws != null) {
-            // 移除连接监听
-            ws.close();
-            ws.end();
-            ws=null;
-        }
+        close();
         setIsConnection(false);
         setIsLogin(false);
         setLoginConnection(false);
@@ -414,7 +401,7 @@ public class WsConnection {
         intent.setAction(IMCoreService.ACTION_LOGIN);
         context.sendBroadcast(intent);
     }
-    public void close(){
+    public synchronized void close(){
         if(ws!=null){
             ws.close();
             ws.end();

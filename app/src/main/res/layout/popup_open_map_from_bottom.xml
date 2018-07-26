@@ -26,6 +26,8 @@
             android:gravity="center"
             android:background="@color/white"
             android:text="@string/baidu_map"/>
+        <View
+            style="@style/HCutOffRule"></View>
         <TextView
             android:id="@+id/tv_gaode"
             android:layout_width="match_parent"
@@ -33,7 +35,6 @@
             android:textColor="@color/black"
             android:textSize="@dimen/x32"
             android:gravity="center"
-            android:layout_marginTop="@dimen/x2"
             android:background="@color/white"
             android:text="@string/gaode_map"/>
         <!--<TextView-->

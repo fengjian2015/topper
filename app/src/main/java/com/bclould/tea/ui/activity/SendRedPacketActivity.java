@@ -179,6 +179,9 @@ public class SendRedPacketActivity extends BaseActivity {
                 if (mEtCount.getText().toString().isEmpty()) {
                     Toast.makeText(this, getString(R.string.toast_count), Toast.LENGTH_SHORT).show();
                     AnimatorTool.getInstance().editTextAnimator(mEtCount);
+                }else  if (getString(R.string.please_choose).equals(mTvCurrency.getText().toString())){
+                    Toast.makeText(this, getString(R.string.toast_coin), Toast.LENGTH_SHORT).show();
+                    return;
                 } else {
                     showPWDialog();
                 }

@@ -1379,6 +1379,18 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("lang") String lang
     );
+    //更換聊天背景
+    @FormUrlEncoded
+    @POST("chat/update/chat_bg")
+    Observable<BaseInfo> changeBackgound(
+            @Header("Authorization") String token,
+            @Field("content") String content
+    );
 
+    //獲取聊天beij背景
+    @POST("chat/get/chat_bg")
+    Observable<BaseInfo> getBackgound(
+            @Header("Authorization") String token
+    );
 
 }

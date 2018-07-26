@@ -484,7 +484,7 @@ public class SocketListener {
                     } else {
                         msgType = FROM_VIDEO_MSG;
                     }
-                    messageInfo.setVoice(url+"?x-oss-process=video/snapshot,t_0,f_jpg,w_300,h_260,m_fast");
+                    messageInfo.setVoice(url+"?x-oss-process=video/snapshot,t_0,f_jpg,w_0,h_0,m_fast");
                     goChat(from, context.getString(R.string.video), roomType);
                     break;
                 case WsContans.MSG_FILE:
@@ -678,7 +678,7 @@ public class SocketListener {
     }
 
     private String downFileCompress(String url){
-        return url+"?x-oss-process=image/resize,p_20";
+        return url+"?x-oss-process=image/resize,p_40";
     }
 
     private File saveFile(byte[] attachment, String fileName, String path) throws IOException {

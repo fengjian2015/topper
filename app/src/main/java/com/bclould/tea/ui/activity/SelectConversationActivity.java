@@ -390,7 +390,7 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
                 }
             } else if (msgType == FROM_IMG_MSG || msgType == TO_IMG_MSG) {
 //                showDialog();
-                if (messageInfo.getMessage().startsWith("http")) {
+                if (!StringUtils.isEmpty(messageInfo.getMessage())&&messageInfo.getMessage().startsWith("http")) {
                     mRoom.transmitImage(messageInfo);
                 }else {
                     mRoom.Upload(messageInfo.getVoice());

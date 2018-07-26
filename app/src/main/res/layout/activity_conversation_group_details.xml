@@ -387,7 +387,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y100"
                 android:background="@color/white"
-                android:visibility="gone"
                 >
                 <View
                     style="@style/HCutOffRule"></View>

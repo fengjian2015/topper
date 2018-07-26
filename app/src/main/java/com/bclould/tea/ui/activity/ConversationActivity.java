@@ -3,7 +3,6 @@ package com.bclould.tea.ui.activity;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.NotificationManager;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,7 +12,6 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
@@ -58,19 +56,14 @@ import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.RecordUtil;
 import com.bclould.tea.utils.StringUtils;
-import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.MessageManageListener;
 import com.bclould.tea.xmpp.Room;
 import com.bclould.tea.xmpp.RoomManage;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
-import com.leon.lfilepickerlibrary.LFilePicker;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.compress.Luban;
 import com.luck.picture.lib.config.PictureConfig;
@@ -97,7 +90,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -129,7 +121,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
 
     private static final int CODE_TAKE_PHOTO_SHOOTING = 100;
     private static final int FILE_SELECT_CODE = 2;
-    public static final int ACTION_SET_AT =101 ;
+    public static final int ACTION_SET_AT = 101;
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.title_name)
@@ -148,6 +140,8 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
     LinearLayout mLlChat;
     @Bind(R.id.ekb_emoticons_keyboard)
     XhsEmoticonsKeyBoard mEkbEmoticonsKeyboard;
+    @Bind(R.id.iv_backgound)
+    ImageView mIvBackgound;
 
     private String roomId;//房間id
     private String mName;
@@ -180,18 +174,18 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         }
         ButterKnife.bind(this);
         mMgr = new DBManager(this);//初始化数据库管理类
-        mDBRoomMember=new DBRoomMember(this);
-        mDBRoomManage=new DBRoomManage(this);
+        mDBRoomMember = new DBRoomMember(this);
+        mDBRoomManage = new DBRoomManage(this);
         ActivityUtil.isGoStartActivity(this);
         EventBus.getDefault().register(this);//初始化EventBus
         initIntent();//初始化intent事件
         initEmoticonsKeyboard();//初始化功能盘
         MyApp.getInstance().addActivity(this);//打开添加activity
         initAdapter();//初始化适配器
-        initData(null,true);//初始化数据
+        initData(null, true);//初始化数据
         setBackgound();
         mMgr.updateNumber(roomId, 0);//更新未读消息条数
-        mMgr.updateAtme(roomId,"");
+        mMgr.updateAtme(roomId, "");
         EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));//发送更新未读消息通知
         if (audioModeManger == null) {
             audioModeManger = new AudioModeManger();
@@ -232,11 +226,11 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
             @Override
             public void onclickitem(String name) {
                 if (getString(R.string.red_package).equals(name)) {
-                    if(RoomManage.ROOM_TYPE_MULTI.equals(roomType)){
+                    if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
                         Intent intent = new Intent(ConversationActivity.this, SendRedGroupActivity.class);
                         intent.putExtra("roomId", roomId);
                         startActivity(intent);
-                    }else{
+                    } else {
                         Intent intent = new Intent(ConversationActivity.this, SendRedPacketActivity.class);
                         intent.putExtra("user", roomId);
                         startActivity(intent);
@@ -246,31 +240,31 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                 } else if (getString(R.string.file).equals(name)) {
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.open_file_manage)));
                 } else if (getString(R.string.location).equals(name)) {
-                    Intent intent = new Intent(ConversationActivity.this,LocationActivity.class);
+                    Intent intent = new Intent(ConversationActivity.this, LocationActivity.class);
                     intent.putExtra("user", roomId);
                     intent.putExtra("type", 1);
                     startActivity(intent);
-                }else if (getString(R.string.transfer).equals(name)) {
+                } else if (getString(R.string.transfer).equals(name)) {
                     Intent intent = new Intent(ConversationActivity.this, ChatTransferActivity.class);
                     intent.putExtra("user", roomId);
                     startActivity(intent);
-                }else if(getString(R.string.shooting).equals(name)){
+                } else if (getString(R.string.shooting).equals(name)) {
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.open_shooting)));
-                }else if(getString(R.string.collect).equals(name)){
-                    Intent intent=new Intent(ConversationActivity.this,CollectActivity.class);
-                    intent.putExtra("type",1);
-                    intent.putExtra("roomId",roomId);
+                } else if (getString(R.string.collect).equals(name)) {
+                    Intent intent = new Intent(ConversationActivity.this, CollectActivity.class);
+                    intent.putExtra("type", 1);
+                    intent.putExtra("roomId", roomId);
                     startActivity(intent);
-                }else if(getString(R.string.business_card).equals(name)){
-                    Intent intent=new Intent(ConversationActivity.this,SelectFriendGetActivity.class);
-                    intent.putExtra("roomId",roomId);
+                } else if (getString(R.string.business_card).equals(name)) {
+                    Intent intent = new Intent(ConversationActivity.this, SelectFriendGetActivity.class);
+                    intent.putExtra("roomId", roomId);
                     startActivity(intent);
                 }
             }
         });
         mEkbEmoticonsKeyboard.addFuncView(simpleAppsGridView);
         mEkbEmoticonsKeyboard.addOnFuncKeyBoardListener(this);
-        mEkbEmoticonsKeyboard.getEtChat().setText(MySharedPreferences.getInstance().getString(UtilTool.getTocoId()+roomId));
+        mEkbEmoticonsKeyboard.getEtChat().setText(MySharedPreferences.getInstance().getString(UtilTool.getTocoId() + roomId));
         mEkbEmoticonsKeyboard.getEtChat().setSelection(mEkbEmoticonsKeyboard.getEtChat().getText().length());
         mEkbEmoticonsKeyboard.getEtChat().setOnSizeChangedListener(new EmoticonsEditText.OnSizeChangedListener() {
             @Override
@@ -422,7 +416,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         mEkbEmoticonsKeyboard.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if (actionId == EditorInfo.IME_ACTION_SEND||actionId==EditorInfo.IME_NULL) {
+                if (actionId == EditorInfo.IME_ACTION_SEND || actionId == EditorInfo.IME_NULL) {
                     sendMessage(mEkbEmoticonsKeyboard.getEtChat().getText().toString());
                     mEkbEmoticonsKeyboard.getEtChat().setText("");
                 }
@@ -436,7 +430,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                         && RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {//是群聊，输入了单独一个@时
 //                    int index = mEkbEmoticonsKeyboard.getEtChat().getSelectionStart();
 //                    if (index == 0) {//如果第一个字符就会@，让他跳
-                        intentToAt();
+                    intentToAt();
 //                        return source;
 //                    }
 //                    Pattern pattern = Pattern.compile("^[A-Za-z0-9]+$");
@@ -453,6 +447,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         mEkbEmoticonsKeyboard.getEditText().addTextChangedListener(new TextWatcher() {
             int delIndex = -1;
             int delLength = 0;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 if (count > 0 && after == 0) {//说明，是删除
@@ -479,11 +474,12 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                     edi.delete(temp1 - temp2, temp1);
                 }
             }
+
             private void checkIsAt(int index) {
                 if (index <= 0) {
                     return;
                 }
-                String sub =  mEkbEmoticonsKeyboard.getEditText().getText().toString().substring(0, index);
+                String sub = mEkbEmoticonsKeyboard.getEditText().getText().toString().substring(0, index);
                 if (sub.length() == 0) {//如果子串是空，返回
                     return;
                 }
@@ -576,7 +572,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
             roomManage.sendMessage(message);
         } else {
             //发送At
-            roomManage.sendATMessage(message,atMap);
+            roomManage.sendATMessage(message, atMap);
             atMap.clear();
         }
 
@@ -612,9 +608,9 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
     //界面销毁隐藏软键盘
     @Override
     public void onDestroy() {
-        String draft=mEkbEmoticonsKeyboard.getEditText().getText().toString();
-        mMgr.updataConversationDraft(roomId,draft);
-        MySharedPreferences.getInstance().setString(UtilTool.getTocoId()+roomId,draft);
+        String draft = mEkbEmoticonsKeyboard.getEditText().getText().toString();
+        mMgr.updataConversationDraft(roomId, draft);
+        MySharedPreferences.getInstance().setString(UtilTool.getTocoId() + roomId, draft);
         EventBus.getDefault().post(new MessageEvent(getString(R.string.refresh)));
         if (audioModeManger != null)
             audioModeManger.unregister();
@@ -631,14 +627,14 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.msg_database_update))) {
-            initData(event.getId(),false);
+            initData(event.getId(), false);
             mMgr.updateNumber(roomId, 0);
-            mMgr.updateAtme(roomId,"");
+            mMgr.updateAtme(roomId, "");
             EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));
         } else if (msg.equals(getString(R.string.send_red_packet_le))) {
-            initData(event.getId(),true);
+            initData(event.getId(), true);
         } else if (msg.equals(getString(R.string.transfer))) {
-            initData(event.getId(),true);
+            initData(event.getId(), true);
         } else if (msg.equals(getString(R.string.open_shooting))) {
             openShooting();
         } else if (msg.equals(getString(R.string.open_photo_album))) {
@@ -647,7 +643,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
             showFileChooser();
         } else if (msg.equals(getString(R.string.look_original))) {
             String id = event.getId();
-            changeUrl(id,event.getFilepath());
+            changeUrl(id, event.getFilepath());
         } else if (msg.equals(getString(R.string.otr_isopen))) {
             mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(roomId.toString()));
         } else if (msg.equals(getString(R.string.delete_friend))) {
@@ -663,34 +659,36 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         } else if (msg.equals(getString(R.string.change_msg_state))) {
             changeMsgState(event.getId());
             UtilTool.Log("fengjian---", "改變消息狀態");
-        }else if (msg.equals(getString(R.string.quit_group))) {
-            if(roomId.equals(event.getId())){
+        } else if (msg.equals(getString(R.string.quit_group))) {
+            if (roomId.equals(event.getId())) {
                 finish();
             }
-        }else if(msg.equals(getString(R.string.refresh_group_members))){
+        } else if (msg.equals(getString(R.string.refresh_group_members))) {
             setTitleName();
             mChatAdapter.notifyDataSetChanged();
-        }else if(msg.equals(getString(R.string.modify_group_name))){
-            mName=event.getName();
+        } else if (msg.equals(getString(R.string.modify_group_name))) {
+            mName = event.getName();
             setTitleName();
             mChatAdapter.notifyDataSetChanged();
-        }else if(msg.equals(getString(R.string.refresh_group_room))){
-            if (roomId.equals(event.getId())){
-                mName=mDBRoomManage.findRoomName(roomId);
+        } else if (msg.equals(getString(R.string.refresh_group_room))) {
+            if (roomId.equals(event.getId())) {
+                mName = mDBRoomManage.findRoomName(roomId);
                 setTitleName();
             }
-        }else if(msg.equals(getString(R.string.kick_out_success))){
-            if (roomId.equals(event.getId())){
+        } else if (msg.equals(getString(R.string.kick_out_success))) {
+            if (roomId.equals(event.getId())) {
                 finish();
             }
-        }else if(msg.equals(getString(R.string.update_file_message))){
-            changeMsgFile(event.getId(),event.getFilepath());
-        }else if(msg.equals(getString(R.string.withdrew_a_message))){
+        } else if (msg.equals(getString(R.string.update_file_message))) {
+            changeMsgFile(event.getId(), event.getFilepath());
+        } else if (msg.equals(getString(R.string.withdrew_a_message))) {
             deleteMsg(event.getId());
+        }else if(msg.equals(getString(R.string.conversation_backgound))){
+            setBackgound();
         }
     }
 
-    private void deleteMsg(String msgId){
+    private void deleteMsg(String msgId) {
         for (MessageInfo info : mMessageList) {
             if (info.getMsgId().equals(msgId)) {
                 mMessageList.remove(info);
@@ -700,16 +698,17 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         }
     }
 
-    private void changeUrl(String id, String url){
+    private void changeUrl(String id, String url) {
         for (MessageInfo info : mMessageList) {
-            if (info.getId()==UtilTool.parseInt(id)) {
+            if (info.getId() == UtilTool.parseInt(id)) {
                 info.setVoice(url);
+                info.setImageType(1);
                 mChatAdapter.notifyItemChanged(mMessageList.indexOf(info));
             }
         }
     }
 
-    private void changeMsgFile(String msgId, String filepath){
+    private void changeMsgFile(String msgId, String filepath) {
         for (MessageInfo info : mMessageList) {
             if (info.getMsgId().equals(msgId)) {
                 info.setVoice(filepath);
@@ -718,9 +717,9 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         }
     }
 
-    private void changeMsgState(String id){
-        for(int i=0;i<mMessageList.size();i++){
-            if(id.equals(mMessageList.get(i).getMsgId())){
+    private void changeMsgState(String id) {
+        for (int i = 0; i < mMessageList.size(); i++) {
+            if (id.equals(mMessageList.get(i).getMsgId())) {
                 mMessageList.get(i).setSendStatus(1);
                 mChatAdapter.notifyItemChanged(i);
                 break;
@@ -813,9 +812,9 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                     int degree = UtilTool.readPictureDegree(url);
                     UtilTool.toturn(url, BitmapFactory.decodeFile(url), degree);
                 }
-                if (!com.bclould.tea.utils.StringUtils.isEmpty(url))
+                if (!StringUtils.isEmpty(url))
                     roomManage.Upload(url);
-            }else if(requestCode==ACTION_SET_AT){
+            } else if (requestCode == ACTION_SET_AT) {
                 String tocoid = data.getStringExtra("tocoid");
                 String name = data.getStringExtra("name");
                 int index = mEkbEmoticonsKeyboard.getEtChat().getSelectionStart();
@@ -827,7 +826,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
     }
 
     private void setAtPartner(String tocoid, boolean isRepeat) {
-        String partnerName = mDBRoomMember.findMemberName(roomId,tocoid);
+        String partnerName = mDBRoomMember.findMemberName(roomId, tocoid);
         if (!isRepeat) {
             String compareStr = "@" + partnerName + " ";
             String preContent = mEkbEmoticonsKeyboard.getEtChat().getText().toString();
@@ -861,7 +860,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
 //                .start();
         Intent intent = new Intent(ConversationActivity.this, YsFilePickerActivity.class);
         YsFilePicker.initMulti(intent);
-        ConversationActivity.this. startActivityForResult(intent, FILE_SELECT_CODE);
+        ConversationActivity.this.startActivityForResult(intent, FILE_SELECT_CODE);
     }
 
     @SuppressLint("HandlerLeak")
@@ -873,7 +872,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                     mRefreshLayout.finishRefresh();
                     //下拉查询历史消息
                     if (mMessageList.size() == 0) return;
-                    currentPosition=mMessageList.size();
+                    currentPosition = mMessageList.size();
                     int position = mLayoutManager.findFirstVisibleItemPosition();
                     View view = mRecyclerView.getChildAt(position);
                     int top = 0;
@@ -881,10 +880,10 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                         top = view.getTop();
                     }
                     List<MessageInfo> messageInfos = mMgr.queryRefreshMessage(roomId, mMessageList.get(0).getCreateTime());
-                    mMessageList.addAll(0,messageInfos);
-                    currentPosition=mMessageList.size()-currentPosition;
+                    mMessageList.addAll(0, messageInfos);
+                    currentPosition = mMessageList.size() - currentPosition;
                     mChatAdapter.notifyDataSetChanged();
-                    mLayoutManager.scrollToPositionWithOffset(currentPosition,top);
+                    mLayoutManager.scrollToPositionWithOffset(currentPosition, top);
                     break;
                 case 4:
                     //上啦加載
@@ -903,7 +902,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                             messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(mMessageList.size() - 1).getCreateTime(), isFist);
                         }
                     }
-                    if(messageInfos1.size()<=0){
+                    if (messageInfos1.size() <= 0) {
                         mRefreshLayout.setEnableLoadMore(false);
                     }
                     List<MessageInfo> MessageList3 = new ArrayList<>();
@@ -918,16 +917,16 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
     };
 
     //初始化数据
-    private void initData(String msgId,boolean isScroll) {
-        if(StringUtils.isEmpty(msgId)){
+    private void initData(String msgId, boolean isScroll) {
+        if (StringUtils.isEmpty(msgId)) {
             List<MessageInfo> messageInfos = mMgr.queryMessage(roomId);
             mMessageList.clear();
             mMessageList.addAll(messageInfos);
             mChatAdapter.notifyDataSetChanged();
             mLayoutManager.scrollToPositionWithOffset(mChatAdapter.getItemCount() - 1, 0);
-        }else{
-            MessageInfo messageInfo=mMgr.queryMessageMsg(msgId);
-            if(roomId.equals(messageInfo.getUsername())) {
+        } else {
+            MessageInfo messageInfo = mMgr.queryMessageMsg(msgId);
+            if (roomId.equals(messageInfo.getUsername())) {
                 mMessageList.add(messageInfo);
                 mChatAdapter.notifyItemInserted(mMessageList.indexOf(messageInfo));
                 mLayoutManager.scrollToPositionWithOffset(mChatAdapter.getItemCount() - 1, 0);
@@ -961,7 +960,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         });
     }
 
-    public void isPlayVoi1ce(boolean isPlayVoice){
+    public void isPlayVoi1ce(boolean isPlayVoice) {
         audioModeManger.setIsPlayVoice(isPlayVoice);
     }
 
@@ -992,7 +991,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
                 roomManage = RoomManage.getInstance().addSingleMessageManage(roomId, mName);
             }
         } else {
-            UtilTool.Log("fengjian", "房间存在---"+roomType+"   " + roomId);
+            UtilTool.Log("fengjian", "房间存在---" + roomType + "   " + roomId);
             roomManage = RoomManage.getInstance().getRoom(roomId);
         }
         roomManage.addMessageManageListener(this);
@@ -1005,9 +1004,9 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
     }
 
     private void setTitleName() {
-        if(RoomManage.ROOM_TYPE_MULTI.equals(roomType)){
-            mTitleName.setText(mDBRoomManage.findRoomName(roomId)+"("+mDBRoomMember.queryAllRequest(roomId).size()+")");
-        }else {
+        if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
+            mTitleName.setText(mDBRoomManage.findRoomName(roomId) + "(" + mDBRoomMember.queryAllRequest(roomId).size() + ")");
+        } else {
             String remark = mMgr.queryRemark(roomId);
             if (!StringUtils.isEmpty(remark)) {
                 mTitleName.setText(remark);
@@ -1043,26 +1042,28 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         });
     }
 
-    private void setBackgound(){
-        String url=MySharedPreferences.getInstance().getString("backgroundurl"+UtilTool.getTocoId());
-        String key=MySharedPreferences.getInstance().getString("backgroundukey"+UtilTool.getTocoId());
-        if(!StringUtils.isEmpty(key)){
-            Glide.with(this).load(new File(Constants.BACKGOUND+key)).into(new SimpleTarget<Drawable>() {
-                @Override
-                public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-                    mRefreshLayout.setBackground(resource);
-                }
-            });
+    private void setBackgound() {
+        String key = MySharedPreferences.getInstance().getString("backgroundu_file" + UtilTool.getTocoId());
+        String urls=MySharedPreferences.getInstance().getString("backgroundu_url"+UtilTool.getTocoId());
+        if (!StringUtils.isEmpty(key)||!StringUtils.isEmpty(urls)) {
+            File file = new File(Constants.BACKGOUND+key);
+            if (file.exists()) {
+                Glide.with(this).load(new File(Constants.BACKGOUND+key)).apply(requestOptions).into(mIvBackgound);
+            }else{
+                Glide.with(this).load(urls).apply(requestOptions).into(mIvBackgound);
+            }
         }
-
     }
 
-    public View getItemView(int position){
+    RequestOptions requestOptions = new RequestOptions()
+            .centerCrop();
+
+    public View getItemView(int position) {
         int firstItemPosition = mLayoutManager.findFirstVisibleItemPosition();
         View view = null;
         if (position - firstItemPosition >= 0)
-            view = mRecyclerView.getChildAt(position - firstItemPosition );
-       return view;
+            view = mRecyclerView.getChildAt(position - firstItemPosition);
+        return view;
     }
 
     @OnClick({R.id.bark, R.id.iv_else})

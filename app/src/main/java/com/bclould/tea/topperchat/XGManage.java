@@ -2,6 +2,8 @@ package com.bclould.tea.topperchat;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.utils.UtilTool;
@@ -55,10 +57,17 @@ public class XGManage {
             @Override
             public void onFail(Object o, int i, String s) {
                 UtilTool.Log("fengjian","添加別名失败："+o+"    "+s);
+                mHandler.sendEmptyMessageDelayed(1,1*1000);
             }
         });
-
     }
+
+    Handler mHandler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            setAlias();
+        }
+    };
 
 
     public void deleteAlias(){
