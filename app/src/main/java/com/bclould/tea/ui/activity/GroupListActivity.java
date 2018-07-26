@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
@@ -21,8 +21,8 @@ import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.RoomManageInfo;
-import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.ui.adapter.GroupListRVAdapter;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -79,6 +79,10 @@ public class GroupListActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+    }
 
     private void initData() {
         dbRoomManage = new DBRoomManage(this);

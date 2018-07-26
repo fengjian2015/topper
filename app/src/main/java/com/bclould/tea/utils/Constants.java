@@ -12,7 +12,7 @@ import android.support.annotation.RequiresApi;
 public class Constants {
     public static final String ADMINISTRATOR_NAME = "TOPPERCHAT";
     public static final int BET_ARR_COUNT = 4;
-    private static final boolean isDebug = true;
+    private static final boolean isDebug = true ;
     public static final String BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "https://api.cnblocklink.com/";
     public static final String NEW_BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "https://www.cnblocklink.com/";
     public static final String DOMAINNAME3 = isDebug ? "wss://socket.bclould.com:8179/toco_server" : "wss://socket.cnblocklink.com:2087/toco_server";
@@ -65,4 +65,10 @@ public class Constants {
     public static final String DOWNLOAD_APK_URL = "https://toco--bucket.oss-cn-shenzhen.aliyuncs.com/topperchat.apk";
     public static final String COMMERCIAL_TENANT_RECOGNITION_SYMBOL = "offline-pay";
     public static final String LANGUAGE = "language";
+    // 简体中文
+    public static final String SIMPLIFIED_CHINESE = "zh";
+    // 英文
+    public static final String ENGLISH = "en";
+    // 繁体中文
+    public static final String TRADITIONAL_CHINESE = "zh-hant";
 }

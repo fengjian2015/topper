@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -32,6 +33,7 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.adapter.BottomDialogRVAdapter3;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -114,6 +116,11 @@ public class RealNameC1Activity extends BaseActivity {
             EventBus.getDefault().register(this);//初始化EventBus
         }
         initData();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     @Override

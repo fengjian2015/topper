@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BankCardInfo;
 import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.utils.AnimatorTool;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -69,6 +71,11 @@ public class BankCardBindingActivity2 extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         initIntent();
         mBankCardPresenter = new BankCardPresenter(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initIntent() {

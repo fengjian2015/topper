@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,6 +27,7 @@ import com.bclould.tea.model.GuessListInfo;
 import com.bclould.tea.ui.adapter.GuessListRVAdapter;
 import com.bclould.tea.ui.adapter.PayManageGVAdapter;
 import com.bclould.tea.utils.ActivityUtil;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -93,6 +95,11 @@ public class MyJoinActivity extends BaseActivity {
         mBlockchainGuessPresenter = new BlockchainGuessPresenter(this);
         initRecyclerView();
         initData(mType, PULL_DOWN);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     boolean isFinish = true;

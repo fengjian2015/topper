@@ -21,6 +21,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.base.SwipeActivity;
 import com.bclould.tea.utils.AnimatorTool;
+import com.bclould.tea.utils.AppLanguageUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -59,6 +60,11 @@ public class FindPasswordActivity extends SwipeActivity {
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
         mFindPasswordPresenter = new FindPasswordPresenter(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     //监听返回键

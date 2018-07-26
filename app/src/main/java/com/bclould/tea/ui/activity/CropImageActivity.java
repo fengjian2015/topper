@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,9 +10,11 @@ import android.support.annotation.RequiresApi;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
+
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.UtilTool;
 import com.isseiaoki.simplecropview.CropImageView;
@@ -49,6 +52,10 @@ public class CropImageActivity extends BaseActivity {
         adjustImage(url);
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+    }
 
     private void adjustImage(String absolutePath) {
         Bitmap bm;

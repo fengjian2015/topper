@@ -1119,4 +1119,5 @@
     <string name="qe_code_red_explain">你的二維碼紅包已經生成，toopperchat用戶可以掃一掃領紅包啦！</string>
     <string name="topperchat_red">topperchat紅包</string>
     <string name="conversation_backgound">設置聊天背景</string>
+    <string name="language_pref_key">language_pref_key</string>
 </resources>

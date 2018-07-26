@@ -3,15 +3,19 @@ package com.bclould.tea.base;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 
+import com.bclould.tea.R;
 import com.bclould.tea.listener.CrashHandler;
 import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.model.StateInfo;
 import com.bclould.tea.network.MyHostnameVerifier;
 import com.bclould.tea.topperchat.RoomMemberManage;
 import com.bclould.tea.topperchat.XGManage;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.GlideImgLoader;
 import com.bclould.tea.utils.MyLifecycleHandler;
@@ -56,6 +60,8 @@ public class MyApp extends Application {
         super.onCreate();
 
         context = this;
+
+        onLanguageChange();
 
         new MyHostnameVerifier();
 
@@ -143,6 +149,31 @@ public class MyApp extends Application {
 
     public MyApp app() {
         return context;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(base, getAppLanguage(base)));
+    }
+
+    /**
+     * Handling Configuration Changes
+     *
+     * @param newConfig newConfig
+     */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        onLanguageChange();
+    }
+
+    private void onLanguageChange() {
+        AppLanguageUtils.changeAppLanguage(this, AppLanguageUtils.getSupportLanguage(getAppLanguage(this)));
+    }
+
+    private String getAppLanguage(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(context.getString(R.string.language_pref_key), "");
     }
 
 }

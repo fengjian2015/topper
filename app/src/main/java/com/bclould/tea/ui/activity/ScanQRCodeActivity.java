@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.ui.fragment.FriendListFragment;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.QRDiscernUtil;
 import com.bclould.tea.utils.UtilTool;
 
@@ -58,6 +60,11 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
         MyApp.getInstance().addActivity(this);
         Intent intent = getIntent();
         mCode = intent.getIntExtra("code", 0);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     @Override

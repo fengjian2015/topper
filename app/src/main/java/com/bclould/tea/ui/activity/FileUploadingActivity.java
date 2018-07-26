@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
@@ -16,6 +17,7 @@ import com.bclould.tea.Presenter.FileUploadingPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.UtilTool;
 
 import java.util.List;
@@ -52,6 +54,11 @@ public class FileUploadingActivity extends BaseActivity {
         mFileUploadingPresenter = FileUploadingPresenter.getInstance(MyApp.getInstance().app());
         mFileUploadingPresenter.setOnUploadingCallbackListener(mUploadingCallback);
         mProgressBar.setMax(100);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     FileUploadingPresenter.UploadingCallback mUploadingCallback = new FileUploadingPresenter.UploadingCallback() {

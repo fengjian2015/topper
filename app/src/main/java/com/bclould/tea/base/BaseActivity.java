@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.bclould.tea.R;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.ConversationActivity;
+import com.bclould.tea.ui.activity.PayPwSelectorActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.GestureLockViewGroup;
 import com.bclould.tea.utils.AnimatorTool;
@@ -100,6 +102,7 @@ public class BaseActivity extends SwipeActivity {
         return false;
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
@@ -160,13 +163,19 @@ public class BaseActivity extends SwipeActivity {
 
         @Override
         public void onGestureEvent(boolean matched) {
-            if (matched) {
-                mGestureDialog.dismiss();
-                mCount = 5;
+            if (mCount > 0) {
+                if (matched) {
+                    if (mCount > 0) {
+                        mGestureDialog.dismiss();
+                        mCount = 5;
+                    }
+                } else {
+                    mCount--;
+                    mTvHint.setText(getString(R.string.set_gesture_hint5) + getString(R.string.hai_sheng) + mCount + getString(R.string.chance));
+                    mTvHint.setTextColor(getResources().getColor(R.color.red));
+                }
             } else {
-                mCount--;
-                mTvHint.setText(getString(R.string.set_gesture_hint5) + getString(R.string.hai_sheng) + mCount + getString(R.string.chance));
-                mTvHint.setTextColor(getResources().getColor(R.color.red));
+                showHintDialog();
             }
         }
 
@@ -174,13 +183,45 @@ public class BaseActivity extends SwipeActivity {
         public void onUnmatchedExceedBoundary() {
             UtilTool.Log("手勢", "onUnmatchedExceedBoundary");
             if (mCount == 0) {
-
-                mGestureDialog.dismiss();
-                WsConnection.getInstance().goMainActivity();
+                showHintDialog();
             }
+        }
+
+        private void showHintDialog() {
+            final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, BaseActivity.this, R.style.dialog);
+            deleteCacheDialog.show();
+            deleteCacheDialog.setTitle(getString(R.string.gesture_count_exceed_hint));
+            Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+            cancel.setText(getString(R.string.again_login));
+            Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+            confirm.setText(getString(R.string.cancel_gesture));
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    deleteCacheDialog.dismiss();
+                    mGestureDialog.dismiss();
+                    WsConnection.getInstance().goMainActivity();
+                }
+            });
+            confirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    deleteCacheDialog.dismiss();
+                    Intent intent = new Intent(BaseActivity.this, PayPwSelectorActivity.class);
+                    intent.putExtra("code", 1);
+                    startActivityForResult(intent, 1);
+                }
+            });
         }
     };
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            mGestureDialog.dismiss();
+        }
+    }
 
     @Override
     public void onPause() {

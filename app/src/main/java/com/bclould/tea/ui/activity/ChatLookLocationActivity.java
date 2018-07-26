@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.widget.CenterIcon;
 import com.bclould.tea.ui.widget.OpenMapFromBottomPopup;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.tencent.map.geolocation.TencentLocation;
@@ -77,6 +79,11 @@ public class ChatLookLocationActivity extends AppCompatActivity implements
         initIntent();
         checkSelf();
         initMap();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     @Override

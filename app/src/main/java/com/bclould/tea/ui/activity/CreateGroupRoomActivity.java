@@ -25,6 +25,7 @@ import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.adapter.CreateGroupRVAdapter;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
@@ -85,6 +86,11 @@ public class CreateGroupRoomActivity extends BaseActivity {
         roomName=getIntent().getStringExtra("roomName");
         roomId=getIntent().getStringExtra("roomId");
         tocoId=getIntent().getStringExtra("tocoId");
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initData() {

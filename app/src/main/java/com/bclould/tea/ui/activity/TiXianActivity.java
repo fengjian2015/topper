@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,12 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bclould.tea.base.MyApp;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.CardBean;
 import com.bclould.tea.ui.adapter.TiXianPVAdapter;
 import com.bclould.tea.ui.widget.WithdrawCashDialog;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.ShadowTransformer;
 
 import java.util.List;
@@ -58,6 +60,11 @@ public class TiXianActivity extends BaseActivity {
         ButterKnife.bind(this);
         initViewPage();
         MyApp.getInstance().addActivity(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     //初始化ViewPage

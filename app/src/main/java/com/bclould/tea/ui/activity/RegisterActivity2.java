@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.bclould.tea.Presenter.RegisterPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.AnimatorTool;
+import com.bclould.tea.utils.AppLanguageUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -84,6 +86,11 @@ public class RegisterActivity2 extends AppCompatActivity {
         MyApp.getInstance().addActivity(this);
         mRegisterPresenter = new RegisterPresenter(this);
         initIntent();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     private void initIntent() {

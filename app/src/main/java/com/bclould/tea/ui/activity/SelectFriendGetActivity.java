@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -14,10 +15,12 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.adapter.FriendListRVAdapter;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.RoomManage;
 import com.gjiazhe.wavesidebar.WaveSideBar;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,6 +62,11 @@ public class SelectFriendGetActivity extends BaseActivity implements FriendListR
         mFriendListRVAdapter.setOnClickListener(this);
         mRecyclerView.setAdapter(mFriendListRVAdapter);
         mRecyclerView.setNestedScrollingEnabled(false);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
     }
 
     Map<String, Integer> mMap = new HashMap<>();
