@@ -34,8 +34,10 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.AuatarListInfo;
+import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.IndividualInfo;
+import com.bclould.tea.model.MessageTopInfo;
 import com.bclould.tea.service.IMCoreService;
 import com.bclould.tea.service.IMService;
 import com.bclould.tea.topperchat.AddFriendReceiver;
@@ -49,6 +51,7 @@ import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
+import com.bclould.tea.xmpp.RoomManage;
 import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,7 +59,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -64,6 +69,7 @@ import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 import static com.bclould.tea.Presenter.LoginPresenter.IS_UPDATE;
 
@@ -200,6 +206,7 @@ public class MainActivity extends BaseActivity {
             getMyImage();
             getFriends();
             getChatBackGround();
+            getMessageTop();
         } else if (2 == whence || 3 == whence) {
             DiscoverFragment discoverFragment = DiscoverFragment.getInstance();
             discoverFragment.initInterface();
@@ -225,11 +232,14 @@ public class MainActivity extends BaseActivity {
         if (numer > 0 && !WsConnection.getInstance().getOutConnection()) {
             mNumber.setVisibility(View.VISIBLE);
             if (numer >= 100) {
+                ShortcutBadger.applyCount(MainActivity.this, 99); //for 1.1.4+
                 mNumber.setText("99+");
             } else {
+                ShortcutBadger.applyCount(MainActivity.this, numer); //for 1.1.4+
                 mNumber.setText(numer + "");
             }
         } else {
+            ShortcutBadger.removeCount(MainActivity.this);
             mNumber.setVisibility(View.GONE);
         }
     }
@@ -334,6 +344,7 @@ public class MainActivity extends BaseActivity {
             getMyImage();
             getFriends();
             getChatBackGround();
+            getMessageTop();
         }
         //初始化底部菜单
         initBottomMenu();
@@ -391,6 +402,38 @@ public class MainActivity extends BaseActivity {
                 }
             });
         }
+    }
+
+    private void getMessageTop(){
+        new GroupPresenter(this).getTopMessage(new GroupPresenter.CallBack5() {
+            @Override
+            public void send(MessageTopInfo baseInfo) {
+                for (MessageTopInfo.DataBean dataBean:baseInfo.getData()){
+                    if(mMgr.findConversation(dataBean.getFor_id())){
+                        mMgr.updateConversationIstop(dataBean.getFor_id(),"true");
+                    }else{
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Date curDate = new Date(System.currentTimeMillis());
+                        String time = formatter.format(curDate);
+                        ConversationInfo info = new ConversationInfo();
+                        info.setTime(time);
+                        info.setUser(dataBean.getFor_id());
+                        info.setMessage("");
+                        info.setIstop("true");
+                        info.setCreateTime(UtilTool.createChatCreatTime());
+                        if(mDBRoomManage.findRoom(dataBean.getFor_id())){
+                            info.setFriend(mDBRoomManage.findRoomName(dataBean.getFor_id()));
+                            info.setChatType(RoomManage.ROOM_TYPE_MULTI);
+                        }else{
+                            info.setFriend(mMgr.queryRemark(dataBean.getFor_id()));
+                            info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
+                        }
+                        mMgr.addConversation(info);
+                    }
+                }
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.message_top_change)));
+            }
+        });
     }
 
     private void getChatBackGround(){

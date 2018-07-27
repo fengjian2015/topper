@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
@@ -226,6 +227,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
                 try {
                     mMgr.deleteConversation(user);
                     mMgr.deleteMessage(user);
+                    setMessageTop(user,0);
                     EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
                     deleteCacheDialog.dismiss();
                 } catch (Exception e) {
@@ -260,8 +262,10 @@ public class ConversationAdapter extends RecyclerView.Adapter {
                         menu.dismiss();
                         if("true".equals(istop)){
                             mMgr.updateConversationIstop(conversationInfo.getUser(),"false");
+                            setMessageTop(conversationInfo.getUser(),0);
                         }else{
                             mMgr.updateConversationIstop(conversationInfo.getUser(),"true");
+                            setMessageTop(conversationInfo.getUser(),1);
                         }
                         EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.message_top_change)));
                         break;
@@ -270,6 +274,14 @@ public class ConversationAdapter extends RecyclerView.Adapter {
         });
         menu.setColor(Color.BLACK);
         menu.showAtLocation();
+    }
+
+    private void setMessageTop(final String roomId, final int status){
+        new GroupPresenter(mContext).setTopMessage(roomId, status, false, new GroupPresenter.CallBack() {
+            @Override
+            public void send() {
+            }
+        });
     }
 
 }

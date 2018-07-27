@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/shallow_gray"
+    tools:context="com.bclould.tea.ui.activity.PublicActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/the_pulice"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x32"/>
+        <TextView
+            android:id="@+id/tv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:paddingRight="@dimen/x20"
+            android:text="@string/search"
+            android:textColor="@color/blue2"
+            android:textSize="@dimen/x28"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:descendantFocusability="blocksDescendants"
+        android:visibility="gone">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.gjiazhe.wavesidebar.WaveSideBar
+            android:id="@+id/side_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:paddingRight="@dimen/x16"
+            app:sidebar_lazy_respond="false"
+            app:sidebar_max_offset="@dimen/x160"
+            app:sidebar_position="right"
+            app:sidebar_text_alignment="center"
+            app:sidebar_text_color="@color/black"
+            app:sidebar_text_size="@dimen/y24"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/cb_search"
+        android:layout_marginTop="@dimen/y20"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+        <ImageView
+            android:id="@+id/iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/icon_nothing_img"/>
+
+        <TextView
+            android:id="@+id/tv_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_public_number"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/x30"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_ununited"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/img_wrong"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y50"
+            android:text="@string/loading_error_anew_loading_hint2"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/x30"/>
+
+    </LinearLayout>
+</LinearLayout>

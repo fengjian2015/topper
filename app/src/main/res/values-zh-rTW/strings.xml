@@ -1120,4 +1120,7 @@
     <string name="topperchat_red">topperchat紅包</string>
     <string name="conversation_backgound">設置聊天背景</string>
     <string name="language_pref_key">language_pref_key</string>
+    <string name="backgound">背景</string>
+    <string name="no_public_number">暫無公眾號</string>
+    <string name="search_public_numbers">搜索公眾號</string>
 </resources>

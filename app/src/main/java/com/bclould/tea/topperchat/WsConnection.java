@@ -41,6 +41,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.leolin.shortcutbadger.ShortcutBadger;
+
 import static com.bclould.tea.Presenter.LoginPresenter.TOKEN;
 import static com.bclould.tea.topperchat.WsContans.CONTENT;
 import static com.bclould.tea.topperchat.WsContans.DEVICE;
@@ -101,7 +103,7 @@ public class WsConnection {
                                 return;
                             }
                             if(mWebSocketArrayList.size()>0){
-                                UtilTool.Log("fengjian","服务连接数大于0");
+                                UtilTool.Log("fengjian","服务连接数大于0"+mWebSocketArrayList.size());
                                 //這種情況必定會被踢出，全部斷開
                                 ws=mWebSocketArrayList.get(0);
                                 close();
@@ -133,6 +135,7 @@ public class WsConnection {
                                     UtilTool.Log("fengjian", "断开连接");
                                     mWebSocketArrayList.remove(webSocket);
                                     closeConnection();
+                                    setIsConnection(false);
 
                                 }
                             });
@@ -142,6 +145,7 @@ public class WsConnection {
                                     UtilTool.Log("fengjian", "断开连接");
                                     mWebSocketArrayList.remove(webSocket);
                                     closeConnection();
+                                    setIsConnection(false);
                                 }
                             });
                             webSocket.setPongCallback(new WebSocket.PongCallback() {
@@ -318,7 +322,6 @@ public class WsConnection {
         }
         LoginThread.isStartExReconnect = false;
         close();
-        setIsConnection(false);
         setIsLogin(false);
         setLoginConnection(false);
     }
@@ -342,8 +345,10 @@ public class WsConnection {
         if(context instanceof Activity){
             UtilTool.Log("fengjian",((Activity)context).getClass().getName());
         }
+        ShortcutBadger.removeCount(context);
         closeConnection();
         setOutConnection(true);
+        setIsConnection(false);
         stopAllIMCoreService(context);
         context.stopService(new Intent(context, IMService.class));
         LoginThread.isStartExReconnect = false;

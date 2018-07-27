@@ -105,8 +105,6 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     @Bind(R.id.rl_review_list)
     RelativeLayout mRlReviewList;
 
-    private final int BACKGROUND=111;
-
     private GroupDetailsMemberAdapter mAdapter;
     private List<RoomMemberInfo> mList = new ArrayList<>();
     private String roomId;
@@ -312,7 +310,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     }
 
     @OnClick({R.id.bark, R.id.on_off_message_free, R.id.on_off_top, R.id.rl_empty_talk, R.id.btn_brak, R.id.rl_group_qr, R.id.rl_group_name, R.id.rl_member_name, R.id.rl_group_management, R.id.rl_looking_chat
-            , R.id.rl_group_image, R.id.rl_go_memberlist, R.id.rl_announcement, R.id.is_allow_modify_data, R.id.is_review,R.id.rl_review_list,R.id.rl_group_red,R.id.rl_redpacket_record,R.id.rl_change_background})
+            , R.id.rl_group_image, R.id.rl_go_memberlist, R.id.rl_announcement, R.id.is_allow_modify_data, R.id.is_review,R.id.rl_review_list,R.id.rl_group_red,R.id.rl_redpacket_record})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -376,9 +374,6 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                 break;
             case R.id.rl_redpacket_record:
                 goRedpacketRecord();
-                break;
-            case R.id.rl_change_background:
-                showBackgoundDialog();
                 break;
         }
     }
@@ -505,34 +500,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         menu.showAtLocation();
     }
 
-    private void showBackgoundDialog() {
-        List<String> list = new ArrayList<>();
-        list.add(getString(R.string.image));
-//        list.add(getString(R.string.network_image));
-        final MenuListPopWindow menu = new MenuListPopWindow(this, list);
-        menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
-            @Override
-            public void onclickitem(int position) {
-                switch (position) {
-                    case 0:
-                        menu.dismiss();
-                        break;
-                    case 1:
-                        menu.dismiss();
-                        goImage(BACKGROUND,false);
-                        break;
-                    case 2:
-                        menu.dismiss();
-                        Intent intent = new Intent(ConversationGroupDetailsActivity.this, SerchImageActivity.class);
-                        intent.putExtra("type", TYPE_GROUP);
-                        startActivity(intent);
-                        break;
-                }
-            }
-        });
-        menu.setColor(Color.BLACK);
-        menu.showAtLocation();
-    }
+
 
     private void goImage(int code,boolean enableCrop) {
         PictureSelector.create(this)
@@ -689,29 +657,44 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     }
 
     private void messageTop() {
-        String istop = mMgr.findConversationIstop(roomId);
+        final int status;
+        final String istop = mMgr.findConversationIstop(roomId);
         if (StringUtils.isEmpty(istop)) {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date curDate = new Date(System.currentTimeMillis());
-            String time = formatter.format(curDate);
-            ConversationInfo info = new ConversationInfo();
-            info.setTime(time);
-            info.setFriend(roomName);
-            info.setUser(roomId);
-            info.setMessage("");
-            info.setCreateTime(UtilTool.createChatCreatTime());
-            info.setChatType(RoomManage.ROOM_TYPE_MULTI);
-            mMgr.addConversation(info);
-            mOnOffTop.setSelected(true);
-            mMgr.updateConversationIstop(roomId, "true");
+            status=1;
         } else if ("true".equals(istop)) {
-            mOnOffTop.setSelected(false);
-            mMgr.updateConversationIstop(roomId, "false");
+            status=0;
         } else {
-            mOnOffTop.setSelected(true);
-            mMgr.updateConversationIstop(roomId, "true");
+            status=1;
         }
-        EventBus.getDefault().post(new MessageEvent(getString(R.string.message_top_change)));
+        new GroupPresenter(this).setTopMessage(roomId, status,true, new CallBack() {
+            @Override
+            public void send() {
+                if(status==1){
+                    if(!mMgr.findConversation(roomId)){
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Date curDate = new Date(System.currentTimeMillis());
+                        String time = formatter.format(curDate);
+                        ConversationInfo info = new ConversationInfo();
+                        info.setTime(time);
+                        info.setFriend(roomName);
+                        info.setUser(roomId);
+                        info.setIstop("true");
+                        info.setMessage("");
+                        info.setCreateTime(UtilTool.createChatCreatTime());
+                        info.setChatType(RoomManage.ROOM_TYPE_MULTI);
+                        mMgr.addConversation(info);
+                    }else{
+                        mMgr.updateConversationIstop(roomId, "true");
+                    }
+                    mOnOffTop.setSelected(true);
+
+                }else{
+                    mOnOffTop.setSelected(false);
+                    mMgr.updateConversationIstop(roomId, "false");
+                }
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.message_top_change)));
+            }
+        });
     }
 
     private void clearMessage() {
@@ -743,33 +726,6 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
 
     }
 
-    private void upload(String path){
-        final File file = new File(path);
-        final String key = UtilTool.getUserId() + UtilTool.createtFileName() +  UtilTool.getPostfix2(file.getName());
-        final File newFile = new File(Constants.BACKGOUND + key);
-        Bitmap cutImg = BitmapFactory.decodeFile(path);
-        UtilTool.comp1(cutImg, newFile);
-        final Bitmap bitmap = BitmapFactory.decodeFile(newFile.getAbsolutePath());
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] bytes = UtilTool.getFileToByte(newFile);
-        String Base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
-        UtilTool.Log("編碼", Base64Image.length() + "");
-        new GroupPresenter(this).changeBackgound(Base64Image, new GroupPresenter.CallBack2() {
-            @Override
-            public void send(String url) {
-                String fileurl=  MySharedPreferences.getInstance().getString("backgroundu_file"+UtilTool.getTocoId());
-                if(!StringUtils.isEmpty(fileurl)&&new File(fileurl).exists()){
-                    new File(fileurl).delete();
-                }
-                MySharedPreferences.getInstance().setString("backgroundu_url"+UtilTool.getTocoId(),url);
-                MySharedPreferences.getInstance().setString("backgroundu_file"+UtilTool.getTocoId(),key);
-                EventBus.getDefault().post(new MessageEvent(getString(R.string.conversation_backgound)));
-            }
-        });
-    }
-
-
     //拿到选择的图片
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -782,14 +738,6 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                         selectList = PictureSelector.obtainMultipleResult(data);
                         upImage(selectList.get(0).getCutPath());
                     } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case BACKGROUND:
-                    try {
-                        selectList = PictureSelector.obtainMultipleResult(data);
-                        upload(selectList.get(0).getPath());
-                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;

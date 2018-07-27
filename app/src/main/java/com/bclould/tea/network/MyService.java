@@ -25,6 +25,7 @@ import com.bclould.tea.model.IndividualInfo;
 import com.bclould.tea.model.LikeInfo;
 import com.bclould.tea.model.LoginInfo;
 import com.bclould.tea.model.LoginRecordInfo;
+import com.bclould.tea.model.MessageTopInfo;
 import com.bclould.tea.model.ModeOfPaymentInfo;
 import com.bclould.tea.model.MyAdListInfo;
 import com.bclould.tea.model.MyAssetsInfo;
@@ -36,6 +37,8 @@ import com.bclould.tea.model.OrderInfo2;
 import com.bclould.tea.model.OrderListInfo;
 import com.bclould.tea.model.OrderStatisticsInfo;
 import com.bclould.tea.model.OutCoinSiteInfo;
+import com.bclould.tea.model.PublicDetailsInfo;
+import com.bclould.tea.model.PublicInfo;
 import com.bclould.tea.model.QuestionInfo;
 import com.bclould.tea.model.ReceiptInfo;
 import com.bclould.tea.model.RedRecordInfo;
@@ -1393,4 +1396,48 @@ public interface MyService {
             @Header("Authorization") String token
     );
 
+    //設置置頂消息
+    @FormUrlEncoded
+    @POST("chat/set/chat_top")
+    Observable<BaseInfo> setTopMessage(
+            @Header("Authorization") String token,
+            @Field("for_id") String for_id,
+            @Field("status") int status
+    );
+
+    //獲取置頂消息
+    @POST("chat/get/chat_top")
+    Observable<MessageTopInfo> getTopMessage(
+            @Header("Authorization") String token
+    );
+
+    //獲取公眾號列表
+    @POST("chat/public_number/list")
+    Observable<PublicInfo> publicList(
+            @Header("Authorization") String token
+    );
+
+    //搜索公眾號
+    @FormUrlEncoded
+    @POST("chat/public_number/search")
+    Observable<PublicInfo> searchList(
+            @Header("Authorization") String token,
+            @Field("name") String name
+    );
+
+    //公眾號詳情
+    @FormUrlEncoded
+    @POST("chat/public_number/info")
+    Observable<PublicDetailsInfo> publicDeltails(
+            @Header("Authorization") String token,
+            @Field("public_number_id") int public_number_id
+    );
+
+    //公眾號關注
+    @FormUrlEncoded
+    @POST("chat/public_number/attention")
+    Observable<PublicDetailsInfo> publicAdd(
+            @Header("Authorization") String token,
+            @Field("public_number_id") int public_number_id
+    );
 }

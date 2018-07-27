@@ -28,6 +28,7 @@ import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
+import com.bclould.tea.utils.UtilTool;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -54,6 +55,7 @@ public class SerchImageActivity extends BaseActivity {
 
     public static final int TYPE_GROUP=0;
     public static final int TYPE_PERSONAL=1;
+    public static final int TYPE_BACKGROUND=2;
 
     private ArrayList<String> imageList = new ArrayList<>();
     private int page = 0;
@@ -180,14 +182,39 @@ public class SerchImageActivity extends BaseActivity {
                        ToastShow.showToast2(SerchImageActivity.this,getString(R.string.picture_is_not_loaded));
                         return;
                     }
-                    Intent intent=new Intent(SerchImageActivity.this,CropImageActivity.class);
-                    intent.putExtra("url",url);
-                    intent.putExtra("type",type);
-                    startActivity(intent);
+                    if(type==TYPE_BACKGROUND){
+                        goSystemSet(url);
+                    }else {
+                        Intent intent = new Intent(SerchImageActivity.this, CropImageActivity.class);
+                        intent.putExtra("url", url);
+                        intent.putExtra("type", type);
+                        startActivity(intent);
+                    }
                     break;
             }
         }
     };
+
+    private void goSystemSet(final String url){
+        showDialog();
+        new Thread(){
+            @Override
+            public void run() {
+                final String path=UtilTool.getImgPathFromCache(url,SerchImageActivity.this);
+                SerchImageActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        hideDialog();
+                        Intent intent=new Intent(SerchImageActivity.this,SystemSetActivity.class);
+                        intent.putExtra("path",path);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        SerchImageActivity.this.finish();
+                    }
+                });
+            }
+        }.start();
+    }
 
     private void showDialog() {
         if (mProgressDialog == null) {

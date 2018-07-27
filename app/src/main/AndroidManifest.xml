@@ -139,7 +139,7 @@
         <!-- 系统设置页面 -->
         <activity
             android:name=".ui.activity.SystemSetActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent" />
 
@@ -1162,6 +1162,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".ui.activity.PublicActivity" />
+        <activity android:name=".ui.activity.SearchPublicActivity" />
+        <activity android:name=".ui.activity.PublicDetailsActivity"></activity>
     </application>
 
 </manifest>
