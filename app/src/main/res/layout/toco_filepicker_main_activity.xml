@@ -68,7 +68,7 @@
             <View
                 android:layout_alignParentBottom="true"
                 android:id="@+id/xx"
-                style="@style/HCutOffRule"
+                style="@style/HorizontalBoundaryStyle"
                 android:layout_below="@+id/rl_title"/>
 
         </RelativeLayout>
@@ -241,7 +241,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_gravity="top"
-            style="@style/HCutOffRule"
+            style="@style/HorizontalBoundaryStyle"
             android:layout_below="@+id/rl_title"/>
 
         <TextView

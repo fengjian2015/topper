@@ -3,13 +3,11 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/shallow_gray"
+              android:background="@color/app_bg_color"
               android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
 
         <ImageView
@@ -20,139 +18,119 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/add_site"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/add_site"/>
 
 
     </RelativeLayout>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
     <TextView
+        style="@style/MainTextShallowStyle30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginTop="@dimen/y30"
-        android:text="@string/address"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
+        android:text="@string/address"/>
 
-    <android.support.v7.widget.CardView
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y110"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
         android:layout_marginTop="@dimen/y20"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape">
 
-        <RelativeLayout
+        <EditText
+            android:id="@+id/et_address"
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="@dimen/x550"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:hint="@string/et_coin_address"
+            android:paddingLeft="@dimen/x20"
+            android:singleLine="true"
+            android:textColorHint="@color/secondary_text_color"
+            android:textCursorDrawable="@null"/>
+
+        <TextView
+            android:id="@+id/xx"
+            android:layout_width="@dimen/x1"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/y10"
+            android:layout_marginTop="@dimen/y10"
+            android:layout_toRightOf="@+id/et_address"
+            android:background="@color/blue"/>
+
+        <ImageView
+            android:id="@+id/iv_sao_ma"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/xx"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_scan_code"/>
 
-            <EditText
-                android:id="@+id/et_address"
-                android:layout_width="@dimen/x550"
-                android:layout_height="match_parent"
-                android:singleLine="true"
-                android:layout_centerVertical="true"
-                android:background="@android:color/transparent"
-                android:hint="@string/et_coin_address"
-                android:paddingLeft="@dimen/x20"
-                android:textColor="@android:color/black"
-                android:textCursorDrawable="@null"
-                android:textSize="@dimen/x28"/>
-
-            <TextView
-                android:id="@+id/xx"
-                android:layout_width="@dimen/x1"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/y10"
-                android:layout_marginTop="@dimen/y10"
-                android:layout_toRightOf="@+id/et_address"
-                android:background="@color/blue"/>
-
-            <ImageView
-                android:id="@+id/iv_sao_ma"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@+id/xx"
-                android:padding="@dimen/x20"
-                android:src="@mipmap/icon_scan_code"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
+    </RelativeLayout>
 
     <TextView
+        style="@style/MainTextShallowStyle30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginTop="@dimen/y20"
-        android:text="@string/tag"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
+        android:text="@string/tag"/>
 
-    <android.support.v7.widget.CardView
+
+    <EditText
+        android:id="@+id/et_remark"
+        style="@style/MainTextShallowStyle30"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y110"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
         android:layout_marginTop="@dimen/y20"
-        app:cardCornerRadius="@dimen/x15">
-
-        <EditText
-            android:id="@+id/et_remark"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:singleLine="true"
-            android:layout_centerVertical="true"
-            android:background="@android:color/transparent"
-            android:hint="@string/et_tag"
-            android:paddingLeft="@dimen/x20"
-            android:textColor="@android:color/black"
-            android:textCursorDrawable="@null"
-            android:textSize="@dimen/x28"/>
-
-    </android.support.v7.widget.CardView>
+        android:background="@drawable/bg_shallow_shape"
+        android:hint="@string/et_tag"
+        android:paddingLeft="@dimen/x20"
+        android:singleLine="true"
+        android:textColorHint="@color/secondary_text_color"
+        android:textCursorDrawable="@null"/>
 
     <TextView
+        style="@style/MainTextShallowStyle30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginTop="@dimen/y20"
-        android:text="@string/google_verify"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
+        android:text="@string/google_verify"/>
 
-    <android.support.v7.widget.CardView
+
+    <EditText
+        android:id="@+id/et_google_code"
+        style="@style/MainTextShallowStyle30"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y110"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
         android:layout_marginTop="@dimen/y20"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape"
+        android:hint="@string/et_google_code"
+        android:inputType="number"
+        android:maxLines="6"
+        android:paddingLeft="@dimen/x20"
+        android:singleLine="true"
+        android:textColorHint="@color/secondary_text_color"
+        android:textCursorDrawable="@null"/>
 
-        <EditText
-            android:id="@+id/et_google_code"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:singleLine="true"
-            android:background="@android:color/transparent"
-            android:hint="@string/et_google_code"
-            android:inputType="number"
-            android:maxLines="6"
-            android:paddingLeft="@dimen/x20"
-            android:textColor="@android:color/black"
-            android:textCursorDrawable="@null"
-            android:textSize="@dimen/x28"/>
-
-    </android.support.v7.widget.CardView>
 
     <!--<TextView
         android:layout_width="wrap_content"
@@ -251,14 +229,10 @@
 
     <Button
         android:id="@+id/btn_preserve"
-        android:layout_width="@dimen/x450"
-        android:layout_height="@dimen/y80"
+        style="@style/LongBtnStyle"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y80"
-        android:background="@drawable/btn_blue_selector"
         android:text="@string/preserve"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="@dimen/x32"/>
+        android:textAllCaps="false"/>
 
 </LinearLayout>

@@ -41,7 +41,7 @@
     </RelativeLayout>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
     <LinearLayout
         android:id="@+id/ll_data"
@@ -72,7 +72,7 @@
         </LinearLayout>
 
         <TextView
-            style="@style/HCutOffRule"/>
+            style="@style/HorizontalBoundaryStyle"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -96,7 +96,7 @@
                 android:layout_centerVertical="true"/>
 
             <TextView
-                style="@style/HCutOffRule"
+                style="@style/HorizontalBoundaryStyle"
                 android:layout_alignParentBottom="true"/>
 
         </RelativeLayout>
@@ -139,7 +139,7 @@
                 android:textSize="@dimen/x28"/>
 
             <TextView
-                style="@style/HCutOffRule"
+                style="@style/HorizontalBoundaryStyle"
                 android:layout_alignParentBottom="true"/>
 
         </RelativeLayout>
@@ -196,7 +196,7 @@
                 android:textSize="@dimen/x28"/>
 
             <TextView
-                style="@style/HCutOffRule"
+                style="@style/HorizontalBoundaryStyle"
                 android:layout_alignParentBottom="true"/>
 
         </RelativeLayout>
@@ -229,7 +229,7 @@
                 android:textSize="@dimen/x28"/>
 
             <TextView
-                style="@style/HCutOffRule"
+                style="@style/HorizontalBoundaryStyle"
                 android:layout_alignParentBottom="true"/>
 
         </RelativeLayout>

@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/x20">
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
     <TextView
         android:id="@+id/tv_news_title"

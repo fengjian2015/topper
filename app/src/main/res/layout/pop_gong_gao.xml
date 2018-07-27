@@ -19,7 +19,7 @@
         android:textSize="@dimen/x30"/>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
     <TextView
         android:id="@+id/tv_huzhao"

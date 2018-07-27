@@ -46,6 +46,6 @@
     </RelativeLayout>
 
     <TextView
-        style="@style/HCutOffRule"
+        style="@style/HorizontalBoundaryStyle"
         android:layout_marginLeft="@dimen/x20"/>
 </LinearLayout>

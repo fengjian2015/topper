@@ -52,7 +52,7 @@
 
         <TextView
             android:id="@+id/xx"
-            style="@style/HCutOffRule"
+            style="@style/HorizontalBoundaryStyle"
             android:layout_above="@+id/tv_cancel"
             android:layout_marginTop="@dimen/y30"/>
 

@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/white"
+              android:background="@color/app_bg_color"
               android:orientation="vertical">
 
+    <TextView
+        style="@style/HorizontalBoundaryStyle"/>
+
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -18,29 +20,24 @@
 
         <TextView
             android:id="@+id/tv_title"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/buy_btc"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/buy_btc"/>
 
         <TextView
             android:id="@+id/tv_help"
+            style="@style/BlueTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:gravity="center"
             android:paddingRight="@dimen/x20"
-            android:text="@string/help"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x30"/>
+            android:text="@string/help"/>
 
     </RelativeLayout>
-
-    <TextView
-        style="@style/HCutOffRule"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -95,7 +92,7 @@
 
 
     <TextView
-        style="@style/HCutOffRule"
+        style="@style/HorizontalBoundaryStyle"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"/>
 
@@ -106,13 +103,12 @@
 
         <TextView
             android:id="@+id/tv2"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x25"
             android:layout_marginTop="@dimen/y20"
-            android:text="@string/trading_limit"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
+            android:text="@string/trading_limit"/>
 
         <TextView
             android:id="@+id/tv_quota"
@@ -148,25 +144,24 @@
 
         <TextView
             android:id="@+id/tv3"
+            style="@style/SecondaryTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv2"
             android:layout_marginLeft="@dimen/x25"
             android:layout_marginTop="@dimen/y20"
-            android:text="@string/remark"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/x30"/>
+            android:text="@string/remark"/>
 
         <TextView
             android:id="@+id/tv_remark"
+            style="@style/SecondaryTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/tv3"
             android:layout_marginLeft="@dimen/x20"
             android:layout_marginTop="@dimen/y20"
             android:layout_toRightOf="@+id/tv3"
-            android:text="123456"
-            android:textSize="@dimen/x30"/>
+            android:text="123456"/>
 
     </RelativeLayout>
 
@@ -177,13 +172,12 @@
 
     <TextView
         android:id="@+id/tv_buysell_count"
+        style="@style/MainTextShallowStyle30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginTop="@dimen/y30"
-        android:text="@string/buy_count"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/x30"/>
+        android:text="@string/buy_count"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -215,29 +209,30 @@
 
         <TextView
             android:id="@+id/tv4"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/et_cny"
             android:layout_marginLeft="@dimen/x25"
             android:layout_marginTop="@dimen/y20"
-            android:text="CNY"
-            android:textColor="@color/black"/>
+            android:text="CNY"/>
 
         <EditText
             android:id="@+id/et_cny"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="@dimen/x315"
             android:layout_height="@dimen/y100"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/tv4"
             android:layout_marginRight="@dimen/x20"
             android:layout_marginTop="@dimen/y10"
-            android:background="@drawable/bg_blue_border"
+            android:background="@drawable/bg_shallow_shape"
+            android:hint="@string/et_money"
             android:inputType="numberDecimal"
             android:paddingLeft="@dimen/x20"
             android:paddingRight="@dimen/x20"
             android:singleLine="true"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x28"/>
+            android:textColorHint="@color/secondary_text_color"/>
 
         <ImageView
             android:layout_width="@dimen/x40"
@@ -251,42 +246,39 @@
 
         <TextView
             android:id="@+id/tv_coin"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/et_coin"
             android:layout_marginLeft="@dimen/x5"
             android:layout_marginTop="@dimen/y20"
-            android:text="BTC"
-            android:textColor="@color/black"/>
+            android:text="BTC"/>
 
         <EditText
             android:id="@+id/et_coin"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="@dimen/x315"
             android:layout_height="@dimen/y100"
             android:layout_below="@+id/tv4"
             android:layout_marginLeft="@dimen/x20"
             android:layout_marginTop="@dimen/y10"
-            android:background="@drawable/bg_blue_border"
+            android:background="@drawable/bg_shallow_shape"
             android:hint="@string/buy_count"
             android:inputType="numberDecimal"
             android:paddingLeft="@dimen/x20"
             android:paddingRight="@dimen/x20"
             android:singleLine="true"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x28"/>
+            android:textColorHint="@color/secondary_text_color"/>
 
     </RelativeLayout>
 
     <Button
         android:id="@+id/btn_sell_buy"
-        android:layout_width="@dimen/x500"
-        android:layout_height="@dimen/y80"
+        style="@style/LongBtnStyle"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y50"
-        android:background="@drawable/bg_blue_shape"
         android:text="@string/buy"
-        android:textAllCaps="false"
-        android:textColor="@color/white"/>
+        android:textAllCaps="false"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -294,39 +286,38 @@
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y50"
-        android:background="@drawable/bg_pop_shape"
+        android:background="@drawable/bg_shallow_shape"
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingLeft="@dimen/x20"
         android:paddingRight="@dimen/x20">
 
         <TextView
+            style="@style/SecondaryTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/warm_prompt"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
+            android:text="@string/warm_prompt"/>
 
         <TextView
+            style="@style/SecondaryTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y20"
-            android:text="@string/buy_sell_hint1"
-            android:textSize="@dimen/x28"/>
+            android:text="@string/buy_sell_hint1"/>
 
         <TextView
+            style="@style/SecondaryTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y20"
-            android:text="@string/buy_sell_hint2"
-            android:textSize="@dimen/x28"/>
+            android:text="@string/buy_sell_hint2"/>
 
         <TextView
+            style="@style/SecondaryTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y20"
-            android:text="@string/buy_sell_hint3"
-            android:textSize="@dimen/x28"/>
+            android:text="@string/buy_sell_hint3"/>
 
 
     </LinearLayout>

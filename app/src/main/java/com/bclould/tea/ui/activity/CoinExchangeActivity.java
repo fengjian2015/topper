@@ -227,11 +227,8 @@ public class CoinExchangeActivity extends BaseActivity {
                 if (!CoinExchangeActivity.this.isDestroyed()) {
                     if (data.getUSDT() != null && data.getRate() != null && data.getTrend() != null) {
                         if (!data.getUSDT().isEmpty() && !data.getRate().isEmpty() && !data.getTrend().isEmpty()) {
-                            mCount++;
-                            if (mCount >= 3) {
-                                mRlData.setVisibility(View.VISIBLE);
-                                mLlError.setVisibility(View.GONE);
-                            }
+                            mRlData.setVisibility(View.VISIBLE);
+                            mLlError.setVisibility(View.GONE);
                             double usdt = Double.parseDouble(data.getUSDT());
                             double cny = Double.parseDouble(data.getRate());
                             DecimalFormat df = new DecimalFormat("#.00");
@@ -262,19 +259,15 @@ public class CoinExchangeActivity extends BaseActivity {
 
     int mPageSize = 100;
     int mPage_id = 0;
-    List<ExchangeOrderInfo.DataBeanX.DataBean> mExchangeOrderList = new ArrayList<>();
+    List<ExchangeOrderInfo.DataBean> mExchangeOrderList = new ArrayList<>();
 
     private void initListData(String name) {
         mExchangeOrderList.clear();
         mCoinPresenter.exchangeOrder("USDT", name, mPage_id, mPageSize, new CoinPresenter.CallBack3() {
             @Override
-            public void send(ExchangeOrderInfo.DataBeanX data) {
-                mCount++;
-                if (mCount >= 3) {
-                    mRlData.setVisibility(View.VISIBLE);
-                    mLlError.setVisibility(View.GONE);
-                }
-                mExchangeOrderList.addAll(data.getData());
+            public void send(List<ExchangeOrderInfo.DataBean> data) {
+
+                mExchangeOrderList.addAll(data);
                 mCoinExchangeRVAdapter.notifyDataSetChanged();
             }
 
@@ -299,11 +292,6 @@ public class CoinExchangeActivity extends BaseActivity {
             public void send(List<CoinListInfo.DataBean> data) {
                 if (!CoinExchangeActivity.this.isDestroyed()) {
                     if (data.size() != 0) {
-                        mCount++;
-                        if (mCount == 3) {
-                            mRlData.setVisibility(View.VISIBLE);
-                            mLlError.setVisibility(View.GONE);
-                        }
                         mCoinList.addAll(data);
                         mCoin.add(data.get(0).getName());
                         mServiceCharge = data.get(0).getOut_exchange();
@@ -351,7 +339,7 @@ public class CoinExchangeActivity extends BaseActivity {
     }
 
     private void showPWDialog() {
-        pwdDialog=new PWDDialog(this);
+        pwdDialog = new PWDDialog(this);
         pwdDialog.setOnPWDresult(new PWDDialog.OnPWDresult() {
             @Override
             public void success(String password) {
@@ -360,7 +348,7 @@ public class CoinExchangeActivity extends BaseActivity {
         });
         String coins = mTvCoin.getText().toString();
         String count = mEtCount.getText().toString();
-        pwdDialog.showDialog(count,coins,coins + getString(R.string.exchange) + getString(R.string.usdt),logo,getString(R.string.service_fee_hint) + Double.parseDouble(mServiceCharge) * 100 + "%" + getString(R.string.sxf));
+        pwdDialog.showDialog(count, coins, coins + getString(R.string.exchange) + getString(R.string.usdt), logo, getString(R.string.service_fee_hint) + Double.parseDouble(mServiceCharge) * 100 + "%" + getString(R.string.sxf));
     }
 
     private void exchange(String password) {
@@ -441,7 +429,7 @@ public class CoinExchangeActivity extends BaseActivity {
     }
 
     public void hideDialog(String name, int id, String logo, String coin_over, String serviceCharge) {
-        this.logo=logo;
+        this.logo = logo;
         mCoin.clear();
         mCoin.add(name);
         initListData(name);

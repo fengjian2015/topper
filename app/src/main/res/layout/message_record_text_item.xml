@@ -47,7 +47,7 @@
             android:textColor="@color/color_53"
             android:textSize="@dimen/x28"/>
         <View
-            style="@style/HCutOffRule"
+            style="@style/HorizontalBoundaryStyle"
             android:layout_below="@+id/iv_head"
             android:layout_marginTop="@dimen/y20"></View>
     </RelativeLayout>

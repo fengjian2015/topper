@@ -214,7 +214,7 @@
                 android:visibility="gone">
 
                 <TextView
-                    style="@style/HCutOffRule"
+                    style="@style/HorizontalBoundaryStyle"
                     android:layout_marginTop="@dimen/y30"/>
 
                 <TextView

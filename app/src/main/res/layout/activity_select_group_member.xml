@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-              android:background="@color/shallow_gray"
+              android:background="@color/app_bg_color"
     android:orientation="vertical"
     tools:activity="com.bclould.tea.ui.activity.SelectGroupMemberActivity">
     <RelativeLayout
@@ -41,7 +41,7 @@
             android:textSize="@dimen/x28"/>
 
     </RelativeLayout>
-    <View style="@style/HCutOffRule"></View>
+    <View style="@style/HorizontalBoundaryStyle"></View>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

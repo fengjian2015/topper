@@ -22,7 +22,7 @@
 
 
     <TextView
-        style="@style/HCutOffRule"
+        style="@style/HorizontalBoundaryStyle"
         android:layout_marginLeft="@dimen/x10"
         android:layout_marginRight="@dimen/x10"
         android:layout_marginTop="@dimen/y30"/>
@@ -40,7 +40,7 @@
         android:textSize="@dimen/x24"/>
 
     <TextView
-        style="@style/HCutOffRule"
+        style="@style/HorizontalBoundaryStyle"
         android:layout_marginLeft="@dimen/x10"
         android:layout_marginRight="@dimen/x10"
         android:layout_marginTop="@dimen/y30"/>

@@ -288,6 +288,7 @@ public class CollectActivity extends BaseActivity {
             public void send() {
                 mRlEdit.setVisibility(View.GONE);
                 mTvEdit.setVisibility(View.VISIBLE);
+                mItemTouchHelper.attachToRecyclerView(null);
             }
         });
     }

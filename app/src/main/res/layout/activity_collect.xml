@@ -4,13 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/shallow_gray"
+    android:background="@color/app_bg_color"
     android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
 
         <ImageView
@@ -21,23 +19,21 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/my_collect"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/my_collect"/>
 
         <TextView
             android:id="@+id/tv_add"
+            style="@style/BlueTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:padding="@dimen/x20"
-            android:text="@string/add"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"/>
+            android:text="@string/add"/>
 
         <TextView
             android:id="@+id/tv_edit"
@@ -47,13 +43,13 @@
             android:gravity="center"
             android:padding="@dimen/x20"
             android:text="@string/edit"
-            android:textColor="@color/red"
+            android:textColor="@color/red_color"
             android:textSize="@dimen/x28"/>
 
     </RelativeLayout>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
 
     <RelativeLayout
@@ -79,11 +75,10 @@
 
             <TextView
                 android:id="@+id/tv_hint"
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/no_collect_hint"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/x30"/>
+                android:text="@string/no_collect_hint"/>
 
         </LinearLayout>
 
@@ -104,12 +99,11 @@
                 android:src="@mipmap/img_wrong"/>
 
             <TextView
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/y50"
-                android:text="@string/loading_error_anew_loading_hint2"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/x30"/>
+                android:text="@string/loading_error_anew_loading_hint2"/>
 
         </LinearLayout>
 
@@ -123,35 +117,34 @@
 
         <RelativeLayout
             android:id="@+id/rl_edit"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y100"
             android:layout_alignParentBottom="true"
-            android:background="@color/white">
+            android:background="@color/app_bg_color"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/xx"
-                style="@style/HCutOffRule"/>
+                style="@style/HorizontalBoundaryStyle"/>
 
             <TextView
                 android:id="@+id/tv_confirm"
+                style="@style/BlueTextStyle28"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:padding="@dimen/x20"
-                android:text="@string/confirm"
-                android:textColor="@color/blue2"
-                android:textSize="@dimen/x30"/>
+                android:text="@string/confirm"/>
 
             <TextView
                 android:id="@+id/tv_cancel"
+                style="@style/SecondaryTextStyle28"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:gravity="center"
                 android:padding="@dimen/x20"
-                android:text="@string/cancel"
-                android:textSize="@dimen/x30"/>
+                android:text="@string/cancel"/>
 
         </RelativeLayout>
 

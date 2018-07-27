@@ -41,7 +41,7 @@
     </RelativeLayout>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
     <RelativeLayout
         android:id="@+id/rl_zhuanzhang"
@@ -78,7 +78,7 @@
     </RelativeLayout>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
     <RelativeLayout
         android:id="@+id/rl_group_chat"
@@ -115,7 +115,7 @@
     </RelativeLayout>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
     <RelativeLayout
         android:id="@+id/rl_message_remind"
@@ -154,7 +154,7 @@
     </RelativeLayout>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
     <RelativeLayout
         android:id="@+id/rl_shield_message"

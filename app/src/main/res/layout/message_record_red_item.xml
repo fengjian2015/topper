@@ -42,7 +42,7 @@
                     android:textSize="@dimen/x28"/>
                 <View
                     android:id="@+id/view1"
-                    style="@style/HCutOffRule"
+                    style="@style/HorizontalBoundaryStyle"
                     android:layout_below="@+id/tv_name"
                     android:layout_marginTop="@dimen/y20"
                     ></View>

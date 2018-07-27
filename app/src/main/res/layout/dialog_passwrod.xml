@@ -43,7 +43,7 @@
             </RelativeLayout>
 
             <TextView
-                style="@style/HCutOffRule"/>
+                style="@style/HorizontalBoundaryStyle"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -95,7 +95,7 @@
             </RelativeLayout>
 
             <TextView
-                style="@style/HCutOffRule"/>
+                style="@style/HorizontalBoundaryStyle"/>
             <RelativeLayout
                 android:id="@+id/rl_coin"
                 android:layout_width="match_parent"
@@ -127,7 +127,7 @@
                     android:layout_centerVertical="true"/>
             </RelativeLayout>
             <TextView
-                style="@style/HCutOffRule"/>
+                style="@style/HorizontalBoundaryStyle"/>
             <com.maning.pswedittextlibrary.MNPasswordEditText
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"

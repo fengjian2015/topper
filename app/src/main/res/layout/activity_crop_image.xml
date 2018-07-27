@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-              android:background="@color/shallow_gray"
-    tools:context="com.bclould.tea.ui.activity.CropImageActivity">
+              xmlns:custom="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/app_bg_color"
+              android:orientation="vertical"
+              tools:context="com.bclould.tea.ui.activity.CropImageActivity">
+
     <RelativeLayout
         android:id="@+id/rl_title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -22,40 +21,40 @@
 
         <TextView
             android:id="@+id/tv_title"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxWidth="@dimen/x300"
             android:layout_centerInParent="true"
+            android:maxWidth="@dimen/x300"
             android:singleLine="true"
-            android:textColor="@color/black"
-            android:text="@string/crop"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/crop"/>
+
         <TextView
             android:id="@+id/tv_ok"
+            style="@style/BlueTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:gravity="center"
             android:paddingRight="@dimen/x20"
-            android:text="@string/finish"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"/>
+            android:text="@string/finish"/>
     </RelativeLayout>
+
     <com.isseiaoki.simplecropview.CropImageView
         android:id="@+id/CropImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerInside"
         android:layout_gravity="center"
-        custom:scv_crop_mode="circle"
-        custom:scv_handle_size="10dp"
-        custom:scv_touch_padding="10dp"
+        android:scaleType="centerInside"
         custom:scv_background_color="#000000"
-        custom:scv_handle_color="#FFFFFF"
-        custom:scv_guide_color="#FFFFFF"
-        custom:scv_overlay_color="#aa1c1c1c"
+        custom:scv_crop_mode="circle"
         custom:scv_frame_color="#FFFFFF"
+        custom:scv_guide_color="#FFFFFF"
+        custom:scv_guide_show_mode="show_on_touch"
+        custom:scv_handle_color="#FFFFFF"
         custom:scv_handle_show_mode="show_always"
-        custom:scv_guide_show_mode="show_on_touch" />
+        custom:scv_handle_size="10dp"
+        custom:scv_overlay_color="#aa1c1c1c"
+        custom:scv_touch_padding="10dp"/>
 </LinearLayout>

@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-                android:background="@color/shallow_gray"
-              android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/app_bg_color"
+                android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/rl_title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
 
         <ImageView
@@ -20,35 +18,34 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/bank_card"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/bank_card"/>
 
         <TextView
             android:id="@+id/tv_delete"
+            style="@style/RedTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center_vertical"
             android:paddingRight="@dimen/x20"
-            android:text="@string/delete"
-            android:textColor="@color/red"/>
+            android:text="@string/delete"/>
 
     </RelativeLayout>
 
     <TextView
         android:id="@+id/xx"
-        android:layout_below="@+id/rl_title"
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"
+        android:layout_below="@+id/rl_title"/>
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:layout_below="@+id/xx"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/xx">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -69,15 +66,11 @@
 
             <Button
                 android:id="@+id/add_bank_card"
-                android:layout_width="@dimen/x450"
-                android:layout_height="@dimen/y80"
+                style="@style/LongBtnStyle"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/y30"
                 android:layout_marginTop="@dimen/y30"
-                android:background="@drawable/bg_white_shape"
-                android:text="@string/add_bank_card"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x32"/>
+                android:text="@string/add_bank_card"/>
 
         </LinearLayout>
 
@@ -100,12 +93,11 @@
             android:src="@mipmap/img_wrong"/>
 
         <TextView
-            android:layout_marginTop="@dimen/y50"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y50"
             android:text="@string/loading_error_anew_loading_hint"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/x30"/>
+            style="@style/MainTextShallowStyle30"/>
 
     </LinearLayout>
 

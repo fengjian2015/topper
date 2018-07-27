@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-              android:background="@color/shallow_gray"
+              android:background="@color/app_bg_color"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:activity="com.bclould.tea.ui.activity.GroupMemberActivity">
@@ -27,7 +27,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/x32"/>
     </RelativeLayout>
-    <View style="@style/HCutOffRule"></View>
+    <View style="@style/HorizontalBoundaryStyle"></View>
 
     <GridView
         android:id="@+id/partner_detial_gridview"

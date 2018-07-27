@@ -2,17 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/shallow_gray"
+                android:background="@color/app_bg_color"
                 android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -23,70 +18,25 @@
 
         <TextView
             android:id="@+id/tv_coins"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/all_address"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/all_address"/>
 
     </RelativeLayout>
 
     <TextView
         android:id="@+id/xx"
-        style="@style/HCutOffRule"
+        style="@style/HorizontalBoundaryStyle"
         android:layout_below="@+id/title"/>
-
-    <!--<RelativeLayout
-        android:id="@+id/rl_hint"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100">
-
-        <TextView
-            android:id="@+id/tv_currency"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x40"
-            android:text="BTC"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/x35"/>
-
-        <TextView
-            android:layout_width="@dimen/x350"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/x40"
-            android:gravity="right"
-            android:text="@string/hint"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/x22"/>
-
-    </RelativeLayout>-->
-
-    <TextView
-        android:id="@+id/hint"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:layout_below="@+id/xx"
-        android:gravity="center"
-        android:text="@string/hint"
-        android:textSize="@dimen/x28"/>
-
-    <TextView
-        android:id="@+id/xx2"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y4"
-        android:layout_below="@+id/hint"
-        android:background="@android:color/black"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/rl_add_site"
-        android:layout_below="@+id/xx2"
+        android:layout_below="@+id/xx"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30">
     </android.support.v7.widget.RecyclerView>
@@ -96,22 +46,17 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/y120"
         android:layout_alignParentBottom="true"
-        android:background="@color/white">
+        android:background="@color/app_bg_color">
 
         <TextView
-            style="@style/HCutOffRule"/>
+            style="@style/HorizontalBoundaryStyle"/>
 
         <Button
             android:id="@+id/btn_add_site"
-            android:layout_width="@dimen/x400"
-            android:layout_height="@dimen/y80"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/btn_blue_selector"
+            style="@style/LongBtnStyle"
+            android:layout_centerInParent="true"
             android:text="@string/add_new_address"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="@dimen/x30"/>
+            android:textAllCaps="false"/>
 
     </RelativeLayout>
 

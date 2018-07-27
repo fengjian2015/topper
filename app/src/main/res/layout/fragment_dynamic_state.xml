@@ -84,7 +84,7 @@
 
             <TextView
                 android:id="@+id/xx2"
-                style="@style/HCutOffRule"/>
+                style="@style/HorizontalBoundaryStyle"/>
 
             <EditText
                 android:id="@+id/comment_et"

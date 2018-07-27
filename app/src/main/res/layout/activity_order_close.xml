@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/shallow_gray"
+    android:background="@color/app_bg_color"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -42,7 +42,7 @@
     </RelativeLayout>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
     <LinearLayout
         android:visibility="gone"
@@ -97,7 +97,7 @@
                 </RelativeLayout>
 
                 <TextView
-                    style="@style/HCutOffRule"
+                    style="@style/HorizontalBoundaryStyle"
                     android:layout_marginTop="@dimen/y20"/>
 
                 <RelativeLayout
@@ -167,7 +167,7 @@
                 </RelativeLayout>
 
                 <TextView
-                    style="@style/HCutOffRule"
+                    style="@style/HorizontalBoundaryStyle"
                     android:layout_marginTop="@dimen/y20"/>
 
                 <RelativeLayout
@@ -245,7 +245,7 @@
                     android:visibility="gone">
 
                     <TextView
-                        style="@style/HCutOffRule"
+                        style="@style/HorizontalBoundaryStyle"
                         android:layout_marginTop="@dimen/y20"/>
 
                     <RelativeLayout
@@ -300,7 +300,7 @@
                     android:visibility="gone">
 
                     <TextView
-                        style="@style/HCutOffRule"
+                        style="@style/HorizontalBoundaryStyle"
                         android:layout_marginTop="@dimen/y20"/>
 
                     <TextView
@@ -321,7 +321,7 @@
                     android:visibility="gone">
 
                     <TextView
-                        style="@style/HCutOffRule"
+                        style="@style/HorizontalBoundaryStyle"
                         android:layout_marginTop="@dimen/y20"/>
 
                     <Button

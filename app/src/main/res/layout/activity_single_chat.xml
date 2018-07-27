@@ -4,7 +4,7 @@
     android:id="@+id/ekb_emoticons_keyboard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/shallow_gray"
+    android:background="@color/app_bg_color"
     android:orientation="vertical">
     <LinearLayout
         android:id="@+id/ll_chat"
@@ -54,7 +54,7 @@
 
         <TextView
             android:id="@+id/xx"
-            style="@style/HCutOffRule"
+            style="@style/HorizontalBoundaryStyle"
             android:layout_below="@+id/rl_title"/>
         <RelativeLayout
             android:layout_width="match_parent"

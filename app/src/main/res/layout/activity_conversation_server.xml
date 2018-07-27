@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-              android:background="@color/shallow_gray"
+              android:background="@color/app_bg_color"
     tools:activity="com.bclould.tea.ui.activity.ConversationServerActivity">
 
     <LinearLayout
@@ -17,12 +17,7 @@
 
         <RelativeLayout
             android:id="@+id/rl_title"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y100"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:background="@color/white">
+            style="@style/TopNavigationBarStyle">
 
             <ImageView
                 android:id="@+id/bark"
@@ -36,14 +31,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="傻狍子"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x32"/>
+                style="@style/MainTextShallowStyle36"/>
 
         </RelativeLayout>
         <TextView
             android:id="@+id/xx"
-            style="@style/HCutOffRule"
+            style="@style/HorizontalBoundaryStyle"
             android:layout_below="@+id/rl_title"/>
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout

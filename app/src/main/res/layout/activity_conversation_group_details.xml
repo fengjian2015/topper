@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/shallow_gray"
-    android:orientation="vertical"
-    tools:activity="com.bclould.tea.ui.activity.ConversationGroupDetailsActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/app_bg_color"
+              android:orientation="vertical"
+              tools:activity="com.bclould.tea.ui.activity.ConversationGroupDetailsActivity">
+
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -19,18 +18,19 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/session_details"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/session_details"/>
     </RelativeLayout>
 
-    <View style="@style/HCutOffRule"></View>
+    <View style="@style/HorizontalBoundaryStyle"></View>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -41,34 +41,35 @@
                 android:id="@+id/rl_go_memberlist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:paddingTop="@dimen/x25"
                 android:paddingBottom="@dimen/x25"
-                android:paddingRight="@dimen/x30"
                 android:paddingLeft="@dimen/x20"
+                android:paddingRight="@dimen/x30"
+                android:paddingTop="@dimen/x25"
                 >
+
                 <TextView
                     android:id="@+id/tv_member_number"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x30"
                     android:text="@string/group_member"
                     />
+
                 <com.bclould.tea.ui.widget.MyGridView
                     android:id="@+id/partner_detial_gridview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_member_number"
+                    android:layout_marginTop="@dimen/y10"
+                    android:layout_toLeftOf="@+id/iv6"
                     android:background="@color/white"
                     android:gravity="center_horizontal|top"
                     android:listSelector="@android:color/transparent"
-                    android:verticalSpacing="@dimen/y15"
-                    android:layout_marginTop="@dimen/y10"
-                    android:layout_toStartOf="@+id/iv6"
                     android:numColumns="6"
+                    android:verticalSpacing="@dimen/y15"
                     >
                 </com.bclould.tea.ui.widget.MyGridView>
+
                 <ImageView
                     android:id="@+id/iv6"
                     android:layout_width="wrap_content"
@@ -79,37 +80,38 @@
                     android:layout_marginLeft="@dimen/x20"
                     android:src="@mipmap/iocn_person_turn"/>
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_group_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:layout_marginTop="@dimen/y20"
-                android:paddingTop="@dimen/x25"
                 android:paddingBottom="@dimen/x25"
-                android:paddingRight="@dimen/x30"
                 android:paddingLeft="@dimen/x20"
+                android:paddingRight="@dimen/x30"
+                android:paddingTop="@dimen/x25"
                 >
+
                 <TextView
                     android:id="@+id/tv11"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/group_head"
                     android:layout_centerVertical="true"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x30"/>
+                    android:layout_toRightOf="@+id/iv_inform"
+                    android:text="@string/group_head"/>
 
                 <ImageView
                     android:id="@+id/iv_head"
                     android:layout_width="@dimen/x80"
                     android:layout_height="@dimen/y80"
-                    android:layout_toLeftOf="@+id/iv3"
                     android:layout_marginRight="@dimen/x10"
-                    android:textColor="@color/gray3"
-                    android:singleLine="true"
+                    android:layout_toLeftOf="@+id/iv3"
                     android:maxEms="10"
-                    android:textSize="@dimen/x26" />
+                    android:singleLine="true"
+                    android:textColor="@color/gray3"
+                    android:textSize="@dimen/x26"/>
+
                 <ImageView
                     android:id="@+id/iv3"
                     android:layout_width="wrap_content"
@@ -118,37 +120,39 @@
                     android:layout_centerVertical="true"
                     android:src="@mipmap/iocn_person_turn"/>
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_group_name"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y100"
-                android:background="@color/white"
                 >
+
                 <View
-                    style="@style/HCutOffRule"
+                    style="@style/HorizontalBoundaryStyle"
                     ></View>
+
                 <TextView
                     android:id="@+id/tv2"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/iv_inform"
                     android:layout_centerVertical="true"
-                    android:text="@string/group_nickname"
-                    android:textColor="@color/black"
+                    android:layout_toRightOf="@+id/iv_inform"
                     android:paddingLeft="@dimen/x20"
-                    android:textSize="@dimen/x30"/>
+                    android:text="@string/group_nickname"/>
 
                 <TextView
                     android:id="@+id/tvgroupr_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/iv1"
-                    android:layout_marginRight="@dimen/x10"
                     android:layout_centerVertical="true"
-                    android:textColor="@color/gray3"
-                    android:singleLine="true"
+                    android:layout_marginRight="@dimen/x10"
+                    android:layout_toLeftOf="@+id/iv1"
                     android:maxEms="10"
-                    android:textSize="@dimen/x26" />
+                    android:singleLine="true"
+                    android:textColor="@color/gray3"
+                    android:textSize="@dimen/x26"/>
+
                 <ImageView
                     android:id="@+id/iv1"
                     android:layout_width="wrap_content"
@@ -162,21 +166,24 @@
             <RelativeLayout
                 android:id="@+id/rl_group_management"
                 android:layout_width="match_parent"
-                android:background="@color/white"
                 android:layout_height="@dimen/y100"
+                android:background="@color/white"
                 android:visibility="gone"
                 >
-                <View style="@style/HCutOffRule"></View>
+
+                <View style="@style/HorizontalBoundaryStyle"></View>
+
                 <TextView
                     android:id="@+id/tv9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/x20"
-                    android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/group_management"
                     android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/iv_inform"
+                    android:paddingLeft="@dimen/x20"
+                    android:text="@string/group_management"
                     android:textColor="@color/black"
                     android:textSize="@dimen/x30"/>
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -185,37 +192,37 @@
                     android:layout_marginRight="@dimen/x30"
                     android:src="@mipmap/iocn_person_turn"/>
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_member_name"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y100"
-                android:background="@color/white"
                 >
 
                 <View
-                    style="@style/HCutOffRule"
+                    style="@style/HorizontalBoundaryStyle"
                     ></View>
 
                 <TextView
                     android:id="@+id/tv8"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/my_nickname_group"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x30"/>
+                    android:text="@string/my_nickname_group"/>
+
                 <TextView
                     android:id="@+id/tv_member_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/x10"
+                    android:layout_toLeftOf="@+id/iv2"
                     android:singleLine="true"
                     android:textColor="@color/gray3"
                     android:textSize="@dimen/x26"
-                    android:layout_toLeftOf="@+id/iv2"
                     />
 
                 <ImageView
@@ -227,26 +234,28 @@
                     android:layout_marginRight="@dimen/x30"
                     android:src="@mipmap/iocn_person_turn"/>
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_group_qr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:paddingLeft="@dimen/x20"
                 >
+
                 <View
-                    style="@style/HCutOffRule"
+                    style="@style/HorizontalBoundaryStyle"
                     ></View>
+
                 <TextView
                     android:id="@+id/tv3"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/group_qr"
-                    android:paddingTop="@dimen/x25"
                     android:paddingBottom="@dimen/x25"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x30"/>
+                    android:paddingTop="@dimen/x25"
+                    android:text="@string/group_qr"/>
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -260,36 +269,38 @@
                 android:id="@+id/rl_announcement"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:paddingBottom="@dimen/x25"
                 >
+
                 <View
-                    style="@style/HCutOffRule"
+                    style="@style/HorizontalBoundaryStyle"
                     ></View>
+
                 <TextView
                     android:id="@+id/tv7"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/group_announcement"
                     android:layout_marginLeft="@dimen/x20"
+                    android:layout_toRightOf="@+id/iv_inform"
                     android:paddingTop="@dimen/x25"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x30"/>
+                    android:text="@string/group_announcement"/>
+
                 <TextView
                     android:id="@+id/tv_announcement"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toStartOf="@+id/iv_1"
-                    android:layout_toLeftOf="@+id/iv_1"
                     android:layout_below="@+id/tv7"
                     android:layout_marginLeft="@dimen/x20"
-                    android:layout_marginTop="@dimen/y6"
-                    android:textSize="@dimen/x26"
-                    android:textColor="@color/gray3"
                     android:layout_marginRight="@dimen/x15"
+                    android:layout_marginTop="@dimen/y6"
+                    android:layout_toLeftOf="@+id/iv_1"
+                    android:layout_toStartOf="@+id/iv_1"
+                    android:textColor="@color/gray3"
+                    android:textSize="@dimen/x26"
                     android:visibility="gone"
                     />
+
                 <ImageView
                     android:id="@+id/iv_1"
                     android:layout_width="wrap_content"
@@ -299,26 +310,28 @@
                     android:layout_marginRight="@dimen/x30"
                     android:src="@mipmap/iocn_person_turn"/>
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_group_red"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:paddingLeft="@dimen/x20"
                 >
+
                 <View
-                    style="@style/HCutOffRule"
+                    style="@style/HorizontalBoundaryStyle"
                     ></View>
+
                 <TextView
                     android:id="@+id/tv15"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/unclaimed_red"
-                    android:paddingTop="@dimen/x25"
                     android:paddingBottom="@dimen/x25"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x30"/>
+                    android:paddingTop="@dimen/x25"
+                    android:text="@string/unclaimed_red"/>
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -327,26 +340,28 @@
                     android:layout_marginRight="@dimen/x30"
                     android:src="@mipmap/iocn_person_turn"/>
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_redpacket_record"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:paddingLeft="@dimen/x20"
                 >
+
                 <View
-                    style="@style/HCutOffRule"
+                    style="@style/HorizontalBoundaryStyle"
                     ></View>
+
                 <TextView
                     android:id="@+id/tv16"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/red_package_record"
-                    android:paddingTop="@dimen/x25"
                     android:paddingBottom="@dimen/x25"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x30"/>
+                    android:paddingTop="@dimen/x25"
+                    android:text="@string/red_package_record"/>
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -355,24 +370,23 @@
                     android:layout_marginRight="@dimen/x30"
                     android:src="@mipmap/iocn_person_turn"/>
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_looking_chat"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y100"
                 android:layout_marginTop="@dimen/y20"
-                android:background="@color/white"
                 >
 
                 <TextView
                     android:id="@+id/tv10"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/looking_for_chat"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x30"/>
+                    android:text="@string/looking_for_chat"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -382,23 +396,52 @@
                     android:layout_marginRight="@dimen/x30"
                     android:src="@mipmap/iocn_person_turn"/>
             </RelativeLayout>
+
             <RelativeLayout
+                android:id="@+id/rl_change_background"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y100"
-                android:background="@color/white"
                 >
+
                 <View
-                    style="@style/HCutOffRule"></View>
+                    style="@style/HorizontalBoundaryStyle"></View>
+
                 <TextView
-                    android:id="@+id/tv4"
+                    android:id="@+id/tv17"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/top_chat"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x30"/>
+                    android:text="@string/conversation_backgound"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x30"
+                    android:src="@mipmap/iocn_person_turn"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y100"
+                >
+
+                <View
+                    style="@style/HorizontalBoundaryStyle"></View>
+
+                <TextView
+                    android:id="@+id/tv4"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_toRightOf="@+id/iv_inform"
+                    android:text="@string/top_chat"/>
 
                 <ImageView
                     android:id="@+id/on_off_top"
@@ -411,23 +454,21 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/y100"
-                android:background="@color/white">
+                android:layout_height="@dimen/y100">
 
                 <View
-                    style="@style/HCutOffRule"
+                    style="@style/HorizontalBoundaryStyle"
                     ></View>
 
                 <TextView
                     android:id="@+id/tv5"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/message_free"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x30"/>
+                    android:text="@string/message_free"/>
 
                 <ImageView
                     android:id="@+id/on_off_message_free"
@@ -446,19 +487,18 @@
                 android:visibility="gone">
 
                 <View
-                    style="@style/HCutOffRule"
+                    style="@style/HorizontalBoundaryStyle"
                     ></View>
 
                 <TextView
                     android:id="@+id/tv12"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/is_allow_modify_data"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x30"/>
+                    android:text="@string/is_allow_modify_data"/>
 
                 <ImageView
                     android:id="@+id/is_allow_modify_data"
@@ -468,6 +508,7 @@
                     android:padding="@dimen/x25"
                     android:src="@drawable/set_disturb_seletor"/>
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_review"
                 android:layout_width="match_parent"
@@ -477,19 +518,18 @@
                 >
 
                 <View
-                    style="@style/HCutOffRule"
+                    style="@style/HorizontalBoundaryStyle"
                     ></View>
 
                 <TextView
                     android:id="@+id/tv13"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/group_chat_invitation_confirmation"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x30"/>
+                    android:text="@string/group_chat_invitation_confirmation"/>
 
                 <ImageView
                     android:id="@+id/is_review"
@@ -507,19 +547,20 @@
                 android:background="@color/white"
                 android:visibility="gone"
                 >
+
                 <View
-                    style="@style/HCutOffRule"
+                    style="@style/HorizontalBoundaryStyle"
                     ></View>
+
                 <TextView
                     android:id="@+id/tv14"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/group_initation_list"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x30"/>
+                    android:text="@string/group_initation_list"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -534,36 +575,31 @@
                 android:id="@+id/rl_empty_talk"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y100"
-                android:background="@color/white"
                 >
 
                 <View
-                    style="@style/HCutOffRule"
+                    style="@style/HorizontalBoundaryStyle"
                     ></View>
 
                 <TextView
                     android:id="@+id/tv6"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/empty_talk"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x30"/>
+                    android:text="@string/empty_talk"/>
             </RelativeLayout>
 
             <Button
                 android:id="@+id/btn_brak"
-                android:layout_width="@dimen/x450"
-                android:layout_height="@dimen/y80"
+                style="@style/LongBtnStyle"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/y64"
-                android:background="@drawable/btn_blue_selector"
-                android:text="@string/delete_out"
-                android:textColor="@color/white"/>
+                android:text="@string/delete_out"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

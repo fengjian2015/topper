@@ -33,6 +33,6 @@
 
     <TextView
         android:layout_alignParentBottom="true"
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
 </RelativeLayout>

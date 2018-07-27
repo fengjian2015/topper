@@ -2,14 +2,14 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/shallow_gray"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/app_bg_color">
 
     <TextView
-        android:text="@string/hint_unfinished"
-        android:gravity="center"
-        android:textSize="@dimen/x55"
+        style="@style/MainTextShallowStyle36"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/hint_unfinished"/>
 
 </LinearLayout>

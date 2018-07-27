@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/shallow_gray"
-              android:gravity="center_horizontal"
-              android:orientation="vertical">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/app_bg_color"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y130"
-        android:background="@color/white"
+        android:background="@color/app_bg_color"
         android:paddingBottom="@dimen/y20"
         android:paddingTop="@dimen/y20">
 
@@ -23,7 +23,7 @@
             android:layout_marginLeft="@dimen/x20"
             android:layout_marginRight="@dimen/x10"
             android:layout_toLeftOf="@+id/tv_cancel"
-            app:cardBackgroundColor="#10000000"
+            app:cardBackgroundColor="@color/boundary_color"
             app:cardCornerRadius="@dimen/x40"
             app:cardElevation="0dp">
 
@@ -61,6 +61,7 @@
 
                 <com.bclould.tea.ui.widget.ClearEditText
                     android:id="@+id/et_search"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
@@ -70,50 +71,47 @@
                     android:maxLength="20"
                     android:paddingRight="@dimen/x30"
                     android:singleLine="true"
-
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x28"/>
+                    android:textColorHint="@color/secondary_text_color"/>
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
 
         <TextView
             android:id="@+id/tv_cancel"
+            style="@style/BlueTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/x10"
             android:paddingRight="@dimen/x20"
-            android:text="@string/cancel"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"/>
+            android:text="@string/cancel"/>
 
     </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_line"
-        style="@style/HCutOffRule"
+        style="@style/HorizontalBoundaryStyle"
         android:layout_below="@+id/rl_title"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/y20"
-        android:layout_below="@+id/tv_line">
+        android:layout_below="@+id/tv_line"
+        android:layout_marginTop="@dimen/y20">
     </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
         android:id="@+id/ll_qr"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/y30"
+        android:layout_alignParentBottom="true"
         android:layout_below="@+id/tv_line"
-        android:paddingBottom="@dimen/y30"
+        android:layout_marginTop="@dimen/y30"
         android:gravity="center"
         android:orientation="vertical"
-        android:layout_alignParentBottom="true"
+        android:paddingBottom="@dimen/y30"
         >
 
         <RelativeLayout
@@ -126,10 +124,10 @@
                 android:id="@+id/qr_code_iv"
                 android:layout_width="@dimen/x400"
                 android:layout_height="@dimen/y400"
-                android:src="@mipmap/qr_code1"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"/>
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:src="@mipmap/qr_code1"/>
 
             <ImageView
                 android:id="@+id/touxiang"
@@ -139,12 +137,13 @@
                 android:src="@mipmap/img_nfriend_headshot1"/>
 
         </RelativeLayout>
+
         <TextView
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y15"
-            android:text="@string/qr_code_hint"
-            android:textSize="@dimen/x28"/>
+            android:text="@string/qr_code_hint"/>
 
     </LinearLayout>
 </RelativeLayout>
