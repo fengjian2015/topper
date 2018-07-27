@@ -1124,4 +1124,7 @@
     <string name="again_login">重新登錄</string>
     <string name="cancel_gesture">取消手勢</string>
     <string name="expect_coin_hint">如您有任何期望添加的幣種，歡迎聯繫我們！</string>
+    <string name="backgound">背景</string>
+    <string name="no_public_number">暫無公眾號</string>
+    <string name="search_public_numbers">搜索公眾號</string>
 </resources>

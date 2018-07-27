@@ -117,13 +117,16 @@ public class IMService extends Service{
                                 if (ConnectStateChangeListenerManager.get().getCurrentState()
                                         != ConnectStateChangeListenerManager.CONNECTED && ConnectStateChangeListenerManager.get().getCurrentState()
                                         != ConnectStateChangeListenerManager.RECEIVING&&
-                                        !WsConnection.getInstance().getLoginConnection()) {
+                                        !WsConnection.getInstance().getLoginConnection()&&
+                                        WsConnection.getInstance().isLogin()) {
                                     UtilTool.Log("fengjian","目前登錄狀態不符合："+ConnectStateChangeListenerManager.get().getCurrentState()+"    "+WsConnection.getInstance().get(IMService.this).isOpen());
                                     disconnect();
                                     exReconnect(2000);
                                     break;
                                 }
-                                if(!WsConnection.getInstance().isLogin()&&!WsConnection.getInstance().getLoginConnection()){
+                                if(!WsConnection.getInstance().isLogin()&&!WsConnection.getInstance().getLoginConnection()&&ConnectStateChangeListenerManager.get().getCurrentState()
+                                        == ConnectStateChangeListenerManager.CONNECTED && ConnectStateChangeListenerManager.get().getCurrentState()
+                                        == ConnectStateChangeListenerManager.RECEIVING){
                                     UtilTool.Log("fengjian","目前登錄狀態不符合："+WsConnection.getInstance().isLogin());
                                     disconnect();
                                 }

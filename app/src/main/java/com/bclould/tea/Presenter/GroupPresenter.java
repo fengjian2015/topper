@@ -14,6 +14,7 @@ import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.GroupCreateInfo;
 import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.GroupMemberInfo;
+import com.bclould.tea.model.MessageTopInfo;
 import com.bclould.tea.model.ReviewInfo;
 import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.model.UnclaimedRedInfo;
@@ -799,8 +800,9 @@ public class GroupPresenter {
                         if (baseInfo.getStatus() == 1) {
                             callBack.send(baseInfo.getData().getUrl());
                             ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.up_succeed));
+                        }else{
+                            ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
                         }
-                        ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
                     }
 
                     @Override
@@ -851,6 +853,81 @@ public class GroupPresenter {
                 });
     }
 
+    public void setTopMessage(String roomId, int status, final boolean isShow, final CallBack callBack) {
+        if(isShow)
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .setTopMessage(UtilTool.getToken(),roomId,status)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            callBack.send();
+                            if (isShow)
+                            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.xg_succeed));
+                        } else {
+                            if (isShow)
+                            ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void getTopMessage( final CallBack5 callBack) {
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .getTopMessage(UtilTool.getToken())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<MessageTopInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(MessageTopInfo messageTopInfo) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        if (messageTopInfo.getStatus() == 1) {
+                            callBack.send(messageTopInfo);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     //定义接口
     public interface CallBack {
         void send();
@@ -878,5 +955,10 @@ public class GroupPresenter {
     public interface CallBack4 {
         void send(UnclaimedRedInfo baseInfo);
         void error();
+    }
+
+    //定义接口
+    public interface CallBack5 {
+        void send(MessageTopInfo baseInfo);
     }
 }

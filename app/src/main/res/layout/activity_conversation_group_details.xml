@@ -18,11 +18,11 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/session_details"
-            style="@style/MainTextShallowStyle36"/>
+            android:text="@string/session_details"/>
     </RelativeLayout>
 
     <View style="@style/HorizontalBoundaryStyle"></View>
@@ -49,10 +49,10 @@
 
                 <TextView
                     android:id="@+id/tv_member_number"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/group_member"
-                    style="@style/MainTextShallowStyle30"
                     />
 
                 <com.bclould.tea.ui.widget.MyGridView
@@ -94,12 +94,12 @@
 
                 <TextView
                     android:id="@+id/tv11"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/group_head"
-                    style="@style/MainTextShallowStyle30"/>
+                    android:text="@string/group_head"/>
 
                 <ImageView
                     android:id="@+id/iv_head"
@@ -133,13 +133,13 @@
 
                 <TextView
                     android:id="@+id/tv2"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/iv_inform"
                     android:paddingLeft="@dimen/x20"
-                    android:text="@string/group_nickname"
-                    style="@style/MainTextShallowStyle30"/>
+                    android:text="@string/group_nickname"/>
 
                 <TextView
                     android:id="@+id/tvgroupr_name"
@@ -205,13 +205,13 @@
 
                 <TextView
                     android:id="@+id/tv8"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/my_nickname_group"
-                    style="@style/MainTextShallowStyle30"/>
+                    android:text="@string/my_nickname_group"/>
 
                 <TextView
                     android:id="@+id/tv_member_name"
@@ -248,13 +248,13 @@
 
                 <TextView
                     android:id="@+id/tv3"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/iv_inform"
                     android:paddingBottom="@dimen/x25"
                     android:paddingTop="@dimen/x25"
-                    android:text="@string/group_qr"
-                    style="@style/MainTextShallowStyle30"/>
+                    android:text="@string/group_qr"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -278,13 +278,13 @@
 
                 <TextView
                     android:id="@+id/tv7"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv_inform"
                     android:paddingTop="@dimen/x25"
-                    android:text="@string/group_announcement"
-                    style="@style/MainTextShallowStyle30"/>
+                    android:text="@string/group_announcement"/>
 
                 <TextView
                     android:id="@+id/tv_announcement"
@@ -324,13 +324,13 @@
 
                 <TextView
                     android:id="@+id/tv15"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/iv_inform"
                     android:paddingBottom="@dimen/x25"
                     android:paddingTop="@dimen/x25"
-                    android:text="@string/unclaimed_red"
-                    style="@style/MainTextShallowStyle30"/>
+                    android:text="@string/unclaimed_red"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -354,13 +354,13 @@
 
                 <TextView
                     android:id="@+id/tv16"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/iv_inform"
                     android:paddingBottom="@dimen/x25"
                     android:paddingTop="@dimen/x25"
-                    android:text="@string/red_package_record"
-                    style="@style/MainTextShallowStyle30"/>
+                    android:text="@string/red_package_record"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -380,13 +380,13 @@
 
                 <TextView
                     android:id="@+id/tv10"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/looking_for_chat"
-                    style="@style/MainTextShallowStyle30"/>
+                    android:text="@string/looking_for_chat"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -408,13 +408,13 @@
 
                 <TextView
                     android:id="@+id/tv17"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/conversation_backgound"
-                    style="@style/MainTextShallowStyle30"/>
+                    android:text="@string/conversation_backgound"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -435,13 +435,13 @@
 
                 <TextView
                     android:id="@+id/tv4"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/top_chat"
-                    style="@style/MainTextShallowStyle30"/>
+                    android:text="@string/top_chat"/>
 
                 <ImageView
                     android:id="@+id/on_off_top"
@@ -462,13 +462,13 @@
 
                 <TextView
                     android:id="@+id/tv5"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/message_free"
-                    style="@style/MainTextShallowStyle30"/>
+                    android:text="@string/message_free"/>
 
                 <ImageView
                     android:id="@+id/on_off_message_free"
@@ -492,13 +492,13 @@
 
                 <TextView
                     android:id="@+id/tv12"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/is_allow_modify_data"
-                    style="@style/MainTextShallowStyle30"/>
+                    android:text="@string/is_allow_modify_data"/>
 
                 <ImageView
                     android:id="@+id/is_allow_modify_data"
@@ -523,13 +523,13 @@
 
                 <TextView
                     android:id="@+id/tv13"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/group_chat_invitation_confirmation"
-                    style="@style/MainTextShallowStyle30"/>
+                    android:text="@string/group_chat_invitation_confirmation"/>
 
                 <ImageView
                     android:id="@+id/is_review"
@@ -554,13 +554,13 @@
 
                 <TextView
                     android:id="@+id/tv14"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/group_initation_list"
-                    style="@style/MainTextShallowStyle30"/>
+                    android:text="@string/group_initation_list"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -583,13 +583,13 @@
 
                 <TextView
                     android:id="@+id/tv6"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv_inform"
-                    android:text="@string/empty_talk"
-                    style="@style/MainTextShallowStyle30"/>
+                    android:text="@string/empty_talk"/>
             </RelativeLayout>
 
             <Button

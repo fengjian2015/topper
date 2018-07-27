@@ -37,6 +37,7 @@ import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tea.ui.activity.GroupListActivity;
 import com.bclould.tea.ui.activity.IndividualDetailsActivity;
 import com.bclould.tea.ui.activity.NewFriendActivity;
+import com.bclould.tea.ui.activity.PublicActivity;
 import com.bclould.tea.ui.activity.RemarkActivity;
 import com.bclould.tea.ui.activity.ScanQRCodeActivity;
 import com.bclould.tea.ui.activity.SearchActivity;
@@ -380,7 +381,7 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
 //                ToastShow.showToast2(getActivity(), getString(R.string.hint_unfinished));
                 break;
             case R.id.my_public:
-                ToastShow.showToast2(getActivity(), getString(R.string.hint_unfinished));
+                startActivity(new Intent(getActivity(), PublicActivity.class));
                 break;
         }
     }

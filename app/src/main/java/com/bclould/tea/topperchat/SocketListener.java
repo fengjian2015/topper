@@ -300,9 +300,9 @@ public class SocketListener {
             UtilTool.Log("fengjian", "已經退出登錄，斷開鏈接");
             WsConnection.getInstance().goMainActivity();
         }
+        ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.RECEIVING);
         WsConnection.getInstance().setIsLogin(true);
         UtilTool.Log("fengjian", "登錄成功");
-        ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.RECEIVING);
         WsConnection.getInstance().setLoginConnection(false);
         new PingThread(context).start();
         new PingThreadRequest(context).start();

@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 29;
+    private static final int DATABASE_VERSION = 30;
 
     public DBHelper(Context context) {
         //CursorFactory设置为null,使用默认值
@@ -36,6 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("create table MessageState(id integer primary key autoincrement, msgId varchar,msgTime integer,roomId varchar)");
         db.execSQL("create table UserCodeDB(id integer primary key autoincrement, email varchar,password varchar)");
         db.execSQL("create table UserInfo(id integer primary key autoincrement, user varchar,path varchar,userName varchar)");//保存陌生人的信息
+        db.execSQL("create table PublicDB(id integer primary key autoincrement, publicId varchar,name varchar,logo varchar,publicDesc varchar,menu varchar)");
     }
 
     /**
@@ -120,6 +121,9 @@ public class DBHelper extends SQLiteOpenHelper {
             case 28:
                 //2018-07-16增加roomId字段,用於記錄撤回消息的房間，根據roomid判斷是否有撤回消息
                 db.execSQL("ALTER TABLE MessageState ADD roomId TEXT");
+            case 29:
+                userCodeDB = "create table if not exists PublicDB"  + "(id integer primary key autoincrement,publicId text,name text,logo text,publicDesc text,menu text)";
+                db.execSQL( userCodeDB );
                 break;
         }
 

@@ -65,7 +65,9 @@ public class XGManage {
     Handler mHandler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            setAlias();
+            if(WsConnection.getInstance().isLogin()){
+                setAlias();
+            }
         }
     };
 
