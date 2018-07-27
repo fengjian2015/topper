@@ -4,14 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/shallow_gray"
+    android:background="@color/app_bg_color"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/rl_title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
 
         <ImageView
@@ -22,37 +20,35 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/lrwmzpm"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/lrwmzpm"/>
 
         <TextView
             android:id="@+id/tv_question"
+            style="@style/BlueTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:padding="@dimen/x20"
-            android:text="@string/question"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"/>
+            android:text="@string/question"/>
 
     </RelativeLayout>
 
     <TextView
         android:id="@+id/xx"
-        style="@style/HCutOffRule"
+        style="@style/HorizontalBoundaryStyle"
         android:layout_below="@+id/rl_title"/>
 
     <RelativeLayout
         android:id="@+id/rl_data"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/xx">
+        android:layout_below="@+id/xx"
+        android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/ll_exchange"
@@ -64,159 +60,132 @@
             android:paddingTop="@dimen/x20">
 
             <TextView
-
                 android:id="@+id/tv_exchange"
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x30"
                 android:drawableLeft="@mipmap/icon_ex_chose"
-                android:drawablePadding="@dimen/x10"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+                android:drawablePadding="@dimen/x10"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y110"
                 android:layout_marginTop="@dimen/y20">
 
-                <android.support.v7.widget.CardView
+
+                <EditText
+                    android:id="@+id/et_count"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/y10"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_marginRight="@dimen/x10"
                     android:layout_weight="3"
-                    app:cardCornerRadius="@dimen/x15">
+                    android:background="@drawable/bg_shallow_shape"
+                    android:hint="@string/et_count"
+                    android:inputType="numberDecimal"
+                    android:paddingLeft="@dimen/x20"
+                    android:paddingRight="@dimen/x20"
+                    android:singleLine="true"
+                    android:textColorHint="@color/secondary_text_color"/>
 
-                    <EditText
-                        android:id="@+id/et_count"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@android:color/transparent"
-                        android:hint="@string/et_count"
-                        android:inputType="numberDecimal"
-                        android:paddingLeft="@dimen/x20"
-                        android:paddingRight="@dimen/x20"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x28"/>
 
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
+                <LinearLayout
+                    android:id="@+id/ll_coin_selector"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/y10"
                     android:layout_marginLeft="@dimen/x10"
                     android:layout_marginRight="@dimen/x20"
                     android:layout_weight="1"
-                    app:cardCornerRadius="@dimen/x15">
+                    android:background="@drawable/bg_shallow_shape"
+                    android:gravity="center">
 
-                    <LinearLayout
-                        android:id="@+id/ll_coin_selector"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center">
+                    <ImageView
+                        android:id="@+id/iv_logo"
+                        android:layout_width="@dimen/x60"
+                        android:layout_height="@dimen/x60"/>
 
-                        <ImageView
-                            android:id="@+id/iv_logo"
-                            android:layout_width="@dimen/x60"
-                            android:layout_height="@dimen/x60"/>
+                    <TextView
+                        android:id="@+id/tv_coin"
+                        style="@style/MainTextShallowStyle30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/x10"/>
 
-                        <TextView
-                            android:id="@+id/tv_coin"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/x10"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/x30"/>
-
-                    </LinearLayout>
-
-                </android.support.v7.widget.CardView>
+                </LinearLayout>
 
             </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_remain"
+                style="@style/SecondaryTextStyle24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/x30"
-                android:textSize="@dimen/x24"/>
+                android:layout_marginLeft="@dimen/x30"/>
 
-            <android.support.v7.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y110"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_marginRight="@dimen/x20"
                 android:layout_marginTop="@dimen/y10"
-                app:cardCornerRadius="@dimen/x15">
+                android:background="@drawable/bg_shallow_shape"
+                android:paddingLeft="@dimen/x20"
+                android:paddingRight="@dimen/x20">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/y110"
-                    android:paddingLeft="@dimen/x20"
-                    android:paddingRight="@dimen/x20">
+                <TextView
+                    android:id="@+id/tv_price"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"/>
 
-                    <TextView
-                        android:id="@+id/tv_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x28"/>
+                <Button
+                    android:id="@+id/btn_float"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/y70"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/bg_green_shape3"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"/>
 
-                    <Button
-                        android:id="@+id/btn_float"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/y70"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/bg_green_shape3"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"/>
+            </RelativeLayout>
 
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
 
             <TextView
                 android:id="@+id/tv_cny"
+                style="@style/SecondaryTextStyle28"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x30"
-                android:layout_marginTop="@dimen/y10"
-                android:textSize="@dimen/x24"/>
+                android:layout_marginTop="@dimen/y10"/>
 
             <Button
                 android:id="@+id/btn_exchange"
-                android:layout_width="@dimen/x400"
-                android:layout_height="@dimen/y80"
+                style="@style/ShortBtnStyle"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/y10"
                 android:layout_marginTop="@dimen/y30"
-                android:background="@drawable/btn_blue_selector"
                 android:text="@string/confirm_exchange"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="@dimen/x32"/>
+                android:textAllCaps="false"/>
 
         </LinearLayout>
 
         <TextView
             android:id="@+id/tv"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_exchange"
             android:layout_marginLeft="@dimen/x30"
             android:drawableLeft="@mipmap/icon_ex_records"
             android:drawablePadding="@dimen/x10"
-            android:text="@string/record"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x28"/>
+            android:text="@string/record"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -248,12 +217,11 @@
             android:src="@mipmap/img_wrong"/>
 
         <TextView
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y50"
-            android:text="@string/loading_error_anew_loading_hint2"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/x30"/>
+            android:text="@string/loading_error_anew_loading_hint2"/>
 
     </LinearLayout>
 

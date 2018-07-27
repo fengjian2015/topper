@@ -30,7 +30,7 @@
     </LinearLayout>
 
     <TextView
-        style="@style/HCutOffRule"
+        style="@style/HorizontalBoundaryStyle"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"/>
 
@@ -59,7 +59,7 @@
     </LinearLayout>
 
     <TextView
-        style="@style/HCutOffRule"
+        style="@style/HorizontalBoundaryStyle"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"/>
 
@@ -88,7 +88,7 @@
     </LinearLayout>
 
     <TextView
-        style="@style/HCutOffRule"
+        style="@style/HorizontalBoundaryStyle"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"/>
 
@@ -117,7 +117,7 @@
     </LinearLayout>
 
     <TextView
-        style="@style/HCutOffRule"
+        style="@style/HorizontalBoundaryStyle"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"/>
 </LinearLayout>

@@ -16,7 +16,7 @@
         android:textSize="@dimen/x36"/>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
 
     <RelativeLayout
@@ -41,7 +41,7 @@
     </RelativeLayout>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
     <Button
         android:id="@+id/btn_cancel"

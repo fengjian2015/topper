@@ -50,7 +50,7 @@
         android:layout_alignParentBottom="true">
 
         <TextView
-            style="@style/HCutOffRule"/>
+            style="@style/HorizontalBoundaryStyle"/>
 
         <com.lu.lubottommenu.LuBottomMenu
             android:id="@+id/lu_bottom_menu"

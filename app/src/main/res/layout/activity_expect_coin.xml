@@ -3,13 +3,11 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/shallow_gray"
+              android:background="@color/app_bg_color"
               android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
 
         <ImageView
@@ -20,122 +18,100 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/expect_coin"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/expect_coin"/>
 
     </RelativeLayout>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
     <TextView
+        style="@style/MainTextShallowStyle30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginTop="@dimen/y30"
-        android:text="如您有任何期望添加的幣種，歡迎聯繫我們！"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
+        android:text="@string/expect_coin_hint"/>
 
     <TextView
+        style="@style/MainTextShallowStyle30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x60"
         android:layout_marginTop="@dimen/y20"
-        android:text="@string/send_who"
-        android:textSize="@dimen/x28"/>
+        android:text="@string/send_who"/>
 
-    <android.support.v7.widget.CardView
+    <TextView
+        android:id="@+id/tv_email"
+        style="@style/MainTextShallowStyle30"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
         android:layout_marginTop="@dimen/y20"
-        app:cardBackgroundColor="#DFDFDF"
-        app:cardCornerRadius="@dimen/x50">
+        android:background="@drawable/bg_shallow_shape"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/x30"
+        android:text="邮电：tocotalk@outlook.com"/>
 
-        <TextView
-            android:id="@+id/tv_email"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/x30"
-            android:text="邮电：tocotalk@outlook.com"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
-
-    </android.support.v7.widget.CardView>
 
     <TextView
+        style="@style/MainTextShallowStyle30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x60"
         android:layout_marginTop="@dimen/y20"
-        android:text="@string/expect_coin"
-        android:textSize="@dimen/x28"/>
+        android:text="@string/expect_coin"/>
 
-    <android.support.v7.widget.CardView
+
+    <EditText
+        android:id="@+id/et_content"
+        style="@style/MainTextShallowStyle30"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
         android:layout_marginTop="@dimen/y20"
-        app:cardCornerRadius="@dimen/x50">
+        android:background="@drawable/bg_shallow_shape"
+        android:gravity="center_vertical"
+        android:hint="@string/et_expect_coin"
+        android:paddingLeft="@dimen/x30"
+        android:textColorHint="@color/secondary_text_color"/>
 
-        <EditText
-            android:id="@+id/et_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:gravity="center_vertical"
-            android:hint="@string/et_expect_coin"
-            android:paddingLeft="@dimen/x30"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
-
-    </android.support.v7.widget.CardView>
 
     <TextView
+        style="@style/MainTextShallowStyle30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x60"
         android:layout_marginTop="@dimen/y20"
-        android:text="@string/contact_information"
-        android:textSize="@dimen/x28"/>
+        android:text="@string/contact_information"/>
 
-    <android.support.v7.widget.CardView
+
+    <EditText
+        android:id="@+id/et_contact"
+        style="@style/MainTextShallowStyle30"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
         android:layout_marginTop="@dimen/y20"
-        app:cardCornerRadius="@dimen/x50">
+        android:background="@drawable/bg_shallow_shape"
+        android:gravity="center_vertical"
+        android:hint="@string/et_emily"
+        android:paddingLeft="@dimen/x30"
+        android:textColorHint="@color/secondary_text_color"/>
 
-        <EditText
-            android:id="@+id/et_contact"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:gravity="center_vertical"
-            android:hint="@string/et_emily"
-            android:paddingLeft="@dimen/x30"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
-
-    </android.support.v7.widget.CardView>
 
     <Button
         android:id="@+id/btn_confirm"
-        android:layout_width="@dimen/x450"
-        android:layout_height="@dimen/y80"
+        style="@style/LongBtnStyle"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y60"
-        android:background="@drawable/btn_blue_selector"
-        android:text="@string/submit"
-        android:textColor="@color/white"/>
+        android:text="@string/submit"/>
 
 </LinearLayout>

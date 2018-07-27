@@ -231,7 +231,7 @@
 
     <TextView
         android:id="@+id/xx"
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/cloud_circle_vp"

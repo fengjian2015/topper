@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-              android:background="@color/shallow_gray"
-    android:orientation="vertical"
-    tools:activity="com.bclould.tea.ui.activity.ConversationRecordFindActivity">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/app_bg_color"
+              android:orientation="vertical"
+              tools:activity="com.bclould.tea.ui.activity.ConversationRecordFindActivity">
+
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -24,11 +23,11 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/chat_content"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            style="@style/MainTextShallowStyle36"/>
     </RelativeLayout>
+
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -36,36 +35,41 @@
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y20"
+        app:cardBackgroundColor="@color/boundary_color"
         app:cardCornerRadius="@dimen/x40">
+
         <RelativeLayout
             android:id="@+id/rl_qr"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y90"
             android:paddingLeft="@dimen/x30"
             android:paddingRight="@dimen/x30">
+
             <ImageView
                 android:id="@+id/iv_search"
                 android:layout_width="@dimen/x50"
                 android:layout_height="@dimen/y50"
                 android:layout_centerVertical="true"
                 android:src="@mipmap/icon_seek"/>
+
             <EditText
                 android:id="@+id/et_search"
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/x60"
                 android:layout_marginRight="@dimen/x60"
-                android:textSize="@dimen/x28"
+                android:background="@null"
                 android:hint="@string/search"
                 android:singleLine="true"
-                android:textColor="@color/black"
-                android:background="@null"/>
+                android:textColorHint="@color/secondary_text_color"/>
+
             <ImageView
                 android:id="@+id/iv_delete"
                 android:layout_width="@dimen/x50"
                 android:layout_height="@dimen/y50"
-                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:src="@mipmap/icon_sh_cancel"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
@@ -75,9 +79,9 @@
         android:id="@+id/recycler_select"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/y20"
         android:layout_marginLeft="@dimen/x60"
         android:layout_marginRight="@dimen/x60"
+        android:layout_marginTop="@dimen/y20"
         >
 
     </android.support.v7.widget.RecyclerView>
@@ -88,16 +92,18 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/y20"
         android:visibility="gone">
+
         <com.scwang.smartrefresh.header.WaterDropHeader
             android:layout_width="match_parent"
-            android:background="@color/light"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:background="@color/light"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="@dimen/y30"
             android:background="@drawable/bg_pay_record_shape"
+            android:paddingTop="@dimen/y30"
             >
         </android.support.v7.widget.RecyclerView>
         <!--<com.bclould.tea.ui.widget.LoadMoreListView-->
@@ -115,16 +121,18 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/y20"
         android:visibility="gone">
+
         <com.scwang.smartrefresh.header.WaterDropHeader
             android:layout_width="match_parent"
-            android:background="@color/light"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:background="@color/light"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_video"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/y30"
             android:background="@drawable/bg_pay_record_shape"
+            android:padding="@dimen/y30"
             >
         </android.support.v7.widget.RecyclerView>
         <!--<com.bclould.tea.ui.widget.LoadMoreListView-->

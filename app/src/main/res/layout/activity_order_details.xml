@@ -41,7 +41,7 @@
     </RelativeLayout>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -132,7 +132,7 @@
                     </RelativeLayout>
 
                     <TextView
-                        style="@style/HCutOffRule"
+                        style="@style/HorizontalBoundaryStyle"
                         android:layout_marginBottom="@dimen/y15"/>
 
                     <RelativeLayout
@@ -326,7 +326,7 @@
                         android:textSize="@dimen/x24"/>
 
                     <TextView
-                        style="@style/HCutOffRule"/>
+                        style="@style/HorizontalBoundaryStyle"/>
 
                     <RelativeLayout
                         android:layout_marginTop="@dimen/y15"
@@ -357,7 +357,7 @@
                     </RelativeLayout>
 
                     <TextView
-                        style="@style/HCutOffRule"
+                        style="@style/HorizontalBoundaryStyle"
                         android:layout_marginTop="@dimen/y15"/>
 
 
@@ -502,7 +502,7 @@
                     </RelativeLayout>-->
 
                     <TextView
-                        style="@style/HCutOffRule"
+                        style="@style/HorizontalBoundaryStyle"
                         android:layout_marginTop="@dimen/y15"/>
 
                     <RelativeLayout

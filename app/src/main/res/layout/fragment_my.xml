@@ -16,7 +16,7 @@
         android:textSize="@dimen/x35"/>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
 
     <android.support.v7.widget.CardView

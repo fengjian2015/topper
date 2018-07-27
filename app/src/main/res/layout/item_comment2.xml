@@ -62,6 +62,6 @@
     </LinearLayout>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
 </LinearLayout>

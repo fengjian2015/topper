@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/shallow_gray"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/app_bg_color"
+              android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -20,49 +18,49 @@
     </RelativeLayout>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/app_bg_color"
         android:paddingBottom="@dimen/y40">
+
         <ImageView
             android:id="@+id/iv_touxiang"
             android:layout_width="@dimen/x120"
             android:layout_height="@dimen/y120"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/y40"/>
+
         <TextView
             android:id="@+id/name"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_touxiang"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x38"
             android:layout_marginTop="@dimen/y30"
             />
     </RelativeLayout>
+
     <TextView
         android:id="@+id/tv_add"
-        android:layout_marginTop="@dimen/y64"
-        android:layout_gravity="center_horizontal"
+        style="@style/MainTextShallowStyle36"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/y38"
-        android:text="@string/has_joined_room"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/y64"
         android:gravity="center_horizontal"
-        android:textColor="@color/gray3"
+        android:text="@string/has_joined_room"
         android:visibility="gone"/>
+
     <Button
         android:id="@+id/btn_add"
-        android:layout_width="@dimen/x450"
-        android:layout_height="@dimen/y80"
+        style="@style/LongBtnStyle"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y64"
-        android:background="@drawable/btn_blue_selector"
-        android:text="@string/add_this_room"
-        android:textColor="@color/white"/>
+        android:text="@string/add_this_room"/>
 </LinearLayout>

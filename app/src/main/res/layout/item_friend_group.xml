@@ -33,6 +33,6 @@
     <TextView
         android:id="@+id/xx"
         android:visibility="gone"
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
 </LinearLayout>

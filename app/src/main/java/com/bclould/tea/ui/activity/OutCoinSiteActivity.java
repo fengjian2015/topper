@@ -42,6 +42,7 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class OutCoinSiteActivity extends BaseActivity {
+
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.tv_coins)
@@ -50,10 +51,6 @@ public class OutCoinSiteActivity extends BaseActivity {
     RelativeLayout mTitle;
     @Bind(R.id.xx)
     TextView mXx;
-    @Bind(R.id.hint)
-    TextView mHint;
-    @Bind(R.id.xx2)
-    TextView mXx2;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @Bind(R.id.btn_add_site)

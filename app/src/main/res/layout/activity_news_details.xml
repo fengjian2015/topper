@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/shallow_gray"
+    android:background="@color/app_bg_color"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -42,7 +42,7 @@
 
     <TextView
         android:id="@+id/xx"
-        style="@style/HCutOffRule"
+        style="@style/HorizontalBoundaryStyle"
         android:layout_below="@+id/title"/>
 
     <ProgressBar
@@ -75,7 +75,7 @@
             android:layout_alignParentBottom="true">
 
             <TextView
-                style="@style/HCutOffRule"/>
+                style="@style/HorizontalBoundaryStyle"/>
 
             <EditText
                 android:id="@+id/comment_et"

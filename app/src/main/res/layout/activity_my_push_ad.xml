@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/shallow_gray"
+    android:background="@color/app_bg_color"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -42,7 +42,7 @@
     </RelativeLayout>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
     <LinearLayout
         android:visibility="gone"
@@ -109,7 +109,7 @@
                 </RelativeLayout>
 
                 <TextView
-                    style="@style/HCutOffRule"/>
+                    style="@style/HorizontalBoundaryStyle"/>
 
                 <RelativeLayout
                     android:id="@+id/rl_sum_buy"
@@ -154,7 +154,7 @@
                 </RelativeLayout>
 
                 <TextView
-                    style="@style/HCutOffRule"/>
+                    style="@style/HorizontalBoundaryStyle"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -211,7 +211,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/HCutOffRule"/>
+                        style="@style/HorizontalBoundaryStyle"/>
 
                     <RelativeLayout
                         android:layout_width="match_parent"

@@ -39,7 +39,7 @@
         android:textSize="@dimen/x26"/>
 
     <TextView
-        style="@style/HCutOffRule"
+        style="@style/HorizontalBoundaryStyle"
         android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

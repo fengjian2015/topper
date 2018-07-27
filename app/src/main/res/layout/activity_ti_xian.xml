@@ -40,7 +40,7 @@
     </RelativeLayout>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

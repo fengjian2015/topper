@@ -27,7 +27,7 @@
             android:background="@color/white"
             android:text="@string/baidu_map"/>
         <View
-            style="@style/HCutOffRule"></View>
+            style="@style/HorizontalBoundaryStyle"></View>
         <TextView
             android:id="@+id/tv_gaode"
             android:layout_width="match_parent"

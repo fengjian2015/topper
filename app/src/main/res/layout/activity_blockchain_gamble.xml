@@ -3,14 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/shallow_gray"
+    android:background="@color/app_bg_color"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/rl_title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -21,12 +19,11 @@
 
         <TextView
             android:id="@+id/tv_title"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/insert_coins_guess"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/insert_coins_guess"/>
 
         <ImageView
             android:id="@+id/iv_more"
@@ -38,7 +35,7 @@
 
         <TextView
             android:id="@+id/xx4"
-            style="@style/HCutOffRule"
+            style="@style/HorizontalBoundaryStyle"
             android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>
@@ -47,7 +44,7 @@
         android:id="@+id/ll_menu"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y80"
-        android:background="@color/white"
+        android:background="@color/app_bg_color"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -60,8 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/platform_guess"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+                style="@style/MainTextShallowStyle30"/>
 
             <TextView
                 android:id="@+id/xx"
@@ -85,8 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/personage_guess"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+                style="@style/MainTextShallowStyle30"/>
 
             <TextView
                 android:id="@+id/xx2"
@@ -110,8 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/my_guess"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+                style="@style/MainTextShallowStyle30"/>
 
             <TextView
                 android:id="@+id/xx3"

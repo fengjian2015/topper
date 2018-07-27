@@ -172,7 +172,7 @@
     </LinearLayout>
 
     <TextView
-        style="@style/HCutOffRule"
+        style="@style/HorizontalBoundaryStyle"
         android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

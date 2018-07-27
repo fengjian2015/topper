@@ -5,7 +5,7 @@
               android:background="@color/white"
               android:orientation="vertical">
     <TextView
-        style="@style/HCutOffRule"
+        style="@style/HorizontalBoundaryStyle"
         android:layout_marginLeft="@dimen/x20"/>
     <RelativeLayout
         android:layout_width="match_parent"

@@ -54,7 +54,7 @@
             </RelativeLayout>
 
             <TextView
-                style="@style/HCutOffRule"
+                style="@style/HorizontalBoundaryStyle"
                 android:layout_marginTop="@dimen/y20"/>
 
             <RelativeLayout
@@ -84,7 +84,7 @@
             </RelativeLayout>
 
             <TextView
-                style="@style/HCutOffRule"
+                style="@style/HorizontalBoundaryStyle"
                 android:layout_marginTop="@dimen/y20"/>
 
             <RelativeLayout

@@ -14,15 +14,6 @@
         <item name="android:background">@color/appThemeColor</item>
     </style>
 
-
-    <!--分割线-->
-    <style name="HCutOffRule">
-        <item name="android:background">@color/gray</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/y1</item>
-
-    </style>
-
     <!--自定义的输入框样式-->
     <style name="MyEditText" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">#a0a0a0</item>
@@ -120,5 +111,118 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
+
+    <!--app主要背景色-->
+    <style name="AppBgThemeColor">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/app_bg_color</item>
+    </style>
+
+    <!--短按鈕樣式-->
+    <style name="LongBtnStyle">
+        <item name="android:layout_width">@dimen/x690</item>
+        <item name="android:layout_height">@dimen/y96</item>
+        <item name="android:textSize">@dimen/x36</item>
+        <item name="android:textColor">@color/main_text_color</item>
+        <item name="android:background">@drawable/bg_blue_shape</item>
+    </style>
+
+    <!--長按鈕樣式-->
+    <style name="ShortBtnStyle">
+        <item name="android:layout_width">@dimen/x560</item>
+        <item name="android:layout_height">@dimen/y96</item>
+        <item name="android:textSize">@dimen/x36</item>
+        <item name="android:textColor">@color/main_text_color</item>
+        <item name="android:background">@drawable/bg_blue_shape</item>
+    </style>
+
+    <!--主要淺色字體樣式36號-->
+    <style name="MainTextShallowStyle36">
+        <item name="android:textSize">@dimen/x36</item>
+        <item name="android:textColor">@color/main_text_color</item>
+    </style>
+
+    <!--主要淺色字體樣式32號-->
+    <style name="MainTextShallowStyle32">
+        <item name="android:textSize">@dimen/x32</item>
+        <item name="android:textColor">@color/main_text_color</item>
+    </style>
+
+    <!--主要淺色字體樣式30號-->
+    <style name="MainTextShallowStyle30">
+        <item name="android:textSize">@dimen/x30</item>
+        <item name="android:textColor">@color/main_text_color</item>
+    </style>
+
+    <!--主要深色字體樣式36號-->
+    <style name="MainTextDeepStyle36">
+        <item name="android:textSize">@dimen/x36</item>
+        <item name="android:textColor">@color/app_bg_color</item>
+    </style>
+
+    <!--主要深色字體樣式32號-->
+    <style name="MainTextDeepStyle32">
+        <item name="android:textSize">@dimen/x32</item>
+        <item name="android:textColor">@color/app_bg_color</item>
+    </style>
+
+    <!--主要深色字體樣式30號-->
+    <style name="MainTextDeepStyle30">
+        <item name="android:textSize">@dimen/x30</item>
+        <item name="android:textColor">@color/app_bg_color</item>
+    </style>
+
+    <!--次要字體樣式28號-->
+    <style name="SecondaryTextStyle28">
+        <item name="android:textSize">@dimen/x28</item>
+        <item name="android:textColor">@color/secondary_text_color</item>
+    </style>
+
+    <!--次要字體樣式24號-->
+    <style name="SecondaryTextStyle24">
+        <item name="android:textSize">@dimen/x24</item>
+        <item name="android:textColor">@color/secondary_text_color</item>
+    </style>
+
+    <!--蓝色字体样式-->
+    <style name="BlueTextStyle28">
+        <item name="android:textSize">@dimen/x28</item>
+        <item name="android:textColor">@color/btn_bg_color</item>
+    </style>
+
+    <!--白色字体样式-->
+    <style name="WhiteTextStyle36">
+        <item name="android:textSize">@dimen/x36</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!--紅色字体样式-->
+    <style name="RedTextStyle28">
+        <item name="android:textSize">@dimen/x28</item>
+        <item name="android:textColor">@color/red_color</item>
+    </style>
+
+    <!--橫向分割线樣式-->
+    <style name="HorizontalBoundaryStyle">
+        <item name="android:background">@color/boundary_color</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/y1</item>
+    </style>
+
+    <!--縱向分割线樣式-->
+    <style name="VerticalBoundaryStyle">
+        <item name="android:background">@color/boundary_color</item>
+        <item name="android:layout_width">@dimen/x1</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <!--頂部導航欄樣式-->
+    <style name="TopNavigationBarStyle">
+        <item name="android:background">@color/app_bg_color</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/y100</item>
+    </style>
+
 </resources>
 

@@ -3,13 +3,11 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/shallow_gray"
+              android:background="@color/app_bg_color"
               android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -19,121 +17,104 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/add_bank_card"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/add_bank_card"/>
 
     </RelativeLayout>
 
     <TextView
-        style="@style/HCutOffRule"/>
+        style="@style/HorizontalBoundaryStyle"/>
 
     <TextView
+        style="@style/MainTextShallowStyle30"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/y80"
         android:layout_marginLeft="@dimen/x30"
         android:gravity="center_vertical"
-        android:text="@string/please_bind_the_cardholders_bank_card"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
+        android:text="@string/please_bind_the_cardholders_bank_card"/>
 
-    <android.support.v7.widget.CardView
+
+    <RelativeLayout
+        android:id="@+id/rl_selector_state"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
         android:layout_marginTop="@dimen/y20"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape">
 
-        <RelativeLayout
-            android:id="@+id/rl_selector_state"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
+        <TextView
+            android:id="@+id/tv3"
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="@dimen/x150"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:text="@string/state_district"/>
 
-            <TextView
-                android:id="@+id/tv3"
-                android:layout_width="@dimen/x150"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:text="@string/state_district"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+        <TextView
+            android:id="@+id/tv_state"
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_toRightOf="@+id/tv3"
+            android:hint="@string/selector_nationality"
+            android:textColorHint="@color/secondary_text_color"/>
 
-            <TextView
-                android:id="@+id/tv_state"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x20"
-                android:layout_toRightOf="@+id/tv3"
-                android:hint="@string/selector_nationality"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+        <ImageView
+            android:id="@+id/iv_jiantou2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x30"
+            android:src="@mipmap/iocn_more_down"/>
 
-            <ImageView
-                android:id="@+id/iv_jiantou2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x30"
-                android:src="@mipmap/iocn_more_down"/>
+    </RelativeLayout>
 
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/y20"
+        android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
-        app:cardCornerRadius="@dimen/x15">
+        android:layout_marginTop="@dimen/y30"
+        android:background="@drawable/bg_shallow_shape">
 
-        <LinearLayout
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="@dimen/x150"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:text="@string/card_number"/>
+
+        <EditText
+            android:id="@+id/et_card_number"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@color/transparent"
+            android:hint="@string/et_bank_card_number"
+            android:inputType="number"
+            android:maxLength="25"
+            android:singleLine="true"
+            android:textColorHint="@color/secondary_text_color"
+            android:textCursorDrawable="@null"/>
 
-            <TextView
-                android:layout_width="@dimen/x150"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:text="@string/card_number"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x25"/>
-
-            <EditText
-                android:id="@+id/et_card_number"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:background="@color/transparent"
-                android:hint="@string/et_bank_card_number"
-                android:inputType="number"
-                android:maxLength="25"
-                android:textColorHint="@color/gray"
-                android:textCursorDrawable="@null"
-                android:textSize="@dimen/x25"/>
-
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn_next"
-        android:layout_width="@dimen/x450"
-        android:layout_height="@dimen/y80"
+        style="@style/LongBtnStyle"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y60"
         android:background="@drawable/btn_blue_selector"
-        android:text="@string/next_step"
-        android:textColor="@color/white"/>
+        android:text="@string/next_step"/>
 
 </LinearLayout>

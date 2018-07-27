@@ -4,14 +4,12 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/shallow_gray"
+              android:background="@color/app_bg_color"
               android:orientation="vertical"
               tools:activity="com.bclould.tea.ui.activity.ConversationDetailsActivity">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -21,21 +19,19 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/session_details"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/session_details"/>
     </RelativeLayout>
 
-    <View style="@style/HCutOffRule"></View>
+    <View style="@style/HorizontalBoundaryStyle"></View>
 
     <RelativeLayout
         android:id="@+id/rl_details"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y160"
-        android:background="@color/white"
         android:paddingBottom="@dimen/y30"
         android:paddingLeft="@dimen/x20"
         android:paddingRight="@dimen/x30"
@@ -46,14 +42,16 @@
             android:id="@+id/image_head"
             android:layout_width="@dimen/x100"
             android:layout_height="@dimen/y100"/>
+
         <ImageView
             android:id="@+id/image_add"
             android:layout_width="@dimen/x100"
             android:layout_height="@dimen/y100"
+            android:layout_marginLeft="@dimen/x30"
             android:layout_toEndOf="@+id/image_head"
             android:layout_toRightOf="@+id/image_head"
-            android:layout_marginLeft="@dimen/x30"
             android:src="@mipmap/add_member"/>
+
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
@@ -147,19 +145,17 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
         android:layout_marginTop="@dimen/y20"
-        android:background="@color/white"
         >
 
         <TextView
             android:id="@+id/tv3"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x20"
             android:layout_toRightOf="@+id/iv_inform"
-            android:text="@string/looking_for_chat"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
+            android:text="@string/looking_for_chat"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -169,24 +165,25 @@
             android:layout_marginRight="@dimen/x30"
             android:src="@mipmap/iocn_person_turn"/>
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/rl_change_background"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
-        android:background="@color/white"
         >
+
         <View
-            style="@style/HCutOffRule"></View>
+            style="@style/HorizontalBoundaryStyle"></View>
+
         <TextView
             android:id="@+id/tv17"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x20"
             android:layout_toRightOf="@+id/iv_inform"
-            android:text="@string/conversation_backgound"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
+            android:text="@string/conversation_backgound"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -196,23 +193,22 @@
             android:layout_marginRight="@dimen/x30"
             android:src="@mipmap/iocn_person_turn"/>
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
         android:layout_marginTop="@dimen/y20"
-        android:background="@color/white"
         >
 
         <TextView
             android:id="@+id/tv4"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x20"
             android:layout_toRightOf="@+id/iv_inform"
-            android:text="@string/top_chat"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
+            android:text="@string/top_chat"/>
 
         <ImageView
             android:id="@+id/on_off_top"
@@ -225,24 +221,22 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        android:layout_height="@dimen/y100">
 
         <View
-            style="@style/HCutOffRule"
-            android:layout_marginRight="@dimen/x20"
-            android:layout_marginLeft="@dimen/x20"></View>
+            style="@style/HorizontalBoundaryStyle"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x20"></View>
 
         <TextView
             android:id="@+id/tv5"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x20"
             android:layout_toRightOf="@+id/iv_inform"
-            android:text="@string/message_free"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
+            android:text="@string/message_free"/>
 
         <ImageView
             android:id="@+id/on_off_message_free"
@@ -257,24 +251,22 @@
         android:id="@+id/rl_empty_talk"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
-        android:background="@color/white"
         >
 
         <View
-            style="@style/HCutOffRule"
-            android:layout_marginRight="@dimen/x20"
-            android:layout_marginLeft="@dimen/x20"></View>
+            style="@style/HorizontalBoundaryStyle"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x20"></View>
 
         <TextView
             android:id="@+id/tv6"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x20"
             android:layout_toRightOf="@+id/iv_inform"
-            android:text="@string/empty_talk"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
+            android:text="@string/empty_talk"/>
 
     </RelativeLayout>
 

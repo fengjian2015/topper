@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/shallow_gray"
+    android:background="@color/app_bg_color"
     android:layout_height="match_parent">
 
     <RelativeLayout
@@ -42,7 +42,7 @@
 
     <TextView
         android:id="@+id/xx"
-        style="@style/HCutOffRule"
+        style="@style/HorizontalBoundaryStyle"
         android:layout_below="@+id/rl_title"/>
 
     <ImageView

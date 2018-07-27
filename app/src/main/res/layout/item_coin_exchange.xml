@@ -45,7 +45,7 @@
 
 
     <TextView
-        style="@style/HCutOffRule"
+        style="@style/HorizontalBoundaryStyle"
         android:layout_below="@+id/tv_time"
         android:layout_marginTop="@dimen/y20"/>
 
