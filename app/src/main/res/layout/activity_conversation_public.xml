@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-              android:background="@color/shallow_gray"
-    tools:activity="com.bclould.tea.ui.activity.ConversationServerActivity">
-
+    android:orientation="vertical"
+    android:background="@color/shallow_gray"
+    tools:context="com.bclould.tea.ui.activity.ConversationPublicActivity">
     <LinearLayout
         android:id="@+id/ll_chat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="false"
         android:focusable="false"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_above="@+id/view">
 
         <RelativeLayout
             android:id="@+id/rl_title"
@@ -36,8 +37,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:text="傻狍子"
                 android:textColor="@color/black"
                 android:textSize="@dimen/x32"/>
+            <ImageView
+                android:id="@+id/iv_else"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/x20"
+                android:src="@mipmap/icon_nav_more_selected"/>
         </RelativeLayout>
         <TextView
             android:id="@+id/xx"
@@ -72,4 +82,17 @@
 
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
     </LinearLayout>
-</LinearLayout>
+    <View
+        android:id="@+id/view"
+        style="@style/HCutOffRule"
+        android:layout_below="@+id/ll_menu"></View>
+    <com.bclould.tea.ui.widget.MenuLinearLayout
+        android:id="@+id/ll_menu"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white">
+
+    </com.bclould.tea.ui.widget.MenuLinearLayout>
+</RelativeLayout>

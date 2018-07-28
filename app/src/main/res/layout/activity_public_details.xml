@@ -36,7 +36,7 @@
         android:background="@color/white"
         android:orientation="vertical"
         android:paddingTop="@dimen/y30"
-        android:paddingBottom="@dimen/y30"
+        android:paddingBottom="@dimen/y50"
         android:paddingRight="@dimen/x50"
         android:paddingLeft="@dimen/x50"
         android:visibility="gone"

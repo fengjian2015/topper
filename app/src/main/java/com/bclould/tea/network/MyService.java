@@ -1440,4 +1440,18 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("public_number_id") int public_number_id
     );
+
+    //公眾號取消關注
+    @FormUrlEncoded
+    @POST("chat/public_number/cancel/attention")
+    Observable<BaseInfo> publicUnfollow(
+            @Header("Authorization") String token,
+            @Field("public_number_id") int public_number_id
+    );
+
+    //重置聊天背景
+    @POST("chat/del/chat_bg")
+    Observable<BaseInfo> deleteBackgound(
+            @Header("Authorization") String token
+    );
 }
