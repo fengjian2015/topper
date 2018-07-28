@@ -8,9 +8,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -20,111 +18,95 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/set_app_look"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/set_app_look"/>
 
     </RelativeLayout>
 
     <TextView
         style="@style/HorizontalBoundaryStyle"/>
 
-
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rl_gesture_pw"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape">
 
-        <RelativeLayout
-            android:id="@+id/rl_gesture_pw"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
+        <ImageView
+            android:id="@+id/iv_gesture"
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:src="@mipmap/icon_shoshi"/>
 
-            <ImageView
-                android:id="@+id/iv_gesture"
-                android:layout_width="@dimen/x40"
-                android:layout_height="@dimen/x40"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:src="@mipmap/icon_shoshi"/>
-
-            <TextView
-                android:id="@+id/tv_gesture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/iv_gesture"
-                android:text="@string/gesture_pw"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
+        <TextView
+            android:id="@+id/tv_gesture"
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_toRightOf="@+id/iv_gesture"
+            android:text="@string/gesture_pw"/>
 
 
-            <ImageView
-                android:id="@+id/on_off_gesture"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/x25"
-                android:src="@drawable/set_disturb_seletor"/>
+        <ImageView
+            android:id="@+id/on_off_gesture"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/x25"
+            android:src="@drawable/set_disturb_seletor"/>
 
 
-        </RelativeLayout>
+    </RelativeLayout>
 
-    </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cv_fingerprint_pw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rl_fingerprint_pw"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape">
 
-        <RelativeLayout
-            android:id="@+id/rl_fingerprint_pw"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
+        <ImageView
+            android:id="@+id/iv_fingerprint"
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:src="@mipmap/icon_zhiwen"/>
 
-            <ImageView
-                android:id="@+id/iv_fingerprint"
-                android:layout_width="@dimen/x40"
-                android:layout_height="@dimen/x40"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:src="@mipmap/icon_zhiwen"/>
+        <TextView
+            android:id="@+id/tv_fingerprint"
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_toRightOf="@+id/iv_fingerprint"
+            android:text="@string/fingerprint_lock"/>
 
-            <TextView
-                android:id="@+id/tv_fingerprint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/iv_fingerprint"
-                android:text="@string/fingerprint_lock"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
-
-            <ImageView
-                android:id="@+id/on_off_fingerprint"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/x25"
-                android:src="@drawable/set_disturb_seletor"/>
+        <ImageView
+            android:id="@+id/on_off_fingerprint"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/x25"
+            android:src="@drawable/set_disturb_seletor"/>
 
 
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
+    </RelativeLayout>
 
 </LinearLayout>

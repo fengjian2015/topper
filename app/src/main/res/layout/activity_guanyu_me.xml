@@ -7,9 +7,7 @@
               android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
 
         <ImageView
@@ -20,201 +18,163 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/guanyu_me"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/guanyu_me"/>
 
     </RelativeLayout>
 
     <TextView
         style="@style/HorizontalBoundaryStyle"/>
 
-
-    <android.support.v7.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y20"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y30"
+            android:src="@mipmap/logo"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y30"
-                android:src="@mipmap/logo"/>
+        <TextView
+            android:id="@+id/tv_version"
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/y30"
+            android:layout_marginTop="@dimen/y20"/>
 
-            <TextView
-                android:id="@+id/tv_version"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/y30"
-                android:layout_marginTop="@dimen/y20"
-                android:textSize="@dimen/x30"/>
+    </LinearLayout>
 
-        </LinearLayout>
 
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y20"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/x30"
+        android:paddingRight="@dimen/x30">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/x30"
-            android:paddingRight="@dimen/x30">
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/guanwang"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/guanwang"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+        <TextView
+            style="@style/SecondaryTextStyle28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="www.topperchat.com"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="www.topperchat.com"
-                android:textSize="@dimen/x28"/>
+    </RelativeLayout>
 
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y20"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/x30"
+        android:paddingRight="@dimen/x30">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/x30"
-            android:paddingRight="@dimen/x30">
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/email"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/email"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+        <TextView
+            style="@style/SecondaryTextStyle28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/official_email"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="@string/official_email"
-                android:textSize="@dimen/x28"/>
+    </RelativeLayout>
 
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/cv_check_update"
-        android:visibility="gone"
+    <RelativeLayout
+        android:id="@+id/rl_check_update"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y20"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape"
+        android:paddingLeft="@dimen/x30"
+        android:paddingRight="@dimen/x30"
+        android:visibility="gone">
 
-        <RelativeLayout
-            android:id="@+id/rl_new"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/x30"
-            android:paddingRight="@dimen/x30">
+        <TextView
+            android:id="@+id/tv"
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/check_update"/>
 
-            <TextView
-                android:id="@+id/tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="@string/check_update"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+        <TextView
+            android:id="@+id/tv_new_update"
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/y40"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_toRightOf="@+id/tv"
+            android:background="@drawable/bg_new_update"
+            android:gravity="center"
+            android:text="New"
+            android:visibility="gone"/>
 
-            <TextView
-                android:id="@+id/tv_new_update"
-                android:layout_width="@dimen/x80"
-                android:layout_height="@dimen/y40"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/tv"
-                android:background="@drawable/bg_new_update"
-                android:gravity="center"
-                android:text="New"
-                android:textColor="@color/white"
-                android:textSize="@dimen/x28"
-                android:visibility="gone"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/iocn_person_turn"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@mipmap/iocn_person_turn"/>
+    </RelativeLayout>
 
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
+    <RelativeLayout
+        android:id="@+id/rl_update_log"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y20"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape"
+        android:paddingLeft="@dimen/x30"
+        android:paddingRight="@dimen/x30">
 
-        <RelativeLayout
-            android:id="@+id/rl_update_log"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="@dimen/x30"
-            android:paddingRight="@dimen/x30">
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/update_log"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="@string/update_log"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/iocn_person_turn"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@mipmap/iocn_person_turn"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
+    </RelativeLayout>
 
 </LinearLayout>

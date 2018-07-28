@@ -107,8 +107,8 @@
     <string name="selector_payment">選擇支付方式(可多选)</string>
     <string name="margin">溢價</string>
     <string name="price">價格</string>
-    <string name="min">最小成交額</string>
-    <string name="max">最大成交額</string>
+    <string name="min">最少交易</string>
+    <string name="max">最大交易</string>
     <string name="payment">付款</string>
     <string name="push">發佈</string>
     <string name="set_login_pw">設置登錄密碼</string>
@@ -1127,4 +1127,6 @@
     <string name="backgound">背景</string>
     <string name="no_public_number">暫無公眾號</string>
     <string name="search_public_numbers">搜索公眾號</string>
+    <string name="login_pw_hint">重置登錄密碼，字母，數字結合，且不小於8位</string>
+    <string name="payment_details">支付詳情</string>
 </resources>

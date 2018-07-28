@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FEFCF7"
+    android:background="@color/app_bg_color"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -16,12 +16,11 @@
 
     <TextView
         android:id="@+id/tv_pay_type"
+        style="@style/MainTextShallowStyle36"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/y30"
-        android:text="@string/payment_succeed"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x32"/>
+        android:text="@string/payment_succeed"/>
 
     <TextView
         android:id="@+id/tv_coin_count"
@@ -29,16 +28,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/y30"
         android:text="0.1TPC"
-        android:textColor="@color/black"
+        android:textColor="@color/main_text_color"
         android:textSize="@dimen/x50"
         android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/tv_who"
+        style="@style/MainTextShallowStyle30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/y50"
-        android:textSize="@dimen/x28"/>
+        android:layout_marginTop="@dimen/y50"/>
 
     <ImageView
         android:id="@+id/tv_touxiang"
@@ -49,20 +48,17 @@
 
     <TextView
         android:id="@+id/tv_name"
+        style="@style/MainTextShallowStyle32"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/y30"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x32"
         android:textStyle="bold"/>
 
     <Button
         android:id="@+id/btn_finish"
-        android:layout_width="@dimen/x300"
-        android:layout_height="@dimen/y80"
+        style="@style/ShortBtnStyle"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y100"
-        android:background="@drawable/bg_blue_border"
-        android:text="@string/finish"
-        android:textColor="@color/blue2"/>
+        android:text="@string/confirm"/>
 
 </LinearLayout>

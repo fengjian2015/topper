@@ -8,9 +8,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
 
         <ImageView
@@ -22,22 +20,20 @@
 
         <TextView
             android:id="@+id/tv_title"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:layout_centerInParent="true"/>
 
         <TextView
             android:id="@+id/tv_question"
+            style="@style/BlueTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:padding="@dimen/x20"
-            android:text="@string/help"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"/>
+            android:text="@string/help"/>
 
     </RelativeLayout>
 
@@ -45,20 +41,19 @@
         style="@style/HorizontalBoundaryStyle"/>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/ll_data"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/tv_order_type"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/y20"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x28"/>
+            android:layout_marginTop="@dimen/y20"/>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -66,7 +61,7 @@
             android:layout_marginLeft="@dimen/x30"
             android:layout_marginRight="@dimen/x20"
             android:layout_marginTop="@dimen/y20"
-            app:cardBackgroundColor="@color/white"
+            app:cardBackgroundColor="@color/boundary_color"
             app:cardCornerRadius="@dimen/x15">
 
             <LinearLayout
@@ -81,18 +76,17 @@
 
                     <TextView
                         android:id="@+id/tv_who"
+                        style="@style/MainTextShallowStyle30"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/buyer"
-                        android:textSize="@dimen/x26"/>
+                        android:text="@string/buyer"/>
 
                     <TextView
                         android:id="@+id/tv_name"
+                        style="@style/SecondaryTextStyle28"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x26"/>
+                        android:layout_alignParentRight="true"/>
 
                 </RelativeLayout>
 
@@ -107,18 +101,17 @@
 
                     <TextView
                         android:id="@+id/tv_hint_limit"
+                        style="@style/MainTextShallowStyle30"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/trading_limit"
-                        android:textSize="@dimen/x26"/>
+                        android:text="@string/trading_limit"/>
 
                     <TextView
                         android:id="@+id/tv_limit"
+                        style="@style/SecondaryTextStyle28"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x26"/>
+                        android:layout_alignParentRight="true"/>
 
                 </RelativeLayout>
 
@@ -129,18 +122,17 @@
 
                     <TextView
                         android:id="@+id/tv_service_charge_hint"
+                        style="@style/MainTextShallowStyle30"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/service_charge"
-                        android:textSize="@dimen/x26"/>
+                        android:text="@string/service_charge"/>
 
                     <TextView
                         android:id="@+id/tv_service_charge"
+                        style="@style/SecondaryTextStyle28"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x26"/>
+                        android:layout_alignParentRight="true"/>
 
                 </RelativeLayout>
 
@@ -151,18 +143,17 @@
 
                     <TextView
                         android:id="@+id/tv_shiji_hint"
+                        style="@style/MainTextShallowStyle30"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/shiji_out_coin"
-                        android:textSize="@dimen/x26"/>
+                        android:text="@string/shiji_out_coin"/>
 
                     <TextView
                         android:id="@+id/tv_shiji"
+                        style="@style/SecondaryTextStyle28"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x26"/>
+                        android:layout_alignParentRight="true"/>
 
                 </RelativeLayout>
 
@@ -177,18 +168,17 @@
 
                     <TextView
                         android:id="@+id/tv_hint_money"
+                        style="@style/MainTextShallowStyle30"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/trading_money"
-                        android:textSize="@dimen/x26"/>
+                        android:text="@string/trading_money"/>
 
                     <TextView
                         android:id="@+id/tv_money"
+                        style="@style/SecondaryTextStyle28"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x26"/>
+                        android:layout_alignParentRight="true"/>
 
                 </RelativeLayout>
 
@@ -199,18 +189,17 @@
 
                     <TextView
                         android:id="@+id/tv_hint_count"
+                        style="@style/MainTextShallowStyle30"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/trading_count"
-                        android:textSize="@dimen/x26"/>
+                        android:text="@string/trading_count"/>
 
                     <TextView
                         android:id="@+id/tv_count"
+                        style="@style/SecondaryTextStyle28"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x26"/>
+                        android:layout_alignParentRight="true"/>
 
                 </RelativeLayout>
 
@@ -221,18 +210,17 @@
 
                     <TextView
                         android:id="@+id/tv_hint_price"
+                        style="@style/MainTextShallowStyle30"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/trading_price"
-                        android:textSize="@dimen/x26"/>
+                        android:text="@string/trading_price"/>
 
                     <TextView
                         android:id="@+id/tv_price"
+                        style="@style/SecondaryTextStyle28"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x26"/>
+                        android:layout_alignParentRight="true"/>
 
                 </RelativeLayout>
 
@@ -254,18 +242,17 @@
                         android:layout_marginTop="@dimen/y20">
 
                         <TextView
+                            style="@style/MainTextShallowStyle30"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/order_number"
-                            android:textSize="@dimen/x26"/>
+                            android:text="@string/order_number"/>
 
                         <TextView
                             android:id="@+id/tv_order_number"
+                            style="@style/SecondaryTextStyle28"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/x26"/>
+                            android:layout_alignParentRight="true"/>
 
                     </RelativeLayout>
 
@@ -275,18 +262,17 @@
                         android:layout_marginTop="@dimen/y20">
 
                         <TextView
+                            style="@style/MainTextShallowStyle30"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/order_time"
-                            android:textSize="@dimen/x26"/>
+                            android:text="@string/order_time"/>
 
                         <TextView
                             android:id="@+id/tv_time"
+                            style="@style/SecondaryTextStyle28"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/x26"/>
+                            android:layout_alignParentRight="true"/>
 
                     </RelativeLayout>
 
@@ -304,6 +290,7 @@
                         android:layout_marginTop="@dimen/y20"/>
 
                     <TextView
+                        style="@style/MainTextShallowStyle30"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -326,15 +313,11 @@
 
                     <Button
                         android:id="@+id/btn_confirm"
-                        android:layout_width="@dimen/x250"
-                        android:layout_height="@dimen/y80"
+                        style="@style/ShortBtnStyle"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginBottom="@dimen/y10"
                         android:layout_marginTop="@dimen/y30"
-                        android:background="@drawable/bg_blue_shape"
-                        android:text="@string/confirm_send_coin"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/x28"/>
+                        android:text="@string/confirm_send_coin"/>
 
                 </LinearLayout>
 
@@ -360,12 +343,11 @@
             android:src="@mipmap/img_wrong"/>
 
         <TextView
-            android:layout_marginTop="@dimen/y50"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/loading_error_anew_loading_hint2"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/x30"/>
+            android:layout_marginTop="@dimen/y50"
+            android:text="@string/loading_error_anew_loading_hint2"/>
 
     </LinearLayout>
 

@@ -11,9 +11,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -24,12 +22,11 @@
 
         <TextView
             android:id="@+id/tv_title"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/push_ad"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/push_ad"/>
 
         <ImageView
             android:id="@+id/iv_question"
@@ -61,11 +58,11 @@
 
             <TextView
                 android:id="@+id/tv_hint"
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/y20"
-                android:textSize="@dimen/x26"/>
+                android:layout_marginTop="@dimen/y20"/>
 
             <TextView
                 style="@style/HorizontalBoundaryStyle"
@@ -73,160 +70,132 @@
                 android:layout_marginRight="@dimen/x30"
                 android:layout_marginTop="@dimen/y20"/>
 
-            <android.support.v7.widget.CardView
+            <RelativeLayout
+                android:id="@+id/rl_buy_sell"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/y100"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_marginRight="@dimen/x30"
                 android:layout_marginTop="@dimen/y20"
-                app:cardCornerRadius="@dimen/x10">
+                android:background="@drawable/bg_shallow_shape">
 
-                <RelativeLayout
-                    android:id="@+id/rl_buy_sell"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/y100">
+                <TextView
+                    android:id="@+id/tv4"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="@dimen/x140"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:gravity="center_vertical"
+                    android:text="@string/buysell"/>
 
-                    <TextView
-                        android:id="@+id/tv4"
-                        android:layout_width="@dimen/x140"
-                        android:layout_height="match_parent"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x30"
-                        android:gravity="center_vertical"
-                        android:text="@string/buysell"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x26"/>
+                <TextView
+                    android:id="@+id/xx4"
+                    style="@style/VerticalBoundaryStyle"
+                    android:layout_toRightOf="@+id/tv4"/>
 
-                    <TextView
-                        android:id="@+id/xx4"
-                        android:layout_width="@dimen/x4"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@+id/tv4"
-                        android:background="@color/light"/>
+                <TextView
+                    android:id="@+id/tv_buy_sell"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:layout_toRightOf="@+id/xx4"
+                    android:hint="@string/selecotr_buy_sell"
+                    android:textColorHint="@color/secondary_text_color"/>
 
-                    <TextView
-                        android:id="@+id/tv_buy_sell"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x30"
-                        android:layout_toRightOf="@+id/xx4"
-                        android:hint="@string/selecotr_buy_sell"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/x30"/>
+                <ImageView
+                    android:layout_width="@dimen/x15"
+                    android:layout_height="@dimen/y20"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x30"
+                    android:src="@mipmap/icon_bill_turninto"/>
 
-                    <ImageView
-                        android:layout_width="@dimen/x15"
-                        android:layout_height="@dimen/y20"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/x30"
-                        android:src="@mipmap/icon_bill_turninto"/>
+            </RelativeLayout>
 
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
+            <RelativeLayout
+                android:id="@+id/rl_selector_currency"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/y100"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_marginRight="@dimen/x30"
                 android:layout_marginTop="@dimen/y20"
-                app:cardCornerRadius="@dimen/x10">
+                android:background="@drawable/bg_shallow_shape">
 
-                <RelativeLayout
-                    android:id="@+id/rl_selector_currency"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/y100">
+                <TextView
+                    android:id="@+id/tv"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="@dimen/x140"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:gravity="center_vertical"
+                    android:text="@string/selected_currency"/>
 
-                    <TextView
-                        android:id="@+id/tv"
-                        android:layout_width="@dimen/x140"
-                        android:layout_height="match_parent"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x30"
-                        android:gravity="center_vertical"
-                        android:text="@string/selected_currency"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x26"/>
+                <TextView
+                    android:id="@+id/xx"
+                    style="@style/VerticalBoundaryStyle"
+                    android:layout_toRightOf="@+id/tv"/>
 
-                    <TextView
-                        android:id="@+id/xx"
-                        android:layout_width="@dimen/x4"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@+id/tv"
-                        android:background="@color/light"/>
+                <TextView
+                    android:id="@+id/tv_currency"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:layout_toRightOf="@+id/xx"
+                    android:hint="@string/selector_coin"
+                    android:text="TPC"/>
 
-                    <TextView
-                        android:id="@+id/tv_currency"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x30"
-                        android:layout_toRightOf="@+id/xx"
-                        android:hint="选择币种"
-                        android:text="TPC"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/x30"/>
+                <ImageView
+                    android:layout_width="@dimen/x15"
+                    android:layout_height="@dimen/y20"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x30"
+                    android:src="@mipmap/icon_bill_turninto"/>
 
-                    <ImageView
-                        android:layout_width="@dimen/x15"
-                        android:layout_height="@dimen/y20"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/x30"
-                        android:src="@mipmap/icon_bill_turninto"/>
+            </RelativeLayout>
 
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
+            <RelativeLayout
+                android:id="@+id/rl_county"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/y100"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_marginRight="@dimen/x30"
                 android:layout_marginTop="@dimen/y20"
-                app:cardCornerRadius="@dimen/x10">
+                android:background="@drawable/bg_shallow_shape">
 
-                <RelativeLayout
-                    android:id="@+id/rl_county"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/y100">
+                <TextView
+                    android:id="@+id/tv2"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="@dimen/x140"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:gravity="center_vertical"
+                    android:text="@string/state_district"/>
 
-                    <TextView
-                        android:id="@+id/tv2"
-                        android:layout_width="@dimen/x140"
-                        android:layout_height="match_parent"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x30"
-                        android:gravity="center_vertical"
-                        android:text="@string/state_district"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x26"/>
+                <TextView
+                    android:id="@+id/xx2"
+                    style="@style/VerticalBoundaryStyle"
+                    android:layout_toRightOf="@+id/tv2"/>
 
-                    <TextView
-                        android:id="@+id/xx2"
-                        android:layout_width="@dimen/x4"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@+id/tv2"
-                        android:background="@color/light"/>
+                <TextView
+                    android:id="@+id/tv_state"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:layout_toRightOf="@+id/xx2"
+                    android:hint="@string/unverified"
+                    android:textColorHint="@color/secondary_text_color"/>
 
-                    <TextView
-                        android:hint="@string/unverified"
-                        android:id="@+id/tv_state"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x30"
-                        android:layout_toRightOf="@+id/xx2"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/x30"/>
-
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
+            </RelativeLayout>
 
             <!--<android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -282,165 +251,137 @@
 
             </android.support.v7.widget.CardView>-->
 
-            <android.support.v7.widget.CardView
+            <RelativeLayout
+                android:id="@+id/rl_payment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/y100"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_marginRight="@dimen/x30"
                 android:layout_marginTop="@dimen/y20"
-                app:cardCornerRadius="@dimen/x10">
+                android:background="@drawable/bg_shallow_shape">
 
-                <RelativeLayout
-                    android:id="@+id/rl_payment"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/y100">
+                <TextView
+                    android:id="@+id/tv8"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="@dimen/x140"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:gravity="center_vertical"
+                    android:text="@string/payment"/>
 
-                    <TextView
-                        android:id="@+id/tv8"
-                        android:layout_width="@dimen/x140"
-                        android:layout_height="match_parent"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x30"
-                        android:gravity="center_vertical"
-                        android:text="@string/payment"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x26"/>
+                <TextView
+                    android:id="@+id/xx8"
+                    style="@style/VerticalBoundaryStyle"
+                    android:layout_toRightOf="@+id/tv8"/>
 
-                    <TextView
-                        android:id="@+id/xx8"
-                        android:layout_width="@dimen/x4"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@+id/tv8"
-                        android:background="@color/light"/>
-
-                    <TextView
-                        android:id="@+id/tv_payment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x30"
-                        android:layout_toRightOf="@+id/xx8"
-                        android:text="@string/bank_card"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/x30"/>
+                <TextView
+                    android:id="@+id/tv_payment"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:layout_toRightOf="@+id/xx8"
+                    android:text="@string/bank_card"/>
 
 
-                    <!--<ImageView
-                        android:layout_width="@dimen/x15"
-                        android:layout_height="@dimen/y20"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/x30"
-                        android:src="@mipmap/icon_bill_turninto"/>-->
+                <!--<ImageView
+                    android:layout_width="@dimen/x15"
+                    android:layout_height="@dimen/y20"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x30"
+                    android:src="@mipmap/icon_bill_turninto"/>-->
 
-                </RelativeLayout>
+            </RelativeLayout>
 
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
+            <RelativeLayout
+                android:id="@+id/rl_phone_number"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/y100"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_marginRight="@dimen/x30"
                 android:layout_marginTop="@dimen/y20"
-                app:cardCornerRadius="@dimen/x10">
+                android:background="@drawable/bg_shallow_shape">
 
-                <RelativeLayout
-                    android:id="@+id/rl_phone_number"
+                <TextView
+                    android:id="@+id/tv11"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="@dimen/x140"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:gravity="center_vertical"
+                    android:text="@string/phone_number"/>
+
+
+                <TextView
+                    android:id="@+id/xx11"
+                    style="@style/VerticalBoundaryStyle"
+                    android:layout_toRightOf="@+id/tv11"/>
+
+                <EditText
+                    android:id="@+id/et_phone_number"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/y100">
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/xx11"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/et_phone"
+                    android:inputType="number"
+                    android:paddingLeft="@dimen/x30"
+                    android:paddingRight="@dimen/x20"
+                    android:singleLine="true"
+                    android:textColorHint="@color/secondary_text_color"
+                    android:textCursorDrawable="@null"/>
 
-                    <TextView
-                        android:id="@+id/tv11"
-                        android:layout_width="@dimen/x140"
-                        android:layout_height="match_parent"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x30"
-                        android:gravity="center_vertical"
-                        android:text="@string/phone_number"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x26"/>
+            </RelativeLayout>
 
-
-                    <TextView
-                        android:id="@+id/xx11"
-                        android:layout_width="@dimen/x4"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@+id/tv11"
-                        android:background="@color/light"/>
-
-                    <EditText
-                        android:id="@+id/et_phone_number"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@+id/xx11"
-                        android:background="@android:color/transparent"
-                        android:hint="@string/et_phone"
-                        android:inputType="number"
-                        android:paddingLeft="@dimen/x30"
-                        android:paddingRight="@dimen/x20"
-                        android:singleLine="true"
-                        android:textColor="@android:color/black"
-                        android:textCursorDrawable="@null"
-                        android:textSize="@dimen/x30"/>
-
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
+            <RelativeLayout
+                android:id="@+id/rl_payment_time"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/y100"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_marginRight="@dimen/x30"
                 android:layout_marginTop="@dimen/y20"
-                app:cardCornerRadius="@dimen/x10">
+                android:background="@drawable/bg_shallow_shape">
 
-                <RelativeLayout
-                    android:id="@+id/rl_payment_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/y100">
+                <TextView
+                    android:id="@+id/tv9"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="@dimen/x140"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:gravity="center_vertical"
+                    android:text="@string/payment_time_limit"/>
 
-                    <TextView
-                        android:id="@+id/tv9"
-                        android:layout_width="@dimen/x140"
-                        android:layout_height="match_parent"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x30"
-                        android:gravity="center_vertical"
-                        android:text="@string/payment_time_limit"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x26"/>
+                <TextView
+                    android:id="@+id/xx9"
+                    style="@style/VerticalBoundaryStyle"
+                    android:layout_toRightOf="@+id/tv9"/>
 
-                    <TextView
-                        android:id="@+id/xx9"
-                        android:layout_width="@dimen/x4"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@+id/tv9"
-                        android:background="@color/light"/>
+                <TextView
+                    android:id="@+id/tv_payment_time"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:layout_toRightOf="@+id/xx9"
+                    android:hint="@string/selector_payment_time_limit"
+                    android:textColorHint="@color/secondary_text_color"/>
 
-                    <TextView
-                        android:id="@+id/tv_payment_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x30"
-                        android:layout_toRightOf="@+id/xx9"
-                        android:hint="@string/selector_payment_time_limit"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/x30"/>
+                <ImageView
+                    android:layout_width="@dimen/x15"
+                    android:layout_height="@dimen/y20"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x30"
+                    android:src="@mipmap/icon_bill_turninto"/>
 
-                    <ImageView
-                        android:layout_width="@dimen/x15"
-                        android:layout_height="@dimen/y20"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/x30"
-                        android:src="@mipmap/icon_bill_turninto"/>
-
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
+            </RelativeLayout>
 
             <!--<android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -502,271 +443,225 @@
 
             </android.support.v7.widget.CardView>-->
 
-            <android.support.v7.widget.CardView
+            <RelativeLayout
+                android:id="@+id/rl_price"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/y100"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_marginRight="@dimen/x30"
                 android:layout_marginTop="@dimen/y20"
-                app:cardCornerRadius="@dimen/x10">
+                android:background="@drawable/bg_shallow_shape">
 
-                <RelativeLayout
-                    android:id="@+id/rl_price"
+                <TextView
+                    android:id="@+id/tv5"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="@dimen/x140"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:gravity="center_vertical"
+                    android:text="@string/price"/>
+
+                <TextView
+                    android:id="@+id/xx5"
+                    style="@style/VerticalBoundaryStyle"
+                    android:layout_toRightOf="@+id/tv5"/>
+
+
+                <EditText
+                    android:id="@+id/et_price"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/y100">
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/tv_units"
+                    android:layout_toRightOf="@+id/xx5"
+                    android:background="@android:color/transparent"
+                    android:inputType="numberDecimal"
+                    android:paddingLeft="@dimen/x30"
+                    android:paddingRight="@dimen/x20"
+                    android:singleLine="true"
+                    android:textColorHint="@color/secondary_text_color"
+                    android:textCursorDrawable="@null"/>
 
-                    <TextView
-                        android:id="@+id/tv5"
-                        android:layout_width="@dimen/x140"
-                        android:layout_height="match_parent"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x30"
-                        android:gravity="center_vertical"
-                        android:text="@string/price"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x26"/>
+                <TextView
+                    android:id="@+id/tv_units"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x30"
+                    android:text="CNY"/>
 
-                    <TextView
-                        android:id="@+id/xx5"
-                        android:layout_width="@dimen/x4"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@+id/tv5"
-                        android:background="@color/light"/>
+            </RelativeLayout>
 
-
-                    <EditText
-                        android:id="@+id/et_price"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_toLeftOf="@+id/tv_units"
-                        android:layout_toRightOf="@+id/xx5"
-                        android:background="@android:color/transparent"
-                        android:inputType="numberDecimal"
-                        android:paddingLeft="@dimen/x30"
-                        android:paddingRight="@dimen/x20"
-                        android:singleLine="true"
-                        android:textColor="@android:color/black"
-                        android:textCursorDrawable="@null"
-                        android:textSize="@dimen/x30"/>
-
-                    <TextView
-                        android:id="@+id/tv_units"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/x30"
-                        android:text="CNY"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/x30"/>
-
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
+            <RelativeLayout
+                android:id="@+id/rl_count"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/y100"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_marginRight="@dimen/x30"
                 android:layout_marginTop="@dimen/y20"
-                app:cardCornerRadius="@dimen/x10">
+                android:background="@drawable/bg_shallow_shape">
 
-                <RelativeLayout
-                    android:id="@+id/rl_count"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/y100">
-
-                    <TextView
-                        android:id="@+id/tv10"
-                        android:layout_width="@dimen/x140"
-                        android:layout_height="match_parent"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x30"
-                        android:gravity="center_vertical"
-                        android:text="@string/count"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x26"/>
+                <TextView
+                    android:id="@+id/tv10"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="@dimen/x140"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:gravity="center_vertical"
+                    android:text="@string/count"/>
 
 
-                    <TextView
-                        android:id="@+id/xx10"
-                        android:layout_width="@dimen/x4"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@+id/tv10"
-                        android:background="@color/light"/>
+                <TextView
+                    android:id="@+id/xx10"
+                    style="@style/VerticalBoundaryStyle"
+                    android:layout_toRightOf="@+id/tv10"/>
 
-                    <EditText
-                        android:id="@+id/et_count"
-                        android:layout_width="@dimen/x400"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@+id/xx10"
-                        android:background="@android:color/transparent"
-                        android:hint="@string/et_count"
-                        android:inputType="numberDecimal"
-                        android:paddingLeft="@dimen/x30"
-                        android:singleLine="true"
-                        android:textColor="@android:color/black"
-                        android:textCursorDrawable="@null"
-                        android:textSize="@dimen/x30"/>
+                <EditText
+                    android:id="@+id/et_count"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="@dimen/x400"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/xx10"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/et_count"
+                    android:inputType="numberDecimal"
+                    android:paddingLeft="@dimen/x30"
+                    android:singleLine="true"
+                    android:textColorHint="@color/secondary_text_color"
+                    android:textCursorDrawable="@null"/>
 
-                    <TextView
-                        android:id="@+id/tv_individual"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/x30"
-                        android:text="@string/individual"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/x30"/>
+                <TextView
+                    android:id="@+id/tv_individual"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x30"
+                    android:text="@string/individual"/>
 
-                </RelativeLayout>
+            </RelativeLayout>
 
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
+            <RelativeLayout
+                android:id="@+id/rl_min_limit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/y100"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_marginRight="@dimen/x30"
                 android:layout_marginTop="@dimen/y20"
-                app:cardCornerRadius="@dimen/x10">
+                android:background="@drawable/bg_shallow_shape">
 
-                <RelativeLayout
-                    android:id="@+id/rl_min_limit"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/y100">
+                <TextView
+                    android:id="@+id/tv6"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="@dimen/x140"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:gravity="center_vertical"
+                    android:text="@string/min"/>
 
-                    <TextView
-                        android:id="@+id/tv6"
-                        android:layout_width="@dimen/x140"
-                        android:layout_height="match_parent"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x30"
-                        android:gravity="center_vertical"
-                        android:text="@string/min"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x26"/>
+                <TextView
+                    android:id="@+id/xx6"
+                    style="@style/VerticalBoundaryStyle"
+                    android:layout_toRightOf="@+id/tv6"/>
 
-                    <TextView
-                        android:id="@+id/xx6"
-                        android:layout_width="@dimen/x4"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@+id/tv6"
-                        android:background="@color/light"/>
+                <EditText
+                    android:id="@+id/et_min_limit"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="@dimen/x400"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/xx6"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/et_min_limit"
+                    android:inputType="numberDecimal"
+                    android:paddingLeft="@dimen/x30"
+                    android:singleLine="true"
+                    android:textColorHint="@color/secondary_text_color"
+                    android:textCursorDrawable="@null"/>
 
-                    <EditText
-                        android:id="@+id/et_min_limit"
-                        android:layout_width="@dimen/x400"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@+id/xx6"
-                        android:background="@android:color/transparent"
-                        android:hint="@string/et_min_limit"
-                        android:inputType="numberDecimal"
-                        android:paddingLeft="@dimen/x30"
-                        android:singleLine="true"
-                        android:textColor="@android:color/black"
-                        android:textCursorDrawable="@null"
-                        android:textSize="@dimen/x30"/>
+                <TextView
+                    android:id="@+id/tv_units2"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x30"
+                    android:text="CNY"/>
 
-                    <TextView
-                        android:id="@+id/tv_units2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/x30"
-                        android:text="CNY"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/x30"/>
+            </RelativeLayout>
 
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
+            <RelativeLayout
+                android:id="@+id/rl_max_limit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/y100"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_marginRight="@dimen/x30"
                 android:layout_marginTop="@dimen/y20"
-                app:cardCornerRadius="@dimen/x10">
+                android:background="@drawable/bg_shallow_shape">
 
-                <RelativeLayout
-                    android:id="@+id/rl_max_limit"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/y100">
+                <TextView
+                    android:id="@+id/tv7"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="@dimen/x140"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x30"
+                    android:gravity="center_vertical"
+                    android:text="@string/max"/>
 
-                    <TextView
-                        android:id="@+id/tv7"
-                        android:layout_width="@dimen/x140"
-                        android:layout_height="match_parent"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x30"
-                        android:gravity="center_vertical"
-                        android:text="@string/max"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x26"/>
+                <TextView
+                    android:id="@+id/xx7"
+                    style="@style/VerticalBoundaryStyle"
+                    android:layout_toRightOf="@+id/tv7"/>
 
-                    <TextView
-                        android:id="@+id/xx7"
-                        android:layout_width="@dimen/x4"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@+id/tv7"
-                        android:background="@color/light"/>
+                <EditText
+                    android:id="@+id/et_max_limit"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="@dimen/x400"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/xx7"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/et_max_limit"
+                    android:inputType="numberDecimal"
+                    android:paddingLeft="@dimen/x30"
+                    android:singleLine="true"
+                    android:textColorHint="@color/secondary_text_color"
+                    android:textCursorDrawable="@null"/>
 
-                    <EditText
-                        android:id="@+id/et_max_limit"
-                        android:layout_width="@dimen/x400"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@+id/xx7"
-                        android:background="@android:color/transparent"
-                        android:hint="@string/et_max_limit"
-                        android:inputType="numberDecimal"
-                        android:paddingLeft="@dimen/x30"
-                        android:singleLine="true"
-                        android:textColor="@android:color/black"
-                        android:textCursorDrawable="@null"
-                        android:textSize="@dimen/x30"/>
+                <TextView
+                    android:id="@+id/tv_units3"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x30"
+                    android:text="CNY"/>
 
-                    <TextView
-                        android:id="@+id/tv_units3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/x30"
-                        android:text="CNY"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/x30"/>
+            </RelativeLayout>
 
-                </RelativeLayout>
-
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
+            <EditText
+                android:id="@+id/et_remark"
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/y180"
                 android:layout_marginBottom="@dimen/y20"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_marginRight="@dimen/x30"
                 android:layout_marginTop="@dimen/y20"
-                app:cardCornerRadius="@dimen/x10">
-
-                <EditText
-                    android:id="@+id/et_remark"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/y180"
-                    android:background="@android:color/transparent"
-                    android:gravity="top"
-                    android:hint="@string/et_memo"
-                    android:paddingLeft="@dimen/x20"
-                    android:paddingTop="@dimen/x20"
-                    android:textSize="@dimen/x26"/>
-
-
-            </android.support.v7.widget.CardView>
+                android:background="@drawable/bg_shallow_shape"
+                android:gravity="top"
+                android:hint="@string/et_memo"
+                android:paddingLeft="@dimen/x20"
+                android:paddingTop="@dimen/x20"
+                android:textColorHint="@color/secondary_text_color"
+                android:textSize="@dimen/x26"/>
 
         </LinearLayout>
 
@@ -777,7 +672,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/y120"
         android:layout_alignParentBottom="true"
-        android:background="@color/white"
         android:orientation="vertical">
 
         <TextView
@@ -785,15 +679,11 @@
 
         <Button
             android:id="@+id/btn_pushing"
-            android:layout_width="@dimen/x400"
-            android:layout_height="@dimen/y80"
+            style="@style/ShortBtnStyle"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/btn_blue_selector"
             android:text="@string/push"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="@dimen/x32"/>
+            android:textAllCaps="false"/>
 
     </RelativeLayout>
 

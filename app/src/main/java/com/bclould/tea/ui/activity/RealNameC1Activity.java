@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -55,30 +54,18 @@ public class RealNameC1Activity extends BaseActivity {
 
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.et_name)
-    EditText mEtName;
-    @Bind(R.id.tv2)
-    TextView mTv2;
-    @Bind(R.id.card_type)
-    TextView mCardType;
-    @Bind(R.id.cv_card_type)
-    CardView mCvCardType;
-    @Bind(R.id.tv)
-    TextView mTv;
-    @Bind(R.id.et_number)
-    EditText mEtNumber;
-    @Bind(R.id.btn_next)
-    Button mBtnNext;
-    @Bind(R.id.ll_pass)
-    LinearLayout mLlPass;
-    @Bind(R.id.ll_no_pass)
-    LinearLayout mLlNoPass;
+    @Bind(R.id.iv_auth_type)
+    ImageView mIvAuthType;
+    @Bind(R.id.tv_cause)
+    TextView mTvCause;
     @Bind(R.id.tv_auth_type)
     TextView mTvAuthType;
     @Bind(R.id.btn_auth)
     Button mBtnAuth;
-    @Bind(R.id.iv_auth_type)
-    ImageView mIvAuthType;
+    @Bind(R.id.ll_pass)
+    LinearLayout mLlPass;
+    @Bind(R.id.et_name)
+    EditText mEtName;
     @Bind(R.id.tv3)
     TextView mTv3;
     @Bind(R.id.tv_state)
@@ -87,16 +74,28 @@ public class RealNameC1Activity extends BaseActivity {
     ImageView mIvJiantou2;
     @Bind(R.id.rl_selector_state)
     RelativeLayout mRlSelectorState;
+    @Bind(R.id.tv2)
+    TextView mTv2;
+    @Bind(R.id.card_type)
+    TextView mCardType;
     @Bind(R.id.iv_jiantou)
     ImageView mIvJiantou;
-    @Bind(R.id.tv_cause)
-    TextView mTvCause;
+    @Bind(R.id.tv)
+    TextView mTv;
+    @Bind(R.id.et_number)
+    EditText mEtNumber;
+    @Bind(R.id.btn_next)
+    Button mBtnNext;
+    @Bind(R.id.ll_no_pass)
+    LinearLayout mLlNoPass;
+    @Bind(R.id.rl_data)
+    RelativeLayout mRlData;
     @Bind(R.id.iv2)
     ImageView mIv2;
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
-    @Bind(R.id.rl_data)
-    RelativeLayout mRlData;
+    @Bind(R.id.rl_card_type)
+    RelativeLayout mRlCardType;
     private ViewGroup mView;
     private PopupWindow mPopupWindow;
     private RealNamePresenter mRealNamePresenter;
@@ -112,7 +111,7 @@ public class RealNameC1Activity extends BaseActivity {
         ButterKnife.bind(this);
         mRealNamePresenter = new RealNamePresenter(this);
         MyApp.getInstance().addActivity(this);
-        if(!EventBus.getDefault().isRegistered(this)){
+        if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);//初始化EventBus
         }
         initData();
@@ -185,13 +184,13 @@ public class RealNameC1Activity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.ll_error, R.id.bark, R.id.cv_card_type, R.id.btn_next, R.id.btn_auth, R.id.rl_selector_state})
+    @OnClick({R.id.ll_error, R.id.bark, R.id.rl_card_type, R.id.btn_next, R.id.btn_auth, R.id.rl_selector_state})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.cv_card_type:
+            case R.id.rl_card_type:
                 showPopup();
                 break;
             case R.id.rl_selector_state:
@@ -257,9 +256,9 @@ public class RealNameC1Activity extends BaseActivity {
 
     private void showPopup() {
         mView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.pop_gong_gao, null);
-        mPopupWindow = new PopupWindow(mView, mCvCardType.getWidth(), ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        mPopupWindow = new PopupWindow(mView, mRlCardType.getWidth(), ViewGroup.LayoutParams.WRAP_CONTENT, true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-        mPopupWindow.showAsDropDown(mCvCardType, 0, 10);
+        mPopupWindow.showAsDropDown(mRlCardType, 0, 10);
         final TextView shenfen = (TextView) mView.findViewById(R.id.tv_shenfen);
         shenfen.setOnClickListener(new View.OnClickListener() {
             @Override

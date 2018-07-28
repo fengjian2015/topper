@@ -7,20 +7,17 @@
 
     <RelativeLayout
         android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <TextView
             android:id="@+id/tv_filtrate"
+            style="@style/BlueTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center_vertical"
             android:paddingRight="@dimen/x20"
-            android:text="筛选"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"
+            android:text="@string/filtrate"
             android:visibility="gone"/>
 
         <RelativeLayout
@@ -35,13 +32,12 @@
 
             <TextView
                 android:id="@+id/tv_state"
+                style="@style/SecondaryTextStyle28"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:gravity="center"
-                android:text="@string/default_state"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+                android:text="@string/default_state"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -55,15 +51,14 @@
 
         <TextView
             android:id="@+id/tv_coin_name"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:drawablePadding="@dimen/x20"
             android:drawableRight="@mipmap/icon_chose_country"
             android:gravity="center"
-            android:text="TPC"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="TPC"/>
 
         <ImageView
             android:id="@+id/bark"
@@ -85,7 +80,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
         android:layout_below="@+id/xx"
-        android:background="@color/white"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -94,22 +88,21 @@
             android:layout_weight="1">
 
             <TextView
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="@string/buy"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
+                android:text="@string/buy"/>
 
             <TextView
                 android:id="@+id/tv_xx"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y3"
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_marginRight="@dimen/x20"
-                android:background="@color/blue2"/>
+                android:background="@color/blue2"
+                android:visibility="gone"/>
 
         </RelativeLayout>
 
@@ -119,22 +112,21 @@
             android:layout_weight="1">
 
             <TextView
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="@string/sell"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
+                android:text="@string/sell"/>
 
             <TextView
                 android:id="@+id/tv_xx2"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y3"
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_marginRight="@dimen/x20"
-                android:background="@color/blue2"/>
+                android:background="@color/blue2"
+                android:visibility="gone"/>
 
         </RelativeLayout>
 
@@ -144,46 +136,45 @@
             android:layout_weight="1">
 
             <TextView
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="@string/order"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
+                android:text="@string/order"/>
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/tv_xx3"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y3"
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_marginRight="@dimen/x20"
-                android:background="@color/blue2"/>
+                android:background="@color/blue2"
+                android:visibility="gone"/>
 
         </RelativeLayout>
 
     </LinearLayout>
 
     <TextView
-        android:layout_below="@+id/ll_menu"
         android:id="@+id/xx3"
-        style="@style/HorizontalBoundaryStyle"/>
+        style="@style/HorizontalBoundaryStyle"
+        android:layout_below="@+id/ll_menu"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/cloud_circle_vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/xx3"
-        android:layout_above="@+id/xx2">
+        android:layout_above="@+id/xx2"
+        android:layout_below="@+id/xx3">
     </android.support.v4.view.ViewPager>
 
     <LinearLayout
-        android:layout_below="@+id/xx3"
-        android:layout_above="@+id/xx2"
         android:id="@+id/ll_error"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/xx2"
+        android:layout_below="@+id/xx3"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone">
@@ -196,9 +187,9 @@
             android:src="@mipmap/img_wrong"/>
 
         <TextView
-            android:layout_marginTop="@dimen/y50"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y50"
             android:text="@string/loading_error_anew_loading_hint2"
             android:textColor="@android:color/black"
             android:textSize="@dimen/x30"/>
@@ -217,30 +208,26 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
-        <Button
+        <TextView
             android:id="@+id/btn_push_ad"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/white"
-            android:text="@string/push_ad"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
+            android:gravity="center"
+            android:text="@string/push_ad"/>
 
         <TextView
-            android:layout_width="@dimen/x1"
-            android:layout_height="match_parent"
-            android:background="@color/gray"/>
+            style="@style/VerticalBoundaryStyle"/>
 
-        <Button
+        <TextView
             android:id="@+id/my_publish"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/white"
-            android:text="@string/my_publish"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
+            android:gravity="center"
+            android:text="@string/my_publish"/>
 
     </LinearLayout>
 

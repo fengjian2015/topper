@@ -56,24 +56,23 @@
 
         <TextView
             android:id="@+id/tv_name"
+            style="@style/MainTextShallowStyle32"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/iv_touxiang"
             android:layout_marginTop="@dimen/y10"
-            android:layout_toRightOf="@+id/iv_touxiang"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:layout_toRightOf="@+id/iv_touxiang"/>
 
 
         <TextView
             android:id="@+id/tv_reputation"
+            style="@style/SecondaryTextStyle24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/iv_touxiang"
             android:layout_marginBottom="@dimen/y10"
             android:layout_marginTop="@dimen/y5"
-            android:layout_toRightOf="@+id/iv_touxiang"
-            android:textSize="@dimen/x24"/>
+            android:layout_toRightOf="@+id/iv_touxiang"/>
 
         <!--<Button
             android:id="@+id/btn_add_friend"

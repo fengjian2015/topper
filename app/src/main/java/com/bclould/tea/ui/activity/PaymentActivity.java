@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -61,6 +60,12 @@ public class PaymentActivity extends BaseActivity {
     ImageView mBark;
     @Bind(R.id.tv_title)
     TextView mTvTitle;
+    @Bind(R.id.tv_give)
+    TextView mTvGive;
+    @Bind(R.id.tv_name)
+    TextView mTvName;
+    @Bind(R.id.iv_touxiang)
+    ImageView mIvTouxiang;
     @Bind(R.id.tv_coin)
     TextView mTvCoin;
     @Bind(R.id.iv_jiantou)
@@ -71,22 +76,16 @@ public class PaymentActivity extends BaseActivity {
     EditText mEtCount;
     @Bind(R.id.et_remark)
     EditText mEtRemark;
-    @Bind(R.id.ll_no_steadfast)
-    LinearLayout mLlNoSteadfast;
     @Bind(R.id.btn_payment)
     Button mBtnPayment;
-    @Bind(R.id.tv_name)
-    TextView mTvName;
-    @Bind(R.id.iv_touxiang)
-    ImageView mIvTouxiang;
-    @Bind(R.id.cv_who)
-    CardView mCvWho;
+    @Bind(R.id.ll_no_steadfast)
+    LinearLayout mLlNoSteadfast;
     @Bind(R.id.iv2)
     ImageView mIv2;
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
-    @Bind(R.id.tv_give)
-    TextView mTvGive;
+    @Bind(R.id.rl_who)
+    RelativeLayout mRlWho;
     private String mUserId;
     private ReceiptPaymentPresenter mReceiptPaymentPresenter;
     private Dialog mBottomDialog;
@@ -149,7 +148,7 @@ public class PaymentActivity extends BaseActivity {
         mType = getIntent().getStringExtra("type");
         if (mType.equals(Constants.MONEYIN)) {//無數據用戶支付
             initData();
-            mCvWho.setVisibility(View.VISIBLE);
+            mRlWho.setVisibility(View.VISIBLE);
             mUserId = getIntent().getStringExtra("userId");
             final String username = getIntent().getStringExtra("username");
             mPersonalDetailsPresenter.getUserData(Integer.parseInt(mUserId), new PersonalDetailsPresenter.CallBack4() {
@@ -169,12 +168,12 @@ public class PaymentActivity extends BaseActivity {
                 }
             });
         } else if (mType.equals(Constants.MONEYOUT)) {//生成付款碼
-            mCvWho.setVisibility(View.GONE);
+            mRlWho.setVisibility(View.GONE);
             initData();
             mTvTitle.setText(getString(R.string.create_fk_code));
             mBtnPayment.setText(getString(R.string.confirm));
         } else if (mType.equals(Constants.QRMONEYIN)) {//生成收款碼
-            mCvWho.setVisibility(View.GONE);
+            mRlWho.setVisibility(View.GONE);
             mTvTitle.setText(getString(R.string.create_sk_code));
             initData();
             mBtnPayment.setText(getString(R.string.confirm));
@@ -183,13 +182,13 @@ public class PaymentActivity extends BaseActivity {
             mCode = getIntent().getStringExtra("username");
             mLlError.setVisibility(View.GONE);
             mTvGive.setText(getString(R.string.payment_give) + getString(R.string.merchant));
-            mCvWho.setVisibility(View.VISIBLE);
+            mRlWho.setVisibility(View.VISIBLE);
             mRlSelectorCoin.setEnabled(false);
             getMerchantUser();
         } else {//有數據用戶支付
             mLlNoSteadfast.setVisibility(View.VISIBLE);
             mLlError.setVisibility(View.GONE);
-            mCvWho.setVisibility(View.VISIBLE);
+            mRlWho.setVisibility(View.VISIBLE);
             mUserId = getIntent().getStringExtra("userId");
             mCoinId = getIntent().getStringExtra("coinId");
             mCoinNames = getIntent().getStringExtra("coinName");
@@ -282,7 +281,7 @@ public class PaymentActivity extends BaseActivity {
     }
 
     private void showPWDialog() {
-        pwdDialog=new PWDDialog(this);
+        pwdDialog = new PWDDialog(this);
         pwdDialog.setOnPWDresult(new PWDDialog.OnPWDresult() {
             @Override
             public void success(String password) {
@@ -297,19 +296,19 @@ public class PaymentActivity extends BaseActivity {
                 }
             }
         });
-        String desc="";
+        String desc = "";
         if (mType.equals(Constants.MONEYIN)) {
-            desc=getString(R.string.scan_qr_code_pay);
+            desc = getString(R.string.scan_qr_code_pay);
         } else if (mType.equals(Constants.MONEYOUT)) {
-            desc=getString(R.string.create_fk_code);
+            desc = getString(R.string.create_fk_code);
         } else if (mType.equals(Constants.QRMONEYIN)) {
-            desc=getString(R.string.create_sk_code);
+            desc = getString(R.string.create_sk_code);
         } else {
-            desc=getString(R.string.scan_qr_code_pay);
+            desc = getString(R.string.scan_qr_code_pay);
         }
         String count = mEtCount.getText().toString();
         String coinName = mTvCoin.getText().toString();
-        pwdDialog.showDialog(count,coinName,desc,logo,null);
+        pwdDialog.showDialog(count, coinName, desc, logo, null);
     }
 
     //支付給商家
@@ -457,7 +456,7 @@ public class PaymentActivity extends BaseActivity {
 
     public void hideDialog(String name, int id, String logo) {
         mId = id;
-        this.logo=logo;
+        this.logo = logo;
         mCoinName = name;
         mBottomDialog.dismiss();
         mTvCoin.setText(name);

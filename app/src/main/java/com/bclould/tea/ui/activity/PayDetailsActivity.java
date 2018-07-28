@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,6 +32,7 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class PayDetailsActivity extends BaseActivity {
+
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.tv_title)
@@ -63,8 +63,8 @@ public class PayDetailsActivity extends BaseActivity {
     TextView mTvCopy;
     @Bind(R.id.rl_tx_id)
     RelativeLayout mRlTxId;
-    @Bind(R.id.cv_data)
-    CardView mCvData;
+    @Bind(R.id.ll_data)
+    LinearLayout mLlData;
     @Bind(R.id.iv2)
     ImageView mIv2;
     @Bind(R.id.ll_error)
@@ -101,7 +101,7 @@ public class PayDetailsActivity extends BaseActivity {
             @Override
             public void send(TransRecordInfo.DataBean data) {
                 if (ActivityUtil.isActivityOnTop(PayDetailsActivity.this)) {
-                    mCvData.setVisibility(View.VISIBLE);
+                    mLlData.setVisibility(View.VISIBLE);
                     mLlError.setVisibility(View.GONE);
                     mTvName.setText(data.getType_name());
                     mTvLimit.setText(data.getName());
@@ -117,7 +117,7 @@ public class PayDetailsActivity extends BaseActivity {
             @Override
             public void error() {
                 if (ActivityUtil.isActivityOnTop(PayDetailsActivity.this)) {
-                    mCvData.setVisibility(View.GONE);
+                    mLlData.setVisibility(View.GONE);
                     mLlError.setVisibility(View.VISIBLE);
                 }
             }

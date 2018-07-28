@@ -8,14 +8,13 @@
 
     <TextView
         android:id="@+id/tv_title"
+        style="@style/MainTextShallowStyle36"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y20"
-        android:text="@string/tocotalk_agreement"
-        android:textColor="@color/white"
-        android:textSize="@dimen/x32"/>
+        android:text="@string/tocotalk_agreement"/>
 
     <TextView
         android:id="@+id/xx"
@@ -28,7 +27,6 @@
         android:background="@color/white"/>
 
     <WebView
-        android:background="#2B353F"
         android:id="@+id/web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,7 +35,8 @@
         android:layout_marginBottom="@dimen/y20"
         android:layout_marginLeft="@dimen/x40"
         android:layout_marginRight="@dimen/x40"
-        android:layout_marginTop="@dimen/y20"></WebView>
+        android:layout_marginTop="@dimen/y20"
+        android:background="#2B353F"></WebView>
 
     <!--<ScrollView
         android:layout_width="match_parent"
@@ -71,6 +70,7 @@
 
     <TextView
         android:id="@+id/tv_consent"
+        style="@style/BlueTextStyle28"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -79,8 +79,6 @@
         android:layout_marginTop="@dimen/y10"
         android:paddingBottom="@dimen/y20"
         android:paddingTop="@dimen/y20"
-        android:text="@string/consent_agreement"
-        android:textColor="@color/blue3"
-        android:textSize="@dimen/x28"/>
+        android:text="@string/consent_agreement"/>
 
 </RelativeLayout>

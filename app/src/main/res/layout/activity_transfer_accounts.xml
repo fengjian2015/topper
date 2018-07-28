@@ -7,9 +7,7 @@
               android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
 
         <ImageView
@@ -20,24 +18,22 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/transfer"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/transfer"/>
 
         <TextView
             android:id="@+id/tv_record"
+            style="@style/BlueTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:gravity="center"
             android:paddingRight="@dimen/x20"
-            android:text="@string/record"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"/>
+            android:text="@string/record"/>
 
     </RelativeLayout>
 
@@ -45,191 +41,156 @@
         style="@style/HorizontalBoundaryStyle"/>
 
     <TextView
+        style="@style/MainTextShallowStyle30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x40"
         android:layout_marginTop="@dimen/y25"
-        android:text="@string/transfer_give"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
+        android:text="@string/transfer_give"/>
 
-    <android.support.v7.widget.CardView
+    <EditText
+        android:id="@+id/et_email"
+        style="@style/MainTextShallowStyle30"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
         android:layout_marginBottom="@dimen/y15"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y15"
-        app:cardCornerRadius="@dimen/x15">
+        android:layout_toLeftOf="@+id/tv_yu_e"
+        android:background="@drawable/bg_shallow_shape"
+        android:hint="@string/et_emily"
+        android:paddingLeft="@dimen/x20"
+        android:paddingRight="@dimen/x20"
+        android:singleLine="true"
+        android:textColorHint="@color/secondary_text_color"/>
 
-        <EditText
-            android:id="@+id/et_email"
-            android:layout_width="match_parent"
-            android:singleLine="true"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/tv_yu_e"
-            android:background="@android:color/transparent"
-            android:hint="@string/et_emily"
-            android:paddingLeft="@dimen/x20"
-            android:paddingRight="@dimen/x20"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x28"/>
-
-    </android.support.v7.widget.CardView>
 
     <TextView
+        style="@style/MainTextShallowStyle30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x40"
-        android:text="@string/count"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
+        android:text="@string/count"/>
 
-
-    <android.support.v7.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
         android:layout_marginBottom="@dimen/y15"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y15"
-        app:cardCornerRadius="@dimen/x15">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <EditText
-                android:id="@+id/et_coin_count"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/tv_yu_e"
-                android:background="@android:color/transparent"
-                android:hint="@string/et_count"
-                android:inputType="numberDecimal"
-                android:paddingLeft="@dimen/x20"
-                android:paddingRight="@dimen/x20"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
-
-            <TextView
-                android:id="@+id/tv_yu_e"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/tv_coin_count"
-                android:text="@string/surplus"
-                android:textSize="@dimen/x28"/>
-
-            <TextView
-                android:id="@+id/tv_coin_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/tv_coin_name"
-                android:text="0"
-                android:textColor="#FF8721"
-                android:textSize="@dimen/x28"/>
-
-            <TextView
-                android:id="@+id/tv_coin_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x20"
-                android:text="BTC"
-                android:textSize="@dimen/x28"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x40"
-        android:text="@string/google_verify"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:layout_marginBottom="@dimen/y15"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y15"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape">
 
         <EditText
-            android:id="@+id/et_google_code"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:singleLine="true"
-            android:layout_toLeftOf="@+id/tv_yu_e"
-            android:background="@android:color/transparent"
-            android:hint="@string/et_google_code"
-            android:inputType="number"
-            android:maxLength="6"
-            android:paddingLeft="@dimen/x20"
-            android:paddingRight="@dimen/x20"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x28"/>
-
-    </android.support.v7.widget.CardView>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x40"
-        android:text="@string/remark"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:layout_marginBottom="@dimen/y15"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y15"
-        app:cardCornerRadius="@dimen/x15">
-
-        <EditText
-            android:id="@+id/et_remark"
+            android:id="@+id/et_coin_count"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/tv_yu_e"
-            android:singleLine="true"
             android:background="@android:color/transparent"
-            android:hint="@string/et_memo"
+            android:hint="@string/et_count"
+            android:inputType="numberDecimal"
             android:paddingLeft="@dimen/x20"
             android:paddingRight="@dimen/x20"
-            android:textColor="@color/black"
+            android:singleLine="true"
+            android:textColorHint="@color/secondary_text_color"/>
+
+        <TextView
+            android:id="@+id/tv_yu_e"
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tv_coin_count"
+            android:text="@string/surplus"/>
+
+        <TextView
+            android:id="@+id/tv_coin_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tv_coin_name"
+            android:text="0"
+            android:textColor="#FF8721"
             android:textSize="@dimen/x28"/>
 
-    </android.support.v7.widget.CardView>
+        <TextView
+            android:id="@+id/tv_coin_name"
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x20"
+            android:text="BTC"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/MainTextShallowStyle30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x40"
+        android:text="@string/google_verify"/>
+
+    <EditText
+        android:id="@+id/et_google_code"
+        style="@style/MainTextShallowStyle30"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_marginBottom="@dimen/y15"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y15"
+        android:layout_toLeftOf="@+id/tv_yu_e"
+        android:background="@drawable/bg_shallow_shape"
+        android:hint="@string/et_google_code"
+        android:inputType="number"
+        android:maxLength="6"
+        android:paddingLeft="@dimen/x20"
+        android:paddingRight="@dimen/x20"
+        android:singleLine="true"
+        android:textColorHint="@color/secondary_text_color"/>
+
+    <TextView
+        style="@style/MainTextShallowStyle30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x40"
+        android:text="@string/remark"/>
+
+    <EditText
+        android:id="@+id/et_remark"
+        style="@style/MainTextShallowStyle30"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_marginBottom="@dimen/y15"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y15"
+        android:layout_toLeftOf="@+id/tv_yu_e"
+        android:background="@drawable/bg_shallow_shape"
+        android:hint="@string/et_memo"
+        android:paddingLeft="@dimen/x20"
+        android:paddingRight="@dimen/x20"
+        android:singleLine="true"
+        android:textColorHint="@color/secondary_text_color"/>
 
     <Button
         android:id="@+id/btn_confirm"
-        android:layout_width="@dimen/x450"
-        android:layout_height="@dimen/y80"
+        style="@style/LongBtnStyle"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y30"
-        android:background="@drawable/btn_blue_selector"
-        android:text="@string/transfer"
-        android:textColor="@color/white"/>
+        android:text="@string/transfer"/>
 
 
     <TextView
+        style="@style/MainTextShallowStyle30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y100"
         android:lineSpacingExtra="@dimen/x10"
-        android:text="@string/transfer_hint"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
+        android:text="@string/transfer_hint"/>
 </LinearLayout>

@@ -7,9 +7,7 @@
               android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -19,319 +17,267 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/user_safety"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/user_safety"/>
 
     </RelativeLayout>
 
     <TextView
         style="@style/HorizontalBoundaryStyle"/>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rl_autonym_attestation"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape">
 
-        <RelativeLayout
-            android:id="@+id/rl_autonym_attestation"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
+        <ImageView
+            android:id="@+id/iv"
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:src="@mipmap/iocn_person_check"/>
 
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_toRightOf="@+id/iv"
+            android:text="@string/authentication"/>
 
-            <ImageView
-                android:id="@+id/iv"
-                android:layout_width="@dimen/x40"
-                android:layout_height="@dimen/x40"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:src="@mipmap/iocn_person_check"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x30"
+            android:src="@mipmap/iocn_person_turn"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:layout_toRightOf="@+id/iv"
-                android:text="@string/authentication"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+    </RelativeLayout>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x30"
-                android:src="@mipmap/iocn_person_turn"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rl_login_password"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape">
 
-        <RelativeLayout
-            android:id="@+id/rl_login_password"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
+        <ImageView
+            android:id="@+id/iv_login_password"
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:src="@mipmap/icon_mima"/>
 
-            <ImageView
-                android:id="@+id/iv_login_password"
-                android:layout_width="@dimen/x40"
-                android:layout_height="@dimen/x40"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:src="@mipmap/icon_mima"/>
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_toRightOf="@+id/iv_login_password"
+            android:text="@string/login_pw"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/iv_login_password"
-                android:text="@string/login_pw"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
+        <ImageView
+            android:layout_width="@dimen/x15"
+            android:layout_height="@dimen/y25"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x25"
+            android:src="@mipmap/icon_aboutus_turninto"/>
 
-            <ImageView
-                android:layout_width="@dimen/x15"
-                android:layout_height="@dimen/y25"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x25"
-                android:src="@mipmap/icon_aboutus_turninto"/>
+    </RelativeLayout>
 
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rl_pay_password"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape">
 
-        <RelativeLayout
-            android:id="@+id/rl_pay_password"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
+        <ImageView
+            android:id="@+id/iv_pay_password"
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:src="@mipmap/icon_pay_password"/>
 
-            <ImageView
-                android:id="@+id/iv_pay_password"
-                android:layout_width="@dimen/x40"
-                android:layout_height="@dimen/x40"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:src="@mipmap/icon_pay_password"/>
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_toRightOf="@+id/iv_pay_password"
+            android:text="@string/payment_pw"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/iv_pay_password"
-                android:text="@string/payment_pw"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
+        <ImageView
+            android:layout_width="@dimen/x15"
+            android:layout_height="@dimen/y25"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x25"
+            android:src="@mipmap/icon_aboutus_turninto"/>
 
-            <ImageView
-                android:layout_width="@dimen/x15"
-                android:layout_height="@dimen/y25"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x25"
-                android:src="@mipmap/icon_aboutus_turninto"/>
+    </RelativeLayout>
 
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rl_app_look"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape">
 
-        <RelativeLayout
-            android:id="@+id/rl_app_look"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
+        <ImageView
+            android:id="@+id/iv_pw_check"
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:src="@mipmap/icon_shoshi"/>
 
-            <ImageView
-                android:id="@+id/iv_pw_check"
-                android:layout_width="@dimen/x40"
-                android:layout_height="@dimen/x40"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:src="@mipmap/icon_shoshi"/>
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_toRightOf="@+id/iv_pw_check"
+            android:text="@string/app_look"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/iv_pw_check"
-                android:text="@string/app_look"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
+        <ImageView
+            android:layout_width="@dimen/x15"
+            android:layout_height="@dimen/y25"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x25"
+            android:src="@mipmap/icon_aboutus_turninto"/>
 
-            <ImageView
-                android:layout_width="@dimen/x15"
-                android:layout_height="@dimen/y25"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x25"
-                android:src="@mipmap/icon_aboutus_turninto"/>
+    </RelativeLayout>
 
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rl_google"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape">
 
-        <RelativeLayout
-            android:id="@+id/rl_google"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
+        <ImageView
+            android:id="@+id/iv_google"
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:src="@mipmap/icon_google"/>
 
-            <ImageView
-                android:id="@+id/iv_google"
-                android:layout_width="@dimen/x40"
-                android:layout_height="@dimen/x40"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:src="@mipmap/icon_google"/>
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_toRightOf="@+id/iv_google"
+            android:text="@string/google_verify"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/iv_google"
-                android:text="@string/google_verify"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
+        <ImageView
+            android:layout_width="@dimen/x15"
+            android:layout_height="@dimen/y25"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x25"
+            android:src="@mipmap/icon_aboutus_turninto"/>
 
-            <ImageView
-                android:layout_width="@dimen/x15"
-                android:layout_height="@dimen/y25"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x25"
-                android:src="@mipmap/icon_aboutus_turninto"/>
+    </RelativeLayout>
 
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rl_login_set"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape">
 
-        <RelativeLayout
-            android:id="@+id/rl_login_set"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
+        <ImageView
+            android:id="@+id/iv_login_set"
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:src="@mipmap/icon_login"/>
 
-            <ImageView
-                android:id="@+id/iv_login_set"
-                android:layout_width="@dimen/x40"
-                android:layout_height="@dimen/x40"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:src="@mipmap/icon_login"/>
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_toRightOf="@+id/iv_login_set"
+            android:text="@string/login_set"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/iv_login_set"
-                android:text="@string/login_set"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x25"
+            android:src="@mipmap/icon_aboutus_turninto"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x25"
-                android:src="@mipmap/icon_aboutus_turninto"/>
+    </RelativeLayout>
 
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rl_login_record"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape">
 
-        <RelativeLayout
-            android:id="@+id/rl_login_record"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
+        <ImageView
+            android:id="@+id/iv_login_record"
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:src="@mipmap/icon_annal"/>
 
-            <ImageView
-                android:id="@+id/iv_login_record"
-                android:layout_width="@dimen/x40"
-                android:layout_height="@dimen/x40"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:src="@mipmap/icon_annal"/>
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_toRightOf="@+id/iv_login_record"
+            android:text="@string/login_record"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/iv_login_record"
-                android:text="@string/login_record"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x25"
+            android:src="@mipmap/icon_aboutus_turninto"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x25"
-                android:src="@mipmap/icon_aboutus_turninto"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
+    </RelativeLayout>
 
 </LinearLayout>

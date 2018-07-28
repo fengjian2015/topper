@@ -7,9 +7,7 @@
               android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -19,12 +17,11 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/personal_details"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/personal_details"/>
 
     </RelativeLayout>
 
@@ -32,76 +29,62 @@
         style="@style/HorizontalBoundaryStyle"/>
 
 
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rl_touxiang"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y180"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y20"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape">
 
-        <RelativeLayout
-            android:id="@+id/rl_touxiang"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y180">
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:text="@string/head_portrait"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:text="@string/head_portrait"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
+        <ImageView
+            android:id="@+id/touxiang"
+            android:layout_width="@dimen/x120"
+            android:layout_height="@dimen/x120"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x30"
+            android:src="@mipmap/img_nfriend_headshot1"/>
 
-            <ImageView
-                android:id="@+id/touxiang"
-                android:layout_width="@dimen/x120"
-                android:layout_height="@dimen/x120"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_marginRight="@dimen/x30"
-                android:src="@mipmap/img_nfriend_headshot1"/>
+    </RelativeLayout>
 
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rl_username"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y20"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape">
 
-        <RelativeLayout
-            android:id="@+id/rl_username"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:text="@string/username"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:text="@string/username"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
+        <TextView
+            android:id="@+id/tv_username"
+            style="@style/SecondaryTextStyle28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x30"/>
 
-            <TextView
-                android:id="@+id/tv_username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x30"
-                android:textSize="@dimen/x26"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
+    </RelativeLayout>
 
 
     <!--<android.support.v7.widget.CardView
@@ -140,75 +123,62 @@
 
     </android.support.v7.widget.CardView>-->
 
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rl_qr_card"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y20"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape">
 
-        <RelativeLayout
-            android:id="@+id/rl_qr_card"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:text="@string/qr_code_card"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:text="@string/qr_code_card"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
+        <ImageView
+            android:layout_width="@dimen/x70"
+            android:layout_height="@dimen/y70"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x30"
+            android:src="@mipmap/qr_code"/>
 
-            <ImageView
-                android:layout_width="@dimen/x70"
-                android:layout_height="@dimen/y70"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_marginRight="@dimen/x30"
-                android:src="@mipmap/qr_code"/>
+    </RelativeLayout>
 
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rl_location"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y20"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape">
 
-        <RelativeLayout
-            android:id="@+id/rl_location"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120">
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:text="@string/nationality"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:text="@string/nationality"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x30"/>
+        <TextView
+            android:id="@+id/tv_location"
+            style="@style/SecondaryTextStyle28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x30"
+            android:hint="@string/unverified"
+            android:textColorHint="@color/secondary_text_color"/>
 
-            <TextView
-                android:id="@+id/tv_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x30"
-                android:hint="@string/unverified"
-                android:textSize="@dimen/x26"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
+    </RelativeLayout>
 
 </LinearLayout>

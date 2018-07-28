@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
               android:background="@color/app_bg_color"
-    android:orientation="vertical"
-    tools:activity="com.bclould.tea.ui.activity.SelectFriendActivity">
+              android:orientation="vertical"
+              tools:activity="com.bclould.tea.ui.activity.SelectFriendActivity">
+
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -20,25 +19,27 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/choose_a_chat"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/choose_a_chat"/>
     </RelativeLayout>
+
+    <TextView
+        style="@style/HorizontalBoundaryStyle"/>
+
     <TextView
         android:id="@+id/tv_select_friend"
+        style="@style/MainTextShallowStyle32"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y80"
-        android:background="@color/white"
-        android:text="選擇好友"
-        android:gravity="center_vertical"
-        android:layout_marginTop="@dimen/y20"
         android:layout_marginBottom="@dimen/y20"
+        android:layout_marginTop="@dimen/y20"
+        android:gravity="center_vertical"
         android:paddingLeft="@dimen/x20"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x32"/>
+        android:text="@string/select_friends"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -58,6 +59,7 @@
             android:textSize="@dimen/x30"/>-->
 
     </RelativeLayout>
+
     <ImageView
         android:id="@+id/image"
         android:layout_width="1dp"

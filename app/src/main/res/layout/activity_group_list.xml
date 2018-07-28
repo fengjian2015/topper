@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
               android:background="@color/app_bg_color"
-    android:orientation="vertical">
+              android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -18,12 +16,11 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/my_group"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/my_group"/>
 
     </RelativeLayout>
 
@@ -33,61 +30,65 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/app_bg_color"
         android:padding="@dimen/x30">
+
         <TextView
             android:id="@+id/tv1"
+            style="@style/MainTextShallowStyle32"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/create_group"
             android:drawablePadding="@dimen/x12"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"
             android:gravity="center_vertical"
+            android:text="@string/create_group"
             />
+
         <EditText
             android:id="@+id/et_create"
+            style="@style/MainTextShallowStyle32"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y80"
             android:layout_below="@+id/tv1"
-            android:background="@drawable/bg_grey_shape3"
+            android:layout_marginTop="@dimen/y20"
+            android:layout_toLeftOf="@+id/tv_create"
+            android:background="@drawable/bg_shallow_shape"
             android:hint="@string/et_group_name"
+            android:maxLength="10"
             android:paddingLeft="@dimen/x20"
             android:paddingRight="@dimen/x20"
-            android:layout_marginTop="@dimen/y20"
             android:singleLine="true"
-            android:maxLength="10"
-            android:textSize="@dimen/x28"
-            android:layout_toLeftOf="@+id/tv_create"
+            android:textColorHint="@color/secondary_text_color"
             />
+
         <TextView
             android:id="@+id/tv_create"
+            style="@style/BlueTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/y80"
-            android:layout_marginTop="@dimen/y20"
+            android:layout_alignParentRight="true"
             android:layout_below="@+id/tv1"
-            android:gravity="center"
-            android:textSize="@dimen/x32"
-            android:textColor="@color/blue2"
-            android:text="@string/confirm"
             android:layout_marginLeft="@dimen/x20"
-            android:layout_alignParentRight="true"/>
+            android:layout_marginTop="@dimen/y20"
+            android:gravity="center"
+            android:text="@string/confirm"/>
     </RelativeLayout>
+
     <TextView
         android:id="@+id/tv_group_line"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y20"
-        android:background="@color/light"
-        />
+        style="@style/HorizontalBoundaryStyle"/>
+
     <TextView
+        style="@style/MainTextShallowStyle30"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y80"
-        android:background="@color/white"
+        android:background="@color/app_bg_color"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/x20"
-        android:text="@string/group"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
+        android:text="@string/group"/>
+
+    <TextView
+        style="@style/HorizontalBoundaryStyle"/>
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
@@ -97,13 +98,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/light"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
+            android:layout_height="match_parent">
         </android.support.v7.widget.RecyclerView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
     <LinearLayout
         android:id="@+id/ll_no_data"
         android:layout_width="match_parent"
