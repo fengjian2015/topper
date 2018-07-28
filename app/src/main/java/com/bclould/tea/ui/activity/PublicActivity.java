@@ -14,9 +14,16 @@ import com.bclould.tea.Presenter.PublicPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.history.DBPublicManage;
 import com.bclould.tea.model.PublicInfo;
+import com.bclould.tea.topperchat.RoomMemberManage;
 import com.bclould.tea.ui.adapter.PublicListRVAdapter;
+import com.bclould.tea.utils.MessageEvent;
 import com.gjiazhe.wavesidebar.WaveSideBar;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +52,7 @@ public class PublicActivity extends BaseActivity implements PublicListRVAdapter.
 
     private List<PublicInfo.DataBean> mUsers = new ArrayList<>();
     private PublicListRVAdapter mPublicListRVAdapter;
+    private DBPublicManage mDBPublicManage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +60,8 @@ public class PublicActivity extends BaseActivity implements PublicListRVAdapter.
         setContentView(R.layout.activity_public);
         MyApp.getInstance().addActivity(this);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);//初始化EventBus
+        mDBPublicManage=new DBPublicManage(this);
         initRecylerView();
         setListener();
         initData();
@@ -68,6 +78,7 @@ public class PublicActivity extends BaseActivity implements PublicListRVAdapter.
                     mLlNoData.setVisibility(View.GONE);
                     mRlData.setVisibility(View.VISIBLE);
                 }
+                RoomMemberManage.getInstance().addPublicManage(dataBean.getData());
                 updateData(dataBean.getData());
             }
 
@@ -89,6 +100,18 @@ public class PublicActivity extends BaseActivity implements PublicListRVAdapter.
         mRecyclerView.setNestedScrollingEnabled(false);
     }
 
+    private void updateList(){
+        List<PublicInfo.DataBean> dataBeanList=mDBPublicManage.queryAllRequest();
+        if(dataBeanList.size()==0){
+            mLlNoData.setVisibility(View.VISIBLE);
+            mRlData.setVisibility(View.GONE);
+        }else{
+            mLlNoData.setVisibility(View.GONE);
+            mRlData.setVisibility(View.VISIBLE);
+        }
+        updateData(dataBeanList);
+    }
+
     Map<String, Integer> mMap = new HashMap<>();
 
     private void updateData(List<PublicInfo.DataBean> dataBeanList) {
@@ -98,6 +121,9 @@ public class PublicActivity extends BaseActivity implements PublicListRVAdapter.
         mUsers.clear();
         mMap.clear();
         mUsers.addAll(dataBeanList);
+        for(PublicInfo.DataBean dataBean:mUsers){
+            dataBean.setName(dataBean.getName());
+        }
         Collections.sort(mUsers);
         try {
             for (int i = 0; i < mUsers.size(); i++) {
@@ -152,9 +178,27 @@ public class PublicActivity extends BaseActivity implements PublicListRVAdapter.
         }
     }
 
+    //接受通知
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(getString(R.string.update_public_number))) {
+            updateList();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
     @Override
     public void onclick(int position) {
-
+        Intent intent=new Intent(PublicActivity.this,ConversationPublicActivity.class);
+        intent.putExtra("publicId",mUsers.get(position).getId()+"");
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     @Override

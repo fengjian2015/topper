@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.R;
+import com.bclould.tea.model.BaseInfo;
 import com.bclould.tea.model.GroupCreateInfo;
 import com.bclould.tea.model.PublicDetailsInfo;
 import com.bclould.tea.model.PublicInfo;
@@ -203,6 +204,46 @@ public class PublicPresenter {
                 });
     }
 
+    public void publicUnfollow(int id,final CallBack2 callBack) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .publicUnfollow(UtilTool.getToken(),id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            callBack.send();
+                        } else {
+                            callBack.error();
+                        }
+                        ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        callBack.error();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+
 
     //定义接口
     public interface CallBack {
@@ -215,4 +256,11 @@ public class PublicPresenter {
         void send(PublicDetailsInfo publicDetailsInfo);
         void error();
     }
+
+    //定义接口
+    public interface CallBack2{
+        void send();
+        void error();
+    }
+
 }

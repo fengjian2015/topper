@@ -1162,9 +1162,26 @@
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.activity.PublicActivity" />
-        <activity android:name=".ui.activity.SearchPublicActivity" />
-        <activity android:name=".ui.activity.PublicDetailsActivity"></activity>
+        <activity android:name=".ui.activity.PublicActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity android:name=".ui.activity.SearchPublicActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity android:name=".ui.activity.PublicDetailsActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity android:name=".ui.activity.ConversationPublicActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
     </application>
 
 </manifest>

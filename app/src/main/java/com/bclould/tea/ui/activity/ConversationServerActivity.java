@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.adapter.ChatServerAdapter;
@@ -65,6 +66,7 @@ public class ConversationServerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation_server);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);//初始化数据库管理类
         EventBus.getDefault().register(this);//初始化EventBus
         mMgr.updateNumber(roomId, 0);//更新未读消息条数

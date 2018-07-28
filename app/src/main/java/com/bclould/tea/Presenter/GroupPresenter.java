@@ -853,6 +853,44 @@ public class GroupPresenter {
                 });
     }
 
+    public void deleteBackgound(final CallBack callBack) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .deleteBackgound(UtilTool.getToken())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            callBack.send();
+                            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.xg_succeed));
+                        }else{
+                            ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
+                        hideDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     public void setTopMessage(String roomId, int status, final boolean isShow, final CallBack callBack) {
         if(isShow)
         showDialog();

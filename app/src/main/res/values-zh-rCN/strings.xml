@@ -530,7 +530,7 @@
         
     <string name="et_name">输入真实姓名</string>
         
-    <string name="selector_nationality">选择国籍或地區</string>
+    <string name="selector_nationality">选择国籍</string>
         
     <string name="id_card_type">证件类型</string>
         
@@ -1866,7 +1866,7 @@
     <string name="exceptional_inform">打赏通知</string>
         
     <string name="exceptional_inform_hint">您有一个新打赏消息,点击查看详情</string>
-    <string name="state_district">国家地区</string>
+    <string name="state_district">国家或地区</string>
         
     <string name="choose_a_chat">选择一个聊天</string>
         
@@ -2214,10 +2214,6 @@
     <string name="topperchat_red">topperchat红包</string>
     <string name="conversation_backgound">​​设置聊天背景</string>
     <string name="language_pref_key">language_pref_key</string>
-    <string name="gesture_count_exceed_hint">温馨提示：解锁失败</string>
-    <string name="again_login">重新登录</string>
-    <string name="cancel_gesture">取消手势</string>
-    <string name="expect_coin_hint">如您有任何期望添加的币种，欢迎联系我们！</string>
     <string name="backgound">背景</string>
     <string name="no_public_number">暂无公众号</string>
     <string name="search_public_numbers">搜索公众号</string>

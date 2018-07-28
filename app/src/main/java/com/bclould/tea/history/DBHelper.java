@@ -36,7 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("create table MessageState(id integer primary key autoincrement, msgId varchar,msgTime integer,roomId varchar)");
         db.execSQL("create table UserCodeDB(id integer primary key autoincrement, email varchar,password varchar)");
         db.execSQL("create table UserInfo(id integer primary key autoincrement, user varchar,path varchar,userName varchar)");//保存陌生人的信息
-        db.execSQL("create table PublicDB(id integer primary key autoincrement, publicId varchar,name varchar,logo varchar,publicDesc varchar,menu varchar)");
+        db.execSQL("create table PublicDB(id integer primary key autoincrement,my_user varchar, publicId varchar,name varchar,logo varchar,publicDesc varchar,menu varchar,isRefresh integer)");
     }
 
     /**
@@ -122,7 +122,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 //2018-07-16增加roomId字段,用於記錄撤回消息的房間，根據roomid判斷是否有撤回消息
                 db.execSQL("ALTER TABLE MessageState ADD roomId TEXT");
             case 29:
-                userCodeDB = "create table if not exists PublicDB"  + "(id integer primary key autoincrement,publicId text,name text,logo text,publicDesc text,menu text)";
+                userCodeDB = "create table if not exists PublicDB"  + "(id integer primary key autoincrement,my_user text,publicId text,name text,logo text,publicDesc text,menu text,isRefresh integer)";
                 db.execSQL( userCodeDB );
                 break;
         }

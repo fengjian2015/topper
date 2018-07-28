@@ -206,7 +206,6 @@ public class MainActivity extends BaseActivity {
             getMyImage();
             getFriends();
             getChatBackGround();
-            getMessageTop();
         } else if (2 == whence || 3 == whence) {
             DiscoverFragment discoverFragment = DiscoverFragment.getInstance();
             discoverFragment.initInterface();
@@ -344,7 +343,6 @@ public class MainActivity extends BaseActivity {
             getMyImage();
             getFriends();
             getChatBackGround();
-            getMessageTop();
         }
         //初始化底部菜单
         initBottomMenu();
@@ -485,6 +483,7 @@ public class MainActivity extends BaseActivity {
             public void send(List<AuatarListInfo.DataBean> data) {
                 mMgr.deleteAllFriend();
                 mMgr.addUserList(data);
+                getMessageTop();
             }
 
             @Override

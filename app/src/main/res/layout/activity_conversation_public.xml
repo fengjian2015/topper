@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/app_bg_color"
-              tools:activity="com.bclould.tea.ui.activity.ConversationServerActivity">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/app_bg_color"
+                android:orientation="vertical"
+                tools:context="com.bclould.tea.ui.activity.ConversationPublicActivity">
 
     <LinearLayout
         android:id="@+id/ll_chat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/view"
         android:clickable="false"
         android:focusable="false"
         android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/rl_title"
-            style="@style/TopNavigationBarStyle">
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y100"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/white">
 
             <ImageView
                 android:id="@+id/bark"
@@ -28,11 +35,21 @@
 
             <TextView
                 android:id="@+id/title_name"
-                style="@style/MainTextShallowStyle36"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"/>
+                android:layout_centerInParent="true"
+                android:text="傻狍子"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x32"/>
 
+            <ImageView
+                android:id="@+id/iv_else"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/x20"
+                android:src="@mipmap/icon_nav_more_selected"/>
         </RelativeLayout>
 
         <TextView
@@ -68,4 +85,19 @@
 
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
     </LinearLayout>
-</LinearLayout>
+
+    <View
+        android:id="@+id/view"
+        style="@style/HorizontalBoundaryStyle"
+        android:layout_below="@+id/ll_menu"></View>
+
+    <com.bclould.tea.ui.widget.MenuLinearLayout
+        android:id="@+id/ll_menu"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+    </com.bclould.tea.ui.widget.MenuLinearLayout>
+</RelativeLayout>

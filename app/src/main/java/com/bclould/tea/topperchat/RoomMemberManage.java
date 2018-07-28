@@ -7,9 +7,11 @@ import android.support.annotation.RequiresApi;
 import com.bclould.tea.R;
 import com.bclould.tea.crypto.otr.OtrChatListenerManager;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.history.DBPublicManage;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.GroupInfo;
+import com.bclould.tea.model.PublicInfo;
 import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.utils.MessageEvent;
@@ -41,8 +43,10 @@ public class RoomMemberManage {
     private Context context;
     private DBRoomMember mDBRoomMember;
     private DBRoomManage mDBRoomManage;
+    private DBPublicManage mDBPublicManage;
     private boolean isLoadMember=false;
     private boolean isLoadManage=false;
+    private boolean isLoadPublic=false;
     public static RoomMemberManage getInstance(){
         if(mInstance == null){
             synchronized (RoomMemberManage.class){
@@ -59,6 +63,7 @@ public class RoomMemberManage {
         this.context=context;
         mDBRoomMember=new DBRoomMember(context);
         mDBRoomManage=new DBRoomManage(context);
+        mDBPublicManage=new DBPublicManage(context);
     }
 
    public synchronized void addRoomMember(final List<GroupInfo.DataBean> dataBean){
@@ -123,4 +128,23 @@ public class RoomMemberManage {
         });
     }
 
+    public synchronized void addPublicManage(final List<PublicInfo.DataBean> baseInfo){
+        if (isLoadPublic){
+            UtilTool.Log("fengjian","已經在加載公眾號信息，暫不讓繼續加載");
+            return;
+        }
+        UtilTool.Log("fengjian","加載房間信息");
+        mSingleThreadExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                isLoadPublic=true;
+                for(PublicInfo.DataBean dataBean1:baseInfo){
+                    mDBPublicManage.addPublic(dataBean1);
+                }
+                mDBPublicManage.deleteOldPublic();
+                mDBPublicManage.updateIsRefresh(baseInfo);
+                isLoadPublic=false;
+            }
+        });
+    }
 }
