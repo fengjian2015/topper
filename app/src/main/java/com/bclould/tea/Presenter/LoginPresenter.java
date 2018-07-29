@@ -51,6 +51,7 @@ public class LoginPresenter {
 
     public static final String TOCOID = "toco_id";
     public static final String TOKEN = "token";
+    public static final String TOKEN_TIME="token_time";
     public static final String USERID = "user_id";
     public static final String LOGINPW = "login_pw";
     public static final String LOGINSET = "login_set";
@@ -117,6 +118,7 @@ public class LoginPresenter {
                             WsConnection.getInstance().setOutConnection(false);
                             UtilTool.Log("日志", baseInfo.getData().getName());
                             MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
+                            MySharedPreferences.getInstance().setLong(TOKEN_TIME,System.currentTimeMillis());
                             MySharedPreferences.getInstance().setString(TOCOID, baseInfo.getData().getToco_id());
                             MySharedPreferences.getInstance().setInteger(USERID, baseInfo.getData().getUser_id());
                             MySharedPreferences.getInstance().setString(MYUSERNAME, baseInfo.getData().getName());

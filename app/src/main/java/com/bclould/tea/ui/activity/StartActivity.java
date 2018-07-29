@@ -31,6 +31,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.bclould.tea.Presenter.LoginPresenter.TOKEN;
+import static com.bclould.tea.Presenter.LoginPresenter.TOKEN_TIME;
 
 
 /**
@@ -58,6 +59,11 @@ public class StartActivity extends LoginBaseActivity {
                     finish();
                     return;
                 }
+                if(!UtilTool.compareTokenTime(MySharedPreferences.getInstance().getLong(TOKEN_TIME))){
+                    startMain();
+                    finish();
+                    return;
+                }
                 if (UtilTool.getToken().equals("bearer")) {
                     startMain();
                     finish();
@@ -79,6 +85,7 @@ public class StartActivity extends LoginBaseActivity {
                                         if (baseInfo.getStatus() == 1) {
                                             WsConnection.getInstance().setOutConnection(false);
                                             MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
+                                            MySharedPreferences.getInstance().setLong(TOKEN_TIME,System.currentTimeMillis());
                                             UtilTool.Log("日志", baseInfo.getMessage());
                                             startMain();
                                             finish();

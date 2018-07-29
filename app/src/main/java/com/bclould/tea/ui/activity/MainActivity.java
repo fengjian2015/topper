@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -202,7 +204,7 @@ public class MainActivity extends BaseActivity {
             //切换Fragment
             changeFragment(0);
             getStateList();
-//            getGroup();
+            getGroup();
             getMyImage();
             getFriends();
             getChatBackGround();
@@ -363,6 +365,12 @@ public class MainActivity extends BaseActivity {
             @Override
             public void send(GroupInfo baseInfo) {
                 // TODO: 2018/6/11 獲取群聊房間塞入數據庫
+                new Handler(){
+                    public void handleMessage(Message msg) {
+                        getMessageTop();
+                    }
+                }.sendEmptyMessageDelayed(0,5*1000);
+
             }
 
             @Override
@@ -422,9 +430,11 @@ public class MainActivity extends BaseActivity {
                         if(mDBRoomManage.findRoom(dataBean.getFor_id())){
                             info.setFriend(mDBRoomManage.findRoomName(dataBean.getFor_id()));
                             info.setChatType(RoomManage.ROOM_TYPE_MULTI);
-                        }else{
+                        }else if(mMgr.findUser(dataBean.getFor_id())){
                             info.setFriend(mMgr.queryRemark(dataBean.getFor_id()));
                             info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
+                        }else{
+                            break;
                         }
                         mMgr.addConversation(info);
                     }
@@ -483,7 +493,6 @@ public class MainActivity extends BaseActivity {
             public void send(List<AuatarListInfo.DataBean> data) {
                 mMgr.deleteAllFriend();
                 mMgr.addUserList(data);
-                getMessageTop();
             }
 
             @Override

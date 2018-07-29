@@ -91,6 +91,18 @@ import static com.bclould.tea.Presenter.LoginPresenter.MYUSERNAME;
 import static com.bclould.tea.Presenter.LoginPresenter.TOCOID;
 import static com.bclould.tea.Presenter.LoginPresenter.TOKEN;
 import static com.bclould.tea.Presenter.LoginPresenter.USERID;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_DOC;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_DOCX;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_LOG;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PDF;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PPT;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PPTX;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_RAR;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_RTF;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_TXT;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_XLS;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_XLSX;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_ZIP;
 
 /**
  * Created by GA on 2017/10/23.
@@ -1492,6 +1504,47 @@ public class UtilTool {
         ForegroundColorSpan span = new ForegroundColorSpan(color);
         builder.setSpan(span, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         view.setText(builder);
+    }
+
+    /**
+     * 比較token是否失效
+     * @param oldtime
+     * @return 失效true
+     */
+    public static boolean compareTokenTime(long oldtime){
+        long newTime=System.currentTimeMillis();
+        if((oldtime+(23*60*60*1000))>=newTime){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    /**
+     * 选择FILE_TYPE_xxx中的一种传入
+     *
+     * @param fileType
+     */
+    public static int getFileImageRe(String fileType) {
+        int resId = -1;
+        if (FILE_TYPE_DOC.equals(fileType) || FILE_TYPE_DOCX.equals(fileType)) {
+            resId = R.mipmap.type_doc;
+        } else if (FILE_TYPE_XLS.equals(fileType) || FILE_TYPE_XLSX.equals(fileType)) {
+            resId = R.mipmap.type_xls;
+        } else if (FILE_TYPE_PPT.equals(fileType) || FILE_TYPE_PPTX.equals(fileType)) {
+            resId = R.mipmap.type_ppt;
+        } else if (FILE_TYPE_PDF.equals(fileType)) {
+            resId = R.mipmap.type_pdf;
+        } else if (FILE_TYPE_TXT.equals(fileType) || FILE_TYPE_LOG.equals(fileType) || FILE_TYPE_RTF.equals(fileType)) {
+            resId = R.mipmap.type_txt;
+        } else if (FILE_TYPE_ZIP.equals(fileType)) {
+            resId = R.mipmap.type_zip;
+        } else if (FILE_TYPE_RAR.equals(fileType)) {
+            resId = R.mipmap.type_rar;
+        } else {
+            resId = R.mipmap.type_unknown;
+        }
+        return resId;
     }
 
 }

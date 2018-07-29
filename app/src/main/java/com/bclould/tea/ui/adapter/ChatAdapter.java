@@ -2184,7 +2184,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             setMsgState(messageInfo.getSendStatus(), mIvWarning, mIvLoad);
             tvFileName.setText(messageInfo.getTitle());
             tvFileSize.setText(messageInfo.getCount());
-            ivType.setImageResource(setImage(messageInfo.getContent()));
+            ivType.setImageResource(UtilTool.getFileImageRe(messageInfo.getContent()));
             mIvWarning.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -2239,7 +2239,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
             tvFileName.setText(messageInfo.getTitle());
             tvFileSize.setText(messageInfo.getCount());
-            ivType.setImageResource(setImage(messageInfo.getContent()));
+            ivType.setImageResource(UtilTool.getFileImageRe(messageInfo.getContent()));
             mCvRedpacket.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -2579,33 +2579,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 }
             }
         });
-    }
-
-    /**
-     * 选择FILE_TYPE_xxx中的一种传入
-     *
-     * @param fileType
-     */
-    public int setImage(String fileType) {
-        int resId = -1;
-        if (FILE_TYPE_DOC.equals(fileType) || FILE_TYPE_DOCX.equals(fileType)) {
-            resId = R.mipmap.type_doc;
-        } else if (FILE_TYPE_XLS.equals(fileType) || FILE_TYPE_XLSX.equals(fileType)) {
-            resId = R.mipmap.type_xls;
-        } else if (FILE_TYPE_PPT.equals(fileType) || FILE_TYPE_PPTX.equals(fileType)) {
-            resId = R.mipmap.type_ppt;
-        } else if (FILE_TYPE_PDF.equals(fileType)) {
-            resId = R.mipmap.type_pdf;
-        } else if (FILE_TYPE_TXT.equals(fileType) || FILE_TYPE_LOG.equals(fileType) || FILE_TYPE_RTF.equals(fileType)) {
-            resId = R.mipmap.type_txt;
-        } else if (FILE_TYPE_ZIP.equals(fileType)) {
-            resId = R.mipmap.type_zip;
-        } else if (FILE_TYPE_RAR.equals(fileType)) {
-            resId = R.mipmap.type_rar;
-        } else {
-            resId = R.mipmap.type_unknown;
-        }
-        return resId;
     }
 
     private void getHtmlContent(final MessageInfo messageInfo,final int position){
