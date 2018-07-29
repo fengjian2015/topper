@@ -14,7 +14,7 @@ public class WsContans {
     public static final String INDEX="index";
     public static final String TOCO_SERVICE="4ed77e8f9c715";
     public static final String FILE_TYPE_DOC = ".doc";
-    public static final String FILE_TYPE_DOCX = ".docx";
+        public static final String FILE_TYPE_DOCX = ".docx";
     public static final String FILE_TYPE_XLS = ".xls";
     public static final String FILE_TYPE_XLSX = ".xlsx";
     public static final String FILE_TYPE_PPT = ".ppt";
