@@ -2221,6 +2221,10 @@
     <string name="backgound">背景</string>
     <string name="no_public_number">暂无公众号</string>
     <string name="search_public_numbers">搜索公众号</string>
-    <string name="login_pw_hint">重置登錄密碼，字母，數字結合，且不小於8位</string>
-    <string name="payment_details">支付詳情</string>
+    <string name="login_pw_hint">重置登录密码，字母，数字结合，且不小于8位</string>
+    <string name="payment_details">支付详情</string>
+    <string name="unfollow">取消关注</string>
+    <string name="reduction_background">​​还原背景</string>
+    <string name="update_public_number">更新公众号</string>
+    <string name="user_freeze_hint">您的賬號已被凍結，請聯繫管理員處理，郵箱：topperchat@outlook.com</string>
 </resources>

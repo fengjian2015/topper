@@ -7,6 +7,7 @@ import java.util.List;
  */
 
 public class PublicMenuInfo {
+
     private List<ButtonBean> button;
 
     public List<ButtonBean> getButton() {
@@ -19,15 +20,15 @@ public class PublicMenuInfo {
 
     public static class ButtonBean {
         /**
-         * type : click
+         * type : view
          * name : 菜单名称
-         * key : 3123132
+         * key :
          * subMenu : false
          * tabSubMenu : false
-         * overLength : true
-         * hasSubmenu : false
-         * sub_button : [{"type":"click","name":"子菜单名称","key":"12312312"},{"type":"click","name":"子菜单名称","key":"12312312"},{"type":"click","name":"子菜单名称","key":"12312312"}]
-         * url : www.baidu.com
+         * overLength : false
+         * hasSubmenu : true
+         * url : 3131231
+         * sub_button : [{"type":"view","name":"子菜单名称","url":"13131321"}]
          */
 
         private String type;
@@ -114,14 +115,23 @@ public class PublicMenuInfo {
 
         public static class SubButtonBean {
             /**
-             * type : click
+             * type : view
              * name : 子菜单名称
-             * key : 12312312
+             * url : 13131321
              */
 
             private String type;
             private String name;
+            private String url;
             private String key;
+
+            public String getKey() {
+                return key;
+            }
+
+            public void setKey(String key) {
+                this.key = key;
+            }
 
             public String getType() {
                 return type;
@@ -139,12 +149,12 @@ public class PublicMenuInfo {
                 this.name = name;
             }
 
-            public String getKey() {
-                return key;
+            public String getUrl() {
+                return url;
             }
 
-            public void setKey(String key) {
-                this.key = key;
+            public void setUrl(String url) {
+                this.url = url;
             }
         }
     }

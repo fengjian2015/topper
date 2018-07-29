@@ -5,10 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_marginLeft="@dimen/x50"
-    android:layout_marginTop="@dimen/y20"
     android:layout_marginBottom="@dimen/y20"
+    android:layout_marginLeft="@dimen/x50"
     android:layout_marginRight="@dimen/x50"
+    android:layout_marginTop="@dimen/y20"
+    app:cardBackgroundColor="@color/boundary_color"
     app:cardCornerRadius="@dimen/x15">
 
     <LinearLayout
@@ -18,12 +19,11 @@
         android:orientation="vertical"
         android:padding="@dimen/x20">
 
-     <TextView
-         android:layout_width="wrap_content"
-         android:text="實名認證"
-         android:textColor="@color/black"
-         android:textSize="@dimen/x32"
-         android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="實名認證"
+            style="@style/MainTextShallowStyle32"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/auth_status"
-                android:textSize="@dimen/x26"/>
+                style="@style/MainTextShallowStyle32"/>
 
             <TextView
                 android:id="@+id/tv_status"
@@ -44,8 +44,7 @@
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/tv_status_hint"
                 android:text="認證失敗，請重新認證"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x26"/>
+                style="@style/MainTextShallowStyle30"/>
 
         </RelativeLayout>
 
@@ -59,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/auth_time"
-                android:textSize="@dimen/x26"/>
+                style="@style/MainTextShallowStyle30"/>
 
             <TextView
                 android:id="@+id/tv_time"
@@ -68,8 +67,7 @@
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/tv_time_hint"
                 android:text="2018-04-20 19:20:00"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x26"/>
+                style="@style/MainTextShallowStyle30"/>
 
         </RelativeLayout>
 
@@ -86,8 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/x20"
                 android:text="@string/look_details"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+                style="@style/MainTextShallowStyle30"/>
 
 
             <ImageView

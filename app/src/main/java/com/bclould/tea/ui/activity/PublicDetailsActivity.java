@@ -1,5 +1,7 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -12,12 +14,24 @@ import com.bclould.tea.Presenter.PublicPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.history.DBPublicManage;
 import com.bclould.tea.model.PublicDetailsInfo;
+import com.bclould.tea.ui.widget.MenuListPopWindow;
+import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.UtilTool;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.bclould.tea.ui.activity.SerchImageActivity.TYPE_BACKGROUND;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class PublicDetailsActivity extends BaseActivity {
@@ -37,6 +51,7 @@ public class PublicDetailsActivity extends BaseActivity {
     LinearLayout mLlData;
 
     private String id;
+    private DBPublicManage mDBPublicManage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +59,8 @@ public class PublicDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_public_details);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
+        EventBus.getDefault().register(this);
+        mDBPublicManage=new DBPublicManage(this);
         initGetintent();
         init();
     }
@@ -55,6 +72,8 @@ public class PublicDetailsActivity extends BaseActivity {
     }
 
     private void init() {
+        setIvElse();
+        setTvState();
         new PublicPresenter(this).publicDeltails(UtilTool.parseInt(id), new PublicPresenter.CallBack1() {
             @Override
             public void send(PublicDetailsInfo publicDetailsInfo) {
@@ -71,6 +90,23 @@ public class PublicDetailsActivity extends BaseActivity {
         });
     }
 
+
+    private void setIvElse(){
+        if(mDBPublicManage.findPublic(id)){
+            mIvElse.setVisibility(View.VISIBLE);
+        }else{
+            mIvElse.setVisibility(View.GONE);
+        }
+    }
+
+    private void setTvState(){
+        if(mDBPublicManage.findPublic(id)){
+            mTvState.setText(getString(R.string.send_message));
+        }else {
+            mTvState.setText(getString(R.string.attention));
+        }
+    }
+
     @OnClick({R.id.bark, R.id.iv_else, R.id.tv_state,R.id.ll_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -79,10 +115,15 @@ public class PublicDetailsActivity extends BaseActivity {
                 break;
             case R.id.iv_else:
                 //更多取關
+                showDialog();
                 break;
             case R.id.tv_state:
                 //關注或者發消息
-                publicAdd();
+                if(mDBPublicManage.findPublic(id)) {
+                    publicSend();
+                }else {
+                    publicAdd();
+                }
                 break;
             case R.id.ll_error:
                 init();
@@ -90,11 +131,19 @@ public class PublicDetailsActivity extends BaseActivity {
         }
     }
 
+    private void publicSend() {
+        Intent intent=new Intent(this,ConversationPublicActivity.class);
+        intent.putExtra("publicId",id);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
     private void publicAdd(){
         new PublicPresenter(this).publicAdd(UtilTool.parseInt(id), new PublicPresenter.CallBack1() {
             @Override
             public void send(PublicDetailsInfo publicDetailsInfo) {
-
+                mDBPublicManage.addPublic(publicDetailsInfo.getData());
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.update_public_number)));
             }
 
             @Override
@@ -106,5 +155,63 @@ public class PublicDetailsActivity extends BaseActivity {
 
     private void initGetintent() {
         id = getIntent().getStringExtra("id");
+    }
+
+    private void showDialog() {
+        List<String> list = new ArrayList<>();
+        list.add(getString(R.string.unfollow));
+        final MenuListPopWindow menu = new MenuListPopWindow(this, list);
+        menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
+            @Override
+            public void onclickitem(int position) {
+                switch (position) {
+                    case 0:
+                        menu.dismiss();
+                        break;
+                    case 1:
+                        menu.dismiss();
+                        unfollow();
+                        break;
+
+                }
+            }
+        });
+        menu.setColor(Color.BLACK);
+        menu.showAtLocation();
+    }
+
+    private void unfollow(){
+        new PublicPresenter(this).publicUnfollow(UtilTool.parseInt(id), new PublicPresenter.CallBack2() {
+            @Override
+            public void send() {
+                mDBPublicManage.deletePublic(id);
+                Intent intent=new Intent(PublicDetailsActivity.this,MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                EventBus.getDefault().post(new MessageEvent(getString(R.string.update_public_number)));
+                PublicDetailsActivity.this.finish();
+            }
+
+            @Override
+            public void error() {
+
+            }
+        });
+    }
+
+    //接受通知
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String msg = event.getMsg();
+        if (msg.equals(getString(R.string.update_public_number))) {
+            setIvElse();
+            setTvState();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

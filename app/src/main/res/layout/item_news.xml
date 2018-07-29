@@ -2,11 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/x20"
                 android:paddingRight="@dimen/x20">
-
 
     <TextView
         style="@style/HorizontalBoundaryStyle"/>
@@ -36,8 +34,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:text="噶克里斯多夫记录数据法拉盛家乐福接口积分卡拉斯"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x28"/>
+            style="@style/MainTextShallowStyle30"/>
 
         <TextView
             android:id="@+id/tv_type"
@@ -62,7 +59,7 @@
             android:layout_below="@+id/tv_news_title"
             android:layout_marginTop="@dimen/y30"
             android:text="3小时前"
-            android:textSize="@dimen/x26"/>
+            style="@style/SecondaryTextStyle28"/>
 
         <TextView
             android:id="@+id/tv_look_count"
@@ -75,7 +72,7 @@
             android:layout_below="@+id/tv_time"
             android:layout_marginTop="@dimen/y20"
             android:text="45623"
-            android:textSize="@dimen/x22"/>
+            style="@style/SecondaryTextStyle24"/>
 
     </RelativeLayout>
 

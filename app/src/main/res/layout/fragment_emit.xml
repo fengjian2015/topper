@@ -28,8 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/no_red_pagket_record"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/x30"/>
+                style="@style/MainTextDeepStyle30"/>
 
         </LinearLayout>
 
@@ -41,7 +40,7 @@
             android:descendantFocusability="blocksDescendants"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/iv_touxiang"
@@ -56,8 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/y20"
                 android:text="安子共发出"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x32"/>
+                style="@style/MainTextDeepStyle32"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -68,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0.05"
-                    android:textColor="@android:color/black"
+                    style="@style/MainTextDeepStyle30"
                     android:textSize="@dimen/x80"
                     android:textStyle="bold"/>
 
@@ -78,8 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x10"
                     android:text="@string/ge_bi"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x35"/>
+                    style="@style/MainTextDeepStyle36"/>
 
             </LinearLayout>
 
@@ -107,6 +104,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="266"
+                            style="@style/MainTextDeepStyle30"
                             android:textSize="@dimen/x45"/>
 
                         <TextView
@@ -114,7 +112,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/y10"
                             android:text="@string/send_red"
-                            android:textSize="@dimen/x26"/>
+                            style="@style/MainTextDeepStyle30"/>
 
                     </LinearLayout>
 
@@ -130,6 +128,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="1001"
+                            style="@style/MainTextDeepStyle30"
                             android:textSize="@dimen/x45"/>
 
                         <TextView
@@ -137,7 +136,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/y10"
                             android:text="@string/money_highest"
-                            android:textSize="@dimen/x26"/>
+                            style="@style/MainTextDeepStyle30"/>
 
                     </LinearLayout>
 
@@ -153,6 +152,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="BTC"
+                            style="@style/MainTextDeepStyle30"
                             android:textSize="@dimen/x45"/>
 
                         <TextView
@@ -160,7 +160,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/y10"
                             android:text="@string/max_coin"
-                            android:textSize="@dimen/x26"/>
+                            style="@style/MainTextDeepStyle30"/>
 
                     </LinearLayout>
 
@@ -202,8 +202,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/loading_error_anew_loading_hint2"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/x30"/>
+                style="@style/MainTextDeepStyle30"/>
 
         </LinearLayout>
 

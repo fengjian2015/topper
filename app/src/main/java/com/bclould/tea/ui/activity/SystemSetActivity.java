@@ -233,6 +233,7 @@ public class SystemSetActivity extends BaseActivity {
         List<String> list = new ArrayList<>();
         list.add(getString(R.string.image));
         list.add(getString(R.string.network_image));
+        list.add(getString(R.string.reduction_background));
         final MenuListPopWindow menu = new MenuListPopWindow(this, list);
         menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
             @Override
@@ -250,6 +251,17 @@ public class SystemSetActivity extends BaseActivity {
                         Intent intent = new Intent(SystemSetActivity.this, SerchImageActivity.class);
                         intent.putExtra("type", TYPE_BACKGROUND);
                         startActivity(intent);
+                        break;
+                    case 3:
+                        menu.dismiss();
+                        new GroupPresenter(SystemSetActivity.this).deleteBackgound(new GroupPresenter.CallBack() {
+                            @Override
+                            public void send() {
+                                MySharedPreferences.getInstance().setString("backgroundu_url"+UtilTool.getTocoId(),"");
+                                MySharedPreferences.getInstance().setString("backgroundu_file"+UtilTool.getTocoId(),"");
+                                EventBus.getDefault().post(new MessageEvent(getString(R.string.conversation_backgound)));
+                            }
+                        });
                         break;
                 }
             }

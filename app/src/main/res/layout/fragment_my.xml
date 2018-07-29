@@ -3,233 +3,203 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/light"
+              android:background="@color/app_bg_color"
               android:orientation="vertical">
 
     <TextView
+        style="@style/MainTextShallowStyle36"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
-        android:background="@color/white"
         android:gravity="center"
-        android:text="@string/person"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x35"/>
+        android:text="@string/person"/>
 
     <TextView
         style="@style/HorizontalBoundaryStyle"/>
 
-
-    <android.support.v7.widget.CardView
+    <RelativeLayout
+        android:id="@+id/rl_personal_data"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y180"
+        android:background="@drawable/bg_shallow_shape"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
+        android:layout_marginTop="@dimen/y30">
 
-        <RelativeLayout
-            android:id="@+id/rl_personal_data"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/iv_touxiang"
+            android:layout_width="@dimen/x120"
+            android:layout_height="@dimen/x120"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:src="@mipmap/img_nfriend_headshot1"/>
 
-            <ImageView
-                android:id="@+id/iv_touxiang"
-                android:layout_width="@dimen/x120"
-                android:layout_height="@dimen/x120"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:src="@mipmap/img_nfriend_headshot1"/>
+        <TextView
+            android:id="@+id/tv_name"
+            style="@style/MainTextShallowStyle36"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y60"
+            android:layout_alignTop="@+id/iv_touxiang"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_toRightOf="@+id/iv_touxiang"/>
 
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/y60"
-                android:layout_alignTop="@+id/iv_touxiang"
-                android:layout_toRightOf="@+id/iv_touxiang"
-                android:layout_marginLeft="@dimen/x30"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x35" />
-            <TextView
-                android:id="@+id/tv_tocoid"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/y60"
-                android:layout_marginLeft="@dimen/x30"
-                android:layout_toRightOf="@+id/iv_touxiang"
-                android:layout_below="@+id/tv_name"
-                android:paddingTop="@dimen/y4"
-                android:textColor="@color/gray3"
-                android:textSize="@dimen/x32"/>
-            <ImageView
-                android:layout_width="@dimen/x70"
-                android:layout_height="@dimen/x70"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x50"
-                android:src="@mipmap/qr_code"/>
+        <TextView
+            android:id="@+id/tv_tocoid"
+            style="@style/MainTextShallowStyle32"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y60"
+            android:layout_below="@+id/tv_name"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_toRightOf="@+id/iv_touxiang"
+            android:paddingTop="@dimen/y4"/>
 
-        </RelativeLayout>
+        <ImageView
+            android:layout_width="@dimen/x70"
+            android:layout_height="@dimen/x70"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x50"
+            android:src="@mipmap/qr_code"/>
 
-    </android.support.v7.widget.CardView>
+    </RelativeLayout>
 
-    <android.support.v7.widget.CardView
+    <RelativeLayout
+        android:id="@+id/rl_security_center"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape">
 
-        <RelativeLayout
-            android:id="@+id/rl_security_center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/iv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:src="@mipmap/icon_person_safe"/>
 
-            <ImageView
-                android:id="@+id/iv2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:src="@mipmap/icon_person_safe"/>
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_toRightOf="@+id/iv2"
+            android:text="@string/user_safety"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:layout_toRightOf="@+id/iv2"
-                android:text="@string/user_safety"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x30"
+            android:src="@mipmap/iocn_person_turn"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x30"
-                android:src="@mipmap/iocn_person_turn"/>
+    </RelativeLayout>
 
-        </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl_system_set"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:layout_marginLeft="@dimen/x20"
+        android:background="@drawable/bg_shallow_shape"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y30">
 
-    </android.support.v7.widget.CardView>
+        <ImageView
+            android:id="@+id/iv3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:src="@mipmap/iocn_person_set"/>
 
-    <android.support.v7.widget.CardView
+        <TextView
+            android:id="@+id/tv"
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_toRightOf="@+id/iv3"
+            android:text="@string/system_set"/>
+
+        <!--<TextView
+            android:visibility="gone"
+            android:id="@+id/tv_new_update"
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/y40"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_toRightOf="@+id/tv"
+            android:textSize="@dimen/x28"
+            android:background="@drawable/bg_new_update"
+            android:gravity="center"
+            android:text="New"
+            android:textColor="@color/white"/>-->
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x30"
+            android:src="@mipmap/iocn_person_turn"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_concern_we"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape"
+        android:visibility="visible">
 
-        <RelativeLayout
-            android:id="@+id/rl_system_set"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/iv3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:src="@mipmap/iocn_person_set"/>
-
-            <TextView
-                android:id="@+id/tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:layout_toRightOf="@+id/iv3"
-                android:text="@string/system_set"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
-
-            <!--<TextView
-                android:visibility="gone"
-                android:id="@+id/tv_new_update"
-                android:layout_width="@dimen/x80"
-                android:layout_height="@dimen/y40"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/tv"
-                android:textSize="@dimen/x28"
-                android:background="@drawable/bg_new_update"
-                android:gravity="center"
-                android:text="New"
-                android:textColor="@color/white"/>-->
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x30"
-                android:src="@mipmap/iocn_person_turn"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
-
-        <RelativeLayout
-            android:id="@+id/rl_concern_we"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y120"
-            android:visibility="visible">
-
-            <ImageView
-                android:id="@+id/iv_concern_we"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:src="@mipmap/iocn_aboutus"/>
+        <ImageView
+            android:id="@+id/iv_concern_we"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:src="@mipmap/iocn_aboutus"/>
 
 
-            <TextView
-                android:id="@+id/tv2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:layout_toRightOf="@+id/iv_concern_we"
-                android:text="@string/guanyu_me"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+        <TextView
+            android:id="@+id/tv2"
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_toRightOf="@+id/iv_concern_we"
+            android:text="@string/guanyu_me"/>
 
-            <TextView
-                android:id="@+id/tv_new_update"
-                android:layout_width="@dimen/x80"
-                android:layout_height="@dimen/y40"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:layout_toRightOf="@+id/tv2"
-                android:background="@drawable/bg_new_update"
-                android:gravity="center"
-                android:text="New"
-                android:textColor="@color/white"
-                android:textSize="@dimen/x28"
-                android:visibility="gone"/>
+        <TextView
+            android:id="@+id/tv_new_update"
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/y40"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_toRightOf="@+id/tv2"
+            android:background="@drawable/bg_new_update"
+            android:gravity="center"
+            android:text="New"
+            android:textColor="@color/white"
+            android:textSize="@dimen/x28"
+            android:visibility="gone"/>
 
-            <ImageView
-                android:layout_width="@dimen/x15"
-                android:layout_height="@dimen/x25"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x25"
-                android:src="@mipmap/iocn_person_turninto"/>
+        <ImageView
+            android:layout_width="@dimen/x15"
+            android:layout_height="@dimen/x25"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x25"
+            android:src="@mipmap/iocn_person_turninto"/>
 
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
+    </RelativeLayout>
 
 </LinearLayout>

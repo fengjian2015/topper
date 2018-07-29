@@ -2,33 +2,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/light"
+              android:background="@color/app_bg_color"
               android:orientation="vertical">
 
     <TextView
+        style="@style/MainTextShallowStyle30"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/y60"
         android:layout_marginLeft="@dimen/x20"
         android:gravity="center"
-        android:text="@string/opinions_and_questions"
-        android:textSize="@dimen/x26"/>
+        android:text="@string/opinions_and_questions"/>
 
     <EditText
         android:id="@+id/feedback_content"
+        style="@style/MainTextShallowStyle30"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y200"
-        android:background="@color/white"
+        android:background="@color/transparent"
         android:gravity="top"
         android:hint="@string/probelm_feedback_hint"
         android:maxLength="150"
         android:paddingLeft="@dimen/x20"
         android:paddingRight="@dimen/x20"
         android:paddingTop="@dimen/y10"
-        android:textCursorDrawable="@null"
-        android:textSize="@dimen/x25"/>
+        android:textColorHint="@color/secondary_text_color"
+        android:textCursorDrawable="@null"/>
 
     <TextView
         android:id="@+id/text_count"
+        style="@style/SecondaryTextStyle28"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/y50"
         android:layout_marginLeft="@dimen/x20"
@@ -38,18 +40,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y220"
-        android:background="@color/white"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/text"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x20"
             android:layout_marginTop="@dimen/y20"
-            android:text="@string/upload_Screenshot"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x26"/>
+            android:text="@string/upload_Screenshot"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -97,22 +97,18 @@
     </LinearLayout>-->
 
     <TextView
+        style="@style/SecondaryTextStyle28"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginTop="@dimen/y10"
-        android:text="@string/thank_hint"
-        android:textSize="@dimen/y26"/>
+        android:text="@string/thank_hint"/>
 
     <Button
         android:id="@+id/finish"
-        android:layout_width="@dimen/x400"
-        android:layout_height="@dimen/y80"
+        style="@style/ShortBtnStyle"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y30"
-        android:background="@drawable/bg_blue_shape"
-        android:text="@string/submit"
-        android:textColor="@color/white"
-        android:textSize="@dimen/x28"/>
+        android:text="@string/submit"/>
 
 </LinearLayout>

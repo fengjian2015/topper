@@ -121,7 +121,7 @@ public class CommentsView extends LinearLayout {
         textView.setHighlightColor(getResources().getColor(android.R.color.transparent));
 //        textView.setHighlightColor(0xff000000);
 
-        textView.setMovementMethod(new CircleMovementMethod(0xffcccccc, 0xffcccccc));
+        textView.setMovementMethod(new CircleMovementMethod(0x20000000, 0x20000000));
 
         textView.setOnClickListener(new OnClickListener() {
             @Override
@@ -136,7 +136,7 @@ public class CommentsView extends LinearLayout {
     }
 
     /**
-     * 设置评论内容点击事件
+     * 设置评论内容点击事件 
      *
      * @param item
      * @param position
@@ -159,7 +159,7 @@ public class CommentsView extends LinearLayout {
             public void updateDrawState(TextPaint ds) {
                 super.updateDrawState(ds);
                 // 设置显示的内容文本颜色
-                ds.setColor(0xff000000);
+                ds.setColor(getResources().getColor(R.color.main_text_color));
                 ds.setTextSize(mContext.getResources().getDimension(R.dimen.x30));
                 ds.setUnderlineText(false);
             }

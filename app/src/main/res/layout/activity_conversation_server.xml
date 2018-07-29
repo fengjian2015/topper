@@ -32,7 +32,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 style="@style/MainTextShallowStyle36"/>
-
         </RelativeLayout>
         <TextView
             android:id="@+id/xx"

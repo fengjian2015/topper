@@ -4,8 +4,8 @@
                 android:layout_height="@dimen/y120"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_marginRight="@dimen/x30"
+                android:background="@drawable/bg_shallow_shape"
                 android:layout_marginBottom="@dimen/y30"
-                android:background="@color/white"
                 android:orientation="vertical">
 
     <LinearLayout
@@ -20,8 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="安子-转账"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
+            style="@style/MainTextShallowStyle30"/>
 
         <TextView
             android:id="@+id/time"
@@ -30,7 +29,7 @@
             android:layout_below="@+id/type_name"
             android:layout_marginTop="@dimen/y10"
             android:text="2017-09-02 14:23"
-            android:textSize="@dimen/x22"/>
+            style="@style/SecondaryTextStyle24"/>
     </LinearLayout>
 
     <TextView
@@ -42,8 +41,7 @@
         android:layout_marginRight="@dimen/x20"
         android:layout_toLeftOf="@+id/imageview"
         android:text="+$4561"
-        android:textColor="@color/red"
-        android:textSize="@dimen/x28"/>
+        style="@style/RedTextStyle28"/>
 
     <ImageView
         android:id="@+id/imageview"

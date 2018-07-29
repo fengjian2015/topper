@@ -8,23 +8,22 @@
     <ImageView
         android:id="@+id/iv_close"
         android:layout_width="@dimen/x70"
-        android:padding="@dimen/x20"
+        android:layout_height="@dimen/x70"
         android:layout_alignParentRight="true"
-        android:src="@mipmap/icon_topbar_cancel"
-        android:layout_height="@dimen/x70"/>
+        android:padding="@dimen/x20"
+        android:src="@mipmap/icon_topbar_cancel"/>
 
     <TextView
-        android:layout_below="@+id/iv_close"
         android:id="@+id/tv_content"
+        style="@style/MainTextDeepStyle32"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_close"
         android:layout_marginBottom="@dimen/y50"
         android:layout_marginLeft="@dimen/x30"
-        android:lineSpacingExtra="@dimen/x10"
         android:layout_marginRight="@dimen/x30"
         android:layout_marginTop="@dimen/y10"
-        android:text="您的賬號已被凍結，請聯繫管理員處理，郵箱：topperchat@outlook.com"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x32"/>
+        android:lineSpacingExtra="@dimen/x10"
+        android:text="@string/user_freeze_hint"/>
 
 </RelativeLayout>

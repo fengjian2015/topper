@@ -13,12 +13,11 @@
 
         <Button
             android:id="@+id/btn_share_friend"
+            style="@style/BlueTextStyle28"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y100"
             android:background="@android:color/transparent"
-            android:text="@string/share_friend"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"></Button>
+            android:text="@string/share_friend"></Button>
 
         <TextView
             android:id="@+id/tv_line"
@@ -32,8 +31,7 @@
             android:layout_height="@dimen/y100"
             android:background="@android:color/transparent"
             android:text="@string/share_dynamic"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"/>
+            style="@style/BlueTextStyle28"/>
     </LinearLayout>
 
 </LinearLayout>

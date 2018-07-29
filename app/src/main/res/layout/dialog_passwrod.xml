@@ -23,15 +23,16 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/y100">
+
                 <TextView
+                    style="@style/MainTextDeepStyle36"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x30"
-                    android:text="@string/et_pay_pw"
                     android:gravity="center"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x36"/>
+                    android:text="@string/et_pay_pw"/>
+
                 <ImageView
                     android:id="@+id/bark"
                     android:layout_width="wrap_content"
@@ -43,7 +44,7 @@
             </RelativeLayout>
 
             <TextView
-                style="@style/HorizontalBoundaryStyle"/>
+                style="@style/HorizontalDeepBoundaryStyle"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -56,38 +57,38 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/tv_desc"
+                        style="@style/MainTextDeepStyle30"
                         android:layout_width="wrap_content"
-                        android:layout_marginLeft="@dimen/x20"
-                        android:layout_marginRight="@dimen/x20"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:textColor="@android:color/black"
-                        android:text="@string/topperchat_red"
-                        android:textSize="@dimen/x26"/>
+                        android:layout_marginLeft="@dimen/x20"
+                        android:layout_marginRight="@dimen/x20"
+                        android:text="@string/topperchat_red"/>
+
                     <TextView
                         android:id="@+id/tv_count"
+                        style="@style/MainTextDeepStyle36"
                         android:layout_width="wrap_content"
-                        android:layout_marginLeft="@dimen/x20"
-                        android:layout_marginRight="@dimen/x20"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:textColor="@android:color/black"
+                        android:layout_marginLeft="@dimen/x20"
+                        android:layout_marginRight="@dimen/x20"
                         android:layout_marginTop="@dimen/y20"
                         android:gravity="center"
-                        android:textSize="@dimen/x50"/>
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/tv_hint"
+                        style="@style/SecondaryTextStyle24"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/y20"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/x24"
                         android:visibility="gone"/>
 
                 </LinearLayout>
@@ -95,39 +96,43 @@
             </RelativeLayout>
 
             <TextView
-                style="@style/HorizontalBoundaryStyle"/>
+                style="@style/HorizontalDeepBoundaryStyle"/>
+
             <RelativeLayout
                 android:id="@+id/rl_coin"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y100"
                 android:paddingLeft="@dimen/x30"
                 android:paddingRight="@dimen/x30">
+
                 <TextView
                     android:id="@+id/tv1"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/y100"
-                    android:text="@string/coins"
-                    android:textColor="@color/black"
                     android:gravity="center"
-                    android:textSize="@dimen/x32"/>
+                    android:text="@string/coins"
+                    style="@style/MainTextDeepStyle32"/>
+
                 <TextView
                     android:id="@+id/tv_coin"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
-                    android:textColor="@color/black"
                     android:gravity="center"
-                    android:textSize="@dimen/x32"/>
+                    style="@style/MainTextDeepStyle32"/>
+
                 <ImageView
                     android:id="@+id/image_logo"
                     android:layout_width="@dimen/x60"
                     android:layout_height="@dimen/x60"
-                    android:layout_toLeftOf="@+id/tv_coin"
+                    android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/x20"
-                    android:layout_centerVertical="true"/>
+                    android:layout_toLeftOf="@+id/tv_coin"/>
             </RelativeLayout>
+
             <TextView
-                style="@style/HorizontalBoundaryStyle"/>
+                style="@style/HorizontalDeepBoundaryStyle"/>
+
             <com.maning.pswedittextlibrary.MNPasswordEditText
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"

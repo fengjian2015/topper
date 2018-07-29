@@ -132,7 +132,11 @@ public class GuessBetRVAdapter extends RecyclerView.Adapter {
         public void setData(GuessInfo.DataBean.BetListBean betListBean, int position) {
             mTvArray.setText(betListBean.getBet_number());
             mTvTime.setText(betListBean.getCreated_at());
-            mTvSeveral.setText("0" + position + mContext.getString(R.string.bet));
+            if(position < 9) {
+                mTvSeveral.setText("0" + position + mContext.getString(R.string.bet));
+            }else {
+                mTvSeveral.setText(position + mContext.getString(R.string.bet));
+            }
             mTvMoney.setText(betListBean.getBonus_number());
         }
     }

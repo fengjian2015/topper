@@ -3,8 +3,8 @@
                 xmlns:emojicon="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/rl_item"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/y150"
-                android:background="@color/white">
+                android:background="@color/app_bg_color"
+                android:layout_height="@dimen/y150">
 
     <ImageView
         android:id="@+id/tab1_item_img"
@@ -24,17 +24,17 @@
 
         <TextView
             android:id="@+id/tab1_item_name"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x35"
-            android:singleLine="true"
             android:maxEms="8"
+            android:singleLine="true"
             android:textStyle="bold"/>
 
         <io.github.rockerhieu.emojicon.EmojiconTextView
             android:id="@+id/tab1_item_text"
+            style="@style/SecondaryTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tab1_item_name"
@@ -44,16 +44,15 @@
             android:maxEms="8"
             android:singleLine="true"
             android:text=""
-            android:textSize="@dimen/x28"
             emojicon:emojiconSize="@dimen/x35"/>
 
         <TextView
             android:id="@+id/time"
+            style="@style/SecondaryTextStyle24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/x20"
-            android:textSize="@dimen/x26"/>
+            android:layout_marginRight="@dimen/x20"/>
 
         <TextView
             android:id="@+id/number"

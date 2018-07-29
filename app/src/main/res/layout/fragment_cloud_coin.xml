@@ -4,22 +4,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light"
+    android:background="@color/app_bg_color"
     android:orientation="vertical">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
-        android:background="#243042">
+        android:layout_height="@dimen/y120">
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/wallet"
-            android:textColor="@color/white"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/wallet"/>
 
         <ImageView
             android:id="@+id/iv_more"
@@ -35,7 +33,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y250"
-        android:background="#243042"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -52,12 +49,11 @@
                 android:src="@mipmap/icon_pg"/>
 
             <TextView
+                style="@style/MainTextShallowStyle32"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/y20"
-                android:text="@string/receipt_payment"
-                android:textColor="@color/white"
-                android:textSize="@dimen/x32"/>
+                android:text="@string/receipt_payment"/>
 
         </LinearLayout>
 
@@ -84,11 +80,10 @@
 
             <TextView
                 android:id="@+id/tv_total"
+                style="@style/MainTextShallowStyle32"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/y20"
-                android:textColor="@color/white"
-                android:textSize="@dimen/x30"
                 android:textStyle="bold"/>
 
         </LinearLayout>
@@ -107,25 +102,23 @@
                 android:src="@mipmap/icon_card"/>
 
             <TextView
+                style="@style/MainTextShallowStyle32"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/y20"
-                android:text="@string/bank_card"
-                android:textColor="@color/white"
-                android:textSize="@dimen/x32"/>
+                android:text="@string/bank_card"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
     <TextView
+        style="@style/MainTextShallowStyle32"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginTop="@dimen/y30"
-        android:text="TopperChat服务"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
+        android:text="TopperChat服务"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -135,102 +128,79 @@
         android:paddingLeft="@dimen/x20"
         android:paddingRight="@dimen/x20">
 
-        <android.support.v7.widget.CardView
+        <LinearLayout
+            android:id="@+id/ll_asserts"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/y20"
             android:layout_weight="1"
-            app:cardCornerRadius="@dimen/x15">
+            android:background="@drawable/bg_shallow_shape"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/ll_asserts"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_asserts"/>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/icon_asserts"/>
+            <TextView
+                style="@style/MainTextShallowStyle32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20"
+                android:text="@string/number_asset"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/y20"
-                    android:text="@string/number_asset"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x32"/>
+        </LinearLayout>
 
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
-
-        <android.support.v7.widget.CardView
+        <LinearLayout
+            android:id="@+id/ll_blockchain_gamble"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/y20"
             android:layout_marginLeft="@dimen/x20"
             android:layout_weight="1"
-            app:cardCornerRadius="@dimen/x15">
+            android:background="@drawable/bg_shallow_shape"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/ll_blockchain_gamble"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_game"/>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/icon_game"/>
+            <TextView
+                style="@style/MainTextShallowStyle32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20"
+                android:text="@string/blockchain_gamble"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/y20"
-                    android:text="@string/blockchain_gamble"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x32"/>
+        </LinearLayout>
 
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
+        <LinearLayout
+            android:id="@+id/ll_exchange"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/y20"
             android:layout_marginLeft="@dimen/x20"
             android:layout_weight="1"
-            app:cardCornerRadius="@dimen/x15">
+            android:background="@drawable/bg_shallow_shape"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/ll_exchange"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_ex"/>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/icon_ex"/>
+            <TextView
+                style="@style/MainTextShallowStyle32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20"
+                android:text="@string/exchange"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/y20"
-                    android:text="@string/exchange"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x32"/>
-
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -241,101 +211,79 @@
         android:paddingLeft="@dimen/x20"
         android:paddingRight="@dimen/x20">
 
-        <android.support.v7.widget.CardView
+        <LinearLayout
+            android:id="@+id/ll_otc"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/y20"
             android:layout_weight="1"
-            app:cardCornerRadius="@dimen/x15">
+            android:background="@drawable/bg_shallow_shape"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/ll_otc"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_otc"/>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/icon_otc"/>
+            <TextView
+                style="@style/MainTextShallowStyle32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20"
+                android:text="OTC"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/y20"
-                    android:text="OTC"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x32"/>
+        </LinearLayout>
 
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
+        <LinearLayout
+            android:id="@+id/ll_financing"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/y20"
             android:layout_marginLeft="@dimen/x20"
             android:layout_weight="1"
-            app:cardCornerRadius="@dimen/x15">
+            android:background="@drawable/bg_shallow_shape"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/ll_financing"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_financing"/>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/icon_financing"/>
+            <TextView
+                style="@style/MainTextShallowStyle32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20"
+                android:text="@string/manage_money"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/y20"
-                    android:text="@string/manage_money"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x32"/>
+        </LinearLayout>
 
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
+        <LinearLayout
+            android:id="@+id/ll_pawn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/y20"
             android:layout_marginLeft="@dimen/x20"
             android:layout_weight="1"
-            app:cardCornerRadius="@dimen/x15">
+            android:background="@drawable/bg_shallow_shape"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/ll_pawn"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_pawn"/>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/icon_pawn"/>
+            <TextView
+                style="@style/MainTextShallowStyle32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20"
+                android:text="@string/pawn"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/y20"
-                    android:text="@string/pawn"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x32"/>
-
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -345,68 +293,54 @@
         android:paddingLeft="@dimen/x20"
         android:paddingRight="@dimen/x20">
 
-        <android.support.v7.widget.CardView
+        <LinearLayout
+            android:id="@+id/ll_safe"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/y20"
             android:layout_weight="1"
-            app:cardCornerRadius="@dimen/x15">
+            android:background="@drawable/bg_shallow_shape"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/ll_safe"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_safe"/>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/icon_safe"/>
+            <TextView
+                style="@style/MainTextShallowStyle32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20"
+                android:text="@string/safe"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/y20"
-                    android:text="@string/safe"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x32"/>
+        </LinearLayout>
 
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
+        <LinearLayout
+            android:id="@+id/ll_collect"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/y20"
             android:layout_marginLeft="@dimen/x20"
             android:layout_weight="1"
-            app:cardCornerRadius="@dimen/x15">
+            android:background="@drawable/bg_shallow_shape"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/ll_collect"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_collect"/>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/icon_collect"/>
+            <TextView
+                style="@style/MainTextShallowStyle32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20"
+                android:text="@string/collect"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/y20"
-                    android:text="@string/collect"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x32"/>
-
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
+        </LinearLayout>
 
         <TextView
             android:layout_width="0dp"

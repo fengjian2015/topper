@@ -90,8 +90,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/no_news"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/x30"/>
+                        style="@style/MainTextShallowStyle30"/>
 
                 </LinearLayout>
 
@@ -116,8 +115,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/y50"
                         android:text="@string/loading_error_anew_loading_hint"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/x30"/>
+                        style="@style/MainTextShallowStyle30"/>
 
                 </LinearLayout>
 

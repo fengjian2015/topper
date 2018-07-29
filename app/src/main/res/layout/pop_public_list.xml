@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_data"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingRight="@dimen/x20"
+    android:paddingLeft="@dimen/x20"
+    >
+    <ListView
+        android:id="@+id/lv_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/icon_public"
+        android:paddingRight="@dimen/x5"
+        android:paddingLeft="@dimen/x5"
+        android:paddingTop="@dimen/x5"
+        android:paddingBottom="@dimen/y10"
+        android:divider="@null"
+        android:scrollbars="none"
+        android:layout_alignParentBottom="true"
+        ></ListView>
+
+</RelativeLayout>

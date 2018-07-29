@@ -94,7 +94,7 @@
             android:paddingLeft="@dimen/x20"
             android:paddingRight="@dimen/x20"
             android:singleLine="true"
-            android:textColorHint="@drawable/bg_shallow_shape"/>
+            android:textColorHint="@color/secondary_text_color"/>
 
     </RelativeLayout>
 

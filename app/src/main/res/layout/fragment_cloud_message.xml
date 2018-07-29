@@ -12,9 +12,7 @@
         android:background="#00000000"/>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <LinearLayout
             android:id="@+id/cloud_circle_menu"
@@ -33,11 +31,11 @@
                 android:orientation="vertical">
 
                 <TextView
+                    style="@style/MainTextShallowStyle36"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/talk"
-                    android:textColor="@drawable/menu_text_color_selector"
-                    android:textSize="@dimen/y32"/>
+                    android:textColor="@drawable/menu_text_color_selector"/>
 
                 <TextView
                     android:id="@+id/yunxin_xx"
@@ -89,7 +87,8 @@
             android:layout_centerInParent="true"
             android:background="@color/gray"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_anim"

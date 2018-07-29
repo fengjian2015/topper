@@ -17,39 +17,36 @@
             android:layout_height="@dimen/y100"
             android:background="@android:color/transparent"
             android:text="@string/copy"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"
+            style="@style/BlueTextStyle28"
             android:visibility="gone"
             />
+
         <TextView
             android:id="@+id/tv_line"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y1"
-            android:background="@color/gray"
+            style="@style/HorizontalDeepBoundaryStyle"
             android:visibility="gone"/>
+
         <Button
             android:id="@+id/btn_transmit"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y100"
             android:background="@android:color/transparent"
             android:text="@string/transmit"
-            android:textColor="@color/blue2"
-            android:visibility="gone"
-            android:textSize="@dimen/x28"/>
+            style="@style/BlueTextStyle28"
+            android:visibility="gone"/>
+
         <TextView
             android:id="@+id/tv_line1"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y1"
-            android:background="@color/gray"
+            style="@style/HorizontalDeepBoundaryStyle"
             android:visibility="gone"/>
+
         <Button
             android:id="@+id/btn_delete"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y100"
             android:background="@android:color/transparent"
             android:text="@string/delete"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"/>
+            style="@style/BlueTextStyle28"/>
     </LinearLayout>
 
 </LinearLayout>

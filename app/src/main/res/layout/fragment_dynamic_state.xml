@@ -7,8 +7,7 @@
 
     <com.scwang.smartrefresh.header.WaterDropHeader
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"/>
+        android:layout_height="wrap_content"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -31,11 +30,10 @@
                 android:src="@mipmap/icon_nothing_img"/>
 
             <TextView
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/no_dynamic_publish"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/x30"/>
+                android:text="@string/no_dynamic_publish"/>
 
         </LinearLayout>
 
@@ -56,31 +54,30 @@
                 android:src="@mipmap/img_wrong"/>
 
             <TextView
-                android:layout_marginTop="@dimen/y50"
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/loading_error_anew_loading_hint"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/x30"/>
+                android:layout_marginTop="@dimen/y50"
+                android:text="@string/loading_error_anew_loading_hint"/>
 
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:visibility="gone"
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:descendantFocusability="beforeDescendants"
             android:fastScrollEnabled="false"
-            android:overScrollMode="never"/>
+            android:overScrollMode="never"
+            android:visibility="gone"/>
 
         <RelativeLayout
-            android:visibility="gone"
-            android:background="@color/white"
             android:id="@+id/rl_edit"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y120"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/xx2"
@@ -97,9 +94,8 @@
                 android:paddingLeft="@dimen/x36"
                 android:paddingRight="@dimen/x36"
                 android:paddingTop="@dimen/x30"
-                android:textColor="@color/black"
-                android:textCursorDrawable="@null"
-                android:textSize="@dimen/x26"/>
+                style="@style/MainTextShallowStyle30"
+                android:textCursorDrawable="@null"/>
 
             <ImageView
                 android:id="@+id/iv_selector_img"
@@ -120,8 +116,7 @@
                 android:gravity="center"
                 android:paddingRight="@dimen/x20"
                 android:text="@string/send"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x32"/>
+                style="@style/BlueTextStyle28"/>
 
         </RelativeLayout>
 

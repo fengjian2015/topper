@@ -7,6 +7,7 @@
     android:layout_gravity="center"
     android:layout_marginBottom="@dimen/y20"
     android:layout_marginLeft="@dimen/x50"
+    app:cardBackgroundColor="@color/boundary_color"
     android:layout_marginRight="@dimen/x50"
     android:layout_marginTop="@dimen/y20"
     app:cardCornerRadius="@dimen/x15">
@@ -23,8 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pay_inform"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            style="@style/MainTextShallowStyle32"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/y30"
             android:text="@string/deal_coin"
-            android:textSize="@dimen/x26"/>
+            style="@style/SecondaryTextStyle28"/>
 
         <TextView
             android:id="@+id/tv_coin"
@@ -41,7 +41,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/y20"
             android:text="BTC"
-            android:textColor="@color/black"
+            style="@style/MainTextShallowStyle36"
             android:textSize="@dimen/x45"
             android:textStyle="bold"/>
 
@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/payee"
-                android:textSize="@dimen/x26"/>
+                style="@style/MainTextShallowStyle30"/>
 
             <TextView
                 android:id="@+id/tv_who"
@@ -64,8 +64,7 @@
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/tv_who_hint"
                 android:text="安子"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x26"/>
+                style="@style/MainTextShallowStyle30"/>
 
         </RelativeLayout>
 
@@ -79,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pay_count"
-                android:textSize="@dimen/x26"/>
+                style="@style/MainTextShallowStyle30"/>
 
             <TextView
                 android:id="@+id/tv_count"
@@ -88,8 +87,7 @@
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/tv_status_hint"
                 android:text="0.01"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x26"/>
+                style="@style/MainTextShallowStyle30"/>
 
         </RelativeLayout>
 
@@ -103,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/deal_time"
-                android:textSize="@dimen/x26"/>
+                style="@style/MainTextShallowStyle30"/>
 
             <TextView
                 android:id="@+id/tv_time"
@@ -112,8 +110,7 @@
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/tv_time_hint"
                 android:text="2018-04-17 19:20:30"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x26"/>
+                style="@style/MainTextShallowStyle30"/>
 
         </RelativeLayout>
 
@@ -130,8 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/x20"
                 android:text="@string/look_details"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+                style="@style/MainTextShallowStyle30"/>
 
 
             <ImageView

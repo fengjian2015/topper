@@ -4,7 +4,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     android:paddingLeft="@dimen/x20"
     android:paddingRight="@dimen/x20">
 
@@ -21,8 +20,7 @@
         android:layout_toLeftOf="@+id/tv_status"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
+        style="@style/MainTextShallowStyle30"/>
 
     <TextView
         android:id="@+id/tv_time"
@@ -32,7 +30,7 @@
         android:layout_marginTop="@dimen/y30"
         android:layout_marginBottom="@dimen/y20"
         android:text="2018-02-20 12:25:00"
-        android:textSize="@dimen/x24"/>
+        style="@style/SecondaryTextStyle24"/>
 
     <TextView
         android:id="@+id/tv_type"
@@ -56,8 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:textColor="@color/gray3"
-        android:textSize="@dimen/x26"/>
+        style="@style/SecondaryTextStyle28"/>
 
     <TextView
         android:id="@+id/tv_look_count"
@@ -70,6 +67,6 @@
         android:textColor="@color/gray"
         android:layout_below="@+id/tv_time"
         android:text="45623"
-        android:textSize="@dimen/x22"/>
+        style="@style/SecondaryTextStyle24"/>
 
 </RelativeLayout>

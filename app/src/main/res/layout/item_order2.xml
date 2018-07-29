@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -32,8 +31,7 @@
             android:layout_marginLeft="@dimen/x20"
             android:layout_toRightOf="@+id/iv_touxiang"
             android:text="安子"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x28"/>
+            style="@style/MainTextShallowStyle30"/>
 
         <TextView
             android:id="@+id/tv_coin_type"
@@ -60,8 +58,7 @@
             android:layout_marginBottom="@dimen/y4"
             android:layout_marginLeft="@dimen/x20"
             android:text="交易金额 50000.00CNY"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x24"/>
+            style="@style/MainTextShallowStyle30"/>
 
         <TextView
             android:id="@+id/tv_time"
@@ -70,7 +67,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/tv_name"
             android:text="订单号:1234564"
-            android:textSize="@dimen/x28"/>
+            style="@style/SecondaryTextStyle28"/>
 
     </RelativeLayout>
 

@@ -6,29 +6,28 @@
                 android:background="@drawable/bg_white_shape"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/y30"
                 android:paddingBottom="@dimen/y30"
                 android:paddingLeft="@dimen/x50"
-                android:paddingRight="@dimen/x50">
+                android:paddingRight="@dimen/x50"
+                android:paddingTop="@dimen/y30">
 
     <TextView
         android:id="@+id/tv_title"
+        style="@style/MainTextDeepStyle30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:drawableLeft="@mipmap/icon_remind"
-        android:text="@string/google_verify"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
+        android:text="@string/google_verify"/>
 
     <TextView
-        android:lineSpacingExtra="@dimen/x8"
-        android:layout_marginTop="@dimen/y30"
+        style="@style/MainTextDeepStyle30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_title"
-        android:text="@string/binding_google_hint"
-        android:textColor="@color/bar_grey_90"
-        android:textSize="@dimen/x26"/>
+        android:layout_marginTop="@dimen/y30"
+        android:lineSpacingExtra="@dimen/x8"
+
+        android:text="@string/binding_google_hint"/>
 
 </RelativeLayout>

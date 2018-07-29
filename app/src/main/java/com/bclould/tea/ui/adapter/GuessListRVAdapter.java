@@ -151,21 +151,19 @@ public class GuessListRVAdapter extends RecyclerView.Adapter {
                     }
                 });
                 if (dataBean.getStatus() == 2) {
-                    mTvKaijiangTime.setTextColor(mContext.getResources().getColor(R.color.black));
                     mRlTime.setVisibility(View.GONE);
                     mRlCount.setVisibility(View.GONE);
                     mLlGuessStatus.setVisibility(View.GONE);
                     mIvGuessStatus.setImageResource(R.mipmap.icon_jc_wait);
                 } else if (dataBean.getStatus() == 3) {
-                    mTvKaijiangTime.setTextColor(mContext.getResources().getColor(R.color.black));
                     mTvCount.setText(dataBean.getCoin_count());
                     mTvJoinTime.setText(dataBean.getJoin_created_at());
                     if (dataBean.getLottery_status() == 0) {
                         mTvAwardStatus.setText(mContext.getString(R.string.no_join));
-                        mTvAwardStatus.setTextColor(mContext.getResources().getColor(R.color.black));
+                        mTvAwardStatus.setTextColor(mContext.getResources().getColor(R.color.main_text_color));
                     } else if (dataBean.getLottery_status() == 2) {
                         mTvAwardStatus.setText(mContext.getString(R.string.no_zhong_jiang));
-                        mTvAwardStatus.setTextColor(mContext.getResources().getColor(R.color.black));
+                        mTvAwardStatus.setTextColor(mContext.getResources().getColor(R.color.main_text_color));
                     } else if (dataBean.getLottery_status() == 3) {
                         mTvAwardStatus.setText(mContext.getString(R.string.zhong_jiang_le));
                         mTvAwardStatus.setTextColor(mContext.getResources().getColor(R.color.yikaijiang));

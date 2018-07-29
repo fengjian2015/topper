@@ -8,18 +8,15 @@
 
     <RelativeLayout
         android:id="@+id/rl_title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <TextView
             android:id="@+id/tv_friend_count"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/friend"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/friend"/>
 
         <ImageView
             android:id="@+id/iv_search"
@@ -46,7 +43,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:orientation="vertical">
 
         <LinearLayout
@@ -58,7 +54,6 @@
                 android:id="@+id/news_friend"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y120"
-                android:background="@color/white"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/x20">
 
@@ -70,14 +65,13 @@
                     android:src="@mipmap/icon_friend_newfriend"/>
 
                 <TextView
+                    style="@style/MainTextShallowStyle32"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv"
-                    android:text="@string/new_friend"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x32"/>
+                    android:text="@string/new_friend"/>
 
                 <TextView
                     android:id="@+id/number"
@@ -117,19 +111,19 @@
                     android:src="@mipmap/icon_friend_groups"/>
 
                 <TextView
+                    style="@style/MainTextShallowStyle32"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv1"
-                    android:text="@string/my_group"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x32"/>
+                    android:text="@string/my_group"/>
 
             </RelativeLayout>
 
             <TextView
                 style="@style/HorizontalBoundaryStyle"/>
+
             <RelativeLayout
                 android:id="@+id/my_public"
                 android:layout_width="match_parent"
@@ -146,19 +140,19 @@
                     android:src="@mipmap/icon_thepublic"/>
 
                 <TextView
+                    style="@style/MainTextShallowStyle32"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_toRightOf="@+id/iv2"
-                    android:text="@string/the_pulice"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x32"/>
+                    android:text="@string/the_pulice"/>
 
             </RelativeLayout>
 
             <TextView
                 style="@style/HorizontalBoundaryStyle"/>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -182,6 +176,7 @@
 
                 <com.gjiazhe.wavesidebar.WaveSideBar
                     android:id="@+id/side_bar"
+                    style="@style/SecondaryTextStyle24"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
@@ -189,9 +184,7 @@
                     app:sidebar_lazy_respond="false"
                     app:sidebar_max_offset="@dimen/x160"
                     app:sidebar_position="right"
-                    app:sidebar_text_alignment="center"
-                    app:sidebar_text_color="@color/black"
-                    app:sidebar_text_size="@dimen/y24"/>
+                    app:sidebar_text_alignment="center"/>
 
             </RelativeLayout>
 

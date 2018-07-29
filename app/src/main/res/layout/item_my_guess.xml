@@ -1,236 +1,227 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/y5"
+    android:layout_marginBottom="@dimen/y20"
     android:layout_marginLeft="@dimen/x30"
     android:layout_marginRight="@dimen/x30"
-    android:layout_marginTop="@dimen/y20"
-    app:cardCornerRadius="@dimen/x15">
+    android:background="@drawable/bg_shallow_shape">
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/iv_guess_status"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@mipmap/icon_jc_pass"/>
 
-        <ImageView
-            android:id="@+id/iv_guess_status"
+
+    <TextView
+        style="@style/HorizontalBoundaryStyle"
+        android:layout_alignTop="@+id/ll_all"/>
+
+    <LinearLayout
+        android:id="@+id/ll_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/y40"
+        android:paddingLeft="@dimen/x30"
+        android:paddingRight="@dimen/x30"
+        android:paddingTop="@dimen/y40">
+
+        <TextView
+            android:id="@+id/tv_kaijiang_time"
+            style="@style/BlueTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@mipmap/icon_jc_pass"/>
+            android:layout_gravity="center_horizontal"
+            android:text="@string/kaijiang_time"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y30">
+
+            <ImageView
+                android:id="@+id/iv_touxiang"
+                android:layout_width="@dimen/x80"
+                android:layout_height="@dimen/x80"
+                android:src="@mipmap/img_tocotalk1"/>
+
+            <TextView
+                android:id="@+id/tv_guess_title"
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_marginRight="@dimen/x20"
+                android:layout_toLeftOf="@+id/btn_bet"
+                android:layout_toRightOf="@+id/iv_touxiang"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="dfasfasdfsadfasdfsadfsdafsdafas"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/SecondaryTextStyle24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/iv_touxiang"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/iv_touxiang"
+                android:text="安子"/>
+
+            <Button
+                android:id="@+id/btn_bet"
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="@dimen/x150"
+                android:layout_height="@dimen/y60"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/bg_blue_shape"
+                android:text="@string/bet"
+                android:visibility="visible"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_dangqian"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y30">
+
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/present_periods"/>
+
+            <TextView
+                android:id="@+id/insert_coins_count"
+                style="@style/SecondaryTextStyle28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="01期"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_jiangjin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y30">
+
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bonus_chi"/>
+
+            <TextView
+                android:id="@+id/tv_bonus_chi"
+                style="@style/SecondaryTextStyle28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="1000/10000 TPC"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y30"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/insert_coins_count"/>
+
+            <TextView
+                android:id="@+id/tv_count"
+                style="@style/SecondaryTextStyle28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="————"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y30"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/join_time"/>
+
+            <TextView
+                android:id="@+id/tv_join_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="————"
+                android:textSize="@dimen/x26"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y30">
+
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/kaijiang_result"/>
+
+            <TextView
+                android:id="@+id/tv_kaijiang_result"
+                style="@style/SecondaryTextStyle28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="————"/>
+
+        </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/ll_all"
+            android:id="@+id/ll_guess_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/y40"
-            android:paddingLeft="@dimen/x30"
-            android:paddingRight="@dimen/x30"
-            android:paddingTop="@dimen/y40">
+            android:visibility="gone">
 
             <TextView
-                android:id="@+id/tv_kaijiang_time"
+                style="@style/HorizontalBoundaryStyle"
+                android:layout_marginTop="@dimen/y30"/>
+
+            <TextView
+                android:id="@+id/tv_award_status"
+                style="@style/MainTextShallowStyle36"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="@string/kaijiang_time"
-                android:textColor="@color/blue2"
-                android:textSize="@dimen/x24"/>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y30">
-
-                <ImageView
-                    android:id="@+id/iv_touxiang"
-                    android:layout_width="@dimen/x80"
-                    android:layout_height="@dimen/x80"
-                    android:src="@mipmap/img_tocotalk1"/>
-
-                <TextView
-                    android:id="@+id/tv_guess_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/x20"
-                    android:layout_marginRight="@dimen/x20"
-                    android:layout_toLeftOf="@+id/btn_bet"
-                    android:layout_toRightOf="@+id/iv_touxiang"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:text="dfasfasdfsadfasdfsadfsdafsdafas"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x28"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/iv_touxiang"
-                    android:layout_marginLeft="@dimen/x20"
-                    android:layout_toRightOf="@+id/iv_touxiang"
-                    android:text="安子"
-                    android:textSize="@dimen/x24"/>
-
-                <Button
-                    android:id="@+id/btn_bet"
-                    android:layout_width="@dimen/x150"
-                    android:layout_height="@dimen/y60"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/bg_blue_shape"
-                    android:text="@string/bet"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/x28"
-                    android:visibility="visible"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_dangqian"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y30">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/present_periods"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x26"/>
-
-                <TextView
-                    android:id="@+id/insert_coins_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="01期"
-                    android:textSize="@dimen/x26"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_jiangjin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y30">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/bonus_chi"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x26"/>
-
-                <TextView
-                    android:id="@+id/tv_bonus_chi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="1000/10000 TPC"
-                    android:textSize="@dimen/x26"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_count"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/y30"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/insert_coins_count"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x26"/>
-
-                <TextView
-                    android:id="@+id/tv_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="————"
-                    android:textSize="@dimen/x26"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y30"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/join_time"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x26"/>
-
-                <TextView
-                    android:id="@+id/tv_join_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="————"
-                    android:textSize="@dimen/x26"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_result"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y30">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/kaijiang_result"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x26"/>
-
-                <TextView
-                    android:id="@+id/tv_kaijiang_result"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="————"
-                    android:textSize="@dimen/x26"/>
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_guess_status"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <TextView
-                    style="@style/HorizontalBoundaryStyle"
-                    android:layout_marginTop="@dimen/y30"/>
-
-                <TextView
-                    android:id="@+id/tv_award_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/y30"
-                    android:text="@string/no_zhong_jiang"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x32"/>
-
-            </LinearLayout>
+                android:text="@string/no_zhong_jiang"/>
 
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
-</android.support.v7.widget.CardView>
+    <TextView
+        style="@style/HorizontalBoundaryStyle"
+        android:layout_below="@+id/ll_all"/>
+</RelativeLayout>

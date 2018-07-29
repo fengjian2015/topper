@@ -9,6 +9,7 @@
     android:layout_marginLeft="@dimen/x50"
     android:layout_marginRight="@dimen/x50"
     android:layout_marginTop="@dimen/y20"
+    app:cardBackgroundColor="@color/boundary_color"
     app:cardCornerRadius="@dimen/x15">
 
     <LinearLayout
@@ -20,28 +21,27 @@
 
         <TextView
             android:id="@+id/tv_type_msg"
+            style="@style/MainTextShallowStyle32"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/exceptional_spending"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/exceptional_spending"/>
 
         <TextView
+            style="@style/SecondaryTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/y30"
-            android:text="@string/exceptional_coin_coins"
-            android:textSize="@dimen/x26"/>
+            android:text="@string/exceptional_coin_coins"/>
 
         <TextView
             android:id="@+id/tv_coin"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/y20"
             android:text="BTC"
-            android:textColor="@color/black"
             android:textSize="@dimen/x45"
             android:textStyle="bold"/>
 
@@ -52,20 +52,19 @@
 
             <TextView
                 android:id="@+id/tv_status_hint"
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/exceptional_coin_count"
-                android:textSize="@dimen/x26"/>
+                android:text="@string/exceptional_coin_count"/>
 
             <TextView
                 android:id="@+id/tv_count"
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/tv_status_hint"
-                android:text="0.01"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x26"/>
+                android:text="0.01"/>
 
         </RelativeLayout>
 
@@ -76,20 +75,19 @@
 
             <TextView
                 android:id="@+id/tv_time_hint"
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/exceptional_coin_time"
-                android:textSize="@dimen/x26"/>
+                android:text="@string/exceptional_coin_time"/>
 
             <TextView
                 android:id="@+id/tv_time"
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/tv_time_hint"
-                android:text="2018-04-17 19:20:30"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x26"/>
+                android:text="2018-04-17 19:20:30"/>
 
         </RelativeLayout>
 
@@ -102,12 +100,11 @@
             android:layout_height="wrap_content">
 
             <TextView
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/x20"
-                android:text="@string/look_details"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+                android:text="@string/look_details"/>
 
 
             <ImageView

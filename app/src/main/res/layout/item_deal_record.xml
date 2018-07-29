@@ -1,40 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/y150"
     android:layout_marginBottom="@dimen/y20"
     android:layout_marginLeft="@dimen/x20"
     android:layout_marginRight="@dimen/x20"
-    android:background="@color/white"
-    app:cardCornerRadius="@dimen/x15">
+    android:background="@drawable/bg_shallow_shape"
+    android:gravity="center_vertical">
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/currency_transfer"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x30"
-            android:text="比特币转账"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
+            android:text="比特币转账"/>
 
 
         <TextView
             android:id="@+id/time"
+            style="@style/SecondaryTextStyle24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/currency_transfer"
             android:layout_marginLeft="@dimen/x30"
             android:layout_marginTop="@dimen/y20"
-            android:text="2017-09-02"
-            android:textColor="@color/gray"
-            android:textSize="@dimen/x24"/>
+            android:text="2017-09-02"/>
 
     </RelativeLayout>
 
@@ -47,27 +43,24 @@
 
         <TextView
             android:id="@+id/money"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginLeft="@dimen/x40"
-            android:text="-$555.00"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
+            android:text="-$555.00"/>
 
 
         <TextView
             android:id="@+id/type"
+            style="@style/SecondaryTextStyle24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/money"
             android:layout_marginTop="@dimen/y20"
-            android:text="交易成功"
-            android:textColor="@color/gray"
-            android:textSize="@dimen/x24"/>
-
+            android:text="交易成功"/>
 
     </RelativeLayout>
 
-</android.support.v7.widget.CardView>
+</RelativeLayout>
