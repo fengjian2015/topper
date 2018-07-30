@@ -1133,4 +1133,13 @@
     <string name="reduction_background">還原背景</string>
     <string name="update_public_number">更新公眾號</string>
     <string name="user_freeze_hint">您的賬號已被凍結，請聯繫管理員處理，郵箱：topperchat@outlook.com</string>
+    <string name="my_friends_circle">我的好友圈</string>
+    <string name="greet_hint">欢迎进入TopperChat！</string>
+    <string name="reduction_success">還原成功</string>
+    <string name="no_more_search_results">沒有更多的搜索結果</string>
+    <string name="security_verification">安全驗證</string>
+    <string name="security_verification_hint">為了你的賬戶安全，需要進行驗證。請將下方的圓標，移動到圓形區域內</string>
+    <string name="security_verification_success">安全驗證成功</string>
+    <string name="security_verification_failure">安全驗證失敗</string>
+    <string name="security_verification_failure_hint">請移動下方的圓標到圓形區域內</string>
 </resources>

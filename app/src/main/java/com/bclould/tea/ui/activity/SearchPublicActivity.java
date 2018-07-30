@@ -18,7 +18,6 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.PublicInfo;
-import com.bclould.tea.ui.adapter.AddFriendAdapter;
 import com.bclould.tea.ui.adapter.SearchPublicAdapter;
 
 import java.util.ArrayList;
@@ -35,9 +34,12 @@ public class SearchPublicActivity extends BaseActivity {
     EditText mEtContent;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.tv_no_data)
+    TextView mTvNoData;
 
     private SearchPublicAdapter mSearchPublicAdapter;
-    private List<PublicInfo.DataBean> mList=new ArrayList<>();
+    private List<PublicInfo.DataBean> mList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +52,7 @@ public class SearchPublicActivity extends BaseActivity {
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mSearchPublicAdapter = new SearchPublicAdapter(this,mList);
+        mSearchPublicAdapter = new SearchPublicAdapter(this, mList);
         mRecyclerView.setAdapter(mSearchPublicAdapter);
     }
 
@@ -70,10 +72,17 @@ public class SearchPublicActivity extends BaseActivity {
         });
     }
 
-    private void search(String content){
+    private void search(String content) {
         new PublicPresenter(this).searchList(content, new PublicPresenter.CallBack() {
             @Override
             public void send(PublicInfo dataBean) {
+                if (dataBean.getData().size() > 0) {
+                    mTvNoData.setVisibility(View.GONE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                }else{
+                    mTvNoData.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.GONE);
+                }
                 mList.clear();
                 mList.addAll(dataBean.getData());
                 mSearchPublicAdapter.notifyDataSetChanged();

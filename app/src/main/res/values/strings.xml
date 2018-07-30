@@ -2229,4 +2229,11 @@
     <string name="user_freeze_hint">您的賬號已被凍結，請聯繫管理員處理，郵箱：topperchat@outlook.com</string>
     <string name="my_friends_circle">我的好友圈</string>
     <string name="greet_hint">欢迎进入TopperChat！</string>
+    <string name="reduction_success">还原成功</string>
+    <string name="no_more_search_results">没有更多的搜索结果</string>
+    <string name="security_verification">安全验证</string>
+    <string name="security_verification_hint">为了你的账户安全，需要进行验证。请将下方的圆标，移动到圆形区域内</string>
+    <string name="security_verification_success">安全验证成功</string>
+    <string name="security_verification_failure">安全验证失败</string>
+    <string name="security_verification_failure_hint">请移动下方的圆标到圆形区域内</string>
 </resources>

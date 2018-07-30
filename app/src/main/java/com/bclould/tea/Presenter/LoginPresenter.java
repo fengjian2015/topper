@@ -19,6 +19,7 @@ import com.bclould.tea.model.LoginRecordInfo;
 import com.bclould.tea.model.UserCodeInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.topperchat.WsConnection;
+import com.bclould.tea.ui.activity.AuthenticationActivity;
 import com.bclould.tea.ui.activity.LoginActivity;
 import com.bclould.tea.ui.activity.LoginSetActivity;
 import com.bclould.tea.ui.activity.MainActivity;
@@ -115,7 +116,6 @@ public class LoginPresenter {
                                 }
                             }
                         } else if (baseInfo.getStatus() == 1) {
-                            WsConnection.getInstance().setOutConnection(false);
                             UtilTool.Log("日志", baseInfo.getData().getName());
                             MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
                             MySharedPreferences.getInstance().setLong(TOKEN_TIME,System.currentTimeMillis());
@@ -145,12 +145,13 @@ public class LoginPresenter {
                             userCodeInfo.setPassword(password);
                             dbUserCode.addUserCode(userCodeInfo);
                             hideDialog();
+                            WsConnection.getInstance().setOutConnection(false);
                             Intent intent = new Intent(mContext, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             intent.putExtra("whence", 1);
                             mContext.startActivity(intent);
-                            LoginActivity activity = (LoginActivity) mContext;
                             EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.refresh_the_interface)));
-                            activity.finish();
+
                         }
                     }
 

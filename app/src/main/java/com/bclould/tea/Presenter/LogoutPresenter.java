@@ -59,6 +59,7 @@ public class LogoutPresenter {
 
     public void logout() {
         showDialog();
+        String s=UtilTool.getToken();
         RetrofitUtil.getInstance(mActivity)
                 .getServer()
                 .logout(UtilTool.getToken())
