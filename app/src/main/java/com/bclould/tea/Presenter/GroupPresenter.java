@@ -872,7 +872,7 @@ public class GroupPresenter {
                         hideDialog();
                         if (baseInfo.getStatus() == 1) {
                             callBack.send();
-                            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.xg_succeed));
+                            ToastShow.showToast2((Activity) mContext, mContext.getString(R.string.reduction_success));
                         }else{
                             ToastShow.showToast2((Activity) mContext, baseInfo.getMessage());
                         }

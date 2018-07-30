@@ -81,7 +81,6 @@ public final class ContentLengthInputStream extends FilterInputStream {
     private int checkReadSoFarOrThrow(int read) throws IOException {
         if (read >= 0) {
             readSoFar += read;
-            UtilTool.Log("fengjian"," readSoFar:"+readSoFar+"    contentLength:"+contentLength+"   read: "+read );
         } else if (contentLength - readSoFar > 0) {
             throw new IOException("Failed to read all expected data"
                     + ", expected: " + contentLength
@@ -89,7 +88,6 @@ public final class ContentLengthInputStream extends FilterInputStream {
         }
         double d=((double)readSoFar/(double)contentLength);
         int progress = (int) ( d* 100);
-        UtilTool.Log("fengjian",""+progress+"    "+d);
         GlideProgressListenerManager.get().progress(progress,mUrl);
 
         return read;

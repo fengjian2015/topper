@@ -132,24 +132,25 @@ public class IMService extends Service{
                                 }
                                 exReconnect(2000);
                                 break;
-                            }
-                            if (!IMLogin.isNetworkActivity(IMService.this)) {
+                            }else{
+                                if (!IMLogin.isNetworkActivity(IMService.this)) {
 //                            MyLogger.xuxLog().i("-----EXLOGIN2");
-                                exReconnect(3 * 1000);
-                                ConnectStateChangeListenerManager.get().notifyListener(
-                                        ConnectStateChangeListenerManager.DISCONNECT);
-                                break;
-                            }
-//                        MyLogger.xuxLog().i("-----EXLOGIN3");
-                            ConnectStateChangeListenerManager.get().notifyListener(
-                                    ConnectStateChangeListenerManager.CONNECTING);
-                            thread1=new Thread(){
-                                @Override
-                                public void run() {
-                                    exloginIM();
+                                    exReconnect(3 * 1000);
+                                    ConnectStateChangeListenerManager.get().notifyListener(
+                                            ConnectStateChangeListenerManager.DISCONNECT);
+                                    break;
                                 }
-                            };
-                            thread1.start();
+//                        MyLogger.xuxLog().i("-----EXLOGIN3");
+                                ConnectStateChangeListenerManager.get().notifyListener(
+                                        ConnectStateChangeListenerManager.CONNECTING);
+                                thread1=new Thread(){
+                                    @Override
+                                    public void run() {
+                                        exloginIM();
+                                    }
+                                };
+                                thread1.start();
+                            }
                         }
                         break;
                     }
