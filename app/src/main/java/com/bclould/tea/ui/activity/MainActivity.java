@@ -50,6 +50,7 @@ import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.StatusBarCompat;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
@@ -106,6 +107,7 @@ public class MainActivity extends BaseActivity {
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        StatusBarCompat.setImmersionStateMode(this);
         super.onCreate(savedInstanceState);
         setSwipeEnabled(false);
         mSupportFragmentManager = getSupportFragmentManager();
@@ -160,20 +162,20 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void resumeRelogin(){
+    private void resumeRelogin() {
         if (!WsConnection.getInstance().getOutConnection()) {
-            if(!WsConnection.isServiceWork(this, IMCoreService.CORE_SERVICE_NAME)){
+            if (!WsConnection.isServiceWork(this, IMCoreService.CORE_SERVICE_NAME)) {
                 ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
                 Intent intent1 = new Intent(this, IMCoreService.class);
                 startService(intent1);
-            }else if(!WsConnection.isServiceWork(this, IMCoreService.SERVICE_NAME)){
+            } else if (!WsConnection.isServiceWork(this, IMCoreService.SERVICE_NAME)) {
                 ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
                 stopService(new Intent(this, IMService.class));
                 Intent intent = new Intent();
                 intent.setAction(IMCoreService.ACTION_START_IMSERVICE);
                 sendBroadcast(intent);
             }
-        }else{
+        } else {
             ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
         }
     }
@@ -365,11 +367,11 @@ public class MainActivity extends BaseActivity {
             @Override
             public void send(GroupInfo baseInfo) {
                 // TODO: 2018/6/11 獲取群聊房間塞入數據庫
-                new Handler(){
+                new Handler() {
                     public void handleMessage(Message msg) {
                         getMessageTop();
                     }
-                }.sendEmptyMessageDelayed(0,5*1000);
+                }.sendEmptyMessageDelayed(0, 5 * 1000);
 
             }
 
@@ -410,14 +412,14 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void getMessageTop(){
+    private void getMessageTop() {
         new GroupPresenter(this).getTopMessage(new GroupPresenter.CallBack5() {
             @Override
             public void send(MessageTopInfo baseInfo) {
-                for (MessageTopInfo.DataBean dataBean:baseInfo.getData()){
-                    if(mMgr.findConversation(dataBean.getFor_id())){
-                        mMgr.updateConversationIstop(dataBean.getFor_id(),"true");
-                    }else{
+                for (MessageTopInfo.DataBean dataBean : baseInfo.getData()) {
+                    if (mMgr.findConversation(dataBean.getFor_id())) {
+                        mMgr.updateConversationIstop(dataBean.getFor_id(), "true");
+                    } else {
                         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         Date curDate = new Date(System.currentTimeMillis());
                         String time = formatter.format(curDate);
@@ -427,13 +429,13 @@ public class MainActivity extends BaseActivity {
                         info.setMessage("");
                         info.setIstop("true");
                         info.setCreateTime(UtilTool.createChatCreatTime());
-                        if(mDBRoomManage.findRoom(dataBean.getFor_id())){
+                        if (mDBRoomManage.findRoom(dataBean.getFor_id())) {
                             info.setFriend(mDBRoomManage.findRoomName(dataBean.getFor_id()));
                             info.setChatType(RoomManage.ROOM_TYPE_MULTI);
-                        }else if(mMgr.findUser(dataBean.getFor_id())){
+                        } else if (mMgr.findUser(dataBean.getFor_id())) {
                             info.setFriend(mMgr.queryRemark(dataBean.getFor_id()));
                             info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
-                        }else{
+                        } else {
                             break;
                         }
                         mMgr.addConversation(info);
@@ -444,33 +446,33 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private void getChatBackGround(){
+    private void getChatBackGround() {
         new GroupPresenter(this).getBackgound(new GroupPresenter.CallBack2() {
             @Override
             public void send(String url) {
-                String urls=MySharedPreferences.getInstance().getString("backgroundu_url"+UtilTool.getTocoId());
-                String filePath= MySharedPreferences.getInstance().getString("backgroundu_file"+UtilTool.getTocoId());
-                if(!StringUtils.isEmpty(UtilTool.getPostfix3(urls))&&url.equals(urls)){
-                    File file=new File(filePath);
-                    if(!file.exists()){
-                         String key = UtilTool.getUserId() + UtilTool.createtFileName() +  ".png";
-                        MySharedPreferences.getInstance().setString("backgroundu_file"+UtilTool.getTocoId(),key);
-                         downBackGround(url,Constants.BACKGOUND + key);
+                String urls = MySharedPreferences.getInstance().getString("backgroundu_url" + UtilTool.getTocoId());
+                String filePath = MySharedPreferences.getInstance().getString("backgroundu_file" + UtilTool.getTocoId());
+                if (!StringUtils.isEmpty(UtilTool.getPostfix3(urls)) && url.equals(urls)) {
+                    File file = new File(filePath);
+                    if (!file.exists()) {
+                        String key = UtilTool.getUserId() + UtilTool.createtFileName() + ".png";
+                        MySharedPreferences.getInstance().setString("backgroundu_file" + UtilTool.getTocoId(), key);
+                        downBackGround(url, Constants.BACKGOUND + key);
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.conversation_backgound)));
                     }
-                }else{
-                    String key = UtilTool.getUserId() + UtilTool.createtFileName() +  ".png";
-                    MySharedPreferences.getInstance().setString("backgroundu_url"+UtilTool.getTocoId(),url);
-                    MySharedPreferences.getInstance().setString("backgroundu_file"+UtilTool.getTocoId(),key);
-                    downBackGround(url,Constants.BACKGOUND + key);
+                } else {
+                    String key = UtilTool.getUserId() + UtilTool.createtFileName() + ".png";
+                    MySharedPreferences.getInstance().setString("backgroundu_url" + UtilTool.getTocoId(), url);
+                    MySharedPreferences.getInstance().setString("backgroundu_file" + UtilTool.getTocoId(), key);
+                    downBackGround(url, Constants.BACKGOUND + key);
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.conversation_backgound)));
                 }
             }
         });
     }
 
-    private void downBackGround(final String url, final String filepath){
-        new Thread(){
+    private void downBackGround(final String url, final String filepath) {
+        new Thread() {
             @Override
             public void run() {
                 try {
@@ -478,8 +480,8 @@ public class MainActivity extends BaseActivity {
                             .load(url)
                             .downloadOnly(500, 500)
                             .get();
-                    UtilTool.copyFile(file.getAbsolutePath(),filepath);
-                }catch (Exception e){
+                    UtilTool.copyFile(file.getAbsolutePath(), filepath);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -601,8 +603,8 @@ public class MainActivity extends BaseActivity {
             ft.show(fragment);
 
             ft.commitAllowingStateLoss();
-            if(mSupportFragmentManager!=null)
-            mSupportFragmentManager.executePendingTransactions();
+            if (mSupportFragmentManager != null)
+                mSupportFragmentManager.executePendingTransactions();
         }
         lastIndex = index;
     }

@@ -17,6 +17,7 @@ import com.bclould.tea.Presenter.ReceiptPaymentPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.fragment.FriendListFragment;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.QRDiscernUtil;
@@ -52,14 +53,23 @@ public class ScanQRCodeActivity extends AppCompatActivity implements QRCodeView.
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initIntent();
         setContentView(R.layout.activity_scan_qr_code);
         ButterKnife.bind(this);
         initView();
         mMgr = new DBManager(this);
         mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);
         MyApp.getInstance().addActivity(this);
+    }
+
+    private void initIntent() {
         Intent intent = getIntent();
         mCode = intent.getIntExtra("code", 0);
+        String action = intent.getAction();
+        if (action!= null &&action.equals("android.intent.action.scan") && WsConnection.getInstance().getOutConnection()) {
+            finish();
+            startActivity(new Intent(this, InitialActivity.class));
+        }
     }
 
     @Override

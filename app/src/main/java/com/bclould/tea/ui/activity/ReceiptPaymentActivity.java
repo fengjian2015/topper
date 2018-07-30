@@ -23,6 +23,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.BaseInfo;
+import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AppLanguageUtils;
@@ -91,12 +92,21 @@ public class ReceiptPaymentActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initIntent();
         setContentView(R.layout.activity_receipt_payment);
         mReceiptPaymentPresenter = new ReceiptPaymentPresenter(this);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
         getPhoneSize();
         moneyIn();
+    }
+
+    private void initIntent() {
+        String action = getIntent().getAction();
+        if (action!= null &&action.equals("android.intent.action.receiving") && WsConnection.getInstance().getOutConnection()) {
+            finish();
+            startActivity(new Intent(this, InitialActivity.class));
+        }
     }
 
     @Override

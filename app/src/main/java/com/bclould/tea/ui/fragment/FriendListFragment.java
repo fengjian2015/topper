@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,7 +36,6 @@ import com.bclould.tea.ui.activity.AddFriendActivity;
 import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tea.ui.activity.GroupListActivity;
-import com.bclould.tea.ui.activity.IndividualDetailsActivity;
 import com.bclould.tea.ui.activity.NewFriendActivity;
 import com.bclould.tea.ui.activity.PublicActivity;
 import com.bclould.tea.ui.activity.RemarkActivity;
@@ -50,8 +50,8 @@ import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.StatusBarCompat;
 import com.bclould.tea.utils.StringUtils;
-import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.gjiazhe.wavesidebar.WaveSideBar;
 import com.google.gson.Gson;
@@ -113,6 +113,8 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
     WaveSideBar mSideBar;
     @Bind(R.id.tv_friend_count)
     TextView mTvFriendCount;
+    @Bind(R.id.status_bar_fix)
+    View mStatusBarFix;
 
     private int QRCODE = 1;
     private DisplayMetrics mDm;
@@ -163,6 +165,7 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_friend_list, container, false);
         ButterKnife.bind(this, view);
+        mStatusBarFix.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, StatusBarCompat.getStateBarHeight(getActivity())));
         mNewFriend = MySharedPreferences.getInstance().getInteger(NEWFRIEND);
         if (mNewFriend > 0) {
             mNumber.setText(mNewFriend + "");

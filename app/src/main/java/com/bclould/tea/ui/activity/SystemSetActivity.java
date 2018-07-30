@@ -40,7 +40,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +48,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.bclould.tea.ui.activity.SerchImageActivity.TYPE_BACKGROUND;
-import static com.bclould.tea.ui.activity.SerchImageActivity.TYPE_GROUP;
 import static com.bclould.tea.utils.MySharedPreferences.SETTING;
 import static com.luck.picture.lib.config.PictureMimeType.ofImage;
 
@@ -138,6 +136,14 @@ public class SystemSetActivity extends BaseActivity {
 
     private void init() {
         boolean privateStatus = MySharedPreferences.getInstance().getBoolean(PRIVATE);
+        String language = MySharedPreferences.getInstance().getString(getString(R.string.language_pref_key));
+        if (language.equals("")) {
+            mTvLanguageHint.setText(getString(R.string.follow_the_system));
+        } else if (language.equals("zh")) {
+            mTvLanguageHint.setText(getString(R.string.simplified_chinese));
+        } else if (language.equals("zh-hant")) {
+            mTvLanguageHint.setText(getString(R.string.chinese_traditional));
+        }
         mOnOffPrivate.setSelected(privateStatus);
         isOnOff2 = privateStatus;
         SharedPreferences sp = getSharedPreferences(SETTING, 0);
@@ -192,7 +198,7 @@ public class SystemSetActivity extends BaseActivity {
     boolean isOnOff = false;
     boolean isOnOff2 = false;
 
-    @OnClick({R.id.btn_brak, R.id.bark, R.id.rl_inform, R.id.rl_private, R.id.rl_help, R.id.rl_cache, R.id.rl_language,R.id.rl_backgound})
+    @OnClick({R.id.btn_brak, R.id.bark, R.id.rl_inform, R.id.rl_private, R.id.rl_help, R.id.rl_cache, R.id.rl_language, R.id.rl_backgound})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_brak:
@@ -257,8 +263,8 @@ public class SystemSetActivity extends BaseActivity {
                         new GroupPresenter(SystemSetActivity.this).deleteBackgound(new GroupPresenter.CallBack() {
                             @Override
                             public void send() {
-                                MySharedPreferences.getInstance().setString("backgroundu_url"+UtilTool.getTocoId(),"");
-                                MySharedPreferences.getInstance().setString("backgroundu_file"+UtilTool.getTocoId(),"");
+                                MySharedPreferences.getInstance().setString("backgroundu_url" + UtilTool.getTocoId(), "");
+                                MySharedPreferences.getInstance().setString("backgroundu_file" + UtilTool.getTocoId(), "");
                                 EventBus.getDefault().post(new MessageEvent(getString(R.string.conversation_backgound)));
                             }
                         });
@@ -321,9 +327,9 @@ public class SystemSetActivity extends BaseActivity {
         }
     }
 
-    private void upload(String path){
+    private void upload(String path) {
         final File file = new File(path);
-        final String key = UtilTool.getUserId() + UtilTool.createtFileName() +  UtilTool.getPostfix2(file.getName());
+        final String key = UtilTool.getUserId() + UtilTool.createtFileName() + UtilTool.getPostfix2(file.getName());
         final File newFile = new File(Constants.BACKGOUND + key);
         Bitmap cutImg = BitmapFactory.decodeFile(path);
         UtilTool.comp1(cutImg, newFile);
@@ -336,12 +342,12 @@ public class SystemSetActivity extends BaseActivity {
         new GroupPresenter(this).changeBackgound(Base64Image, new GroupPresenter.CallBack2() {
             @Override
             public void send(String url) {
-                String fileurl=  MySharedPreferences.getInstance().getString("backgroundu_file"+UtilTool.getTocoId());
-                if(!StringUtils.isEmpty(fileurl)&&new File(fileurl).exists()){
+                String fileurl = MySharedPreferences.getInstance().getString("backgroundu_file" + UtilTool.getTocoId());
+                if (!StringUtils.isEmpty(fileurl) && new File(fileurl).exists()) {
                     new File(fileurl).delete();
                 }
-                MySharedPreferences.getInstance().setString("backgroundu_url"+UtilTool.getTocoId(),url);
-                MySharedPreferences.getInstance().setString("backgroundu_file"+UtilTool.getTocoId(),key);
+                MySharedPreferences.getInstance().setString("backgroundu_url" + UtilTool.getTocoId(), url);
+                MySharedPreferences.getInstance().setString("backgroundu_file" + UtilTool.getTocoId(), key);
                 EventBus.getDefault().post(new MessageEvent(getString(R.string.conversation_backgound)));
             }
         });

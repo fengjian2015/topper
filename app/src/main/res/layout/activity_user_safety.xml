@@ -31,7 +31,7 @@
     <RelativeLayout
         android:id="@+id/rl_autonym_attestation"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
+        android:layout_height="@dimen/y150"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y30"
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginLeft="@dimen/x20"
             android:layout_toRightOf="@+id/iv"
             android:text="@string/authentication"/>
 
@@ -64,77 +64,159 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_login_password"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y30"
-        android:background="@drawable/bg_shallow_shape">
+        android:background="@drawable/bg_shallow_shape"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/iv_login_password"
-            android:layout_width="@dimen/x40"
-            android:layout_height="@dimen/x40"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:src="@mipmap/icon_mima"/>
+        <RelativeLayout
+            android:id="@+id/rl_login_password"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120">
 
-        <TextView
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_toRightOf="@+id/iv_login_password"
-            android:text="@string/login_pw"/>
+            <ImageView
+                android:id="@+id/iv_login_password"
+                android:layout_width="@dimen/x40"
+                android:layout_height="@dimen/x40"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:src="@mipmap/icon_mima"/>
 
-        <ImageView
-            android:layout_width="@dimen/x15"
-            android:layout_height="@dimen/y25"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/x25"
-            android:src="@mipmap/icon_aboutus_turninto"/>
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/iv_login_password"
+                android:text="@string/login_pw"/>
 
-    </RelativeLayout>
+            <ImageView
+                android:layout_width="@dimen/x15"
+                android:layout_height="@dimen/y25"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x25"
+                android:src="@mipmap/icon_aboutus_turninto"/>
 
-    <RelativeLayout
-        android:id="@+id/rl_pay_password"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y30"
-        android:background="@drawable/bg_shallow_shape">
-
-        <ImageView
-            android:id="@+id/iv_pay_password"
-            android:layout_width="@dimen/x40"
-            android:layout_height="@dimen/x40"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:src="@mipmap/icon_pay_password"/>
+        </RelativeLayout>
 
         <TextView
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_toRightOf="@+id/iv_pay_password"
-            android:text="@string/payment_pw"/>
+            style="@style/HorizontalBoundaryStyle"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"/>
 
-        <ImageView
-            android:layout_width="@dimen/x15"
-            android:layout_height="@dimen/y25"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/x25"
-            android:src="@mipmap/icon_aboutus_turninto"/>
+        <RelativeLayout
+            android:id="@+id/rl_login_set"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120">
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/iv_login_set"
+                android:layout_width="@dimen/x40"
+                android:layout_height="@dimen/x40"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:src="@mipmap/icon_login"/>
+
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/iv_login_set"
+                android:text="@string/login_set"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x25"
+                android:src="@mipmap/icon_aboutus_turninto"/>
+
+        </RelativeLayout>
+
+        <TextView
+            style="@style/HorizontalBoundaryStyle"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_login_record"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120">
+
+            <ImageView
+                android:id="@+id/iv_login_record"
+                android:layout_width="@dimen/x40"
+                android:layout_height="@dimen/x40"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:src="@mipmap/icon_annal"/>
+
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/iv_login_record"
+                android:text="@string/login_record"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x25"
+                android:src="@mipmap/icon_aboutus_turninto"/>
+
+        </RelativeLayout>
+
+        <TextView
+            style="@style/HorizontalBoundaryStyle"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_pay_password"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120">
+
+            <ImageView
+                android:id="@+id/iv_pay_password"
+                android:layout_width="@dimen/x40"
+                android:layout_height="@dimen/x40"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:src="@mipmap/icon_pay_password"/>
+
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/iv_pay_password"
+                android:text="@string/payment_pw"/>
+
+            <ImageView
+                android:layout_width="@dimen/x15"
+                android:layout_height="@dimen/y25"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x25"
+                android:src="@mipmap/icon_aboutus_turninto"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/rl_app_look"
@@ -208,76 +290,5 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_login_set"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y30"
-        android:background="@drawable/bg_shallow_shape">
-
-        <ImageView
-            android:id="@+id/iv_login_set"
-            android:layout_width="@dimen/x40"
-            android:layout_height="@dimen/x40"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:src="@mipmap/icon_login"/>
-
-        <TextView
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_toRightOf="@+id/iv_login_set"
-            android:text="@string/login_set"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/x25"
-            android:src="@mipmap/icon_aboutus_turninto"/>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_login_record"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y30"
-        android:background="@drawable/bg_shallow_shape">
-
-        <ImageView
-            android:id="@+id/iv_login_record"
-            android:layout_width="@dimen/x40"
-            android:layout_height="@dimen/x40"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:src="@mipmap/icon_annal"/>
-
-        <TextView
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_toRightOf="@+id/iv_login_record"
-            android:text="@string/login_record"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/x25"
-            android:src="@mipmap/icon_aboutus_turninto"/>
-
-    </RelativeLayout>
 
 </LinearLayout>

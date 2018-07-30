@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.bclould.tea.Presenter.SubscribeCoinPresenter;
 import com.bclould.tea.R;
-
 import com.bclould.tea.ui.activity.BankCardActivity;
 import com.bclould.tea.ui.activity.BlockchainGambleActivity;
 import com.bclould.tea.ui.activity.CoinExchangeActivity;
@@ -28,6 +27,7 @@ import com.bclould.tea.ui.activity.PayRecordActivity;
 import com.bclould.tea.ui.activity.ReceiptPaymentActivity;
 import com.bclould.tea.ui.activity.SafeActivity;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.StatusBarCompat;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -68,6 +68,12 @@ public class WalletFragment extends Fragment {
     LinearLayout mLlSafe;
     @Bind(R.id.tv_total)
     TextView mTvTotal;
+    @Bind(R.id.status_bar_fix)
+    View mStatusBarFix;
+    @Bind(R.id.ll_blockchain_gamble)
+    LinearLayout mLlBlockchainGamble;
+    @Bind(R.id.ll_collect)
+    LinearLayout mLlCollect;
 
 
     public static WalletFragment getInstance() {
@@ -87,6 +93,7 @@ public class WalletFragment extends Fragment {
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         ButterKnife.bind(this, view);
+        mStatusBarFix.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, StatusBarCompat.getStateBarHeight(getActivity())));
         return view;
     }
 
@@ -101,7 +108,7 @@ public class WalletFragment extends Fragment {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.transfer))) {
             initData();
-        }else if(msg.equals(getString(R.string.refresh_the_interface))){
+        } else if (msg.equals(getString(R.string.refresh_the_interface))) {
             initData();
         }
     }

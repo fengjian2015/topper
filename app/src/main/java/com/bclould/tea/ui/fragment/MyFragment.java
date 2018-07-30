@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -42,12 +43,20 @@ public class MyFragment extends Fragment {
     public static MyFragment instance = null;
     @Bind(R.id.iv_touxiang)
     ImageView mIvTouxiang;
+    @Bind(R.id.ll_touxiang)
+    LinearLayout mLlTouxiang;
     @Bind(R.id.tv_name)
     TextView mTvName;
-    @Bind(R.id.tv_tocoid)
-    TextView mTvTocoid;
     @Bind(R.id.rl_personal_data)
     RelativeLayout mRlPersonalData;
+    @Bind(R.id.iv4)
+    ImageView mIv4;
+    @Bind(R.id.rl_collect)
+    RelativeLayout mRlCollect;
+    @Bind(R.id.iv5)
+    ImageView mIv5;
+    @Bind(R.id.rl_dynamic)
+    RelativeLayout mRlDynamic;
     @Bind(R.id.iv2)
     ImageView mIv2;
     @Bind(R.id.rl_security_center)
@@ -66,6 +75,8 @@ public class MyFragment extends Fragment {
     TextView mTvNewUpdate;
     @Bind(R.id.rl_concern_we)
     RelativeLayout mRlConcernWe;
+    @Bind(R.id.status_bar_fix)
+    View mStatusBarFix;
 
 
     private DBManager mMgr;
@@ -83,8 +94,8 @@ public class MyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_my, container, false);
         ButterKnife.bind(this, view);
-        if(!EventBus.getDefault().isRegistered(this))
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         init();
         return view;
     }
@@ -121,7 +132,7 @@ public class MyFragment extends Fragment {
             mTvNewUpdate.setVisibility(View.GONE);
         }
         mTvName.setText(UtilTool.getUser());
-        mTvTocoid.setText(getString(R.string.id) + UtilTool.getTocoId());
+//        mTvTocoid.setText(getString(R.string.id) + UtilTool.getTocoId());
         if (mMgr == null) {
             mMgr = new DBManager(getContext());
         }

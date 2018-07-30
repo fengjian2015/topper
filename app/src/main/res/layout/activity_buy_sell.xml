@@ -111,35 +111,32 @@
 
         <TextView
             android:id="@+id/tv_quota"
+            style="@style/SecondaryTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y20"
-            android:layout_toRightOf="@+id/tv2"
-            android:textColor="@color/bar_grey"
-            android:textSize="@dimen/x28"/>
+            android:layout_toRightOf="@+id/tv2"/>
 
         <TextView
             android:id="@+id/tv_price"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x20"
             android:layout_marginRight="@dimen/x10"
             android:layout_marginTop="@dimen/y20"
-            android:layout_toLeftOf="@+id/tv"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
+            android:layout_toLeftOf="@+id/tv"/>
 
         <TextView
             android:id="@+id/tv"
+            style="@style/SecondaryTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/tv_price"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/x25"
             android:layout_marginTop="@dimen/y20"
-            android:text="CNY"
-            android:textColor="@color/bar_grey"
-            android:textSize="@dimen/x28"/>
+            android:text="CNY"/>
 
         <TextView
             android:id="@+id/tv3"

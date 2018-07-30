@@ -2227,4 +2227,6 @@
     <string name="reduction_background">​​还原背景</string>
     <string name="update_public_number">更新公众号</string>
     <string name="user_freeze_hint">您的賬號已被凍結，請聯繫管理員處理，郵箱：topperchat@outlook.com</string>
+    <string name="my_friends_circle">我的好友圈</string>
+    <string name="greet_hint">欢迎进入TopperChat！</string>
 </resources>

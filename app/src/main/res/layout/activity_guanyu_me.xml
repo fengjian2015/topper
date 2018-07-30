@@ -55,126 +55,136 @@
 
     </LinearLayout>
 
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y20"
+        android:layout_marginTop="@dimen/y30"
         android:background="@drawable/bg_shallow_shape"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/x30"
-        android:paddingRight="@dimen/x30">
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/x30"
+            android:paddingRight="@dimen/x30">
+
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/guanwang"/>
+
+            <TextView
+                style="@style/SecondaryTextStyle28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="www.topperchat.com"/>
+
+        </RelativeLayout>
 
         <TextView
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/guanwang"/>
+            style="@style/HorizontalBoundaryStyle"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"/>
 
-        <TextView
-            style="@style/SecondaryTextStyle28"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="www.topperchat.com"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/x30"
+            android:paddingRight="@dimen/x30">
 
-    </RelativeLayout>
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/email"/>
 
-    <RelativeLayout
+            <TextView
+                style="@style/SecondaryTextStyle28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="@string/official_email"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y20"
+        android:layout_marginTop="@dimen/y30"
         android:background="@drawable/bg_shallow_shape"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/x30"
-        android:paddingRight="@dimen/x30">
+        android:orientation="vertical">
 
-        <TextView
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/email"/>
+        <RelativeLayout
+            android:id="@+id/rl_check_update"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:paddingLeft="@dimen/x30"
+            android:paddingRight="@dimen/x30"
+            android:visibility="gone">
 
-        <TextView
-            style="@style/SecondaryTextStyle28"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="@string/official_email"/>
+            <TextView
+                android:id="@+id/tv"
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/check_update"/>
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_new_update"
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="@dimen/x80"
+                android:layout_height="@dimen/y40"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/tv"
+                android:background="@drawable/bg_new_update"
+                android:gravity="center"
+                android:text="New"
+                android:visibility="gone"/>
 
-    <RelativeLayout
-        android:id="@+id/rl_check_update"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y20"
-        android:background="@drawable/bg_shallow_shape"
-        android:paddingLeft="@dimen/x30"
-        android:paddingRight="@dimen/x30"
-        android:visibility="gone">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/iocn_person_turn"/>
 
-        <TextView
-            android:id="@+id/tv"
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/check_update"/>
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tv_new_update"
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="@dimen/x80"
-            android:layout_height="@dimen/y40"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_toRightOf="@+id/tv"
-            android:background="@drawable/bg_new_update"
-            android:gravity="center"
-            android:text="New"
-            android:visibility="gone"/>
+        <RelativeLayout
+            android:id="@+id/rl_update_log"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:paddingLeft="@dimen/x30"
+            android:paddingRight="@dimen/x30">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/iocn_person_turn"/>
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/update_log"/>
 
-    </RelativeLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/iocn_person_turn"/>
 
-    <RelativeLayout
-        android:id="@+id/rl_update_log"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y20"
-        android:background="@drawable/bg_shallow_shape"
-        android:paddingLeft="@dimen/x30"
-        android:paddingRight="@dimen/x30">
+        </RelativeLayout>
 
-        <TextView
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/update_log"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/iocn_person_turn"/>
-
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

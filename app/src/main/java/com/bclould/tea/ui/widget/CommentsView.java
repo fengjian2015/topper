@@ -136,7 +136,7 @@ public class CommentsView extends LinearLayout {
     }
 
     /**
-     * 设置评论内容点击事件 
+     * 设置评论内容点击事件
      *
      * @param item
      * @param position

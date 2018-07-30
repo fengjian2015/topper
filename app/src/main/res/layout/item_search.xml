@@ -13,14 +13,13 @@
 
     <TextView
         android:id="@+id/tv_name"
+        style="@style/MainTextShallowStyle30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/x30"
         android:layout_toRightOf="@+id/iv_touxiang"
-        android:text="name"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x30"/>
+        android:text="name"/>
 
     <TextView
         style="@style/HorizontalBoundaryStyle"

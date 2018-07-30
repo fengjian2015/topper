@@ -45,6 +45,7 @@ import com.bclould.tea.ui.activity.SendQRCodeRedActivity;
 import com.bclould.tea.ui.adapter.ConversationAdapter;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.StatusBarCompat;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tea.xmpp.IConnectStateChangeListener;
@@ -96,6 +97,8 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     TextView mTvTitle;
     @Bind(R.id.title_progress)
     ProgressBar mTitleProgress;
+    @Bind(R.id.status_bar_fix)
+    View mStatusBarFix;
     private List<Map<String, Object>> list = new ArrayList<>();
     private List<ConversationInfo> showlist = new ArrayList<>();
     private DBManager mgr;
@@ -131,6 +134,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
             getActivity().registerReceiver(receiver, intentFilter);
         }*/
         ButterKnife.bind(this, view);
+        mStatusBarFix.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, StatusBarCompat.getStateBarHeight(getActivity())));
         mgr = new DBManager(getActivity());
         mDBRoomMember = new DBRoomMember(getActivity());
         mDBRoomManage = new DBRoomManage(getActivity());
