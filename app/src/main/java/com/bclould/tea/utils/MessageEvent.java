@@ -23,6 +23,15 @@ public class MessageEvent {
     private String name;
     private String filepath;
     private String roomId;
+    private String url;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public String getRoomId() {
         return roomId;

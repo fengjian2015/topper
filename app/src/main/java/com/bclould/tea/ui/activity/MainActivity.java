@@ -451,7 +451,7 @@ public class MainActivity extends BaseActivity {
                 String urls=MySharedPreferences.getInstance().getString("backgroundu_url"+UtilTool.getTocoId());
                 String filePath= MySharedPreferences.getInstance().getString("backgroundu_file"+UtilTool.getTocoId());
                 if(!StringUtils.isEmpty(UtilTool.getPostfix3(urls))&&url.equals(urls)){
-                    File file=new File(filePath);
+                    File file=new File(Constants.BACKGOUND +filePath);
                     if(!file.exists()){
                          String key = UtilTool.getUserId() + UtilTool.createtFileName() +  ".png";
                         MySharedPreferences.getInstance().setString("backgroundu_file"+UtilTool.getTocoId(),key);

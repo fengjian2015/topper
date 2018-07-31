@@ -17,7 +17,7 @@ public class MessageInfo implements Serializable {
     private String time;
     private String remark;
     private int type;
-    private int status;
+    private int status;//紅包領取狀態，或者視頻是否下載狀態（1下載，0未下載）
     private int id;
     private int redId;
     private String voice;

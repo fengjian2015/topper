@@ -79,7 +79,6 @@ public class WsConnection {
     }
 
     private WsConnection() {}
-
     public WebSocket get(Context context){
         synchronized (lock) {
             mContext = context;
@@ -117,6 +116,8 @@ public class WsConnection {
                                 ws=webSocket;
                                 closeConnection();
                                 mWebSocketArrayList.clear();
+                                setIsConnection(false);
+                                setIsLogin(false);
                                 return;
                             }
                             ws = webSocket;

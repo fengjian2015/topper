@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -37,7 +39,7 @@ public class FileDownloadPresenter {
     private static Context sContext;
     private long mApk_download_progress;
     public OSSAsyncTask<GetObjectResult> mTask;
-
+    private List<String> keyList=new ArrayList<>();
     //单例
     public static FileDownloadPresenter getInstance(Context context) {
         if (instance == null) {
@@ -49,6 +51,11 @@ public class FileDownloadPresenter {
 
 
     public void dowbloadFile(String bucketName, final String key, final File file) {
+        if(keyList.contains(key)){
+            UtilTool.Log("fengjian","正在下載中，去掉本次請求");
+            return;
+        }
+        keyList.add(key);
         mApk_download_progress = file.length();
         GetObjectRequest get = new GetObjectRequest(bucketName, key);
         if (mApk_download_progress != 0) {
@@ -107,10 +114,12 @@ public class FileDownloadPresenter {
                 } else {
                     onError(key);
                 }
+                keyList.remove(key);
             }
 
             @Override
             public void onFailure(GetObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
+                keyList.remove(key);
                 onError(key);
                 // 请求异常
                 if (clientExcepion != null) {

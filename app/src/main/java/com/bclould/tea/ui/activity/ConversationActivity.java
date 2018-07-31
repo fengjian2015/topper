@@ -690,6 +690,23 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
             deleteMsg(event.getId());
         }else if(msg.equals(getString(R.string.conversation_backgound))){
             setBackgound();
+        }else if(msg.equals(getString(R.string.automatic_download_complete))){
+            downloadMsg(event.getUrl(),event.getFilepath());
+        }
+    }
+
+    private void downloadMsg(String file, String filepath) {
+        for (MessageInfo info : mMessageList) {
+            if (info.getMessage().equals(file)) {
+                info.setStatus(1);
+                mMgr.updateMessageState(info.getId()+"",1);
+                if(!StringUtils.isEmpty(filepath)){
+                    info.setMessage(filepath);
+                    mMgr.updateMessage(info.getId(),filepath);
+                }
+                mChatAdapter.notifyItemChanged(mMessageList.indexOf(info));
+                return;
+            }
         }
     }
 

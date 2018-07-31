@@ -2227,4 +2227,7 @@
     <string name="security_verification_success">安全验证成功</string>
     <string name="security_verification_failure">安全验证失败</string>
     <string name="security_verification_failure_hint">请移动下方的圆标到圆形区域内</string>
+    <string name="automatic_download_complete">自动下载完成</string>
+    <string name="automatically_download">自动下载</string>
+    <string name="automatically_download_chat_video">自动下载聊天视频</string>
 </resources>
