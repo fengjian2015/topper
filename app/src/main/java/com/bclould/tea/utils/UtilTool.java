@@ -59,6 +59,7 @@ import com.luck.picture.lib.tools.PictureFileUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -86,6 +87,7 @@ import java.util.regex.Pattern;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
+import static com.bclould.tea.Presenter.LoginPresenter.EMAIL;
 import static com.bclould.tea.Presenter.LoginPresenter.LOGINPW;
 import static com.bclould.tea.Presenter.LoginPresenter.MYUSERNAME;
 import static com.bclould.tea.Presenter.LoginPresenter.TOCOID;
@@ -210,7 +212,7 @@ public class UtilTool {
     }
 
     public static void comp(Bitmap image, File file) {
-        if(image==null)return;
+        if (image == null) return;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         if (baos.toByteArray().length / 1024 > 1024) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
@@ -245,10 +247,10 @@ public class UtilTool {
     }
 
     public static void comp1(Bitmap image, File file) {
-        if(image==null)return;
+        if (image == null) return;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        if (baos.toByteArray().length / 1024 > 5*1024) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
+        if (baos.toByteArray().length / 1024 > 5 * 1024) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
             baos.reset();//重置baos即清空baos
             image.compress(Bitmap.CompressFormat.JPEG, 50, baos);//这里压缩50%，把压缩后的数据存放到baos中
         }
@@ -332,7 +334,7 @@ public class UtilTool {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
         int options = 100;
-        while (baos.toByteArray().length / 1024 > 5*1024) { //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+        while (baos.toByteArray().length / 1024 > 5 * 1024) { //循环判断如果压缩后图片是否大于100kb,大于继续压缩
             baos.reset();//重置baos即清空baos
             image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
             options -= 10;//每次都减少10
@@ -640,6 +642,7 @@ public class UtilTool {
 
     /**
      * 二維碼中間加圖標
+     *
      * @param src
      * @param logo
      * @return
@@ -771,6 +774,12 @@ public class UtilTool {
     public static String getTocoId() {
 
         return MySharedPreferences.getInstance().getString(TOCOID);
+
+    }
+
+    public static String getEmail() {
+
+        return MySharedPreferences.getInstance().getString(EMAIL);
 
     }
 
@@ -1093,7 +1102,7 @@ public class UtilTool {
     public static String getPostfix4(String fileName) {
         String pos = "";
         try {
-            pos = fileName.substring(fileName.lastIndexOf(".")+1);
+            pos = fileName.substring(fileName.lastIndexOf(".") + 1);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1508,14 +1517,15 @@ public class UtilTool {
 
     /**
      * 比較token是否失效
+     *
      * @param oldtime
      * @return 失效true
      */
-    public static boolean compareTokenTime(long oldtime){
-        long newTime=System.currentTimeMillis();
-        if((oldtime+(23*60*60*1000))>=newTime){
+    public static boolean compareTokenTime(long oldtime) {
+        long newTime = System.currentTimeMillis();
+        if ((oldtime + (23 * 60 * 60 * 1000)) >= newTime) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }

@@ -6,9 +6,8 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 
 import com.bclould.tea.ui.fragment.ConversationFragment;
-import com.bclould.tea.ui.fragment.DiscoverFragment;
-import com.bclould.tea.ui.fragment.FriendListFragment;
 import com.bclould.tea.ui.fragment.MyFragment;
+import com.bclould.tea.ui.fragment.NewsFragment;
 import com.bclould.tea.ui.fragment.WalletFragment;
 
 import java.util.HashMap;
@@ -55,22 +54,19 @@ public class FragmentFactory {
         Fragment fragment = null;
         switch (position) {
             case 0:// 云信页面
-                fragment = ConversationFragment.getInstance();
+                fragment = NewsFragment.getInstance();
                 break;
             case 1:// 云币页面
-                fragment = FriendListFragment.getInstance();
-                break;
-            case 2:// 云币页面
-                fragment = DiscoverFragment.getInstance();
-                break;
-            case 3:// 云圈页面
                 fragment = WalletFragment.getInstance();
                 break;
-            case 4:// 我的页面
+            case 2:// 云币页面
+                fragment = ConversationFragment.getInstance();
+                break;
+            case 3:// 我的页面
                 fragment = MyFragment.getInstance();
                 break;
             default:
-                fragment = ConversationFragment.getInstance();
+                fragment = NewsFragment.getInstance();
                 break;
         }
         mMainMap.put(position, fragment);

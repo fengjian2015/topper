@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.ui.activity.CollectActivity;
+import com.bclould.tea.ui.activity.DynamicActivity;
 import com.bclould.tea.ui.activity.GuanYuMeActivity;
 import com.bclould.tea.ui.activity.PersonalDetailsActivity;
 import com.bclould.tea.ui.activity.SystemSetActivity;
@@ -146,7 +148,7 @@ public class MyFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
-    @OnClick({R.id.rl_personal_data, R.id.rl_security_center, R.id.rl_system_set, R.id.rl_concern_we})
+    @OnClick({R.id.rl_dynamic, R.id.rl_collect, R.id.rl_personal_data, R.id.rl_security_center, R.id.rl_system_set, R.id.rl_concern_we})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_personal_data:
@@ -160,6 +162,12 @@ public class MyFragment extends Fragment {
                 break;
             case R.id.rl_concern_we:
                 startActivity(new Intent(getActivity(), GuanYuMeActivity.class));
+                break;
+            case R.id.rl_dynamic:
+                startActivity(new Intent(getActivity(), DynamicActivity.class));
+                break;
+            case R.id.rl_collect:
+                startActivity(new Intent(getActivity(), CollectActivity.class));
                 break;
         }
     }

@@ -2236,4 +2236,8 @@
     <string name="security_verification_success">安全验证成功</string>
     <string name="security_verification_failure">安全验证失败</string>
     <string name="security_verification_failure_hint">请移动下方的圆标到圆形区域内</string>
+    <string name="treasure">财富</string>
+    <string name="information">资讯</string>
+    <string name="message">消息</string>
+    <string name="my_ad_platform">我的广告平台</string>
 </resources>

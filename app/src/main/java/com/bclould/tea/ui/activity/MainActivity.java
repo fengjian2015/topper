@@ -213,9 +213,9 @@ public class MainActivity extends BaseActivity {
         } else if (2 == whence || 3 == whence) {
             DiscoverFragment discoverFragment = DiscoverFragment.getInstance();
             discoverFragment.initInterface();
-            setSelector(2);
+            setSelector(0);
             //切换Fragment
-            changeFragment(2);
+            changeFragment(0);
             if (3 == whence) {
                 showLoginOut();
             }
@@ -335,9 +335,9 @@ public class MainActivity extends BaseActivity {
 
         //开始选中聊天Fragment
         if (WsConnection.getInstance().getOutConnection()) {
-            setSelector(2);
+            setSelector(0);
             //切换Fragment
-            changeFragment(2);
+            changeFragment(0);
         } else {
             setSelector(0);
             //切换Fragment
@@ -554,7 +554,7 @@ public class MainActivity extends BaseActivity {
                         setSelector(index);
                         converstonTop(index);
                     } else {
-                        if (index != 2) {
+                        if (index != 0) {
                             startActivity(new Intent(MainActivity.this, InitialActivity.class));
                         }
                     }

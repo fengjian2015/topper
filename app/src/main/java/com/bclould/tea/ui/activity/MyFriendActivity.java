@@ -1,4 +1,4 @@
-package com.bclould.tea.ui.fragment;
+package com.bclould.tea.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
@@ -19,38 +18,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tea.Presenter.PersonalDetailsPresenter;
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.AuatarListInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.NewFriendInfo;
 import com.bclould.tea.model.QrRedInfo;
 import com.bclould.tea.model.UserInfo;
-import com.bclould.tea.ui.activity.AddFriendActivity;
-import com.bclould.tea.ui.activity.ConversationActivity;
-import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
-import com.bclould.tea.ui.activity.GroupListActivity;
-import com.bclould.tea.ui.activity.NewFriendActivity;
-import com.bclould.tea.ui.activity.PublicActivity;
-import com.bclould.tea.ui.activity.RemarkActivity;
-import com.bclould.tea.ui.activity.ScanQRCodeActivity;
-import com.bclould.tea.ui.activity.SearchActivity;
-import com.bclould.tea.ui.activity.SelectConversationActivity;
-import com.bclould.tea.ui.activity.SendQRCodeRedActivity;
 import com.bclould.tea.ui.adapter.FriendListRVAdapter;
+import com.bclould.tea.ui.fragment.FriendListFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
-import com.bclould.tea.utils.StatusBarCompat;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 import com.gjiazhe.wavesidebar.WaveSideBar;
@@ -75,15 +63,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.app.Activity.RESULT_OK;
 import static com.bclould.tea.ui.adapter.ChatAdapter.TO_CARD_MSG;
 
 /**
- * Created by GA on 2017/9/19.
+ * Created by GA on 2018/7/31.
  */
-
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class FriendListFragment extends Fragment implements FriendListRVAdapter.OnclickListener{
+public class MyFriendActivity extends BaseActivity implements FriendListRVAdapter.OnclickListener {
 
     public static final String NEWFRIEND = "new_friend";
     public static FriendListFragment instance = null;
@@ -160,33 +146,26 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
         return instance;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.activity_friend_list, container, false);
-        ButterKnife.bind(this, view);
-        mStatusBarFix.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, StatusBarCompat.getStateBarHeight(getActivity())));
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_friend_list);
+        ButterKnife.bind(this);
         mNewFriend = MySharedPreferences.getInstance().getInteger(NEWFRIEND);
         if (mNewFriend > 0) {
             mNumber.setText(mNewFriend + "");
             mNumber.setVisibility(View.VISIBLE);
         }
-        mMgr = new DBManager(getContext());
-        mPersonalDetailsPresenter = new PersonalDetailsPresenter(getContext());
+        mMgr = new DBManager(this);
+        mPersonalDetailsPresenter = new PersonalDetailsPresenter(this);
         initData();
         setListener();
         initRecylerView();
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
-        /*if (receiver == null) {
-            receiver = new AddFriendReceiver();
-            IntentFilter intentFilter = new IntentFilter("com.bclould.tea.addfriend");
-            getActivity().registerReceiver(receiver, intentFilter);
-        }*/
         updateData();
         getPhoneSize();
         showNumber();
-        return view;
     }
 
     //获取屏幕高度
@@ -194,8 +173,8 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
         mSideBar.setIndexItems();
         mDm = new DisplayMetrics();
 
-        if (getActivity() != null)
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(mDm);
+        if (this != null)
+            this.getWindowManager().getDefaultDisplay().getMetrics(mDm);
 
         mHeightPixels = mDm.heightPixels;
     }
@@ -204,6 +183,7 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        ButterKnife.unbind(this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -295,10 +275,10 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
     }
 
     private void showNumber() {
-        new PersonalDetailsPresenter(getActivity()).getNewFriendData(false, new PersonalDetailsPresenter.CallBack5() {
+        new PersonalDetailsPresenter(this).getNewFriendData(false, new PersonalDetailsPresenter.CallBack5() {
             @Override
             public void send(NewFriendInfo listdata) {
-                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                if (ActivityUtil.isActivityOnTop(MyFriendActivity.this)) {
                     mMgr.deleteRequest();
                     int number = 0;
                     for (int i = 0; i < listdata.getData().size(); i++) {
@@ -344,8 +324,8 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
     }
 
     private void initRecylerView() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mFriendListRVAdapter = new FriendListRVAdapter(getContext(), mUsers, mMgr);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mFriendListRVAdapter = new FriendListRVAdapter(this, mUsers, mMgr);
         mFriendListRVAdapter.setOnClickListener(this);
         mRecyclerView.setAdapter(mFriendListRVAdapter);
         mRecyclerView.setNestedScrollingEnabled(false);
@@ -357,34 +337,31 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
         });
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 
-
-    @OnClick({R.id.iv_more, R.id.iv_search, R.id.news_friend, R.id.my_group, R.id.my_public})
+    @OnClick({R.id.bark, R.id.iv_more, R.id.iv_search, R.id.news_friend, R.id.my_group, R.id.my_public})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_more:
                 initPopWindow();
                 break;
+            case R.id.bark:
+                finish();
+                break;
             case R.id.iv_search:
-                startActivity(new Intent(getActivity(), SearchActivity.class));
+                startActivity(new Intent(this, SearchActivity.class));
                 break;
             case R.id.news_friend:
-                startActivity(new Intent(getActivity(), NewFriendActivity.class));
+                startActivity(new Intent(this, NewFriendActivity.class));
                 MySharedPreferences.getInstance().setInteger(NEWFRIEND, 0);
                 mNumber.setVisibility(View.GONE);
                 mNewFriend = 0;
                 break;
             case R.id.my_group:
-                startActivity(new Intent(getActivity(), GroupListActivity.class));
-//                ToastShow.showToast2(getActivity(), getString(R.string.hint_unfinished));
+                startActivity(new Intent(this, GroupListActivity.class));
+//                ToastShow.showToast2(this, getString(R.string.hint_unfinished));
                 break;
             case R.id.my_public:
-                startActivity(new Intent(getActivity(), PublicActivity.class));
+                startActivity(new Intent(this, PublicActivity.class));
                 break;
         }
     }
@@ -394,7 +371,7 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
 
         int widthPixels = mDm.widthPixels;
 
-        mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_cloud_message, null);
+        mView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.pop_cloud_message, null);
 
         mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 4, true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
@@ -417,7 +394,7 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
                 Gson gson = new Gson();
                 QrRedInfo qrRedInfo = gson.fromJson(jsonresult, QrRedInfo.class);
                 UtilTool.Log("日志", qrRedInfo.getRedID());
-                Intent intent = new Intent(getActivity(), GrabQRCodeRedActivity.class);
+                Intent intent = new Intent(this, GrabQRCodeRedActivity.class);
                 intent.putExtra("id", qrRedInfo.getRedID());
                 intent.putExtra("type", true);
                 startActivity(intent);
@@ -442,17 +419,17 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
 
                     switch (index) {
                         case 0:
-                            Intent intent = new Intent(getActivity(), ScanQRCodeActivity.class);
+                            Intent intent = new Intent(MyFriendActivity.this, ScanQRCodeActivity.class);
                             intent.putExtra("code", QRCODE);
                             startActivityForResult(intent, 0);
                             mPopupWindow.dismiss();
                             break;
                         case 1:
-                            startActivity(new Intent(getActivity(), SendQRCodeRedActivity.class));
+                            startActivity(new Intent(MyFriendActivity.this, SendQRCodeRedActivity.class));
                             mPopupWindow.dismiss();
                             break;
                         case 2:
-                            startActivity(new Intent(getActivity(), AddFriendActivity.class));
+                            startActivity(new Intent(MyFriendActivity.this, AddFriendActivity.class));
                             mPopupWindow.dismiss();
                             break;
                     }
@@ -464,60 +441,60 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
 
     @Override
     public void onclick(int position) {
-        Intent intent = new Intent(getContext(), ConversationActivity.class);
+        Intent intent = new Intent(this, ConversationActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("name",mUsers.get(position).getUserName());
+        bundle.putString("name", mUsers.get(position).getUserName());
         bundle.putString("user", mUsers.get(position).getUser());
         intent.putExtras(bundle);
         mMgr.updateNumber(mUsers.get(position).getUser(), 0);
-        EventBus.getDefault().post(new MessageEvent(getContext().getString(R.string.dispose_unread_msg)));
-        getContext().startActivity(intent);
+        EventBus.getDefault().post(new MessageEvent(this.getString(R.string.dispose_unread_msg)));
+        this.startActivity(intent);
     }
 
     @Override
     public void onLongClick(int position) {
-        String remark=mUsers.get(position).getRemark();
-        if(StringUtils.isEmpty(remark)){
-            remark=mUsers.get(position).getUserName();
+        String remark = mUsers.get(position).getRemark();
+        if (StringUtils.isEmpty(remark)) {
+            remark = mUsers.get(position).getUserName();
         }
         showRemarkDialog(mUsers.get(position).getUserName(), remark, mUsers.get(position).getUser());
     }
 
     private void showRemarkDialog(final String name, final String remark, final String user) {
-        List<String> list = Arrays.asList(new String[]{getContext().getString(R.string.updata_remark),getContext().getString(R.string.send_card),getContext().getString(R.string.delete_friend)});
-        final MenuListPopWindow menu = new MenuListPopWindow(getContext(), list);
+        List<String> list = Arrays.asList(new String[]{this.getString(R.string.updata_remark), this.getString(R.string.send_card), this.getString(R.string.delete_friend)});
+        final MenuListPopWindow menu = new MenuListPopWindow(this, list);
         menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
             @Override
             public void onclickitem(int position) {
                 Intent intent;
-                switch (position){
+                switch (position) {
                     case 0:
                         menu.dismiss();
                         break;
                     case 1:
                         menu.dismiss();
-                        intent=new Intent(getContext(), RemarkActivity.class);
-                        intent.putExtra("name",name);
-                        intent.putExtra("remark",remark);
-                        intent.putExtra("user",user);
+                        intent = new Intent(MyFriendActivity.this, RemarkActivity.class);
+                        intent.putExtra("name", name);
+                        intent.putExtra("remark", remark);
+                        intent.putExtra("user", user);
                         startActivity(intent);
                         break;
                     case 2:
                         menu.dismiss();
                         UserInfo info = mMgr.queryUser(user);
-                        intent = new Intent(getContext(), SelectConversationActivity.class);
+                        intent = new Intent(MyFriendActivity.this, SelectConversationActivity.class);
                         intent.putExtra("type", 2);
-                        MessageInfo messageInfo=new MessageInfo();
+                        MessageInfo messageInfo = new MessageInfo();
                         messageInfo.setHeadUrl(info.getPath());
                         messageInfo.setMessage(name);
                         messageInfo.setCardUser(user);
-                        intent.putExtra("msgType",TO_CARD_MSG);
+                        intent.putExtra("msgType", TO_CARD_MSG);
                         intent.putExtra("messageInfo", messageInfo);
                         startActivity(intent);
                         break;
                     case 3:
                         menu.dismiss();
-                        showDeleteDialog(remark,user,user);
+                        showDeleteDialog(remark, user, user);
                         break;
                 }
             }
@@ -527,7 +504,7 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
     }
 
     private void showDeleteDialog(String mName, final String mUser, final String roomId) {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, getActivity(), R.style.dialog);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.confirm_delete) + " " + mName + " " + getString(R.string.what));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
@@ -542,7 +519,7 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
             @Override
             public void onClick(View view) {
                 try {
-                    new PersonalDetailsPresenter(getActivity()).deleteFriend(mUser, new PersonalDetailsPresenter.CallBack() {
+                    new PersonalDetailsPresenter(MyFriendActivity.this).deleteFriend(mUser, new PersonalDetailsPresenter.CallBack() {
                         @Override
                         public void send() {
                             mMgr.deleteConversation(roomId);

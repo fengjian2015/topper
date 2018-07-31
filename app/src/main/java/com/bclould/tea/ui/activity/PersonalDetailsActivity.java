@@ -72,6 +72,10 @@ public class PersonalDetailsActivity extends BaseActivity {
     TextView mTvLocation;
     @Bind(R.id.rl_location)
     RelativeLayout mRlLocation;
+    @Bind(R.id.tv_email)
+    TextView mTvEmail;
+    @Bind(R.id.tv_id)
+    TextView mTvId;
 
     private List<LocalMedia> selectList = new ArrayList<>();
     private DBManager mMgr;
@@ -103,6 +107,8 @@ public class PersonalDetailsActivity extends BaseActivity {
             mTouxiang.setImageBitmap(bitmap);*/
         UtilTool.getImage(mMgr, UtilTool.getTocoId(), PersonalDetailsActivity.this, mTouxiang);
         mTvUsername.setText(UtilTool.getUser());
+        mTvId.setText(UtilTool.getTocoId());
+        mTvEmail.setText(UtilTool.getEmail());
     }
 
     //拿到选择的图片
@@ -208,7 +214,7 @@ public class PersonalDetailsActivity extends BaseActivity {
                     case 2:
                         menu.dismiss();
                         Intent intent = new Intent(PersonalDetailsActivity.this, SerchImageActivity.class);
-                        intent.putExtra("type",TYPE_PERSONAL);
+                        intent.putExtra("type", TYPE_PERSONAL);
                         startActivity(intent);
                         break;
                 }

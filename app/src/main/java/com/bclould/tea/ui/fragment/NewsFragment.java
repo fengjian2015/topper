@@ -47,6 +47,7 @@ import butterknife.ButterKnife;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class NewsFragment extends Fragment implements OnBannerListener {
+    private static NewsFragment instance = null;
     @Bind(R.id.tv_kaifa)
     TextView mTvKaifa;
     @Bind(R.id.banner)
@@ -74,6 +75,17 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     private int PULL_DOWN = 1;
     private NewsNoticePresenter mNewsNoticePresenter;
     public LinearLayoutManager mLinearLayoutManager;
+
+    public static NewsFragment getInstance() {
+
+        if (instance == null) {
+
+            instance = new NewsFragment();
+
+        }
+
+        return instance;
+    }
 
     @Nullable
     @Override

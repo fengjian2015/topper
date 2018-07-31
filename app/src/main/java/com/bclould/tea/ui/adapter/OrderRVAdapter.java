@@ -103,7 +103,7 @@ public class OrderRVAdapter extends RecyclerView.Adapter {
             if (dataBean.getStatus() == 4) {
                 mTvType.setTextColor(mContext.getResources().getColor(R.color.color_orange));
             } else {
-                mTvType.setTextColor(mContext.getResources().getColor(R.color.black));
+                mTvType.setTextColor(mContext.getResources().getColor(R.color.main_text_color));
             }
                 /*
                 UtilTool.getImage(mMgr, jid, mContext, mIvTouxiang);*/

@@ -38,8 +38,8 @@ import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.QrRedInfo;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.AddFriendActivity;
-import com.bclould.tea.ui.activity.AuthenticationActivity;
 import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
+import com.bclould.tea.ui.activity.MyFriendActivity;
 import com.bclould.tea.ui.activity.ScanQRCodeActivity;
 import com.bclould.tea.ui.activity.SearchActivity;
 import com.bclould.tea.ui.activity.SendQRCodeRedActivity;
@@ -356,6 +356,10 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                             break;
                         case 2:
                             startActivity(new Intent(getActivity(), AddFriendActivity.class));
+                            mPopupWindow.dismiss();
+                            break;
+                        case 3:
+                            startActivity(new Intent(getActivity(), MyFriendActivity.class));
                             mPopupWindow.dismiss();
                             break;
                     }

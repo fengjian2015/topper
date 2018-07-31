@@ -1,4 +1,4 @@
-package com.bclould.tea.ui.fragment;
+package com.bclould.tea.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,13 +10,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,10 +25,10 @@ import android.widget.Toast;
 
 import com.bclould.tea.Presenter.DynamicPresenter;
 import com.bclould.tea.R;
+import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.DynamicListInfo;
 import com.bclould.tea.model.UserInfo;
-import com.bclould.tea.ui.activity.MainActivity;
 import com.bclould.tea.ui.adapter.DynamicRVAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.ActivityUtil;
@@ -57,15 +54,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.app.Activity.RESULT_OK;
 import static com.luck.picture.lib.config.PictureMimeType.ofImage;
 
 /**
- * Created by GA on 2017/9/19.
+ * Created by GA on 2018/7/31.
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class DynamicFragment extends Fragment {
+public class DynamicActivity extends BaseActivity {
     @Bind(R.id.iv)
     ImageView mIv;
     @Bind(R.id.ll_no_data)
@@ -88,6 +84,16 @@ public class DynamicFragment extends Fragment {
     ImageView mIv2;
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
+    @Bind(R.id.bark)
+    ImageView mBark;
+    @Bind(R.id.tv_title)
+    TextView mTvTitle;
+    @Bind(R.id.rl_push_dynamic_status)
+    RelativeLayout mRlPushDynamicStatus;
+    @Bind(R.id.iv_push_dynamic)
+    ImageView mIvPushDynamic;
+    @Bind(R.id.iv_my_dynamic)
+    ImageView mIvMyDynamic;
     private DynamicPresenter mDynamicPresenter;
     private DynamicRVAdapter mDynamicRVAdapter;
     private DBManager mMgr;
@@ -103,20 +109,20 @@ public class DynamicFragment extends Fragment {
     private boolean mType;
 
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.activity_dynamic, container, false);
-        ButterKnife.bind(this, view);
-        mDynamicPresenter = new DynamicPresenter(getContext());
-        mMgr = new DBManager(getContext());
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_dynamic);
+        ButterKnife.bind(this);
+        mDynamicPresenter = new DynamicPresenter(this);
+        mMgr = new DBManager(this);
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         initRecyclerView();
         initListener();
         initData(PULL_DOWN);
-        return view;
     }
+
 
     //接受通知
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -155,7 +161,7 @@ public class DynamicFragment extends Fragment {
                     mIvSelectorImg.setVisibility(View.GONE);
                     mCommentEt.setHint(getString(R.string.reply) + event.getCoinName());
                     mRlEdit.setVisibility(View.VISIBLE);
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
                     boolean isOpen = imm.isActive(mCommentEt);//isOpen若返回true，则表示输入法打开
                     if (!isOpen) {
                         mCommentEt.requestFocus();
@@ -168,7 +174,7 @@ public class DynamicFragment extends Fragment {
                 mCommentEt.setHint(getString(R.string.et_comment));
                 mIvSelectorImg.setVisibility(View.GONE);
                 mRlEdit.setVisibility(View.VISIBLE);
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
                 boolean isOpen = imm.isActive(mCommentEt);//isOpen若返回true，则表示输入法打开
                 if (!isOpen) {
                     mCommentEt.requestFocus();
@@ -181,7 +187,7 @@ public class DynamicFragment extends Fragment {
     }
 
     private void showDeleteCommentDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, getContext(), R.style.dialog);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.whether_delete_comment));
         Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
@@ -223,7 +229,7 @@ public class DynamicFragment extends Fragment {
 
     @SuppressLint("HandlerLeak")
     private void showRewardSucceedDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_reward, getContext(), R.style.dialog);
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_reward, this, R.style.dialog);
         deleteCacheDialog.show();
         new Handler() {
             public void handleMessage(Message msg) {
@@ -251,7 +257,7 @@ public class DynamicFragment extends Fragment {
         mDynamicPresenter.dynamicList(mPage_id, mPageSize, userList, new DynamicPresenter.CallBack2() {
             @Override
             public void send(List<DynamicListInfo.DataBean> data) {
-                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                if (ActivityUtil.isActivityOnTop(DynamicActivity.this)) {
                     if (mRecyclerView != null) {
                         if (type == PULL_DOWN) {
                             mRefreshLayout.finishRefresh();
@@ -287,7 +293,7 @@ public class DynamicFragment extends Fragment {
 
             @Override
             public void error() {
-                if (ActivityUtil.isActivityOnTop(getActivity())) {
+                if (ActivityUtil.isActivityOnTop(DynamicActivity.this)) {
                     if (type == PULL_UP) {
                         mRefreshLayout.finishLoadMore();
                     } else {
@@ -314,9 +320,9 @@ public class DynamicFragment extends Fragment {
     boolean isFinish = true;
 
     private void initRecyclerView() {
-        mLinearLayoutManager = new LinearLayoutManager(getContext());
+        mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mDynamicRVAdapter = new DynamicRVAdapter(getActivity(), mDataList, mDynamicPresenter);
+        mDynamicRVAdapter = new DynamicRVAdapter(this, mDataList, mDynamicPresenter);
         mRecyclerView.setAdapter(mDynamicRVAdapter);
         mLinearLayoutManager.scrollToPositionWithOffset(0, 0);
         mRecyclerView.post(new Runnable() {
@@ -330,7 +336,7 @@ public class DynamicFragment extends Fragment {
         mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
             public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 boolean isOpen = imm.isActive(mCommentEt);//isOpen若返回true，则表示输入法打开
                 if (isOpen) {
                     imm.hideSoftInputFromWindow(mCommentEt.getWindowToken(), 0);
@@ -372,8 +378,8 @@ public class DynamicFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    protected void onDestroy() {
+        super.onDestroy();
         ButterKnife.unbind(this);
         EventBus.getDefault().unregister(this);
     }
@@ -396,26 +402,6 @@ public class DynamicFragment extends Fragment {
                     }
                     break;
             }
-        }
-    }
-
-    @OnClick({R.id.iv_selector_img, R.id.send})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.iv_selector_img:
-                selectorImg();
-                break;
-            case R.id.send:
-                if (mCommentEt.getText().toString().isEmpty()) {
-                    Toast.makeText(getContext(), getString(R.string.toast_comment), Toast.LENGTH_SHORT).show();
-                } else {
-                    if (mType) {
-                        sendComment(mDynamicId, mCommentId, "", 0);
-                    } else {
-                        sendComment(mDynamicId, "0", "", 0);
-                    }
-                }
-                break;
         }
     }
 
@@ -454,7 +440,7 @@ public class DynamicFragment extends Fragment {
                     sendComment(mDynamicId, "0", key, 1);
                     break;
                 case 1:
-                    Toast.makeText(getContext(), getString(R.string.comment_erorr), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DynamicActivity.this, getString(R.string.comment_erorr), Toast.LENGTH_SHORT).show();
                     break;
             }
 
@@ -527,5 +513,41 @@ public class DynamicFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @OnClick({R.id.bark, R.id.rl_push_dynamic_status, R.id.iv_push_dynamic, R.id.iv_my_dynamic, R.id.send})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.bark:
+                finish();
+                break;
+            case R.id.rl_push_dynamic_status:
+                startActivity(new Intent(this, FileUploadingActivity.class));
+//                ToastShow.showToast2(getActivity(), getString(R.string.toast_uploading_dynamic));
+                break;
+            case R.id.iv_push_dynamic:
+                startActivity(new Intent(this, PublicshDynamicActivity.class));
+                break;
+            case R.id.iv_my_dynamic:
+                Intent intent = new Intent(this, PersonageDynamicActivity.class);
+                intent.putExtra("name", UtilTool.getUser());
+                intent.putExtra("user", UtilTool.getTocoId());
+                startActivity(intent);
+                break;
+            case R.id.iv_selector_img:
+                selectorImg();
+                break;
+            case R.id.send:
+                if (mCommentEt.getText().toString().isEmpty()) {
+                    Toast.makeText(this, getString(R.string.toast_comment), Toast.LENGTH_SHORT).show();
+                } else {
+                    if (mType) {
+                        sendComment(mDynamicId, mCommentId, "", 0);
+                    } else {
+                        sendComment(mDynamicId, "0", "", 0);
+                    }
+                }
+                break;
+        }
     }
 }

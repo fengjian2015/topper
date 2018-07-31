@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_bg_color"
     android:orientation="vertical">
 
     <View
@@ -16,6 +17,14 @@
     <RelativeLayout
         android:id="@+id/rl_title"
         style="@style/TopNavigationBarStyle">
+
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
 
         <TextView
             android:id="@+id/tv_friend_count"
@@ -39,6 +48,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:padding="@dimen/x25"
+            android:visibility="gone"
             android:src="@mipmap/ico_nav_add"/>
 
     </RelativeLayout>
