@@ -258,7 +258,8 @@
     <string name="et_max_limit">每筆交易最大成交額</string>
     <string name="qr_code_hint">掃描二維碼，添加好友</string>
     <string name="save_qr_code">保存二維碼</string>
-        <string name="qr_code_red_package">二維碼紅包</string>
+        
+    <string name="qr_code_red_package">二維碼紅包</string>
     <string name="qr_code_red_hint">掃一掃上面的二維碼圖片，領取紅包</string>
     <string name="question_details">問題詳情</string>
     <string name="real_name_verify">實名驗證</string>
@@ -1142,4 +1143,11 @@
     <string name="security_verification_success">安全驗證成功</string>
     <string name="security_verification_failure">安全驗證失敗</string>
     <string name="security_verification_failure_hint">請移動下方的圓標到圓形區域內</string>
+    <string name="automatic_download_complete">自動下載完成</string>
+    <string name="automatically_download">自動下載</string>
+    <string name="automatically_download_chat_video">自動下載聊天視頻</string>
+    <string name="treasure">财富</string>
+    <string name="information">資訊</string>
+    <string name="message">消息</string>
+    <string name="my_ad_platform">我的廣告平台</string>
 </resources>

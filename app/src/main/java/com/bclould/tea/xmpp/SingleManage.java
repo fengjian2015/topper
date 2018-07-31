@@ -508,6 +508,7 @@ public class SingleManage implements Room {
             String time = formatter.format(curDate);
             messageInfo.setTime(time);
             messageInfo.setType(0);
+            messageInfo.setKey(key);
             if (postfix.equals("Image")) {
                 messageInfo.setMsgType(TO_IMG_MSG);
             } else if (postfix.equals("Video")) {
@@ -545,6 +546,7 @@ public class SingleManage implements Room {
             String time = formatter.format(curDate);
             messageInfo.setTime(time);
             messageInfo.setType(0);
+            messageInfo.setKey(key);
             messageInfo.setSendStatus(2);
             if (postfix.equals("Image")) {
                 messageInfo.setMsgType(TO_IMG_MSG);

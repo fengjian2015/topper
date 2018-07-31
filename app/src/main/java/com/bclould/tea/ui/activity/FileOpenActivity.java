@@ -174,20 +174,20 @@ public class FileOpenActivity extends BaseActivity {
 
     FileDownloadPresenter.downloadCallback mDownloadCallback = new FileDownloadPresenter.downloadCallback() {
         @Override
-        public void onSuccess(File file, String key) {
-            if (!key.equals(key)) return;
+        public void onSuccess(File file, String keys) {
+            if (!key.equals(keys)) return;
             mHandler.sendEmptyMessage(2);
         }
 
         @Override
-        public void onFailure(String key) {
-            if (!key.equals(key)) return;
+        public void onFailure(String keys) {
+            if (!key.equals(keys)) return;
             mHandler.sendEmptyMessage(1);
         }
 
         @Override
-        public void onSuccsetProgressListeneress(long currentSize, long totalSize, String key) {
-            if (!key.equals(key)) return;
+        public void onSuccsetProgressListeneress(long currentSize, long totalSize, String keys) {
+            if (!key.equals(keys)) return;
             if (!mFile.exists()) {
                 MySharedPreferences.getInstance().setLong(key, totalSize);
             } else {

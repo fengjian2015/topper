@@ -37,6 +37,25 @@ public class ActivityUtil {
 		return true;
 	}
 
+	public static boolean isActivityOnTop(Context context) {
+		if(context!=null){
+			if(context instanceof Activity){
+				if (Build.VERSION.SDK_INT >= 17) {
+					if (((Activity)context).isDestroyed() || ((Activity)context).isFinishing()) {
+						return false;
+					}
+				} else {
+					if (((Activity)context).isFinishing()) {
+						return false;
+					}
+				}
+			}
+		}else{
+			return false;
+		}
+		return true;
+	}
+
 	public static boolean isGoStartActivity(Activity context){
 		if(!isActivityRunning(context)||WsConnection.getInstance().getOutConnection()){
 			PackageManager packageManager = context.getPackageManager();

@@ -59,32 +59,25 @@ import static com.luck.picture.lib.config.PictureMimeType.ofImage;
 public class SystemSetActivity extends BaseActivity {
     public static final String INFORM = "inform";
     public static final String PRIVATE = UtilTool.getUserId() + "private";
+    public static final String AUTOMATICALLY_DOWNLOA= UtilTool.getUserId() + "Dautomatically_download";
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.iv_inform)
-    ImageView mIvInform;
     @Bind(R.id.tv_inform)
     TextView mTvInform;
     @Bind(R.id.on_off_inform)
     ImageView mOnOffInform;
     @Bind(R.id.rl_inform)
     RelativeLayout mRlInform;
-    @Bind(R.id.iv_private)
-    ImageView mIvPrivate;
     @Bind(R.id.tv_private)
     TextView mTvPrivate;
     @Bind(R.id.on_off_private)
     ImageView mOnOffPrivate;
     @Bind(R.id.rl_private)
     RelativeLayout mRlPrivate;
-    @Bind(R.id.iv_help)
-    ImageView mIvHelp;
     @Bind(R.id.tv_help)
     TextView mTvHelp;
     @Bind(R.id.rl_help)
     RelativeLayout mRlHelp;
-    @Bind(R.id.iv_cache)
-    ImageView mIvCache;
     @Bind(R.id.tv_cache)
     TextView mTvCache;
     @Bind(R.id.tv_cache_count)
@@ -93,14 +86,14 @@ public class SystemSetActivity extends BaseActivity {
     RelativeLayout mRlCache;
     @Bind(R.id.btn_brak)
     Button mBtnBrak;
-    @Bind(R.id.iv_language)
-    ImageView mIvLanguage;
     @Bind(R.id.tv_language)
     TextView mTvLanguage;
     @Bind(R.id.tv_language_hint)
     TextView mTvLanguageHint;
     @Bind(R.id.rl_language)
     RelativeLayout mRlLanguage;
+    @Bind(R.id.on_off_download)
+    ImageView mOnOffDownload;
 
     private long mFolderSize;
     private List<LocalMedia> selectList = new ArrayList<>();
@@ -155,7 +148,7 @@ public class SystemSetActivity extends BaseActivity {
             mOnOffInform.setSelected(true);
             isOnOff = true;
         }
-
+        setDownOnOff();
         countCache();
     }
 
@@ -197,8 +190,7 @@ public class SystemSetActivity extends BaseActivity {
 
     boolean isOnOff = false;
     boolean isOnOff2 = false;
-
-    @OnClick({R.id.btn_brak, R.id.bark, R.id.rl_inform, R.id.rl_private, R.id.rl_help, R.id.rl_cache, R.id.rl_language, R.id.rl_backgound})
+    @OnClick({R.id.btn_brak, R.id.bark, R.id.rl_inform, R.id.rl_private, R.id.rl_help, R.id.rl_cache, R.id.rl_language, R.id.rl_backgound,R.id.rl_download,R.id.on_off_download})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_brak:
@@ -232,8 +224,32 @@ public class SystemSetActivity extends BaseActivity {
             case R.id.rl_backgound:
                 showBackgoundDialog();
                 break;
+            case R.id.rl_download:
+            case R.id.on_off_download:
+                changeDownOnOff();
+                break;
         }
     }
+
+    private void setDownOnOff(){
+        if(MySharedPreferences.getInstance().getBoolean(AUTOMATICALLY_DOWNLOA)){
+            mOnOffDownload.setSelected(true);
+        }else{
+            mOnOffDownload.setSelected(false);
+        }
+    }
+
+    private void changeDownOnOff() {
+        if(MySharedPreferences.getInstance().getBoolean(AUTOMATICALLY_DOWNLOA)){
+            MySharedPreferences.getInstance().setBoolean(AUTOMATICALLY_DOWNLOA,false);
+            mOnOffDownload.setSelected(false);
+        }else{
+            MySharedPreferences.getInstance().setBoolean(AUTOMATICALLY_DOWNLOA,true);
+            mOnOffDownload.setSelected(true);
+        }
+
+    }
+
 
     private void showBackgoundDialog() {
         List<String> list = new ArrayList<>();

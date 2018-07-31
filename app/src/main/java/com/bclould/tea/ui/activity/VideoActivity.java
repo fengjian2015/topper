@@ -27,11 +27,14 @@ import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.ui.widget.VideoPlayer;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 import com.bumptech.glide.Glide;
 import com.danikula.videocache.HttpProxyCacheServer;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.net.URI;
@@ -145,6 +148,11 @@ public class VideoActivity extends SwipeActivity {
                     @Override
                     public void onBufferingUpdate(MediaPlayer mp, int percent) {
                         int secondpercent = (int) (mVideoPlayer.getDuration() * percent * 0.01f);
+                        if(secondpercent==mVideoPlayer.getDuration()){
+                            MessageEvent messageEvent=new MessageEvent(getString(R.string.automatic_download_complete));
+                            messageEvent.setUrl(uri);
+                            EventBus.getDefault().post(messageEvent);
+                        }
                         mItemTime.setSecondaryProgress(secondpercent);//设置缓存进度
                     }
                 });

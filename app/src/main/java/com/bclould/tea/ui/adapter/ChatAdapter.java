@@ -31,10 +31,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bclould.tea.Presenter.FileDownloadPresenter;
 import com.bclould.tea.Presenter.GrabRedPresenter;
 import com.bclould.tea.R;
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomMember;
+import com.bclould.tea.model.DownloadInfo;
 import com.bclould.tea.model.GrabRedInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.SerMap;
@@ -54,6 +57,7 @@ import com.bclould.tea.ui.activity.TransferDetailsActivity;
 import com.bclould.tea.ui.activity.VideoActivity;
 import com.bclould.tea.ui.widget.CurrencyDialog;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.ui.widget.LodingCircleView;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.ui.widget.MyYAnimation;
 import com.bclould.tea.utils.AnimatorTool;
@@ -62,6 +66,7 @@ import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.CustomLinkMovementMethod;
 import com.bclould.tea.utils.HyperLinkUtil;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
@@ -74,6 +79,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.danikula.videocache.HttpProxyCacheServer;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jsoup.Jsoup;
@@ -85,6 +91,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -105,6 +113,7 @@ import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_TXT;
 import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_XLS;
 import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_XLSX;
 import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_ZIP;
+import static com.bclould.tea.ui.activity.SystemSetActivity.AUTOMATICALLY_DOWNLOA;
 import static com.bclould.tea.utils.UtilTool.Log;
 
 /**
@@ -162,6 +171,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private RelativeLayout mrlTitle;
     private DBRoomMember mDBRoomMember;
     private CurrencyDialog mCurrencyDialog;
+    private FileDownloadPresenter mFileDownloadPresenter;
 
     public ChatAdapter(Context context, List<MessageInfo> messageList, String roomId, DBManager mgr, MediaPlayer mediaPlayer, String name, String roomType, RelativeLayout rlTitle, DBRoomMember mDBRoomMember
     ) {
@@ -176,6 +186,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         mName = name;
         mrlTitle = rlTitle;
         this.mDBRoomMember = mDBRoomMember;
+        mFileDownloadPresenter = FileDownloadPresenter.getInstance(context);
     }
 
     @Override
@@ -1498,6 +1509,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         View tvCreateTime;
         @Bind(R.id.tv_name)
         TextView tvName;
+        @Bind(R.id.loading_pr)
+        LodingCircleView loadingPr;
 
         FromVideoHolder(View view) {
             super(view);
@@ -1508,6 +1521,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
+            setLoading(messageInfo,loadingPr,mIvVideoPlay);
             if(messageInfo.getVoice().startsWith("http")) {
                 Glide.with(mContext).load(messageInfo.getVoice()).listener(new RequestListener<Drawable>() {
                     @Override
@@ -1540,8 +1554,85 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     return false;
                 }
             });
+
         }
     }
+    private void setLoading( MessageInfo messageInfo, final LodingCircleView loadingPr, ImageView mIvVideoPlay) {
+        if(messageInfo.getStatus()!=1&&MySharedPreferences.getInstance().getBoolean(AUTOMATICALLY_DOWNLOA)){
+            try {
+                startLoading(messageInfo,loadingPr,mIvVideoPlay);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else{
+            mIvVideoPlay.setVisibility(View.VISIBLE);
+            loadingPr.setVisibility(View.GONE);
+        }
+    }
+    private void startLoading(final MessageInfo messageInfo, final LodingCircleView loadingPr, ImageView ivVideoPlay) throws URISyntaxException {
+        final String key=messageInfo.getKey();
+        final File mFile = new File(Constants.DOWNLOAD + key);
+        if (mFile.exists()) {
+            if (MySharedPreferences.getInstance().getLong(key) == mFile.length() || (MySharedPreferences.getInstance().getLong(key) == 0 && mFile.length() != 0)) {
+                UtilTool.Log("下載"+key,"文件存在   不需要下載");
+                ivVideoPlay.setVisibility(View.VISIBLE);
+                loadingPr.setVisibility(View.GONE);
+                return;
+            } else {
+                UtilTool.Log("下載"+key,"文件存在   開始下載");
+                double currentSize = Double.parseDouble(mFile.length() + "");
+                double totleSize = Double.parseDouble(MySharedPreferences.getInstance().getLong(key) + "");
+                int progress = (int) (currentSize / totleSize * 100);
+                loadingPr.setProgerss(progress,true);
+                ivVideoPlay.setVisibility(View.GONE);
+                mFileDownloadPresenter.dowbloadFile(Constants.BUCKET_NAME2, key, mFile);
+            }
+        } else {
+            UtilTool.Log("下載"+key,"文件不存在   開始下載");
+            loadingPr.setVisibility(View.VISIBLE);
+            ivVideoPlay.setVisibility(View.GONE);
+            mFileDownloadPresenter.dowbloadFile(Constants.BUCKET_NAME2, key, mFile);
+        }
+        mFileDownloadPresenter.setOnDownloadCallbackListener(new FileDownloadPresenter.downloadCallback() {
+            @Override
+            public void onSuccess(File file, String keys) {
+                if (!key.equals(keys)) return;
+                mFileDownloadPresenter.removeDownloadCallbackListener(this);
+                UtilTool.Log("下載"+key,"下載成功");
+                MessageEvent messageEvent=new MessageEvent(mContext.getString(R.string.automatic_download_complete));
+                messageEvent.setUrl(messageInfo.getMessage());
+                messageEvent.setFilepath(mFile.getAbsolutePath());
+                EventBus.getDefault().post(messageEvent);
+            }
+
+            @Override
+            public void onFailure(String keys) {
+                if (!key.equals(keys)) return;
+                mFileDownloadPresenter.removeDownloadCallbackListener(this);
+                UtilTool.Log("下載"+key,"下載失敗");
+            }
+
+            @Override
+            public void onSuccsetProgressListeneress(final long currentSize, final long totalSize, final String keys) {
+                if (!key.equals(keys)) return;
+                if (!mFile.exists()) {
+                    MySharedPreferences.getInstance().setLong(key, totalSize);
+                } else {
+                    if (mFile.length() == 0) {
+                        MySharedPreferences.getInstance().setLong(key, totalSize);
+                    }
+                }
+                ((Activity)mContext).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        int progress = (int) (Double.parseDouble(currentSize+ MySharedPreferences.getInstance().getLong(key) + "") / Double.parseDouble(totalSize + MySharedPreferences.getInstance().getLong(key) + "") * 100);
+                        loadingPr.setProgerss(progress,true);
+                    }
+                });
+            }
+        });
+    }
+    
 
     class ToLocationHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_touxiang)
