@@ -20,12 +20,12 @@
 
         <TextView
             android:id="@+id/tv_title"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y30"
             android:gravity="center"
             android:text="@string/security_verification"
-            style="@style/MainTextShallowStyle36"
             />
     </RelativeLayout>
 
@@ -41,6 +41,7 @@
 
     <TextView
         android:id="@+id/tv_hint"
+        style="@style/MainTextShallowStyle32"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_title"
@@ -48,8 +49,7 @@
         android:gravity="center"
         android:paddingLeft="@dimen/x100"
         android:paddingRight="@dimen/x100"
-        android:text="@string/security_verification_hint"
-        style="@style/MainTextShallowStyle32"/>
+        android:text="@string/security_verification_hint"/>
 
     <ImageView
         android:id="@+id/iv_target"
@@ -69,7 +69,7 @@
         android:layout_below="@+id/tv_hint"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/y30"
-        android:src="@mipmap/img_nfriend_headshot1"
+        android:src="@mipmap/icon_lock_logo"
         />
 
 </RelativeLayout>

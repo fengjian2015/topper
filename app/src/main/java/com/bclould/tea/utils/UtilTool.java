@@ -1557,4 +1557,32 @@ public class UtilTool {
         return resId;
     }
 
+    public static void createNomedia(String file){
+        File cacheDir = new File(file);
+        if (!cacheDir.exists())
+            cacheDir.mkdirs();
+        File nomedia = new File(file+ "/.nomedia");
+        if (!nomedia.exists())
+            try {
+                nomedia.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+    }
+
+    /**
+     * make true current connect service is wifi
+     * @param mContext
+     * @return
+     */
+    public static boolean isWifi(Context mContext) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) mContext
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
+        if (activeNetInfo != null
+                && activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            return true;
+        }
+        return false;
+    }
 }

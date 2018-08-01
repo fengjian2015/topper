@@ -224,13 +224,6 @@
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
-        <!-- 提现页面 -->
-        <activity
-            android:name=".ui.activity.TiXianActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/Transparent"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
 
         <!-- 银行卡页面 -->
         <activity
@@ -1189,7 +1182,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
-        <activity android:name=".ui.activity.AuthenticationActivity"></activity>
 
         <!--朋友圈页-->
         <activity
@@ -1203,6 +1195,13 @@
         <activity
             android:name=".ui.activity.MyFriendActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
+        <activity
+            android:name=".ui.activity.AuthenticationActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan"/>

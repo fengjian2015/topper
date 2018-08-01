@@ -145,38 +145,10 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     }
 
     private void createFile() {
-        File cacheDir2 = new File(Constants.BACKGOUND);
-        if (!cacheDir2.exists())
-            cacheDir2.mkdirs();
-        File nomedia2 = new File(Constants.BACKGOUND + ".nomedia");
-        if (!nomedia2.exists())
-            try {
-                nomedia2.createNewFile();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        File cacheDir1 = new File(Constants.PUBLICDIR);
-        if (!cacheDir1.exists())
-            cacheDir1.mkdirs();
-        File nomedia1 = new File(Constants.PUBLICDIR + ".nomedia");
-        if (!nomedia1.exists())
-            try {
-                nomedia1.createNewFile();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        File cacheDir = new File(getActivity().getFilesDir().getAbsolutePath() + "/images");
-        if (!cacheDir.exists())
-            cacheDir.mkdirs();
-        File nomedia = new File(getActivity().getFilesDir().getAbsolutePath() + "/images" + "/.nomedia");
-        if (!nomedia.exists())
-            try {
-                nomedia.createNewFile();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+        UtilTool.createNomedia(Constants.BACKGOUND);
+        UtilTool.createNomedia(Constants.PUBLICDIR);
+        UtilTool.createNomedia(Constants.VIDEO);
+        UtilTool.createNomedia(getActivity().getFilesDir().getAbsolutePath() + "/images");
     }
 
     @Override
