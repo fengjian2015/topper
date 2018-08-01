@@ -6,31 +6,28 @@
 
     <TextView
         android:id="@+id/tv_ip"
+        style="@style/SecondaryTextStyle24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/x30"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x26"/>
+        android:layout_marginLeft="@dimen/x30"/>
 
     <TextView
         android:id="@+id/tv_state"
+        style="@style/SecondaryTextStyle24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginRight="@dimen/x30"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x26"/>
+        android:layout_marginRight="@dimen/x30"/>
 
     <TextView
         android:id="@+id/tv_time"
+        style="@style/SecondaryTextStyle24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/x30"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x26"/>
+        android:layout_marginRight="@dimen/x30"/>
 
 
     <TextView

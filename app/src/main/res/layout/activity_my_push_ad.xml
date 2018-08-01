@@ -35,6 +35,15 @@
             android:paddingRight="@dimen/x20"
             android:text="@string/filtrate"/>
 
+        <ImageView
+            android:id="@+id/iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:src="@mipmap/ico_order_sell"/>
+
     </RelativeLayout>
 
     <TextView
@@ -60,13 +69,6 @@
                 android:id="@+id/rl_sum_sell"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y90">
-
-                <ImageView
-                    android:id="@+id/iv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:src="@mipmap/ico_order_sell"/>
 
                 <TextView
                     style="@style/MainTextShallowStyle30"

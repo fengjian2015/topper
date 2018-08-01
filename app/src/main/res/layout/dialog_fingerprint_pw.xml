@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/app_bg_color">
 
         <ImageView
             android:id="@+id/iv_logo"
@@ -20,7 +20,7 @@
 
         <TextView
             android:id="@+id/tv_app_name"
-            style="@style/MainTextDeepStyle36"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/iv_fingerprint"
@@ -39,7 +39,7 @@
 
         <TextView
             android:id="@+id/tv_check"
-            style="@style/MainTextDeepStyle30"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_fingerprint"
@@ -56,7 +56,7 @@
 
         <TextView
             android:id="@+id/tv_cancel"
-            style="@style/MainTextDeepStyle36"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y120"
             android:layout_alignParentBottom="true"

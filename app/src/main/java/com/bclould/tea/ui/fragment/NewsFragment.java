@@ -26,6 +26,8 @@ import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.UtilTool;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -75,6 +77,12 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     private int PULL_DOWN = 1;
     private NewsNoticePresenter mNewsNoticePresenter;
     public LinearLayoutManager mLinearLayoutManager;
+    private RequestOptions mRequestOptions = new RequestOptions()
+            .error(R.mipmap.img_banner_default)
+            .centerCrop()
+            .placeholder(R.mipmap.img_banner_default)
+            .diskCacheStrategy(DiskCacheStrategy.ALL);
+    ;
 
     public static NewsFragment getInstance() {
 
@@ -206,6 +214,8 @@ public class NewsFragment extends Fragment implements OnBannerListener {
     }
 
     private void initBanner(List<String> top, List<String> titleList) {
+
+
         mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
                 .setImages(top)
                 .setBannerTitles(titleList)
@@ -214,6 +224,7 @@ public class NewsFragment extends Fragment implements OnBannerListener {
                     public void displayImage(Context context, Object path, ImageView imageView) {
                         Glide.with(context.getApplicationContext())
                                 .load(path)
+                                .apply(mRequestOptions)
                                 .into(imageView);
                     }
                 })

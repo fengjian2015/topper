@@ -16,7 +16,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="@dimen/y450"
-        android:background="@mipmap/bg_img_friend"/>
+        android:background="@mipmap/icon_me_bg"/>
 
     <RelativeLayout
         android:id="@+id/rl_personal_data"
@@ -27,29 +27,23 @@
         android:layout_marginTop="@dimen/y250"
         android:background="@drawable/bg_bright_shape">
 
-        <LinearLayout
-            android:id="@+id/ll_touxiang"
+        <ImageView
+            android:id="@+id/iv_touxiang"
+            android:layout_width="@dimen/x150"
+            android:layout_height="@dimen/x150"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginTop="@dimen/y30"
+            android:src="@mipmap/img_nfriend_headshot1"/>
+
+        <TextView
+            style="@style/MainTextDeepStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/iv_touxiang"
-                android:layout_width="@dimen/x150"
-                android:layout_height="@dimen/x150"
-                android:layout_marginLeft="@dimen/x30"
-                android:src="@mipmap/img_nfriend_headshot1"/>
-
-            <TextView
-                style="@style/MainTextDeepStyle30"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/x30"
-                android:layout_marginTop="@dimen/y30"
-                android:text="@string/greet_hint"/>
-
-        </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/y30"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginTop="@dimen/y30"
+            android:text="@string/greet_hint"/>
 
 
         <TextView
@@ -57,10 +51,10 @@
             style="@style/MainTextDeepStyle36"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/y60"
-            android:layout_alignTop="@+id/ll_touxiang"
+            android:layout_alignTop="@+id/iv_touxiang"
             android:layout_marginLeft="@dimen/x50"
             android:layout_marginTop="@dimen/y30"
-            android:layout_toRightOf="@+id/ll_touxiang"/>
+            android:layout_toRightOf="@+id/iv_touxiang"/>
 
         <!--<TextView
             android:id="@+id/tv_tocoid"
@@ -76,7 +70,7 @@
             android:layout_width="@dimen/x80"
             android:layout_height="@dimen/x80"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/ll_touxiang"
+            android:layout_alignTop="@+id/iv_touxiang"
             android:layout_marginRight="@dimen/x50"
             android:layout_marginTop="@dimen/y30"
             android:src="@mipmap/qr_code"/>
@@ -98,7 +92,9 @@
         <RelativeLayout
             android:id="@+id/rl_collect"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y110">
+            android:layout_height="@dimen/y110"
+            android:paddingBottom="@dimen/y20"
+            android:paddingTop="@dimen/y20">
 
             <ImageView
                 android:id="@+id/iv4"
@@ -106,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x30"
-                android:src="@mipmap/icon_person_safe"/>
+                android:src="@mipmap/icon_me_collection"/>
 
             <TextView
                 style="@style/MainTextShallowStyle30"
@@ -130,7 +126,9 @@
         <RelativeLayout
             android:id="@+id/rl_dynamic"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y110">
+            android:layout_height="@dimen/y110"
+            android:paddingBottom="@dimen/y20"
+            android:paddingTop="@dimen/y20">
 
             <ImageView
                 android:id="@+id/iv5"
@@ -138,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x30"
-                android:src="@mipmap/iocn_person_set"/>
+                android:src="@mipmap/icon_me_circlefriend"/>
 
             <TextView
                 style="@style/MainTextShallowStyle30"
@@ -162,7 +160,9 @@
         <RelativeLayout
             android:id="@+id/rl_security_center"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y110">
+            android:layout_height="@dimen/y110"
+            android:paddingBottom="@dimen/y20"
+            android:paddingTop="@dimen/y20">
 
             <ImageView
                 android:id="@+id/iv2"
@@ -194,7 +194,9 @@
         <RelativeLayout
             android:id="@+id/rl_system_set"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y110">
+            android:layout_height="@dimen/y110"
+            android:paddingBottom="@dimen/y20"
+            android:paddingTop="@dimen/y20">
 
             <ImageView
                 android:id="@+id/iv3"
@@ -242,6 +244,8 @@
             android:id="@+id/rl_concern_we"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y110"
+            android:paddingBottom="@dimen/y20"
+            android:paddingTop="@dimen/y20"
             android:visibility="visible">
 
             <ImageView

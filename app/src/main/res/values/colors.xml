@@ -61,4 +61,5 @@
     <color name="secondary_text_color">#aaacb2</color><!--用于辅助、次要文字信息-->
     <color name="boundary_color">#10c8e9f9</color><!--用于分割线,浅色背景色-->
     <color name="red_color">#e53131</color><!--用于分割线,浅色背景色-->
+    <color name="purple_color">#769af9</color><!--用于分割线,浅色背景色-->
 </resources>

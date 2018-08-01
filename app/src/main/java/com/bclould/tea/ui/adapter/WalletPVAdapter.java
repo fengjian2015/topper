@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bclould.tea.R;
@@ -68,7 +69,6 @@ public class WalletPVAdapter extends PagerAdapter implements CardAdapter {
             mBaseElevation = cardView.getCardElevation();
         }
         cardView.setMaxCardElevation(mBaseElevation * MAX_ELEVATION_FACTOR);
-
         mViews.set(position, cardView);
         return view;
     }
@@ -86,6 +86,8 @@ public class WalletPVAdapter extends PagerAdapter implements CardAdapter {
         TextView mTvTitle;
         @Bind(R.id.tv_count)
         TextView mTvCount;
+        @Bind(R.id.rl_all)
+        RelativeLayout mRlAll;
         @Bind(R.id.bank_card)
         CardView mBankCard;
 
@@ -94,10 +96,11 @@ public class WalletPVAdapter extends PagerAdapter implements CardAdapter {
             mTvTitle.setText(dataList.get(position).getTitle());
             mIvIcon.setImageResource(dataList.get(position).getIcon());
             mTvCount.setText(position + 1 + "-" + dataList.size());
+            mRlAll.setBackgroundResource(dataList.get(position).getBg());
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    switch (position){
+                    switch (position) {
                         case 0:
                             mContext.startActivity(new Intent(mContext, ReceiptPaymentActivity.class));
                             break;

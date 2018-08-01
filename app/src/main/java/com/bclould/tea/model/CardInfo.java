@@ -6,7 +6,8 @@ package com.bclould.tea.model;
 
 public class CardInfo {
 
-    private int mIcon ;
+    private int mIcon;
+    private int mBg;
 
     public int getIcon() {
         return mIcon;
@@ -26,11 +27,17 @@ public class CardInfo {
 
     private String mTitle;
 
-    public CardInfo(int icon, String title) {
-        mIcon = icon;
-        mTitle = title;
+    public int getBg() {
+        return mBg;
     }
 
+    public void setBg(int bg) {
+        mBg = bg;
+    }
 
-
+    public CardInfo(int icon, String title, int bg) {
+        mIcon = icon;
+        mTitle = title;
+        mBg = bg;
+    }
 }

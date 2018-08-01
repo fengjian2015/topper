@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -45,8 +44,6 @@ public class MyFragment extends Fragment {
     public static MyFragment instance = null;
     @Bind(R.id.iv_touxiang)
     ImageView mIvTouxiang;
-    @Bind(R.id.ll_touxiang)
-    LinearLayout mLlTouxiang;
     @Bind(R.id.tv_name)
     TextView mTvName;
     @Bind(R.id.rl_personal_data)

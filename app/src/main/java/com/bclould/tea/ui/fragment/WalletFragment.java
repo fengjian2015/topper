@@ -124,9 +124,9 @@ public class WalletFragment extends Fragment {
             mViews.add(null);
             mViews.add(null);
             mViews.add(null);
-            mDataList.add(new CardInfo(R.mipmap.icon_copy, getString(R.string.receipt_payment)));
-            mDataList.add(new CardInfo(R.mipmap.icon_copy, getString(R.string.number_asset)));
-            mDataList.add(new CardInfo(R.mipmap.icon_copy, getString(R.string.bank_card)));
+            mDataList.add(new CardInfo(R.mipmap.icon_receiving, getString(R.string.receipt_payment), R.mipmap.icon_receiving_bg));
+            mDataList.add(new CardInfo(R.mipmap.icon_assetscard, getString(R.string.my_address), R.mipmap.icon_assetscard_bg));
+            mDataList.add(new CardInfo(R.mipmap.icon_bankcard, getString(R.string.bank_card), R.mipmap.icon_bankcard_bg));
         }
     }
 

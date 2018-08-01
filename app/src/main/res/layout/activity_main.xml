@@ -25,6 +25,7 @@
         android:id="@+id/main_bottom_menu"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y120"
+        android:background="#2f3a4e"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
@@ -36,15 +37,14 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="@dimen/x50"
-                android:layout_height="@dimen/y50"
+                android:layout_width="@dimen/x60"
+                android:layout_height="@dimen/y60"
                 android:src="@drawable/menu_yunquan_selector"/>
 
             <TextView
-                style="@style/SecondaryTextStyle28"
+                style="@style/SecondaryTextStyle24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y8"
                 android:text="@string/information"
                 android:textColor="@drawable/menu_text_color_selector"/>
 
@@ -59,15 +59,14 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="@dimen/x50"
-                android:layout_height="@dimen/y50"
+                android:layout_width="@dimen/y60"
+                android:layout_height="@dimen/y60"
                 android:src="@drawable/menu_biyun_selector"/>
 
             <TextView
-                style="@style/SecondaryTextStyle28"
+                style="@style/SecondaryTextStyle24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y8"
                 android:text="@string/treasure"
                 android:textColor="@drawable/menu_text_color_selector"/>
 
@@ -88,16 +87,15 @@
 
                 <ImageView
                     android:id="@+id/iv"
-                    android:layout_width="@dimen/x50"
-                    android:layout_height="@dimen/y50"
+                    android:layout_width="@dimen/y60"
+                    android:layout_height="@dimen/y60"
                     android:src="@drawable/menu_yunxin_selector"/>
 
                 <TextView
-                    style="@style/SecondaryTextStyle28"
+                    style="@style/SecondaryTextStyle24"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/iv"
-                    android:layout_marginTop="@dimen/y8"
                     android:text="@string/talk"
                     android:textColor="@drawable/menu_text_color_selector"/>
             </LinearLayout>
@@ -134,15 +132,14 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="@dimen/x50"
-                android:layout_height="@dimen/y50"
+                android:layout_width="@dimen/y60"
+                android:layout_height="@dimen/y60"
                 android:src="@drawable/menu_wode_selector"/>
 
             <TextView
-                style="@style/SecondaryTextStyle28"
+                style="@style/SecondaryTextStyle24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/y8"
                 android:text="@string/person"
                 android:textColor="@drawable/menu_text_color_selector"/>
 
