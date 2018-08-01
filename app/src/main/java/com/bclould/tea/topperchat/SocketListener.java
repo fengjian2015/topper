@@ -167,6 +167,9 @@ public class SocketListener {
     private DBRoomManage mdbRoomManage;
     private DBRoomMember mdbRoomMember;
     private int IMSequence = 1000;
+    private PingThread mPingThread;
+    private PingThreadRequest mPingThreadRequest;
+    public static int pingNumber=0;
     ExecutorService executorService;//以後用於群聊功能
     private static SocketListener mInstance;
 
@@ -304,8 +307,13 @@ public class SocketListener {
         WsConnection.getInstance().setIsLogin(true);
         UtilTool.Log("fengjian", "登錄成功");
         WsConnection.getInstance().setLoginConnection(false);
-        new PingThread(context).start();
-        new PingThreadRequest(context).start();
+
+        pingNumber++;
+        mPingThread=new PingThread(context,pingNumber);
+        mPingThread.start();
+        mPingThreadRequest= new PingThreadRequest(context,pingNumber);
+        mPingThreadRequest.start();
+
         XGManage.getInstance().setAlias();
     }
 

@@ -2230,4 +2230,5 @@
     <string name="automatic_download_complete">自动下载完成</string>
     <string name="automatically_download">自动下载</string>
     <string name="automatically_download_chat_video">自动下载聊天视频</string>
+    <string name="add_images">添加图片</string>
 </resources>

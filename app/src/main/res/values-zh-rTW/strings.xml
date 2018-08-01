@@ -1136,4 +1136,5 @@
     <string name="automatic_download_complete">自動下載完成</string>
     <string name="automatically_download">自動下載</string>
     <string name="automatically_download_chat_video">自動下載聊天視頻</string>
+    <string name="add_images">添加圖片</string>
 </resources>

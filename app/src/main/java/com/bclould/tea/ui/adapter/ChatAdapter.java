@@ -171,7 +171,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private RelativeLayout mrlTitle;
     private DBRoomMember mDBRoomMember;
     private CurrencyDialog mCurrencyDialog;
-    private FileDownloadPresenter mFileDownloadPresenter;
 
     public ChatAdapter(Context context, List<MessageInfo> messageList, String roomId, DBManager mgr, MediaPlayer mediaPlayer, String name, String roomType, RelativeLayout rlTitle, DBRoomMember mDBRoomMember
     ) {
@@ -186,7 +185,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
         mName = name;
         mrlTitle = rlTitle;
         this.mDBRoomMember = mDBRoomMember;
-        mFileDownloadPresenter = FileDownloadPresenter.getInstance(context);
     }
 
     @Override
@@ -1558,7 +1556,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
     }
     private void setLoading( MessageInfo messageInfo, final LodingCircleView loadingPr, ImageView mIvVideoPlay) {
-        if(messageInfo.getStatus()!=1&&MySharedPreferences.getInstance().getBoolean(AUTOMATICALLY_DOWNLOA)){
+        if(messageInfo.getStatus()!=1&&MySharedPreferences.getInstance().getBoolean(AUTOMATICALLY_DOWNLOA)&&UtilTool.isWifi(mContext)){
             try {
                 startLoading(messageInfo,loadingPr,mIvVideoPlay);
             }catch (Exception e){
@@ -1571,7 +1569,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     }
     private void startLoading(final MessageInfo messageInfo, final LodingCircleView loadingPr, ImageView ivVideoPlay) throws URISyntaxException {
         final String key=messageInfo.getKey();
-        final File mFile = new File(Constants.DOWNLOAD + key);
+        final File mFile = new File(Constants.VIDEO + key);
         if (mFile.exists()) {
             if (MySharedPreferences.getInstance().getLong(key) == mFile.length() || (MySharedPreferences.getInstance().getLong(key) == 0 && mFile.length() != 0)) {
                 UtilTool.Log("下載"+key,"文件存在   不需要下載");
@@ -1585,19 +1583,19 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 int progress = (int) (currentSize / totleSize * 100);
                 loadingPr.setProgerss(progress,true);
                 ivVideoPlay.setVisibility(View.GONE);
-                mFileDownloadPresenter.dowbloadFile(Constants.BUCKET_NAME2, key, mFile);
+                FileDownloadPresenter.getInstance(mContext).dowbloadFile(Constants.BUCKET_NAME2, key, mFile);
             }
         } else {
             UtilTool.Log("下載"+key,"文件不存在   開始下載");
             loadingPr.setVisibility(View.VISIBLE);
             ivVideoPlay.setVisibility(View.GONE);
-            mFileDownloadPresenter.dowbloadFile(Constants.BUCKET_NAME2, key, mFile);
+            FileDownloadPresenter.getInstance(mContext).dowbloadFile(Constants.BUCKET_NAME2, key, mFile);
         }
-        mFileDownloadPresenter.setOnDownloadCallbackListener(new FileDownloadPresenter.downloadCallback() {
+        FileDownloadPresenter.getInstance(mContext).setOnDownloadCallbackListener(new FileDownloadPresenter.downloadCallback() {
             @Override
             public void onSuccess(File file, String keys) {
                 if (!key.equals(keys)) return;
-                mFileDownloadPresenter.removeDownloadCallbackListener(this);
+                FileDownloadPresenter.getInstance(mContext).removeDownloadCallbackListener(this);
                 UtilTool.Log("下載"+key,"下載成功");
                 MessageEvent messageEvent=new MessageEvent(mContext.getString(R.string.automatic_download_complete));
                 messageEvent.setUrl(messageInfo.getMessage());
@@ -1608,7 +1606,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             @Override
             public void onFailure(String keys) {
                 if (!key.equals(keys)) return;
-                mFileDownloadPresenter.removeDownloadCallbackListener(this);
+                FileDownloadPresenter.getInstance(mContext).removeDownloadCallbackListener(this);
                 UtilTool.Log("下載"+key,"下載失敗");
             }
 

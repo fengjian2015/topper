@@ -65,7 +65,7 @@
         android:id="@+id/iv_move"
         android:layout_width="@dimen/x160"
         android:layout_height="@dimen/y160"
-        android:src="@mipmap/img_nfriend_headshot1"
+        android:src="@mipmap/icon_lock_logo"
         android:layout_marginTop="@dimen/y30"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/tv_hint"

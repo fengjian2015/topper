@@ -1186,7 +1186,17 @@
             android:screenOrientation="portrait"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".ui.activity.AuthenticationActivity"></activity>
+        <activity android:name=".ui.activity.AuthenticationActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+
+        <activity android:name=".ui.activity.AnnouncementActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:windowSoftInputMode="stateHidden|adjustPan" ></activity>
     </application>
 
 </manifest>
