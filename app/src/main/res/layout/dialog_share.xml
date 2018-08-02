@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/x600"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_white_shape"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="@dimen/y30"
+        android:paddingLeft="@dimen/x30"
+        android:paddingRight="@dimen/x30"
+        android:paddingTop="@dimen/y30">
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/send_to"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x36" />
+
+        <ImageView
+            android:id="@+id/iv_head"
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/y80"
+            android:layout_below="@+id/tv1"
+            android:layout_marginBottom="@dimen/y10"
+            android:layout_marginTop="@dimen/y30" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y80"
+            android:layout_alignTop="@+id/iv_head"
+            android:layout_marginLeft="@dimen/x10"
+            android:layout_toRightOf="@+id/iv_head"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x28" />
+
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y300"
+            android:layout_below="@+id/iv_head"
+            android:scaleType="centerInside"
+            android:visibility="gone"
+            />
+
+        <com.bclould.tea.ui.widget.MyAutoCompleteTextView
+            android:id="@+id/et_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_image"
+            android:paddingLeft="@dimen/x20"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:layout_marginTop="@dimen/y20"
+            android:textCursorDrawable="@null"
+            android:theme="@style/MyEditText"
+            android:maxLines="2"
+            android:textSize="@dimen/x28"
+            android:hint="@string/leave_message_friend"/>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y90"
+        >
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:text="@string/cancel"
+            android:textColor="#99000000"
+            android:textSize="@dimen/x28"
+            android:paddingRight="@dimen/x20"
+            android:paddingLeft="@dimen/x40"
+            android:layout_toLeftOf="@+id/btn_confirm"/>
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:text="@string/confirm"
+            android:textColor="@color/blue2"
+            android:paddingLeft="@dimen/x20"
+            android:paddingRight="@dimen/x40"
+            android:layout_alignParentRight="true"
+            android:textSize="@dimen/x28" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

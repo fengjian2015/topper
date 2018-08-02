@@ -2245,4 +2245,6 @@
     <string name="my_ad_platform">我的广告平台</string>
     <string name="start_group">发起群聊</string>
     <string name="add_images">添加图片</string>
+    <string name="send_to">发送给：</string>
+    <string name="leave_message_friend">给朋友留言</string>
 </resources>

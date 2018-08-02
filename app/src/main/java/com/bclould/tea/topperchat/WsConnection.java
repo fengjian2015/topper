@@ -106,21 +106,27 @@ public class WsConnection {
                                 UtilTool.Log("fengjian","服務連接已存在，清空最新的");
                                 webSocket.close();
                                 webSocket.end();
+                                setIsConnection(false);
                                 return;
                             }
                             if(mWebSocketArrayList.size()>0){
                                 UtilTool.Log("fengjian","服务连接数大于0"+mWebSocketArrayList.size());
                                 //這種情況必定會被踢出，全部斷開
-                                ws=mWebSocketArrayList.get(0);
-                                close();
+                                for(WebSocket webSocket1:mWebSocketArrayList){
+                                    if(webSocket1!=null){
+                                        webSocket1.end();
+                                        webSocket1.close();
+                                    }
+                                }
                                 ws=webSocket;
                                 closeConnection();
                                 mWebSocketArrayList.clear();
-                                setIsConnection(false);
                                 setIsLogin(false);
+                                setIsConnection(false);
                                 return;
                             }
                             ws = webSocket;
+                            setIsConnection(false);
                             mWebSocketArrayList.add(ws);
 
                             UtilTool.Log("fengjian", "连接服務器成功-----"+mWebSocketArrayList.size());

@@ -74,7 +74,6 @@ public class SingleManage implements Room {
     private Context context;
     private String mName;
     private String url;
-    private ArrayList<MessageManageListener> listeners = new ArrayList<>();
     private static ExecutorService mSingleThreadExecutor = null;
 
     public SingleManage(DBManager mMgr, String mUser, Context context, String name) {
@@ -129,46 +128,29 @@ public class SingleManage implements Room {
 
     @Override
     public void addMessageManageListener(MessageManageListener messageManageListener) {
-        listeners.add(messageManageListener);
+        MessageListenerManage.get().addMessageManageListener(messageManageListener);
     }
 
     @Override
     public void removerMessageManageListener(MessageManageListener messageManageListener) {
-        if (listeners.contains(messageManageListener)) {
-            listeners.remove(messageManageListener);
-        }
+        MessageListenerManage.get().removerMessageManageListener(messageManageListener);
     }
 
     private void refreshAddData(MessageInfo messageInfo) {
-        if (listeners != null) {
-            for (MessageManageListener messageManageListener : listeners) {
-                messageManageListener.refreshAddData(messageInfo);
-            }
-        }
+        MessageListenerManage.get().refreshAddData(messageInfo);
     }
 
     private void sendFileResults(String newFile2, boolean isSuccess) {
-        if (listeners != null) {
-            for (MessageManageListener messageManageListener : listeners) {
-                messageManageListener.sendFileResults(newFile2, isSuccess);
-            }
-        }
+        MessageListenerManage.get().sendFileResults(newFile2,isSuccess);
     }
 
     private void sendFile(String msgId, boolean isSuccess) {
-        if (listeners != null) {
-            for (MessageManageListener messageManageListener : listeners) {
-                messageManageListener.sendFile(msgId, isSuccess);
-            }
-        }
+        MessageListenerManage.get().sendFile(msgId, isSuccess);
+
     }
 
     private void sendError(int id) {
-        if (listeners != null) {
-            for (MessageManageListener messageManageListener : listeners) {
-                messageManageListener.sendError(id);
-            }
-        }
+        MessageListenerManage.get().sendError(id);
     }
 
     @Override

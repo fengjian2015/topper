@@ -68,7 +68,7 @@ public class SelectConversationAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnItemListener{
-        void onItemClick(String remark,String name,String user,String chatType);
+        void onItemClick(String remark,String name,String user,String chatType,String url);
     }
 
     @Override
@@ -112,7 +112,25 @@ public class SelectConversationAdapter extends RecyclerView.Adapter {
             mRlItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onItemListener.onItemClick(mTab1ItemName.getText().toString(),mConversationInfo.getFriend(),mConversationInfo.getUser(),mConversationInfo.getChatType());
+                    String url="";
+                    if(RoomManage.ROOM_TYPE_MULTI.equals(mConversationInfo.getChatType())){
+                        url=mDBRoomManage.findRoomUrl(mConversationInfo.getUser());
+                    }else{
+                        url = mDBRoomMember.findMemberUrl(mConversationInfo.getUser());
+                        if (StringUtils.isEmpty(url) && mMgr.findUser(mConversationInfo.getUser())) {
+                            UserInfo info = mMgr.queryUser(mConversationInfo.getUser());
+                            if (!info.getPath().isEmpty()) {
+                                url = info.getPath();
+                            }
+                        }
+                        if (StringUtils.isEmpty(url)) {
+                            url = mMgr.findStrangerPath(mConversationInfo.getUser());
+                        }
+                        if (StringUtils.isEmpty(url)) {
+                            url = mMgr.findUserPath(mConversationInfo.getUser());
+                        }
+                    }
+                    onItemListener.onItemClick(mTab1ItemName.getText().toString(),mConversationInfo.getFriend(),mConversationInfo.getUser(),mConversationInfo.getChatType(),url );
                 }
             });
 

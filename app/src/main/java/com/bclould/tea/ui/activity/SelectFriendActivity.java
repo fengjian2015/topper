@@ -20,6 +20,7 @@ import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.adapter.SelectFriendAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.ui.widget.ShareDialog;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
@@ -187,7 +188,21 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
         }
     }
 
-    private void showDeleteDialog(String remark, final String name, final String user) {
+    private void showDeleteDialog(String remark, final String name, final String user,String url) {
+//        ShareDialog shareDialog=new ShareDialog(this);
+//        shareDialog.show();
+//        shareDialog.setTvName(remark);
+//        shareDialog.setIvHead(url);
+//        shareDialog.setOnClickListener(new ShareDialog.OnClickListener() {
+//            @Override
+//            public void onOkClick(String content) {
+//                sendMessage(user, name);
+//                if(!StringUtils.isEmpty(content)) {
+//                    mRoom.sendMessage(content);
+//                }
+//            }
+//        });
+
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.confirm_send_to) + remark);
@@ -359,8 +374,8 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
     }
 
     @Override
-    public void onItemClick(String remark, String name, String user) {
-        showDeleteDialog(remark, name, user);
+    public void onItemClick(String remark, String name, String user,String url) {
+        showDeleteDialog(remark, name, user,url);
 
     }
 
