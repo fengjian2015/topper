@@ -65,7 +65,7 @@ public class SelectFriendAdapter extends RecyclerView.Adapter{
     }
 
     public interface OnItemListener{
-        void onItemClick(String remark,String name,String user);
+        void onItemClick(String remark,String name,String user,String url);
     }
 
     /**
@@ -98,8 +98,20 @@ public class SelectFriendAdapter extends RecyclerView.Adapter{
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onItemListener.onItemClick(mFriendChildName.getText().toString(),mName
-                            ,mUser);
+                    String url ="";
+                    if ( mMgr.findUser(mUserInfo.getUser())) {
+                        UserInfo info = mMgr.queryUser(mUserInfo.getUser());
+                        if (!info.getPath().isEmpty()) {
+                            url = info.getPath();
+                        }
+                    }
+                    if (StringUtils.isEmpty(url)) {
+                        url = mMgr.findStrangerPath(mUserInfo.getUser());
+                    }
+                    if (StringUtils.isEmpty(url)) {
+                        url = mMgr.findUserPath(mUserInfo.getUser());
+                    }
+                    onItemListener.onItemClick(mFriendChildName.getText().toString(),mName,mUser,url);
                 }
             });
         }

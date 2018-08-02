@@ -1137,4 +1137,6 @@
     <string name="automatically_download">自動下載</string>
     <string name="automatically_download_chat_video">自動下載聊天視頻</string>
     <string name="add_images">添加圖片</string>
+    <string name="send_to">發送給：</string>
+    <string name="leave_message_friend">給朋友留言</string>
 </resources>

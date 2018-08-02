@@ -5,10 +5,13 @@ package com.bclould.tea.topperchat;
  */
 
 public class WsContans {
+    public static final String VIDEO_THUMBNAIL="?x-oss-process=video/snapshot,t_0,f_jpg,w_0,h_0,m_fast";
+
     public static final String PASSWORD="password";
     public static final String TOCOID="toco_id";
     public static final String CONTENT="content";
     public static final String DEVICE="device";
+    public static final String IMSERVEICE_TIME="IMService_Time";
     public static final int DEVICE_ID=1;
     public static final String TYPE="type";
     public static final String INDEX="index";

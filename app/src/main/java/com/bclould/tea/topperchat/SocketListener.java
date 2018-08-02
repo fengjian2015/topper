@@ -111,6 +111,7 @@ import static com.bclould.tea.topperchat.WsContans.MSG_SINGLER;
 import static com.bclould.tea.topperchat.WsContans.MSG_SINGLER_RESULT;
 import static com.bclould.tea.topperchat.WsContans.MSG_STEANGER;
 import static com.bclould.tea.topperchat.WsContans.TYPE;
+import static com.bclould.tea.topperchat.WsContans.VIDEO_THUMBNAIL;
 import static com.bclould.tea.ui.activity.SystemSetActivity.INFORM;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_CARD_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_FILE_MSG;
@@ -492,7 +493,7 @@ public class SocketListener {
                     } else {
                         msgType = FROM_VIDEO_MSG;
                     }
-                    messageInfo.setVoice(url+"?x-oss-process=video/snapshot,t_0,f_jpg,w_0,h_0,m_fast");
+                    messageInfo.setVoice(url+VIDEO_THUMBNAIL);
                     goChat(from, context.getString(R.string.video), roomType);
                     break;
                 case WsContans.MSG_FILE:

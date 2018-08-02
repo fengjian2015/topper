@@ -2,12 +2,15 @@ package com.bclould.tea.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +31,7 @@ import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.adapter.SelectConversationAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.ui.widget.ShareDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
@@ -49,6 +53,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -60,6 +66,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tea.topperchat.WsContans.VIDEO_THUMBNAIL;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_CARD_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_FILE_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_GUESS_MSG;
@@ -311,7 +318,22 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
         }
     }
 
-    private void showDeleteDialog(String remark, final String name, final String user, final String chatType) {
+    private void showDeleteDialog(String remark, final String name, final String user, final String chatType,String url) {
+//        ShareDialog shareDialog=new ShareDialog(this);
+//        shareDialog.show();
+//        shareDialog.setTvName(remark);
+//        shareDialog.setIvHead(url);
+//        setDialogImage(shareDialog);
+//        shareDialog.setOnClickListener(new ShareDialog.OnClickListener() {
+//            @Override
+//            public void onOkClick(String content) {
+//                sendMessage(user, name, chatType);
+//                if(!StringUtils.isEmpty(content)) {
+//                    mRoom.sendMessage(content);
+//                }
+//            }
+//        });
+
         final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
         deleteCacheDialog.show();
         deleteCacheDialog.setTitle(getString(R.string.confirm_send_to) + remark);
@@ -330,6 +352,39 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
                 deleteCacheDialog.dismiss();
             }
         });
+    }
+
+    private void setDialogImage(ShareDialog shareDialog){
+        if(type==0){
+            if (shareType.contains(IMAGE_TYPE)){
+
+            }if (shareType.contains(VIDEO_TYPE)){
+
+            }
+        }else if (type == 1){
+            if (msgType == FROM_IMG_MSG || msgType == TO_IMG_MSG) {
+                if (!StringUtils.isEmpty(messageInfo.getMessage())&&messageInfo.getMessage().startsWith("http")) {
+                    shareDialog.setIvImage(messageInfo.getMessage());
+                }else {
+                    shareDialog.setIvImage(new File(messageInfo.getVoice()));
+                }
+            } else if (msgType == FROM_VIDEO_MSG || msgType == TO_VIDEO_MSG) {
+                if (messageInfo.getMessage().startsWith("http")) {
+                    shareDialog.setIvImage(messageInfo.getMessage()+VIDEO_THUMBNAIL);
+                } else {
+                    Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(messageInfo.getMessage()
+                            , MediaStore.Video.Thumbnails.MINI_KIND);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                    byte[] bytes=baos.toByteArray();
+                    shareDialog.setIvImage(bytes);
+                }
+            }
+        }else if(type==2){
+            if (msgType == FROM_IMG_MSG || msgType == TO_IMG_MSG) {
+                shareDialog.setIvImage(new File(messageInfo.getVoice()));
+            }
+        }
     }
 
     private Room mRoom;
@@ -502,8 +557,8 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
     }
 
     @Override
-    public void onItemClick(String remark, String name, String user, String chatType) {
-        showDeleteDialog(remark, name, user, chatType);
+    public void onItemClick(String remark, String name, String user, String chatType,String url) {
+        showDeleteDialog(remark, name, user, chatType,url);
 
     }
 

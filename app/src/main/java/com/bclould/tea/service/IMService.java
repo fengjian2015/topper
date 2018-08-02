@@ -9,18 +9,19 @@ import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.topperchat.WsOfflineConnection;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tea.xmpp.IMLogin;
 import com.bclould.tea.xmpp.RoomManage;
 
+import static com.bclould.tea.topperchat.WsContans.IMSERVEICE_TIME;
+
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class IMService extends Service{
     private final static int EXLOGIN = 1;
-    private final static int SERVER_HANDLER = 2;
     private Handler handler = null;
     Thread thread1;
-    private boolean isRun=false;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -32,7 +33,6 @@ public class IMService extends Service{
             instanceHandler();
         }
         loginIM();
-        serverReconnect();
     }
 
     @Override
@@ -45,7 +45,6 @@ public class IMService extends Service{
         super.onDestroy();
         UtilTool.Log("fengjian","----Service onDestroy");
         handler.removeMessages(EXLOGIN);
-        handler.removeMessages(SERVER_HANDLER);
         handler = null;
     }
 
@@ -64,8 +63,9 @@ public class IMService extends Service{
             this.stopService(new Intent(this, IMService.class));
             return;
         }
+        MySharedPreferences.getInstance().setLong(IMSERVEICE_TIME,System.currentTimeMillis());
         WsOfflineConnection.getInstance().get(IMService.this);
-        if (WsConnection.getInstance().get(IMService.this)!=null&&WsConnection.getInstance().get(IMService.this).isOpen()|| WsConnection.getInstance().isLogin()) {
+        if (WsConnection.getInstance().get(IMService.this)!=null&&WsConnection.getInstance().get(IMService.this).isOpen()&& WsConnection.getInstance().isLogin()) {
             ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTED);
             handler.removeMessages(EXLOGIN);
             exReconnect(1000);
@@ -82,26 +82,15 @@ public class IMService extends Service{
         handler.sendEmptyMessageDelayed(EXLOGIN, delayMillis);
     }
 
-    private void serverReconnect(){
-        handler.sendEmptyMessageDelayed(SERVER_HANDLER, 5*1000);
-    }
 
 
     private Handler instanceHandler(){
         handler = new Handler(getMainLooper()) {
             public void handleMessage(android.os.Message msg) {
                 switch (msg.what) {
-                    case SERVER_HANDLER:
-                        if(isRun){
-                            isRun=false;
-                        }else{
-                            handler.removeMessages(EXLOGIN);
-                            exReconnect(1*1000);
-                        }
-                        break;
                     case EXLOGIN: {
                         synchronized (this) {
-                            isRun=true;
+                            MySharedPreferences.getInstance().setLong(IMSERVEICE_TIME,System.currentTimeMillis());
                             if (WsConnection.getInstance().getOutConnection()) {
                                 UtilTool.Log("fengjian","检测到未登录");
                                 WsConnection.getInstance().goMainActivity();

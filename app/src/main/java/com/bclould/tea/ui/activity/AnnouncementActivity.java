@@ -77,6 +77,7 @@ public class AnnouncementActivity extends BaseActivity {
     private DBRoomManage mDBRoomManage;
     private SpannableString mSpannableString;
     private List<HashMap> mStringList=new ArrayList<>();//記錄選擇的圖片key
+    private  List<HashMap> newHashMaps=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,8 +121,10 @@ public class AnnouncementActivity extends BaseActivity {
             mEt.setFocusableInTouchMode(true);
             mEt.setFocusable(true);
             mEt.requestFocus();
+            mEt.setEnabled(true);
         } else {
             mEt.setFocusable(false);
+            mEt.setEnabled(false);
             mEt.setFocusableInTouchMode(false);
         }
     }
@@ -264,11 +267,14 @@ public class AnnouncementActivity extends BaseActivity {
 
     private void searchImage(String content){
         Pattern p = Pattern.compile("<img src=\"([^：]*?)\"/>");
-        final Matcher m = p.matcher(content);
+        Matcher m = p.matcher(content);
         while (m.find()) {
             String url=m.group().substring(10,m.group().length()-3);
-            UtilTool.Log("公告",m.group()+"   "+m.start()+"     "+m.group().length()+"   "+url+"    "+url.length()+"   "+content.length());
             String imageUrl= downFile(url);
+            final String group=m.group();
+            final int start=m.start();
+            Bitmap bmp=BitmapFactory.decodeResource(getResources(), R.drawable.image_placeholder);
+            insertPic(bmp,group,start);
             Glide.with( this ) // could be an issue!
                     .load(imageUrl)
                     .into(new SimpleTarget<Drawable>() {
@@ -276,7 +282,7 @@ public class AnnouncementActivity extends BaseActivity {
                         public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
                             BitmapDrawable bd = (BitmapDrawable) resource;
                             Bitmap bm = bd.getBitmap();
-                            insertPic(bm,m.group(),m.start());
+                            insertPic(bm,group,start);
                         }
                     });
         }
@@ -299,31 +305,41 @@ public class AnnouncementActivity extends BaseActivity {
     private void uploadImage(){
         showDialog();
         String content=mEt.getText().toString();
-        final List<HashMap> hashMaps=new ArrayList<>();
-        hashMaps.clear();
-        hashMaps.addAll(mStringList);
-        for(final HashMap hashMap:mStringList){
-            if(!content.contains((String)hashMap.get("key"))){
-                hashMaps.remove(hashMap);
-                return;
+
+        newHashMaps.clear();
+        newHashMaps.addAll(mStringList);
+        for( final HashMap hashMap:mStringList){
+            if(!content.contains((String)hashMap.get("key"))&&newHashMaps.contains(hashMap)){
+                newHashMaps.remove(hashMap);
+                continue;
             }
             OSSClient ossClient = OSSupload.getInstance().visitOSS();
             PutObjectRequest put = new PutObjectRequest(Constants.BUCKET_NAME2, (String) hashMap.get("key"), (String) hashMap.get("url"));
             ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                 @Override
                 public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
-                    hashMaps.remove(hashMap);
-                    if(hashMaps.size()==0){
-                        commit();
-                        hideDialog();
+                    if(newHashMaps.contains(hashMap))
+                    newHashMaps.remove(hashMap);
+                    if(newHashMaps.size()==0){
+                        AnnouncementActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                commit();
+                                hideDialog();
+                            }
+                        });
                     }
                 }
 
                 @Override
                 public void onFailure(PutObjectRequest putObjectRequest, ClientException e, ServiceException e1) {
                     UtilTool.Log("aws", "错误");
-                    hideDialog();
-                    mStringList.addAll(hashMaps);
+                    AnnouncementActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            hideDialog();
+                        }
+                    });
                 }
             });
         }

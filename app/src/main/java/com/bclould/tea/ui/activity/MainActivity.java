@@ -48,6 +48,7 @@ import com.bclould.tea.ui.fragment.DiscoverFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.IMUtils;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
@@ -172,6 +173,13 @@ public class MainActivity extends BaseActivity {
                 Intent intent = new Intent();
                 intent.setAction(IMCoreService.ACTION_START_IMSERVICE);
                 sendBroadcast(intent);
+            }else {
+                if(IMUtils.compareServiceTime()){
+                    stopService(new Intent(this, IMService.class));
+                    Intent intent = new Intent();
+                    intent.setAction(IMCoreService.ACTION_START_IMSERVICE);
+                    sendBroadcast(intent);
+                }
             }
         }else{
             ConnectStateChangeListenerManager.get().notifyListener(ConnectStateChangeListenerManager.CONNECTING);
