@@ -13,11 +13,10 @@
         android:src="@mipmap/icon_w_ok"/>
 
     <TextView
+        style="@style/MainTextDeepStyle32"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/y30"
-        android:text="@string/reward_succeed"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x32"/>
+        android:text="@string/reward_succeed"/>
 
 </LinearLayout>

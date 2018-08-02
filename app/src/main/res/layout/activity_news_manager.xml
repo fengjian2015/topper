@@ -7,9 +7,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -19,37 +17,34 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/ad_manager"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/ad_manager"/>
 
 
         <TextView
             android:id="@+id/tv_filtrate"
+            style="@style/BlueTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center"
-            android:visibility="gone"
             android:paddingRight="@dimen/x20"
             android:text="@string/filtrate"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"/>
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/tv_empty"
-            android:visibility="gone"
+            style="@style/RedTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:paddingRight="@dimen/x20"
             android:text="@string/empty"
-            android:textColor="@color/red"
-            android:textSize="@dimen/x28"/>
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
@@ -60,7 +55,6 @@
         android:id="@+id/ll_menu"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y80"
-        android:background="@color/white"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -69,12 +63,11 @@
             android:layout_weight="1">
 
             <TextView
+                style="@style/MainTextShallowStyle32"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/my_publish"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+                android:text="@string/my_publish"/>
 
             <TextView
                 android:id="@+id/xx"
@@ -94,12 +87,11 @@
             android:layout_weight="1">
 
             <TextView
+                style="@style/MainTextShallowStyle32"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/browse_record"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+                android:text="@string/browse_record"/>
 
             <TextView
                 android:id="@+id/xx2"
@@ -119,12 +111,11 @@
             android:layout_weight="1">
 
             <TextView
+                style="@style/MainTextShallowStyle32"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/drafts"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+                android:text="@string/drafts"/>
 
             <TextView
                 android:id="@+id/xx3"
@@ -139,6 +130,9 @@
         </RelativeLayout>
 
     </LinearLayout>
+
+    <TextView
+        style="@style/HorizontalBoundaryStyle"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"

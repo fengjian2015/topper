@@ -13,15 +13,17 @@ import com.bclould.tea.utils.UtilTool;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class PingThread extends Thread {
     private Context context;
+    private int pingNumber;
 
-    public PingThread(Context context) {
+    public PingThread(Context context, int pingNumber) {
         this.context = context;
+        this.pingNumber=pingNumber;
     }
 
     @Override
     public void run() {
 
-        while (WsConnection.getInstance().isLogin()) {
+        while (WsConnection.getInstance().isLogin()&&pingNumber==SocketListener.pingNumber) {
             try {
                 WsConnection.getInstance().changeMsgStateOvertime();
                 UtilTool.Log("fengjian","發送ping");

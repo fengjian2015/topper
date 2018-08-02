@@ -7,9 +7,7 @@
               android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
 
         <ImageView
@@ -20,24 +18,22 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/assets"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/assets"/>
 
         <TextView
             android:id="@+id/tv_subscription"
+            style="@style/BlueTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:gravity="center"
             android:paddingRight="@dimen/x20"
-            android:text="@string/expect_coin"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"/>
+            android:text="@string/expect_coin"/>
 
     </RelativeLayout>
 
@@ -73,6 +69,7 @@
                     android:layout_marginRight="@dimen/x20"
                     android:layout_marginTop="@dimen/y30"
                     android:visibility="visible"
+                    app:cardBackgroundColor="@color/boundary_color"
                     app:cardCornerRadius="@dimen/x50">
 
                     <LinearLayout
@@ -92,6 +89,7 @@
 
                         <com.bclould.tea.ui.widget.ClearEditText
                             android:id="@+id/et_coin_name"
+                            style="@style/MainTextShallowStyle30"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="6"
@@ -102,8 +100,7 @@
                             android:paddingLeft="@dimen/x30"
                             android:paddingRight="@dimen/x30"
                             android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/x35"/>
+                            android:textColorHint="@color/secondary_text_color"/>
 
 
                     </LinearLayout>
@@ -116,7 +113,7 @@
                     android:layout_marginLeft="@dimen/x20"
                     android:layout_marginRight="@dimen/x20"
                     android:layout_marginTop="@dimen/y30"
-                    app:cardBackgroundColor="#F7F7F7"
+                    app:cardBackgroundColor="@color/boundary_color"
                     app:cardCornerRadius="@dimen/x50">
 
                     <RelativeLayout
@@ -125,22 +122,20 @@
 
                         <TextView
                             android:id="@+id/tv_currency"
+                            style="@style/MainTextShallowStyle30"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="@dimen/x30"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/x30"/>
+                            android:layout_marginLeft="@dimen/x30"/>
 
                         <TextView
                             android:id="@+id/tv_total"
+                            style="@style/MainTextShallowStyle36"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/x30"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/x35"/>
+                            android:layout_marginRight="@dimen/x30"/>
 
                     </RelativeLayout>
 
@@ -171,12 +166,11 @@
                     android:src="@mipmap/img_wrong"/>
 
                 <TextView
-                    android:layout_marginTop="@dimen/y50"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/loading_error_anew_loading_hint"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/x30"/>
+                    android:layout_marginTop="@dimen/y50"
+                    android:text="@string/loading_error_anew_loading_hint"/>
 
             </LinearLayout>
 

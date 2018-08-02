@@ -1,3 +1,4 @@
+/*
 package com.bclould.tea.ui.activity;
 
 import android.content.Context;
@@ -15,7 +16,7 @@ import android.widget.Toast;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
-import com.bclould.tea.model.CardBean;
+import com.bclould.tea.model.CardInfo;
 import com.bclould.tea.ui.adapter.TiXianPVAdapter;
 import com.bclould.tea.ui.widget.WithdrawCashDialog;
 import com.bclould.tea.utils.AppLanguageUtils;
@@ -27,9 +28,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+*/
 /**
  * Created by GA on 2017/9/25.
- */
+ *//*
+
 
 public class TiXianActivity extends BaseActivity {
 
@@ -49,7 +52,7 @@ public class TiXianActivity extends BaseActivity {
     @Bind(R.id.bank_name)
     TextView mBankName;
     private ShadowTransformer mCardShadowTransformer;
-    private List<CardBean> mData;
+    private List<CardInfo> mData;
     private TiXianPVAdapter mTiXianPVAdapter;
 
 
@@ -71,10 +74,10 @@ public class TiXianActivity extends BaseActivity {
     private void initViewPage() {
 
         mTiXianPVAdapter = new TiXianPVAdapter(this);
-        mTiXianPVAdapter.addCardItem(new CardBean("中国银行", "* * * * 0 7 9 6"));
-        mTiXianPVAdapter.addCardItem(new CardBean("建设银行", "* * * * 0 0 2 3"));
-        mTiXianPVAdapter.addCardItem(new CardBean("工商银行", "* * * * 4 8 9 5"));
-        mTiXianPVAdapter.addCardItem(new CardBean("农业银行", "* * * * 9 9 9 9"));
+        mTiXianPVAdapter.addCardItem(new CardInfo("中国银行", "* * * * 0 7 9 6"));
+        mTiXianPVAdapter.addCardItem(new CardInfo("建设银行", "* * * * 0 0 2 3"));
+        mTiXianPVAdapter.addCardItem(new CardInfo("工商银行", "* * * * 4 8 9 5"));
+        mTiXianPVAdapter.addCardItem(new CardInfo("农业银行", "* * * * 9 9 9 9"));
 
         mCardShadowTransformer = new ShadowTransformer(mViewPager, mTiXianPVAdapter);
         mCardShadowTransformer.enableScaling(true);
@@ -177,9 +180,10 @@ public class TiXianActivity extends BaseActivity {
 
     }
 
-    public void setData(List<CardBean> data) {
+    public void setData(List<CardInfo> data) {
 
         mData = data;
 
     }
 }
+*/

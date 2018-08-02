@@ -2,19 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@color/white"
               android:orientation="vertical">
 
     <TextView
         android:id="@+id/catalog"
+        style="@style/SecondaryTextStyle28"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#E0E0E0"
+        android:background="@color/boundary_color"
         android:paddingBottom="@dimen/y5"
         android:paddingLeft="@dimen/x30"
-        android:paddingTop="@dimen/y5"
-        android:textColor="#454545"
-        android:textSize="@dimen/y26"/>
+        android:paddingTop="@dimen/y5"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -31,14 +29,13 @@
 
         <TextView
             android:id="@+id/friend_child_name"
+            style="@style/MainTextShallowStyle32"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x30"
             android:layout_toRightOf="@+id/friend_child_touxiang"
-            android:text="好友昵称"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
+            android:text="好友昵称"/>
 
         <!--<TextView
             android:id="@+id/friend_child_type"

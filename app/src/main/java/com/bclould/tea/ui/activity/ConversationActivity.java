@@ -169,10 +169,6 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_chat);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            getWindow().setStatusBarColor(getResources().getColor(R.color.white));
-        }
         ButterKnife.bind(this);
         mMgr = new DBManager(this);//初始化数据库管理类
         mDBRoomMember = new DBRoomMember(this);
@@ -690,6 +686,23 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
             deleteMsg(event.getId());
         }else if(msg.equals(getString(R.string.conversation_backgound))){
             setBackgound();
+        }else if(msg.equals(getString(R.string.automatic_download_complete))){
+            downloadMsg(event.getUrl(),event.getFilepath());
+        }
+    }
+
+    private void downloadMsg(String file, String filepath) {
+        for (MessageInfo info : mMessageList) {
+            if (info.getMessage().equals(file)) {
+                info.setStatus(1);
+                mMgr.updateMessageState(info.getId()+"",1);
+                if(!StringUtils.isEmpty(filepath)){
+                    info.setMessage(filepath);
+                    mMgr.updateMessage(info.getId(),filepath);
+                }
+                mChatAdapter.notifyItemChanged(mMessageList.indexOf(info));
+                return;
+            }
         }
     }
 

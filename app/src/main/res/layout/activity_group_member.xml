@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
               android:background="@color/app_bg_color"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:activity="com.bclould.tea.ui.activity.GroupMemberActivity">
+              android:orientation="vertical"
+              tools:activity="com.bclould.tea.ui.activity.GroupMemberActivity">
+
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -20,28 +19,27 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/group_member_manage"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/group_member_manage"/>
     </RelativeLayout>
+
     <View style="@style/HorizontalBoundaryStyle"></View>
 
     <GridView
         android:id="@+id/partner_detial_gridview"
-        android:paddingTop="@dimen/y30"
-        android:paddingBottom="@dimen/y30"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tv_member_number"
-        android:background="@color/white"
+        android:layout_marginTop="@dimen/y10"
         android:gravity="center_horizontal|top"
         android:listSelector="@android:color/transparent"
-        android:verticalSpacing="@dimen/y15"
-        android:layout_marginTop="@dimen/y10"
         android:numColumns="6"
+        android:paddingBottom="@dimen/y30"
+        android:paddingTop="@dimen/y30"
+        android:verticalSpacing="@dimen/y15"
         >
     </GridView>
 </LinearLayout>

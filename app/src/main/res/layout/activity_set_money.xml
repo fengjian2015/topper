@@ -7,9 +7,7 @@
               android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
 
         <ImageView
@@ -20,70 +18,52 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/set_money"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/set_money"/>
 
     </RelativeLayout>
 
     <TextView
         style="@style/HorizontalBoundaryStyle"/>
 
-    <android.support.v7.widget.CardView
+    <EditText
+        android:id="@+id/et_count"
+        style="@style/MainTextShallowStyle30"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
         android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape"
+        android:hint="@string/et_count"
+        android:paddingLeft="@dimen/x20"
+        android:paddingRight="@dimen/x20"
+        android:singleLine="true"
+        android:textColorHint="@color/secondary_text_color"/>
 
-        <EditText
-            android:id="@+id/et_count"
-            android:layout_width="match_parent"
-            android:singleLine="true"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:hint="@string/et_count"
-            android:paddingLeft="@dimen/x20"
-            android:paddingRight="@dimen/x20"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
+    <EditText
+        android:id="@+id/et_remark"
+        style="@style/MainTextShallowStyle30"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
         android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
-
-        <EditText
-            android:id="@+id/et_remark"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:hint="@string/et_memo"
-            android:paddingLeft="@dimen/x20"
-            android:singleLine="true"
-            android:paddingRight="@dimen/x20"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x30"/>
-
-    </android.support.v7.widget.CardView>
+        android:background="@drawable/bg_shallow_shape"
+        android:hint="@string/et_memo"
+        android:paddingLeft="@dimen/x20"
+        android:paddingRight="@dimen/x20"
+        android:singleLine="true"
+        android:textColorHint="@color/secondary_text_color"/>
 
     <Button
         android:id="@+id/btn_finish"
-        android:layout_width="@dimen/x450"
-        android:layout_height="@dimen/y80"
+        style="@style/LongBtnStyle"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y60"
-        android:background="@drawable/btn_blue_selector"
-        android:text="@string/finish"
-        android:textColor="@color/white"/>
+        android:text="@string/finish"/>
 
 </LinearLayout>

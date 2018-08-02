@@ -12,14 +12,13 @@
     </android.support.v4.view.ViewPager>
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/tv_number"
+        style="@style/MainTextShallowStyle32"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/y100"
-        android:textColor="@color/white"
-        android:textSize="@dimen/x32"/>
+        android:visibility="gone"/>
 
 </RelativeLayout>

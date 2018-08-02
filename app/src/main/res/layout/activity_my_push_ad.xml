@@ -7,9 +7,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
 
         <ImageView
@@ -20,24 +18,22 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/my_publish"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/my_publish"/>
 
         <TextView
             android:id="@+id/tv_filtrate"
+            style="@style/BlueTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:gravity="center"
             android:paddingRight="@dimen/x20"
-            android:text="@string/filtrate"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"/>
+            android:text="@string/filtrate"/>
 
     </RelativeLayout>
 
@@ -45,341 +41,316 @@
         style="@style/HorizontalBoundaryStyle"/>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/ll_data"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
 
-        <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_marginBottom="@dimen/y20">
+            android:background="@color/app_bg_color"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/x20"
+            android:paddingRight="@dimen/x20"
+            android:visibility="visible">
 
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/rl_sum_sell"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/x20"
-                android:paddingRight="@dimen/x20"
-                android:visibility="visible">
+                android:layout_height="@dimen/y90">
 
-                <RelativeLayout
-                    android:id="@+id/rl_sum_sell"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/y90">
-
-                    <ImageView
-                        android:id="@+id/iv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:src="@mipmap/ico_order_sell"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x20"
-                        android:layout_toRightOf="@+id/iv"
-                        android:text="@string/sum_sell"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x28"/>
-
-                    <TextView
-                        android:id="@+id/tv_sum_sell"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/x20"
-                        android:layout_toLeftOf="@+id/iv_jiantou"
-                        android:textColor="@color/blue2"
-                        android:textSize="@dimen/x28"/>
-
-                    <ImageView
-                        android:id="@+id/iv_jiantou"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:src="@mipmap/ico_order_more"/>
-
-                </RelativeLayout>
+                <ImageView
+                    android:id="@+id/iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@mipmap/ico_order_sell"/>
 
                 <TextView
-                    style="@style/HorizontalBoundaryStyle"/>
-
-                <RelativeLayout
-                    android:id="@+id/rl_sum_buy"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/y90">
-
-                    <ImageView
-                        android:id="@+id/iv2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:src="@mipmap/ico_order_buy"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x20"
-                        android:layout_toRightOf="@+id/iv2"
-                        android:text="@string/sum_buy"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x28"/>
-
-                    <TextView
-                        android:id="@+id/tv_sum_buy"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/x20"
-                        android:layout_toLeftOf="@+id/iv_jiantou2"
-                        android:textColor="@color/blue2"
-                        android:textSize="@dimen/x28"/>
-
-                    <ImageView
-                        android:id="@+id/iv_jiantou2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:src="@mipmap/ico_order_more"/>
-
-                </RelativeLayout>
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_toRightOf="@+id/iv"
+                    android:text="@string/sum_sell"/>
 
                 <TextView
-                    style="@style/HorizontalBoundaryStyle"/>
+                    android:id="@+id/tv_sum_sell"
+                    style="@style/BlueTextStyle28"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x20"
+                    android:layout_toLeftOf="@+id/iv_jiantou"/>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/y90">
+                <ImageView
+                    android:id="@+id/iv_jiantou"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/ico_order_more"/>
 
-                    <ImageView
-                        android:id="@+id/iv3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:src="@mipmap/ico_order_me"/>
+            </RelativeLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/x20"
-                        android:layout_toRightOf="@+id/iv3"
-                        android:text="@string/sum_sell"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x28"/>
+            <TextView
+                style="@style/HorizontalBoundaryStyle"/>
 
-                    <LinearLayout
-                        android:id="@+id/ll_on_off"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:gravity="center_vertical">
+            <RelativeLayout
+                android:id="@+id/rl_sum_buy"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y90">
 
-                        <TextView
-                            android:id="@+id/tv_on_off"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/x20"
-                            android:text="@string/zhankai"
-                            android:textColor="@color/blue2"
-                            android:textSize="@dimen/x28"/>
+                <ImageView
+                    android:id="@+id/iv2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/ico_order_buy"/>
 
-                        <ImageView
-                            android:id="@+id/iv_jiantou3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@mipmap/icon_more_down"/>
+                <TextView
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_toRightOf="@+id/iv2"
+                    android:text="@string/sum_buy"/>
 
-                    </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_sum_buy"
+                    style="@style/BlueTextStyle28"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x20"
+                    android:layout_toLeftOf="@+id/iv_jiantou2"/>
 
-                </RelativeLayout>
+                <ImageView
+                    android:id="@+id/iv_jiantou2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/ico_order_more"/>
+
+            </RelativeLayout>
+
+            <TextView
+                style="@style/HorizontalBoundaryStyle"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y90">
+
+                <ImageView
+                    android:id="@+id/iv3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/ico_order_me"/>
+
+                <TextView
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x20"
+                    android:layout_toRightOf="@+id/iv3"
+                    android:text="@string/sum_sell"/>
 
                 <LinearLayout
-                    android:id="@+id/ll_sum"
-                    android:visibility="gone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:id="@+id/ll_on_off"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_vertical">
 
                     <TextView
-                        style="@style/HorizontalBoundaryStyle"/>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
+                        android:id="@+id/tv_on_off"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/y20">
+                        android:layout_marginRight="@dimen/x20"
+                        android:text="@string/zhankai"
+                        android:textColor="@color/blue2"
+                        android:textSize="@dimen/x28"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="@string/ad_count"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/x28"/>
-
-                        <TextView
-                            android:id="@+id/tv_sum_deal_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/x20"
-                            android:textColor="@color/blue2"
-                            android:textSize="@dimen/x28"/>
-
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/iv_jiantou3"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/y20">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="@string/all_order"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/x28"/>
-
-                        <TextView
-                            android:id="@+id/tv_order_sum"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/x20"
-                            android:textColor="@color/blue2"
-                            android:textSize="@dimen/x28"/>
-
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/y20">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="@string/anomaly_order"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/x28"/>
-
-                        <TextView
-                            android:id="@+id/tv_anomaly_order_sum"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/x20"
-                            android:textColor="@color/blue2"
-                            android:textSize="@dimen/x28"/>
-
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/y20">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="@string/off_the_stocks"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/x28"/>
-
-                        <TextView
-                            android:id="@+id/tv_finish_sum"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/x20"
-                            android:textColor="@color/blue2"
-                            android:textSize="@dimen/x28"/>
-
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/y20">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="@string/canceled_canc"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/x28"/>
-
-                        <TextView
-                            android:id="@+id/tv_cancel_sum"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/x20"
-                            android:textColor="@color/blue2"
-                            android:textSize="@dimen/x28"/>
-
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/y20"
-                        android:layout_marginTop="@dimen/y20">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="@string/underway"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/x28"/>
-
-                        <TextView
-                            android:id="@+id/tv_underway_sum"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/x20"
-                            android:textColor="@color/blue2"
-                            android:textSize="@dimen/x28"/>
-
-
-                    </RelativeLayout>
+                        android:src="@mipmap/icon_more_down"/>
 
                 </LinearLayout>
 
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_sum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/HorizontalBoundaryStyle"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y20">
+
+                    <TextView
+                        style="@style/MainTextShallowStyle30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/ad_count"/>
+
+                    <TextView
+                        android:id="@+id/tv_sum_deal_count"
+                        style="@style/BlueTextStyle28"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/x20"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y20">
+
+                    <TextView
+                        style="@style/MainTextShallowStyle30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/all_order"/>
+
+                    <TextView
+                        android:id="@+id/tv_order_sum"
+                        style="@style/BlueTextStyle28"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/x20"/>
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y20">
+
+                    <TextView
+                        style="@style/MainTextShallowStyle30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/anomaly_order"/>
+
+                    <TextView
+                        android:id="@+id/tv_anomaly_order_sum"
+                        style="@style/BlueTextStyle28"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/x20"/>
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y20">
+
+                    <TextView
+                        style="@style/MainTextShallowStyle30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/off_the_stocks"/>
+
+                    <TextView
+                        android:id="@+id/tv_finish_sum"
+                        style="@style/BlueTextStyle28"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/x20"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y20">
+
+                    <TextView
+                        style="@style/MainTextShallowStyle30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/canceled_canc"/>
+
+                    <TextView
+                        android:id="@+id/tv_cancel_sum"
+                        style="@style/BlueTextStyle28"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/x20"/>
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/y20"
+                    android:layout_marginTop="@dimen/y20">
+
+                    <TextView
+                        style="@style/MainTextShallowStyle30"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/underway"/>
+
+                    <TextView
+                        android:id="@+id/tv_underway_sum"
+                        style="@style/BlueTextStyle28"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/x20"/>
+
+
+                </RelativeLayout>
+
             </LinearLayout>
 
-        </android.support.v7.widget.CardView>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/y100"
-            android:background="@color/white"
+            android:background="@color/app_bg_color"
             android:orientation="horizontal">
 
 
@@ -390,12 +361,11 @@
                 android:layout_weight="1">
 
                 <TextView
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="@string/my_buy"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x30"/>
+                    android:text="@string/my_buy"/>
 
                 <TextView
                     android:id="@+id/tv_xx"
@@ -416,12 +386,11 @@
                 android:layout_weight="1">
 
                 <TextView
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="@string/my_sell"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x30"/>
+                    android:text="@string/my_sell"/>
 
                 <TextView
                     android:id="@+id/tv_xx2"
@@ -461,12 +430,11 @@
             android:src="@mipmap/img_wrong"/>
 
         <TextView
-            android:layout_marginTop="@dimen/y50"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/loading_error_anew_loading_hint2"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/x30"/>
+            android:layout_marginTop="@dimen/y50"
+            android:text="@string/loading_error_anew_loading_hint2"/>
 
     </LinearLayout>
 

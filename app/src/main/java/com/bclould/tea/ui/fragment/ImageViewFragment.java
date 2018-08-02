@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.network.https.GlideProgressListener;
+import com.bclould.tea.network.https.GlideProgressListenerManager;
 import com.bclould.tea.ui.widget.ZoomImageView;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.QRDiscernUtil;
@@ -30,7 +32,7 @@ import java.io.File;
  * Created by GA on 2018/3/7.
  */
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ImageViewFragment extends Fragment {
+public class ImageViewFragment extends Fragment implements GlideProgressListener{
     private String imageUrl;
     private ProgressBar loadBar;
     private ZoomImageView imageGiv;
@@ -46,6 +48,7 @@ public class ImageViewFragment extends Fragment {
                 false);
         init(view);
         loadImage(imageUrl);
+        GlideProgressListenerManager.get().registerListener(this);
         return view;
     }
 
@@ -62,6 +65,7 @@ public class ImageViewFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     UtilTool.Log("图片", mBigImgUrl);
+                    mArtworkMaster.setText("0%");
                     loadBar.setVisibility(View.VISIBLE);
                     loadBar.bringToFront();
                     Glide.with(ImageViewFragment.this).load(mBigImgUrl).listener(new RequestListener<Drawable>() {
@@ -153,6 +157,34 @@ public class ImageViewFragment extends Fragment {
         this.mBigImgUrl = bigImgUrl;
         mMgr = mgr;
         mId = id;
+    }
+
+    @Override
+    public void onDestroy() {
+        GlideProgressListenerManager.get().unregisterListener(this);
+        super.onDestroy();
+    }
+
+    @Override
+    public void start(String url) {
+
+    }
+
+    @Override
+    public void progress(final int progress, String url) {
+        if(mBigImgUrl.equals(url)){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mArtworkMaster.setText(progress+"%");
+                }
+            });
+        }
+    }
+
+    @Override
+    public void end(String url) {
+
     }
 }
 

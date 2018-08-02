@@ -21,8 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x30"
             android:text="01 :"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            style="@style/MainTextDeepStyle32"/>
 
         <TextView
             android:id="@+id/tv_number"
@@ -31,8 +30,7 @@
             android:layout_alignBottom="@+id/tv"
             android:layout_marginLeft="@dimen/x10"
             android:layout_toRightOf="@+id/tv"
-            android:textColor="@color/bar_grey"
-            android:textSize="@dimen/x26"/>
+            style="@style/SecondaryTextStyle28"/>
 
         <TextView
             android:id="@+id/tv_hash"
@@ -43,8 +41,7 @@
             android:layout_marginRight="@dimen/x30"
             android:layout_marginTop="@dimen/y10"
             android:lineSpacingExtra="@dimen/y10"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x24"/>
+            style="@style/BlueTextStyle28"/>
 
         <TextView
             android:id="@+id/tv_copy"
@@ -57,8 +54,7 @@
             android:paddingLeft="@dimen/x20"
             android:paddingTop="@dimen/y20"
             android:text="@string/copy2"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x24"/>
+            style="@style/BlueTextStyle28"/>
 
     </RelativeLayout>
 
@@ -80,8 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x30"
             android:text="02 :"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            style="@style/MainTextDeepStyle32"/>
 
         <TextView
             android:id="@+id/tv_number2"
@@ -90,8 +85,7 @@
             android:layout_alignBottom="@+id/tv2"
             android:layout_marginLeft="@dimen/x10"
             android:layout_toRightOf="@+id/tv2"
-            android:textColor="@color/bar_grey"
-            android:textSize="@dimen/x26"/>
+            style="@style/SecondaryTextStyle28"/>
 
         <TextView
             android:id="@+id/tv_hash2"
@@ -102,8 +96,7 @@
             android:layout_marginRight="@dimen/x30"
             android:layout_marginTop="@dimen/y10"
             android:lineSpacingExtra="@dimen/x10"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x24"/>
+            style="@style/BlueTextStyle28"/>
 
         <TextView
             android:id="@+id/tv_copy2"
@@ -116,8 +109,7 @@
             android:paddingLeft="@dimen/x20"
             android:paddingTop="@dimen/y20"
             android:text="@string/copy2"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x24"/>
+            style="@style/BlueTextStyle28"/>
 
     </RelativeLayout>
 
@@ -139,8 +131,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x30"
             android:text="03 :"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            style="@style/MainTextDeepStyle32"/>
 
         <TextView
             android:id="@+id/tv_number3"
@@ -149,8 +140,7 @@
             android:layout_alignBottom="@+id/tv3"
             android:layout_marginLeft="@dimen/x10"
             android:layout_toRightOf="@+id/tv3"
-            android:textColor="@color/bar_grey"
-            android:textSize="@dimen/x26"/>
+            style="@style/SecondaryTextStyle28"/>
 
         <TextView
             android:id="@+id/tv_hash3"
@@ -161,8 +151,7 @@
             android:layout_marginRight="@dimen/x30"
             android:layout_marginTop="@dimen/y10"
             android:lineSpacingExtra="@dimen/x10"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x24"/>
+            style="@style/BlueTextStyle28"/>
 
         <TextView
             android:id="@+id/tv_copy3"
@@ -175,8 +164,7 @@
             android:paddingLeft="@dimen/x20"
             android:paddingTop="@dimen/y20"
             android:text="@string/copy2"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x24"/>
+            style="@style/BlueTextStyle28"/>
 
     </RelativeLayout>
 
@@ -198,8 +186,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x30"
             android:text="04 :"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            style="@style/MainTextDeepStyle32"/>
 
         <TextView
             android:id="@+id/tv_number4"
@@ -208,8 +195,7 @@
             android:layout_alignBottom="@+id/tv4"
             android:layout_marginLeft="@dimen/x10"
             android:layout_toRightOf="@+id/tv4"
-            android:textColor="@color/bar_grey"
-            android:textSize="@dimen/x26"/>
+            style="@style/SecondaryTextStyle28"/>
 
         <TextView
             android:id="@+id/tv_hash4"
@@ -220,8 +206,7 @@
             android:layout_marginRight="@dimen/x30"
             android:layout_marginTop="@dimen/y10"
             android:lineSpacingExtra="@dimen/x10"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x24"/>
+            style="@style/BlueTextStyle28"/>
 
         <TextView
             android:id="@+id/tv_copy4"
@@ -234,8 +219,7 @@
             android:paddingLeft="@dimen/x20"
             android:paddingTop="@dimen/y20"
             android:text="@string/copy2"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x24"/>
+            style="@style/BlueTextStyle28"/>
 
     </RelativeLayout>
 

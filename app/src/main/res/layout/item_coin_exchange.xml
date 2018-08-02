@@ -10,8 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/y20"
         android:text="name"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
+        style="@style/MainTextShallowStyle30"/>
 
     <TextView
         android:id="@+id/tv_type"
@@ -20,7 +19,7 @@
         android:layout_below="@+id/tv_name"
         android:layout_marginTop="@dimen/y10"
         android:text="type"
-        android:textSize="@dimen/x24"/>
+        style="@style/SecondaryTextStyle24"/>
 
 
     <TextView
@@ -30,8 +29,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/y20"
         android:text="money"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x30"/>
+        style="@style/MainTextShallowStyle30"/>
 
     <TextView
         android:id="@+id/tv_time"
@@ -41,7 +39,7 @@
         android:layout_below="@+id/tv_money"
         android:layout_marginTop="@dimen/y10"
         android:text="time"
-        android:textSize="@dimen/x24"/>
+        style="@style/SecondaryTextStyle24"/>
 
 
     <TextView

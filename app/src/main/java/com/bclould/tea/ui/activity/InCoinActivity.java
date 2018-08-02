@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -38,6 +37,7 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class InCoinActivity extends BaseActivity {
 
+
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.tv_record)
@@ -48,8 +48,6 @@ public class InCoinActivity extends BaseActivity {
     ImageView mIvSiteQr;
     @Bind(R.id.tv_site)
     TextView mTvSite;
-    @Bind(R.id.card_view)
-    CardView mCardView;
     @Bind(R.id.btn_copy)
     Button mBtnCopy;
     @Bind(R.id.iv)

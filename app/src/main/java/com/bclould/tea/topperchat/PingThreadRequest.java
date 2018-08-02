@@ -14,14 +14,16 @@ import com.bclould.tea.utils.UtilTool;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class PingThreadRequest extends Thread {
     private Context context;
+    private int pingNumber;
 
-    public PingThreadRequest(Context context) {
+    public PingThreadRequest(Context context, int pingNumber) {
         this.context = context;
+        this.pingNumber=pingNumber;
     }
 
     @Override
     public void run() {
-        while (WsConnection.getInstance().isLogin()) {
+        while (WsConnection.getInstance().isLogin()&&pingNumber==SocketListener.pingNumber) {
             try {
                 sleep(2 * 60 * 1000);
                 if(MySharedPreferences.getInstance().getInteger("ping")!=1){

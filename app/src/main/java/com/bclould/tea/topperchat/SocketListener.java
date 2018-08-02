@@ -111,6 +111,7 @@ import static com.bclould.tea.topperchat.WsContans.MSG_SINGLER;
 import static com.bclould.tea.topperchat.WsContans.MSG_SINGLER_RESULT;
 import static com.bclould.tea.topperchat.WsContans.MSG_STEANGER;
 import static com.bclould.tea.topperchat.WsContans.TYPE;
+import static com.bclould.tea.topperchat.WsContans.VIDEO_THUMBNAIL;
 import static com.bclould.tea.ui.activity.SystemSetActivity.INFORM;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_CARD_MSG;
 import static com.bclould.tea.ui.adapter.ChatAdapter.FROM_FILE_MSG;
@@ -167,6 +168,9 @@ public class SocketListener {
     private DBRoomManage mdbRoomManage;
     private DBRoomMember mdbRoomMember;
     private int IMSequence = 1000;
+    private PingThread mPingThread;
+    private PingThreadRequest mPingThreadRequest;
+    public static int pingNumber=0;
     ExecutorService executorService;//以後用於群聊功能
     private static SocketListener mInstance;
 
@@ -304,8 +308,13 @@ public class SocketListener {
         WsConnection.getInstance().setIsLogin(true);
         UtilTool.Log("fengjian", "登錄成功");
         WsConnection.getInstance().setLoginConnection(false);
-        new PingThread(context).start();
-        new PingThreadRequest(context).start();
+
+        pingNumber++;
+        mPingThread=new PingThread(context,pingNumber);
+        mPingThread.start();
+        mPingThreadRequest= new PingThreadRequest(context,pingNumber);
+        mPingThreadRequest.start();
+
         XGManage.getInstance().setAlias();
     }
 
@@ -484,7 +493,7 @@ public class SocketListener {
                     } else {
                         msgType = FROM_VIDEO_MSG;
                     }
-                    messageInfo.setVoice(url+"?x-oss-process=video/snapshot,t_0,f_jpg,w_0,h_0,m_fast");
+                    messageInfo.setVoice(url+VIDEO_THUMBNAIL);
                     goChat(from, context.getString(R.string.video), roomType);
                     break;
                 case WsContans.MSG_FILE:

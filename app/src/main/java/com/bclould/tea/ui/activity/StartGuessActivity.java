@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -68,8 +67,8 @@ public class StartGuessActivity extends BaseActivity {
     RelativeLayout mRlGuessType;
     @Bind(R.id.et_command)
     EditText mEtCommand;
-    @Bind(R.id.cv_password)
-    CardView mCvPassword;
+    @Bind(R.id.rl_pw)
+    RelativeLayout mRlPw;
     @Bind(R.id.et_guess_title)
     EditText mEtGuessTitle;
     @Bind(R.id.tv_coin)
@@ -92,9 +91,11 @@ public class StartGuessActivity extends BaseActivity {
     RelativeLayout mRlSelectorDeadline;
     @Bind(R.id.btn_confirm)
     Button mBtnConfirm;
+
     private Dialog mBottomDialog;
     private int mId;
     private PWDDialog pwdDialog;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,10 +178,10 @@ public class StartGuessActivity extends BaseActivity {
         } else if (mTvDeadline.getText().toString().isEmpty()) {
             Toast.makeText(this, getString(R.string.toast_dealine), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mRlSelectorDeadline);
-        }else if (mEtSingleInsertCount.getText().toString().isEmpty()) {
+        } else if (mEtSingleInsertCount.getText().toString().isEmpty()) {
             Toast.makeText(this, getString(R.string.toast_single_count), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtSingleInsertCount);
-        } else if (mCvPassword.getVisibility() == View.VISIBLE) {
+        } else if (mRlPw.getVisibility() == View.VISIBLE) {
             if (mEtCommand.getText().toString().isEmpty()) {
                 Toast.makeText(this, getString(R.string.toast_guess_pw), Toast.LENGTH_SHORT).show();
                 AnimatorTool.getInstance().editTextAnimator(mEtCommand);
@@ -274,16 +275,16 @@ public class StartGuessActivity extends BaseActivity {
         } else if (sign == GUESS_TYPE) {
             mTvType.setText(name);
             if (name.equals(getString(R.string.start_guess_type))) {
-                mCvPassword.setVisibility(View.GONE);
+                mRlPw.setVisibility(View.GONE);
             } else {
-                mCvPassword.setVisibility(View.VISIBLE);
+                mRlPw.setVisibility(View.VISIBLE);
             }
         }
     }
 
 
     private void showPWDialog() {
-        pwdDialog=new PWDDialog(this);
+        pwdDialog = new PWDDialog(this);
         pwdDialog.setOnPWDresult(new PWDDialog.OnPWDresult() {
             @Override
             public void success(String password) {
@@ -291,7 +292,7 @@ public class StartGuessActivity extends BaseActivity {
             }
         });
         String coins = mTvCoin.getText().toString();
-        pwdDialog.showDialog(getString(R.string.push_guess) + coins + getString(R.string.msg),null,null,null,null);
+        pwdDialog.showDialog(getString(R.string.push_guess) + coins + getString(R.string.msg), null, null, null, null);
     }
 
     private void pushing(String password) {

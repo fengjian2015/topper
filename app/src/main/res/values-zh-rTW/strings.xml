@@ -107,8 +107,8 @@
     <string name="selector_payment">選擇支付方式(可多选)</string>
     <string name="margin">溢價</string>
     <string name="price">價格</string>
-    <string name="min">最小成交額</string>
-    <string name="max">最大成交額</string>
+    <string name="min">最少交易</string>
+    <string name="max">最大交易</string>
     <string name="payment">付款</string>
     <string name="push">發佈</string>
     <string name="set_login_pw">設置登錄密碼</string>
@@ -258,7 +258,8 @@
     <string name="et_max_limit">每筆交易最大成交額</string>
     <string name="qr_code_hint">掃描二維碼，添加好友</string>
     <string name="save_qr_code">保存二維碼</string>
-        <string name="qr_code_red_package">二維碼紅包</string>
+        
+    <string name="qr_code_red_package">二維碼紅包</string>
     <string name="qr_code_red_hint">掃一掃上面的二維碼圖片，領取紅包</string>
     <string name="question_details">問題詳情</string>
     <string name="real_name_verify">實名驗證</string>
@@ -1127,7 +1128,30 @@
     <string name="backgound">背景</string>
     <string name="no_public_number">暫無公眾號</string>
     <string name="search_public_numbers">搜索公眾號</string>
+    <string name="login_pw_hint">重置登錄密碼，字母，數字結合，且不小於8位</string>
+    <string name="payment_details">支付詳情</string>
     <string name="unfollow">取消關注</string>
     <string name="reduction_background">還原背景</string>
     <string name="update_public_number">更新公眾號</string>
+    <string name="user_freeze_hint">您的賬號已被凍結，請聯繫管理員處理，郵箱：topperchat@outlook.com</string>
+    <string name="my_friends_circle">我的好友圈</string>
+    <string name="greet_hint">欢迎进入TopperChat！</string>
+    <string name="reduction_success">還原成功</string>
+    <string name="no_more_search_results">沒有更多的搜索結果</string>
+    <string name="security_verification">安全驗證</string>
+    <string name="security_verification_hint">為了你的賬戶安全，需要進行驗證。請將下方的圓標，移動到圓形區域內</string>
+    <string name="security_verification_success">安全驗證成功</string>
+    <string name="security_verification_failure">安全驗證失敗</string>
+    <string name="security_verification_failure_hint">請移動下方的圓標到圓形區域內</string>
+    <string name="automatic_download_complete">自動下載完成</string>
+    <string name="automatically_download">自動下載</string>
+    <string name="automatically_download_chat_video">自動下載聊天視頻</string>
+    <string name="treasure">财富</string>
+    <string name="information">資訊</string>
+    <string name="message">消息</string>
+    <string name="my_ad_platform">我的廣告平台</string>
+    <string name="start_group">发起群聊</string>
+    <string name="add_images">添加圖片</string>
+    <string name="send_to">發送給：</string>
+    <string name="leave_message_friend">給朋友留言</string>
 </resources>

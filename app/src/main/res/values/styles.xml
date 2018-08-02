@@ -191,6 +191,12 @@
         <item name="android:textColor">@color/btn_bg_color</item>
     </style>
 
+    <!--蓝色字体样式-->
+    <style name="BlueTextStyle36">
+        <item name="android:textSize">@dimen/x36</item>
+        <item name="android:textColor">@color/btn_bg_color</item>
+    </style>
+
     <!--白色字体样式-->
     <style name="WhiteTextStyle36">
         <item name="android:textSize">@dimen/x36</item>
@@ -206,6 +212,13 @@
     <!--橫向分割线樣式-->
     <style name="HorizontalBoundaryStyle">
         <item name="android:background">@color/boundary_color</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/y1</item>
+    </style>
+
+    <!--橫向深色分割线樣式-->
+    <style name="HorizontalDeepBoundaryStyle">
+        <item name="android:background">@color/secondary_text_color</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/y1</item>
     </style>

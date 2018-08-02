@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/app_bg_color"
-    tools:context="com.bclould.tea.ui.activity.PublicDetailsActivity">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/app_bg_color"
+              android:orientation="vertical"
+              tools:context="com.bclould.tea.ui.activity.PublicDetailsActivity">
+
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -29,54 +28,60 @@
             android:src="@mipmap/icon_nav_more_selected"/>
 
     </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/ll_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        android:gravity="center"
         android:orientation="vertical"
-        android:paddingTop="@dimen/y30"
-        android:paddingBottom="@dimen/y50"
-        android:paddingRight="@dimen/x50"
+        android:paddingBottom="@dimen/y30"
         android:paddingLeft="@dimen/x50"
-        android:visibility="gone"
-        android:gravity="center">
+        android:paddingRight="@dimen/x50"
+        android:paddingTop="@dimen/y30"
+        android:visibility="gone">
+
         <ImageView
             android:id="@+id/iv_head"
             android:layout_width="@dimen/x120"
             android:layout_height="@dimen/y120"
             />
+
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y30"
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="@dimen/x32"
-            android:layout_marginTop="@dimen/y30"
             />
+
         <TextView
             android:id="@+id/tv_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y30"
             android:gravity="center"
             android:textColor="@color/gray3"
             android:textSize="@dimen/x28"
-            android:layout_marginTop="@dimen/y30"
             />
+
         <TextView
             android:id="@+id/tv_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="@dimen/x40"
-            android:paddingLeft="@dimen/x40"
-            android:paddingTop="@dimen/y10"
-            android:paddingBottom="@dimen/y10"
             android:layout_marginTop="@dimen/y30"
-            android:text="關注"
-            android:textColor="@color/redpacket2"
-            android:background="@drawable/bg_buysell_shape5"/>
+            android:background="@drawable/bg_buysell_shape5"
+            android:paddingBottom="@dimen/y10"
+            android:paddingLeft="@dimen/x40"
+            android:paddingRight="@dimen/x40"
+            android:paddingTop="@dimen/y10"
+            android:text="@string/attention"
+            android:textColor="@color/redpacket2"/>
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/ll_error"
         android:layout_width="match_parent"
@@ -94,12 +99,11 @@
             android:src="@mipmap/img_wrong"/>
 
         <TextView
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y50"
-            android:text="@string/loading_error_anew_loading_hint2"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/x30"/>
+            android:text="@string/loading_error_anew_loading_hint2"/>
 
     </LinearLayout>
 </LinearLayout>

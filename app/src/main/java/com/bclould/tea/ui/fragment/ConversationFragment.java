@@ -39,12 +39,13 @@ import com.bclould.tea.model.QrRedInfo;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.AddFriendActivity;
 import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
-import com.bclould.tea.ui.activity.ScanQRCodeActivity;
+import com.bclould.tea.ui.activity.GroupListActivity;
+import com.bclould.tea.ui.activity.MyFriendActivity;
 import com.bclould.tea.ui.activity.SearchActivity;
-import com.bclould.tea.ui.activity.SendQRCodeRedActivity;
 import com.bclould.tea.ui.adapter.ConversationAdapter;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.StatusBarCompat;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.ConnectStateChangeListenerManager;
 import com.bclould.tea.xmpp.IConnectStateChangeListener;
@@ -54,7 +55,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -96,6 +96,8 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     TextView mTvTitle;
     @Bind(R.id.title_progress)
     ProgressBar mTitleProgress;
+    @Bind(R.id.status_bar_fix)
+    View mStatusBarFix;
     private List<Map<String, Object>> list = new ArrayList<>();
     private List<ConversationInfo> showlist = new ArrayList<>();
     private DBManager mgr;
@@ -131,6 +133,7 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
             getActivity().registerReceiver(receiver, intentFilter);
         }*/
         ButterKnife.bind(this, view);
+        mStatusBarFix.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, StatusBarCompat.getStateBarHeight(getActivity())));
         mgr = new DBManager(getActivity());
         mDBRoomMember = new DBRoomMember(getActivity());
         mDBRoomManage = new DBRoomManage(getActivity());
@@ -140,38 +143,10 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     }
 
     private void createFile() {
-        File cacheDir2 = new File(Constants.BACKGOUND);
-        if (!cacheDir2.exists())
-            cacheDir2.mkdirs();
-        File nomedia2 = new File(Constants.BACKGOUND + ".nomedia");
-        if (!nomedia2.exists())
-            try {
-                nomedia2.createNewFile();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        File cacheDir1 = new File(Constants.PUBLICDIR);
-        if (!cacheDir1.exists())
-            cacheDir1.mkdirs();
-        File nomedia1 = new File(Constants.PUBLICDIR + ".nomedia");
-        if (!nomedia1.exists())
-            try {
-                nomedia1.createNewFile();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        File cacheDir = new File(getActivity().getFilesDir().getAbsolutePath() + "/images");
-        if (!cacheDir.exists())
-            cacheDir.mkdirs();
-        File nomedia = new File(getActivity().getFilesDir().getAbsolutePath() + "/images" + "/.nomedia");
-        if (!nomedia.exists())
-            try {
-                nomedia.createNewFile();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+        UtilTool.createNomedia(Constants.BACKGOUND);
+        UtilTool.createNomedia(Constants.PUBLICDIR);
+        UtilTool.createNomedia(Constants.VIDEO);
+        UtilTool.createNomedia(getActivity().getFilesDir().getAbsolutePath() + "/images");
     }
 
     @Override
@@ -292,13 +267,12 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
         int widthPixels = mDm.widthPixels;
 
-        mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_cloud_message, null);
+        mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_message, null);
 
-        mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 4, true);
+        mPopupWindow = new PopupWindow(mView, ViewGroup.LayoutParams.WRAP_CONTENT, (int)(getResources().getDimension(R.dimen.y300)), true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
 
-        mPopupWindow.showAsDropDown(mXx, (widthPixels - widthPixels / 100 * 35 - 20), 0);
-
+        mPopupWindow.showAsDropDown(mXx, (widthPixels - mPopupWindow.getWidth()), 0);
         popChildClick();
     }
 
@@ -340,18 +314,18 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
                     switch (index) {
                         case 0:
-                            Intent intent = new Intent(getActivity(), ScanQRCodeActivity.class);
-                            intent.putExtra("code", QRCODE);
-                            startActivityForResult(intent, 0);
+                            startActivity(new Intent(getActivity(), GroupListActivity.class));
                             mPopupWindow.dismiss();
                             break;
                         case 1:
-                            startActivity(new Intent(getActivity(), SendQRCodeRedActivity.class));
+                            startActivity(new Intent(getActivity(), MyFriendActivity.class));
                             mPopupWindow.dismiss();
                             break;
                         case 2:
                             startActivity(new Intent(getActivity(), AddFriendActivity.class));
                             mPopupWindow.dismiss();
+                            break;
+                        case 3:
                             break;
                     }
 

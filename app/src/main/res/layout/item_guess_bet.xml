@@ -1,89 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/y5"
     android:layout_marginLeft="@dimen/x20"
     android:layout_marginRight="@dimen/x20"
     android:layout_marginTop="@dimen/y20"
-    android:orientation="vertical"
-    app:cardCornerRadius="@dimen/x15">
+    android:background="@drawable/bg_shallow_shape"
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/iv_status"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/icon_jc_fail"/>
 
-        <ImageView
-            android:id="@+id/iv_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@mipmap/icon_jc_fail"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/y20"
+        android:paddingTop="@dimen/y20">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/y20"
-            android:paddingTop="@dimen/y20">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/tv_several"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/x30"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x28"/>
-
-                <TextView
-                    android:id="@+id/tv_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/x30"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x28"/>
-
-            </RelativeLayout>
+            android:layout_height="wrap_content">
 
             <TextView
-                style="@style/HorizontalBoundaryStyle"
-                android:layout_marginTop="@dimen/y20"/>
+                android:id="@+id/tv_several"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x30"
+                style="@style/MainTextShallowStyle30"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/x30"
+                style="@style/MainTextShallowStyle30"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/x30"
-                    android:layout_marginTop="@dimen/y20"
-                    android:text="@string/bet_array"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x28"/>
+        </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/tv_array"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginLeft="@dimen/x30"
-                    android:layout_marginRight="@dimen/x30"
-                    android:layout_marginTop="@dimen/y20"
-                    android:text="01_02_03_04"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x28"/>
-            </RelativeLayout>
+        <TextView
+            style="@style/HorizontalBoundaryStyle"
+            android:layout_marginTop="@dimen/y20"/>
 
-        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginTop="@dimen/y20"
+                android:text="@string/bet_array"
+                style="@style/MainTextShallowStyle30"/>
 
-</android.support.v7.widget.CardView>
+            <TextView
+                android:id="@+id/tv_array"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginRight="@dimen/x30"
+                android:layout_marginTop="@dimen/y20"
+                android:text="01_02_03_04"
+                style="@style/MainTextShallowStyle30"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

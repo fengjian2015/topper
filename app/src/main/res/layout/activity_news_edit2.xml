@@ -9,9 +9,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -21,23 +19,21 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/ad_edit"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/ad_edit"/>
 
         <TextView
             android:id="@+id/publish"
+            style="@style/BlueTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:padding="@dimen/x20"
-            android:text="@string/push"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"/>
+            android:text="@string/push"/>
 
     </RelativeLayout>
 
@@ -57,10 +53,10 @@
 
     <WebView
         android:id="@+id/web_view"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/progressBar"/>
+        android:layout_below="@+id/progressBar"
+        android:visibility="gone"/>
 
 
     <LinearLayout
@@ -78,19 +74,18 @@
             android:src="@mipmap/wifi"/>
 
         <TextView
+            style="@style/MainTextShallowStyle32"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y20"
-            android:text="@string/network_break"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/network_break"/>
 
         <TextView
+            style="@style/SecondaryTextStyle24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y20"
-            android:text="@string/network_break_click_update"
-            android:textSize="@dimen/x24"/>
+            android:text="@string/network_break_click_update"/>
 
     </LinearLayout>
 

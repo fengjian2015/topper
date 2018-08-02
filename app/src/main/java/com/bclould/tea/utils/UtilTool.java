@@ -59,6 +59,7 @@ import com.luck.picture.lib.tools.PictureFileUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -86,11 +87,24 @@ import java.util.regex.Pattern;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
+import static com.bclould.tea.Presenter.LoginPresenter.EMAIL;
 import static com.bclould.tea.Presenter.LoginPresenter.LOGINPW;
 import static com.bclould.tea.Presenter.LoginPresenter.MYUSERNAME;
 import static com.bclould.tea.Presenter.LoginPresenter.TOCOID;
 import static com.bclould.tea.Presenter.LoginPresenter.TOKEN;
 import static com.bclould.tea.Presenter.LoginPresenter.USERID;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_DOC;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_DOCX;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_LOG;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PDF;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PPT;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PPTX;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_RAR;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_RTF;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_TXT;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_XLS;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_XLSX;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_ZIP;
 
 /**
  * Created by GA on 2017/10/23.
@@ -198,7 +212,7 @@ public class UtilTool {
     }
 
     public static void comp(Bitmap image, File file) {
-        if(image==null)return;
+        if (image == null) return;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         if (baos.toByteArray().length / 1024 > 1024) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
@@ -233,10 +247,10 @@ public class UtilTool {
     }
 
     public static void comp1(Bitmap image, File file) {
-        if(image==null)return;
+        if (image == null) return;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        if (baos.toByteArray().length / 1024 > 5*1024) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
+        if (baos.toByteArray().length / 1024 > 5 * 1024) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
             baos.reset();//重置baos即清空baos
             image.compress(Bitmap.CompressFormat.JPEG, 50, baos);//这里压缩50%，把压缩后的数据存放到baos中
         }
@@ -320,7 +334,7 @@ public class UtilTool {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
         int options = 100;
-        while (baos.toByteArray().length / 1024 > 5*1024) { //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+        while (baos.toByteArray().length / 1024 > 5 * 1024) { //循环判断如果压缩后图片是否大于100kb,大于继续压缩
             baos.reset();//重置baos即清空baos
             image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
             options -= 10;//每次都减少10
@@ -628,6 +642,7 @@ public class UtilTool {
 
     /**
      * 二維碼中間加圖標
+     *
      * @param src
      * @param logo
      * @return
@@ -759,6 +774,12 @@ public class UtilTool {
     public static String getTocoId() {
 
         return MySharedPreferences.getInstance().getString(TOCOID);
+
+    }
+
+    public static String getEmail() {
+
+        return MySharedPreferences.getInstance().getString(EMAIL);
 
     }
 
@@ -1081,7 +1102,7 @@ public class UtilTool {
     public static String getPostfix4(String fileName) {
         String pos = "";
         try {
-            pos = fileName.substring(fileName.lastIndexOf(".")+1);
+            pos = fileName.substring(fileName.lastIndexOf(".") + 1);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1494,4 +1515,74 @@ public class UtilTool {
         view.setText(builder);
     }
 
+    /**
+     * 比較token是否失效
+     *
+     * @param oldtime
+     * @return 失效true
+     */
+    public static boolean compareTokenTime(long oldtime) {
+        long newTime = System.currentTimeMillis();
+        if ((oldtime + (23 * 60 * 60 * 1000)) >= newTime) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 选择FILE_TYPE_xxx中的一种传入
+     *
+     * @param fileType
+     */
+    public static int getFileImageRe(String fileType) {
+        int resId = -1;
+        if (FILE_TYPE_DOC.equals(fileType) || FILE_TYPE_DOCX.equals(fileType)) {
+            resId = R.mipmap.type_doc;
+        } else if (FILE_TYPE_XLS.equals(fileType) || FILE_TYPE_XLSX.equals(fileType)) {
+            resId = R.mipmap.type_xls;
+        } else if (FILE_TYPE_PPT.equals(fileType) || FILE_TYPE_PPTX.equals(fileType)) {
+            resId = R.mipmap.type_ppt;
+        } else if (FILE_TYPE_PDF.equals(fileType)) {
+            resId = R.mipmap.type_pdf;
+        } else if (FILE_TYPE_TXT.equals(fileType) || FILE_TYPE_LOG.equals(fileType) || FILE_TYPE_RTF.equals(fileType)) {
+            resId = R.mipmap.type_txt;
+        } else if (FILE_TYPE_ZIP.equals(fileType)) {
+            resId = R.mipmap.type_zip;
+        } else if (FILE_TYPE_RAR.equals(fileType)) {
+            resId = R.mipmap.type_rar;
+        } else {
+            resId = R.mipmap.type_unknown;
+        }
+        return resId;
+    }
+
+    public static void createNomedia(String file){
+        File cacheDir = new File(file);
+        if (!cacheDir.exists())
+            cacheDir.mkdirs();
+        File nomedia = new File(file+ "/.nomedia");
+        if (!nomedia.exists())
+            try {
+                nomedia.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+    }
+
+    /**
+     * make true current connect service is wifi
+     * @param mContext
+     * @return
+     */
+    public static boolean isWifi(Context mContext) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) mContext
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
+        if (activeNetInfo != null
+                && activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            return true;
+        }
+        return false;
+    }
 }

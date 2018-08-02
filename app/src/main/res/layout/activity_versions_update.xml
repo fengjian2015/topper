@@ -8,9 +8,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -21,12 +19,11 @@
 
         <TextView
             android:id="@+id/title"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/version_updating"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/version_updating"/>
 
     </RelativeLayout>
 
@@ -38,10 +35,10 @@
 
     <RelativeLayout
         android:id="@+id/rl_data"
-        android:visibility="gone"
-        android:layout_below="@+id/xx"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/xx"
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/ll_apk_name"
@@ -53,65 +50,62 @@
 
             <TextView
                 android:id="@+id/tv_new_update"
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="@dimen/x80"
                 android:layout_height="@dimen/y40"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toRightOf="@+id/tv"
                 android:background="@drawable/bg_new_update"
                 android:gravity="center"
-                android:text="New"
-                android:textColor="@color/white"
-                android:textSize="@dimen/x28"/>
+                android:text="New"/>
 
             <TextView
                 android:id="@+id/tv_app_name"
+                style="@style/MainTextShallowStyle36"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x20"
                 android:text="TopperChat"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x40"
                 android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/tv_new_versions_tag"
+                style="@style/SecondaryTextStyle24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x20"
-                android:text="v0.66"
-                android:textSize="@dimen/x26"/>
+                android:text="v0.66"/>
 
         </LinearLayout>
 
         <TextView
             android:id="@+id/tv_body"
+            style="@style/MainTextShallowStyle32"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ll_apk_name"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="@dimen/x20"
             android:layout_marginRight="@dimen/x20"
-            android:layout_marginTop="@dimen/y40"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:layout_marginTop="@dimen/y40"/>
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/tv_no_update"
+            style="@style/MainTextShallowStyle32"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/y200"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/y200"
             android:layout_marginTop="@dimen/y100"
             android:text="@string/already_new_version"
-            android:textSize="@dimen/x32"/>
+            android:visibility="gone"/>
 
         <RelativeLayout
-            android:visibility="gone"
             android:id="@+id/rl_update"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -126,12 +120,12 @@
 
             <TextView
                 android:id="@+id/tv_progress"
+                style="@style/SecondaryTextStyle28"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/rl_btn"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/y10"
-                android:textSize="@dimen/x26"/>
+                android:layout_marginTop="@dimen/y10"/>
 
             <RelativeLayout
                 android:id="@+id/rl_btn"
@@ -144,35 +138,23 @@
 
                 <Button
                     android:id="@+id/btn_download"
-                    android:layout_width="@dimen/x500"
-                    android:layout_height="@dimen/y80"
-                    android:background="@drawable/btn_blue_selector"
+                    style="@style/ShortBtnStyle"
                     android:text="@string/download"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/x32"
                     android:visibility="visible"/>
 
                 <Button
                     android:id="@+id/btn_stop"
-                    android:layout_width="@dimen/x500"
-                    android:layout_height="@dimen/y80"
-                    android:background="@drawable/btn_blue_selector"
+                    style="@style/ShortBtnStyle"
                     android:text="@string/stop"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/x32"
                     android:visibility="gone"/>
 
                 <Button
                     android:id="@+id/btn_finish"
-                    android:layout_width="@dimen/x500"
-                    android:layout_height="@dimen/y80"
-                    android:background="@drawable/btn_blue_selector"
+                    style="@style/ShortBtnStyle"
                     android:text="@string/install"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/x32"
                     android:visibility="gone"/>
 
             </RelativeLayout>
@@ -181,10 +163,10 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_below="@+id/xx"
         android:id="@+id/ll_error"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/xx"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone">
@@ -197,12 +179,11 @@
             android:src="@mipmap/img_wrong"/>
 
         <TextView
-            android:layout_marginTop="@dimen/y50"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/loading_error_anew_loading_hint2"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/x30"/>
+            android:layout_marginTop="@dimen/y50"
+            android:text="@string/loading_error_anew_loading_hint2"/>
 
     </LinearLayout>
 

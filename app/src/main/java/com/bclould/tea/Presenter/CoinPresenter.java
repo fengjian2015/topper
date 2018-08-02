@@ -1,5 +1,6 @@
 package com.bclould.tea.Presenter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -14,6 +15,7 @@ import com.bclould.tea.model.StateInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.activity.ExpectCoinActivity;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.UtilTool;
 
 import java.util.List;
@@ -100,6 +102,7 @@ public class CoinPresenter {
 
                     @Override
                     public void onNext(BaseInfo baseInfo) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
                         if (baseInfo.getStatus() == 1) {
                             callBack2.send(baseInfo.getData());
                         }
@@ -164,6 +167,7 @@ public class CoinPresenter {
 
                     @Override
                     public void onNext(@NonNull CoinListInfo coinListInfo) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
                         hideDialog();
                         if (coinListInfo.getStatus() == 1) {
                             callBack.send(coinListInfo.getData());
@@ -173,6 +177,7 @@ public class CoinPresenter {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
                         hideDialog();
                         callBack.error();
                         UtilTool.Log("日志1", e.getMessage());
@@ -200,6 +205,7 @@ public class CoinPresenter {
 
                     @Override
                     public void onNext(@NonNull BaseInfo baseInfo) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
                         hideDialog();
                         if (baseInfo.getStatus() == 1) {
                             Toast.makeText(mContext, mContext.getString(R.string.exchange_succeed), Toast.LENGTH_SHORT).show();
@@ -211,6 +217,7 @@ public class CoinPresenter {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
+                        if (!ActivityUtil.isActivityOnTop((Activity) mContext)) return;
                         hideDialog();
                         UtilTool.Log("日志1", e.getMessage());
                     }

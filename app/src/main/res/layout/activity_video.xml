@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
+        android:background="@color/black"
         />
     <LinearLayout
         android:id="@+id/linear_controll"
@@ -97,5 +98,6 @@
         android:src="@mipmap/icon_topbar_cancel"
         android:layout_marginTop="@dimen/y100"
         android:layout_marginLeft="@dimen/x30"/>
+
 
 </RelativeLayout>

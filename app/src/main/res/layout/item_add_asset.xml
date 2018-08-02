@@ -3,8 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/y120"
-    android:background="@color/white">
+    android:layout_height="@dimen/y120">
 
     <ImageView
         android:id="@+id/iv_coin"
@@ -15,12 +14,12 @@
 
     <TextView
         android:id="@+id/tv_coin"
+        style="@style/MainTextDeepStyle30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/x15"
-        android:layout_toRightOf="@+id/iv_coin"
-        android:textSize="@dimen/x28"/>
+        android:layout_toRightOf="@+id/iv_coin"/>
 
     <android.support.v7.widget.CardView
         android:layout_width="wrap_content"
@@ -32,17 +31,16 @@
 
         <Button
             android:id="@+id/btc_add"
+            style="@style/BlueTextStyle28"
             android:layout_width="@dimen/x130"
             android:layout_height="@dimen/y60"
             android:background="@drawable/bg_buysell_shape"
             android:text="@string/add"
-            android:textAllCaps="false"
-            android:textColor="@color/blue"
-            android:textSize="@dimen/x28"/>
+            android:textAllCaps="false"/>
     </android.support.v7.widget.CardView>
 
     <TextView
-        android:layout_alignParentBottom="true"
-        style="@style/HorizontalBoundaryStyle"/>
+        style="@style/HorizontalBoundaryStyle"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

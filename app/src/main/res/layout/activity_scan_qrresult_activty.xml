@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
               android:background="@color/app_bg_color"
-    tools:activity="com.bclould.tea.ui.activity.ScanQRResultActivty">
+              android:orientation="vertical"
+              tools:activity="com.bclould.tea.ui.activity.ScanQRResultActivty">
+
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -20,19 +19,18 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/qr_scan_result"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/qr_scan_result"/>
     </RelativeLayout>
+
     <TextView
         android:id="@+id/tv_content"
-        android:textSize="@dimen/x32"
-        android:textColor="@color/black"
-        android:padding="@dimen/x30"
+        style="@style/MainTextShallowStyle32"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/x30"
         />
 </LinearLayout>

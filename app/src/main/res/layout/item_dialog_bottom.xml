@@ -34,7 +34,7 @@
         android:textSize="@dimen/x30"/>
 
     <TextView
-        style="@style/HorizontalBoundaryStyle"
+        style="@style/HorizontalDeepBoundaryStyle"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"/>

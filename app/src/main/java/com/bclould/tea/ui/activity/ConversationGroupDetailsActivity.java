@@ -205,8 +205,8 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
 
     private void setGroupAnnouncement() {
         if (!StringUtils.isEmpty(mDBRoomManage.findRoomDescription(roomId))) {
-            mTvAnnouncement.setText(mDBRoomManage.findRoomDescription(roomId));
-            mTvAnnouncement.setVisibility(View.VISIBLE);
+//            mTvAnnouncement.setText(mDBRoomManage.findRoomDescription(roomId));
+            mTvAnnouncement.setVisibility(View.GONE);
         } else {
             mTvAnnouncement.setVisibility(View.GONE);
         }
@@ -449,16 +449,19 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     }
 
     private void goAnnouncement() {
-        if (!isOwner()) {
-            ToastShow.showToast2(ConversationGroupDetailsActivity.this, getString(R.string.only_owner_change_group_announcement));
-            return;
-        }
-        Intent intent = new Intent(this, ModificationNameActivity.class);
-        intent.putExtra("type", 3);
-        intent.putExtra("content", mTvAnnouncement.getText().toString());
-        intent.putExtra("roomId", roomId);
-        intent.putExtra("tocoId", UtilTool.getTocoId());
+        Intent intent = new Intent(ConversationGroupDetailsActivity.this, AnnouncementActivity.class);
+        intent.putExtra("roomId",roomId);
         startActivity(intent);
+//        if (!isOwner()) {
+//            ToastShow.showToast2(ConversationGroupDetailsActivity.this, getString(R.string.only_owner_change_group_announcement));
+//            return;
+//        }
+//        Intent intent = new Intent(this, ModificationNameActivity.class);
+//        intent.putExtra("type", 3);
+//        intent.putExtra("content", mTvAnnouncement.getText().toString());
+//        intent.putExtra("roomId", roomId);
+//        intent.putExtra("tocoId", UtilTool.getTocoId());
+//        startActivity(intent);
     }
 
     private void goMemberList() {

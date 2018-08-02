@@ -3,18 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="@dimen/x300"
-    android:minWidth="@dimen/x650"
     android:background="@drawable/bg_white_shape"
     android:gravity="center"
+    android:minWidth="@dimen/x650"
     android:orientation="vertical">
 
     <TextView
+        style="@style/MainTextDeepStyle32"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/guess_password_title"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x32"/>
+        android:text="@string/guess_password_title"/>
 
     <LinearLayout
         android:id="@+id/ll_guess_count"
@@ -25,6 +24,7 @@
 
         <EditText
             android:id="@+id/et_guess_password"
+            style="@style/MainTextDeepStyle30"
             android:layout_width="@dimen/x450"
             android:layout_height="match_parent"
             android:background="@drawable/wf_bule"
@@ -32,8 +32,7 @@
             android:inputType="number"
             android:maxLength="8"
             android:paddingLeft="@dimen/x20"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x28"/>
+            android:textColorHint="@color/secondary_text_color"/>
 
         <Button
             android:id="@+id/btn_confirm"

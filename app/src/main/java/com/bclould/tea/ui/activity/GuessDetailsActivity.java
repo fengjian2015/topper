@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -67,10 +66,10 @@ public class GuessDetailsActivity extends BaseActivity {
     private static final int MINUS = 1;
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.tv_title)
-    TextView mTvTitle;
     @Bind(R.id.title)
     TextView mTitle;
+    @Bind(R.id.iv_share)
+    ImageView mIvShare;
     @Bind(R.id.tv_day)
     TextView mTvDay;
     @Bind(R.id.tv2)
@@ -85,6 +84,10 @@ public class GuessDetailsActivity extends BaseActivity {
     TextView mTv4;
     @Bind(R.id.tv_second)
     TextView mTvSecond;
+    @Bind(R.id.ll_time)
+    LinearLayout mLlTime;
+    @Bind(R.id.tv_title)
+    TextView mTvTitle;
     @Bind(R.id.tv_start_time)
     TextView mTvStartTime;
     @Bind(R.id.tv_present_periods)
@@ -103,6 +106,16 @@ public class GuessDetailsActivity extends BaseActivity {
     TextView mTvSumCoin;
     @Bind(R.id.progressBar)
     ProgressBar mProgressBar;
+    @Bind(R.id.btn_minus)
+    Button mBtnMinus;
+    @Bind(R.id.et_bet_count)
+    EditText mEtBetCount;
+    @Bind(R.id.btn_plus)
+    Button mBtnPlus;
+    @Bind(R.id.btn_confirm)
+    Button mBtnConfirm;
+    @Bind(R.id.ll_guess_count)
+    LinearLayout mLlGuessCount;
     @Bind(R.id.et_array)
     EditText mEtArray;
     @Bind(R.id.et_array2)
@@ -113,48 +126,6 @@ public class GuessDetailsActivity extends BaseActivity {
     EditText mEtArray4;
     @Bind(R.id.btn_random)
     Button mBtnRandom;
-    @Bind(R.id.recycler_view)
-    RecyclerView mRecyclerView;
-    @Bind(R.id.btn_bet)
-    Button mBtnBet;
-    @Bind(R.id.scrollView)
-    ScrollView mScrollView;
-    @Bind(R.id.ll_no)
-    LinearLayout mLlNo;
-    @Bind(R.id.tv_number)
-    TextView mTvNumber;
-    @Bind(R.id.tv_number2)
-    TextView mTvNumber2;
-    @Bind(R.id.tv_number3)
-    TextView mTvNumber3;
-    @Bind(R.id.tv_number4)
-    TextView mTvNumber4;
-    @Bind(R.id.tv_kaijiang_time)
-    TextView mTvKaijiangTime;
-    @Bind(R.id.tv_title2)
-    TextView mTvTitle2;
-    @Bind(R.id.tv_start_time2)
-    TextView mTvStartTime2;
-    @Bind(R.id.tv_present_periods2)
-    TextView mTvPresentPeriods2;
-    @Bind(R.id.tv_who2)
-    TextView mTvWho2;
-    @Bind(R.id.tv_coin2)
-    TextView mTvCoin2;
-    @Bind(R.id.tv_single_insert_count3)
-    TextView mTvSingleInsertCount3;
-    @Bind(R.id.tv_present_invest_count2)
-    TextView mTvPresentInvestCount2;
-    @Bind(R.id.tv_bonus_count)
-    TextView mTvBonusCount;
-    @Bind(R.id.recycler_view2)
-    RecyclerView mRecyclerView2;
-    @Bind(R.id.ll_already)
-    LinearLayout mLlAlready;
-    @Bind(R.id.et_bet_count)
-    EditText mEtBetCount;
-    @Bind(R.id.btn_confirm)
-    Button mBtnConfirm;
     @Bind(R.id.ll_array)
     LinearLayout mLlArray;
     @Bind(R.id.et2_array)
@@ -205,26 +176,55 @@ public class GuessDetailsActivity extends BaseActivity {
     Button mBtnRandom5;
     @Bind(R.id.ll_array5)
     LinearLayout mLlArray5;
-    @Bind(R.id.scrollView2)
-    ScrollView mScrollView2;
-    @Bind(R.id.ll_guess_count)
-    LinearLayout mLlGuessCount;
     @Bind(R.id.ll_bet)
     LinearLayout mLlBet;
-    @Bind(R.id.btn_minus)
-    Button mBtnMinus;
-    @Bind(R.id.btn_plus)
-    Button mBtnPlus;
-    @Bind(R.id.cv_time)
-    CardView mCvTime;
+    @Bind(R.id.btn_bet)
+    Button mBtnBet;
+    @Bind(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+    @Bind(R.id.scrollView)
+    ScrollView mScrollView;
+    @Bind(R.id.ll_no)
+    LinearLayout mLlNo;
+    @Bind(R.id.tv_number)
+    TextView mTvNumber;
+    @Bind(R.id.tv_number2)
+    TextView mTvNumber2;
+    @Bind(R.id.tv_number3)
+    TextView mTvNumber3;
+    @Bind(R.id.tv_number4)
+    TextView mTvNumber4;
     @Bind(R.id.ll_hash)
     LinearLayout mLlHash;
-    @Bind(R.id.iv_share)
-    ImageView mIvShare;
+    @Bind(R.id.tv_kaijiang_time)
+    TextView mTvKaijiangTime;
+    @Bind(R.id.tv_title2)
+    TextView mTvTitle2;
+    @Bind(R.id.tv_start_time2)
+    TextView mTvStartTime2;
+    @Bind(R.id.tv_present_periods2)
+    TextView mTvPresentPeriods2;
+    @Bind(R.id.tv_who2)
+    TextView mTvWho2;
+    @Bind(R.id.tv_coin2)
+    TextView mTvCoin2;
+    @Bind(R.id.tv_single_insert_count3)
+    TextView mTvSingleInsertCount3;
+    @Bind(R.id.tv_present_invest_count2)
+    TextView mTvPresentInvestCount2;
+    @Bind(R.id.tv_bonus_count)
+    TextView mTvBonusCount;
+    @Bind(R.id.recycler_view2)
+    RecyclerView mRecyclerView2;
+    @Bind(R.id.scrollView2)
+    ScrollView mScrollView2;
+    @Bind(R.id.ll_already)
+    LinearLayout mLlAlready;
     @Bind(R.id.iv2)
     ImageView mIv2;
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
+
     private int mBet_id;
     private int mPeriod_qty;
     private BlockchainGuessPresenter mBlockchainGuessPresenter;
@@ -416,7 +416,7 @@ public class GuessDetailsActivity extends BaseActivity {
                         mLlAlready.setVisibility(View.GONE);
                         mLlGuessCount.setVisibility(View.GONE);
                         mLlBet.setVisibility(View.GONE);
-                        mCvTime.setVisibility(View.GONE);
+                        mLlTime.setVisibility(View.GONE);
                         mBtnBet.setVisibility(View.GONE);
                         mBtnBet.setBackground(getDrawable(R.drawable.bg_gray_shape));
                         mBtnRandom.setBackground(getDrawable(R.drawable.bg_grey_shape2));
@@ -675,7 +675,7 @@ public class GuessDetailsActivity extends BaseActivity {
             mRandomSumArr = mRandomArr;
         }
 
-        pwdDialog=new PWDDialog(this);
+        pwdDialog = new PWDDialog(this);
         final int finalCount = count;
         pwdDialog.setOnPWDresult(new PWDDialog.OnPWDresult() {
             @Override
@@ -683,7 +683,7 @@ public class GuessDetailsActivity extends BaseActivity {
                 bet(password, finalCount);
             }
         });
-        pwdDialog.showDialog(UtilTool.doubleMultiply(count, Double.parseDouble(mSingle_coin)),mTvCoin.getText().toString(),getString(R.string.bet) + mTvCoin.getText().toString() + getString(R.string.guess),null,null);
+        pwdDialog.showDialog(UtilTool.doubleMultiply(count, Double.parseDouble(mSingle_coin)), mTvCoin.getText().toString(), getString(R.string.bet) + mTvCoin.getText().toString() + getString(R.string.guess), null, null);
     }
 
     @OnClick({R.id.ll_error, R.id.iv_share, R.id.ll_hash, R.id.btn_plus, R.id.btn_minus, R.id.bark, R.id.btn_random, R.id.btn_random2, R.id.btn_random3, R.id.btn_random4, R.id.btn_random5, R.id.btn_bet, R.id.btn_confirm})

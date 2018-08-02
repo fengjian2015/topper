@@ -8,10 +8,8 @@
 
     <RelativeLayout
         android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:layout_alignParentTop="true"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle"
+        android:layout_alignParentTop="true">
 
         <ImageView
             android:id="@+id/bark"
@@ -22,12 +20,11 @@
 
         <TextView
             android:id="@+id/title_name"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/gongao_details"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/gongao_details"/>
 
         <ImageView
             android:id="@+id/iv_share"
@@ -79,6 +76,7 @@
 
             <EditText
                 android:id="@+id/comment_et"
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="@dimen/x600"
                 android:layout_height="match_parent"
                 android:background="@color/transparent"
@@ -87,21 +85,19 @@
                 android:paddingLeft="@dimen/x36"
                 android:paddingRight="@dimen/x36"
                 android:paddingTop="@dimen/x30"
-                android:textColor="@color/black"
-                android:textCursorDrawable="@null"
-                android:textSize="@dimen/x26"/>
+                android:textColorHint="@color/secondary_text_color"
+                android:textCursorDrawable="@null"/>
 
             <TextView
                 android:id="@+id/send"
+                style="@style/BlueTextStyle28"
                 android:layout_width="@dimen/x80"
                 android:layout_height="@dimen/x80"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/x34"
                 android:gravity="center"
-                android:text="@string/send"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x32"/>
+                android:text="@string/send"/>
 
         </RelativeLayout>
 
@@ -122,20 +118,19 @@
             android:src="@mipmap/wifi"/>
 
         <TextView
+            style="@style/MainTextShallowStyle32"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y20"
-            android:text="@string/network_break"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/network_break"/>
 
         <TextView
+            style="@style/SecondaryTextStyle24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/y300"
             android:layout_marginTop="@dimen/y20"
-            android:text="@string/network_break_click_update"
-            android:textSize="@dimen/x24"/>
+            android:text="@string/network_break_click_update"/>
 
     </LinearLayout>
 

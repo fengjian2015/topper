@@ -563,6 +563,13 @@ public class YsFilePickerActivity extends BaseActivity implements OnLongClickLis
                     //if (mOptFilterListed != null && !mOptFilterListed.contains(extension)) continue;
                     if (mOptFilterExclude != null && mOptFilterExclude.contains(extension))
                         continue;
+                }else{
+                    String fileName=files[i].getName();
+                    int index = fileName.lastIndexOf(".");
+                    if (index == 0) continue;
+                    if(fileName.startsWith(".")){
+                        continue;
+                    }
                 }
                 mFilesList.add(files[i]);
             }
@@ -820,6 +827,7 @@ public class YsFilePickerActivity extends BaseActivity implements OnLongClickLis
         int index = fileName.lastIndexOf(".");
         if (index == -1) return "";
         if(index==0&&!file.isDirectory()) return "";
+        if(fileName.startsWith("."))return "";
         return fileName.substring(index + 1, fileName.length()).toLowerCase(Locale.getDefault());
     }
 

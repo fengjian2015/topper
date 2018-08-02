@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg_color"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        style="@style/TopNavigationBarStyle">
+
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/MainTextShallowStyle36"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/dynamic"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_push_dynamic_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/iv_push_dynamic"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/x20"
+                android:layout_marginTop="@dimen/y20"
+                android:src="@mipmap/icon_nav_dynamics"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/x20"
+                android:paddingRight="@dimen/x30"
+                android:src="@mipmap/ico_nav_dying"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_push_dynamic"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/iv_my_dynamic"
+            android:paddingLeft="@dimen/x20"
+            android:paddingRight="@dimen/x30"
+            android:src="@mipmap/icon_talk_push"/>
+
+        <ImageView
+            android:id="@+id/iv_my_dynamic"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="@dimen/x20"
+            android:paddingRight="@dimen/x30"
+            android:src="@mipmap/ico_find_dt"/>
+
+    </RelativeLayout>
+
+    <TextView
+        style="@style/HorizontalBoundaryStyle"/>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.scwang.smartrefresh.header.WaterDropHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/ll_no_data"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/rl_ununited"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@mipmap/icon_nothing_img"/>
+
+                <TextView
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_dynamic_publish"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_error"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/rl_ununited"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/iv2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@mipmap/img_wrong"/>
+
+                <TextView
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y50"
+                    android:text="@string/loading_error_anew_loading_hint"/>
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:descendantFocusability="beforeDescendants"
+                android:fastScrollEnabled="false"
+                android:overScrollMode="never"
+                android:visibility="gone"/>
+
+            <RelativeLayout
+                android:id="@+id/rl_edit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y120"
+                android:layout_alignParentBottom="true"
+                android:background="@color/white"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/xx2"
+                    style="@style/HorizontalBoundaryStyle"/>
+
+                <EditText
+                    android:id="@+id/comment_et"
+                    style="@style/MainTextShallowStyle30"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/iv_selector_img"
+                    android:background="@color/transparent"
+                    android:hint="@string/et_comment"
+                    android:paddingBottom="@dimen/x30"
+                    android:paddingLeft="@dimen/x36"
+                    android:paddingRight="@dimen/x36"
+                    android:paddingTop="@dimen/x30"
+                    android:textCursorDrawable="@null"/>
+
+                <ImageView
+                    android:id="@+id/iv_selector_img"
+                    android:layout_width="@dimen/x80"
+                    android:layout_height="@dimen/x80"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x20"
+                    android:layout_toLeftOf="@+id/send"
+                    android:scaleType="center"
+                    android:src="@mipmap/icon_tail_photo"/>
+
+                <TextView
+                    android:id="@+id/send"
+                    style="@style/BlueTextStyle28"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:paddingRight="@dimen/x20"
+                    android:text="@string/send"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+</LinearLayout>

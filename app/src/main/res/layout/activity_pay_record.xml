@@ -7,9 +7,7 @@
               android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -19,23 +17,21 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/payment_record"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/payment_record"/>
 
         <TextView
             android:id="@+id/tv_filtrate"
+            style="@style/BlueTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:paddingRight="@dimen/x20"
-            android:text="@string/filtrate"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x30"/>
+            android:text="@string/filtrate"/>
 
     </RelativeLayout>
 
@@ -49,13 +45,12 @@
 
         <TextView
             android:id="@+id/tv_date"
+            style="@style/SecondaryTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/x30"
             android:gravity="center_vertical"
-            android:text="2018-03"
-            android:textColor="#243042"
-            android:textSize="@dimen/x28"/>
+            android:text="2018-03"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -68,12 +63,12 @@
     </RelativeLayout>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:layout_width="match_parent"
         android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:srlDisableContentWhenRefresh="true"
         app:srlEnableRefresh="false"
-        app:srlEnableScrollContentWhenRefreshed="false"
-        android:layout_height="match_parent">
+        app:srlEnableScrollContentWhenRefreshed="false">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -99,11 +94,10 @@
 
                 <TextView
                     android:id="@+id/tv_hint"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/no_record"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/x30"/>
+                    android:text="@string/no_record"/>
 
             </LinearLayout>
 
@@ -125,12 +119,11 @@
                     android:src="@mipmap/img_wrong"/>
 
                 <TextView
-                    android:layout_marginTop="@dimen/y50"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/loading_error_anew_loading_hint2"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/x30"/>
+                    android:layout_marginTop="@dimen/y50"
+                    android:text="@string/loading_error_anew_loading_hint2"/>
 
             </LinearLayout>
 

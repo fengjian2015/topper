@@ -35,6 +35,7 @@ public class Constants {
     public static final String BACKGOUND = "/sdcard/tocotalk/background/";
     public static final String ALBUM = "/sdcard/tocotalk/album/";
     public static final String DOWNLOAD = "/sdcard/tocotalk/download/";
+    public static final String VIDEO = "/sdcard/tocotalk/video/";
     public static final String QRMONEYIN = "qrMoneyIn";
     public static final String DATAMONEYIN = "dataMoneyIn";
     public static final String OTC_DISCLAIMER = "otc_disclaimer";

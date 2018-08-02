@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.widget.Toast;
@@ -82,6 +83,7 @@ public class LogoutPresenter {
                     @Override
                     public void onError(@NonNull Throwable e) {
                         hideDialog();
+                        imLogout(mActivity.getString(R.string.out_group_success));
                     }
 
                     @Override
@@ -93,8 +95,15 @@ public class LogoutPresenter {
 
     public void imLogout(final String message) {
         UtilTool.Log("fengjian", "退出成功");
-        Toast.makeText(mActivity,message, Toast.LENGTH_SHORT).show();
+        new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg) {
+                Toast.makeText(mActivity,message, Toast.LENGTH_SHORT).show();
+                WsConnection.getInstance().goMainActivity();
+            }
+        }.sendEmptyMessage(0);
 //            MyApp.getInstance().exit();
-        WsConnection.getInstance().goMainActivity();
     }
+
+
 }

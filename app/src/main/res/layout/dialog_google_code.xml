@@ -7,44 +7,38 @@
 
     <TextView
         android:id="@+id/tv_title"
+        style="@style/MainTextDeepStyle32"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginTop="@dimen/y30"
-        android:text="@string/google_verify"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/x30"/>
+        android:text="@string/google_verify"/>
 
 
     <EditText
         android:id="@+id/et_google_code"
+        style="@style/MainTextDeepStyle30"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y110"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginRight="@dimen/x30"
-        android:singleLine="true"
         android:layout_marginTop="@dimen/y30"
         android:background="@drawable/bg_blue_border"
         android:hint="@string/et_google_code"
         android:inputType="number"
         android:maxLength="6"
         android:paddingLeft="@dimen/x20"
-        android:textCursorDrawable="@null"
-        android:textSize="@dimen/x28"/>
+        android:singleLine="true"
+        android:textColorHint="@color/secondary_text_color"
+        android:textCursorDrawable="@null"/>
 
     <Button
         android:id="@+id/btn_confirm"
-        android:layout_width="@dimen/x450"
-        android:layout_height="@dimen/y80"
+        style="@style/ShortBtnStyle"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/y60"
-        android:layout_marginLeft="@dimen/x50"
-        android:layout_marginRight="@dimen/x50"
-        android:layout_marginTop="@dimen/y60"
-        android:background="@drawable/btn_blue_selector"
+        android:layout_marginBottom="@dimen/y50"
+        android:layout_marginTop="@dimen/y50"
         android:text="@string/confirm"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="@dimen/x32"/>
+        android:textAllCaps="false"/>
 
 </LinearLayout>

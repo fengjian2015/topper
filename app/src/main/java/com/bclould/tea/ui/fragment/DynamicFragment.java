@@ -106,7 +106,7 @@ public class DynamicFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_dynamic_state, container, false);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.activity_dynamic, container, false);
         ButterKnife.bind(this, view);
         mDynamicPresenter = new DynamicPresenter(getContext());
         mMgr = new DBManager(getContext());

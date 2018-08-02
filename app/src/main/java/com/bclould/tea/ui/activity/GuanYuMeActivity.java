@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -40,16 +39,14 @@ public class GuanYuMeActivity extends BaseActivity {
 
     @Bind(R.id.bark)
     ImageView mBark;
+    @Bind(R.id.tv_version)
+    TextView mTvVersion;
     @Bind(R.id.tv)
     TextView mTv;
     @Bind(R.id.tv_new_update)
     TextView mTvNewUpdate;
-    @Bind(R.id.rl_new)
-    RelativeLayout mRlNew;
-    @Bind(R.id.tv_version)
-    TextView mTvVersion;
-    @Bind(R.id.cv_check_update)
-    CardView mCvCheckUpdate;
+    @Bind(R.id.rl_check_update)
+    RelativeLayout mRlCheckUpdate;
     @Bind(R.id.rl_update_log)
     RelativeLayout mRlUpdateLog;
     private UpdateLogPresenter mUpdateLogPresenter;
@@ -59,17 +56,17 @@ public class GuanYuMeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guanyu_me);
         ButterKnife.bind(this);
-        if(!EventBus.getDefault().isRegistered(this))
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         if (UtilTool.compareVersion(this)) {
             mTvNewUpdate.setVisibility(View.VISIBLE);
         } else {
             mTvNewUpdate.setVisibility(View.GONE);
         }
         if (MySharedPreferences.getInstance().getInteger(IS_UPDATE) == 1) {
-            mCvCheckUpdate.setVisibility(View.VISIBLE);
+            mRlCheckUpdate.setVisibility(View.VISIBLE);
         } else {
-            mCvCheckUpdate.setVisibility(View.GONE);
+            mRlCheckUpdate.setVisibility(View.GONE);
         }
         mUpdateLogPresenter = new UpdateLogPresenter(this);
         String versionCode = UtilTool.getVersionCode(this);
@@ -85,12 +82,12 @@ public class GuanYuMeActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-       if (msg.equals(getString(R.string.check_new_version))) {
-           mCvCheckUpdate.setVisibility(View.VISIBLE);
+        if (msg.equals(getString(R.string.check_new_version))) {
+            mRlCheckUpdate.setVisibility(View.VISIBLE);
         }
     }
 
-    @OnClick({R.id.bark, R.id.rl_new, R.id.rl_update_log})
+    @OnClick({R.id.bark, R.id.rl_check_update, R.id.rl_update_log})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -99,7 +96,7 @@ public class GuanYuMeActivity extends BaseActivity {
             case R.id.rl_update_log:
                 startActivity(new Intent(this, UpdateLogActivity.class));
                 break;
-            case R.id.rl_new:
+            case R.id.rl_check_update:
                 startActivity(new Intent(GuanYuMeActivity.this, VersionsUpdateActivity.class));
                 break;
         }

@@ -1,92 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/x20"
     android:layout_marginRight="@dimen/x20"
-    app:cardCornerRadius="@dimen/x15">
+    android:background="@drawable/bg_shallow_shape"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/y20"
+    android:paddingLeft="@dimen/x10"
+    android:paddingRight="@dimen/x10"
+    android:paddingTop="@dimen/y20">
+
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:src="@mipmap/img_infrom"/>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/iv_jiantou"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_toRightOf="@+id/iv"
+        android:text="Tocotalk小喇叭【置頂】"
+        style="@style/MainTextShallowStyle30"/>
+
+    <TextView
+        android:id="@+id/tv_new"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/x10"
+        android:text="NEW"
+        style="@style/RedTextStyle28"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tv_title"
+        android:layout_below="@+id/iv"
+        android:layout_marginTop="@dimen/y20"
+        android:text="2018-05-19 17:26:02"
+        style="@style/SecondaryTextStyle24"/>
+
+    <TextView
+        android:id="@+id/xx"
+        style="@style/HorizontalBoundaryStyle"
+        android:layout_below="@+id/tv_time"
+        android:layout_marginTop="@dimen/y20"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/y20"
-        android:paddingLeft="@dimen/x10"
-        android:paddingRight="@dimen/x10"
-        android:paddingTop="@dimen/y20">
+        android:layout_below="@+id/xx"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginTop="@dimen/y20">
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="關於開放ETF(以太基金)交易、充幣共公告"
+            style="@style/MainTextShallowStyle30"/>
+
 
         <ImageView
-            android:id="@+id/iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/x20"
-            android:src="@mipmap/img_infrom"/>
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/iv_jiantou"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_toRightOf="@+id/iv"
-            android:text="Tocotalk小喇叭【置頂】"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x28"/>
-
-        <TextView
-            android:id="@+id/tv_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/x10"
-            android:text="NEW"
-            android:textColor="@color/red"
-            android:textSize="@dimen/x32"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tv_title"
-            android:layout_below="@+id/iv"
-            android:layout_marginTop="@dimen/y20"
-            android:text="2018-05-19 17:26:02"
-            android:textSize="@dimen/x24"/>
-
-        <TextView
-            android:id="@+id/xx"
-            style="@style/HorizontalBoundaryStyle"
-            android:layout_below="@+id/tv_time"
-            android:layout_marginTop="@dimen/y20"/>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/xx"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginTop="@dimen/y20">
-
-            <TextView
-                android:id="@+id/tv_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="關於開放ETF(以太基金)交易、充幣共公告"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x30"
-                android:src="@mipmap/iocn_person_turn"/>
-
-        </RelativeLayout>
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x30"
+            android:src="@mipmap/iocn_person_turn"/>
 
     </RelativeLayout>
 
-</android.support.v7.widget.CardView>
+</RelativeLayout>

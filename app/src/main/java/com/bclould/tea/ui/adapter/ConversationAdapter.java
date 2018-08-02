@@ -145,9 +145,9 @@ public class ConversationAdapter extends RecyclerView.Adapter {
 
         public void setData(ConversationInfo conversationInfo) {
             if ("true".equals(conversationInfo.getIstop())) {
-                mRlItem.setBackgroundColor(mContext.getResources().getColor(R.color.gray2));
+                mRlItem.setBackgroundColor(mContext.getResources().getColor(R.color.boundary_color));
             } else {
-                mRlItem.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                mRlItem.setBackgroundColor(mContext.getResources().getColor(R.color.app_bg_color));
             }
             mConversationInfo = conversationInfo;
 

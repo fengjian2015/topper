@@ -1,8 +1,10 @@
 package com.bclould.tea.ui.activity;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,6 +26,7 @@ import butterknife.OnClick;
  * Created by GA on 2018/1/3.
  */
 
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class RedPacketRecordActivity extends BaseActivity {
     @Bind(R.id.bark)
     ImageView mBark;

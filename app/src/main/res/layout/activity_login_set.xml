@@ -7,9 +7,7 @@
               android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -19,12 +17,11 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/login_set"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/login_set"/>
 
     </RelativeLayout>
 
@@ -32,162 +29,152 @@
         style="@style/HorizontalBoundaryStyle"/>
 
     <TextView
+        style="@style/SecondaryTextStyle28"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y20"
-        android:text="@string/login_set_hint"
-        android:textSize="@dimen/x26"/>
+        android:text="@string/login_set_hint"/>
 
     <LinearLayout
         android:id="@+id/ll_check_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y20"
+        android:background="@drawable/bg_shallow_shape"
         android:orientation="vertical">
 
-        <android.support.v7.widget.CardView
+        <RelativeLayout
+            android:id="@+id/rl_no_verify"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y100"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginRight="@dimen/x20"
-            android:layout_marginTop="@dimen/y20"
-            app:cardCornerRadius="@dimen/x15">
+            android:gravity="center_vertical">
 
-            <RelativeLayout
-                android:id="@+id/rl_no_verify"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical">
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x30"
+                android:text="@string/login_set1"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/x30"
-                    android:text="@string/login_set1"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x28"/>
+            <CheckBox
+                android:id="@+id/cb_no_verify"
+                style="@style/CustomCheckboxTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/x30"
+                android:clickable="false"/>
 
-                <CheckBox
-                    android:id="@+id/cb_no_verify"
-                    style="@style/CustomCheckboxTheme"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/x30"
-                    android:clickable="false"/>
+        </RelativeLayout>
 
-            </RelativeLayout>
+        <TextView
+            style="@style/HorizontalBoundaryStyle"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"/>
 
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
+        <RelativeLayout
+            android:id="@+id/rl_email_verify"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y100"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginRight="@dimen/x20"
-            android:layout_marginTop="@dimen/y20"
-            app:cardCornerRadius="@dimen/x15">
+            android:gravity="center_vertical">
 
-            <RelativeLayout
-                android:id="@+id/rl_email_verify"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical">
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x30"
+                android:text="@string/login_set2"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/x30"
-                    android:text="@string/login_set2"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x28"/>
+            <CheckBox
+                android:id="@+id/cb_email"
+                style="@style/CustomCheckboxTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/x30"
+                android:clickable="false"/>
 
-                <CheckBox
-                    android:id="@+id/cb_email"
-                    style="@style/CustomCheckboxTheme"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/x30"
-                    android:clickable="false"/>
+        </RelativeLayout>
 
-            </RelativeLayout>
 
-        </android.support.v7.widget.CardView>
+        <TextView
+            style="@style/HorizontalBoundaryStyle"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"/>
 
-        <android.support.v7.widget.CardView
+        <RelativeLayout
+            android:id="@+id/rl_google_verify"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y100"
-            android:layout_marginBottom="@dimen/y20"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginRight="@dimen/x20"
-            android:layout_marginTop="@dimen/y20"
-            app:cardCornerRadius="@dimen/x15">
+            android:gravity="center_vertical">
 
-            <RelativeLayout
-                android:id="@+id/rl_google_verify"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical">
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x30"
+                android:text="@string/login_set3"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/x30"
-                    android:text="@string/login_set3"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x28"/>
+            <CheckBox
+                android:id="@+id/cb_google"
+                style="@style/CustomCheckboxTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/x30"
+                android:clickable="false"/>
 
-                <CheckBox
-                    android:id="@+id/cb_google"
-                    style="@style/CustomCheckboxTheme"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/x30"
-                    android:clickable="false"/>
-
-            </RelativeLayout>
-
-        </android.support.v7.widget.CardView>
-
+        </RelativeLayout>
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/y20"
-        android:layout_marginLeft="@dimen/x30"
-        android:text="@string/required"
-        android:textSize="@dimen/x28"/>
-
-    <android.support.v7.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
-        app:cardCornerRadius="@dimen/x15">
+        android:layout_marginTop="@dimen/y30"
+        android:background="@drawable/bg_shallow_shape"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/SecondaryTextStyle28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/y20"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginTop="@dimen/y20"
+            android:text="@string/required"/>
+
+        <TextView
+            style="@style/HorizontalBoundaryStyle"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"/>
+
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/y120"
             android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/et_pay_password"
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="9"
                 android:background="@android:color/transparent"
                 android:hint="@string/et_pay_pw"
-                android:singleLine="true"
                 android:inputType="numberPassword"
                 android:maxLength="6"
                 android:paddingLeft="@dimen/x20"
                 android:paddingRight="@dimen/x20"
-                android:textCursorDrawable="@null"
-                android:textSize="@dimen/x26"/>
+                android:singleLine="true"
+                android:textColorHint="@color/secondary_text_color"
+                android:textCursorDrawable="@null"/>
 
             <RelativeLayout
                 android:id="@+id/rl_eye"
@@ -210,41 +197,33 @@
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y20"
-        app:cardCornerRadius="@dimen/x15">
+        <TextView
+            style="@style/HorizontalBoundaryStyle"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"/>
 
         <EditText
             android:id="@+id/et_vcode"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="9"
-            android:background="@android:color/transparent"
+            android:layout_height="@dimen/y120"
+            android:background="@color/transparent"
             android:hint="@string/et_google_code"
-            android:singleLine="true"
             android:inputType="number"
             android:maxLength="6"
             android:paddingLeft="@dimen/x20"
             android:paddingRight="@dimen/x20"
-            android:textCursorDrawable="@null"
-            android:textSize="@dimen/x26"/>
+            android:singleLine="true"
+            android:textColorHint="@color/secondary_text_color"
+            android:textCursorDrawable="@null"/>
+    </LinearLayout>
 
-    </android.support.v7.widget.CardView>
 
     <Button
         android:id="@+id/btn_finish"
-        android:layout_width="@dimen/x450"
-        android:layout_height="@dimen/y80"
+        style="@style/LongBtnStyle"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y100"
-        android:background="@drawable/btn_blue_selector"
-        android:text="@string/finish"
-        android:textColor="@color/white"/>
+        android:text="@string/finish"/>
 
 </LinearLayout>

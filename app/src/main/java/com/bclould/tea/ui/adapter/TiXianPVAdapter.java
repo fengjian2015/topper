@@ -1,3 +1,4 @@
+/*
 package com.bclould.tea.ui.adapter;
 
 import android.content.Context;
@@ -11,7 +12,7 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.ui.activity.TiXianActivity;
-import com.bclould.tea.model.CardBean;
+import com.bclould.tea.model.CardInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +21,17 @@ import butterknife.Bind;
 
 import static butterknife.ButterKnife.bind;
 
+*/
 /**
  * Created by GA on 2017/10/16.
- */
+ *//*
+
 public class TiXianPVAdapter extends PagerAdapter implements CardAdapter {
 
     private TiXianActivity mTiXianActivity;
     private Context mContext;
     private List<CardView> mViews;
-    private List<CardBean> mData;
+    private List<CardInfo> mData;
     private float mBaseElevation;
 
     public TiXianPVAdapter(TiXianActivity tiXianActivity) {
@@ -38,7 +41,7 @@ public class TiXianPVAdapter extends PagerAdapter implements CardAdapter {
         mViews = new ArrayList<>();
     }
 
-    public void addCardItem(CardBean item) {
+    public void addCardItem(CardInfo item) {
         mViews.add(null);
         mData.add(item);
     }
@@ -95,7 +98,7 @@ public class TiXianPVAdapter extends PagerAdapter implements CardAdapter {
         @Bind(R.id.bank_card)
         CardView mBankCard;
 
-        ViewHolder(View view, int position, List<CardBean> data) {
+        ViewHolder(View view, int position, List<CardInfo> data) {
             bind(this, view);
 
             if (position % 2 == 1) {
@@ -113,3 +116,4 @@ public class TiXianPVAdapter extends PagerAdapter implements CardAdapter {
         }
     }
 }
+*/

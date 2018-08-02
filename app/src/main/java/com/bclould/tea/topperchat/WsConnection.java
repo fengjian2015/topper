@@ -79,8 +79,7 @@ public class WsConnection {
     }
 
     private WsConnection() {}
-
-    public synchronized WebSocket get(Context context){
+    public WebSocket get(Context context){
         synchronized (lock) {
             mContext = context;
             try {
@@ -95,6 +94,7 @@ public class WsConnection {
                         @Override
                         public void onCompleted(Exception ex, final com.koushikdutta.async.http.WebSocket webSocket) {
                             if (ex != null) {
+                                if(ws!=null&&ws.isOpen())return;
                                 setIsLogin(false);
                                 setLoginConnection(false);
                                 setIsConnection(false);
@@ -102,17 +102,31 @@ public class WsConnection {
                                 ex.printStackTrace();
                                 return;
                             }
+                            if(ws!=null&&ws.isOpen()){
+                                UtilTool.Log("fengjian","服務連接已存在，清空最新的");
+                                webSocket.close();
+                                webSocket.end();
+                                setIsConnection(false);
+                                return;
+                            }
                             if(mWebSocketArrayList.size()>0){
                                 UtilTool.Log("fengjian","服务连接数大于0"+mWebSocketArrayList.size());
                                 //這種情況必定會被踢出，全部斷開
-                                ws=mWebSocketArrayList.get(0);
-                                close();
+                                for(WebSocket webSocket1:mWebSocketArrayList){
+                                    if(webSocket1!=null){
+                                        webSocket1.end();
+                                        webSocket1.close();
+                                    }
+                                }
                                 ws=webSocket;
                                 closeConnection();
                                 mWebSocketArrayList.clear();
+                                setIsLogin(false);
+                                setIsConnection(false);
                                 return;
                             }
                             ws = webSocket;
+                            setIsConnection(false);
                             mWebSocketArrayList.add(ws);
 
                             UtilTool.Log("fengjian", "连接服務器成功-----"+mWebSocketArrayList.size());
@@ -136,6 +150,7 @@ public class WsConnection {
                                     mWebSocketArrayList.remove(webSocket);
                                     closeConnection();
                                     setIsConnection(false);
+                                    setIsLogin(false);
 
                                 }
                             });
@@ -146,6 +161,7 @@ public class WsConnection {
                                     mWebSocketArrayList.remove(webSocket);
                                     closeConnection();
                                     setIsConnection(false);
+                                    setIsLogin(false);
                                 }
                             });
                             webSocket.setPongCallback(new WebSocket.PongCallback() {
@@ -322,7 +338,6 @@ public class WsConnection {
         }
         LoginThread.isStartExReconnect = false;
         close();
-        setIsLogin(false);
         setLoginConnection(false);
     }
 
@@ -349,6 +364,7 @@ public class WsConnection {
         closeConnection();
         setOutConnection(true);
         setIsConnection(false);
+        setIsLogin(false);
         stopAllIMCoreService(context);
         context.stopService(new Intent(context, IMService.class));
         LoginThread.isStartExReconnect = false;

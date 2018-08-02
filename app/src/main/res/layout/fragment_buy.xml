@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    android:layout_height="match_parent">
 
     <com.scwang.smartrefresh.header.WaterDropHeader
         android:layout_width="match_parent"
@@ -15,11 +14,12 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/ll_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="@color/app_bg_color"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -30,7 +30,7 @@
                 android:layout_marginRight="@dimen/x30"
                 android:layout_marginTop="@dimen/y20"
                 android:layout_toLeftOf="@+id/tv_cancel"
-                app:cardBackgroundColor="#10000000"
+                app:cardBackgroundColor="@color/boundary_color"
                 app:cardCornerRadius="@dimen/x40"
                 app:cardElevation="0dp">
 
@@ -52,6 +52,7 @@
 
                     <com.bclould.tea.ui.widget.ClearEditText
                         android:id="@+id/et_search"
+                        style="@style/MainTextShallowStyle30"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="6"
@@ -61,8 +62,7 @@
                         android:paddingLeft="@dimen/x30"
                         android:paddingRight="@dimen/x30"
                         android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x28"/>
+                        android:textColorHint="@color/secondary_text_color"/>
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
@@ -93,9 +93,8 @@
                 android:id="@+id/tv_hint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text= "@string/no_ad_publish"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/x30"/>
+                android:text="@string/no_ad_publish"
+                style="@style/MainTextShallowStyle30"/>
 
         </LinearLayout>
 
@@ -116,38 +115,37 @@
                 android:src="@mipmap/img_wrong"/>
 
             <TextView
-                android:layout_marginTop="@dimen/y50"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y50"
                 android:text="@string/loading_error_anew_loading_hint"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/x30"/>
+                style="@style/MainTextShallowStyle30"/>
 
         </LinearLayout>
 
         <!--<LinearLayout-->
-            <!--android:id="@+id/ll_loading_error"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_below="@+id/ll_search"-->
-            <!--android:gravity="center"-->
-            <!--android:orientation="vertical"-->
-            <!--android:visibility="visible">-->
+        <!--android:id="@+id/ll_loading_error"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_below="@+id/ll_search"-->
+        <!--android:gravity="center"-->
+        <!--android:orientation="vertical"-->
+        <!--android:visibility="visible">-->
 
-            <!--<ImageView-->
-                <!--android:id="@+id/iv2"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center_horizontal"-->
-                <!--android:src="@mipmap/icon_nothing_img"/>-->
+        <!--<ImageView-->
+        <!--android:id="@+id/iv2"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:src="@mipmap/icon_nothing_img"/>-->
 
-            <!--<TextView-->
-                <!--android:id="@+id/tv_hint2"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text= "@string/loading_error_hint"-->
-                <!--android:textColor="@android:color/black"-->
-                <!--android:textSize="@dimen/x30"/>-->
+        <!--<TextView-->
+        <!--android:id="@+id/tv_hint2"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text= "@string/loading_error_hint"-->
+        <!--android:textColor="@android:color/black"-->
+        <!--android:textSize="@dimen/x30"/>-->
 
         <!--</LinearLayout>-->
 

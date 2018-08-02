@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -44,69 +43,69 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_CARD_MSG;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class IndividualDetailsActivity extends BaseActivity {
+
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.iv_head)
-    ImageView ivHead;
+    ImageView mIvHead;
     @Bind(R.id.tv_name)
-    TextView tvName;
+    TextView mTvName;
     @Bind(R.id.image_qr)
-    ImageView imageQr;
-    @Bind(R.id.rl_dynamic)
-    RelativeLayout rlDynamic;
-    @Bind(R.id.image1)
-    ImageView image1;
-    @Bind(R.id.image2)
-    ImageView image2;
-    @Bind(R.id.image3)
-    ImageView image3;
-    @Bind(R.id.image4)
-    ImageView image4;
-    @Bind(R.id.tv_region)
-    TextView tvRegion;
-    @Bind(R.id.tv_remark)
-    TextView tvRemark;
-    @Bind(R.id.btn_brak)
-    Button btnBrak;
+    ImageView mImageQr;
     @Bind(R.id.rl_qr)
-    RelativeLayout rlQr;
-    @Bind(R.id.rl_remark)
-    RelativeLayout rlRemark;
-    @Bind(R.id.rl_card)
-    RelativeLayout rlCard;
+    RelativeLayout mRlQr;
     @Bind(R.id.tv1)
     TextView mTv1;
+    @Bind(R.id.image1)
+    ImageView mImage1;
+    @Bind(R.id.image2)
+    ImageView mImage2;
+    @Bind(R.id.image3)
+    ImageView mImage3;
+    @Bind(R.id.image4)
+    ImageView mImage4;
+    @Bind(R.id.rl_dynamic)
+    RelativeLayout mRlDynamic;
     @Bind(R.id.tv6)
     TextView mTv6;
     @Bind(R.id.on_off_dy)
     ImageView mOnOffDy;
-    @Bind(R.id.tv2)
-    TextView mTv2;
-    @Bind(R.id.rl_cache)
-    RelativeLayout mRlCache;
-    @Bind(R.id.tv3)
-    TextView mTv3;
-    @Bind(R.id.tv4)
-    TextView mTv4;
-    @Bind(R.id.tv5)
-    TextView mTv5;
+    @Bind(R.id.rl_no_look_ta_dy)
+    RelativeLayout mRlNoLookTaDy;
     @Bind(R.id.tv7)
     TextView mTv7;
     @Bind(R.id.on_off_dy2)
     ImageView mOnOffDy2;
-    @Bind(R.id.cv_no_look_ta_dy)
-    CardView mCvNoLookTaDy;
-    @Bind(R.id.cv_no_look_ta_dy2)
-    CardView mCvNoLookTaDy2;
+    @Bind(R.id.rl_no_look_ta_dy2)
+    RelativeLayout mRlNoLookTaDy2;
+    @Bind(R.id.tv2)
+    TextView mTv2;
+    @Bind(R.id.tv_region)
+    TextView mTvRegion;
+    @Bind(R.id.rl_cache)
+    RelativeLayout mRlCache;
+    @Bind(R.id.tv3)
+    TextView mTv3;
+    @Bind(R.id.tv_remark)
+    TextView mTvRemark;
+    @Bind(R.id.rl_remark)
+    RelativeLayout mRlRemark;
+    @Bind(R.id.tv4)
+    TextView mTv4;
+    @Bind(R.id.tv5)
+    TextView mTv5;
+    @Bind(R.id.rl_card)
+    RelativeLayout mRlCard;
+    @Bind(R.id.btn_send)
+    Button mBtnSend;
+    @Bind(R.id.btn_brak)
+    Button mBtnBrak;
+    @Bind(R.id.ll_data)
+    LinearLayout mLlData;
     @Bind(R.id.iv2)
     ImageView mIv2;
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
-    @Bind(R.id.ll_data)
-    LinearLayout mLlData;
-    @Bind(R.id.btn_send)
-    Button mBtnSend;
-
     private DBManager mMgr;
     private String mUser;
     private String mName;
@@ -153,31 +152,31 @@ public class IndividualDetailsActivity extends BaseActivity {
             type = 2;
         }
         if (type == 1) {
-            imageQr.setVisibility(View.VISIBLE);
-            rlRemark.setVisibility(View.VISIBLE);
-            btnBrak.setText(getString(R.string.delete));
+            mImageQr.setVisibility(View.VISIBLE);
+            mRlRemark.setVisibility(View.VISIBLE);
+            mBtnBrak.setText(getString(R.string.delete));
             mBtnSend.setVisibility(View.VISIBLE);
-            rlCard.setVisibility(View.VISIBLE);
-            mCvNoLookTaDy.setVisibility(View.VISIBLE);
-            mCvNoLookTaDy2.setVisibility(View.VISIBLE);
+            mRlCard.setVisibility(View.VISIBLE);
+            mRlNoLookTaDy.setVisibility(View.VISIBLE);
+            mRlNoLookTaDy2.setVisibility(View.VISIBLE);
         } else if (type == 2) {
-            imageQr.setVisibility(View.INVISIBLE);
-            rlRemark.setVisibility(View.GONE);
-            btnBrak.setText(getString(R.string.add_friend));
+            mImageQr.setVisibility(View.INVISIBLE);
+            mRlRemark.setVisibility(View.GONE);
+            mBtnBrak.setText(getString(R.string.add_friend));
             mBtnSend.setVisibility(View.GONE);
-            rlCard.setVisibility(View.GONE);
-            mCvNoLookTaDy.setVisibility(View.GONE);
-            mCvNoLookTaDy2.setVisibility(View.GONE);
+            mRlCard.setVisibility(View.GONE);
+            mRlNoLookTaDy.setVisibility(View.GONE);
+            mRlNoLookTaDy2.setVisibility(View.GONE);
         } else if (type == 3) {
-            btnBrak.setVisibility(View.GONE);
-            rlCard.setVisibility(View.GONE);
-            mCvNoLookTaDy.setVisibility(View.GONE);
-            mCvNoLookTaDy2.setVisibility(View.GONE);
-            rlRemark.setVisibility(View.GONE);
+            mBtnBrak.setVisibility(View.GONE);
+            mRlCard.setVisibility(View.GONE);
+            mRlNoLookTaDy.setVisibility(View.GONE);
+            mRlNoLookTaDy2.setVisibility(View.GONE);
+            mRlRemark.setVisibility(View.GONE);
             mBtnSend.setVisibility(View.GONE);
         }
         if (TOCO_SERVICE.equals(mUser)) {
-            btnBrak.setVisibility(View.GONE);
+            mBtnBrak.setVisibility(View.GONE);
         }
         initData();
     }
@@ -199,9 +198,9 @@ public class IndividualDetailsActivity extends BaseActivity {
                     saveData(data);
                     individualInfo = data;
                     mName = individualInfo.getName();
-                    tvName.setText(individualInfo.getName());
-                    tvRemark.setText(individualInfo.getRemark());
-                    tvRegion.setText(individualInfo.getCountry());
+                    mTvName.setText(individualInfo.getName());
+                    mTvRemark.setText(individualInfo.getRemark());
+                    mTvRegion.setText(individualInfo.getCountry());
                     avatar = individualInfo.getAvatar();
                     if (data.getNo_see_him() == 1) {
                         isNoSeeHim = true;
@@ -215,11 +214,11 @@ public class IndividualDetailsActivity extends BaseActivity {
                     }
                     mOnOffDy.setSelected(isNoSeeHim);
                     mOnOffDy2.setSelected(isNoSeeMe);
-                    Glide.with(IndividualDetailsActivity.this).load(individualInfo.getAvatar()).apply(new RequestOptions().placeholder(R.mipmap.img_nfriend_headshot1)).into(ivHead);
+                    Glide.with(IndividualDetailsActivity.this).load(individualInfo.getAvatar()).apply(new RequestOptions().placeholder(R.mipmap.img_nfriend_headshot1)).into(mIvHead);
                     if (!individualInfo.getAvatar().isEmpty()) {
-                        UtilTool.setCircleImg(IndividualDetailsActivity.this, individualInfo.getAvatar(), ivHead);
+                        UtilTool.setCircleImg(IndividualDetailsActivity.this, individualInfo.getAvatar(), mIvHead);
                     } else {
-                        UtilTool.setCircleImg(IndividualDetailsActivity.this, R.mipmap.img_nfriend_headshot1, ivHead);
+                        UtilTool.setCircleImg(IndividualDetailsActivity.this, R.mipmap.img_nfriend_headshot1, mIvHead);
                     }
                 }
             }
@@ -239,7 +238,7 @@ public class IndividualDetailsActivity extends BaseActivity {
         mMgr.updateConversationName(data.getToco_id(), data.getName());
     }
 
-    @OnClick({R.id.cv_no_look_ta_dy, R.id.cv_no_look_ta_dy2, R.id.rl_dynamic, R.id.bark, R.id.btn_brak, R.id.rl_qr, R.id.rl_remark, R.id.rl_card, R.id.iv_head, R.id.ll_error,R.id.btn_send})
+    @OnClick({R.id.rl_no_look_ta_dy, R.id.rl_no_look_ta_dy2, R.id.rl_dynamic, R.id.bark, R.id.btn_brak, R.id.rl_qr, R.id.rl_remark, R.id.rl_card, R.id.iv_head, R.id.ll_error, R.id.btn_send})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_dynamic:
@@ -258,10 +257,10 @@ public class IndividualDetailsActivity extends BaseActivity {
             case R.id.ll_error:
                 initData();
                 break;
-            case R.id.cv_no_look_ta_dy:
+            case R.id.rl_no_look_ta_dy:
                 noLookTaDy(2);
                 break;
-            case R.id.cv_no_look_ta_dy2:
+            case R.id.rl_no_look_ta_dy2:
                 noLookTaDy(1);
                 break;
             case R.id.btn_brak:
@@ -434,7 +433,7 @@ public class IndividualDetailsActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REMARK && data != null) {
             String remark = data.getStringExtra("remark");
-            tvRemark.setText(remark);
+            mTvRemark.setText(remark);
             EventBus.getDefault().post(new MessageEvent(getString(R.string.change_friend_remark)));
         }
         super.onActivityResult(requestCode, resultCode, data);

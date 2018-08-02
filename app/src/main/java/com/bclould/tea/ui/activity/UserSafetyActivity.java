@@ -25,37 +25,22 @@ import butterknife.OnClick;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class UserSafetyActivity extends BaseActivity {
-
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.iv)
-    ImageView mIv;
     @Bind(R.id.rl_autonym_attestation)
     RelativeLayout mRlAutonymAttestation;
-    @Bind(R.id.iv_login_password)
-    ImageView mIvLoginPassword;
     @Bind(R.id.rl_login_password)
     RelativeLayout mRlLoginPassword;
-    @Bind(R.id.iv_pay_password)
-    ImageView mIvPayPassword;
-    @Bind(R.id.rl_pay_password)
-    RelativeLayout mRlPayPassword;
-    @Bind(R.id.iv_pw_check)
-    ImageView mIvPwCheck;
-    @Bind(R.id.rl_app_look)
-    RelativeLayout mRlAppLook;
-    @Bind(R.id.iv_google)
-    ImageView mIvGoogle;
-    @Bind(R.id.rl_google)
-    RelativeLayout mRlGoogle;
-    @Bind(R.id.iv_login_set)
-    ImageView mIvLoginSet;
     @Bind(R.id.rl_login_set)
     RelativeLayout mRlLoginSet;
-    @Bind(R.id.iv_login_record)
-    ImageView mIvLoginRecord;
     @Bind(R.id.rl_login_record)
     RelativeLayout mRlLoginRecord;
+    @Bind(R.id.rl_pay_password)
+    RelativeLayout mRlPayPassword;
+    @Bind(R.id.rl_app_look)
+    RelativeLayout mRlAppLook;
+    @Bind(R.id.rl_google)
+    RelativeLayout mRlGoogle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

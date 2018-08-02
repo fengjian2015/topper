@@ -1,106 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/light"
-              android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/app_bg_color"
+                android:orientation="vertical">
 
-    <TextView
+    <View
+        android:id="@+id/status_bar_fix"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white"
-        android:gravity="center"
-        android:text="@string/person"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x35"/>
+        android:layout_height="0dp"
+        android:background="#00000000"
+        />
 
-    <TextView
-        style="@style/HorizontalBoundaryStyle"/>
-
-
-    <android.support.v7.widget.CardView
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y180"
+        android:layout_height="@dimen/y450"
+        android:background="@mipmap/icon_me_bg"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_personal_data"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y280"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:layout_marginTop="@dimen/y250"
+        android:background="@drawable/bg_bright_shape">
+
+        <ImageView
+            android:id="@+id/iv_touxiang"
+            android:layout_width="@dimen/x150"
+            android:layout_height="@dimen/x150"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginTop="@dimen/y30"
+            android:src="@mipmap/img_nfriend_headshot1"/>
+
+        <TextView
+            style="@style/MainTextDeepStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/y30"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginTop="@dimen/y30"
+            android:text="@string/greet_hint"/>
+
+
+        <TextView
+            android:id="@+id/tv_name"
+            style="@style/MainTextDeepStyle36"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y60"
+            android:layout_alignTop="@+id/iv_touxiang"
+            android:layout_marginLeft="@dimen/x50"
+            android:layout_marginTop="@dimen/y30"
+            android:layout_toRightOf="@+id/iv_touxiang"/>
+
+        <!--<TextView
+            android:id="@+id/tv_tocoid"
+            style="@style/MainTextShallowStyle32"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y60"
+            android:layout_below="@+id/tv_name"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_toRightOf="@+id/iv_touxiang"
+            android:paddingTop="@dimen/y4"/>-->
+
+        <ImageView
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/x80"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/iv_touxiang"
+            android:layout_marginRight="@dimen/x50"
+            android:layout_marginTop="@dimen/y30"
+            android:src="@mipmap/qr_code"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_personal_data"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
+        android:background="@drawable/bg_shallow_shape"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/y10"
+        android:paddingTop="@dimen/y10">
 
         <RelativeLayout
-            android:id="@+id/rl_personal_data"
+            android:id="@+id/rl_collect"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="@dimen/y110"
+            android:paddingBottom="@dimen/y20"
+            android:paddingTop="@dimen/y20">
 
             <ImageView
-                android:id="@+id/iv_touxiang"
-                android:layout_width="@dimen/x120"
-                android:layout_height="@dimen/x120"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
-                android:src="@mipmap/img_nfriend_headshot1"/>
-
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/y60"
-                android:layout_alignTop="@+id/iv_touxiang"
-                android:layout_toRightOf="@+id/iv_touxiang"
-                android:layout_marginLeft="@dimen/x30"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x35" />
-            <TextView
-                android:id="@+id/tv_tocoid"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/y60"
-                android:layout_marginLeft="@dimen/x30"
-                android:layout_toRightOf="@+id/iv_touxiang"
-                android:layout_below="@+id/tv_name"
-                android:paddingTop="@dimen/y4"
-                android:textColor="@color/gray3"
-                android:textSize="@dimen/x32"/>
-            <ImageView
-                android:layout_width="@dimen/x70"
-                android:layout_height="@dimen/x70"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x50"
-                android:src="@mipmap/qr_code"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
-
-        <RelativeLayout
-            android:id="@+id/rl_security_center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/iv2"
+                android:id="@+id/iv4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x30"
-                android:src="@mipmap/icon_person_safe"/>
+                android:src="@mipmap/icon_me_collection"/>
 
             <TextView
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x30"
-                android:layout_toRightOf="@+id/iv2"
-                android:text="@string/user_safety"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+                android:layout_toRightOf="@+id/iv4"
+                android:text="@string/my_collect"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -112,20 +123,80 @@
 
         </RelativeLayout>
 
-    </android.support.v7.widget.CardView>
+        <RelativeLayout
+            android:id="@+id/rl_dynamic"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y110"
+            android:paddingBottom="@dimen/y20"
+            android:paddingTop="@dimen/y20">
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
+            <ImageView
+                android:id="@+id/iv5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x30"
+                android:src="@mipmap/icon_me_circlefriend"/>
+
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_toRightOf="@+id/iv5"
+                android:text="@string/my_friends_circle"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x30"
+                android:src="@mipmap/iocn_person_turn"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_security_center"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y110"
+            android:paddingBottom="@dimen/y20"
+            android:paddingTop="@dimen/y20">
+
+            <ImageView
+                android:id="@+id/iv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x30"
+                android:src="@mipmap/icon_person_safe"/>
+
+            <TextView
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_toRightOf="@+id/iv2"
+                android:text="@string/user_safety"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x30"
+                android:src="@mipmap/iocn_person_turn"/>
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/rl_system_set"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="@dimen/y110"
+            android:paddingBottom="@dimen/y20"
+            android:paddingTop="@dimen/y20">
 
             <ImageView
                 android:id="@+id/iv3"
@@ -137,14 +208,13 @@
 
             <TextView
                 android:id="@+id/tv"
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_toRightOf="@+id/iv3"
-                android:text="@string/system_set"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+                android:text="@string/system_set"/>
 
             <!--<TextView
                 android:visibility="gone"
@@ -170,20 +240,12 @@
 
         </RelativeLayout>
 
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginRight="@dimen/x20"
-        android:layout_marginTop="@dimen/y30"
-        app:cardCornerRadius="@dimen/x15">
-
         <RelativeLayout
             android:id="@+id/rl_concern_we"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y120"
+            android:layout_height="@dimen/y110"
+            android:paddingBottom="@dimen/y20"
+            android:paddingTop="@dimen/y20"
             android:visibility="visible">
 
             <ImageView
@@ -197,14 +259,13 @@
 
             <TextView
                 android:id="@+id/tv2"
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x30"
                 android:layout_toRightOf="@+id/iv_concern_we"
-                android:text="@string/guanyu_me"
-                android:textColor="@color/black"
-                android:textSize="@dimen/x28"/>
+                android:text="@string/guanyu_me"/>
 
             <TextView
                 android:id="@+id/tv_new_update"
@@ -230,6 +291,6 @@
 
         </RelativeLayout>
 
-    </android.support.v7.widget.CardView>
+    </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

@@ -8,35 +8,32 @@
 
     <TextView
         android:id="@+id/title"
+        style="@style/MainTextDeepStyle36"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x30"
         android:layout_marginTop="@dimen/y30"
-        android:text="@string/payment_pw_error_hint"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/x35"/>
+        android:text="@string/payment_pw_error_hint"/>
 
     <TextView
         android:id="@+id/tv_retry"
+        style="@style/MainTextDeepStyle36"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/y30"
         android:layout_marginLeft="@dimen/x300"
-        android:text="@string/retry"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/x35"/>
+        android:text="@string/retry"/>
 
     <TextView
         android:id="@+id/tv_find_password"
+        style="@style/BlueTextStyle36"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="@dimen/y30"
         android:layout_marginRight="@dimen/x30"
-        android:text="@string/find_password"
-        android:textColor="@color/blue2"
-        android:textSize="@dimen/x35"/>
+        android:text="@string/find_password"/>
 
 </RelativeLayout>

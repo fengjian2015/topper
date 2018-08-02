@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
               android:background="@color/app_bg_color"
-    tools:activity="com.bclould.tea.ui.activity.ModificationNameActivity">
+              android:orientation="vertical"
+              tools:activity="com.bclould.tea.ui.activity.ModificationNameActivity">
+
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -21,46 +20,50 @@
 
         <TextView
             android:id="@+id/tv_title"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/my_nickname_group"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/my_nickname_group"/>
 
         <TextView
             android:id="@+id/tv_hint"
+            style="@style/BlueTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
             android:paddingRight="@dimen/x20"
-            android:text="@string/finish"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"/>
+            android:text="@string/finish"/>
     </RelativeLayout>
+
     <View style="@style/HorizontalBoundaryStyle"></View>
+
     <EditText
         android:id="@+id/et_name"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y80"
+        android:layout_height="@dimen/y100"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
         android:layout_marginTop="@dimen/y20"
+        android:background="@drawable/bg_shallow_shape"
+        android:maxLength="10"
         android:paddingLeft="@dimen/x30"
         android:paddingRight="@dimen/x30"
-        android:maxLength="10"
-        android:background="@color/white"
-        android:singleLine="true" />
+        android:singleLine="true"/>
 
     <EditText
         android:id="@+id/et_announcement"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y300"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
         android:layout_marginTop="@dimen/y20"
-        android:padding="@dimen/x30"
-        android:maxLength="200"
-        android:background="@color/white"
+        android:background="@drawable/bg_shallow_shape"
         android:gravity="top|left"
+        android:maxLength="200"
+        android:padding="@dimen/x30"
         android:visibility="gone"
         />
 </LinearLayout>

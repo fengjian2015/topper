@@ -11,7 +11,6 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -56,6 +55,8 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class PayPwSelectorActivity extends BaseActivity {
 
+    public static final String GESTURE_PW_SELE = "gesture_pw_sele";
+    public static final String FINGERPRINT_PW_SELE = "fingerprint_pw_sele";
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.iv_gesture)
@@ -74,10 +75,6 @@ public class PayPwSelectorActivity extends BaseActivity {
     ImageView mOnOffFingerprint;
     @Bind(R.id.rl_fingerprint_pw)
     RelativeLayout mRlFingerprintPw;
-    public static final String GESTURE_PW_SELE = "gesture_pw_sele";
-    public static final String FINGERPRINT_PW_SELE = "fingerprint_pw_sele";
-    @Bind(R.id.cv_fingerprint_pw)
-    CardView mCvFingerprintPw;
     private ArrayList<Map<String, String>> valueList;
     private Animation mEnterAnim;
     private Animation mExitAnim;
@@ -112,9 +109,9 @@ public class PayPwSelectorActivity extends BaseActivity {
         mCode = getIntent().getIntExtra("code", 0);
         FingerprintManagerCompat managerCompat = FingerprintManagerCompat.from(MyApp.getInstance().app());
         if (!managerCompat.isHardwareDetected()) { //判断设备是否支持
-            mCvFingerprintPw.setVisibility(View.GONE);
+            mRlFingerprintPw.setVisibility(View.GONE);
         } else {
-            mCvFingerprintPw.setVisibility(View.VISIBLE);
+            mRlFingerprintPw.setVisibility(View.VISIBLE);
         }
     }
 

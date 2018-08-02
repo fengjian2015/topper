@@ -2,13 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@color/white"
+              android:background="@color/app_bg_color"
               android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -18,22 +16,21 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/qr_code"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/qr_code"/>
 
         <TextView
             android:id="@+id/tv_share"
+            style="@style/BlueTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:layout_alignParentRight="true"
-            android:text="@string/share"
-            android:textColor="@color/blue2"
-            android:padding="@dimen/x20"/>
+            android:gravity="center"
+            android:paddingRight="@dimen/x20"
+            android:text="@string/share"/>
 
     </RelativeLayout>
 
@@ -57,10 +54,10 @@
                 android:id="@+id/qr_code_iv"
                 android:layout_width="@dimen/x600"
                 android:layout_height="@dimen/y600"
-                android:src="@mipmap/qr_code1"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"/>
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:src="@mipmap/qr_code1"/>
 
             <ImageView
                 android:id="@+id/touxiang"
@@ -72,23 +69,23 @@
         </RelativeLayout>
 
         <TextView
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/y15"
-            android:text="@string/qr_code_hint"
-            android:textSize="@dimen/x28"/>
+            android:text="@string/qr_code_hint"/>
 
     </LinearLayout>
 
     <Button
         android:id="@+id/btn_save_qr"
+        style="@style/MainTextShallowStyle30"
         android:layout_width="@dimen/x200"
         android:layout_height="@dimen/y60"
         android:layout_below="@+id/tv_hint"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/y30"
-        android:textSize="@dimen/x28"
         android:background="@drawable/bg_register_shape"
         android:text="@string/save_qr_code"/>
 </LinearLayout>

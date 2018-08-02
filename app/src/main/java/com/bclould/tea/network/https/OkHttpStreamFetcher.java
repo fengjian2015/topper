@@ -11,7 +11,6 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.HttpException;
 import com.bumptech.glide.load.data.DataFetcher;
 import com.bumptech.glide.load.model.GlideUrl;
-import com.bumptech.glide.util.ContentLengthInputStream;
 import com.bumptech.glide.util.Synthetic;
 
 import java.io.IOException;
@@ -55,6 +54,7 @@ public class OkHttpStreamFetcher implements DataFetcher<InputStream> {
                 if (Log.isLoggable(TAG, Log.DEBUG)) {
                     Log.d(TAG, "OkHttp failed to obtain result", e);
                 }
+                GlideProgressListenerManager.get().end(url.toStringUrl());
                 callback.onLoadFailed(e);
             }
 
@@ -63,9 +63,11 @@ public class OkHttpStreamFetcher implements DataFetcher<InputStream> {
                 responseBody = response.body();
                 if (response.isSuccessful()) {
                     long contentLength = responseBody.contentLength();
-                    stream = ContentLengthInputStream.obtain(responseBody.byteStream(), contentLength);
+                    String mUrl=url.toStringUrl();
+                    stream = ContentLengthInputStream.obtain(responseBody.byteStream(), contentLength,mUrl);
                     callback.onDataReady(stream);
                 } else {
+                    GlideProgressListenerManager.get().end(url.toStringUrl());
                     callback.onLoadFailed(new HttpException(response.message(), response.code()));
                 }
             }

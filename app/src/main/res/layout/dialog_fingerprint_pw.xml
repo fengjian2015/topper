@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/app_bg_color">
 
         <ImageView
             android:id="@+id/iv_logo"
@@ -20,14 +20,13 @@
 
         <TextView
             android:id="@+id/tv_app_name"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/iv_fingerprint"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/y20"
-            android:text="@string/app_name"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/app_name"/>
 
         <ImageView
             android:id="@+id/iv_fingerprint"
@@ -40,31 +39,29 @@
 
         <TextView
             android:id="@+id/tv_check"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_fingerprint"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/y30"
-            android:text="@string/check_fingerprint_hint"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x28"/>
+            android:text="@string/check_fingerprint_hint"/>
 
         <TextView
             android:id="@+id/xx"
-            style="@style/HorizontalBoundaryStyle"
+            style="@style/HorizontalDeepBoundaryStyle"
             android:layout_above="@+id/tv_cancel"
             android:layout_marginTop="@dimen/y30"/>
 
         <TextView
             android:id="@+id/tv_cancel"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y120"
             android:layout_alignParentBottom="true"
             android:gravity="center"
-            android:text="@string/cancel"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/cancel"/>
 
     </RelativeLayout>
 

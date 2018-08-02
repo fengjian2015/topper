@@ -8,15 +8,14 @@
 
     <TextView
         android:id="@+id/tv_title"
+        style="@style/MainTextDeepStyle36"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
         android:gravity="center"
-        android:text="@string/selector_coin"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/x36"/>
+        android:text="@string/selector_coin"/>
 
     <TextView
-        style="@style/HorizontalBoundaryStyle"/>
+        style="@style/HorizontalDeepBoundaryStyle"/>
 
 
     <RelativeLayout
@@ -30,30 +29,26 @@
         </android.support.v7.widget.RecyclerView>
 
         <Button
-            android:visibility="gone"
             android:id="@+id/btn_add_coin"
             android:layout_width="@dimen/x200"
             android:layout_height="@dimen/y80"
             android:layout_centerInParent="true"
             android:background="@drawable/bg_register_shape"
-            android:text="充币"/>
+            android:text="充币"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
     <TextView
-        style="@style/HorizontalBoundaryStyle"/>
+        style="@style/HorizontalDeepBoundaryStyle"/>
 
     <Button
         android:id="@+id/btn_cancel"
-        android:layout_width="@dimen/x600"
-        android:layout_height="@dimen/y80"
+        style="@style/ShortBtnStyle"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/y20"
         android:layout_marginTop="@dimen/y20"
-        android:background="@drawable/btn_blue_selector"
-        android:text="@string/cancel"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/x32"/>
+        android:text="@string/cancel"/>
 
 
 </LinearLayout>

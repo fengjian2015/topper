@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.ui.activity.CollectActivity;
+import com.bclould.tea.ui.activity.DynamicActivity;
 import com.bclould.tea.ui.activity.GuanYuMeActivity;
 import com.bclould.tea.ui.activity.PersonalDetailsActivity;
 import com.bclould.tea.ui.activity.SystemSetActivity;
@@ -44,10 +46,16 @@ public class MyFragment extends Fragment {
     ImageView mIvTouxiang;
     @Bind(R.id.tv_name)
     TextView mTvName;
-    @Bind(R.id.tv_tocoid)
-    TextView mTvTocoid;
     @Bind(R.id.rl_personal_data)
     RelativeLayout mRlPersonalData;
+    @Bind(R.id.iv4)
+    ImageView mIv4;
+    @Bind(R.id.rl_collect)
+    RelativeLayout mRlCollect;
+    @Bind(R.id.iv5)
+    ImageView mIv5;
+    @Bind(R.id.rl_dynamic)
+    RelativeLayout mRlDynamic;
     @Bind(R.id.iv2)
     ImageView mIv2;
     @Bind(R.id.rl_security_center)
@@ -66,6 +74,8 @@ public class MyFragment extends Fragment {
     TextView mTvNewUpdate;
     @Bind(R.id.rl_concern_we)
     RelativeLayout mRlConcernWe;
+    @Bind(R.id.status_bar_fix)
+    View mStatusBarFix;
 
 
     private DBManager mMgr;
@@ -83,8 +93,8 @@ public class MyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_my, container, false);
         ButterKnife.bind(this, view);
-        if(!EventBus.getDefault().isRegistered(this))
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
         init();
         return view;
     }
@@ -121,7 +131,7 @@ public class MyFragment extends Fragment {
             mTvNewUpdate.setVisibility(View.GONE);
         }
         mTvName.setText(UtilTool.getUser());
-        mTvTocoid.setText(getString(R.string.id) + UtilTool.getTocoId());
+//        mTvTocoid.setText(getString(R.string.id) + UtilTool.getTocoId());
         if (mMgr == null) {
             mMgr = new DBManager(getContext());
         }
@@ -135,7 +145,7 @@ public class MyFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
-    @OnClick({R.id.rl_personal_data, R.id.rl_security_center, R.id.rl_system_set, R.id.rl_concern_we})
+    @OnClick({R.id.rl_dynamic, R.id.rl_collect, R.id.rl_personal_data, R.id.rl_security_center, R.id.rl_system_set, R.id.rl_concern_we})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_personal_data:
@@ -149,6 +159,12 @@ public class MyFragment extends Fragment {
                 break;
             case R.id.rl_concern_we:
                 startActivity(new Intent(getActivity(), GuanYuMeActivity.class));
+                break;
+            case R.id.rl_dynamic:
+                startActivity(new Intent(getActivity(), DynamicActivity.class));
+                break;
+            case R.id.rl_collect:
+                startActivity(new Intent(getActivity(), CollectActivity.class));
                 break;
         }
     }

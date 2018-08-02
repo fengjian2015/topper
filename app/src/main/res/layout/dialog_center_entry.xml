@@ -13,26 +13,23 @@
 
         <Button
             android:id="@+id/btn_delete"
+            style="@style/BlueTextStyle28"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y100"
             android:background="@android:color/transparent"
-            android:text="@string/delete"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"></Button>
+            android:text="@string/delete"></Button>
+
         <TextView
             android:id="@+id/tv_line"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y1"
-            android:background="@color/gray"
-            />
+            style="@style/HorizontalDeepBoundaryStyle"/>
+
         <Button
             android:id="@+id/btn_stick"
+            style="@style/BlueTextStyle28"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y100"
             android:background="@android:color/transparent"
-            android:text="@string/stick"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"/>
+            android:text="@string/stick"/>
     </LinearLayout>
 
 </LinearLayout>

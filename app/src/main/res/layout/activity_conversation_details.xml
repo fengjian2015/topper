@@ -194,10 +194,13 @@
             android:src="@mipmap/iocn_person_turn"/>
     </RelativeLayout>
 
+
+    <View
+        style="@style/HorizontalBoundaryStyle"></View>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"
-        android:layout_marginTop="@dimen/y20"
         >
 
         <TextView
@@ -223,10 +226,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100">
 
+
         <View
-            style="@style/HorizontalBoundaryStyle"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginRight="@dimen/x20"></View>
+            style="@style/HorizontalBoundaryStyle"></View>
+        >>>>>>> liaolinan
 
         <TextView
             android:id="@+id/tv5"
@@ -254,9 +257,7 @@
         >
 
         <View
-            style="@style/HorizontalBoundaryStyle"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginRight="@dimen/x20"></View>
+            style="@style/HorizontalBoundaryStyle"></View>
 
         <TextView
             android:id="@+id/tv6"

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/app_bg_color"
+                tools:context="com.bclould.tea.ui.activity.AuthenticationActivity">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        style="@style/TopNavigationBarStyle">
+
+        <ImageView
+            android:id="@+id/bark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="@dimen/x20"
+            android:src="@mipmap/icon_nav_return"/>
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/MainTextShallowStyle36"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y30"
+            android:gravity="center"
+            android:text="@string/security_verification"
+            />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_title"
+        android:layout_width="@dimen/x140"
+        android:layout_height="@dimen/y140"
+        android:layout_below="@+id/rl_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/y30"
+        android:src="@mipmap/icon_lock"
+        />
+
+    <TextView
+        android:id="@+id/tv_hint"
+        style="@style/MainTextShallowStyle32"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_title"
+        android:layout_marginTop="@dimen/y30"
+        android:gravity="center"
+        android:paddingLeft="@dimen/x100"
+        android:paddingRight="@dimen/x100"
+        android:text="@string/security_verification_hint"/>
+
+    <ImageView
+        android:id="@+id/iv_target"
+        android:layout_width="@dimen/x190"
+        android:layout_height="@dimen/y190"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/y50"
+        android:layout_marginRight="@dimen/x50"
+        android:src="@mipmap/icon_lock_add"
+        />
+
+    <ImageView
+        android:id="@+id/iv_move"
+        android:layout_width="@dimen/x160"
+        android:layout_height="@dimen/y160"
+        android:layout_below="@+id/tv_hint"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/y30"
+        android:src="@mipmap/icon_lock_logo"
+        />
+
+</RelativeLayout>

@@ -6,9 +6,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
 
         <ImageView
@@ -20,11 +18,10 @@
 
         <TextView
             android:id="@+id/tv_title"
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:layout_centerInParent="true"/>
 
     </RelativeLayout>
 
@@ -63,11 +60,10 @@
 
                 <TextView
                     android:id="@+id/tv_hint"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/ta_no_dynamic"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/x30"/>
+                    android:text="@string/ta_no_dynamic"/>
 
             </LinearLayout>
 
@@ -88,12 +84,11 @@
                     android:src="@mipmap/img_wrong"/>
 
                 <TextView
-                    android:layout_marginTop="@dimen/y50"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y50"
                     android:text="@string/loading_error_anew_loading_hint"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/x30"/>
+                    style="@style/MainTextShallowStyle30"/>
 
             </LinearLayout>
 

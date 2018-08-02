@@ -2,11 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/x20"
                 android:paddingRight="@dimen/x20">
-
 
     <TextView
         style="@style/HorizontalBoundaryStyle"/>
@@ -31,13 +29,12 @@
 
         <TextView
             android:id="@+id/tv_news_title"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="噶克里斯多夫记录数据法拉盛家乐福接口积分卡拉斯"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x28"/>
+            android:text="噶克里斯多夫记录数据法拉盛家乐福接口积分卡拉斯"/>
 
         <TextView
             android:id="@+id/tv_type"
@@ -57,25 +54,24 @@
 
         <TextView
             android:id="@+id/tv_time"
+            style="@style/SecondaryTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_news_title"
             android:layout_marginTop="@dimen/y30"
-            android:text="3小时前"
-            android:textSize="@dimen/x26"/>
+            android:text="3小时前"/>
 
         <TextView
             android:id="@+id/tv_look_count"
-            android:visibility="gone"
-            android:drawableLeft="@mipmap/icon_eye_of2"
-            android:drawablePadding="@dimen/x10"
+            style="@style/SecondaryTextStyle24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/gray"
             android:layout_below="@+id/tv_time"
             android:layout_marginTop="@dimen/y20"
+            android:drawableLeft="@mipmap/icon_eye_of2"
+            android:drawablePadding="@dimen/x10"
             android:text="45623"
-            android:textSize="@dimen/x22"/>
+            android:visibility="gone"/>
 
     </RelativeLayout>
 

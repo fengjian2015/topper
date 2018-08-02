@@ -25,9 +25,12 @@ import android.widget.Toast;
 import com.bclould.tea.R;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.ConversationActivity;
+import com.bclould.tea.ui.activity.DeblockingFingerprintActivity;
+import com.bclould.tea.ui.activity.DeblockingGestureActivity;
 import com.bclould.tea.ui.activity.PayPwSelectorActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.GestureLockViewGroup;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.FingerprintUtil;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -56,7 +59,7 @@ public class BaseActivity extends SwipeActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             getWindow().setStatusBarColor(getResources().getColor(R.color.app_bg_color));
         }
     }
@@ -111,115 +114,13 @@ public class BaseActivity extends SwipeActivity {
             isActive = true;
             if (!UtilTool.getToken().equals("bearer")) {
                 if (MySharedPreferences.getInstance().getBoolean(FINGERPRINT_PW_SELE)) {
-                    checkFingerprint();
+                    startActivity(new Intent(this, DeblockingFingerprintActivity.class));
                 }
                 if (MySharedPreferences.getInstance().getBoolean(GESTURE_PW_SELE)) {
-                    showGestureDialog();
+                    startActivity(new Intent(this, DeblockingGestureActivity.class));
                 }
             }
             UtilTool.Log("ACTIVITY", "程序从后台唤醒");
-        }
-    }
-
-    private void showGestureDialog() {
-        if (mGestureDialog == null) {
-            mGestureDialog = new Dialog(BaseActivity.this, R.style.dialog2);
-            View contentView = LayoutInflater.from(BaseActivity.this).inflate(R.layout.dialog_gesture_pw, null);
-            //获得dialog的window窗口
-            Window window = mGestureDialog.getWindow();
-            window.getDecorView().setPadding(0, 0, 0, 0);
-            //获得window窗口的属性
-            WindowManager.LayoutParams lp = window.getAttributes();
-            //设置窗口宽度为充满全屏
-            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-            //将设置好的属性set回去
-            window.setAttributes(lp);
-            mGestureDialog.setContentView(contentView);
-            mGestureDialog.setCancelable(false);
-        }
-        if (!mGestureDialog.isShowing()) {
-            mGestureDialog.show();
-            mGestureView = (GestureLockViewGroup) mGestureDialog.findViewById(R.id.gesture_view);
-            mTvHint = (TextView) mGestureDialog.findViewById(R.id.tv_hint);
-            mTvHint.setText(getString(R.string.import_gesture));
-            String mAnswerstr = MySharedPreferences.getInstance().getString(GESTURE_ANSWER);
-            int[] arr = new int[mAnswerstr.length()];
-            for (int i = 0; i < mAnswerstr.length(); i++) {
-                arr[i] = Character.getNumericValue(mAnswerstr.charAt(i));
-            }
-            mGestureView.setAnswer(arr);
-            mGestureView.setOnGestureLockViewListener(mOnGestureLockViewListener);
-        }
-    }
-
-    GestureLockViewGroup.OnGestureLockViewListener mOnGestureLockViewListener = new GestureLockViewGroup.OnGestureLockViewListener() {
-
-        public int mCount = 5;
-
-        @Override
-        public void onBlockSelected(int position) {
-
-        }
-
-        @Override
-        public void onGestureEvent(boolean matched) {
-            if (mCount > 0) {
-                if (matched) {
-                    if (mCount > 0) {
-                        mGestureDialog.dismiss();
-                        mCount = 5;
-                    }
-                } else {
-                    mCount--;
-                    mTvHint.setText(getString(R.string.set_gesture_hint5) + getString(R.string.hai_sheng) + mCount + getString(R.string.chance));
-                    mTvHint.setTextColor(getResources().getColor(R.color.red));
-                }
-            } else {
-                showHintDialog();
-            }
-        }
-
-        @Override
-        public void onUnmatchedExceedBoundary() {
-            UtilTool.Log("手勢", "onUnmatchedExceedBoundary");
-            if (mCount == 0) {
-                showHintDialog();
-            }
-        }
-
-        private void showHintDialog() {
-            final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, BaseActivity.this, R.style.dialog);
-            deleteCacheDialog.show();
-            deleteCacheDialog.setTitle(getString(R.string.gesture_count_exceed_hint));
-            Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
-            cancel.setText(getString(R.string.again_login));
-            Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
-            confirm.setText(getString(R.string.cancel_gesture));
-            cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    deleteCacheDialog.dismiss();
-                    mGestureDialog.dismiss();
-                    WsConnection.getInstance().goMainActivity();
-                }
-            });
-            confirm.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    deleteCacheDialog.dismiss();
-                    Intent intent = new Intent(BaseActivity.this, PayPwSelectorActivity.class);
-                    intent.putExtra("code", 1);
-                    startActivityForResult(intent, 1);
-                }
-            });
-        }
-    };
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            mGestureDialog.dismiss();
         }
     }
 
@@ -234,161 +135,9 @@ public class BaseActivity extends SwipeActivity {
             //app 进入后台
             isActive = false;//记录当前已经进入后台
             UtilTool.Log("ACTIVITY", "程序进入后台");
-            FingerprintUtil.cancel();
-            if (mFingerprintdialog != null) {
-                if (mFingerprintdialog.isShowing()) {
-                    mFingerprintdialog.dismiss();
-                }
-                mFingerprintdialog = null;
-            }
-            if (mGestureDialog != null) {
-                if (mGestureDialog.isShowing()) {
-                    mGestureDialog.dismiss();
-                }
-                mGestureDialog = null;
-            }
+
         }
         super.onStop();
-    }
-
-    private void checkFingerprint() {
-        FingerprintUtil.callFingerPrint(mOnCallBackListenr);
-    }
-
-    FingerprintUtil.OnCallBackListenr mOnCallBackListenr = new FingerprintUtil.OnCallBackListenr() {
-
-        private TextView mCheck;
-        private int mCount = 5;
-
-        @Override
-        public void onSupportFailed() {
-            Toast.makeText(BaseActivity.this, getString(R.string.nonsupport_fingerprint), Toast.LENGTH_SHORT).show();
-            FingerprintUtil.cancel();
-        }
-
-        @Override
-        public void onInsecurity() {
-            Toast.makeText(BaseActivity.this, getString(R.string.insecurity), Toast.LENGTH_SHORT).show();
-            FingerprintUtil.cancel();
-        }
-
-        @Override
-        public void onEnrollFailed() {
-            Toast.makeText(BaseActivity.this, getString(R.string.no_set_fingerprint), Toast.LENGTH_SHORT).show();
-            FingerprintUtil.cancel();
-        }
-
-        @Override
-        public void onAuthenticationStart() {
-            if (mFingerprintdialog == null) {
-                mFingerprintdialog = new Dialog(BaseActivity.this, R.style.dialog2);
-                View contentView = LayoutInflater.from(BaseActivity.this).inflate(R.layout.dialog_fingerprint_pw, null);
-                //获得dialog的window窗口
-                Window window = mFingerprintdialog.getWindow();
-                window.getDecorView().setPadding(0, 0, 0, 0);
-                //获得window窗口的属性
-                WindowManager.LayoutParams lp = window.getAttributes();
-                //设置窗口宽度为充满全屏
-                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-                //将设置好的属性set回去
-                window.setAttributes(lp);
-                mFingerprintdialog.setContentView(contentView);
-                mFingerprintdialog.setCancelable(false);
-            }
-            if (!mFingerprintdialog.isShowing()) {
-                mFingerprintdialog.show();
-                TextView cancel = (TextView) mFingerprintdialog.findViewById(R.id.tv_cancel);
-                TextView xx = (TextView) mFingerprintdialog.findViewById(R.id.xx);
-                mCheck = (TextView) mFingerprintdialog.findViewById(R.id.tv_check);
-                cancel.setText(getString(R.string.exit));
-                cancel.setVisibility(View.GONE);
-                xx.setVisibility(View.GONE);
-                cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        showQuitDialog();
-                    }
-                });
-            }
-        }
-
-        @Override
-        public void onAuthenticationError(int errMsgId, CharSequence errString) {
-            UtilTool.Log("指紋", errMsgId + ":" + errString);
-            if (mFingerprintdialog != null && mFingerprintdialog.isShowing() && errMsgId != 5) {
-                if (mCount > 0) {
-                    mCount--;
-                    mCheck.setText(getString(R.string.check_fingerprint_error) + getString(R.string.hai_sheng) + mCount + getString(R.string.chance));
-                    mCheck.setTextColor(getResources().getColor(R.color.red));
-                    AnimatorTool.getInstance().editTextAnimator(mCheck);
-                } else {
-                    mFingerprintdialog.dismiss();
-                    WsConnection.getInstance().goMainActivity();
-                    mCount = 5;
-                }
-            }
-
-        }
-
-        @Override
-        public void onAuthenticationFailed() {
-            if (mFingerprintdialog != null && mFingerprintdialog.isShowing()) {
-                if (mCount > 0) {
-                    mCount--;
-                    mCheck.setText(getString(R.string.check_fingerprint_error) + getString(R.string.hai_sheng) + mCount + getString(R.string.chance));
-                    mCheck.setTextColor(getResources().getColor(R.color.red));
-                    AnimatorTool.getInstance().editTextAnimator(mCheck);
-                } else {
-                    mFingerprintdialog.dismiss();
-                    WsConnection.getInstance().goMainActivity();
-                    mCount = 5;
-                }
-            }
-        }
-
-        @Override
-        public void onAuthenticationHelp(int helpMsgId, CharSequence helpString) {
-            Toast.makeText(BaseActivity.this, getString(R.string.finger_move_fast), Toast.LENGTH_SHORT).show();
-        }
-
-        @SuppressLint("HandlerLeak")
-        @Override
-        public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
-            if (mFingerprintdialog != null && mFingerprintdialog.isShowing()) {
-                mCount = 5;
-                mCheck.setText(getString(R.string.check_fingerprint_succeed));
-                mCheck.setTextColor(getResources().getColor(R.color.blue2));
-                new Handler() {
-                    public void handleMessage(Message msg) {
-                        mFingerprintdialog.dismiss();
-                    }
-                }.sendEmptyMessageDelayed(0, 1500);
-            }
-        }
-    };
-
-    private void showQuitDialog() {
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
-        deleteCacheDialog.show();
-        deleteCacheDialog.setTitle(getString(R.string.logout_hint));
-        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
-        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteCacheDialog.dismiss();
-            }
-        });
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteCacheDialog.dismiss();
-                FingerprintUtil.cancel();
-                mFingerprintdialog.dismiss();
-                WsConnection.getInstance().goMainActivity();
-            }
-        });
-
     }
 
     @Override

@@ -28,6 +28,7 @@ import com.bclould.tea.ui.activity.PersonageDynamicActivity;
 import com.bclould.tea.ui.activity.PublicshDynamicActivity;
 import com.bclould.tea.ui.adapter.CloudMessageVPAdapter;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.StatusBarCompat;
 import com.bclould.tea.utils.UtilTool;
 
 import org.greenrobot.eventbus.EventBus;
@@ -85,6 +86,8 @@ public class DiscoverFragment extends Fragment {
     ViewPager mCloudCircleVp;
     @Bind(R.id.rl_title)
     RelativeLayout mRlTitle;
+    @Bind(R.id.status_bar_fix)
+    View mStatusBarFix;
     private MainActivity.MyOnTouchListener mTouchListener;
     private List<Fragment> mFragmentList = new ArrayList<>();
 
@@ -101,6 +104,7 @@ public class DiscoverFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_discover, container, false);
         ButterKnife.bind(this, view);
+        mStatusBarFix.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, StatusBarCompat.getStateBarHeight(getActivity())));
         if (!EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().register(this);
         initInterface();

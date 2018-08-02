@@ -5,7 +5,7 @@
     android:id="@+id/refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light">
+    android:background="@color/app_bg_color">
 
     <com.scwang.smartrefresh.header.WaterDropHeader
         android:layout_width="match_parent"
@@ -25,6 +25,7 @@
             android:layout_marginRight="@dimen/x40"
             android:layout_marginTop="@dimen/y30"
             android:visibility="gone"
+            app:cardBackgroundColor="@color/boundary_color"
             app:cardCornerRadius="@dimen/x40">
 
             <LinearLayout
@@ -44,6 +45,7 @@
 
                 <com.bclould.tea.ui.widget.ClearEditText
                     android:id="@+id/et_search"
+                    style="@style/MainTextShallowStyle30"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="6"
@@ -54,8 +56,7 @@
                     android:paddingLeft="@dimen/x30"
                     android:paddingRight="@dimen/x30"
                     android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x28"/>
+                    android:textColorHint="@color/secondary_text_color"/>
 
 
             </LinearLayout>
@@ -87,11 +88,10 @@
                 android:src="@mipmap/icon_nothing_img"/>
 
             <TextView
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/no_guess"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/x30"/>
+                android:text="@string/no_guess"/>
 
         </LinearLayout>
 
@@ -112,12 +112,11 @@
                 android:src="@mipmap/img_wrong"/>
 
             <TextView
-                android:layout_marginTop="@dimen/y50"
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/loading_error_anew_loading_hint"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/x30"/>
+                android:layout_marginTop="@dimen/y50"
+                android:text="@string/loading_error_anew_loading_hint"/>
 
         </LinearLayout>
 

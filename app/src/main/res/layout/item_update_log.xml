@@ -2,17 +2,15 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/white"
     android:layout_height="@dimen/y120">
 
     <TextView
         android:id="@+id/tv_title"
+        style="@style/MainTextShallowStyle30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/x20"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
+        android:layout_marginLeft="@dimen/x20"/>
 
     <TextView
         android:id="@+id/tv_time"
@@ -21,7 +19,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/x20"
         android:layout_toLeftOf="@+id/iv_jiantou"
-        android:textSize="@dimen/x26"/>
+        style="@style/SecondaryTextStyle28"/>
 
 
     <ImageView

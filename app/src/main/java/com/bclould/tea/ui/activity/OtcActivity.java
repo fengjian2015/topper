@@ -69,6 +69,8 @@ import static com.bclould.tea.R.style.BottomDialog;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class OtcActivity extends BaseActivity {
 
+    @Bind(R.id.tv_filtrate)
+    TextView mTvFiltrate;
     @Bind(R.id.tv_state)
     TextView mTvState;
     @Bind(R.id.rl_selector_state)
@@ -89,24 +91,22 @@ public class OtcActivity extends BaseActivity {
     TextView mTvXx3;
     @Bind(R.id.ll_menu)
     LinearLayout mLlMenu;
-    @Bind(R.id.cloud_circle_vp)
-    ViewPager mCloudCircleVp;
-    @Bind(R.id.xx2)
-    TextView mXx2;
-    @Bind(R.id.btn_push_ad)
-    Button mBtnPushAd;
-    @Bind(R.id.ll_bottom)
-    LinearLayout mLlBottom;
-    @Bind(R.id.tv_filtrate)
-    TextView mTvFiltrate;
     @Bind(R.id.xx3)
     TextView mXx3;
+    @Bind(R.id.cloud_circle_vp)
+    ViewPager mCloudCircleVp;
     @Bind(R.id.iv2)
     ImageView mIv2;
     @Bind(R.id.ll_error)
     LinearLayout mLlError;
+    @Bind(R.id.xx2)
+    TextView mXx2;
+    @Bind(R.id.btn_push_ad)
+    TextView mBtnPushAd;
     @Bind(R.id.my_publish)
-    Button mMyPublish;
+    TextView mMyPublish;
+    @Bind(R.id.ll_bottom)
+    LinearLayout mLlBottom;
     private Dialog mBottomDialog;
     private int mId;
     private String mName_zh;

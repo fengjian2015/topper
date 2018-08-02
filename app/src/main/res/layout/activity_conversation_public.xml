@@ -54,7 +54,7 @@
 
         <TextView
             android:id="@+id/xx"
-            style="@style/HorizontalBoundaryStyle"
+            style="@style/VerticalBoundaryStyle"
             android:layout_below="@+id/rl_title"/>
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -88,7 +88,7 @@
 
     <View
         android:id="@+id/view"
-        style="@style/HorizontalBoundaryStyle"
+        style="@style/VerticalBoundaryStyle"
         android:layout_below="@+id/ll_menu"></View>
 
     <com.bclould.tea.ui.widget.MenuLinearLayout

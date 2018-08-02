@@ -2,14 +2,12 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/app_bg_color"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/app_bg_color">
 
     <RelativeLayout
         android:id="@+id/rl_title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle">
 
         <ImageView
             android:id="@+id/bark"
@@ -19,24 +17,22 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/transfer_details"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            android:text="@string/transfer_details"/>
 
         <TextView
             android:id="@+id/tv_transfer_record"
+            style="@style/BlueTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
             android:paddingRight="@dimen/x20"
-            android:text="@string/record"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"/>
+            android:text="@string/record"/>
 
     </RelativeLayout>
 
@@ -56,45 +52,43 @@
 
     <TextView
         android:id="@+id/tv_hint"
+        style="@style/MainTextShallowStyle30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/y30"
-        android:text="@string/already_deposited_wallet"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
+        android:text="@string/already_deposited_wallet"/>
 
     <TextView
         android:id="@+id/tv_coin"
+        style="@style/MainTextShallowStyle36"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_hint"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/y30"
         android:text="100.00"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x32"
         android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/tv_count"
+        style="@style/MainTextShallowStyle30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_coin"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/y20"
-        android:text="TPC"
-        android:textSize="@dimen/x28"/>
+        android:text="TPC"/>
 
     <TextView
         android:id="@+id/tv_time"
+        style="@style/SecondaryTextStyle24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/y80"
-        android:text="@string/transfer_time"
-        android:textSize="@dimen/x26"/>
+        android:text="@string/transfer_time"/>
 
 </RelativeLayout>

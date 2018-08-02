@@ -2,25 +2,35 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/x600"
-    android:layout_height="@dimen/y300"
+    android:layout_height="wrap_content"
     android:background="@drawable/bg_white_shape"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="5"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="@dimen/y30"
         android:paddingLeft="@dimen/x20"
         android:paddingRight="@dimen/x20"
-        android:gravity="center">
+        android:paddingTop="@dimen/y30">
 
         <TextView
             android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
+            style="@style/MainTextDeepStyle36"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/delete_cache_hint"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/x28"/>
+            android:gravity="center"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_content"
+            style="@style/SecondaryTextStyle28"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_title"
+            android:gravity="center"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
@@ -29,22 +39,13 @@
         android:layout_height="@dimen/y1"
         android:background="@color/gray"/>
 
-    <LinearLayout
+    <Button
+        android:id="@+id/btn_confirm"
+        style="@style/BlueTextStyle36"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/btn_confirm"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:text="@string/confirm"
-            android:textColor="@color/blue2"
-            android:textSize="@dimen/x28"/>
-
-
-    </LinearLayout>
+        android:layout_height="@dimen/y90"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:text="@string/confirm"/>
 
 </LinearLayout>

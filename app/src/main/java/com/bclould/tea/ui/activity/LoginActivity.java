@@ -194,9 +194,21 @@ public class LoginActivity extends LoginBaseActivity {
             case R.id.btn_login:
                 //判断邮箱、密码、验证码是否为空，格式是否正确
                 if (checkEdit()) {
-                    login();
+//                    login();
+                    startActivity(new Intent(this,AuthenticationActivity.class));
                 }
                 break;
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if(intent!=null){
+            boolean isState=intent.getBooleanExtra("isState",false);
+            if(isState){
+                login();
+            }
         }
     }
 

@@ -95,7 +95,7 @@ public class FileOpenActivity extends BaseActivity {
     }
 
     private void init() {
-        mTvType.setImageResource(setImage(mMessageInfo.getContent()));
+        mTvType.setImageResource(UtilTool.getFileImageRe(mMessageInfo.getContent()));
         String path = mMessageInfo.getVoice();
         key = mMessageInfo.getKey();
 
@@ -174,20 +174,20 @@ public class FileOpenActivity extends BaseActivity {
 
     FileDownloadPresenter.downloadCallback mDownloadCallback = new FileDownloadPresenter.downloadCallback() {
         @Override
-        public void onSuccess(File file, String key) {
-            if (!key.equals(key)) return;
+        public void onSuccess(File file, String keys) {
+            if (!key.equals(keys)) return;
             mHandler.sendEmptyMessage(2);
         }
 
         @Override
-        public void onFailure(String key) {
-            if (!key.equals(key)) return;
+        public void onFailure(String keys) {
+            if (!key.equals(keys)) return;
             mHandler.sendEmptyMessage(1);
         }
 
         @Override
-        public void onSuccsetProgressListeneress(long currentSize, long totalSize, String key) {
-            if (!key.equals(key)) return;
+        public void onSuccsetProgressListeneress(long currentSize, long totalSize, String keys) {
+            if (!key.equals(keys)) return;
             if (!mFile.exists()) {
                 MySharedPreferences.getInstance().setLong(key, totalSize);
             } else {
@@ -257,33 +257,6 @@ public class FileOpenActivity extends BaseActivity {
         super.onDestroy();
         ButterKnife.unbind(this);
         mFileDownloadPresenter.removeDownloadCallbackListener(mDownloadCallback);
-    }
-
-    /**
-     * 选择FILE_TYPE_xxx中的一种传入
-     *
-     * @param fileType
-     */
-    public int setImage(String fileType) {
-        int resId = -1;
-        if (FILE_TYPE_DOC.equals(fileType) || FILE_TYPE_DOCX.equals(fileType)) {
-            resId = R.mipmap.type_doc;
-        } else if (FILE_TYPE_XLS.equals(fileType) || FILE_TYPE_XLSX.equals(fileType)) {
-            resId = R.mipmap.type_xls;
-        } else if (FILE_TYPE_PPT.equals(fileType) || FILE_TYPE_PPTX.equals(fileType)) {
-            resId = R.mipmap.type_ppt;
-        } else if (FILE_TYPE_PDF.equals(fileType)) {
-            resId = R.mipmap.type_pdf;
-        } else if (FILE_TYPE_TXT.equals(fileType) || FILE_TYPE_LOG.equals(fileType) || FILE_TYPE_RTF.equals(fileType)) {
-            resId = R.mipmap.type_txt;
-        } else if (FILE_TYPE_ZIP.equals(fileType)) {
-            resId = R.mipmap.type_zip;
-        } else if (FILE_TYPE_RAR.equals(fileType)) {
-            resId = R.mipmap.type_rar;
-        } else {
-            resId = R.mipmap.type_unknown;
-        }
-        return resId;
     }
 
     /**
