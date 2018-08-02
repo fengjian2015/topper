@@ -39,10 +39,9 @@ import com.bclould.tea.model.QrRedInfo;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.AddFriendActivity;
 import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
+import com.bclould.tea.ui.activity.GroupListActivity;
 import com.bclould.tea.ui.activity.MyFriendActivity;
-import com.bclould.tea.ui.activity.ScanQRCodeActivity;
 import com.bclould.tea.ui.activity.SearchActivity;
-import com.bclould.tea.ui.activity.SendQRCodeRedActivity;
 import com.bclould.tea.ui.adapter.ConversationAdapter;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
@@ -56,7 +55,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -269,13 +267,12 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
         int widthPixels = mDm.widthPixels;
 
-        mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_cloud_message, null);
+        mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_message, null);
 
-        mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 4, true);
+        mPopupWindow = new PopupWindow(mView, ViewGroup.LayoutParams.WRAP_CONTENT, (int)(getResources().getDimension(R.dimen.y300)), true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
 
-        mPopupWindow.showAsDropDown(mXx, (widthPixels - widthPixels / 100 * 35 - 20), 0);
-
+        mPopupWindow.showAsDropDown(mXx, (widthPixels - mPopupWindow.getWidth()), 0);
         popChildClick();
     }
 
@@ -317,13 +314,11 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
 
                     switch (index) {
                         case 0:
-                            Intent intent = new Intent(getActivity(), ScanQRCodeActivity.class);
-                            intent.putExtra("code", QRCODE);
-                            startActivityForResult(intent, 0);
+                            startActivity(new Intent(getActivity(), GroupListActivity.class));
                             mPopupWindow.dismiss();
                             break;
                         case 1:
-                            startActivity(new Intent(getActivity(), SendQRCodeRedActivity.class));
+                            startActivity(new Intent(getActivity(), MyFriendActivity.class));
                             mPopupWindow.dismiss();
                             break;
                         case 2:
@@ -331,8 +326,6 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
                             mPopupWindow.dismiss();
                             break;
                         case 3:
-                            startActivity(new Intent(getActivity(), MyFriendActivity.class));
-                            mPopupWindow.dismiss();
                             break;
                     }
 

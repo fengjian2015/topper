@@ -2243,4 +2243,6 @@
     <string name="information">资讯</string>
     <string name="message">消息</string>
     <string name="my_ad_platform">我的广告平台</string>
+    <string name="start_group">发起群聊</string>
+    <string name="add_images">添加图片</string>
 </resources>

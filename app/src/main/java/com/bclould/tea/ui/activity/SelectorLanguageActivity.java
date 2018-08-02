@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +17,7 @@ import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
+import com.bclould.tea.service.IMService;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
 
@@ -52,6 +54,7 @@ public class SelectorLanguageActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selector_language);
         ButterKnife.bind(this);
+        MyApp.getInstance().addActivity(this);
         MySharedPreferences.getInstance().getSp().registerOnSharedPreferenceChangeListener(mPreferenceChangeListener);
         init();
     }
@@ -139,12 +142,27 @@ public class SelectorLanguageActivity extends BaseActivity {
         }
     };
 
+    @SuppressLint("HandlerLeak")
     private void onChangeAppLanguage(String newLanguage) {
         AppLanguageUtils.changeAppLanguage(this, newLanguage);
         AppLanguageUtils.changeAppLanguage(MyApp.getInstance().app(), newLanguage);
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        stopService(new Intent(this, IMService.class));
+        startService(new Intent(this, IMService.class));
+
+        /*new Handler() {
+            public void handleMessage(Message msg) {
+                Intent intent = getPackageManager()
+                        .getLaunchIntentForPackage(getApplication().getPackageName());
+                PendingIntent restartIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                AlarmManager mgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 200, restartIntent);
+                System.exit(0);
+            }
+        }.sendEmptyMessageDelayed(0, 3000);*/
+
     }
 
     @Override

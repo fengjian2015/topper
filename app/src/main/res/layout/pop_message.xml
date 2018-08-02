@@ -5,20 +5,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_msg_pop_shape"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/x30"
-    android:paddingRight="@dimen/x30">
-
-    <TextView
-        android:id="@+id/pop_bit"
-        style="@style/MainTextDeepStyle30"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/y15"
-        android:layout_weight="1"
-        android:drawableLeft="@mipmap/icon_news_flicking"
-        android:drawablePadding="@dimen/x30"
-        android:gravity="center"
-        android:text="@string/rich_scan"/>
+    android:paddingRight="@dimen/x30"
+    android:paddingLeft="@dimen/x30">
 
     <TextView
         android:id="@+id/pop_eth"
@@ -26,11 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:drawableLeft="@mipmap/icon_news_receiving"
         android:drawablePadding="@dimen/x30"
+        android:drawableLeft="@mipmap/icon_chat_startgroupchat"
         android:gravity="center"
-        android:text="@string/receipt_payment"
-        android:visibility="visible"/>
+        android:text="@string/start_group"/>
 
     <TextView
         android:id="@+id/pop_etc"
@@ -38,20 +25,18 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:drawableLeft="@mipmap/icon_news_codeenvelope"
         android:drawablePadding="@dimen/x30"
+        android:drawableLeft="@mipmap/icon_chat_myfriend"
         android:gravity="center"
-        android:text="@string/qr_code_red_package"
-        android:visibility="visible"/>
+        android:text="@string/my_friend"/>
 
     <TextView
-        android:id="@+id/pop_ltc"
         style="@style/MainTextDeepStyle30"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:drawableLeft="@mipmap/icon_talk_add"
         android:drawablePadding="@dimen/x30"
+        android:drawableLeft="@mipmap/icon_talk_add"
         android:gravity="center"
         android:text="@string/add_friend"/>
 

@@ -371,7 +371,7 @@ public class MyFriendActivity extends BaseActivity implements FriendListRVAdapte
 
         int widthPixels = mDm.widthPixels;
 
-        mView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.pop_cloud_message, null);
+        mView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.pop_message, null);
 
         mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 4, true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());

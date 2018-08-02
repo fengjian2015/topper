@@ -394,7 +394,7 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
 
         int widthPixels = mDm.widthPixels;
 
-        mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_cloud_message, null);
+        mView = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.pop_message, null);
 
         mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 4, true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());

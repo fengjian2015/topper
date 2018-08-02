@@ -12,6 +12,7 @@ import com.bclould.tea.model.GonggaoListInfo;
 import com.bclould.tea.model.NewsListInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -47,19 +48,20 @@ public class NewsNoticePresenter {
             mProgressDialog = LoadingProgressDialog.createDialog(mContext);
             mProgressDialog.setMessage(mContext.getString(R.string.loading));
         }
-
-        mProgressDialog.show();
+        if (ActivityUtil.isActivityOnTop(mContext)) {
+            mProgressDialog.show();
+        }
     }
 
     private void hideDialog() {
-        if (mProgressDialog != null) {
+        if (mProgressDialog != null && ActivityUtil.isActivityOnTop(mContext)) {
             mProgressDialog.dismiss();
             mProgressDialog = null;
         }
     }
 
     public void getNewsList(final int page, int pageSize, final CallBack callBack) {
-showDialog();
+        showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .getNewsList(UtilTool.getToken(), page, pageSize)
@@ -81,10 +83,11 @@ showDialog();
                                 MySharedPreferences.getInstance().setString(NEWS_JSON, gson.toJson(newsListInfo));
                             }
                             callBack.send(newsListInfo.getLists(), newsListInfo.getTop());
-                        }else{
+                        } else {
                             callBack.finishRefresh();
                         }
                     }
+
                     @Override
                     public void onError(Throwable e) {
                         hideDialog();
@@ -125,7 +128,7 @@ showDialog();
                         hideDialog();
                         if (gonggaoListInfo.getStatus() == 1) {
                             callBack2.send(gonggaoListInfo.getData());
-                        }else{
+                        } else {
                             callBack2.finishRefresh();
                         }
                     }
@@ -162,7 +165,7 @@ showDialog();
                         hideDialog();
                         if (gonggaoListInfo.getStatus() == 1) {
                             callBack2.send(gonggaoListInfo.getData());
-                        }else {
+                        } else {
                             callBack2.finishRefresh();
                         }
                     }
@@ -199,7 +202,7 @@ showDialog();
                         hideDialog();
                         if (gonggaoListInfo.getStatus() == 1) {
                             callBack2.send(gonggaoListInfo.getData());
-                        }else {
+                        } else {
                             callBack2.finishRefresh();
                         }
                     }
@@ -305,7 +308,7 @@ showDialog();
                         hideDialog();
                         if (gonggaoListInfo.getStatus() == 1) {
                             callBack2.send(gonggaoListInfo.getData());
-                        }else {
+                        } else {
                             callBack2.finishRefresh();
                         }
                     }
@@ -358,6 +361,7 @@ showDialog();
         void send(List<NewsListInfo.ListsBean> lists, List<NewsListInfo.TopBean> top);
 
         void error();
+
         void finishRefresh();
     }
 
@@ -366,6 +370,7 @@ showDialog();
         void send(List<GonggaoListInfo.DataBean> data);
 
         void error();
+
         void finishRefresh();
     }
 
