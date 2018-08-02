@@ -2,8 +2,11 @@ package com.bclould.tea.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +35,8 @@ import com.bclould.tea.xmpp.RoomManage;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,6 +45,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.bclould.tea.topperchat.WsContans.VIDEO_THUMBNAIL;
 import static com.bclould.tea.ui.activity.SelectConversationActivity.IMAGE_TYPE;
 import static com.bclould.tea.ui.activity.SelectConversationActivity.TEXT_PLAIN;
 import static com.bclould.tea.ui.activity.SelectConversationActivity.TYPE_HTML;
@@ -189,38 +195,75 @@ public class SelectFriendActivity extends BaseActivity implements SelectFriendAd
     }
 
     private void showDeleteDialog(String remark, final String name, final String user,String url) {
-//        ShareDialog shareDialog=new ShareDialog(this);
-//        shareDialog.show();
-//        shareDialog.setTvName(remark);
-//        shareDialog.setIvHead(url);
-//        shareDialog.setOnClickListener(new ShareDialog.OnClickListener() {
+        ShareDialog shareDialog=new ShareDialog(this);
+        shareDialog.show();
+        shareDialog.setTvName(remark);
+        shareDialog.setIvHead(url);
+        setDialogImage(shareDialog);
+        shareDialog.setOnClickListener(new ShareDialog.OnClickListener() {
+            @Override
+            public void onOkClick(String content) {
+                sendMessage(user, name);
+                if(!StringUtils.isEmpty(content)) {
+                    mRoom.sendMessage(content);
+                }
+            }
+        });
+
+//        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
+//        deleteCacheDialog.show();
+//        deleteCacheDialog.setTitle(getString(R.string.confirm_send_to) + remark);
+//        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+//        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+//        cancel.setOnClickListener(new View.OnClickListener() {
 //            @Override
-//            public void onOkClick(String content) {
-//                sendMessage(user, name);
-//                if(!StringUtils.isEmpty(content)) {
-//                    mRoom.sendMessage(content);
-//                }
+//            public void onClick(View view) {
+//                deleteCacheDialog.dismiss();
 //            }
 //        });
+//        confirm.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                sendMessage(user, name);
+//                deleteCacheDialog.dismiss();
+//            }
+//        });
+    }
 
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
-        deleteCacheDialog.show();
-        deleteCacheDialog.setTitle(getString(R.string.confirm_send_to) + remark);
-        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
-        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteCacheDialog.dismiss();
+    private void setDialogImage(ShareDialog shareDialog){
+        if(type==0){
+            if (shareType.contains(IMAGE_TYPE)){
+                shareDialog.setIvImage(new File(filePath));
+            }if (shareType.contains(VIDEO_TYPE)){
+                Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Video.Thumbnails.MINI_KIND);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                byte[] bytes=baos.toByteArray();
+                shareDialog.setIvImage(bytes);
             }
-        });
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendMessage(user, name);
-                deleteCacheDialog.dismiss();
+        }else if (type == 1){
+            if (msgType == FROM_IMG_MSG || msgType == TO_IMG_MSG) {
+                if (!StringUtils.isEmpty(messageInfo.getMessage())&&messageInfo.getMessage().startsWith("http")) {
+                    shareDialog.setIvImage(messageInfo.getMessage());
+                }else {
+                    shareDialog.setIvImage(new File(messageInfo.getVoice()));
+                }
+            } else if (msgType == FROM_VIDEO_MSG || msgType == TO_VIDEO_MSG) {
+                if (messageInfo.getMessage().startsWith("http")) {
+                    shareDialog.setIvImage(messageInfo.getMessage()+VIDEO_THUMBNAIL);
+                } else {
+                    Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(messageInfo.getMessage(), MediaStore.Video.Thumbnails.MINI_KIND);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                    byte[] bytes=baos.toByteArray();
+                    shareDialog.setIvImage(bytes);
+                }
             }
-        });
+        }else if(type==2){
+            if (msgType == FROM_IMG_MSG || msgType == TO_IMG_MSG) {
+                shareDialog.setIvImage(new File(messageInfo.getVoice()));
+            }
+        }
     }
 
 

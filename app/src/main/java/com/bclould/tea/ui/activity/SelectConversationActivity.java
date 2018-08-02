@@ -319,47 +319,51 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
     }
 
     private void showDeleteDialog(String remark, final String name, final String user, final String chatType,String url) {
-//        ShareDialog shareDialog=new ShareDialog(this);
-//        shareDialog.show();
-//        shareDialog.setTvName(remark);
-//        shareDialog.setIvHead(url);
-//        setDialogImage(shareDialog);
-//        shareDialog.setOnClickListener(new ShareDialog.OnClickListener() {
+        ShareDialog shareDialog=new ShareDialog(this);
+        shareDialog.show();
+        shareDialog.setTvName(remark);
+        shareDialog.setIvHead(url);
+        setDialogImage(shareDialog);
+        shareDialog.setOnClickListener(new ShareDialog.OnClickListener() {
+            @Override
+            public void onOkClick(String content) {
+                sendMessage(user, name, chatType);
+                if(!StringUtils.isEmpty(content)) {
+                    mRoom.sendMessage(content);
+                }
+            }
+        });
+
+//        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
+//        deleteCacheDialog.show();
+//        deleteCacheDialog.setTitle(getString(R.string.confirm_send_to) + remark);
+//        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
+//        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
+//        cancel.setOnClickListener(new View.OnClickListener() {
 //            @Override
-//            public void onOkClick(String content) {
-//                sendMessage(user, name, chatType);
-//                if(!StringUtils.isEmpty(content)) {
-//                    mRoom.sendMessage(content);
-//                }
+//            public void onClick(View view) {
+//                deleteCacheDialog.dismiss();
 //            }
 //        });
-
-        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_delete_cache, this, R.style.dialog);
-        deleteCacheDialog.show();
-        deleteCacheDialog.setTitle(getString(R.string.confirm_send_to) + remark);
-        Button cancel = (Button) deleteCacheDialog.findViewById(R.id.btn_cancel);
-        Button confirm = (Button) deleteCacheDialog.findViewById(R.id.btn_confirm);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteCacheDialog.dismiss();
-            }
-        });
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendMessage(user, name, chatType);
-                deleteCacheDialog.dismiss();
-            }
-        });
+//        confirm.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                sendMessage(user, name, chatType);
+//                deleteCacheDialog.dismiss();
+//            }
+//        });
     }
 
     private void setDialogImage(ShareDialog shareDialog){
         if(type==0){
             if (shareType.contains(IMAGE_TYPE)){
-
+                shareDialog.setIvImage(new File(filePath));
             }if (shareType.contains(VIDEO_TYPE)){
-
+                Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(filePath, MediaStore.Video.Thumbnails.MINI_KIND);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                byte[] bytes=baos.toByteArray();
+                shareDialog.setIvImage(bytes);
             }
         }else if (type == 1){
             if (msgType == FROM_IMG_MSG || msgType == TO_IMG_MSG) {
@@ -372,8 +376,7 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
                 if (messageInfo.getMessage().startsWith("http")) {
                     shareDialog.setIvImage(messageInfo.getMessage()+VIDEO_THUMBNAIL);
                 } else {
-                    Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(messageInfo.getMessage()
-                            , MediaStore.Video.Thumbnails.MINI_KIND);
+                    Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(messageInfo.getMessage(), MediaStore.Video.Thumbnails.MINI_KIND);
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
                     byte[] bytes=baos.toByteArray();
