@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.RequiresApi;
 
+import com.bclould.tea.base.MyApp;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.topperchat.WsOfflineConnection;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -26,9 +27,9 @@ public class IMService extends Service{
     public void onCreate() {
         super.onCreate();
         UtilTool.Log("fengjian","----IMService oncreate");
-        RoomManage.getInstance().setContext(this);
-        WsConnection.getInstance().setContext(this);
-        WsOfflineConnection.getInstance().setContext(this);
+        RoomManage.getInstance().setContext(MyApp.getInstance().app() == null ? this : MyApp.getInstance().app());
+        WsConnection.getInstance().setContext(MyApp.getInstance().app() == null ? this : MyApp.getInstance().app());
+        WsOfflineConnection.getInstance().setContext(MyApp.getInstance().app() == null ? this : MyApp.getInstance().app());
         if(handler==null) {
             instanceHandler();
         }

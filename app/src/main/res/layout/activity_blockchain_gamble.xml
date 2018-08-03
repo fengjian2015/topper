@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:padding="@dimen/x20"
-            android:src="@mipmap/ico_nav_detail"/>
+            android:src="@mipmap/icon_nav_add"/>
 
         <TextView
             android:id="@+id/xx4"
@@ -53,11 +53,11 @@
             android:layout_weight="1">
 
             <TextView
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/platform_guess"
-                style="@style/MainTextShallowStyle30"/>
+                android:text="@string/platform_guess"/>
 
             <TextView
                 android:id="@+id/xx"
@@ -77,11 +77,11 @@
             android:layout_weight="1">
 
             <TextView
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/personage_guess"
-                style="@style/MainTextShallowStyle30"/>
+                android:text="@string/personage_guess"/>
 
             <TextView
                 android:id="@+id/xx2"
@@ -101,11 +101,11 @@
             android:layout_weight="1">
 
             <TextView
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="@string/my_guess"
-                style="@style/MainTextShallowStyle30"/>
+                android:text="@string/my_guess"/>
 
             <TextView
                 android:id="@+id/xx3"

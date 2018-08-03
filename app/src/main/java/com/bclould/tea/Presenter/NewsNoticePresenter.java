@@ -38,6 +38,7 @@ public class NewsNoticePresenter {
     private static final String NEWS_JSON = UtilTool.getTocoId() + "news_json";
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
+    private int mCount = 1;
 
     public NewsNoticePresenter(Context context) {
         mContext = context;
@@ -77,7 +78,8 @@ public class NewsNoticePresenter {
                     public void onNext(NewsListInfo newsListInfo) {
                         hideDialog();
                         if (newsListInfo.getStatus() == 1) {
-                            if (page == 1) {
+                            if (mCount == 1) {
+                                mCount++;
                                 Gson gson = new Gson();
                                 UtilTool.Log("動態", gson.toJson(newsListInfo));
                                 MySharedPreferences.getInstance().setString(NEWS_JSON, gson.toJson(newsListInfo));
@@ -91,7 +93,7 @@ public class NewsNoticePresenter {
                     @Override
                     public void onError(Throwable e) {
                         hideDialog();
-                        if (page == 1) {
+                        if (mCount == 1) {
                             SharedPreferences sp = MySharedPreferences.getInstance().getSp();
                             if (sp.contains(NEWS_JSON)) {
                                 Gson gson = new Gson();
@@ -100,6 +102,8 @@ public class NewsNoticePresenter {
                             } else {
                                 callBack.error();
                             }
+                        }else {
+                            callBack.finishRefresh();
                         }
                     }
 

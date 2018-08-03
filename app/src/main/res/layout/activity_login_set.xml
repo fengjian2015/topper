@@ -99,7 +99,6 @@
 
         </RelativeLayout>
 
-
         <TextView
             style="@style/HorizontalBoundaryStyle"
             android:layout_marginLeft="@dimen/x30"

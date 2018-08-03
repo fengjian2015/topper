@@ -307,7 +307,7 @@
         
     <string name="detail">详情</string>
         
-    <string name="question">问题</string>
+    <string name="question">帮助</string>
         
     <string name="receipt_of_transfer_record">没有转账记录</string>
         
@@ -490,7 +490,7 @@
         
     <string name="probelm_feedback">问题反馈</string>
         
-    <string name="all_problem">所有问题</string>
+    <string name="all_problem">所有帮助</string>
         
     <string name="suggestion_feedback">意见反馈</string>
         

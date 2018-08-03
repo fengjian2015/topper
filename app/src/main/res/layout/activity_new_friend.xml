@@ -22,16 +22,13 @@
             android:layout_centerInParent="true"
             android:text="@string/new_friend"/>
 
-        <TextView
+        <ImageView
             android:id="@+id/tv_add"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:gravity="center"
             android:padding="@dimen/x20"
-            android:text="+"
-            android:textColor="@color/main_text_color"
-            android:textSize="@dimen/x50"/>
+            android:src="@mipmap/icon_nav_add"/>
 
     </RelativeLayout>
 

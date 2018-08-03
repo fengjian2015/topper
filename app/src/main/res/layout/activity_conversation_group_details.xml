@@ -62,7 +62,6 @@
                     android:layout_below="@+id/tv_member_number"
                     android:layout_marginTop="@dimen/y10"
                     android:layout_toLeftOf="@+id/iv6"
-                    android:background="@color/white"
                     android:gravity="center_horizontal|top"
                     android:listSelector="@android:color/transparent"
                     android:numColumns="6"
@@ -167,7 +166,6 @@
                 android:id="@+id/rl_group_management"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y100"
-                android:background="@color/white"
                 android:visibility="gone"
                 >
 
@@ -181,8 +179,7 @@
                     android:layout_toRightOf="@+id/iv_inform"
                     android:paddingLeft="@dimen/x20"
                     android:text="@string/group_management"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/x30"/>
+                    style="@style/MainTextShallowStyle30"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -398,6 +395,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:visibility="gone"
                 android:id="@+id/rl_change_background"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y100"

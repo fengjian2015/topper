@@ -153,7 +153,7 @@
     <string name="cardholder">持卡人</string>
     <string name="id_number">證件號</string>
     <string name="detail">詳情</string>
-    <string name="question">問題</string>
+    <string name="question">幫助</string>
     <string name="receipt_of_transfer_record">沒有轉賬記錄</string>
     <string name="buy_btc">購買BTC</string>
     <string name="help">幫助</string>
@@ -245,7 +245,7 @@
     <string name="nationality">國籍</string>
     <string name="unverified">未認證</string>
     <string name="probelm_feedback">問題反饋</string>
-    <string name="all_problem">所有問題</string>
+    <string name="all_problem">所有幫助</string>
     <string name="suggestion_feedback">意見反饋</string>
     <string name="publish_dynamic">發佈動態</string>
     <string name="et_write_something">寫點什麼....</string>

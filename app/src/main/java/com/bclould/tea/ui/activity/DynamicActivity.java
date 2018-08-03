@@ -183,6 +183,10 @@ public class DynamicActivity extends BaseActivity {
             }
         } else if (msg.equals(getString(R.string.hide_keyboard))) {
             mRlEdit.setVisibility(View.GONE);
+        } else if (msg.equals(getString(R.string.start_service))) {
+            mRlPushDynamicStatus.setVisibility(View.VISIBLE);
+        } else if (msg.equals(getString(R.string.destroy_service))) {
+            mRlPushDynamicStatus.setVisibility(View.GONE);
         }
     }
 

@@ -159,9 +159,9 @@ public class BlockchainGambleActivity extends BaseActivity {
 
         mView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.pop_blockchain_gamble, null);
 
-        mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 6, true);
+        mPopupWindow = new PopupWindow(mView, ViewGroup.LayoutParams.WRAP_CONTENT, (int) (getResources().getDimension(R.dimen.y200)), true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-        mPopupWindow.showAsDropDown(mXx4, (widthPixels - widthPixels / 100 * 35 - 20), 0);
+        mPopupWindow.showAsDropDown(mXx4, (widthPixels - mPopupWindow.getWidth()), 0);
         popChildClick();
     }
 

@@ -77,14 +77,15 @@
 
                 <TextView
                     android:id="@+id/tv_site"
-                    style="@style/MainTextShallowStyle30"
+                    style="@style/SecondaryTextStyle28"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/y100"
                     android:background="@drawable/bg_gray_shape"
                     android:paddingBottom="@dimen/y5"
                     android:paddingLeft="@dimen/x20"
-                    android:paddingRight="@dimen/x20"
+                    android:layout_marginTop="@dimen/y20"
+                    android:paddingRight="@dimen/x10"
                     android:paddingTop="@dimen/y5"/>
 
             </LinearLayout>

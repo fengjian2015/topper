@@ -147,9 +147,9 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
             if (addRequestInfo.getType() == 1) {
                 if(addRequestInfo.getUser().equals(UtilTool.getTocoId())){
                     mBtnConsent.setEnabled(false);
-                    mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                    mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.transparent));
                     mBtnConsent.setText(mContext.getString(R.string.waiting_agreed));
-                    mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.gray));
+                    mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.secondary_text_color));
                 }else{
                     mBtnConsent.setEnabled(true);
                     mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.green));
@@ -157,14 +157,14 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
                     mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.white));
                 }
             }else if(addRequestInfo.getType() == 2){
-                mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.transparent));
                 mBtnConsent.setText(mContext.getString(R.string.agrd_agreed));
-                mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.gray));
+                mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.secondary_text_color));
                 mBtnConsent.setEnabled(false);
             }else{
-                mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.transparent));
                 mBtnConsent.setText(mContext.getString(R.string.denied));
-                mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.gray));
+                mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.secondary_text_color));
                 mBtnConsent.setEnabled(false);
             }
         }

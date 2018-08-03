@@ -3,31 +3,31 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_four_bg"
-    android:orientation="vertical"
-    android:padding="@dimen/x20">
+    android:paddingLeft="@dimen/x30"
+    android:paddingRight="@dimen/x30"
+    android:background="@drawable/bg_msg_pop_shape"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_regulation_statement"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/y15"
         android:layout_weight="1"
+        android:drawablePadding="@dimen/x30"
         android:drawableLeft="@mipmap/icon_jc_state"
         android:gravity="center"
         android:text="@string/regulation_statement"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/x28"/>
+        style="@style/MainTextDeepStyle30"/>
 
     <TextView
         android:id="@+id/tv_guess_record"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:drawablePadding="@dimen/x30"
         android:layout_weight="1"
         android:drawableLeft="@mipmap/icon_jc_history"
         android:gravity="center"
         android:text="@string/guess_record"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/x28"/>
+        style="@style/MainTextDeepStyle30"/>
 
 </LinearLayout>

@@ -30,6 +30,7 @@
         <TextView
             android:id="@+id/tv_pay_way"
             style="@style/MainTextShallowStyle30"
+            android:textSize="@dimen/x24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x20"
@@ -72,7 +73,7 @@
                 android:layout_width="@dimen/x3"
                 android:layout_height="@dimen/y23"
                 android:layout_marginLeft="@dimen/x10"
-                android:background="@color/gray"/>
+                android:background="@color/main_text_color"/>
 
             <TextView
                 android:id="@+id/tv_coin_count"

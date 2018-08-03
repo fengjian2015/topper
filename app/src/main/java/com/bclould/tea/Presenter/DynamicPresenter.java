@@ -36,6 +36,7 @@ public class DynamicPresenter {
     private static final String DYNAMIC_JSON = UtilTool.getTocoId() + "dynamic_json";
     private final Context mContext;
     private LoadingProgressDialog mProgressDialog;
+    private int mCount = 1;
 
     public DynamicPresenter(Context context) {
         mContext = context;
@@ -97,7 +98,7 @@ public class DynamicPresenter {
 
     public void dynamicList(final int page, int pageSize, String userList, final CallBack2 callBack2) {
         UtilTool.Log("动态", userList);
-            showDialog();
+        showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .dynamicList(UtilTool.getToken(), page, pageSize, userList)
@@ -110,9 +111,10 @@ public class DynamicPresenter {
 
                     @Override
                     public void onNext(DynamicListInfo dynamicListInfo) {
-                            hideDialog();
+                        hideDialog();
                         if (dynamicListInfo.getStatus() == 1) {
-                            if (page == 1) {
+                            if (mCount == 1) {
+                                mCount++;
                                 Gson gson = new Gson();
                                 UtilTool.Log("動態", gson.toJson(dynamicListInfo));
                                 MySharedPreferences.getInstance().setString(DYNAMIC_JSON, gson.toJson(dynamicListInfo));
@@ -127,7 +129,7 @@ public class DynamicPresenter {
                     @Override
                     public void onError(Throwable e) {
                         hideDialog();
-                        if (page == 1) {
+                        if (mCount == 1) {
                             SharedPreferences sp = MySharedPreferences.getInstance().getSp();
                             if (sp.contains(DYNAMIC_JSON)) {
                                 Gson gson = new Gson();
@@ -136,6 +138,8 @@ public class DynamicPresenter {
                             } else {
                                 callBack2.error();
                             }
+                        } else {
+                            callBack2.finishRefresh();
                         }
                         UtilTool.Log("动态", e.getMessage());
                         Toast.makeText(mContext, mContext.getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
@@ -149,7 +153,7 @@ public class DynamicPresenter {
     }
 
     public void taDynamicList(int page, int pageSize, String user, final CallBack2 callBack2) {
-            showDialog();
+        showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .taDynamicList(UtilTool.getToken(), page, pageSize, user)
@@ -162,7 +166,7 @@ public class DynamicPresenter {
 
                     @Override
                     public void onNext(DynamicListInfo dynamicListInfo) {
-                            hideDialog();
+                        hideDialog();
                         if (dynamicListInfo.getStatus() == 1) {
                             callBack2.send(dynamicListInfo.getData());
                         } else {
@@ -173,7 +177,7 @@ public class DynamicPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                            hideDialog();
+                        hideDialog();
                         UtilTool.Log("動態", e.getMessage());
                         Toast.makeText(mContext, mContext.getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
                     }
@@ -435,6 +439,7 @@ public class DynamicPresenter {
         void send(List<DynamicListInfo.DataBean> data);
 
         void error();
+
         void finishRefresh();
     }
 

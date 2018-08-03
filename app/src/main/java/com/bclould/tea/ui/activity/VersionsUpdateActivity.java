@@ -118,8 +118,10 @@ public class VersionsUpdateActivity extends BaseActivity {
 
             @Override
             public void error() {
-                mRlData.setVisibility(View.GONE);
-                mLlError.setVisibility(View.VISIBLE);
+                if (ActivityUtil.isActivityOnTop(VersionsUpdateActivity.this)) {
+                    mRlData.setVisibility(View.GONE);
+                    mLlError.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -166,13 +168,13 @@ public class VersionsUpdateActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.bark, R.id.btn_download, R.id.btn_finish, R.id.btn_stop,R.id.ll_error})
+    @OnClick({R.id.bark, R.id.btn_download, R.id.btn_finish, R.id.btn_stop, R.id.ll_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-                case R.id.ll_error:
+            case R.id.ll_error:
                 checkVersion();
                 break;
             case R.id.btn_download:

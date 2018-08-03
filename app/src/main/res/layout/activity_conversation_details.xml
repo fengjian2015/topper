@@ -54,11 +54,11 @@
 
         <TextView
             android:id="@+id/tv_name"
+            style="@style/MainTextShallowStyle32"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:textColor="@color/image_overlay_true"
-            android:textSize="@dimen/x32"/>
+            android:textColor="@color/image_overlay_true"/>
 
         <TextView
             android:id="@+id/tv_otr_state"
@@ -167,6 +167,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/rl_change_background"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y100"

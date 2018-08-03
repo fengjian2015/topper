@@ -98,59 +98,6 @@ public class LoginSetActivity extends BaseActivity {
         } else {
             mCbNoVerify.setChecked(true);
         }
-        initCheckBox();
-    }
-
-    private void initCheckBox() {
-        for (int i = 0; i < mLlCheckBox.getChildCount(); i++) {
-            View childAt = mLlCheckBox.getChildAt(i);
-            childAt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int index = mLlCheckBox.indexOfChild(view);
-                    selectorCheck(index);
-                    mIndex = index;
-                }
-            });
-        }
-    }
-
-    private void selectorCheck(int index) {
-        switch (index) {
-            case 0:
-                mCbNoVerify.setChecked(true);
-                mCbEmail.setChecked(false);
-                mCbGoogle.setChecked(false);
-                break;
-            case 1:
-                mCbNoVerify.setChecked(false);
-                mCbEmail.setChecked(true);
-                mCbGoogle.setChecked(false);
-                break;
-            case 2:
-                mCbNoVerify.setChecked(false);
-                mCbEmail.setChecked(false);
-                mCbGoogle.setChecked(true);
-                break;
-        }
-    }
-
-    @OnClick({R.id.bark, R.id.rl_eye, R.id.btn_finish})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.bark:
-                finish();
-                break;
-            case R.id.rl_eye:
-                isEye = !isEye;
-                eyeShowHidden(isEye);
-                break;
-            case R.id.btn_finish:
-                if (checkEdit()) {
-                    submit();
-                }
-                break;
-        }
     }
 
     private void submit() {
@@ -185,5 +132,41 @@ public class LoginSetActivity extends BaseActivity {
             return true;
         }
         return false;
+    }
+
+    @OnClick({R.id.bark, R.id.rl_no_verify, R.id.rl_email_verify, R.id.rl_google_verify, R.id.rl_eye, R.id.btn_finish})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.rl_no_verify:
+                mCbNoVerify.setChecked(true);
+                mCbEmail.setChecked(false);
+                mCbGoogle.setChecked(false);
+                mIndex = 0;
+                break;
+            case R.id.rl_email_verify:
+                mIndex = 1;
+                mCbNoVerify.setChecked(false);
+                mCbEmail.setChecked(true);
+                mCbGoogle.setChecked(false);
+                break;
+            case R.id.rl_google_verify:
+                mIndex = 2;
+                mCbNoVerify.setChecked(false);
+                mCbEmail.setChecked(false);
+                mCbGoogle.setChecked(true);
+                break;
+            case R.id.bark:
+                finish();
+                break;
+            case R.id.rl_eye:
+                isEye = !isEye;
+                eyeShowHidden(isEye);
+                break;
+            case R.id.btn_finish:
+                if (checkEdit()) {
+                    submit();
+                }
+                break;
+        }
     }
 }

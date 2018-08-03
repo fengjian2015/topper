@@ -73,8 +73,8 @@ public class PushBuyingActivity extends BaseActivity {
     ImageView mBark;
     @Bind(R.id.tv_title)
     TextView mTvTitle;
-    @Bind(R.id.iv_question)
-    ImageView mIvQuestion;
+    @Bind(R.id.tv_question)
+    TextView mTvQuestion;
     @Bind(R.id.rl_title)
     RelativeLayout mRlTitle;
     @Bind(R.id.tv_hint)
@@ -111,6 +111,14 @@ public class PushBuyingActivity extends BaseActivity {
     TextView mTvPayment;
     @Bind(R.id.rl_payment)
     RelativeLayout mRlPayment;
+    @Bind(R.id.tv11)
+    TextView mTv11;
+    @Bind(R.id.xx11)
+    TextView mXx11;
+    @Bind(R.id.et_phone_number)
+    EditText mEtPhoneNumber;
+    @Bind(R.id.rl_phone_number)
+    RelativeLayout mRlPhoneNumber;
     @Bind(R.id.tv9)
     TextView mTv9;
     @Bind(R.id.xx9)
@@ -167,15 +175,6 @@ public class PushBuyingActivity extends BaseActivity {
     Button mBtnPushing;
     @Bind(R.id.rl_bottom)
     RelativeLayout mRlBottom;
-    @Bind(R.id.tv11)
-    TextView mTv11;
-    @Bind(R.id.xx11)
-    TextView mXx11;
-    @Bind(R.id.et_phone_number)
-    EditText mEtPhoneNumber;
-    @Bind(R.id.rl_phone_number)
-    RelativeLayout mRlPhoneNumber;
-
     private Dialog mBottomDialog;
     private RecyclerView mRecyclerView;
     private BottomDialogRVAdapter mBottomDialogRVAdapter;
@@ -334,7 +333,7 @@ public class PushBuyingActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.rl_buy_sell, R.id.bark, R.id.iv_question, R.id.rl_selector_currency, R.id.rl_county, R.id.rl_payment, R.id.rl_payment_time, R.id.btn_pushing})
+    @OnClick({R.id.rl_buy_sell, R.id.bark, R.id.tv_question, R.id.rl_selector_currency, R.id.rl_county, R.id.rl_payment, R.id.rl_payment_time, R.id.btn_pushing})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -343,7 +342,7 @@ public class PushBuyingActivity extends BaseActivity {
             case R.id.rl_buy_sell:
                 showDialog(mModeOfPayment, mBuySellList, BUYSELL, getString(R.string.buysell));
                 break;
-            case R.id.iv_question:
+            case R.id.tv_question:
                 startActivity(new Intent(this, ProblemFeedBackActivity.class));
                 break;
             case R.id.rl_selector_currency:
@@ -460,7 +459,7 @@ public class PushBuyingActivity extends BaseActivity {
     }
 
     private void showPWDialog() {
-        pwdDialog=new PWDDialog(this);
+        pwdDialog = new PWDDialog(this);
         pwdDialog.setOnPWDresult(new PWDDialog.OnPWDresult() {
             @Override
             public void success(String password) {
@@ -469,12 +468,12 @@ public class PushBuyingActivity extends BaseActivity {
         });
         String coins = mTvCurrency.getText().toString();
         String count = mEtCount.getText().toString();
-        String desc="";
+        String desc = "";
         if (mType == 1)
-            desc=getString(R.string.push_buy) + coins + getString(R.string.msg);
+            desc = getString(R.string.push_buy) + coins + getString(R.string.msg);
         else
-            desc=getString(R.string.push_sell) + coins + getString(R.string.msg);
-        pwdDialog.showDialog(count,coins,desc,logo,null);
+            desc = getString(R.string.push_sell) + coins + getString(R.string.msg);
+        pwdDialog.showDialog(count, coins, desc, logo, null);
     }
 
     private void pushing(String password) {
@@ -608,7 +607,7 @@ public class PushBuyingActivity extends BaseActivity {
 
     public void hideDialog2(String name, int id, String serviceCharge, String logo) {
         mBottomDialog.dismiss();
-        this.logo=logo;
+        this.logo = logo;
         mCoinName = name;
         initData(name);
         UtilTool.Log("手續費", serviceCharge);
