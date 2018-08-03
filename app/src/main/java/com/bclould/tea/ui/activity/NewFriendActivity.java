@@ -41,7 +41,7 @@ public class NewFriendActivity extends BaseActivity {
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.tv_add)
-    TextView mTvAdd;
+    ImageView mTvAdd;
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
     private DBManager mMgr;
