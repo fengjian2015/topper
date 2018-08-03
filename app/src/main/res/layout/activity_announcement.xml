@@ -8,9 +8,8 @@
     android:background="@color/app_bg_color"
     tools:context="com.bclould.tea.ui.activity.AnnouncementActivity">
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:background="@color/white">
+        style="@style/TopNavigationBarStyle"
+       >
 
         <ImageView
             android:id="@+id/bark"
@@ -25,8 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/gonggao"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x32"/>
+            style="@style/MainTextShallowStyle36"/>
 
         <TextView
             android:id="@+id/tv_hint"
@@ -35,7 +33,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
-            android:paddingRight="@dimen/x20"
+            android:paddingRight="@dimen/x30"
             android:text="@string/edit"
             android:textColor="@color/blue2"
             android:textSize="@dimen/x28"/>
@@ -54,7 +52,8 @@
                 android:id="@+id/et"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
+                android:background="@null"
+                style="@style/MainTextShallowStyle30"
                 android:padding="@dimen/x30"
                 android:gravity="left|top"
                 android:layout_above="@+id/view"/>
@@ -70,9 +69,10 @@
                 android:layout_height="@dimen/y90"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="@dimen/y1"
-                android:background="@color/white"
-                android:visibility="gone"
-                android:text="@string/add_images"/>
+                android:background="@color/boundary_color"
+                style="@style/MainTextShallowStyle30"
+                android:text="@string/add_images"
+                android:visibility="gone"/>
         </RelativeLayout>
     </ScrollView>
 </LinearLayout>

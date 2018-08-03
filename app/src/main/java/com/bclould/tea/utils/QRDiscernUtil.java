@@ -23,12 +23,14 @@ import com.bclould.tea.model.QrRedInfo;
 import com.bclould.tea.model.ReceiptInfo;
 import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tea.ui.activity.GroupConfirmActivity;
+import com.bclould.tea.ui.activity.HTMLActivity;
 import com.bclould.tea.ui.activity.IndividualDetailsActivity;
 import com.bclould.tea.ui.activity.PayReceiptResultActivity;
 import com.bclould.tea.ui.activity.PaymentActivity;
 import com.bclould.tea.ui.activity.ProblemFeedBackActivity;
 import com.bclould.tea.ui.activity.ScanQRResultActivty;
 import com.bclould.tea.ui.activity.SelectConversationActivity;
+import com.bclould.tea.ui.activity.StartActivity;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
@@ -371,7 +373,12 @@ public class QRDiscernUtil {
                 intent.putExtra("username", replace);
                 mContext.startActivity(intent);
                 mContext.finish();
-            } else {
+            } else if(!StringUtils.isEmpty(result) && UtilTool.checkLinkedExe(result)){
+                Intent intent=new Intent(mContext, HTMLActivity.class);
+                intent.putExtra("html5Url",result);
+                mContext.startActivity(intent);
+                mContext.finish();
+            }else {
                 Intent intent = new Intent(mContext, ScanQRResultActivty.class);
                 intent.putExtra("result", result);
                 mContext.startActivity(intent);

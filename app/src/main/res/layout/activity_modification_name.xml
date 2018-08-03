@@ -51,6 +51,7 @@
         android:maxLength="10"
         android:paddingLeft="@dimen/x30"
         android:paddingRight="@dimen/x30"
+        style="@style/MainTextShallowStyle30"
         android:singleLine="true"/>
 
     <EditText
@@ -63,6 +64,7 @@
         android:background="@drawable/bg_shallow_shape"
         android:gravity="top|left"
         android:maxLength="200"
+        style="@style/MainTextShallowStyle30"
         android:padding="@dimen/x30"
         android:visibility="gone"
         />

@@ -16,8 +16,7 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:layout_below="@+id/group_touxiang"
-        android:textSize="@dimen/x22"
         android:gravity="center"
-        android:textColor="@color/black"
+        style="@style/SecondaryTextStyle24"
         />
 </LinearLayout>

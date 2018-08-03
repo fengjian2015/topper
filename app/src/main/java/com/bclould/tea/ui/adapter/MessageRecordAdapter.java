@@ -20,6 +20,7 @@ import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.activity.ConversationRecordFindActivity;
+import com.bclould.tea.utils.ChatTimeUtil;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 
@@ -134,7 +135,7 @@ public class MessageRecordAdapter extends RecyclerView.Adapter {
             }
         }
         ((TextViewHolder) holder).tvContent.setText(messageInfoList.get(position).getMessage());
-        ((TextViewHolder) holder).tvTime.setText(messageInfoList.get(position).getTime());
+        ((TextViewHolder) holder).tvTime.setText(ChatTimeUtil.getConversation(messageInfoList.get(position).getCreateTime()));
 
         UtilTool.getImage(context,((TextViewHolder)holder).ivHead,mDBRoomMember,mMdb,send);
         /*Bitmap bitmap=UtilTool.getImage(mMdb, send, context);
@@ -220,7 +221,7 @@ public class MessageRecordAdapter extends RecyclerView.Adapter {
         /*Bitmap bitmap=UtilTool.getImage(mMdb, send, context);
         ((RedViewHolder) holder).ivHead.setImageBitmap(bitmap);*/
         UtilTool.getImage(mMdb, send, context, ((RedViewHolder) holder).ivHead);
-        ((RedViewHolder) holder).tvTime.setText(messageInfoList.get(position).getTime());
+        ((RedViewHolder) holder).tvTime.setText(ChatTimeUtil.getConversation(messageInfoList.get(position).getCreateTime()));
         ((RedViewHolder) holder).tvBi.setText(messageInfoList.get(position).getCount() + messageInfoList.get(position).getCoin());
         ((RedViewHolder) holder).rlCache.setOnClickListener(new View.OnClickListener() {
             @Override
