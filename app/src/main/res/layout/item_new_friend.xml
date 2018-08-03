@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/y150">
+                android:layout_height="@dimen/y150"
+                >
 
 
     <ImageView
@@ -20,7 +21,8 @@
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginTop="@dimen/y12"
         android:layout_toRightOf="@+id/iv_touxiang"
-        style="@style/MainTextShallowStyle32"/>
+        style="@style/MainTextShallowStyle32"
+       />
 
     <Button
         android:id="@+id/btn_consent"

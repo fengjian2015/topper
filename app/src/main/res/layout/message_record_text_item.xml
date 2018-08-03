@@ -22,9 +22,9 @@
             android:layout_height="@dimen/y40"
             android:layout_toRightOf="@+id/iv_head"
             android:layout_marginLeft="@dimen/x15"
-            android:textColor="@color/black"
             android:gravity="center_vertical"
-            android:textSize="@dimen/x28"/>
+            style="@style/MainTextShallowStyle30"
+           />
 
         <TextView
             android:id="@+id/tv_content"
@@ -35,8 +35,7 @@
             android:singleLine="true"
             android:gravity="top"
             android:paddingRight="@dimen/x270"
-            android:textColor="@color/black"
-            android:textSize="@dimen/x28" />
+            style="@style/SecondaryTextStyle28" />
 
         <TextView
             android:id="@+id/tv_time"
@@ -44,8 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:textColor="@color/color_53"
-            android:textSize="@dimen/x28"/>
+            style="@style/SecondaryTextStyle28" />
         <View
             style="@style/HorizontalBoundaryStyle"
             android:layout_below="@+id/iv_head"

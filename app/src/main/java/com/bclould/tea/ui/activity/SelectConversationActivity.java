@@ -173,9 +173,9 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
         shareType = bundle.getString("shareType");
         uri = bundle.getParcelable(Intent.EXTRA_STREAM);
         setShareData(text, shareType);
-        if (!StringUtils.isEmpty(shareText) && UtilTool.checkLinkedExe(shareText)) {
-            showDeleteDialog(shareText);
-        }
+//        if (!StringUtils.isEmpty(shareText) && UtilTool.checkLinkedExe(shareText)) {
+//            showDeleteDialog(shareText);
+//        }
     }
 
     private void getShareIntent() {
@@ -187,7 +187,7 @@ public class SelectConversationActivity extends BaseActivity implements SelectCo
         uri = bundle.getParcelable(Intent.EXTRA_STREAM);
         setShareData(text, type);
         if (!StringUtils.isEmpty(shareText) && UtilTool.checkLinkedExe(shareText)) {
-            showDeleteDialog(shareText);
+//            showDeleteDialog(shareText);
             shareType=TYPE_HTML;
         }
     }

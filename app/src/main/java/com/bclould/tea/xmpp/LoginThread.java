@@ -12,14 +12,15 @@ import com.bclould.tea.utils.UtilTool;
 public class LoginThread extends Thread {
 	private Context context;
 	public static boolean isStartExReconnect = false;
-
-	public LoginThread(Context context) {
+	private int loginNumber;
+	public LoginThread(Context context,int loginNumber) {
 		this.context = context;
+		this.loginNumber=loginNumber;
 	}
 
 	@Override
 	public void run() {
-		while (true) {
+		while (true&&loginNumber==WsConnection.loginNumber) {
 			if (WsConnection.getInstance().getOutConnection()) {
 				UtilTool.Log("fengjian","關閉連接");
 				WsConnection.getInstance().goMainActivity();

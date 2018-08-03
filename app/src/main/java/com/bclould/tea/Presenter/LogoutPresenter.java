@@ -99,9 +99,14 @@ public class LogoutPresenter {
             @Override
             public void handleMessage(Message msg) {
                 Toast.makeText(mActivity,message, Toast.LENGTH_SHORT).show();
-                WsConnection.getInstance().goMainActivity();
             }
         }.sendEmptyMessage(0);
+        new Thread(){
+            @Override
+            public void run() {
+                WsConnection.getInstance().goMainActivity();
+            }
+        }.start();
 //            MyApp.getInstance().exit();
     }
 

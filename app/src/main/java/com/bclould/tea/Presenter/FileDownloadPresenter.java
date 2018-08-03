@@ -74,6 +74,7 @@ public class FileDownloadPresenter {
 
             @Override
             public void onSuccess(GetObjectRequest request, GetObjectResult result) {
+                keyList.remove(key);
                 try {// 请求成功
                     InputStream inputStream = result.getObjectContent();
                     RandomAccessFile raf = null;
@@ -114,7 +115,6 @@ public class FileDownloadPresenter {
                 } else {
                     onError(key);
                 }
-                keyList.remove(key);
             }
 
             @Override

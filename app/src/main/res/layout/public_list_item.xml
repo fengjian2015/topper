@@ -9,11 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="@dimen/x28"/>
+        style="@style/SecondaryTextStyle28"/>
     <View
-        android:layout_width="@dimen/y1"
-        android:layout_height="match_parent"
-        android:background="@color/gray"
+        style="@style/VerticalBoundaryStyle"
         android:layout_alignParentRight="true"></View>
 </RelativeLayout>

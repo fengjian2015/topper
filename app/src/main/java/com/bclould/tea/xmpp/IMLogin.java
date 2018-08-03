@@ -13,7 +13,7 @@ import com.bclould.tea.utils.UtilTool;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class IMLogin {
 	public static void login(Context context) {
-		new LoginThread(context).start();
+		new LoginThread(context,++WsConnection.loginNumber).start();
 	}
 
 	public static boolean loginServer(Context context) {
