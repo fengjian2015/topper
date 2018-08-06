@@ -31,7 +31,7 @@
     <RelativeLayout
         android:id="@+id/rl_autonym_attestation"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y150"
+        android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x20"
         android:layout_marginRight="@dimen/x20"
         android:layout_marginTop="@dimen/y30"
@@ -45,13 +45,26 @@
             android:layout_marginLeft="@dimen/x20"
             android:text="@string/authentication"/>
 
-        <ImageView
+        <TextView
+            android:id="@+id/tv_status"
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x10"
+            android:layout_toLeftOf="@+id/iv_jiantou"
+            android:layout_toRightOf="@+id/xx2"
+            android:hint="@string/unverified"
+            android:textColorHint="@color/secondary_text_color"/>
+
+        <ImageView
+            android:id="@+id/iv_jiantou"
+            android:layout_width="@dimen/x15"
+            android:layout_height="@dimen/y25"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/x30"
-            android:src="@mipmap/iocn_person_turn"/>
+            android:layout_marginRight="@dimen/x25"
+            android:src="@mipmap/icon_aboutus_turninto"/>
 
     </RelativeLayout>
 

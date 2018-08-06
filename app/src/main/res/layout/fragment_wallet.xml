@@ -84,7 +84,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/x30"
-                android:src="@mipmap/iocn_person_turn"/>
+                android:src="@mipmap/iocn_person_turninto"/>
 
         </RelativeLayout>
 
@@ -116,7 +116,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/x30"
-                android:src="@mipmap/iocn_person_turn"/>
+                android:src="@mipmap/iocn_person_turninto"/>
 
         </RelativeLayout>
 
@@ -148,7 +148,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/x30"
-                android:src="@mipmap/iocn_person_turn"/>
+                android:src="@mipmap/iocn_person_turninto"/>
 
         </RelativeLayout>
 
@@ -195,7 +195,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/x30"
-                android:src="@mipmap/iocn_person_turn"/>
+                android:src="@mipmap/iocn_person_turninto"/>
 
         </RelativeLayout>
 

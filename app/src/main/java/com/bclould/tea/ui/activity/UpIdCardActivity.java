@@ -345,7 +345,9 @@ public class UpIdCardActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         ButterKnife.unbind(this);
-        mTask.cancel();
+        if (mTask != null) {
+            mTask.cancel();
+        }
         super.onDestroy();
     }
 }

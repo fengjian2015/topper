@@ -152,11 +152,12 @@ public class RealNameC1Activity extends BaseActivity {
                         mTvAuthType.setText(getString(R.string.verify_error));
                         mBtnAuth.setVisibility(View.VISIBLE);
                     } else if (type == 2) {
-                        mTvCause.setVisibility(View.GONE);
+                        mTvCause.setVisibility(View.VISIBLE);
+                        mTvCause.setText(getString(R.string.submitted_realname));
                         mIvAuthType.setImageResource(R.mipmap.shenhezhong);
                         mLlNoPass.setVisibility(View.GONE);
                         mBtnAuth.setVisibility(View.GONE);
-                        mTvAuthType.setText(getString(R.string.check_pending));
+                        mTvAuthType.setText(getString(R.string.check_pending_hint));
                         mLlPass.setVisibility(View.VISIBLE);
                     } else if (type == 1) {
                         mLlNoPass.setVisibility(View.VISIBLE);
@@ -254,7 +255,7 @@ public class RealNameC1Activity extends BaseActivity {
         mTvState.setText(name);
     }
 
-    private void showPopup() {
+    private void showPopup() { 
         mView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.pop_gong_gao, null);
         mPopupWindow = new PopupWindow(mView, mRlCardType.getWidth(), ViewGroup.LayoutParams.WRAP_CONTENT, true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());

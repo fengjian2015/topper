@@ -38,14 +38,6 @@
         android:layout_marginTop="@dimen/y30"
         android:background="@drawable/bg_shallow_shape">
 
-        <ImageView
-            android:id="@+id/iv_gesture"
-            android:layout_width="@dimen/x40"
-            android:layout_height="@dimen/x40"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:src="@mipmap/icon_shoshi"/>
-
         <TextView
             android:id="@+id/tv_gesture"
             style="@style/MainTextShallowStyle30"
@@ -53,7 +45,6 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x20"
-            android:layout_toRightOf="@+id/iv_gesture"
             android:text="@string/gesture_pw"/>
 
 
@@ -79,14 +70,6 @@
         android:layout_marginTop="@dimen/y30"
         android:background="@drawable/bg_shallow_shape">
 
-        <ImageView
-            android:id="@+id/iv_fingerprint"
-            android:layout_width="@dimen/x40"
-            android:layout_height="@dimen/x40"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:src="@mipmap/icon_zhiwen"/>
-
         <TextView
             android:id="@+id/tv_fingerprint"
             style="@style/MainTextShallowStyle30"
@@ -94,7 +77,6 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/x20"
-            android:layout_toRightOf="@+id/iv_fingerprint"
             android:text="@string/fingerprint_lock"/>
 
         <ImageView

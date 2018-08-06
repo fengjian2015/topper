@@ -154,13 +154,19 @@
                 android:visibility="gone"/>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/x15"
+                android:layout_height="@dimen/x25"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@mipmap/iocn_person_turn"/>
+                android:layout_marginRight="@dimen/x25"
+                android:src="@mipmap/iocn_person_turninto"/>
 
         </RelativeLayout>
+
+        <TextView
+            style="@style/HorizontalBoundaryStyle"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"/>
 
         <RelativeLayout
             android:id="@+id/rl_update_log"
@@ -177,11 +183,12 @@
                 android:text="@string/update_log"/>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/x15"
+                android:layout_height="@dimen/x25"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@mipmap/iocn_person_turn"/>
+                android:layout_marginRight="@dimen/x25"
+                android:src="@mipmap/iocn_person_turninto"/>
 
         </RelativeLayout>
 

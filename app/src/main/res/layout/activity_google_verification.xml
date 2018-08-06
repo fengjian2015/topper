@@ -103,10 +103,9 @@
 
             <TextView
                 android:id="@+id/tv_email"
+                style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/x28"/>
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
@@ -131,11 +130,9 @@
                 style="@style/MainTextShallowStyle30"
                 android:layout_width="@dimen/x175"
                 android:layout_height="@dimen/y80"
-                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/bg_green_shape"
-                android:drawableRight="@mipmap/update"
                 android:padding="@dimen/x10"
                 android:text="@string/copy"/>
 

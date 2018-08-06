@@ -59,22 +59,19 @@ public class PayPwSelectorActivity extends BaseActivity {
     public static final String FINGERPRINT_PW_SELE = "fingerprint_pw_sele";
     @Bind(R.id.bark)
     ImageView mBark;
-    @Bind(R.id.iv_gesture)
-    ImageView mIvGesture;
     @Bind(R.id.tv_gesture)
     TextView mTvGesture;
     @Bind(R.id.on_off_gesture)
     ImageView mOnOffGesture;
     @Bind(R.id.rl_gesture_pw)
     RelativeLayout mRlGesturePw;
-    @Bind(R.id.iv_fingerprint)
-    ImageView mIvFingerprint;
     @Bind(R.id.tv_fingerprint)
     TextView mTvFingerprint;
     @Bind(R.id.on_off_fingerprint)
     ImageView mOnOffFingerprint;
     @Bind(R.id.rl_fingerprint_pw)
     RelativeLayout mRlFingerprintPw;
+
     private ArrayList<Map<String, String>> valueList;
     private Animation mEnterAnim;
     private Animation mExitAnim;
