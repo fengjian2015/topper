@@ -2248,4 +2248,7 @@
     <string name="send_to">发送给：</string>
     <string name="leave_message_friend">给朋友留言</string>
     <string name="exchange_record">兑换记录</string>
+    <string name="authenticated">已认证</string>
+    <string name="check_pending_hint">系统审核中......</string>
+    <string name="submitted_realname">您已提交实名验证信息</string>
 </resources>

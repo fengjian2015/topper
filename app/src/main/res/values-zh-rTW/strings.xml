@@ -1154,4 +1154,8 @@
     <string name="add_images">添加圖片</string>
     <string name="send_to">發送給：</string>
     <string name="leave_message_friend">給朋友留言</string>
+    <string name="exchange_record">兌換記錄</string>
+    <string name="authenticated">已認證</string>
+    <string name="check_pending_hint">系統審核中......</string>
+    <string name="submitted_realname">您已提交實名驗證信息</string>
 </resources>

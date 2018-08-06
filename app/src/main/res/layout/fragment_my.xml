@@ -114,12 +114,12 @@
                 android:text="@string/my_collect"/>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/x15"
+                android:layout_height="@dimen/x25"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x30"
-                android:src="@mipmap/iocn_person_turn"/>
+                android:layout_marginRight="@dimen/x25"
+                android:src="@mipmap/iocn_person_turninto"/>
 
         </RelativeLayout>
 
@@ -148,12 +148,12 @@
                 android:text="@string/my_friends_circle"/>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/x15"
+                android:layout_height="@dimen/x25"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x30"
-                android:src="@mipmap/iocn_person_turn"/>
+                android:layout_marginRight="@dimen/x25"
+                android:src="@mipmap/iocn_person_turninto"/>
 
         </RelativeLayout>
 
@@ -182,12 +182,12 @@
                 android:text="@string/user_safety"/>
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/x15"
+                android:layout_height="@dimen/x25"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x30"
-                android:src="@mipmap/iocn_person_turn"/>
+                android:layout_marginRight="@dimen/x25"
+                android:src="@mipmap/iocn_person_turninto"/>
 
         </RelativeLayout>
 
@@ -231,12 +231,12 @@
                 android:textColor="@color/white"/>-->
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/x15"
+                android:layout_height="@dimen/x25"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/x30"
-                android:src="@mipmap/iocn_person_turn"/>
+                android:layout_marginRight="@dimen/x25"
+                android:src="@mipmap/iocn_person_turninto"/>
 
         </RelativeLayout>
 

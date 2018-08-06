@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -33,20 +32,17 @@ import butterknife.OnClick;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class PayPasswordActivity extends BaseActivity {
 
+
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.et_pay_password)
     EditText mEtPayPassword;
     @Bind(R.id.eye)
     ImageView mEye;
-    @Bind(R.id.rl_show_hidden)
-    RelativeLayout mRlShowHidden;
-    @Bind(R.id.ll_pay_pw)
-    LinearLayout mLlPayPw;
+    @Bind(R.id.rl_pay_pw)
+    RelativeLayout mRlPayPw;
     @Bind(R.id.et_vcode)
     EditText mEtVcode;
-    @Bind(R.id.ll_vcode)
-    LinearLayout mLlVcode;
     @Bind(R.id.btn_finish)
     Button mBtnFinish;
 
@@ -68,13 +64,13 @@ public class PayPasswordActivity extends BaseActivity {
 
     boolean isEye = false;
 
-    @OnClick({R.id.bark, R.id.rl_show_hidden, R.id.btn_finish})
+    @OnClick({R.id.bark, R.id.eye, R.id.btn_finish})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
                 break;
-            case R.id.rl_show_hidden:
+            case R.id.eye:
                 isEye = !isEye;
                 eyeShowHidden(isEye);
                 break;

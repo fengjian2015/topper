@@ -9,15 +9,19 @@ import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.MySharedPreferences;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.bclould.tea.Presenter.LoginPresenter.STATE;
 
 /**
  * Created by GA on 2017/10/11.
@@ -41,6 +45,8 @@ public class UserSafetyActivity extends BaseActivity {
     RelativeLayout mRlAppLook;
     @Bind(R.id.rl_google)
     RelativeLayout mRlGoogle;
+    @Bind(R.id.tv_status)
+    TextView mTvStatus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +54,9 @@ public class UserSafetyActivity extends BaseActivity {
         setContentView(R.layout.activity_user_safety);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
+        if (MySharedPreferences.getInstance().getSp().contains(STATE)) {
+            mTvStatus.setText(getString(R.string.authenticated));
+        }
     }
 
     @Override
