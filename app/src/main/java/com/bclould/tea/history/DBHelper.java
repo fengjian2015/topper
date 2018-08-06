@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "test.db";
-    private static final int DATABASE_VERSION = 30;
+    private static final int DATABASE_VERSION = 31;
 
     public DBHelper(Context context) {
         //CursorFactory设置为null,使用默认值
@@ -27,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 ", state integer, redId integer, voice varchar, voiceStatus integer, voiceTime varchar, sendStatus integer, msgType integer" +
                 ", imageType integer,send varchar,lat float,lng float,address varchar,title varchar,headUrl varchar,cardUser varchar,linkUrl varchar" +
                 ",content varchar,converstaion varchar,guessPw varchar,initiator varchar,betId varchr,periodQty varchar,filekey varchar,createTime integer,msgId varchar" +
-                ",showChatTime varchar,roomName varchar,roomId varchar)");
+                ",showChatTime varchar,roomName varchar,roomId varchar,isRead integer,isBurnReading integer)");
         db.execSQL("create table AddRequest(id integer primary key autoincrement, my_user varchar, user varchar, type integer,userName varchar)");
         db.execSQL("create table UserImage(id integer primary key autoincrement, my_user varchar, user varchar, status integer, path varchar, remark varchar,userName varchar)");
         db.execSQL("create table RoomManage(id integer primary key autoincrement, roomImage varchar, roomId varchar, roomName varchar, roomNumber integer,my_user varchar,owner varchar,description varchar,isRefresh integer" +
@@ -37,6 +37,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("create table UserCodeDB(id integer primary key autoincrement, email varchar,password varchar)");
         db.execSQL("create table UserInfo(id integer primary key autoincrement, user varchar,path varchar,userName varchar)");//保存陌生人的信息
         db.execSQL("create table PublicDB(id integer primary key autoincrement,my_user varchar, publicId varchar,name varchar,logo varchar,publicDesc varchar,menu varchar,isRefresh integer)");
+        db.execSQL("create table ConversationBurnDB(id integer primary key autoincrement,my_user varchar, number integer, message varchar, user varchar, friend varchar,chatType varchar,createTime integer)");
     }
 
     /**
@@ -124,7 +125,15 @@ public class DBHelper extends SQLiteOpenHelper {
             case 29:
                 userCodeDB = "create table if not exists PublicDB"  + "(id integer primary key autoincrement,my_user text,publicId text,name text,logo text,publicDesc text,menu text,isRefresh integer)";
                 db.execSQL( userCodeDB );
+            case 30:
+                //閱後即焚功
+                userCodeDB = "create table if not exists ConversationBurnDB"  + "(id integer primary key autoincrement,my_user text,number integer,message text,user text,friend text,chatType text,createTime integer)";
+                db.execSQL( userCodeDB );
+
+                db.execSQL("ALTER TABLE MessageRecord ADD isRead INTEGER");
+                db.execSQL("ALTER TABLE MessageRecord ADD isBurnReading INTEGER");
                 break;
+
         }
 
             //20180523增加房间类型，用于新增群聊判断

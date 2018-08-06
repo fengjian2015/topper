@@ -66,6 +66,7 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     private boolean initRecordIndicator = false;
     private OnResultOTR onResultOTR;
     private String roomType;//房间类型
+    private boolean isBurnReading;//是否是閱後即焚
     private MenuGridListPopWindow menu;
 
     public XhsEmoticonsKeyBoard(Context context, AttributeSet attrs) {
@@ -183,9 +184,13 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
 //        }
     }
 
+    public void setIsBurnReading(boolean isBurnReading){
+        this.isBurnReading=isBurnReading;
+    }
+
     public MenuGridListPopWindow setListMenu(Context context){
         this.mContext=context;
-        menu = new MenuGridListPopWindow(mContext,mEtChat,roomType);
+        menu = new MenuGridListPopWindow(mContext,mEtChat,roomType,isBurnReading);
         menu.setColor(Color.BLACK);
         return menu;
     }

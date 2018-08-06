@@ -57,6 +57,26 @@ public class MessageInfo implements Serializable {
     private String roomName;
     private String roomId;
 
+    //2018-*08-06增加閱後即焚字段
+    private int isRead;//0表示未讀
+    private int isBurnReading; //0表示正常消息
+
+    public int getIsBurnReading() {
+        return isBurnReading;
+    }
+
+    public void setIsBurnReading(int isBurnReading) {
+        this.isBurnReading = isBurnReading;
+    }
+
+    public int getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(int isRead) {
+        this.isRead = isRead;
+    }
+
     public String getRoomName() {
         return roomName;
     }

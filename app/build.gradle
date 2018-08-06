@@ -109,6 +109,8 @@ configurations.all {
 
 
 
+
+
 dependencies {
     implementation 'com.android.support:design:26.1.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -201,13 +203,12 @@ dependencies {
     compile 'org.jsoup:jsoup:1.11.3'
     compile project(path: ':camera')
     compile 'org.msgpack:jackson-dataformat-msgpack:0.8.16'
-    compile 'com.koushikdutta.async:androidasync:2.+'
     compile 'com.iceteck.silicompressorr:silicompressor:2.1'
     compile 'com.github.andy6804tw:ZoomImageView-lib:0.0.1'
-
     implementation files('libs/fastjson-1.2.9.jar')
     compile 'com.isseiaoki:simplecropview:1.1.7'
     compile 'com.leon:lfilepickerlibrary:1.8.0'
+
     //側滑刪除
     compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
 
@@ -215,6 +216,8 @@ dependencies {
     compile 'com.tencent.xinge:xinge:3.2.4-beta'
     compile 'com.tencent.wup:wup:1.0.0.E-alpha'
     compile 'com.tencent.mid:mid:3.9.0-alpha'
+
     //通知消息數
-    compile "me.leolin:ShortcutBadger:1.1.22@aar"
+    compile 'me.leolin:ShortcutBadger:1.1.22@aar'
+    implementation project(':AndroidAsync')
 }

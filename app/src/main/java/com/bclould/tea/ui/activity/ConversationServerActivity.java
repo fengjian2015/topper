@@ -140,7 +140,7 @@ public class ConversationServerActivity extends BaseActivity {
     //初始化数据
     private void initData(String msgId) {
         if(StringUtils.isEmpty(msgId)){
-            List<MessageInfo> messageInfos = mMgr.queryMessage(roomId);
+            List<MessageInfo> messageInfos = mMgr.queryMessage(roomId,0);
             mMessageList.clear();
             mMessageList.addAll(messageInfos);
             mChatAdapter.notifyDataSetChanged();
@@ -197,7 +197,7 @@ public class ConversationServerActivity extends BaseActivity {
                     if (view != null) {
                         top = view.getTop();
                     }
-                    List<MessageInfo> messageInfos = mMgr.queryRefreshMessage(roomId, mMessageList.get(0).getCreateTime());
+                    List<MessageInfo> messageInfos = mMgr.queryRefreshMessage(roomId, mMessageList.get(0).getCreateTime(),0);
                     mMessageList.addAll(0,messageInfos);
                     currentPosition=mMessageList.size()-currentPosition;
                     mChatAdapter.notifyDataSetChanged();
@@ -212,12 +212,12 @@ public class ConversationServerActivity extends BaseActivity {
                     List<MessageInfo> messageInfos1 = null;
                     if (isFist) {
                         MessageInfo messageInfo = (MessageInfo) bundle3.getSerializable("MessageInfo");
-                        messageInfos1 = mMgr.queryLoadMessage(roomId, messageInfo.getCreateTime(), isFist);
+                        messageInfos1 = mMgr.queryLoadMessage(roomId, messageInfo.getCreateTime(), isFist,0);
                     } else {
                         if (mMessageList.size() == 0) {
-                            messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(0).getCreateTime(), isFist);
+                            messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(0).getCreateTime(), isFist,0);
                         } else {
-                            messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(mMessageList.size() - 1).getCreateTime(), isFist);
+                            messageInfos1 = mMgr.queryLoadMessage(roomId, mMessageList.get(mMessageList.size() - 1).getCreateTime(), isFist,0);
                         }
                     }
                     if(messageInfos1.size()<=0){

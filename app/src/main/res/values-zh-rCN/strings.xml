@@ -2247,4 +2247,5 @@
     <string name="add_images">添加图片</string>
     <string name="send_to">发送给：</string>
     <string name="leave_message_friend">给朋友留言</string>
+    <string name="burn_after_reading">阅后即焚</string>
 </resources>

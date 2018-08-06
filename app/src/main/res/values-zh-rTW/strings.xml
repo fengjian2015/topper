@@ -1154,4 +1154,5 @@
     <string name="add_images">添加圖片</string>
     <string name="send_to">發送給：</string>
     <string name="leave_message_friend">給朋友留言</string>
+    <string name="burn_after_reading">閱后即焚</string>
 </resources>

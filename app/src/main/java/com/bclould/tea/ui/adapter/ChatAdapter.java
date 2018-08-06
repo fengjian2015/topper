@@ -60,6 +60,7 @@ import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LodingCircleView;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.ui.widget.MyYAnimation;
+import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.ChatTimeUtil;
 import com.bclould.tea.utils.Constants;
@@ -930,6 +931,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         if (StringUtils.isEmpty(mName)) {
             mName = mUser;
         }
+        if(!ActivityUtil.isActivityOnTop(mContext))return;
         if(mCurrencyDialog==null){
             mCurrencyDialog = new CurrencyDialog(R.layout.dialog_redpacket, mContext, R.style.dialog);
             Window window = mCurrencyDialog.getWindow();
