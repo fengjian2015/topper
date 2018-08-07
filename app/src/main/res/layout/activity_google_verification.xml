@@ -14,7 +14,7 @@
             android:id="@+id/bark"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:padding="@dimen/x20"
+            android:padding="@dimen/x30"
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
@@ -32,7 +32,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
-            android:paddingRight="@dimen/x20"
+            android:paddingRight="@dimen/x30"
             android:text="@string/warm_prompt"/>
 
     </RelativeLayout>
@@ -52,13 +52,14 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/y80"
-            android:layout_marginLeft="@dimen/x30"
-            android:layout_marginRight="@dimen/x30">
+            android:layout_height="@dimen/y120"
+            android:background="@color/main_text_color"
+            android:paddingLeft="@dimen/x30"
+            android:paddingRight="@dimen/x30">
 
             <TextView
                 android:id="@+id/tv"
-                style="@style/MainTextShallowStyle30"
+                style="@style/MainTextDeepStyle32"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -76,45 +77,47 @@
 
         </RelativeLayout>
 
-        <TextView
-            style="@style/HorizontalBoundaryStyle"
-            android:layout_marginLeft="@dimen/x30"
-            android:layout_marginRight="@dimen/x30"/>
-
-        <ImageView
-            android:id="@+id/iv_qr_code"
-            android:layout_width="@dimen/x350"
-            android:layout_height="@dimen/x350"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/y30"/>
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/y30"
-            android:orientation="horizontal">
+            android:layout_height="@dimen/y150"
+            android:paddingLeft="@dimen/x30"
+            android:paddingRight="@dimen/x30">
 
             <TextView
+                android:id="@+id/tv3"
                 style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/x30"
+                android:layout_centerVertical="true"
                 android:text="@string/the_current_account"/>
 
             <TextView
                 android:id="@+id/tv_email"
                 style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_toRightOf="@+id/tv3"/>
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/iv_qr_code"
+                android:layout_width="@dimen/x120"
+                android:layout_height="@dimen/x120"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                style="@style/HorizontalBoundaryStyle"
+                android:layout_alignParentBottom="true"/>
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y100"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginRight="@dimen/x20"
-            android:layout_marginTop="@dimen/y30">
+            android:layout_height="@dimen/y120"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30">
 
             <TextView
                 android:id="@+id/secret_key"
@@ -122,19 +125,23 @@
                 android:layout_width="@dimen/x500"
                 android:layout_height="@dimen/y90"
                 android:layout_centerVertical="true"
-                android:background="@drawable/bg_shallow_shape"
-                android:gravity="center"/>
+                android:gravity="center_vertical"/>
 
             <Button
                 android:id="@+id/btn_copy"
                 style="@style/MainTextShallowStyle30"
-                android:layout_width="@dimen/x175"
-                android:layout_height="@dimen/y80"
+                android:layout_width="@dimen/x150"
+                android:layout_height="@dimen/y60"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/bg_green_shape"
+                android:background="@drawable/bg_blue_shape"
                 android:padding="@dimen/x10"
                 android:text="@string/copy"/>
+
+
+            <TextView
+                style="@style/HorizontalBoundaryStyle"
+                android:layout_alignParentBottom="true"/>
 
         </RelativeLayout>
 
@@ -142,20 +149,23 @@
             android:id="@+id/et_code"
             style="@style/MainTextShallowStyle30"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y100"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginRight="@dimen/x20"
-            android:layout_marginTop="@dimen/y20"
-            android:background="@drawable/bg_shallow_shape"
+            android:layout_height="@dimen/y120"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:background="@color/transparent"
             android:hint="@string/et_google_code"
             android:inputType="number"
             android:maxLength="6"
-            android:paddingLeft="@dimen/x20"
             android:singleLine="true"
             android:textColorHint="@color/secondary_text_color"
             android:textCursorDrawable="@null"/>
 
+
+        <TextView
+            style="@style/HorizontalBoundaryStyle"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"/>
 
         <Button
             android:id="@+id/btn_finish"
@@ -177,12 +187,13 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/y80"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginRight="@dimen/x20">
+            android:layout_height="@dimen/y120"
+            android:background="@color/main_text_color"
+            android:paddingLeft="@dimen/x30"
+            android:paddingRight="@dimen/x30">
 
             <TextView
-                style="@style/MainTextShallowStyle30"
+                style="@style/MainTextDeepStyle32"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -199,37 +210,33 @@
 
         </RelativeLayout>
 
-        <TextView
-            style="@style/HorizontalBoundaryStyle"
-            android:layout_marginLeft="@dimen/x30"
-            android:layout_marginRight="@dimen/x30"/>
-
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/y120"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_marginRight="@dimen/x20"
-            android:layout_marginTop="@dimen/y30"
-            android:background="@drawable/bg_shallow_shape">
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30">
 
             <TextView
                 style="@style/MainTextShallowStyle30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x30"
                 android:text="@string/google_verify"/>
 
-            <TextView
+            <Button
                 android:id="@+id/tv_unbinding"
-                style="@style/BlueTextStyle28"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                style="@style/MainTextShallowStyle30"
+                android:layout_width="@dimen/x150"
+                android:layout_height="@dimen/y60"
                 android:layout_alignParentRight="true"
-                android:gravity="center_vertical"
-                android:paddingRight="@dimen/x30"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_blue_shape"
                 android:text="@string/unbinding"/>
+
+            <TextView
+                style="@style/HorizontalBoundaryStyle"
+                android:layout_alignParentBottom="true"/>
 
         </RelativeLayout>
 
@@ -240,54 +247,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rl_title"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
         android:orientation="vertical"
         android:visibility="gone">
-
-        <TextView
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/y80"
-            android:layout_marginLeft="@dimen/x30"
-            android:gravity="center_vertical"
-            android:text="@string/send_email"/>
 
         <TextView
             android:id="@+id/tv_email2"
             style="@style/MainTextShallowStyle30"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y120"
-            android:layout_marginLeft="@dimen/x30"
-            android:layout_marginRight="@dimen/x30"
-            android:background="@drawable/bg_shallow_shape"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/x20"
             android:paddingRight="@dimen/x20"/>
 
+        <TextView
+            style="@style/HorizontalBoundaryStyle"
+            android:layout_alignParentBottom="true"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y120"
-            android:layout_marginLeft="@dimen/x30"
-            android:layout_marginRight="@dimen/x30"
-            android:layout_marginTop="@dimen/y30"
-            android:background="@drawable/bg_shallow_shape">
-
-            <TextView
-                android:id="@+id/tv2"
-                style="@style/MainTextShallowStyle30"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x20"
-                android:text="@string/vcode"/>
+            android:layout_height="@dimen/y120">
 
             <EditText
                 android:id="@+id/et_vcode"
                 style="@style/MainTextShallowStyle30"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_toLeftOf="@+id/tv_send"
-                android:layout_toRightOf="@+id/tv2"
                 android:background="@android:color/transparent"
                 android:hint="@string/et_vcode"
                 android:inputType="number"
@@ -305,6 +293,10 @@
                 android:paddingRight="@dimen/x20"
                 android:text="@string/send"/>
 
+            <TextView
+                style="@style/HorizontalBoundaryStyle"
+                android:layout_alignParentBottom="true"/>
+
         </RelativeLayout>
 
 
@@ -319,7 +311,6 @@
     </LinearLayout>
 
     <LinearLayout
-
         android:id="@+id/ll_error"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,29 +1,19 @@
 package com.bclould.tea.ui.activity;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.Animation;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bclould.tea.Presenter.BankCardPresenter;
 import com.bclould.tea.Presenter.UpdateLogPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
@@ -31,18 +21,13 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.utils.AppLanguageUtils;
-import com.bclould.tea.utils.FingerprintUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.ToastShow;
-import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -71,14 +56,6 @@ public class PayPwSelectorActivity extends BaseActivity {
     ImageView mOnOffFingerprint;
     @Bind(R.id.rl_fingerprint_pw)
     RelativeLayout mRlFingerprintPw;
-
-    private ArrayList<Map<String, String>> valueList;
-    private Animation mEnterAnim;
-    private Animation mExitAnim;
-    private Dialog mRedDialog;
-    private GridView mGridView;
-    private MNPasswordEditText mEtPassword;
-    private BankCardPresenter mBankCardPresenter;
     private PWDDialog pwdDialog;
     private UpdateLogPresenter mUpdateLogPresenter;
     private int mCode;
@@ -161,12 +138,22 @@ public class PayPwSelectorActivity extends BaseActivity {
                     if (isFingerprint) {
                         showCancelFingerprintDialog(1);
                     } else {
-                        checkFingerprint();
+                        Intent intent = new Intent(this, DeblockingFingerprintActivity.class);
+                        intent.putExtra("type", true);
+                        startActivityForResult(intent, 0);
                     }
                 } else {
                     ToastShow.showToast2(this, getString(R.string.already_set_fingerprint));
                 }
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0 && resultCode == RESULT_OK) {
+            showPWDialog(1);
         }
     }
 
@@ -217,97 +204,6 @@ public class PayPwSelectorActivity extends BaseActivity {
             public void onClick(View view) {
                 deleteCacheDialog.dismiss();
                 startActivity(new Intent(PayPwSelectorActivity.this, PayPasswordActivity.class));
-            }
-        });
-    }
-
-    private void checkFingerprint() {
-
-        FingerprintUtil.callFingerPrint(new FingerprintUtil.OnCallBackListenr() {
-
-            private TextView mCheck;
-            private Dialog mFingerprintdialog;
-
-            @Override
-            public void onSupportFailed() {
-                Toast.makeText(PayPwSelectorActivity.this, getString(R.string.nonsupport_fingerprint), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onInsecurity() {
-                Toast.makeText(PayPwSelectorActivity.this, getString(R.string.insecurity), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onEnrollFailed() {
-                Toast.makeText(PayPwSelectorActivity.this, getString(R.string.no_set_fingerprint), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAuthenticationStart() {
-                if (mFingerprintdialog == null) {
-                    mFingerprintdialog = new Dialog(PayPwSelectorActivity.this, R.style.dialog2);
-                    View contentView = LayoutInflater.from(PayPwSelectorActivity.this).inflate(R.layout.dialog_fingerprint_pw, null);
-                    //获得dialog的window窗口
-                    Window window = mFingerprintdialog.getWindow();
-                    window.getDecorView().setPadding(0, 0, 0, 0);
-                    //获得window窗口的属性
-                    WindowManager.LayoutParams lp = window.getAttributes();
-                    //设置窗口宽度为充满全屏+
-                    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-                    //将设置好的属性set回去
-                    window.setAttributes(lp);
-                    mFingerprintdialog.setContentView(contentView);
-                    mFingerprintdialog.setCancelable(false);
-                }
-                if (!mFingerprintdialog.isShowing()) {
-                    mFingerprintdialog.show();
-                    TextView cancel = (TextView) mFingerprintdialog.findViewById(R.id.tv_cancel);
-                    mCheck = (TextView) mFingerprintdialog.findViewById(R.id.tv_check);
-                    cancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            FingerprintUtil.cancel();
-                            mFingerprintdialog.dismiss();
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onAuthenticationError(int errMsgId, CharSequence errString) {
-                if (mFingerprintdialog != null && mFingerprintdialog.isShowing()) {
-                    mCheck.setText(getString(R.string.check_fingerprint_error));
-                    mCheck.setTextColor(getResources().getColor(R.color.red));
-                }
-            }
-
-            @Override
-            public void onAuthenticationFailed() {
-                if (mFingerprintdialog != null && mFingerprintdialog.isShowing()) {
-                    mCheck.setText(getString(R.string.check_fingerprint_error));
-                    mCheck.setTextColor(getResources().getColor(R.color.red));
-                }
-            }
-
-            @Override
-            public void onAuthenticationHelp(int helpMsgId, CharSequence helpString) {
-                Toast.makeText(PayPwSelectorActivity.this, getString(R.string.finger_move_fast), Toast.LENGTH_SHORT).show();
-            }
-
-            @SuppressLint("HandlerLeak")
-            @Override
-            public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
-                if (mFingerprintdialog != null && mFingerprintdialog.isShowing()) {
-                    mCheck.setText(getString(R.string.check_fingerprint_succeed));
-                    mCheck.setTextColor(getResources().getColor(R.color.blue2));
-                    new Handler() {
-                        public void handleMessage(Message msg) {
-                            mFingerprintdialog.dismiss();
-                            showPWDialog(1);
-                        }
-                    }.sendEmptyMessageDelayed(0, 1500);
-                }
             }
         });
     }

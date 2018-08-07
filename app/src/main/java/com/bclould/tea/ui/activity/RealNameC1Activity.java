@@ -255,7 +255,7 @@ public class RealNameC1Activity extends BaseActivity {
         mTvState.setText(name);
     }
 
-    private void showPopup() { 
+    private void showPopup() {
         mView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.pop_gong_gao, null);
         mPopupWindow = new PopupWindow(mView, mRlCardType.getWidth(), ViewGroup.LayoutParams.WRAP_CONTENT, true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
