@@ -53,6 +53,8 @@ public class GoogleVerificationActivity extends BaseActivity {
 
     @Bind(R.id.bark)
     ImageView mBark;
+    @Bind(R.id.tv_hint)
+    TextView mTvHint;
     @Bind(R.id.rl_title)
     RelativeLayout mRlTitle;
     @Bind(R.id.xx)
@@ -61,10 +63,12 @@ public class GoogleVerificationActivity extends BaseActivity {
     TextView mTv;
     @Bind(R.id.tv_download)
     TextView mTvDownload;
-    @Bind(R.id.iv_qr_code)
-    ImageView mIvQrCode;
+    @Bind(R.id.tv3)
+    TextView mTv3;
     @Bind(R.id.tv_email)
     TextView mTvEmail;
+    @Bind(R.id.iv_qr_code)
+    ImageView mIvQrCode;
     @Bind(R.id.secret_key)
     TextView mSecretKey;
     @Bind(R.id.btn_copy)
@@ -75,12 +79,12 @@ public class GoogleVerificationActivity extends BaseActivity {
     Button mBtnFinish;
     @Bind(R.id.ll_binding)
     LinearLayout mLlBinding;
+    @Bind(R.id.tv_unbinding)
+    Button mTvUnbinding;
     @Bind(R.id.ll_binding_status)
     LinearLayout mLlBindingStatus;
     @Bind(R.id.tv_email2)
     TextView mTvEmail2;
-    @Bind(R.id.tv2)
-    TextView mTv2;
     @Bind(R.id.et_vcode)
     EditText mEtVcode;
     @Bind(R.id.tv_send)
@@ -89,10 +93,6 @@ public class GoogleVerificationActivity extends BaseActivity {
     Button mBtnUnbinding;
     @Bind(R.id.ll_unbinding)
     LinearLayout mLlUnbinding;
-    @Bind(R.id.tv_hint)
-    TextView mTvHint;
-    @Bind(R.id.tv_unbinding)
-    TextView mTvUnbinding;
     @Bind(R.id.iv2)
     ImageView mIv2;
     @Bind(R.id.ll_error)
@@ -104,6 +104,7 @@ public class GoogleVerificationActivity extends BaseActivity {
     private DeleteCacheDialog mDeleteCacheDialog;
     private int mRecLen;
     Timer mTimer;
+    private String mImgUrl;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -144,7 +145,8 @@ public class GoogleVerificationActivity extends BaseActivity {
                         mLlUnbinding.setVisibility(View.GONE);
                         mLlBindingStatus.setVisibility(View.GONE);
                         mSecretKey.setText(googleInfo.getKey());
-                        Glide.with(GoogleVerificationActivity.this).load(googleInfo.getImg()).into(mIvQrCode);
+                        mImgUrl = googleInfo.getImg();
+                        Glide.with(GoogleVerificationActivity.this).load(mImgUrl).into(mIvQrCode);
                     }
                 }
             }
@@ -214,11 +216,14 @@ public class GoogleVerificationActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.ll_error, R.id.bark, R.id.tv_hint, R.id.tv_download, R.id.btn_copy, R.id.btn_finish, R.id.tv_send, R.id.btn_unbinding, R.id.tv_unbinding})
+    @OnClick({R.id.iv_qr_code, R.id.ll_error, R.id.bark, R.id.tv_hint, R.id.tv_download, R.id.btn_copy, R.id.btn_finish, R.id.tv_send, R.id.btn_unbinding, R.id.tv_unbinding})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.iv_qr_code:
+                showImgDialog();
                 break;
             case R.id.tv_hint:
                 showHintDialog();
@@ -234,7 +239,7 @@ public class GoogleVerificationActivity extends BaseActivity {
                     bindGoogle();
                 break;
             case R.id.tv_send:
-                    sendVcode();
+                sendVcode();
                 break;
             case R.id.tv_unbinding:
                 mLlBindingStatus.setVisibility(View.GONE);
@@ -250,6 +255,19 @@ public class GoogleVerificationActivity extends BaseActivity {
                 getGoogleKey();
                 break;
         }
+    }
+
+    private void showImgDialog() {
+        final DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_img, this, R.style.dialog);
+        deleteCacheDialog.show();
+        ImageView ivImg = (ImageView) deleteCacheDialog.findViewById(R.id.iv_img);
+        Glide.with(GoogleVerificationActivity.this).load(mImgUrl).into(ivImg);
+        ivImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteCacheDialog.dismiss();
+            }
+        });
     }
 
     private void showDialog() {
