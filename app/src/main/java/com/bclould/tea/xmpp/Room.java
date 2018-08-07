@@ -39,4 +39,5 @@ public interface Room {
     void sendHtml(MessageInfo messageInfo);
     void anewSendHtml(MessageInfo messageInfo);
     void transmitImage(MessageInfo messageInfo);
+    void setIsBurnReading(int isBurnReading);
 }

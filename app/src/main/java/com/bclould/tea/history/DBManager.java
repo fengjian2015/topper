@@ -94,8 +94,8 @@ public class DBManager {
             long currTime = message.getCreateTime();
             try {
                 Cursor c = db.rawQuery(
-                        "SELECT createTime from MessageRecord where user = ? and my_user=?  and (showChatTime is NOT NULL and showChatTime != '') order by createTime desc limit 1",
-                        new String[]{message.getUsername(), UtilTool.getTocoId()});
+                        "SELECT createTime from MessageRecord where user = ? and my_user=? and isBurnReading=?  and (showChatTime is NOT NULL and showChatTime != '') order by createTime desc limit 1",
+                        new String[]{message.getUsername(), UtilTool.getTocoId(),message.getIsBurnReading()+""});
                 if (c.moveToNext()) {
                     long lastTime = c.getLong(c.getColumnIndex("createTime"));
                     if (UtilTool.compareTime(lastTime, currTime)) {
@@ -322,15 +322,16 @@ public class DBManager {
         }
     }
 
-    public void deleteMessage(String user) {
+    public void deleteMessage(String user,int isBurnReading) {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
-            db.delete("MessageRecord", "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
+            db.delete("MessageRecord", "user=? and my_user=? and isBurnReading=?", new String[]{user, UtilTool.getTocoId(),isBurnReading+""});
             DatabaseManager.getInstance().closeWritableDatabase();
         }
     }
 
-    public MessageInfo deleteSingleMessage(String mUser,String id){
+
+    public MessageInfo deleteSingleMessage(String mUser,String id,int isBurnReading){
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
             MessageInfo messageInfo = null;
@@ -341,7 +342,7 @@ public class DBManager {
                 String msgId = cursor.getString(cursor.getColumnIndex("msgId"));
                 cursor.close();
                 if (!StringUtils.isEmpty(showChatTime)) {
-                    Cursor cursor1 = db.rawQuery("select * from MessageRecord where createTime > ? and my_user=? ORDER BY createTime asc", new String[]{createTime + "", UtilTool.getTocoId()});
+                    Cursor cursor1 = db.rawQuery("select * from MessageRecord where createTime > ? and my_user=? and isBurnReading=? ORDER BY createTime asc", new String[]{createTime + "", UtilTool.getTocoId(),isBurnReading+""});
                     if (cursor1.moveToFirst()) {
                         String msgId1 = cursor1.getString(cursor1.getColumnIndex("msgId"));
                         long showTime = cursor1.getLong(cursor1.getColumnIndex("createTime"));
@@ -358,7 +359,7 @@ public class DBManager {
         }
     }
 
-    public int deleteSingleMessageMsgId(String msgId){
+    public int deleteSingleMessageMsgId(String msgId,int isBurnReading){
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
             MessageInfo messageInfo = null;
@@ -368,7 +369,7 @@ public class DBManager {
                 long createTime = cursor.getLong(cursor.getColumnIndex("createTime"));
                 cursor.close();
                 if (!StringUtils.isEmpty(showChatTime)) {
-                    Cursor cursor1 = db.rawQuery("select * from MessageRecord where createTime > ? and my_user=? ORDER BY createTime asc", new String[]{createTime + "", UtilTool.getTocoId()});
+                    Cursor cursor1 = db.rawQuery("select * from MessageRecord where createTime > ? and my_user=? and isBurnReading=? ORDER BY createTime asc", new String[]{createTime + "", UtilTool.getTocoId(),isBurnReading+""});
                     if (cursor1.moveToFirst()) {
                         String msgId1 = cursor1.getString(cursor1.getColumnIndex("msgId"));
                         long showTime = cursor1.getLong(cursor1.getColumnIndex("createTime"));
@@ -405,12 +406,12 @@ public class DBManager {
         }
     }
 
-    public String findLastMessageConversation(String roomid) {
+    public String findLastMessageConversation(String roomid,int isBurnReading) {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
             String conversation = null;
-            Cursor cursor = db.rawQuery("select converstaion from MessageRecord where user=? and my_user=? ORDER BY createTime asc",
-                    new String[]{roomid, UtilTool.getTocoId()});
+            Cursor cursor = db.rawQuery("select converstaion from MessageRecord where user=? and my_user=? and isBurnReading=? ORDER BY createTime asc",
+                    new String[]{roomid, UtilTool.getTocoId(),isBurnReading+""});
 
             if (cursor.moveToLast()) {
                 conversation = cursor.getString(cursor.getColumnIndex("converstaion"));
@@ -421,12 +422,12 @@ public class DBManager {
         }
     }
 
-    public String findLastMessageConversationTime(String roomid) {
+    public String findLastMessageConversationTime(String roomid,int isBurnReading) {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
             String time = "";
-            Cursor cursor = db.rawQuery("select time from MessageRecord where user=? and my_user=? ORDER BY createTime asc",
-                    new String[]{roomid, UtilTool.getTocoId()});
+            Cursor cursor = db.rawQuery("select time from MessageRecord where user=? and my_user=? and isBurnReading=? ORDER BY createTime asc",
+                    new String[]{roomid, UtilTool.getTocoId(),isBurnReading+""});
 
             if (cursor.moveToLast()) {
                 time = cursor.getString(cursor.getColumnIndex("time"));
@@ -437,12 +438,12 @@ public class DBManager {
         }
     }
 
-    public long findLastMessageConversationCreateTime(String roomid) {
+    public long findLastMessageConversationCreateTime(String roomid,int isBurnReading) {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
             long time = 0;
-            Cursor cursor = db.rawQuery("select createTime from MessageRecord where user=? and my_user=? ORDER BY createTime asc",
-                    new String[]{roomid, UtilTool.getTocoId()});
+            Cursor cursor = db.rawQuery("select createTime from MessageRecord where user=? and my_user=? and isBurnReading=? ORDER BY createTime asc",
+                    new String[]{roomid, UtilTool.getTocoId(),isBurnReading+""});
 
             if (cursor.moveToLast()) {
                 time = cursor.getLong(cursor.getColumnIndex("createTime"));

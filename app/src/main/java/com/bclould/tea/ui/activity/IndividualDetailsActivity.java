@@ -397,7 +397,7 @@ public class IndividualDetailsActivity extends BaseActivity {
                         @Override
                         public void send() {
                             mMgr.deleteConversation(roomId);
-                            mMgr.deleteMessage(roomId);
+                            mMgr.deleteMessage(roomId,0);
                             mMgr.deleteUser(mUser);
                             EventBus.getDefault().post(new MessageEvent(getString(R.string.delete_friend)));
                             finish();

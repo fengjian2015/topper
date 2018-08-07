@@ -74,7 +74,7 @@ public class RoomManage {
         if(roomHashMap!=null){
              roomHashMap.remove(roomId);
         }
-        mMgr.deleteMessage(roomId);
+        mMgr.deleteMessage(roomId,0);
         mMgr.deleteConversation(roomId);
         dbRoomManage.deleteRoom(roomId);
         dbRoomMember.deleteRoom(roomId);
@@ -88,5 +88,11 @@ public class RoomManage {
           return roomHashMap.get(roomId);
         }
         return null;
+    }
+
+    public synchronized void reoveAllRoom(){
+        if(roomHashMap!=null){
+            roomHashMap.clear();
+        }
     }
 }

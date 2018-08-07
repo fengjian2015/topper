@@ -74,6 +74,7 @@ public class MultiManage implements Room{
     private DBRoomMember dbRoomMember;
     private DBRoomManage dbRoomManage;
     private static ExecutorService mSingleThreadExecutor = null;
+    private int isBurnReading=0;
 
     public MultiManage(DBManager mMgr, DBRoomMember dbRoomMember, DBRoomManage dbRoomManage, String roomId, Context context, String roomName) {
         this.mMgr=mMgr;
@@ -85,6 +86,10 @@ public class MultiManage implements Room{
         mSingleThreadExecutor = Executors.newSingleThreadExecutor();// 每次只执行一个线程任务的线程池
     }
 
+    @Override
+    public void setIsBurnReading(int isBurnReading){
+        this.isBurnReading=isBurnReading;
+    }
     @Override
     public void changeName(String name) {
         this.roomName=name;
@@ -156,7 +161,7 @@ public class MultiManage implements Room{
     @Override
     public boolean anewSendText(String message, int id) {
         try {
-            mMgr.deleteSingleMessage(roomId, id + "");
+            mMgr.deleteSingleMessage(roomId, id + "",isBurnReading);
             sendMessage(message);
             return true;
         } catch (Exception e) {
@@ -188,7 +193,7 @@ public class MultiManage implements Room{
 
     private void changeConversationInfo(String time,String message,long createTime){
         if (mMgr.findConversation(roomId)) {
-            mMgr.updateConversation(dbRoomManage.findRoomName(roomId),roomId, 0,  mMgr.findLastMessageConversation(roomId), mMgr.findLastMessageConversationTime(roomId),createTime,null);
+            mMgr.updateConversation(dbRoomManage.findRoomName(roomId),roomId, 0,  mMgr.findLastMessageConversation(roomId,0), mMgr.findLastMessageConversationTime(roomId,0),createTime,null);
         } else {
             mMgr.addConversation(createConversation(time,message,createTime));
         }
@@ -308,7 +313,7 @@ public class MultiManage implements Room{
 
     @Override
     public void anewUploadFile(MessageInfo messageInfo){
-        mMgr.deleteSingleMessage(roomId, messageInfo.getId() + "");
+        mMgr.deleteSingleMessage(roomId, messageInfo.getId() + "",isBurnReading);
         uploadFile(messageInfo.getMessage());
     }
 
@@ -416,7 +421,7 @@ public class MultiManage implements Room{
 
     @Override
     public void anewSendUpload(MessageInfo messageInfo) {
-        mMgr.deleteSingleMessage(roomId, messageInfo.getId() + "");
+        mMgr.deleteSingleMessage(roomId, messageInfo.getId() + "",isBurnReading);
         Upload(messageInfo.getMessage());
     }
 
@@ -608,7 +613,7 @@ public class MultiManage implements Room{
 
     @Override
     public void anewSendLocation(MessageInfo messageInfo) {
-        mMgr.deleteSingleMessage(roomId, messageInfo.getId() + "");
+        mMgr.deleteSingleMessage(roomId, messageInfo.getId() + "",isBurnReading);
         sendLocationMessage(messageInfo.getVoice(), null, messageInfo.getTitle(), messageInfo.getAddress(), messageInfo.getLat(), messageInfo.getLng());
     }
 
@@ -694,7 +699,7 @@ public class MultiManage implements Room{
 
     @Override
     public void anewSendCard(MessageInfo messageInfo) {
-        mMgr.deleteSingleMessage(roomId, messageInfo.getId() + "");
+        mMgr.deleteSingleMessage(roomId, messageInfo.getId() + "",isBurnReading);
         sendCaed(messageInfo);
     }
 
@@ -750,7 +755,7 @@ public class MultiManage implements Room{
 
     @Override
     public void anewSendShareLink(MessageInfo messageInfo) {
-        mMgr.deleteSingleMessage(roomId, messageInfo.getId() + "");
+        mMgr.deleteSingleMessage(roomId, messageInfo.getId() + "",isBurnReading);
         sendShareLink(messageInfo);
     }
 
@@ -806,7 +811,7 @@ public class MultiManage implements Room{
 
     @Override
     public void anewSendShareGuess(MessageInfo messageInfo) {
-        mMgr.deleteSingleMessage(roomId, messageInfo.getId() + "");
+        mMgr.deleteSingleMessage(roomId, messageInfo.getId() + "",isBurnReading);
         sendShareGuess(messageInfo);
     }
 
@@ -863,7 +868,7 @@ public class MultiManage implements Room{
     @Override
     public boolean anewSendVoice(MessageInfo messageInfo) {
         try {
-            mMgr.deleteSingleMessage(roomId, messageInfo.getId() + "");
+            mMgr.deleteSingleMessage(roomId, messageInfo.getId() + "",isBurnReading);
             sendVoice(UtilTool.getFileDuration(messageInfo.getVoice(), context), messageInfo.getVoice());
             return true;
         } catch (Exception e) {
@@ -1157,7 +1162,7 @@ public class MultiManage implements Room{
 
     @Override
     public void anewSendHtml(MessageInfo messageInfo) {
-        mMgr.deleteSingleMessage(roomId, messageInfo.getId() + "");
+        mMgr.deleteSingleMessage(roomId, messageInfo.getId() + "",isBurnReading);
         sendHtml(messageInfo);
     }
 }

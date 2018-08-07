@@ -19,6 +19,7 @@ import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.bclould.tea.R;
 import com.bclould.tea.crypto.otr.OtrChatListenerManager;
+import com.bclould.tea.history.DBConversationBurnManage;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.MessageInfo;
@@ -70,14 +71,17 @@ import static com.bclould.tea.ui.adapter.ChatAdapter.TO_WITHDRAW_MSG;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class SingleManage implements Room {
     private DBManager mMgr;
+    private DBConversationBurnManage mDBConversationBurnManage;
     private String mUser;//對方id
     private Context context;
     private String mName;
     private String url;
     private static ExecutorService mSingleThreadExecutor = null;
+    private int isBurnReading=0;
 
     public SingleManage(DBManager mMgr, String mUser, Context context, String name) {
         this.mMgr = mMgr;
+        mDBConversationBurnManage=new DBConversationBurnManage(context);
         this.mUser = mUser;
         this.context = context;
         this.mName = name;
@@ -87,20 +91,25 @@ public class SingleManage implements Room {
         }
     }
 
+    @Override
+    public void setIsBurnReading(int isBurnReading){
+        this.isBurnReading=isBurnReading;
+    }
+
     public void setUrl(String url){
         this.url=url;
     }
 
     private synchronized boolean send(String to, byte[] attachment, String body, int msgType, String msgId, long time) throws Exception {
         mMgr.addMessageMsgId(msgId,null);
-        MessageManage.getInstance().sendSingLe(to,attachment,body,msgType,msgId,time,mUser,mMgr,context);
+        MessageManage.getInstance().sendSingLe(to,attachment,body,msgType,msgId,time,mUser,mMgr,context,isBurnReading);
         return true;
     }
 
     private synchronized boolean sendWithdraw(String to, byte[] attachment, MessageInfo messageInfo, int msgType, String msgId, long time) throws Exception {
         String body=JSON.toJSONString(messageInfo);
         mMgr.addMessageMsgId(msgId,messageInfo.getRoomId());
-        MessageManage.getInstance().sendSingLe(to,attachment,body,msgType,msgId,time,mUser,mMgr,context);
+        MessageManage.getInstance().sendSingLe(to,attachment,body,msgType,msgId,time,mUser,mMgr,context,isBurnReading);
         return true;
     }
 
@@ -156,7 +165,7 @@ public class SingleManage implements Room {
     @Override
     public boolean anewSendText(String message, int id) {
         try {
-            mMgr.deleteSingleMessage(mUser, id + "");
+            mMgr.deleteSingleMessage(mUser, id + "",isBurnReading);
             sendMessage(message);
             return true;
         } catch (Exception e) {
@@ -187,10 +196,18 @@ public class SingleManage implements Room {
     }
 
     private void changeConversationInfo(String time, String message, long createTime) {
-        if (mMgr.findConversation(mUser)) {
-            mMgr.updateConversation(mUser, 0,  mMgr.findLastMessageConversation(mUser), mMgr.findLastMessageConversationTime(mUser), createTime);
-        } else {
-            mMgr.addConversation(createConversation(time, message, createTime));
+        if(isBurnReading==0){
+            if (mMgr.findConversation(mUser)) {
+                mMgr.updateConversation(mUser, 0,  mMgr.findLastMessageConversation(mUser,isBurnReading), mMgr.findLastMessageConversationTime(mUser,isBurnReading), createTime);
+            } else {
+                mMgr.addConversation(createConversation(time, message, createTime));
+            }
+        }else{
+            if (mDBConversationBurnManage.findConversation(mUser)) {
+                mDBConversationBurnManage.updateConversation(mUser, 0,  mMgr.findLastMessageConversation(mUser,isBurnReading),  createTime);
+            } else {
+                mDBConversationBurnManage.addConversation(createConversation(time, message, createTime));
+            }
         }
     }
 
@@ -210,19 +227,20 @@ public class SingleManage implements Room {
             send(mUser, null, JSON.toJSONString(sendMessage), WsContans.MSG_TEXT, msgId, createTime);
 
             MessageInfo messageInfo = new MessageInfo();
-            messageInfo.setUsername(mUser);
-            messageInfo.setMessage(message);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date curDate = new Date(System.currentTimeMillis());
             String time = formatter.format(curDate);
+            messageInfo.setMessage(message);
+            messageInfo.setConverstaion(message);
+            messageInfo.setMsgId(msgId);
+            messageInfo.setCreateTime(createTime);
             messageInfo.setTime(time);
+            messageInfo.setIsBurnReading(isBurnReading);
+            messageInfo.setUsername(mUser);
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_TEXT_MSG);
             messageInfo.setSendStatus(0);
             messageInfo.setSend(UtilTool.getTocoId());
-            messageInfo.setConverstaion(message);
-            messageInfo.setMsgId(msgId);
-            messageInfo.setCreateTime(createTime);
             messageInfo.setId(mMgr.addMessage(messageInfo));
             changeConversationInfo(time, message, createTime);
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
@@ -239,6 +257,7 @@ public class SingleManage implements Room {
             String time = formatter.format(curDate);
             messageInfo.setTime(time);
             messageInfo.setType(0);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setMsgType(TO_TEXT_MSG);
             messageInfo.setSendStatus(2);
             messageInfo.setSend(UtilTool.getTocoId());
@@ -261,7 +280,7 @@ public class SingleManage implements Room {
 
     @Override
     public void anewUploadFile(MessageInfo messageInfo){
-        mMgr.deleteSingleMessage(mUser, messageInfo.getId() + "");
+        mMgr.deleteSingleMessage(mUser, messageInfo.getId() + "",isBurnReading);
         uploadFile(messageInfo.getMessage());
     }
 
@@ -323,6 +342,7 @@ public class SingleManage implements Room {
             messageInfo.setType(0);
             messageInfo.setContent(postfix);
             messageInfo.setTitle(title);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setCount(size);
             messageInfo.setKey(key);
             messageInfo.setMsgType(TO_FILE_MSG);
@@ -350,6 +370,7 @@ public class SingleManage implements Room {
             messageInfo.setContent(postfix);
             messageInfo.setTitle(title);
             messageInfo.setCount(size);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setKey(key);
             messageInfo.setSendStatus(2);
             messageInfo.setMsgType(TO_FILE_MSG);
@@ -368,7 +389,7 @@ public class SingleManage implements Room {
 
     @Override
     public void anewSendUpload(MessageInfo messageInfo) {
-        mMgr.deleteSingleMessage(mUser, messageInfo.getId() + "");
+        mMgr.deleteSingleMessage(mUser, messageInfo.getId() + "",isBurnReading);
         Upload(messageInfo.getMessage());
     }
 
@@ -489,6 +510,7 @@ public class SingleManage implements Room {
             Date curDate = new Date(System.currentTimeMillis());
             String time = formatter.format(curDate);
             messageInfo.setTime(time);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setType(0);
             messageInfo.setKey(key);
             if (postfix.equals("Image")) {
@@ -527,6 +549,7 @@ public class SingleManage implements Room {
             Date curDate = new Date(System.currentTimeMillis());
             String time = formatter.format(curDate);
             messageInfo.setTime(time);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setType(0);
             messageInfo.setKey(key);
             messageInfo.setSendStatus(2);
@@ -562,7 +585,7 @@ public class SingleManage implements Room {
 
     @Override
     public void anewSendLocation(MessageInfo messageInfo) {
-        mMgr.deleteSingleMessage(mUser, messageInfo.getId() + "");
+        mMgr.deleteSingleMessage(mUser, messageInfo.getId() + "",isBurnReading);
         sendLocationMessage(messageInfo.getVoice(), null, messageInfo.getTitle(), messageInfo.getAddress(), messageInfo.getLat(), messageInfo.getLng());
     }
 
@@ -600,6 +623,7 @@ public class SingleManage implements Room {
             messageInfo.setUsername(mUser);
             messageInfo.setTime(time);
             messageInfo.setMessage(title);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setMsgType(TO_LOCATION_MSG);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
@@ -626,6 +650,7 @@ public class SingleManage implements Room {
             messageInfo.setUsername(mUser);
             messageInfo.setTime(time);
             messageInfo.setTitle(title);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setAddress(address);
             messageInfo.setLat(lat);
             messageInfo.setLng(lng);
@@ -653,7 +678,7 @@ public class SingleManage implements Room {
 
     @Override
     public void anewSendCard(MessageInfo messageInfo) {
-        mMgr.deleteSingleMessage(mUser, messageInfo.getId() + "");
+        mMgr.deleteSingleMessage(mUser, messageInfo.getId() + "",isBurnReading);
         sendCaed(messageInfo);
     }
 
@@ -671,6 +696,7 @@ public class SingleManage implements Room {
             messageInfo.setTime(time);
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_CARD_MSG);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setSendStatus(0);
             messageInfo.setConverstaion(converstaion);
@@ -692,6 +718,7 @@ public class SingleManage implements Room {
             messageInfo.setTime(time);
             messageInfo.setType(2);
             messageInfo.setMsgType(TO_CARD_MSG);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setSendStatus(2);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
@@ -709,7 +736,7 @@ public class SingleManage implements Room {
 
     @Override
     public void anewSendShareLink(MessageInfo messageInfo) {
-        mMgr.deleteSingleMessage(mUser, messageInfo.getId() + "");
+        mMgr.deleteSingleMessage(mUser, messageInfo.getId() + "",isBurnReading);
         sendShareLink(messageInfo);
     }
 
@@ -729,6 +756,7 @@ public class SingleManage implements Room {
             messageInfo.setTime(time);
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_LINK_MSG);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setSendStatus(0);
             messageInfo.setConverstaion(converstaion);
@@ -750,6 +778,7 @@ public class SingleManage implements Room {
             messageInfo.setTime(time);
             messageInfo.setType(2);
             messageInfo.setMsgType(TO_LINK_MSG);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setSendStatus(2);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
@@ -765,7 +794,7 @@ public class SingleManage implements Room {
 
     @Override
     public void anewSendShareGuess(MessageInfo messageInfo) {
-        mMgr.deleteSingleMessage(mUser, messageInfo.getId() + "");
+        mMgr.deleteSingleMessage(mUser, messageInfo.getId() + "",isBurnReading);
         sendShareGuess(messageInfo);
     }
 
@@ -784,6 +813,7 @@ public class SingleManage implements Room {
             messageInfo.setTime(time);
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_GUESS_MSG);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setSendStatus(0);
             messageInfo.setConverstaion(converstaion);
@@ -805,6 +835,7 @@ public class SingleManage implements Room {
             messageInfo.setTime(time);
             messageInfo.setType(2);
             messageInfo.setMsgType(TO_GUESS_MSG);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setSendStatus(2);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
@@ -822,7 +853,7 @@ public class SingleManage implements Room {
     @Override
     public boolean anewSendVoice(MessageInfo messageInfo) {
         try {
-            mMgr.deleteSingleMessage(mUser, messageInfo.getId() + "");
+            mMgr.deleteSingleMessage(mUser, messageInfo.getId() + "",isBurnReading);
             sendVoice(UtilTool.getFileDuration(messageInfo.getVoice(), context), messageInfo.getVoice());
             return true;
         } catch (Exception e) {
@@ -852,6 +883,7 @@ public class SingleManage implements Room {
             messageInfo.setVoice(fileName);
             messageInfo.setTime(time);
             messageInfo.setMsgType(TO_VOICE_MSG);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setVoiceTime(duration + "");
             messageInfo.setVoiceStatus(1);
             messageInfo.setSendStatus(0);
@@ -880,6 +912,7 @@ public class SingleManage implements Room {
             messageInfo.setVoice(fileName);
             messageInfo.setTime(time);
             messageInfo.setMsgType(TO_VOICE_MSG);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setVoiceTime(duration + "");
             messageInfo.setVoiceStatus(1);
             messageInfo.setSendStatus(2);
@@ -917,6 +950,7 @@ public class SingleManage implements Room {
             messageInfo.setRemark(mRemark);
             messageInfo.setCoin(mCoin);
             messageInfo.setMsgType(TO_TRANSFER_MSG);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setCount(mCount);
             messageInfo.setStatus(0);
             messageInfo.setSend(UtilTool.getTocoId());
@@ -960,6 +994,7 @@ public class SingleManage implements Room {
             messageInfo.setRemark(mRemark);
             messageInfo.setCoin(mCoin);
             messageInfo.setMsgType(TO_RED_MSG);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setCount(mCount + "");
             messageInfo.setStatus(0);
             messageInfo.setRedId(id);
@@ -997,6 +1032,7 @@ public class SingleManage implements Room {
             messageInfo.setConverstaion(converstaion);
             messageInfo.setMsgId(msgId);
             messageInfo.setCreateTime(createTime);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setId(mMgr.addMessage(messageInfo));
             changeConversationInfo(time,converstaion,createTime);
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
@@ -1012,6 +1048,7 @@ public class SingleManage implements Room {
             messageInfo.setType(2);
             messageInfo.setMsgType(TO_INVITE_MSG);
             messageInfo.setSendStatus(2);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
             messageInfo.setMsgId(UtilTool.createMsgId(mUser));
@@ -1039,6 +1076,7 @@ public class SingleManage implements Room {
             messageInfo.setMsgType(TO_WITHDRAW_MSG);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setSendStatus(0);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setConverstaion(converstaion);
             messageInfo.setMsgId(msgId);
             messageInfo.setCreateTime(createTime);
@@ -1055,6 +1093,7 @@ public class SingleManage implements Room {
             String time = formatter.format(curDate);
             messageInfo.setTime(time);
             messageInfo.setType(2);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setMsgType(TO_WITHDRAW_MSG);
             messageInfo.setSendStatus(2);
             messageInfo.setSend(UtilTool.getTocoId());
@@ -1082,6 +1121,7 @@ public class SingleManage implements Room {
             messageInfo.setTime(time);
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_HTML_MSG);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setSendStatus(0);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
@@ -1101,6 +1141,7 @@ public class SingleManage implements Room {
             messageInfo.setTime(time);
             messageInfo.setType(0);
             messageInfo.setMsgType(TO_HTML_MSG);
+            messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setSendStatus(2);
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setConverstaion(converstaion);
@@ -1115,7 +1156,7 @@ public class SingleManage implements Room {
 
     @Override
     public void anewSendHtml(MessageInfo messageInfo) {
-        mMgr.deleteSingleMessage(mUser, messageInfo.getId() + "");
+        mMgr.deleteSingleMessage(mUser, messageInfo.getId() + "",isBurnReading);
         sendHtml(messageInfo);
     }
 }

@@ -716,7 +716,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    mMgr.deleteMessage(roomId);
+                    mMgr.deleteMessage(roomId,0);
                     mMgr.updateConversationMessage(roomId, "");
                     Toast.makeText(ConversationGroupDetailsActivity.this, getString(R.string.empty_success), Toast.LENGTH_SHORT).show();
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.msg_database_update)));

@@ -34,16 +34,15 @@ import android.widget.Toast;
 import com.bclould.tea.Presenter.FileDownloadPresenter;
 import com.bclould.tea.Presenter.GrabRedPresenter;
 import com.bclould.tea.R;
-import com.bclould.tea.base.MyApp;
+import com.bclould.tea.history.DBBurnManager;
+import com.bclould.tea.history.DBConversationBurnManage;
 import com.bclould.tea.history.DBManager;
-import com.bclould.tea.history.DBRoomMember;
-import com.bclould.tea.model.DownloadInfo;
 import com.bclould.tea.model.GrabRedInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.model.SerMap;
 import com.bclould.tea.ui.activity.AddCollectActivity;
 import com.bclould.tea.ui.activity.ChatLookLocationActivity;
-import com.bclould.tea.ui.activity.ConversationActivity;
+import com.bclould.tea.ui.activity.ConversationBurnActivity;
 import com.bclould.tea.ui.activity.FileOpenActivity;
 import com.bclould.tea.ui.activity.GroupConfirmActivity;
 import com.bclould.tea.ui.activity.GuessDetailsActivity;
@@ -80,7 +79,6 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-import com.danikula.videocache.HttpProxyCacheServer;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jsoup.Jsoup;
@@ -90,9 +88,7 @@ import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.net.SocketTimeoutException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -102,18 +98,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.github.rockerhieu.emojicon.EmojiconTextView;
 
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_DOC;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_DOCX;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_LOG;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PDF;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PPT;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PPTX;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_RAR;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_RTF;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_TXT;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_XLS;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_XLSX;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_ZIP;
 import static com.bclould.tea.ui.activity.SystemSetActivity.AUTOMATICALLY_DOWNLOA;
 import static com.bclould.tea.utils.UtilTool.Log;
 
@@ -122,7 +106,7 @@ import static com.bclould.tea.utils.UtilTool.Log;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ChatAdapter extends RecyclerView.Adapter {
+public class ChatBurnAdapter extends RecyclerView.Adapter {
 
     public static final int FROM_TEXT_MSG = 0;//接收文本消息类型
     public static final int TO_TEXT_MSG = 1;//发送文本消息类型
@@ -156,11 +140,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     private final Context mContext;
     private final List<MessageInfo> mMessageList;
-//    private final Bitmap mFromBitmap;
-
     private final DBManager mMgr;
     private final GrabRedPresenter mGrabRedPresenter;
-    //    private final Bitmap mToBitmap;
     private final MediaPlayer mMediaPlayer;
     private int voicePosition;
     ArrayList<String> mImageList = new ArrayList<>();
@@ -170,11 +151,12 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private String mRoomType;
     private String mName;
     private RelativeLayout mrlTitle;
-    private DBRoomMember mDBRoomMember;
     private CurrencyDialog mCurrencyDialog;
+    private DBConversationBurnManage mDBConversationBurnManage;
+    private DBBurnManager mDBBurnManager;
 
-    public ChatAdapter(Context context, List<MessageInfo> messageList, String roomId, DBManager mgr, MediaPlayer mediaPlayer, String name, String roomType, RelativeLayout rlTitle, DBRoomMember mDBRoomMember
-    ) {
+    public ChatBurnAdapter(Context context, List<MessageInfo> messageList, String roomId, DBManager mgr, MediaPlayer mediaPlayer, String name, String roomType, RelativeLayout rlTitle
+            , DBConversationBurnManage dbConversationBurnManage, DBBurnManager dBBurnManager) {
         mContext = context;
         mMessageList = messageList;
         mRoomId = roomId;
@@ -185,7 +167,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
         //繼續保留這兩個字段是用於之前版本有的消息沒有send字段
         mName = name;
         mrlTitle = rlTitle;
-        this.mDBRoomMember = mDBRoomMember;
+        mDBConversationBurnManage=dbConversationBurnManage;
+        this.mDBBurnManager=dBBurnManager;
     }
 
     @Override
@@ -461,10 +444,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View view) {
                 try {
-                    MessageInfo messageInfoNext = mMgr.deleteSingleMessage(mRoomId, messageInfo.getId() + "",0);
-                    String conversation = mMgr.findLastMessageConversation(mRoomId,0);
+                    MessageInfo messageInfoNext = mMgr.deleteSingleMessage(mRoomId, messageInfo.getId() + "",1);
+                    String conversation = mMgr.findLastMessageConversation(mRoomId,1);
                     if (!StringUtils.isEmpty(conversation)) {
-                        mMgr.updateConversationMessage(mRoomId, conversation);
+                        mDBConversationBurnManage.updateConversationMessage(mRoomId, conversation);
                     }
                     if (messageInfoNext != null) {
                         mMessageList.get(mMessageList.indexOf(messageInfo) + 1).setShowChatTime(messageInfoNext.getShowChatTime());
@@ -483,17 +466,17 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private void showCopyDialog(final int msgtype, final MessageInfo messageInfo, final boolean isCopy, boolean isTransmit, boolean isWithdraw,boolean isCollect) {
         final List<String> list = new ArrayList<>();
         list.add(mContext.getString(R.string.delete));
-        if (isCopy)
-            list.add(mContext.getString(R.string.copy));
-        if (isTransmit)
-            list.add(mContext.getString(R.string.transmit));
+//        if (isCopy)
+//            list.add(mContext.getString(R.string.copy));
+//        if (isTransmit)
+//            list.add(mContext.getString(R.string.transmit));
 //        if(isWithdraw&&messageInfo.getSendStatus()==1&&
 //                (messageInfo.getCreateTime()+(3*60*1000)>System.currentTimeMillis())){
 //            list.add(mContext.getString(R.string.withdrew));
 //        }
-        if(isCollect){
-            list.add(mContext.getString(R.string.collect));
-        }
+//        if(isCollect){
+//            list.add(mContext.getString(R.string.collect));
+//        }
         final MenuListPopWindow menu = new MenuListPopWindow(mContext, list);
         menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
             @Override
@@ -572,13 +555,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
     }
 
     private void setNameAndUrl(ImageView mIvTouxiang, MessageInfo messageInfo, TextView tvName) {
-        UtilTool.getImage(mContext, mIvTouxiang, mDBRoomMember, mMgr, messageInfo.getSend());
+        UtilTool.getImage(mMgr,messageInfo.getSend(),mContext, mIvTouxiang);
 
         if (RoomManage.ROOM_TYPE_MULTI.equals(mRoomType)) {
             String name = mMgr.queryRemark(messageInfo.getSend());
-            if (StringUtils.isEmpty(name)) {
-                name = mDBRoomMember.findMemberName(mRoomId, messageInfo.getSend());
-            }
             if (StringUtils.isEmpty(name)) {
                 name = messageInfo.getSend();
             }
@@ -671,6 +651,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
 //            mIvTouxiang.setImageBitmap(mFromBitmap);
+            setBurnMessage(messageInfo.getMsgId());
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
@@ -852,6 +833,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public void setData(final MessageInfo messageInfo) {
             String mUser = messageInfo.getSend();
+            setBurnMessage(messageInfo.getMsgId());
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             final String mName = mMgr.findUserName(mUser);
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
@@ -915,6 +897,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     TextView tvRemark;
     ImageView bark ;
     Button open;
+
     //显示币种弹框
     private void showDialog(final MessageInfo messageInfo, boolean isGrabThe, boolean isOverdue, final GrabRedInfo grabRedInfo) {
         //暫無群聊，所以沒有考慮群聊情況
@@ -924,9 +907,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
         String mName = mMgr.queryRemark(mUser);
         if (StringUtils.isEmpty(mName)) {
             mName = mMgr.findUserName(mUser);
-        }
-        if (StringUtils.isEmpty(mName)) {
-            mName = mDBRoomMember.findMemberName(mRoomId, mUser);
         }
         if (StringUtils.isEmpty(mName)) {
             mName = mUser;
@@ -972,7 +952,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         name.setText(mName);
 
 //        touxiang.setImageBitmap(mFromBitmap);
-        UtilTool.getImage(mContext, touxiang, mDBRoomMember, mMgr, mUser);
+        UtilTool.getImage(mMgr,mUser , mContext,touxiang);
         bark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1102,7 +1082,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     public void playVoice(MediaPlayer mediaPlayer, String fileName, final AnimationDrawable anim, final int position) {
         try {
-            ((ConversationActivity) mContext).isPlayVoi1ce(true);
+            ((ConversationBurnActivity) mContext).isPlayVoi1ce(true);
             if (mAnim != null) {
                 mAnim.selectDrawable(0);
                 mAnim.stop();
@@ -1114,7 +1094,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mediaPlayer) {
-                    ((ConversationActivity) mContext).isPlayVoi1ce(false);
+                    ((ConversationBurnActivity) mContext).isPlayVoi1ce(false);
                     mediaPlayer.reset();
                     anim.selectDrawable(0);
                     anim.stop();
@@ -1122,7 +1102,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     notifyItemChanged(position);
                     for (int i = position; i < mMessageList.size(); i++) {
                         if (mMessageList.get(i).getMsgType() == FROM_VOICE_MSG && mMessageList.get(i).getVoiceStatus() != 1) {
-                            View view = ((ConversationActivity) mContext).getItemView(i);
+                            View view = ((ConversationBurnActivity) mContext).getItemView(i);
                             if (view != null) {
                                 ImageView mIvAnim = view.findViewById(R.id.iv_anim);
                                 mAnim = (AnimationDrawable) mIvAnim.getBackground();
@@ -1167,11 +1147,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
         @Override
         public void handleMessage(Message msg) {
             try {
-                ((ConversationActivity) mContext).isPlayVoi1ce(true);
+                ((ConversationBurnActivity) mContext).isPlayVoi1ce(true);
                 mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mediaPlayer) {
-                        ((ConversationActivity) mContext).isPlayVoi1ce(false);
+                        ((ConversationBurnActivity) mContext).isPlayVoi1ce(false);
                         mediaPlayer.reset();
                         mAnim.selectDrawable(0);
                         mAnim.stop();
@@ -1179,7 +1159,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                         notifyItemChanged(voicePosition);
                         for (int i = voicePosition; i < mMessageList.size(); i++) {
                             if (mMessageList.get(i).getMsgType() == FROM_VOICE_MSG && mMessageList.get(i).getVoiceStatus() != 1) {
-                                View view = ((ConversationActivity) mContext).getItemView(i);
+                                View view = ((ConversationBurnActivity) mContext).getItemView(i);
                                 if (view != null) {
                                     ImageView mIvAnim = view.findViewById(R.id.iv_anim);
                                     mAnim = (AnimationDrawable) mIvAnim.getBackground();
@@ -1249,6 +1229,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo, final int position) {
+            setBurnMessage(messageInfo.getMsgId());
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
@@ -1377,6 +1358,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setBurnMessage(messageInfo.getMsgId());
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
@@ -1518,6 +1500,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setBurnMessage(messageInfo.getMsgId());
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
@@ -1717,6 +1700,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setBurnMessage(messageInfo.getMsgId());
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
@@ -1820,6 +1804,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setBurnMessage(messageInfo.getMsgId());
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
@@ -1936,7 +1921,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
-            // TODO: 2018/5/28 所有的from需要增加一個名字
+            setBurnMessage(messageInfo.getMsgId());
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
@@ -2066,7 +2051,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
-            // TODO: 2018/5/28 所有的from需要增加一個名字
+            setBurnMessage(messageInfo.getMsgId());
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
@@ -2180,6 +2165,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setBurnMessage(messageInfo.getMsgId());
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
@@ -2325,6 +2311,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setBurnMessage(messageInfo.getMsgId());
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
@@ -2428,6 +2415,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
+            setBurnMessage(messageInfo.getMsgId());
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
@@ -2571,6 +2559,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo, int position) {
+            setBurnMessage(messageInfo.getMsgId());
             getHtmlContent(messageInfo,position);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
@@ -2764,5 +2753,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 }
             }).apply(requestOptions).into(mIvImg);
         }
+    }
+
+    private void setBurnMessage(String msgId){
+        mDBBurnManager.addBurn(msgId);
     }
 }

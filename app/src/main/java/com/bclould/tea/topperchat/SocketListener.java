@@ -19,6 +19,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.NotificationCompat;
 import android.util.Base64;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -28,6 +29,7 @@ import com.bclould.tea.Presenter.GroupPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.crypto.otr.OtrChatListenerManager;
+import com.bclould.tea.history.DBConversationBurnManage;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
@@ -167,10 +169,11 @@ public class SocketListener {
     private DBManager mgr;
     private DBRoomManage mdbRoomManage;
     private DBRoomMember mdbRoomMember;
+    private DBConversationBurnManage mDBConversationBurnManage;
     private int IMSequence = 1000;
     private PingThread mPingThread;
     private PingThreadRequest mPingThreadRequest;
-    public static int pingNumber=0;
+    public static int pingNumber = 0;
     ExecutorService executorService;//以後用於群聊功能
     private static SocketListener mInstance;
 
@@ -185,20 +188,25 @@ public class SocketListener {
         return mInstance;
     }
 
+    public static void clear(){
+        mInstance=null;
+    }
+
     private SocketListener(Context context) {
         this.context = context;
         executorService = Executors.newFixedThreadPool(5);
         mgr = new DBManager(context);
         mdbRoomManage = new DBRoomManage(context);
         mdbRoomMember = new DBRoomMember(context);
+        mDBConversationBurnManage = new DBConversationBurnManage(context);
         mNotificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel("1", "channelName", NotificationManager.IMPORTANCE_HIGH);
             mNotificationManager.createNotificationChannel(channel);
-            mBuilder= new Notification.Builder(context,"1");
-        }else{
-            mBuilder= new Notification.Builder(context);
+            mBuilder = new Notification.Builder(context, "1");
+        } else {
+            mBuilder = new Notification.Builder(context);
         }
 
     }
@@ -220,22 +228,13 @@ public class SocketListener {
                     content = objectMapper.readValue((byte[]) deserialized.get(CONTENT), new TypeReference<Map<String, Object>>() {
                     });
                     UtilTool.Log("fengjian", "聊天消息message：to：" + content.get("to") + "   from:" + content.get("from") + "   crypt:" + content.get("crypt") + "   message：" + content.get("message") + "   type：" + content.get(TYPE) + "   id:" + content.get("id"));
-                    if(UtilTool.parseInt(content.get("isBurnReading")+"")==0){
-                        messageFeedback(content, true, RoomManage.ROOM_TYPE_SINGLE);
-                    }else{
-                        // TODO: 2018/8/6 閱後即焚消息單獨處理
-                    }
+                    messageFeedback(content, true, RoomManage.ROOM_TYPE_SINGLE);
                     break;
                 case MSG_GROUP:
                     //群組消息
                     content = objectMapper.readValue((byte[]) deserialized.get(CONTENT), new TypeReference<Map<String, Object>>() {
                     });
-                    if(UtilTool.parseInt(content.get("isBurnReading")+"")==0){
-                        messageFeedback(content, true, RoomManage.ROOM_TYPE_MULTI);
-                    }else{
-                        // TODO: 2018/8/6 閱後即焚消息單獨處理
-                    }
-
+                    messageFeedback(content, true, RoomManage.ROOM_TYPE_MULTI);
                     break;
                 case MSG_BROADCAST:
                     //廣播消息
@@ -250,12 +249,14 @@ public class SocketListener {
                     logout();
                     break;
                 case MSG_SINGLER_RESULT:
-                    content = objectMapper.readValue((byte[]) deserialized.get(CONTENT), new TypeReference<Map<String, Object>>() {});
+                    content = objectMapper.readValue((byte[]) deserialized.get(CONTENT), new TypeReference<Map<String, Object>>() {
+                    });
                     //消息回執，改變消息狀態
                     changeMsgState(content);
                     break;
                 case MSG_GROUP_RESULT:
-                    content = objectMapper.readValue((byte[]) deserialized.get(CONTENT), new TypeReference<Map<String, Object>>() {});
+                    content = objectMapper.readValue((byte[]) deserialized.get(CONTENT), new TypeReference<Map<String, Object>>() {
+                    });
                     //消息回執，改變消息狀態
                     changeMsgState(content);
                     break;
@@ -264,23 +265,20 @@ public class SocketListener {
                     content = objectMapper.readValue((byte[]) deserialized.get(CONTENT), new TypeReference<Map<String, Object>>() {
                     });
                     UtilTool.Log("fengjian", "聊天消息message：to：" + content.get("to") + "   from:" + content.get("from") + "   crypt:" + content.get("crypt") + "   message：" + content.get("message") + "   type：" + content.get(TYPE) + "   id:" + content.get("id"));
-                    if(UtilTool.parseInt(content.get("isBurnReading")+"")==0){
-                        messageFeedback(content, true, RoomManage.ROOM_TYPE_SINGLE);
-                    }else{
-                        // TODO: 2018/8/6 閱後即焚消息單獨處理
-                    }
+                    messageFeedback(content, true, RoomManage.ROOM_TYPE_SINGLE);
                     break;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     //其他賬號登錄
     public void logout() {
         WsConnection.getInstance().logoutService(context);
         Intent intent = new Intent(context, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("whence",3);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("whence", 3);
         context.startActivity(intent);
         MySharedPreferences.getInstance().setString(TOKEN, "");
         MySharedPreferences.getInstance().setString(TOCOID, "");
@@ -290,11 +288,11 @@ public class SocketListener {
     private void changeMsgState(Map<Object, Object> content) {
         UtilTool.Log("fengjian", "接受到消息反饋" + content.toString());
         String id = (String) content.get("id");
-        String roomId=mgr.findIsWithdraw(id);
-        if(!StringUtils.isEmpty(roomId)){
+        String roomId = mgr.findIsWithdraw(id);
+        if (!StringUtils.isEmpty(roomId)) {
             //表示是撤回消息
-            MessageInfo messageInfo=mgr.queryMessageMsg(id);
-            mgr.deleteSingleMessageMsgId(messageInfo.getBetId());
+            MessageInfo messageInfo = mgr.queryMessageMsg(id);
+            mgr.deleteSingleMessageMsgId(messageInfo.getBetId(), 0);
             MessageEvent messageEvent = new MessageEvent(context.getString(R.string.withdrew_a_message));
             messageEvent.setId(messageInfo.getBetId());
             EventBus.getDefault().post(messageEvent);
@@ -323,15 +321,15 @@ public class SocketListener {
         WsConnection.getInstance().setLoginConnection(false);
 
         pingNumber++;
-        mPingThread=new PingThread(context,pingNumber);
+        mPingThread = new PingThread(context, pingNumber);
         mPingThread.start();
-        mPingThreadRequest= new PingThreadRequest(context,pingNumber);
+        mPingThreadRequest = new PingThreadRequest(context, pingNumber);
         mPingThreadRequest.start();
 
         XGManage.getInstance().setAlias();
     }
 
-    private String OTRCrypt(String from, String chatmesssage, boolean crypt){
+    private String OTRCrypt(String from, String chatmesssage, boolean crypt) {
         if (crypt) {
             if (OtrChatListenerManager.getInstance().isOtrEstablishMessage(chatmesssage,
                     OtrChatListenerManager.getInstance().sessionID(UtilTool.getTocoId(), from), context)) {
@@ -352,7 +350,7 @@ public class SocketListener {
      * @return false表示攔截消息
      */
     private void bellJudgment(String from, boolean isPlayHint) {
-        if (isPlayHint&&!isNoDisturbing(from)) {
+        if (isPlayHint && !isNoDisturbing(from)) {
             UtilTool.playHint(context);
         }
     }
@@ -360,9 +358,10 @@ public class SocketListener {
 
     /**
      * 是否免打扰
+     *
      * @return true是
      */
-    private boolean isNoDisturbing(String from){
+    private boolean isNoDisturbing(String from) {
         //鈴聲必須放在處理消息類前面
         SharedPreferences sp = context.getSharedPreferences(SETTING, 0);
         boolean free = MySharedPreferences.getInstance().getBoolean(SETTING + from + UtilTool.getTocoId());
@@ -371,7 +370,7 @@ public class SocketListener {
         } else if (sp.contains(INFORM)) {
             if (MySharedPreferences.getInstance().getBoolean(INFORM)) {
                 return false;
-            }else{
+            } else {
                 return true;
             }
         } else {
@@ -388,26 +387,27 @@ public class SocketListener {
      */
     public void messageFeedback(Map<Object, Object> content, boolean isPlayHint, String roomType) {
         try {
+            int isBurnReading = UtilTool.parseInt(content.get("isBurnReading") + "");
             Map<Object, Object> messageMap = objectMapper.readValue((byte[]) content.get("message"), new TypeReference<Map<String, Object>>() {
             });
             String from;
             String sendFrom;
             boolean isMe = false;
-            if(RoomManage.ROOM_TYPE_MULTI.equals(roomType)){
-                from = content.get("group_id")+"";
-                sendFrom=(String) content.get("toco_id");
+            if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
+                from = content.get("group_id") + "";
+                sendFrom = (String) content.get("toco_id");
                 if (UtilTool.getTocoId().equals(sendFrom)) {
                     isMe = true;
                     isPlayHint = false;
                 }
-            }else{
+            } else {
                 from = (String) content.get("from");
                 if (UtilTool.getTocoId().equals(from)) {
                     from = (String) content.get("to");
                     isMe = true;
                     isPlayHint = false;
                 }
-                sendFrom=from;
+                sendFrom = from;
             }
             //處理多終端登錄，自己消息同步問題
             String message = (String) messageMap.get("body");
@@ -441,10 +441,10 @@ public class SocketListener {
             } else {
                 friend = mgr.findUserName(from);
             }
-            if (StringUtils.isEmpty(friend)){
-                if(!StringUtils.isEmpty((String) content.get("name"))){
-                    friend= (String) content.get("name");
-                }else{
+            if (StringUtils.isEmpty(friend)) {
+                if (!StringUtils.isEmpty((String) content.get("name"))) {
+                    friend = (String) content.get("name");
+                } else {
                     friend = from;
                 }
             }
@@ -474,7 +474,7 @@ public class SocketListener {
                 case WsContans.MSG_IMAGE:
                     //圖片
                     String key1 = messageInfo.getKey();
-                    String url1 ;
+                    String url1;
                     if (key1.startsWith("http")) {
                         url1 = key1;
                     } else {
@@ -506,7 +506,7 @@ public class SocketListener {
                     } else {
                         msgType = FROM_VIDEO_MSG;
                     }
-                    messageInfo.setVoice(url+VIDEO_THUMBNAIL);
+                    messageInfo.setVoice(url + VIDEO_THUMBNAIL);
                     goChat(from, context.getString(R.string.video), roomType);
                     break;
                 case WsContans.MSG_FILE:
@@ -519,7 +519,7 @@ public class SocketListener {
                     } else {
                         msgType = FROM_FILE_MSG;
                     }
-                    redpacket="["+context.getString(R.string.file)+"]";
+                    redpacket = "[" + context.getString(R.string.file) + "]";
                     goChat(from, context.getString(R.string.file), roomType);
                     break;
                 case WsContans.MSG_LOCATION:
@@ -598,19 +598,19 @@ public class SocketListener {
                     } else {
                         msgType = FROM_INVITE_MSG;
                     }
-                    goChat(from,context.getString(R.string.group_intive), roomType);
+                    goChat(from, context.getString(R.string.group_intive), roomType);
                     break;
                 case WsContans.MSG_WITHDRAW:
                     //撤回消息
-                    messageInfo.setMessage("\""+messageInfo.getInitiator()+"\""+context.getString(R.string.withdrew_a_message));
-                    redpacket=messageInfo.getMessage();
-                    mgr.deleteSingleMessageMsgId(messageInfo.getBetId());
+                    messageInfo.setMessage("\"" + messageInfo.getInitiator() + "\"" + context.getString(R.string.withdrew_a_message));
+                    redpacket = messageInfo.getMessage();
+                    mgr.deleteSingleMessageMsgId(messageInfo.getBetId(), isBurnReading);
                     if (isMe) {
                         msgType = TO_WITHDRAW_MSG;
                     } else {
                         msgType = FROM_WITHDRAW_MSG;
                     }
-                    goChat(from,redpacket,roomType);
+                    goChat(from, redpacket, roomType);
 
                     MessageEvent messageEvent = new MessageEvent(context.getString(R.string.withdrew_a_message));
                     messageEvent.setId(messageInfo.getBetId());
@@ -632,7 +632,7 @@ public class SocketListener {
                     } else {
                         msgType = FROM_HTML_MSG;
                     }
-                    goChat(from,redpacket,roomType);
+                    goChat(from, redpacket, roomType);
                     break;
                 default:
                     return;
@@ -644,6 +644,11 @@ public class SocketListener {
             } else {
                 messageInfo.setSend(from);
             }
+            if(isBurnReading==1){
+                messageInfo.setIsBurnReading(1);
+            }else{
+                messageInfo.setIsBurnReading(0);
+            }
             messageInfo.setUsername(from);
             messageInfo.setTime(time);
             messageInfo.setType(type);
@@ -654,17 +659,31 @@ public class SocketListener {
             messageInfo.setSendStatus(1);
             messageInfo.setCreateTime(createTime);
             mgr.addMessage(messageInfo);
-            int number = mgr.queryNumber(from);
+
+            setConversation(messageInfo, from, isMe, friend, createTime, time, roomType, redpacket, isBurnReading);
+            MessageEvent messageEvent = new MessageEvent(context.getString(R.string.msg_database_update));
+            messageEvent.setId(msgId);
+            EventBus.getDefault().post(messageEvent);
+            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.dispose_unread_msg)));
+            bellJudgment(from, isPlayHint);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setConversation(MessageInfo messageInfo, String from, boolean isMe, String friend, long createTime, String time, String roomType, String redpacket, int isBurnReading) {
+        if (isBurnReading == 0) {
             String atme = "";
-            if(messageInfo.getAtMap()!=null&&messageInfo.getAtMap().size()>0
-                    &&!StringUtils.isEmpty(messageInfo.getAtMap().get(UtilTool.getTocoId()))){
-                atme=context.getString(R.string.member_at_me);
+            if (messageInfo.getAtMap() != null && messageInfo.getAtMap().size() > 0
+                    && !StringUtils.isEmpty(messageInfo.getAtMap().get(UtilTool.getTocoId()))) {
+                atme = context.getString(R.string.member_at_me);
             }
+            int number = mgr.queryNumber(from);
             if (mgr.findConversation(from)) {
                 if (!isMe) {
                     number++;
                 }
-                mgr.updateConversation(friend,from, number, mgr.findLastMessageConversation(from), mgr.findLastMessageConversationTime(from), createTime,atme);
+                mgr.updateConversation(friend, from, number, mgr.findLastMessageConversation(from, isBurnReading), mgr.findLastMessageConversationTime(from, isBurnReading), createTime, atme);
             } else {
                 ConversationInfo info = new ConversationInfo();
                 info.setTime(time);
@@ -682,14 +701,31 @@ public class SocketListener {
                 info.setCreateTime(UtilTool.createChatCreatTime());
                 mgr.addConversation(info);
             }
-            MessageEvent messageEvent = new MessageEvent(context.getString(R.string.msg_database_update));
-            messageEvent.setId(msgId);
-            EventBus.getDefault().post(messageEvent);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.dispose_unread_msg)));
-            bellJudgment(from,isPlayHint);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else {
+            int number = mDBConversationBurnManage.queryNumber(from);
+            if (mDBConversationBurnManage.findConversation(from)) {
+                if (!isMe) {
+                    number++;
+                }
+                mDBConversationBurnManage.updateConversation(friend, from, number, mgr.findLastMessageConversation(from, isBurnReading), createTime);
+            } else {
+                ConversationInfo info = new ConversationInfo();
+                info.setTime(time);
+                if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
+                    info.setChatType(RoomManage.ROOM_TYPE_MULTI);
+                } else {
+                    info.setChatType(RoomManage.ROOM_TYPE_SINGLE);
+                }
+                info.setFriend(friend);
+                info.setChatType(roomType);
+                info.setUser(from);
+                info.setNumber(1);
+                info.setMessage(redpacket);
+                info.setCreateTime(UtilTool.createChatCreatTime());
+                mDBConversationBurnManage.addConversation(info);
+            }
         }
+
     }
 
     private String downFile(String key) throws ParseException {
@@ -699,8 +735,8 @@ public class SocketListener {
         return url;
     }
 
-    private String downFileCompress(String url){
-        return url+"?x-oss-process=image/resize,p_40";
+    private String downFileCompress(String url) {
+        return url + "?x-oss-process=image/resize,p_40";
     }
 
     private File saveFile(byte[] attachment, String fileName, String path) throws IOException {
@@ -727,16 +763,18 @@ public class SocketListener {
 
         return file;
     }
+
     /**
-     *處理廣播消息
+     * 處理廣播消息
      *
      * @param binary
      */
     public void friendRequest(byte[] binary) {
         try {
-            Map<Object, Object> contentMap = objectMapper.readValue(binary, new TypeReference<Map<String, Object>>() {});
+            Map<Object, Object> contentMap = objectMapper.readValue(binary, new TypeReference<Map<String, Object>>() {
+            });
             Map<Object, Object> jsonMap = JSON.parseObject(new String((byte[]) contentMap.get("message")), HashMap.class);
-            int type = UtilTool.parseInt(jsonMap.get(TYPE)+"");
+            int type = UtilTool.parseInt(jsonMap.get(TYPE) + "");
             Map<Object, Object> messageMap = JSON.parseObject((String) jsonMap.get("message"), HashMap.class);
             switch (type) {
                 case BC_MEMBER_GROUP:
@@ -778,7 +816,7 @@ public class SocketListener {
      *
      * @param binary
      */
-    public void umengFriendRequest(Map<String,String> jsonMap) {
+    public void umengFriendRequest(Map<String, String> jsonMap) {
         try {
 //            Map<Object, Object> contentMap = objectMapper.readValue(binary, new TypeReference<Map<String, Object>>() {});
 //            Map<Object, Object> jsonMap = JSON.parseObject(new String((byte[]) contentMap.get("message")), HashMap.class);
@@ -840,6 +878,7 @@ public class SocketListener {
 
     /**
      * 離線消息通知
+     *
      * @param messageMap
      */
     private void offlineNew(Map<Object, Object> messageMap) {
@@ -849,32 +888,33 @@ public class SocketListener {
 
             PackageManager packageManager = context.getPackageManager();
             Intent intent = packageManager.getLaunchIntentForPackage("com.bclould.tea");
-            goActivity(intent, Constants.ADMINISTRATOR_NAME, messageMap.get("text")+"");
+            goActivity(intent, Constants.ADMINISTRATOR_NAME, messageMap.get("text") + "");
         }
 
     }
 
-    private void kickOut(Map<Object, Object> messageMap){
-        final String roomId=messageMap.get("group_id")+"";
+    private void kickOut(Map<Object, Object> messageMap) {
+        final String roomId = messageMap.get("group_id") + "";
         mdbRoomManage.deleteRoom(roomId);
         mgr.deleteConversation(roomId);
-        mgr.deleteMessage(roomId);
+        mgr.deleteMessage(roomId, 0);
         mdbRoomMember.deleteRoom(roomId);
-        MessageEvent messageEvent= new MessageEvent(context.getString(R.string.kick_out_success));
+        MessageEvent messageEvent = new MessageEvent(context.getString(R.string.kick_out_success));
         messageEvent.setId(roomId);
         EventBus.getDefault().post(messageEvent);
     }
 
     /**
      * 刷新某個房間信息
+     *
      * @param messageMap
      */
     private void updataGroupRoom(Map<Object, Object> messageMap) {
-        final String roomId=messageMap.get("group_id")+"";
-        new GroupPresenter(context).selectGroupMember(Integer.parseInt(roomId), mdbRoomMember, false,mdbRoomManage,mgr, new GroupPresenter.CallBack() {
+        final String roomId = messageMap.get("group_id") + "";
+        new GroupPresenter(context).selectGroupMember(Integer.parseInt(roomId), mdbRoomMember, false, mdbRoomManage, mgr, new GroupPresenter.CallBack() {
             @Override
             public void send() {
-                MessageEvent messageEvent= new MessageEvent(context.getString(R.string.refresh_group_room));
+                MessageEvent messageEvent = new MessageEvent(context.getString(R.string.refresh_group_room));
                 messageEvent.setId(roomId);
                 EventBus.getDefault().post(messageEvent);
             }
@@ -883,12 +923,13 @@ public class SocketListener {
 
     /**
      * 打賞支出和收入
+     *
      * @param messageMap
      */
     private void enjoyPlaying(Map<Object, Object> messageMap) {
         Intent intent = new Intent(context, PayDetailsActivity.class);
         intent.putExtra("id", messageMap.get("id") + "");
-        intent.putExtra("log_id", messageMap.get("log_id")+"");
+        intent.putExtra("log_id", messageMap.get("log_id") + "");
         intent.putExtra("type_number", messageMap.get("type_number") + "");
         goActivity(intent, context.getString(R.string.exceptional_inform), context.getString(R.string.exceptional_inform_hint));
 
@@ -897,9 +938,9 @@ public class SocketListener {
         messageInfo.setUsername(Constants.ADMINISTRATOR_NAME);
         messageInfo.setMsgType(ADMINISTRATOR_EXCEPTIONAL_MSG);
 
-        if((int)messageMap.get("type_number")==13) {
+        if ((int) messageMap.get("type_number") == 13) {
             messageInfo.setConverstaion("[" + context.getString(R.string.exceptional_spending) + "]");
-        }else{
+        } else {
             messageInfo.setConverstaion("[" + context.getString(R.string.exceptional_income) + "]");
         }
         messageInfo.setTime((String) messageMap.get("created_at"));
@@ -911,8 +952,8 @@ public class SocketListener {
         addMessage(messageInfo);
     }
 
-    private void createConversation(String group_id,String roomName){
-        ConversationInfo info=new ConversationInfo();
+    private void createConversation(String group_id, String roomName) {
+        ConversationInfo info = new ConversationInfo();
         info.setChatType(RoomManage.ROOM_TYPE_MULTI);
         info.setIstop("false");
         info.setFriend(roomName);
@@ -929,9 +970,10 @@ public class SocketListener {
         roomManageInfo.setRoomName(roomName);
         roomManageInfo.setRoomId(group_id);
         mdbRoomManage.addRoom(roomManageInfo);
-        new GroupPresenter(context).selectGroupMember(Integer.parseInt(group_id), mdbRoomMember, false,mdbRoomManage,mgr, new GroupPresenter.CallBack() {
+        new GroupPresenter(context).selectGroupMember(Integer.parseInt(group_id), mdbRoomMember, false, mdbRoomManage, mgr, new GroupPresenter.CallBack() {
             @Override
-            public void send() {}
+            public void send() {
+            }
         });
         EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
         EventBus.getDefault().post(new MessageEvent(context.getString(R.string.refresh_group_members)));
@@ -939,23 +981,25 @@ public class SocketListener {
 
     /**
      * 創建群組通知
+     *
      * @param messageMap
      * @param toco_id
      */
     private void createGroup(Map<Object, Object> messageMap, String toco_id) {
-        if(UtilTool.getTocoId().equals(toco_id))return;
-        String roomId=messageMap.get("group_id")+"";
-        String roomName= (String) messageMap.get("name");
-        createConversation(roomId,roomName);
+        if (UtilTool.getTocoId().equals(toco_id)) return;
+        String roomId = messageMap.get("group_id") + "";
+        String roomName = (String) messageMap.get("name");
+        createConversation(roomId, roomName);
     }
 
     /**
      * 退出群組通知
+     *
      * @param messageMap
      */
     private void qiutGroup(Map<Object, Object> messageMap) {
-        String roomId=messageMap.get("group_id")+"";
-        new GroupPresenter(context).selectGroupMember(Integer.parseInt(roomId), mdbRoomMember, false,mdbRoomManage,mgr, new GroupPresenter.CallBack() {
+        String roomId = messageMap.get("group_id") + "";
+        new GroupPresenter(context).selectGroupMember(Integer.parseInt(roomId), mdbRoomMember, false, mdbRoomManage, mgr, new GroupPresenter.CallBack() {
             @Override
             public void send() {
                 EventBus.getDefault().post(new MessageEvent(context.getString(R.string.refresh_group_members)));
@@ -965,13 +1009,14 @@ public class SocketListener {
 
     /**
      * 加入群組通知
+     *
      * @param messageMap
      */
     private void addGroup(Map<Object, Object> messageMap) {
-        String roomId=messageMap.get("group_id")+"";
-        String roomName= (String) messageMap.get("name");
-        if (mdbRoomManage.findRoom(roomId)){
-            new GroupPresenter(context).selectGroupMember(Integer.parseInt(roomId), mdbRoomMember, false,mdbRoomManage,mgr, new GroupPresenter.CallBack() {
+        String roomId = messageMap.get("group_id") + "";
+        String roomName = (String) messageMap.get("name");
+        if (mdbRoomManage.findRoom(roomId)) {
+            new GroupPresenter(context).selectGroupMember(Integer.parseInt(roomId), mdbRoomMember, false, mdbRoomManage, mgr, new GroupPresenter.CallBack() {
                 @Override
                 public void send() {
                     EventBus.getDefault().post(new MessageEvent(context.getString(R.string.refresh_group_members)));
@@ -980,28 +1025,29 @@ public class SocketListener {
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
             return;
         }
-        createConversation(roomId,roomName);
+        createConversation(roomId, roomName);
     }
 
     /**
      * 紅包被領取通知
+     *
      * @param messageMap
      */
     private void redGet(Map<Object, Object> messageMap) {
         mgr.updateMessageRedState(messageMap.get("rp_id") + "", 1);
         MessageInfo messageInfo = new MessageInfo();
-        String groupid= messageMap.get("group_id")+"";
-        if(!StringUtils.isEmpty(groupid)&&!"null".equals(groupid)){
+        String groupid = messageMap.get("group_id") + "";
+        if (!StringUtils.isEmpty(groupid) && !"null".equals(groupid)) {
             messageInfo.setSend(groupid);
             messageInfo.setUsername(groupid);
-            goChat(groupid,messageMap.get("desc")+context.getString(R.string.red_package),RoomManage.ROOM_TYPE_MULTI);
-        }else{
+            goChat(groupid, messageMap.get("desc") + context.getString(R.string.red_package), RoomManage.ROOM_TYPE_MULTI);
+        } else {
             messageInfo.setSend((String) messageMap.get("toco_id"));
             messageInfo.setUsername((String) messageMap.get("toco_id"));
-            goChat((String) messageMap.get("toco_id"),messageMap.get("desc")+context.getString(R.string.red_package),RoomManage.ROOM_TYPE_SINGLE);
+            goChat((String) messageMap.get("toco_id"), messageMap.get("desc") + context.getString(R.string.red_package), RoomManage.ROOM_TYPE_SINGLE);
         }
         messageInfo.setMsgType(RED_GET_MSG);
-        messageInfo.setConverstaion(messageMap.get("desc")+context.getString(R.string.red_package));
+        messageInfo.setConverstaion(messageMap.get("desc") + context.getString(R.string.red_package));
         messageInfo.setTime(UtilTool.createChatTime());
         messageInfo.setRedId((Integer) messageMap.get("rp_id"));
         messageInfo.setMessage((String) messageMap.get("desc"));
@@ -1190,10 +1236,10 @@ public class SocketListener {
         messageInfo.setStatus((Integer) messageMap.get("status"));
         messageInfo.setType((Integer) messageMap.get(TYPE));
         Intent intent;
-        if ((int) messageMap.get("status") == 1||(int) messageMap.get("status") == 2) {
+        if ((int) messageMap.get("status") == 1 || (int) messageMap.get("status") == 2) {
             intent = new Intent(context, OrderDetailsActivity.class);
             intent.putExtra("type", context.getString(R.string.order));
-            intent.putExtra("id", messageMap.get("id")+"");
+            intent.putExtra("id", messageMap.get("id") + "");
             intent.putExtra(TYPE, context.getString(R.string.order));
         } else {
             intent = new Intent(context, OrderCloseActivity.class);
@@ -1239,7 +1285,7 @@ public class SocketListener {
             String from = (String) messageMap.get("toco_id");
             //確認請求
             String response;
-            if ("1".equals(messageMap.get("status")+"")) {
+            if ("1".equals(messageMap.get("status") + "")) {
                 response = context.getString(R.string.ta_consent_add_friend);
                 Intent intent = new Intent();
                 intent.putExtra("response", response);
@@ -1252,13 +1298,13 @@ public class SocketListener {
                 mgr.addUser(userInfo);
                 EventBus.getDefault().post(new MessageEvent(context.getString(R.string.new_friend)));
                 context.sendBroadcast(intent);
-            } else if ("2".equals(messageMap.get("status")+"")) {
+            } else if ("2".equals(messageMap.get("status") + "")) {
                 //发送广播传递response字符串
                 response = context.getString(R.string.ta_reject_add_friend);
                 UtilTool.Log("fengjian", "删除成功！");
                 mgr.deleteUser(from);
                 mgr.deleteConversation(from);
-                mgr.deleteMessage(from);
+                mgr.deleteMessage(from, 0);
                 EventBus.getDefault().post(new MessageEvent(context.getString(R.string.delete_friend)));
                 Intent intent = new Intent();
                 intent.putExtra("response", response);
@@ -1270,7 +1316,7 @@ public class SocketListener {
             //接受到刪除好友
             mgr.deleteUser(from);
             mgr.deleteConversation(from);
-            mgr.deleteMessage(from);
+            mgr.deleteMessage(from, 0);
             EventBus.getDefault().post(new MessageEvent(context.getString(R.string.delete_friend)));
             UtilTool.Log("fengjian", "删除成功！");
         }
@@ -1279,15 +1325,15 @@ public class SocketListener {
     private void addMessage(MessageInfo messageInfo) {
         //添加数据库from
         String from = messageInfo.getSend();
-        String friend= mgr.queryRemark(from);
-        if(StringUtils.isEmpty(friend)){
-            friend=mgr.findUserName(from);
+        String friend = mgr.queryRemark(from);
+        if (StringUtils.isEmpty(friend)) {
+            friend = mgr.findUserName(from);
         }
-        if(StringUtils.isEmpty(friend)){
-            friend=mdbRoomManage.findRoomName(friend);
+        if (StringUtils.isEmpty(friend)) {
+            friend = mdbRoomManage.findRoomName(friend);
         }
-        if(StringUtils.isEmpty(friend)){
-            friend=from;
+        if (StringUtils.isEmpty(friend)) {
+            friend = from;
         }
 
         String redpacket = messageInfo.getConverstaion();
@@ -1296,7 +1342,7 @@ public class SocketListener {
         mgr.addMessage(messageInfo);
         int number = mgr.queryNumber(from);
         if (mgr.findConversation(from)) {
-            mgr.updateConversation(friend,from, number + 1, redpacket, time, messageInfo.getCreateTime(),null);
+            mgr.updateConversation(friend, from, number + 1, redpacket, time, messageInfo.getCreateTime(), null);
         } else {
             ConversationInfo info = new ConversationInfo();
             info.setTime(time);
@@ -1320,7 +1366,7 @@ public class SocketListener {
      * @param content
      */
     private void goActivity(Intent intent, String title, String content) {
-        if(isNoDisturbing(Constants.ADMINISTRATOR_NAME)){
+        if (isNoDisturbing(Constants.ADMINISTRATOR_NAME)) {
             return;
         }
         mResultIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -1332,18 +1378,18 @@ public class SocketListener {
         mBuilder.setAutoCancel(true);
         Notification notification = mBuilder.build();
         mNotificationManager.notify(0, notification);
-        bellJudgment(Constants.ADMINISTRATOR_NAME,  true);
+        bellJudgment(Constants.ADMINISTRATOR_NAME, true);
     }
 
     private void goChat(String from, String message, String roomType) {
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         boolean screen = pm.isScreenOn();
         if (MyLifecycleHandler.isApplicationInForeground()) {
-            if(screen){
+            if (screen) {
                 return;
             }
         }
-        if(isNoDisturbing(from)){
+        if (isNoDisturbing(from)) {
             return;
         }
         if (from.isEmpty()) {

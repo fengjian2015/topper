@@ -44,7 +44,7 @@ public class MessageManage {
         return mInstance;
     }
 
-    public void sendSingLe(final String to, final byte[] attachment, final String body, final int msgType, final String msgId, final long time, final String roomId, final DBManager mMgr, final Context context){
+    public void sendSingLe(final String to, final byte[] attachment, final String body, final int msgType, final String msgId, final long time, final String roomId, final DBManager mMgr, final Context context,final int isBurnReading){
         mSingleThreadExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -67,6 +67,7 @@ public class MessageManage {
                     contentMap.put("type", msgType);
                     contentMap.put("id", msgId);
                     contentMap.put("time", time);
+                    contentMap.put("isBurnReading",isBurnReading);
                     if(!mMgr.findUser(to)){
                         contentMap.put("name", UtilTool.getUser());
                     }
@@ -82,7 +83,7 @@ public class MessageManage {
                 }catch (Exception e){
                     mMgr.updateMessageStatus(msgId, 2);
                     if(!StringUtils.isEmpty(mMgr.findIsWithdraw(msgId))) {
-                        mMgr.deleteSingleMessageMsgId(msgId);
+                        mMgr.deleteSingleMessageMsgId(msgId,isBurnReading);
                         MessageEvent messageEvent = new MessageEvent(context.getString(R.string.withdrew_a_message));
                         messageEvent.setId(msgId);
                         EventBus.getDefault().post(messageEvent);
@@ -128,7 +129,7 @@ public class MessageManage {
                 }catch (Exception e){
                     mMgr.updateMessageStatus(msgId, 2);
                     if(!StringUtils.isEmpty(mMgr.findIsWithdraw(msgId))) {
-                        mMgr.deleteSingleMessageMsgId(msgId);
+                        mMgr.deleteSingleMessageMsgId(msgId,0);
                     }
                     EventBus.getDefault().post(new MessageEvent(context.getString(R.string.msg_database_update)));
                     e.printStackTrace();

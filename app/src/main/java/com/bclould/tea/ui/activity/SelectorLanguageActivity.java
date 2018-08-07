@@ -18,8 +18,10 @@ import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.service.IMService;
+import com.bclould.tea.topperchat.SocketListener;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.xmpp.RoomManage;
 
 import java.util.Locale;
 
@@ -149,6 +151,8 @@ public class SelectorLanguageActivity extends BaseActivity {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        RoomManage.getInstance().reoveAllRoom();
+        SocketListener.clear();
         stopService(new Intent(this, IMService.class));
         startService(new Intent(this, IMService.class));
 

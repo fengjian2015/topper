@@ -28,7 +28,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -37,22 +36,17 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.crypto.otr.OtrChatListenerManager;
-import com.bclould.tea.filepicker.YsFilePicker;
-import com.bclould.tea.filepicker.YsFilePickerActivity;
 import com.bclould.tea.filepicker.YsFilePickerParcelObject;
+import com.bclould.tea.history.DBBurnManager;
 import com.bclould.tea.history.DBConversationBurnManage;
 import com.bclould.tea.history.DBManager;
-import com.bclould.tea.history.DBRoomManage;
-import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.MessageInfo;
-import com.bclould.tea.ui.adapter.ChatAdapter;
+import com.bclould.tea.ui.adapter.ChatBurnAdapter;
 import com.bclould.tea.ui.widget.SimpleAppsGridView;
-import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.AudioModeManger;
 import com.bclould.tea.utils.Constants;
@@ -144,11 +138,12 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
     private List<MessageInfo> mMessageList = new ArrayList<>();
     private DBManager mMgr;
     private DBConversationBurnManage mDBConversationBurnManage;
+    private DBBurnManager mDBBurnManager;
     private List<LocalMedia> selectList = new ArrayList<>();
     private RecordIndicator recordIndicator;
     private RecordUtil recordUtil;
     private MediaPlayer mediaPlayer = new MediaPlayer();
-    private ChatAdapter mChatAdapter;
+    private ChatBurnAdapter mChatAdapter;
     private LinearLayoutManager mLayoutManager;
     private Room roomManage;
     private String roomType;//房间类型
@@ -161,6 +156,7 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
         ButterKnife.bind(this);
         mMgr = new DBManager(this);//初始化数据库管理类
         mDBConversationBurnManage=new DBConversationBurnManage(this);
+        mDBBurnManager=new DBBurnManager(this);
         EventBus.getDefault().register(this);//初始化EventBus
         initIntent();//初始化intent事件
         initEmoticonsKeyboard();//初始化功能盘
@@ -196,23 +192,8 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
         mEkbEmoticonsKeyboard.setListMenu(this).setListOnClick(new MenuGridListPopWindow.ListOnClick() {
             @Override
             public void onclickitem(String name) {
-                if (getString(R.string.red_package).equals(name)) {
-                    if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
-                        Intent intent = new Intent(ConversationBurnActivity.this, SendRedGroupActivity.class);
-                        intent.putExtra("roomId", roomId);
-                        startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(ConversationBurnActivity.this, SendRedPacketActivity.class);
-                        intent.putExtra("user", roomId);
-                        startActivity(intent);
-                    }
-                } else if (getString(R.string.image).equals(name)) {
+                if (getString(R.string.image).equals(name)) {
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.open_photo_album)));
-                }else if (getString(R.string.location).equals(name)) {
-                    Intent intent = new Intent(ConversationBurnActivity.this, LocationActivity.class);
-                    intent.putExtra("user", roomId);
-                    intent.putExtra("type", 1);
-                    startActivity(intent);
                 }else if (getString(R.string.shooting).equals(name)) {
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.open_shooting)));
                 } else if (getString(R.string.collect).equals(name)) {
@@ -690,7 +671,7 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
                     if (view != null) {
                         top = view.getTop();
                     }
-                    List<MessageInfo> messageInfos = mMgr.queryRefreshMessage(roomId, mMessageList.get(0).getCreateTime(),0);
+                    List<MessageInfo> messageInfos = mMgr.queryRefreshMessage(roomId, mMessageList.get(0).getCreateTime(),1);
                     mMessageList.addAll(0, messageInfos);
                     currentPosition = mMessageList.size() - currentPosition;
                     mChatAdapter.notifyDataSetChanged();
@@ -792,13 +773,15 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
                 UtilTool.Log("fengjian", "添加单聊---" + roomId);
                 roomManage = RoomManage.getInstance().addSingleMessageManage(roomId, mName);
             } else {
-
+                finish();
+                return;
             }
         } else {
             UtilTool.Log("fengjian", "房间存在---" + roomType + "   " + roomId);
             roomManage = RoomManage.getInstance().getRoom(roomId);
         }
         roomManage.addMessageManageListener(this);
+        roomManage.setIsBurnReading(1);
         setTitleName();
     }
 
@@ -809,13 +792,14 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
 
     private void setTitleName() {
         mTitleName.setText("");
+        mIvElse.setVisibility(View.GONE);
     }
 
     //初始化适配器
     private void initAdapter() {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mChatAdapter = new ChatAdapter(this, mMessageList, roomId, mMgr, mediaPlayer, mName, roomType, mRlTitle, null);
+        mChatAdapter = new ChatBurnAdapter(this, mMessageList, roomId, mMgr, mediaPlayer, mName, roomType, mRlTitle, mDBConversationBurnManage,mDBBurnManager);
         mRecyclerView.setAdapter(mChatAdapter);
         mRefreshLayout.setEnableLoadMore(false);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -861,7 +845,7 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
         return view;
     }
 
-    @OnClick({R.id.bark, R.id.iv_else})
+    @OnClick({R.id.bark})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -872,25 +856,9 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
                     imm.hideSoftInputFromWindow(mEkbEmoticonsKeyboard.getEtChat().getWindowToken(), 0);
                 }
                 break;
-            case R.id.iv_else:
-                goDetails();
-                break;
         }
     }
 
-    private void goDetails() {
-        if (RoomManage.ROOM_TYPE_MULTI.equals(roomType)) {
-            Intent intent = new Intent(this, ConversationGroupDetailsActivity.class);
-            intent.putExtra("roomId", roomId);
-            startActivity(intent);
-        } else {
-            Intent intent = new Intent(this, ConversationDetailsActivity.class);
-            intent.putExtra("user", roomId);
-            intent.putExtra("name", mName);
-            intent.putExtra("roomId", roomId);
-            startActivity(intent);
-        }
-    }
 
     @Override
     public void OnFuncPop(int i) {

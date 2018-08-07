@@ -185,7 +185,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
 
             //兼容老版本
             if((conversationInfo.getCreateTime()+"").length()<11){
-                long time=mMgr.findLastMessageConversationCreateTime(conversationInfo.getUser());
+                long time=mMgr.findLastMessageConversationCreateTime(conversationInfo.getUser(),0);
                 if(time<=0){
                     time=UtilTool.createChatCreatTime();
                 }
@@ -226,7 +226,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
             public void onClick(View view) {
                 try {
                     mMgr.deleteConversation(user);
-                    mMgr.deleteMessage(user);
+                    mMgr.deleteMessage(user,0);
                     setMessageTop(user,0);
                     EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
                     deleteCacheDialog.dismiss();

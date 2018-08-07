@@ -152,7 +152,7 @@ public class ConversationBurnListAdapter extends RecyclerView.Adapter {
             public void onClick(View view) {
                 try {
                     mDBConversationBurnManage.deleteConversation(user);
-                    mDBManager.deleteMessage(user);
+                    mDBManager.deleteMessage(user,1);
                     EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
                     deleteCacheDialog.dismiss();
                 } catch (Exception e) {

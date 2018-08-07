@@ -275,7 +275,7 @@ public class ConversationDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    mMgr.deleteMessage(mUser);
+                    mMgr.deleteMessage(mUser,0);
                     mMgr.updateConversationMessage(mUser,"");
                     Toast.makeText(ConversationDetailsActivity.this, getString(R.string.empty_success), Toast.LENGTH_SHORT).show();
                     EventBus.getDefault().post(new MessageEvent(getString(R.string.msg_database_update)));

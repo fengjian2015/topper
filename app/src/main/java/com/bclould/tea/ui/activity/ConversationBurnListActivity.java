@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -47,6 +48,7 @@ public class ConversationBurnListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation_burn_list);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);//初始化EventBus
         mDBManager=new DBManager(this);
         mDBConversationBurnManage=new DBConversationBurnManage(this);
         initRecyclerView();
@@ -155,8 +157,20 @@ public class ConversationBurnListActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.iv_else:
-
+                goSelectFriends();
                 break;
         }
+    }
+
+    private void goSelectFriends() {
+        Intent intent=new Intent(this,SelectFriendGetActivity.class);
+        intent.putExtra("type",1);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);//初始化EventBus
     }
 }

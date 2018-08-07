@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.model.ConversationInfo;
+import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 
 import java.util.ArrayList;
@@ -61,11 +62,37 @@ public class DBConversationBurnManage {
         }
     }
 
+
+    public int queryNumber(String user) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            String sql = "select * from ConversationBurnDB where my_user=? and user=?";
+            Cursor c = db.rawQuery(sql, new String[]{UtilTool.getTocoId(), user});
+            int number = 0;
+            while (c.moveToNext()) {
+                number = c.getInt(c.getColumnIndex("number"));
+            }
+            c.close();
+            DatabaseManager.getInstance().closeWritableDatabase();
+            return number;
+        }
+    }
+
     public void updateNumber(String user, int number) {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
             ContentValues cv = new ContentValues();
             cv.put("number", number);
+            db.update("ConversationBurnDB", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
+    }
+
+    public void updateConversationMessage(String user, String chat) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            ContentValues cv = new ContentValues();
+            cv.put("message", chat);
             db.update("ConversationBurnDB", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
             DatabaseManager.getInstance().closeWritableDatabase();
         }
@@ -82,6 +109,31 @@ public class DBConversationBurnManage {
             values.put("chatType", conversationInfo.getChatType());
             values.put("createTime", conversationInfo.getCreateTime());
             db.update("ConversationBurnDB", values, "user=? and my_user=?", new String[]{conversationInfo.getUser(), UtilTool.getTocoId()});
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
+    }
+
+    public void updateConversation(String user, int number, String chat,long createTime) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            ContentValues cv = new ContentValues();
+            cv.put("number", number);
+            cv.put("message", chat);
+            cv.put("createTime", createTime);
+            db.update("ConversationBurnDB", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
+            DatabaseManager.getInstance().closeWritableDatabase();
+        }
+    }
+
+    public void updateConversation(String name,String user, int number, String chat,long createTime) {
+        synchronized (lock) {
+            SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(true);
+            ContentValues cv = new ContentValues();
+            cv.put("number", number);
+            cv.put("message", chat);
+            cv.put("createTime", createTime);
+            cv.put("friend",name);
+            db.update("ConversationBurnDB", cv, "user=? and my_user=?", new String[]{user, UtilTool.getTocoId()});
             DatabaseManager.getInstance().closeWritableDatabase();
         }
     }

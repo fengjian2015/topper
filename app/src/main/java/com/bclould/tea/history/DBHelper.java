@@ -38,6 +38,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("create table UserInfo(id integer primary key autoincrement, user varchar,path varchar,userName varchar)");//保存陌生人的信息
         db.execSQL("create table PublicDB(id integer primary key autoincrement,my_user varchar, publicId varchar,name varchar,logo varchar,publicDesc varchar,menu varchar,isRefresh integer)");
         db.execSQL("create table ConversationBurnDB(id integer primary key autoincrement,my_user varchar, number integer, message varchar, user varchar, friend varchar,chatType varchar,createTime integer)");
+        db.execSQL("create table BurnDB(id integer primary key autoincrement,my_user varchar,msgId varchar,createTime integer)");
     }
 
     /**
@@ -132,6 +133,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
                 db.execSQL("ALTER TABLE MessageRecord ADD isRead INTEGER");
                 db.execSQL("ALTER TABLE MessageRecord ADD isBurnReading INTEGER");
+
+                userCodeDB = "create table if not exists BurnDB"  + "(id integer primary key autoincrement,my_user text,msgId text,createTime integer)";
+                db.execSQL( userCodeDB );
                 break;
 
         }

@@ -339,7 +339,7 @@ public class WsConnection {
             for (MessageInfo messageInfo : list) {
                 mManager.updateMessageStatus(messageInfo.getMsgId(), 2);
                 if (!StringUtils.isEmpty(messageInfo.getRoomId())) {
-                    mManager.deleteSingleMessageMsgId(messageInfo.getMsgId());
+                    mManager.deleteSingleMessageMsgId(messageInfo.getMsgId(),0);
                 }
             }
             EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.msg_database_update)));

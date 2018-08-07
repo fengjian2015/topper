@@ -546,7 +546,7 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
                         @Override
                         public void send() {
                             mMgr.deleteConversation(roomId);
-                            mMgr.deleteMessage(roomId);
+                            mMgr.deleteMessage(roomId,0);
                             mMgr.deleteUser(mUser);
                             EventBus.getDefault().post(new MessageEvent(getString(R.string.delete_friend)));
                         }

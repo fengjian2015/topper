@@ -1,6 +1,7 @@
 package com.bclould.tea.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -43,6 +44,7 @@ public class SelectFriendGetActivity extends BaseActivity implements FriendListR
     private List<UserInfo> mUsers = new ArrayList<>();
     private FriendListRVAdapter mFriendListRVAdapter;
     private String roomId;
+    private int type=0;//0發送名片，1選擇好友進行閱後即焚消息
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,10 +52,16 @@ public class SelectFriendGetActivity extends BaseActivity implements FriendListR
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
         mMgr = new DBManager(this);
-        roomId=getIntent().getStringExtra("roomId");
+
+        initGetIntent();
         initRecylerView();
         setListener();
         updateData();
+    }
+
+    private void initGetIntent() {
+        type=getIntent().getIntExtra("type",0);
+        roomId=getIntent().getStringExtra("roomId");
     }
 
     private void initRecylerView() {
@@ -141,11 +149,22 @@ public class SelectFriendGetActivity extends BaseActivity implements FriendListR
 
     @Override
     public void onclick(int position) {
-        MessageInfo messageInfo = new MessageInfo();
-        messageInfo.setHeadUrl(mUsers.get(position).getPath());
-        messageInfo.setMessage(mUsers.get(position).getUserName());
-        messageInfo.setCardUser(mUsers.get(position).getUser());
-        RoomManage.getInstance().getRoom(roomId).sendCaed(messageInfo);
+        if(type==1){
+            Intent intent = new Intent();
+            intent.setClass(this, ConversationBurnActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("name", mUsers.get(position).getRemark());
+            bundle.putString("user", mUsers.get(position).getUser());
+            bundle.putString("chatType", RoomManage.ROOM_TYPE_SINGLE);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }else {
+            MessageInfo messageInfo = new MessageInfo();
+            messageInfo.setHeadUrl(mUsers.get(position).getPath());
+            messageInfo.setMessage(mUsers.get(position).getUserName());
+            messageInfo.setCardUser(mUsers.get(position).getUser());
+            RoomManage.getInstance().getRoom(roomId).sendCaed(messageInfo);
+        }
         SelectFriendGetActivity.this.finish();
     }
 
