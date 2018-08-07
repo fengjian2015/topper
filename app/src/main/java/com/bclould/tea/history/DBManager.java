@@ -78,6 +78,8 @@ public class DBManager {
             values.put("showChatTime", messageInfo.getShowChatTime());
             values.put("roomName",messageInfo.getRoomName());
             values.put("roomId",messageInfo.getRoomId());
+            values.put("isRead",messageInfo.getIsRead());
+            values.put("isBurnReading",messageInfo.getIsBurnReading());
             int id = (int) sdb.insert("MessageRecord", null, values);
             UtilTool.Log("日志", "添加成功" + messageInfo.toString());
             DatabaseManager.getInstance().closeWritableDatabase();
@@ -92,7 +94,7 @@ public class DBManager {
             long currTime = message.getCreateTime();
             try {
                 Cursor c = db.rawQuery(
-                        "SELECT createTime from MessageRecord where user = ? and my_user=? and (showChatTime is NOT NULL and showChatTime != '') order by createTime desc limit 1",
+                        "SELECT createTime from MessageRecord where user = ? and my_user=?  and (showChatTime is NOT NULL and showChatTime != '') order by createTime desc limit 1",
                         new String[]{message.getUsername(), UtilTool.getTocoId()});
                 if (c.moveToNext()) {
                     long lastTime = c.getLong(c.getColumnIndex("createTime"));
@@ -111,11 +113,11 @@ public class DBManager {
         }
     }
 
-    public long queryMessageCount(String user) {
+    public long queryMessageCount(String user,int isBurnReading) {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
-            String sql = "select count(*) from MessageRecord where user=? and my_user=?";
-            Cursor cursor = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId()});
+            String sql = "select count(*) from MessageRecord where user=? and my_user=? and isBurnReading=?";
+            Cursor cursor = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(),isBurnReading+""});
             cursor.moveToFirst();
             long count = cursor.getLong(0);
             cursor.close();
@@ -130,7 +132,7 @@ public class DBManager {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
             ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
-            String sql = "select * from MessageRecord where user=? and my_user=? and (msgType=? or msgType=? or msgType=? or msgType=?) ORDER BY createTime desc limit ?";
+            String sql = "select * from MessageRecord where user=? and my_user=? and isBurnReading=0 and (msgType=? or msgType=? or msgType=? or msgType=?) ORDER BY createTime desc limit ?";
             Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), fromtype + "", sentype + "", sendred + "", fromred + "", limit * 10 + ""});
             if (c != null) {
                 while (c.moveToNext()) {
@@ -183,6 +185,8 @@ public class DBManager {
             messageInfo.setShowChatTime(c.getString(c.getColumnIndex("showChatTime")));
             messageInfo.setRoomId(c.getString(c.getColumnIndex("roomId")));
             messageInfo.setRoomName(c.getString(c.getColumnIndex("roomName")));
+            messageInfo.setIsRead(c.getInt(c.getColumnIndex("isRead")));
+            messageInfo.setIsBurnReading(c.getInt(c.getColumnIndex("isBurnReading")));
             return messageInfo;
         }
     }
@@ -192,7 +196,7 @@ public class DBManager {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
             ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
-            String sql = "select * from MessageRecord where user=? and my_user=? and message like ? ORDER BY createTime desc limit ?";
+            String sql = "select * from MessageRecord where user=? and my_user=? and isBurnReading=0 and message like ? ORDER BY createTime desc limit ?";
             Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), "%" + content + "%", limit * 10 + ""});
             if (c != null) {
                 while (c.moveToNext()) {
@@ -210,7 +214,7 @@ public class DBManager {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
             ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
-            String sql = "select * from MessageRecord where user=? and my_user=? and (msgType=? or msgType=?) ORDER BY createTime desc limit ?";
+            String sql = "select * from MessageRecord where user=? and my_user=? and isBurnReading=0 and (msgType=? or msgType=?) ORDER BY createTime desc limit ?";
             Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), fromtype + "", sentype + "", limit * 20 + ""});
             if (c != null) {
                 while (c.moveToNext()) {
@@ -223,13 +227,13 @@ public class DBManager {
         }
     }
 
-    public List<MessageInfo> queryMessage(String user) {
+    public List<MessageInfo> queryMessage(String user,int isBurnReading) {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
-            long count = queryMessageCount(user);
+            long count = queryMessageCount(user,isBurnReading);
             ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
-            String sql = "select * from MessageRecord where user=? and my_user=? ORDER BY createTime asc limit ?,?";
-            Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), count - 10 + "", 10 + ""});
+            String sql = "select * from MessageRecord where user=? and my_user=? and isBurnReading=? ORDER BY createTime asc limit ?,?";
+            Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(),isBurnReading+"", count - 10 + "", 10 + ""});
             if (c != null) {
                 while (c.moveToNext()) {
                     messageInfos.add(addMessage(c));
@@ -265,12 +269,12 @@ public class DBManager {
      * @param id
      * @return
      */
-    public List<MessageInfo> queryRefreshMessage(String user, long createTime) {
+    public List<MessageInfo> queryRefreshMessage(String user, long createTime,int isBurnReading) {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
             ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
-            String sql = "select * from MessageRecord where user=? and my_user=? and createTime < ? ORDER BY createTime desc limit ?";
-            Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), createTime + "", 10 + ""});
+            String sql = "select * from MessageRecord where user=? and my_user=? and isBurnReading=? and createTime < ? ORDER BY createTime desc limit ?";
+            Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(),isBurnReading+"", createTime + "", 10 + ""});
             if (c != null) {
                 while (c.moveToNext()) {
                     messageInfos.add(addMessage(c));
@@ -293,17 +297,17 @@ public class DBManager {
      * @param id
      * @return
      */
-    public List<MessageInfo> queryLoadMessage(String user, long createTime, boolean isFist) {
+    public List<MessageInfo> queryLoadMessage(String user, long createTime, boolean isFist,int isBurnReading) {
         synchronized (lock) {
             SQLiteDatabase db = DatabaseManager.getInstance().openWritableDatabase(false);
             ArrayList<MessageInfo> messageInfos = new ArrayList<MessageInfo>();
             String sql;
             if (isFist) {
-                sql = "select * from MessageRecord where user=? and my_user=? and createTime >= ? limit ?";
+                sql = "select * from MessageRecord where user=? and my_user=? and isBurnReading=? and createTime >= ? limit ?";
             } else {
-                sql = "select * from MessageRecord where user=? and my_user=? and createTime > ? limit ?";
+                sql = "select * from MessageRecord where user=? and my_user=? and isBurnReading=? and createTime > ? limit ?";
             }
-            Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), createTime + "", 10 + ""});
+            Cursor c = db.rawQuery(sql, new String[]{user, UtilTool.getTocoId(), isBurnReading+"",createTime + "", 10 + ""});
             if (c != null) {
                 while (c.moveToNext()) {
                     messageInfos.add(addMessage(c));

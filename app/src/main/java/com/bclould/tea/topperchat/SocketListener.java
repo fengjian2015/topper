@@ -220,13 +220,22 @@ public class SocketListener {
                     content = objectMapper.readValue((byte[]) deserialized.get(CONTENT), new TypeReference<Map<String, Object>>() {
                     });
                     UtilTool.Log("fengjian", "聊天消息message：to：" + content.get("to") + "   from:" + content.get("from") + "   crypt:" + content.get("crypt") + "   message：" + content.get("message") + "   type：" + content.get(TYPE) + "   id:" + content.get("id"));
-                    messageFeedback(content, true, RoomManage.ROOM_TYPE_SINGLE);
+                    if(UtilTool.parseInt(content.get("isBurnReading")+"")==0){
+                        messageFeedback(content, true, RoomManage.ROOM_TYPE_SINGLE);
+                    }else{
+                        // TODO: 2018/8/6 閱後即焚消息單獨處理
+                    }
                     break;
                 case MSG_GROUP:
                     //群組消息
                     content = objectMapper.readValue((byte[]) deserialized.get(CONTENT), new TypeReference<Map<String, Object>>() {
                     });
-                    messageFeedback(content, true, RoomManage.ROOM_TYPE_MULTI);
+                    if(UtilTool.parseInt(content.get("isBurnReading")+"")==0){
+                        messageFeedback(content, true, RoomManage.ROOM_TYPE_MULTI);
+                    }else{
+                        // TODO: 2018/8/6 閱後即焚消息單獨處理
+                    }
+
                     break;
                 case MSG_BROADCAST:
                     //廣播消息
@@ -255,7 +264,11 @@ public class SocketListener {
                     content = objectMapper.readValue((byte[]) deserialized.get(CONTENT), new TypeReference<Map<String, Object>>() {
                     });
                     UtilTool.Log("fengjian", "聊天消息message：to：" + content.get("to") + "   from:" + content.get("from") + "   crypt:" + content.get("crypt") + "   message：" + content.get("message") + "   type：" + content.get(TYPE) + "   id:" + content.get("id"));
-                    messageFeedback(content, true, RoomManage.ROOM_TYPE_SINGLE);
+                    if(UtilTool.parseInt(content.get("isBurnReading")+"")==0){
+                        messageFeedback(content, true, RoomManage.ROOM_TYPE_SINGLE);
+                    }else{
+                        // TODO: 2018/8/6 閱後即焚消息單獨處理
+                    }
                     break;
             }
         } catch (Exception e) {

@@ -1524,9 +1524,9 @@ public class UtilTool {
     public static boolean compareTokenTime(long oldtime) {
         long newTime = System.currentTimeMillis();
         if ((oldtime + (23 * 60 * 60 * 1000)) >= newTime) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 

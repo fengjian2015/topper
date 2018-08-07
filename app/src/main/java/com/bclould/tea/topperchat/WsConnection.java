@@ -7,9 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.RequiresApi;
+import android.widget.Toast;
 
 import com.bclould.tea.Presenter.LoginPresenter;
+import com.bclould.tea.Presenter.LogoutPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
@@ -44,6 +48,7 @@ import java.util.Map;
 import me.leolin.shortcutbadger.ShortcutBadger;
 
 import static com.bclould.tea.Presenter.LoginPresenter.TOKEN;
+import static com.bclould.tea.Presenter.LoginPresenter.TOKEN_TIME;
 import static com.bclould.tea.topperchat.WsContans.CONTENT;
 import static com.bclould.tea.topperchat.WsContans.DEVICE;
 import static com.bclould.tea.topperchat.WsContans.DEVICE_ID;
@@ -93,10 +98,10 @@ public class WsConnection {
                         UtilTool.Log("fengjian", "進入打開websocket-------------" + ws.isOpen());
                     }
                     UtilTool.Log("fengjian", "進入打開websocket-------------" + mWebSocketArrayList.size());
-                    AsyncHttpClient.getDefaultInstance().getSocketMiddleware().setIdleTimeoutMs(20000);
                     AsyncHttpClient.getDefaultInstance().websocket(Constants.DOMAINNAME3, "2087", new AsyncHttpClient.WebSocketConnectCallback() {
                         @Override
                         public void onCompleted(Exception ex, final com.koushikdutta.async.http.WebSocket webSocket) {
+
                             if (ex != null) {
                                 if (ws != null && ws.isOpen()) return;
                                 setIsLogin(false);
@@ -130,8 +135,9 @@ public class WsConnection {
                                 return;
                             }
                             ws = webSocket;
-                            setIsConnection(false);
                             mWebSocketArrayList.add(ws);
+                            setLoginConnection(false);
+                            setIsConnection(false);
 
                             UtilTool.Log("fengjian", "连接服務器成功-----" + mWebSocketArrayList.size());
                             try {
@@ -188,6 +194,18 @@ public class WsConnection {
     public synchronized void login() throws Exception {
         if (StringUtils.isEmpty(UtilTool.getTocoId())) {
             goMainActivity();
+            return;
+        }
+        if(UtilTool.compareTokenTime(MySharedPreferences.getInstance().getLong(TOKEN_TIME))){
+            UtilTool.Log("fengjian","登錄token過期");
+            new Handler(Looper.getMainLooper()){
+                @Override
+                public void handleMessage(Message msg) {
+                    Toast.makeText(mContext,mContext.getString(R.string.token_stale_dated), Toast.LENGTH_SHORT).show();
+                }
+            }.sendEmptyMessage(0);
+            goMainActivity();
+            return;
         }
         if (isLogin || isOutConnection || isLoginConnection) {
             UtilTool.Log("fengjian", "暫時不讓登錄：isLogin：" + isLogin + "    isOutConnection：" + isOutConnection + "    isLoginConnection：" + isLoginConnection);
@@ -381,15 +399,15 @@ public class WsConnection {
         }
         ShortcutBadger.removeCount(context);
         closeConnection();
-        setOutConnection(true);
-        setIsConnection(false);
-        setIsLogin(false);
         stopAllIMCoreService(context);
         context.stopService(new Intent(context, IMService.class));
         LoginThread.isStartExReconnect = false;
         WsOfflineConnection.getInstance().closeConnection();
         UtilTool.Log("fengjian", "关闭连接");
         XGManage.getInstance().deleteAlias();
+        setOutConnection(true);
+        setIsConnection(false);
+        setIsLogin(false);
     }
 
     /***

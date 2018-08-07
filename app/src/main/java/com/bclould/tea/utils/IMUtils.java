@@ -16,7 +16,7 @@ public class IMUtils {
     public static boolean compareServiceTime(){
         long time=MySharedPreferences.getInstance().getLong(WsContans.IMSERVEICE_TIME);
         long newtime=System.currentTimeMillis();
-        if(newtime>(time+10*1000)){
+        if(newtime>(time+20*1000)){
             UtilTool.Log("fengjian","超過時長需要重啟服務"+newtime+"    "+time);
             return true;
         }

@@ -47,12 +47,14 @@ public class MenuGridListPopWindow extends Dialog {
     private Context context;
     private int color = 0;
     private String roomType;
+    private boolean isBurnReading;
 
-    public MenuGridListPopWindow(Context context, EmoticonsEditText etChat, String roomType) {
+    public MenuGridListPopWindow(Context context, EmoticonsEditText etChat, String roomType,boolean isBurnReading) {
         super(context, R.style.BottomDialog2);
         View view = View.inflate(context, R.layout.menugridlist_popwindow, null);
         this.context = context;
         this.roomType=roomType;
+        this.isBurnReading=isBurnReading;
         gv_menu = (MyGridView) view.findViewById(R.id.gv_menu);
         setList();
         gv_menu.setAdapter(new MyMenuAdapter());
@@ -95,16 +97,23 @@ public class MenuGridListPopWindow extends Dialog {
     }
 
     private void setList() {
-        mAppBeanList.add(new AppInfo(R.drawable.icon_tail_photo, context.getString(R.string.image)));
-        mAppBeanList.add(new AppInfo(R.drawable.icon_tail_camera, context.getString(R.string.shooting)));
-        if(!XhsEmoticonsKeyBoard.ROOM_TYPE_MULTI.equals(roomType)) {
-            mAppBeanList.add(new AppInfo(R.drawable.icon_tail_transfer, context.getString(R.string.transfer)));
+        if(isBurnReading){
+            mAppBeanList.add(new AppInfo(R.drawable.icon_tail_photo, context.getString(R.string.image)));
+            mAppBeanList.add(new AppInfo(R.drawable.icon_tail_camera, context.getString(R.string.shooting)));
+            mAppBeanList.add(new AppInfo(R.drawable.icon_collect,context.getString(R.string.collect)));
+            mAppBeanList.add(new AppInfo(R.drawable.icon_chat_card,context.getString(R.string.business_card)));
+        }else{
+            mAppBeanList.add(new AppInfo(R.drawable.icon_tail_photo, context.getString(R.string.image)));
+            mAppBeanList.add(new AppInfo(R.drawable.icon_tail_camera, context.getString(R.string.shooting)));
+            if(!XhsEmoticonsKeyBoard.ROOM_TYPE_MULTI.equals(roomType)) {
+                mAppBeanList.add(new AppInfo(R.drawable.icon_tail_transfer, context.getString(R.string.transfer)));
+            }
+            mAppBeanList.add(new AppInfo(R.drawable.icon_tail_red_envelope, context.getString(R.string.red_package)));
+            mAppBeanList.add(new AppInfo(R.drawable.icon_tail_position, context.getString(R.string.location)));
+            mAppBeanList.add(new AppInfo(R.drawable.icon_tail_file,context.getString(R.string.file)));
+            mAppBeanList.add(new AppInfo(R.drawable.icon_collect,context.getString(R.string.collect)));
+            mAppBeanList.add(new AppInfo(R.drawable.icon_chat_card,context.getString(R.string.business_card)));
         }
-        mAppBeanList.add(new AppInfo(R.drawable.icon_tail_red_envelope, context.getString(R.string.red_package)));
-        mAppBeanList.add(new AppInfo(R.drawable.icon_tail_position, context.getString(R.string.location)));
-        mAppBeanList.add(new AppInfo(R.drawable.icon_tail_file,context.getString(R.string.file)));
-        mAppBeanList.add(new AppInfo(R.drawable.icon_collect,context.getString(R.string.collect)));
-        mAppBeanList.add(new AppInfo(R.drawable.icon_chat_card,context.getString(R.string.business_card)));
     }
 
     public void showAtLocation(){
