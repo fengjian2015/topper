@@ -1,8 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
     <shortcut
         android:enabled="true"
-        android:icon="@mipmap/icon_talk_scrode"
+        android:icon="@mipmap/icon_code"
+        android:shortcutDisabledMessage="@string/qr_code"
+        android:shortcutId="qrcode"
+        android:shortcutLongLabel="@string/qr_code"
+        android:shortcutShortLabel="@string/qr_code">
+
+        <intent
+            android:action="android.intent.action.qrcode"
+            android:targetClass="com.bclould.tea.ui.activity.QRCodeActivity"
+            android:targetPackage="com.bclould.tea"/>
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@mipmap/icon_news_receiving"
+        android:shortcutDisabledMessage="@string/receipt_payment"
+        android:shortcutId="receiving"
+        android:shortcutLongLabel="@string/receipt_payment"
+        android:shortcutShortLabel="@string/receipt_payment">
+
+        <intent
+            android:action="android.intent.action.receiving"
+            android:targetClass="com.bclould.tea.ui.activity.ReceiptPaymentActivity"
+            android:targetPackage="com.bclould.tea"/>
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@mipmap/icon_news_flicking"
         android:shortcutDisabledMessage="@string/rich_scan"
         android:shortcutId="rich_scan"
         android:shortcutLongLabel="@string/rich_scan"
@@ -15,33 +46,4 @@
         <categories android:name="android.shortcut.conversation"/>
     </shortcut>
 
-    <!--<shortcut
-        android:enabled="true"
-        android:icon="@mipmap/icon_talk_scrode"
-        android:shortcutDisabledMessage="@string/rich_scan"
-        android:shortcutId="otc"
-        android:shortcutLongLabel="@string/rich_scan"
-        android:shortcutShortLabel="@string/rich_scan">
-
-        <intent
-            android:action="android.intent.action.otc"
-            android:targetClass="com.bclould.tea.ui.activity.OtcActivity"
-            android:targetPackage="com.bclould.tea"/>
-        <categories android:name="android.shortcut.conversation"/>
-    </shortcut>-->
-
-    <shortcut
-        android:enabled="true"
-        android:icon="@mipmap/icon_get_c"
-        android:shortcutDisabledMessage="@string/receipt_payment"
-        android:shortcutId="receiving"
-        android:shortcutLongLabel="@string/receipt_payment"
-        android:shortcutShortLabel="@string/receipt_payment">
-
-        <intent
-            android:action="android.intent.action.receiving"
-            android:targetClass="com.bclould.tea.ui.activity.ReceiptPaymentActivity"
-            android:targetPackage="com.bclould.tea"/>
-        <categories android:name="android.shortcut.conversation"/>
-    </shortcut>
 </shortcuts>

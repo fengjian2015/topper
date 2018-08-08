@@ -18,6 +18,7 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.MessageInfo;
+import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.UtilTool;
@@ -54,6 +55,7 @@ public class QRCodeActivity extends BaseActivity {
         setContentView(R.layout.activity_qr_code);
         ButterKnife.bind(this);
         MyApp.getInstance().addActivity(this);
+        initIntent();
         init();
     }
 
@@ -66,12 +68,23 @@ public class QRCodeActivity extends BaseActivity {
         try {
             DBManager mgr = new DBManager(this);
             String user = getIntent().getStringExtra("user");
+            if (user == null) {
+                user = UtilTool.getTocoId();
+            }
             UtilTool.getImage(mgr, user, this, mTouxiang);
 //            mTouxiang.setImageBitmap(UtilTool.getImage(mgr,user, this));
             Bitmap bitmap = UtilTool.createQRImage(UtilTool.base64PetToJson(this, Constants.BUSINESSCARD, "name", user, "名片"));
             mQrCodeIv.setImageBitmap(bitmap);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void initIntent() {
+        String action = getIntent().getAction();
+        if (action != null && action.equals("android.intent.action.qrcode") && WsConnection.getInstance().getOutConnection()) {
+            finish();
+            startActivity(new Intent(this, InitialActivity.class));
         }
     }
 
