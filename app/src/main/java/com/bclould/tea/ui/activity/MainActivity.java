@@ -512,7 +512,7 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private void getStateList() {
+    public void getStateList() {
         mCoinPresenter.getState();
     }
 

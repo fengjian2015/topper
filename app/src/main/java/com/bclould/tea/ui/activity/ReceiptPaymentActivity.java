@@ -188,10 +188,10 @@ public class ReceiptPaymentActivity extends BaseActivity {
 
         mView = (ViewGroup) LayoutInflater.from(this).inflate(R.layout.pop_receipt_payment, null);
 
-        mPopupWindow = new PopupWindow(mView, widthPixels / 100 * 35, mHeightPixels / 6, true);
+        mPopupWindow = new PopupWindow(mView, ViewGroup.LayoutParams.WRAP_CONTENT, (int) (getResources().getDimension(R.dimen.y200)), true);
         mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
 
-        mPopupWindow.showAsDropDown(mXx2, (widthPixels - widthPixels / 100 * 35 - 20), 0);
+        mPopupWindow.showAsDropDown(mXx2, (widthPixels - mPopupWindow.getWidth()), 0);
         popChildClick();
     }
 

@@ -2,6 +2,7 @@ package com.bclould.tea.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,13 +22,16 @@ import com.bclould.tea.Presenter.CollectPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.model.CollectInfo;
+import com.bclould.tea.model.DynamicListInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.adapter.CollectRVAdapter;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -82,8 +86,10 @@ public class CollectActivity extends BaseActivity {
     private ItemTouchHelper mItemTouchHelper;
     private List<CollectInfo.DataBean> mDataList2 = new ArrayList<>();
 
-    private int intentType=0;//1表示聊天界面進入
+    private int intentType = 0;//1表示聊天界面進入
     private String roomId;
+    public static final String COLLECT_JOSN = UtilTool.getTocoId() + "collect_josn";
+    private boolean mIsUpdate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,6 +102,12 @@ public class CollectActivity extends BaseActivity {
         mCollectPresenter = new CollectPresenter(this);
         initIntent();
         initRecyclerView();
+        SharedPreferences sp = MySharedPreferences.getInstance().getSp();
+        if (sp.contains(COLLECT_JOSN)) {
+            mIsUpdate = false;
+        } else {
+            mIsUpdate = true;
+        }
         initData();
         initView();
     }
@@ -106,7 +118,7 @@ public class CollectActivity extends BaseActivity {
     }
 
     private void initView() {
-        if(intentType==1){
+        if (intentType == 1) {
             mTvAdd.setVisibility(View.GONE);
             mTvEdit.setVisibility(View.GONE);
         }
@@ -114,20 +126,21 @@ public class CollectActivity extends BaseActivity {
     }
 
     private void initIntent() {
-        intentType=getIntent().getIntExtra("type",0);
-        roomId=getIntent().getStringExtra("roomId");
+        intentType = getIntent().getIntExtra("type", 0);
+        roomId = getIntent().getStringExtra("roomId");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.add_collect))) {
+            mIsUpdate = true;
             initData();
         }
     }
 
     private void initRecyclerView() {
-        mCollectRVAdapter = new CollectRVAdapter(this, mDataList, mCollectPresenter,intentType,roomId);
+        mCollectRVAdapter = new CollectRVAdapter(this, mDataList, mCollectPresenter, intentType, roomId);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mCollectRVAdapter);
         mItemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
@@ -167,7 +180,7 @@ public class CollectActivity extends BaseActivity {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int actionState) {
                 if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
-                    viewHolder.itemView.setBackgroundColor(Color.LTGRAY);
+                    viewHolder.itemView.setBackgroundColor(Color.TRANSPARENT);
                 }
                 super.onSelectedChanged(viewHolder, actionState);
             }
@@ -175,7 +188,7 @@ public class CollectActivity extends BaseActivity {
             @Override
             public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                 super.clearView(recyclerView, viewHolder);
-                viewHolder.itemView.setBackgroundColor(Color.WHITE);
+                viewHolder.itemView.setBackgroundColor(Color.TRANSPARENT);
             }
 
         });
@@ -197,39 +210,55 @@ public class CollectActivity extends BaseActivity {
     }
 
     private void initData() {
-        mCollectPresenter.getCollectList(new CollectPresenter.CallBack() {
-            @Override
-            public void send(List<CollectInfo.DataBean> data) {
-                if (ActivityUtil.isActivityOnTop(CollectActivity.this)) {
-                    if (data.size() != 0) {
-                        mRecyclerView.setVisibility(View.VISIBLE);
-                        mLlNoData.setVisibility(View.GONE);
-                        mLlError.setVisibility(View.GONE);
-                        mDataList.clear();
-                        mDataList.addAll(data);
-                        mCollectRVAdapter.notifyDataSetChanged();
-                    } else {
-                        mRecyclerView.setVisibility(View.GONE);
-                        mLlNoData.setVisibility(View.VISIBLE);
-                        mLlError.setVisibility(View.GONE);
+        if (mIsUpdate) {
+            mCollectPresenter.getCollectList(new CollectPresenter.CallBack() {
+                @Override
+                public void send(List<CollectInfo.DataBean> data) {
+                    if (ActivityUtil.isActivityOnTop(CollectActivity.this)) {
+                        if (data.size() != 0) {
+                            mRecyclerView.setVisibility(View.VISIBLE);
+                            mLlNoData.setVisibility(View.GONE);
+                            mLlError.setVisibility(View.GONE);
+                            mDataList.clear();
+                            mDataList.addAll(data);
+                            mCollectRVAdapter.notifyDataSetChanged();
+                        } else {
+                            mRecyclerView.setVisibility(View.GONE);
+                            mLlNoData.setVisibility(View.VISIBLE);
+                            mLlError.setVisibility(View.GONE);
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void error() {
-                if (ActivityUtil.isActivityOnTop(CollectActivity.this)) {
-                    mRecyclerView.setVisibility(View.GONE);
-                    mLlNoData.setVisibility(View.GONE);
-                    mLlError.setVisibility(View.VISIBLE);
+                @Override
+                public void error() {
+                    if (ActivityUtil.isActivityOnTop(CollectActivity.this)) {
+                        mRecyclerView.setVisibility(View.GONE);
+                        mLlNoData.setVisibility(View.GONE);
+                        mLlError.setVisibility(View.VISIBLE);
+                    }
                 }
-            }
 
-            @Override
-            public void finishRefresh() {
+                @Override
+                public void finishRefresh() {
 
+                }
+            });
+        } else {
+            Gson gson = new Gson();
+            CollectInfo collectInfo = gson.fromJson(MySharedPreferences.getInstance().getString(COLLECT_JOSN), CollectInfo.class);
+            mDataList.addAll(collectInfo.getData());
+            if(mDataList.size() == 0){
+                mRecyclerView.setVisibility(View.GONE);
+                mLlNoData.setVisibility(View.VISIBLE);
+                mLlError.setVisibility(View.GONE);
+            }else {
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mLlNoData.setVisibility(View.GONE);
+                mLlError.setVisibility(View.GONE);
             }
-        });
+            mCollectRVAdapter.notifyDataSetChanged();
+        }
     }
 
     boolean isEdit = false;
@@ -241,6 +270,7 @@ public class CollectActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.ll_error:
+                mIsUpdate = true;
                 initData();
                 break;
             case R.id.tv_cancel:
@@ -263,7 +293,7 @@ public class CollectActivity extends BaseActivity {
                 mDataList2.addAll(mDataList);
                 mTvEdit.setVisibility(View.GONE);
                 mRlEdit.setVisibility(View.VISIBLE);
-                isEdit =true;
+                isEdit = true;
                 mItemTouchHelper.attachToRecyclerView(mRecyclerView);
                 ToastShow.showToast2(CollectActivity.this, getString(R.string.long_click_haul));
                 break;
@@ -286,6 +316,10 @@ public class CollectActivity extends BaseActivity {
         mCollectPresenter.saveSequence(sequenceStr, new CollectPresenter.CallBack2() {
             @Override
             public void send() {
+                CollectInfo collectInfo = new CollectInfo();
+                collectInfo.setData(mDataList);
+                Gson gson = new Gson();
+                MySharedPreferences.getInstance().setString(COLLECT_JOSN, gson.toJson(collectInfo));
                 mRlEdit.setVisibility(View.GONE);
                 mTvEdit.setVisibility(View.VISIBLE);
                 mItemTouchHelper.attachToRecyclerView(null);

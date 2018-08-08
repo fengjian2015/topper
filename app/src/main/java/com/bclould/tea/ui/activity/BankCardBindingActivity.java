@@ -59,6 +59,10 @@ public class BankCardBindingActivity extends BaseActivity {
     ImageView mIvJiantou2;
     @Bind(R.id.rl_selector_state)
     RelativeLayout mRlSelectorState;
+    @Bind(R.id.tv)
+    TextView mTv;
+    @Bind(R.id.iv_scan)
+    ImageView mIvScan;
     private BankCardPresenter mBankCardPresenter;
     private Dialog mStateDialog;
     private int mStateId;
@@ -109,7 +113,8 @@ public class BankCardBindingActivity extends BaseActivity {
         if (mEtCardNumber.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, getString(R.string.toast_card_number), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mEtCardNumber);
-        }if (mTvState.getText().toString().trim().isEmpty()) {
+        }
+        if (mTvState.getText().toString().trim().isEmpty()) {
             Toast.makeText(this, getString(R.string.toast_state), Toast.LENGTH_SHORT).show();
             AnimatorTool.getInstance().editTextAnimator(mRlSelectorState);
         } else {
@@ -118,11 +123,14 @@ public class BankCardBindingActivity extends BaseActivity {
         return false;
     }
 
-    @OnClick({R.id.bark, R.id.btn_next, R.id.rl_selector_state})
+    @OnClick({R.id.bark, R.id.btn_next, R.id.rl_selector_state, R.id.iv_scan})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.iv_scan:
+                startActivity(new Intent(this, ScanQRCodeActivity.class));
                 break;
             case R.id.rl_selector_state:
                 showStateDialog();
@@ -179,15 +187,21 @@ public class BankCardBindingActivity extends BaseActivity {
             addCoin.setVisibility(View.VISIBLE);
         }
     }
+
     public void hideDialog2(int id, String name) {
         mStateDialog.dismiss();
         mStateId = id;
         mTvState.setText(name);
+        if (mStateId == 44) {
+            mIvScan.setVisibility(View.VISIBLE);
+        } else {
+            mIvScan.setVisibility(View.GONE);
+        }
     }
 
     private void next() {
         final String cardNumber = mEtCardNumber.getText().toString().trim();
-        mBankCardPresenter.bankCardInfo(cardNumber, mStateId,new BankCardPresenter.CallBack() {
+        mBankCardPresenter.bankCardInfo(cardNumber, mStateId, new BankCardPresenter.CallBack() {
             @Override
             public void send(BankCardInfo.DataBean data) {
                 if (!BankCardBindingActivity.this.isDestroyed()) {

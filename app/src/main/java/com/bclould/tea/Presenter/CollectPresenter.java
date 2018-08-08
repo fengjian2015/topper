@@ -12,8 +12,10 @@ import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.ui.activity.AddCollectActivity;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.ActivityUtil;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -21,6 +23,8 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.bclould.tea.ui.activity.CollectActivity.COLLECT_JOSN;
 
 /**
  * Created by GA on 2018/7/13.
@@ -73,6 +77,8 @@ public class CollectPresenter {
                         hideDialog();
                         if (collectInfo.getStatus() == 1) {
                             callBack.send(collectInfo.getData());
+                            Gson gson = new Gson();
+                            MySharedPreferences.getInstance().setString(COLLECT_JOSN, gson.toJson(collectInfo));
                         } else {
                             callBack.finishRefresh();
                         }

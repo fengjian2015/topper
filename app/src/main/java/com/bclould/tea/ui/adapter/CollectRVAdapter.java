@@ -20,15 +20,19 @@ import com.bclould.tea.model.CollectInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.activity.HTMLActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.xmpp.RoomManage;
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.mcxtzhang.swipemenulib.SwipeMenuLayout;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.bclould.tea.ui.activity.CollectActivity.COLLECT_JOSN;
 
 /**
  * Created by GA on 2018/7/13.
@@ -170,6 +174,10 @@ public class CollectRVAdapter extends RecyclerView.Adapter {
                     public void send() {
                         swipeView.quickClose();
                         mDataList.remove(position);
+                        CollectInfo collectInfo = new CollectInfo();
+                        collectInfo.setData(mDataList);
+                        Gson gson = new Gson();
+                        MySharedPreferences.getInstance().setString(COLLECT_JOSN, gson.toJson(collectInfo));
                         notifyDataSetChanged();
                     }
                 });
