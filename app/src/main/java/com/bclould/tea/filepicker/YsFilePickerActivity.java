@@ -925,6 +925,8 @@ public class YsFilePickerActivity extends BaseActivity implements OnLongClickLis
                     thumbnail.setImageResource(R.mipmap.type_txt);
                 } else if (file.getName().endsWith(".rtf")) {
                     thumbnail.setImageResource(R.mipmap.type_txt);
+                } else if(file.getName().endsWith(".mp3")){
+                    thumbnail.setImageResource(R.mipmap.type_mp3);
                 } else {
                     thumbnail.setImageResource(R.mipmap.type_unknown);
                 }

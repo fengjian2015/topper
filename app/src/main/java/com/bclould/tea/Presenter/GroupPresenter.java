@@ -22,6 +22,7 @@ import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.topperchat.RoomMemberManage;
 import com.bclould.tea.ui.widget.LoadingProgressDialog;
 import com.bclould.tea.utils.ActivityUtil;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
@@ -185,7 +186,7 @@ public class GroupPresenter {
                                         @Override
                                         public void run() {
                                             UtilTool.Log("房間","存儲結束");
-                                            EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.refresh_group_room)));
+                                            EventBus.getDefault().post(new MessageEvent(EventBusUtil.refresh_group_room));
                                             callBack.send(baseInfo);
                                         }
                                     });

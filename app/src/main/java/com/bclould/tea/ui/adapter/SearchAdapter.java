@@ -17,6 +17,7 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.activity.ConversationServerActivity;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.RoomManage;
@@ -105,7 +106,7 @@ public class SearchAdapter extends RecyclerView.Adapter {
                         mContext.startActivity(intent);
                     }
                     mMgr.updateNumber(mUser, 0);
-                    EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
+                    EventBus.getDefault().post(new MessageEvent(EventBusUtil.dispose_unread_msg));
 
                 }
             });

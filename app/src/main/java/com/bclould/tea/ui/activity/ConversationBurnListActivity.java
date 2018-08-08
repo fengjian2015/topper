@@ -17,6 +17,7 @@ import com.bclould.tea.history.DBConversationBurnManage;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.ui.adapter.ConversationBurnListAdapter;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -86,12 +87,12 @@ public class ConversationBurnListActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        if (msg.equals(getString(R.string.oneself_send_msg))) {
+        if (msg.equals(EventBusUtil.oneself_send_msg)) {
             initData();
-        } else if (msg.equals(getString(R.string.dispose_unread_msg))) {
-            EventBus.getDefault().post(new MessageEvent(getString(R.string.refresh_msg_number)));
+        } else if (msg.equals(EventBusUtil.dispose_unread_msg)) {
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.refresh_msg_number));
             initData();
-        } if (msg.equals(getString(R.string.delete_friend))) {
+        } if (msg.equals(EventBusUtil.delete_friend)) {
             initData();
         } if (msg.equals(getString(R.string.refresh_the_interface))) {
             initData();

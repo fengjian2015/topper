@@ -8,6 +8,7 @@ import com.bclould.tea.R;
 import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -78,7 +79,7 @@ public class RoomManage {
         mMgr.deleteConversation(roomId);
         dbRoomManage.deleteRoom(roomId);
         dbRoomMember.deleteRoom(roomId);
-        MessageEvent messageEvent = new MessageEvent(context.getString(R.string.quit_group));
+        MessageEvent messageEvent = new MessageEvent(EventBusUtil.quit_group);
         messageEvent.setId(roomId);
         EventBus.getDefault().post(messageEvent);
     }

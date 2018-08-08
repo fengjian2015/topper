@@ -20,6 +20,7 @@ import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.ui.activity.ConversationBurnActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.ChatTimeUtil;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -98,7 +99,7 @@ public class ConversationBurnListAdapter extends RecyclerView.Adapter {
                     mNumber.setVisibility(View.GONE);
                     mConversationInfo.setNumber(0);
                     mDBConversationBurnManage.updateConversation(mConversationInfo);
-                    EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
+                    EventBus.getDefault().post(new MessageEvent(EventBusUtil.dispose_unread_msg));
                 }
             });
             mRlItem.setOnLongClickListener(new View.OnLongClickListener() {
@@ -153,7 +154,7 @@ public class ConversationBurnListAdapter extends RecyclerView.Adapter {
                 try {
                     mDBConversationBurnManage.deleteConversation(user);
                     mDBManager.deleteMessage(user,1);
-                    EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
+                    EventBus.getDefault().post(new MessageEvent(EventBusUtil.dispose_unread_msg));
                     deleteCacheDialog.dismiss();
                 } catch (Exception e) {
                     e.printStackTrace();

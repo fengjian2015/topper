@@ -45,18 +45,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_DOC;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_DOCX;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_LOG;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PDF;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PPT;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PPTX;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_RAR;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_RTF;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_TXT;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_XLS;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_XLSX;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_ZIP;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class FileOpenActivity extends BaseActivity {

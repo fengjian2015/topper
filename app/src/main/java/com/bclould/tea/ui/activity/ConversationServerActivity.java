@@ -22,6 +22,7 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.adapter.ChatServerAdapter;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -70,7 +71,7 @@ public class ConversationServerActivity extends BaseActivity {
         mMgr = new DBManager(this);//初始化数据库管理类
         EventBus.getDefault().register(this);//初始化EventBus
         mMgr.updateNumber(roomId, 0);//更新未读消息条数
-        EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));//发送更新未读消息通知
+        EventBus.getDefault().post(new MessageEvent(EventBusUtil.dispose_unread_msg));//发送更新未读消息通知
         initIntent();
         initAdapter();
         initData(null);
@@ -129,10 +130,10 @@ public class ConversationServerActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        if (msg.equals(getString(R.string.msg_database_update))) {
+        if (msg.equals(EventBusUtil.msg_database_update)) {
             initData(event.getId());
             mMgr.updateNumber(roomId, 0);
-            EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.dispose_unread_msg));
         }
     }
 

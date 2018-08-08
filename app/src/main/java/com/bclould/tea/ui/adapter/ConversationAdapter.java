@@ -30,6 +30,7 @@ import com.bclould.tea.ui.fragment.ConversationFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.utils.ChatTimeUtil;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
@@ -130,7 +131,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
                     }
                     mNumber.setVisibility(View.GONE);
                     mMgr.updateConversation(mConversationInfo.getUser(), 0, mConversationInfo.getMessage(), mConversationInfo.getTime(),mConversationInfo.getCreateTime());
-                    EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
+                    EventBus.getDefault().post(new MessageEvent(EventBusUtil.dispose_unread_msg));
                 }
             });
             mRlItem.setOnLongClickListener(new View.OnLongClickListener() {
@@ -228,7 +229,7 @@ public class ConversationAdapter extends RecyclerView.Adapter {
                     mMgr.deleteConversation(user);
                     mMgr.deleteMessage(user,0);
                     setMessageTop(user,0);
-                    EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
+                    EventBus.getDefault().post(new MessageEvent(EventBusUtil.dispose_unread_msg));
                     deleteCacheDialog.dismiss();
                 } catch (Exception e) {
                     e.printStackTrace();

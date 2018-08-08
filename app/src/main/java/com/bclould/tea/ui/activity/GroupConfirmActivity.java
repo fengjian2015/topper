@@ -17,6 +17,7 @@ import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.model.ConversationInfo;
 import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
@@ -102,7 +103,7 @@ public class GroupConfirmActivity extends BaseActivity {
                 ToastShow.showToast2(GroupConfirmActivity.this, getString(R.string.add_success));
                 saveRoom(roomId);
                 createConversation(roomId,roomName);
-                EventBus.getDefault().post(new MessageEvent(getString(R.string.oneself_send_msg)));
+                EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
                 GroupConfirmActivity.this.finish();
             }
         });

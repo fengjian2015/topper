@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.R;
+import com.bclould.tea.alipay.AlipayClient;
 import com.bclould.tea.listener.CrashHandler;
 import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.model.StateInfo;
@@ -80,6 +81,8 @@ public class MyApp extends Application {
         registerActivityLifecycleCallbacks(new MyLifecycleHandler());
 
         RoomMemberManage.getInstance().setContext(this);
+
+        AlipayClient.getInstance().init(this);
     }
 
 

@@ -27,9 +27,9 @@ public class IMService extends Service{
     public void onCreate() {
         super.onCreate();
         UtilTool.Log("fengjian","----IMService oncreate");
-        RoomManage.getInstance().setContext(MyApp.getInstance().app() == null ? this : MyApp.getInstance().app());
-        WsConnection.getInstance().setContext(MyApp.getInstance().app() == null ? this : MyApp.getInstance().app());
-        WsOfflineConnection.getInstance().setContext(MyApp.getInstance().app() == null ? this : MyApp.getInstance().app());
+        RoomManage.getInstance().setContext( this );
+        WsConnection.getInstance().setContext(this);
+        WsOfflineConnection.getInstance().setContext(this);
         if(handler==null) {
             instanceHandler();
         }

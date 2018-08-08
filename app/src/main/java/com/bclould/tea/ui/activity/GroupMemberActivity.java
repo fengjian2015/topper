@@ -17,6 +17,7 @@ import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.ui.adapter.GroupDetailsMemberAdapter;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.UtilTool;
 
@@ -95,7 +96,7 @@ public class GroupMemberActivity extends BaseActivity {
 //            new GroupPresenter(this).selectGroupMember(Integer.parseInt(roomId), mDBRoomMember, true, mDBRoomManage, mMgr, new GroupPresenter.CallBack() {
 //                @Override
 //                public void send() {
-//                    EventBus.getDefault().post(new MessageEvent(getString(R.string.refresh_group_members)));
+//                    EventBus.getDefault().post(new MessageEvent(EventBusUtil.refresh_group_members));
 //                }
 //            });
                     } else {
@@ -110,17 +111,17 @@ public class GroupMemberActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        if (msg.equals(getString(R.string.quit_group))) {
+        if (msg.equals(EventBusUtil.quit_group)) {
             if (roomId.equals(event.getId())) {
                 finish();
             }
-        } else if (msg.equals(getString(R.string.refresh_group_members))) {
+        } else if (msg.equals(EventBusUtil.refresh_group_members)) {
             setGroupMember(false);
-        }else if (msg.equals(getString(R.string.refresh_group_room))) {
+        }else if (msg.equals(EventBusUtil.refresh_group_room)) {
             if (roomId.equals(event.getId())) {
                 setGroupMember(false);
             }
-        } else if (msg.equals(getString(R.string.kick_out_success))) {
+        } else if (msg.equals(EventBusUtil.kick_out_success)) {
             if (roomId.equals(event.getId())) {
                 finish();
             }

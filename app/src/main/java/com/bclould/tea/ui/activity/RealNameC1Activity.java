@@ -33,6 +33,7 @@ import com.bclould.tea.ui.adapter.BottomDialogRVAdapter3;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -180,7 +181,7 @@ public class RealNameC1Activity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        if (msg.equals(getString(R.string.real_name_verify))) {
+        if (msg.equals(EventBusUtil.real_name_verify)) {
             initData();
         }
     }

@@ -151,10 +151,6 @@ public class SelectorLanguageActivity extends BaseActivity {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        RoomManage.getInstance().reoveAllRoom();
-        SocketListener.clear();
-        stopService(new Intent(this, IMService.class));
-        startService(new Intent(this, IMService.class));
 
         /*new Handler() {
             public void handleMessage(Message msg) {

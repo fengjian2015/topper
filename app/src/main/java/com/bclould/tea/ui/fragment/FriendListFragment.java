@@ -48,6 +48,7 @@ import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StatusBarCompat;
@@ -211,13 +212,13 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.login_succeed))) {
             initData();
-        } else if (msg.equals(getString(R.string.new_friend))) {
+        } else if (msg.equals(EventBusUtil.new_friend)) {
             initData();
-        } else if (msg.equals(getString(R.string.delete_friend))) {
+        } else if (msg.equals(EventBusUtil.delete_friend)) {
             updateData();
         } else if (msg.equals(getString(R.string.change_friend_remark))) {
             updateData();
-        } else if (msg.equals(getString(R.string.receive_add_request))) {
+        } else if (msg.equals(EventBusUtil.receive_add_request)) {
             sendHandler();
         } else if (msg.equals(getString(R.string.refresh_the_interface))) {
             updateData();
@@ -470,7 +471,7 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
         bundle.putString("user", mUsers.get(position).getUser());
         intent.putExtras(bundle);
         mMgr.updateNumber(mUsers.get(position).getUser(), 0);
-        EventBus.getDefault().post(new MessageEvent(getContext().getString(R.string.dispose_unread_msg)));
+        EventBus.getDefault().post(new MessageEvent(EventBusUtil.dispose_unread_msg));
         getContext().startActivity(intent);
     }
 
@@ -548,7 +549,7 @@ public class FriendListFragment extends Fragment implements FriendListRVAdapter.
                             mMgr.deleteConversation(roomId);
                             mMgr.deleteMessage(roomId,0);
                             mMgr.deleteUser(mUser);
-                            EventBus.getDefault().post(new MessageEvent(getString(R.string.delete_friend)));
+                            EventBus.getDefault().post(new MessageEvent(EventBusUtil.delete_friend));
                         }
                     });
                     deleteCacheDialog.dismiss();

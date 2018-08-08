@@ -7,6 +7,7 @@ import android.support.annotation.RequiresApi;
 import com.bclould.tea.R;
 import com.bclould.tea.crypto.otr.OtrChatListenerManager;
 import com.bclould.tea.history.DBManager;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
@@ -84,11 +85,11 @@ public class MessageManage {
                     mMgr.updateMessageStatus(msgId, 2);
                     if(!StringUtils.isEmpty(mMgr.findIsWithdraw(msgId))) {
                         mMgr.deleteSingleMessageMsgId(msgId,isBurnReading);
-                        MessageEvent messageEvent = new MessageEvent(context.getString(R.string.withdrew_a_message));
+                        MessageEvent messageEvent = new MessageEvent(EventBusUtil.withdrew_a_message);
                         messageEvent.setId(msgId);
                         EventBus.getDefault().post(messageEvent);
                     }else{
-                        MessageEvent messageEvent = new MessageEvent(context.getString(R.string.change_msg_state));
+                        MessageEvent messageEvent = new MessageEvent(EventBusUtil.change_msg_state);
                         messageEvent.setId(msgId);
                         EventBus.getDefault().post(messageEvent);
                     }
@@ -131,7 +132,7 @@ public class MessageManage {
                     if(!StringUtils.isEmpty(mMgr.findIsWithdraw(msgId))) {
                         mMgr.deleteSingleMessageMsgId(msgId,0);
                     }
-                    EventBus.getDefault().post(new MessageEvent(context.getString(R.string.msg_database_update)));
+                    EventBus.getDefault().post(new MessageEvent(EventBusUtil.msg_database_update));
                     e.printStackTrace();
                 }
             }

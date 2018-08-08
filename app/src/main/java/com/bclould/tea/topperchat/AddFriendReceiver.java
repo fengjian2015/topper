@@ -20,6 +20,7 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.ui.activity.MainActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.ActivityUtil;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
@@ -89,7 +90,7 @@ public class AddFriendReceiver extends BroadcastReceiver {
                                     mNewFriend = MySharedPreferences.getInstance().getInteger(NEWFRIEND);
                                     mNewFriend--;
                                     MySharedPreferences.getInstance().setInteger(NEWFRIEND, mNewFriend);
-                                    EventBus.getDefault().post(new MessageEvent(context.getString(R.string.receive_add_request)));
+                                    EventBus.getDefault().post(new MessageEvent(EventBusUtil.receive_add_request));
                                 }
                             });
                         }
@@ -105,9 +106,9 @@ public class AddFriendReceiver extends BroadcastReceiver {
                                     mNewFriend = MySharedPreferences.getInstance().getInteger(NEWFRIEND);
                                     mNewFriend--;
                                     MySharedPreferences.getInstance().setInteger(NEWFRIEND, mNewFriend);
-                                    EventBus.getDefault().post(new MessageEvent(context.getString(R.string.receive_add_request)));
+                                    EventBus.getDefault().post(new MessageEvent(EventBusUtil.receive_add_request));
                                     //同意
-                                    EventBus.getDefault().post(new MessageEvent(context.getString(R.string.new_friend)));
+                                    EventBus.getDefault().post(new MessageEvent(EventBusUtil.new_friend));
                                 }
                             });
                         }

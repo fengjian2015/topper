@@ -21,6 +21,7 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.model.AddRequestInfo;
 import com.bclould.tea.ui.activity.ConversationActivity;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
@@ -120,7 +121,7 @@ public class NewFriendRVAdapter extends RecyclerView.Adapter {
                             @Override
                             public void send() {
                                 mMgr.updateRequest(mAddRequestInfo.getId(), 1);
-                                EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.new_friend)));
+                                EventBus.getDefault().post(new MessageEvent(EventBusUtil.new_friend));
                                 mBtnConsent.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                                 mBtnConsent.setText(mContext.getString(R.string.agrd_agreed));
                                 mBtnConsent.setTextColor(mContext.getResources().getColor(R.color.gray));

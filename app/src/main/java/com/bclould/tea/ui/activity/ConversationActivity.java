@@ -53,6 +53,7 @@ import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.AudioModeManger;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.RecordUtil;
@@ -183,7 +184,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         setBackgound();
         mMgr.updateNumber(roomId, 0);//更新未读消息条数
         mMgr.updateAtme(roomId, "");
-        EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));//发送更新未读消息通知
+        EventBus.getDefault().post(new MessageEvent(EventBusUtil.dispose_unread_msg));//发送更新未读消息通知
         if (audioModeManger == null) {
             audioModeManger = new AudioModeManger();
         }
@@ -627,12 +628,12 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        if (msg.equals(getString(R.string.msg_database_update))) {
+        if (msg.equals(EventBusUtil.msg_database_update)) {
             initData(event.getId(), false);
             mMgr.updateNumber(roomId, 0);
             mMgr.updateAtme(roomId, "");
-            EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));
-        } else if (msg.equals(getString(R.string.send_red_packet_le))) {
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.dispose_unread_msg));
+        } else if (msg.equals(EventBusUtil.send_red_packet_le)) {
             initData(event.getId(), true);
         } else if (msg.equals(getString(R.string.transfer))) {
             initData(event.getId(), true);
@@ -647,7 +648,7 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
             changeUrl(id, event.getFilepath());
         } else if (msg.equals(getString(R.string.otr_isopen))) {
             mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(roomId.toString()));
-        } else if (msg.equals(getString(R.string.delete_friend))) {
+        } else if (msg.equals(EventBusUtil.delete_friend)) {
             finish();
         } else if (msg.equals(getString(R.string.change_friend_remark))) {
             setTitleName();
@@ -657,32 +658,32 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
         } else if (msg.equals(getString(R.string.start_otr))) {
             mEkbEmoticonsKeyboard.startOTR();
             UtilTool.Log("fengjian---", "开启加密");
-        } else if (msg.equals(getString(R.string.change_msg_state))) {
+        } else if (msg.equals(EventBusUtil.change_msg_state)) {
             changeMsgState(event.getId());
             UtilTool.Log("fengjian---", "改變消息狀態");
-        } else if (msg.equals(getString(R.string.quit_group))) {
+        } else if (msg.equals(EventBusUtil.quit_group)) {
             if (roomId.equals(event.getId())) {
                 finish();
             }
-        } else if (msg.equals(getString(R.string.refresh_group_members))) {
+        } else if (msg.equals(EventBusUtil.refresh_group_members)) {
             setTitleName();
             mChatAdapter.notifyDataSetChanged();
         } else if (msg.equals(getString(R.string.modify_group_name))) {
             mName = event.getName();
             setTitleName();
             mChatAdapter.notifyDataSetChanged();
-        } else if (msg.equals(getString(R.string.refresh_group_room))) {
+        } else if (msg.equals(EventBusUtil.refresh_group_room)) {
             if (roomId.equals(event.getId())) {
                 mName = mDBRoomManage.findRoomName(roomId);
                 setTitleName();
             }
-        } else if (msg.equals(getString(R.string.kick_out_success))) {
+        } else if (msg.equals(EventBusUtil.kick_out_success)) {
             if (roomId.equals(event.getId())) {
                 finish();
             }
         } else if (msg.equals(getString(R.string.update_file_message))) {
             changeMsgFile(event.getId(), event.getFilepath());
-        } else if (msg.equals(getString(R.string.withdrew_a_message))) {
+        } else if (msg.equals(EventBusUtil.withdrew_a_message)) {
             deleteMsg(event.getId());
         }else if(msg.equals(getString(R.string.conversation_backgound))){
             setBackgound();
