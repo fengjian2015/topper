@@ -263,7 +263,6 @@ public class NewsFragment extends Fragment implements OnBannerListener {
 
     private void initBanner(List<String> top, List<String> titleList) {
 
-
         mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE)
                 .setImages(top)
                 .setBannerTitles(titleList)

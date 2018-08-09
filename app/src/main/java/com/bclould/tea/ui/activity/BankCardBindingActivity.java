@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.ocr.sdk.OCR;
+import com.baidu.ocr.sdk.OnResultListener;
+import com.baidu.ocr.sdk.exception.OCRError;
+import com.baidu.ocr.sdk.model.BankCardParams;
+import com.baidu.ocr.sdk.model.BankCardResult;
 import com.bclould.tea.Presenter.BankCardPresenter;
 import com.bclould.tea.Presenter.RealNamePresenter;
 import com.bclould.tea.R;
@@ -31,6 +38,9 @@ import com.bclould.tea.ui.adapter.BottomDialogRVAdapter3;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.UtilTool;
+
+import java.io.File;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,6 +55,7 @@ import static com.bclould.tea.R.style.BottomDialog;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class BankCardBindingActivity extends BaseActivity {
 
+    private static final int REQUEST_CODE_CAMERA = 1;
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.btn_next)
@@ -130,7 +141,11 @@ public class BankCardBindingActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.iv_scan:
-                startActivity(new Intent(this, ScanQRCodeActivity.class));
+                Intent intent = new Intent(BankCardBindingActivity.this, com.baidu.ocr.ui.camera.CameraActivity.class);
+                intent.putExtra(com.baidu.ocr.ui.camera.CameraActivity.KEY_OUTPUT_FILE_PATH,
+                        UtilTool.getSaveFile(getApplication()).getAbsolutePath());
+                intent.putExtra(com.baidu.ocr.ui.camera.CameraActivity.KEY_CONTENT_TYPE, com.baidu.ocr.ui.camera.CameraActivity.CONTENT_TYPE_BANK_CARD);
+                startActivityForResult(intent, REQUEST_CODE_CAMERA);
                 break;
             case R.id.rl_selector_state:
                 showStateDialog();
@@ -141,6 +156,43 @@ public class BankCardBindingActivity extends BaseActivity {
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_CAMERA && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                String contentType = data.getStringExtra(com.baidu.ocr.ui.camera.CameraActivity.KEY_CONTENT_TYPE);
+                String filePath = UtilTool.getSaveFile(getApplicationContext()).getAbsolutePath();
+                if (!TextUtils.isEmpty(contentType)) {
+                    if (com.baidu.ocr.ui.camera.CameraActivity.CONTENT_TYPE_BANK_CARD.equals(contentType)) {
+                        recIDCard(filePath);
+                    }
+                }
+            }
+        }
+    }
+
+    private void recIDCard(String filePath) {
+        BankCardParams param = new BankCardParams();
+        param.setImageFile(new File(filePath));
+        OCR.getInstance(this).recognizeBankCard(param, new OnResultListener<BankCardResult>() {
+            @Override
+            public void onResult(BankCardResult result) {
+                // 调用成功，返回BankCardResult对象
+                if (result != null) {
+                    UtilTool.Log("bank", result.toString());
+                }
+            }
+
+            @Override
+            public void onError(OCRError error) {
+                // 调用失败，返回OCRError对象
+                UtilTool.Log("bank", error.getCause().getMessage());
+            }
+        });
     }
 
     private void showStateDialog() {

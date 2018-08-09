@@ -65,7 +65,7 @@ public class NewsNoticePresenter {
         showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .getNewsList(UtilTool.getToken(), page, pageSize)
+                .getNewsList(UtilTool.getToken(), page, pageSize, UtilTool.getLanguage(mContext))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<NewsListInfo>() {
@@ -102,7 +102,7 @@ public class NewsNoticePresenter {
                             } else {
                                 callBack.error();
                             }
-                        }else {
+                        } else {
                             callBack.finishRefresh();
                         }
                     }

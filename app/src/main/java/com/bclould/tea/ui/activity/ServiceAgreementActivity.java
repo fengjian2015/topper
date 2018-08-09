@@ -6,15 +6,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.bclould.tea.Presenter.RegisterPresenter;
 import com.bclould.tea.R;
+import com.bclould.tea.base.LoginBaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.UtilTool;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,7 +26,7 @@ import butterknife.OnClick;
  */
 
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class ServiceAgreementActivity extends AppCompatActivity {
+public class ServiceAgreementActivity extends LoginBaseActivity {
 
 
     @Bind(R.id.tv_title)
@@ -54,7 +55,7 @@ public class ServiceAgreementActivity extends AppCompatActivity {
     }
 
     private void initWebView() {
-        mWebView.loadUrl(Constants.BASE_URL + "api/user_agreement");
+        mWebView.loadUrl(Constants.BASE_URL + "api/user_agreement" + "/" + UtilTool.getLanguage(this));
     }
 
     private void initIntent() {
