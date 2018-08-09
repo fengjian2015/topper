@@ -22,6 +22,7 @@ import com.bclould.tea.service.IMCoreService;
 import com.bclould.tea.service.IMService;
 import com.bclould.tea.ui.activity.MainActivity;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
@@ -342,7 +343,7 @@ public class WsConnection {
                     mManager.deleteSingleMessageMsgId(messageInfo.getMsgId(),0);
                 }
             }
-            EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.msg_database_update)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.msg_database_update));
         }
         mManager.deleteAllMsgId();
     }
@@ -356,7 +357,7 @@ public class WsConnection {
             for (String string : list) {
                 mManager.updateMessageStatus(string, 2);
             }
-            EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.msg_database_update)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.msg_database_update));
         }
     }
 

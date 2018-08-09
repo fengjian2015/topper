@@ -18,6 +18,7 @@ import com.bclould.tea.history.DBManager;
 import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.ui.activity.ConversationActivity;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.RoomManage;
@@ -92,7 +93,7 @@ public class GroupListRVAdapter extends RecyclerView.Adapter {
                     intent.putExtras(bundle);
                     mContext.startActivity(intent);
                     mDBManager.updateConversationNumber(mRoomManageInfo.getRoomId(), 0);
-                    EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
+                    EventBus.getDefault().post(new MessageEvent(EventBusUtil.dispose_unread_msg));
                     ((Activity)mContext).finish();
                 }
             });

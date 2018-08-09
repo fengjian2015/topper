@@ -28,6 +28,7 @@ public class WsContans {
     public static final String FILE_TYPE_ZIP = ".zip";
     public static final String FILE_TYPE_RAR = ".rar";
     public static final String FILE_TYPE_RTF = ".rtf";
+    public static final String FILE_TYPE_MP3=".mp3";
 
     //文檔定義消息類型
     public static final int MSG_SINGLER=3;//單聊消息

@@ -44,8 +44,10 @@ import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
 import com.bclould.tea.ui.activity.GroupListActivity;
 import com.bclould.tea.ui.activity.MyFriendActivity;
 import com.bclould.tea.ui.activity.SearchActivity;
+import com.bclould.tea.ui.activity.SendRedAlipaylActivity;
 import com.bclould.tea.ui.adapter.ConversationAdapter;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StatusBarCompat;
 import com.bclould.tea.utils.UtilTool;
@@ -253,7 +255,8 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_search:
-                startActivity(new Intent(getActivity(), SearchActivity.class));
+//                startActivity(new Intent(getActivity(), SearchActivity.class));
+                startActivity(new Intent(getActivity(), SendRedAlipaylActivity.class));
 //                startActivity(new Intent(getActivity(), ConversationBurnListActivity.class));
                 break;
             case R.id.iv_more:
@@ -359,14 +362,14 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
         if (msg.equals(getString(R.string.login_succeed))) {
             getGroup();
             initData();
-        } else if (msg.equals(getString(R.string.oneself_send_msg))) {
+        } else if (msg.equals(EventBusUtil.oneself_send_msg)) {
             initData();
-        } else if (msg.equals(getString(R.string.send_red_packet_le))) {
+        } else if (msg.equals(EventBusUtil.send_red_packet_le)) {
             initData();
-        } else if (msg.equals(getString(R.string.dispose_unread_msg))) {
-            EventBus.getDefault().post(new MessageEvent(getString(R.string.refresh_msg_number)));
+        } else if (msg.equals(EventBusUtil.dispose_unread_msg)) {
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.refresh_msg_number));
             initData();
-        } else if (msg.equals(getString(R.string.new_friend))) {
+        } else if (msg.equals(EventBusUtil.new_friend)) {
             initData();
         } else if (msg.equals(getString(R.string.login_error))) {
             mRlUnunited.setVisibility(View.VISIBLE);
@@ -374,17 +377,17 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
             initData();
         } else if (msg.equals(getString(R.string.change_friend_remark))) {
             initData();
-        } else if (msg.equals(getString(R.string.delete_friend))) {
+        } else if (msg.equals(EventBusUtil.delete_friend)) {
             initData();
-        } else if (msg.equals(getString(R.string.quit_group))) {
+        } else if (msg.equals(EventBusUtil.quit_group)) {
             initData();
         } else if (msg.equals(getString(R.string.refresh_the_interface))) {
             initData();
         } else if (msg.equals(getString(R.string.modify_group_name))) {
             initData();
-        } else if (msg.equals(getString(R.string.refresh_group_room))) {
+        } else if (msg.equals(EventBusUtil.refresh_group_room)) {
             initData();
-        } else if (msg.equals(getString(R.string.kick_out_success))) {
+        } else if (msg.equals(EventBusUtil.kick_out_success)) {
             initData();
         } else if (msg.equals(getString(R.string.home_msg_click_two))) {
             unNumbertopList();

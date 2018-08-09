@@ -13,6 +13,7 @@ import com.baidu.ocr.sdk.OnResultListener;
 import com.baidu.ocr.sdk.exception.OCRError;
 import com.baidu.ocr.sdk.model.AccessToken;
 import com.bclould.tea.R;
+import com.bclould.tea.alipay.AlipayClient;
 import com.bclould.tea.listener.CrashHandler;
 import com.bclould.tea.model.CoinListInfo;
 import com.bclould.tea.model.StateInfo;
@@ -96,6 +97,7 @@ public class MyApp extends Application {
                 error.printStackTrace();
             }
         }, getApplicationContext(), "kwPFq1qEMF7Uu9XQ1eYXuza8", "GlhguubBaj0XGKYYOpNVZHCYquokpdIj");
+        AlipayClient.getInstance().init(this);
     }
 
 

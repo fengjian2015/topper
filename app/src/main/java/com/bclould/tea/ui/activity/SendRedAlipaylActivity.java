@@ -11,7 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alipay.sdk.app.EnvUtils;
 import com.bclould.tea.R;
+import com.bclould.tea.alipay.AlipayClient;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.utils.AnimatorTool;
 
@@ -28,12 +30,11 @@ public class SendRedAlipaylActivity extends BaseActivity {
     EditText mEtRemark;
     @Bind(R.id.tv_allmoney)
     TextView mTvAllmoney;
-    @Bind(R.id.ll_error)
-    LinearLayout mLlError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
         setContentView(R.layout.activity_send_red_alipayl);
         ButterKnife.bind(this);
         setOnClick();
@@ -67,7 +68,7 @@ public class SendRedAlipaylActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_send:
-
+                AlipayClient.getInstance().payV2(SendRedAlipaylActivity.this);
                 break;
         }
     }

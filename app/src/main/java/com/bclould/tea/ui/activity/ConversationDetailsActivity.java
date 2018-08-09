@@ -27,6 +27,7 @@ import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
@@ -278,7 +279,7 @@ public class ConversationDetailsActivity extends BaseActivity {
                     mMgr.deleteMessage(mUser,0);
                     mMgr.updateConversationMessage(mUser,"");
                     Toast.makeText(ConversationDetailsActivity.this, getString(R.string.empty_success), Toast.LENGTH_SHORT).show();
-                    EventBus.getDefault().post(new MessageEvent(getString(R.string.msg_database_update)));
+                    EventBus.getDefault().post(new MessageEvent(EventBusUtil.msg_database_update));
                     deleteCacheDialog.dismiss();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -311,7 +312,7 @@ public class ConversationDetailsActivity extends BaseActivity {
         String msg = event.getMsg();
         if (msg.equals(getString(R.string.otr_isopen))){
             changeOTRState();
-        }else if(msg.equals(getString(R.string.delete_friend))){
+        }else if(msg.equals(EventBusUtil.delete_friend)){
             finish();
         }else if(msg.equals(getString(R.string.change_friend_remark))){
             setName();

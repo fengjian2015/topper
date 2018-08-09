@@ -64,6 +64,7 @@ import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.ChatTimeUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.CustomLinkMovementMethod;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.HyperLinkUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -454,7 +455,7 @@ public class ChatBurnAdapter extends RecyclerView.Adapter {
                     }
                     mMessageList.remove(messageInfo);
                     notifyDataSetChanged();
-                    EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
+                    EventBus.getDefault().post(new MessageEvent(EventBusUtil.dispose_unread_msg));
                     deleteCacheDialog.dismiss();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -2415,7 +2416,6 @@ public class ChatBurnAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo) {
-            setBurnMessage(messageInfo.getMsgId());
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             goIndividualDetails(mIvTouxiang, mRoomId, mName, messageInfo);
@@ -2559,7 +2559,6 @@ public class ChatBurnAdapter extends RecyclerView.Adapter {
         }
 
         public void setData(final MessageInfo messageInfo, int position) {
-            setBurnMessage(messageInfo.getMsgId());
             getHtmlContent(messageInfo,position);
             setCreatetime(tvCreateTime, messageInfo.getShowChatTime());
             setNameAndUrl(mIvTouxiang, messageInfo, tvName);

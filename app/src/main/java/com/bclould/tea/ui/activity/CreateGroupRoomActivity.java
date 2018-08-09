@@ -26,6 +26,7 @@ import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.adapter.CreateGroupRVAdapter;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
@@ -149,7 +150,7 @@ public class CreateGroupRoomActivity extends BaseActivity {
             @Override
             public void send() {
                 mDBRoomMember.addRoomMemberUserInfo(mUserInfoList,roomId);
-                EventBus.getDefault().post(new MessageEvent(getString(R.string.refresh_group_members)));
+                EventBus.getDefault().post(new MessageEvent(EventBusUtil.refresh_group_members));
                 finish();
             }
         });
@@ -183,7 +184,7 @@ public class CreateGroupRoomActivity extends BaseActivity {
                         bundle.putString("chatType",RoomManage.ROOM_TYPE_MULTI);
                         intent.putExtras(bundle);
                         startActivity(intent);
-                        EventBus.getDefault().post(new MessageEvent(getString(R.string.oneself_send_msg)));
+                        EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.create_group_chat)));
                         finish();
                     }

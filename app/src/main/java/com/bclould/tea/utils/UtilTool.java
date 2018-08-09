@@ -95,6 +95,7 @@ import static com.bclould.tea.Presenter.LoginPresenter.USERID;
 import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_DOC;
 import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_DOCX;
 import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_LOG;
+import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_MP3;
 import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PDF;
 import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PPT;
 import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PPTX;
@@ -1550,7 +1551,9 @@ public class UtilTool {
             resId = R.mipmap.type_zip;
         } else if (FILE_TYPE_RAR.equals(fileType)) {
             resId = R.mipmap.type_rar;
-        } else {
+        } else if(FILE_TYPE_MP3.endsWith(fileType)){
+            resId = R.mipmap.type_mp3;
+        }else {
             resId = R.mipmap.type_unknown;
         }
         return resId;

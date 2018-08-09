@@ -47,6 +47,7 @@ import com.bclould.tea.ui.activity.OrderCloseActivity;
 import com.bclould.tea.ui.activity.OrderDetailsActivity;
 import com.bclould.tea.ui.activity.PayDetailsActivity;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MyLifecycleHandler;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -293,12 +294,12 @@ public class SocketListener {
             //表示是撤回消息
             MessageInfo messageInfo = mgr.queryMessageMsg(id);
             mgr.deleteSingleMessageMsgId(messageInfo.getBetId(), 0);
-            MessageEvent messageEvent = new MessageEvent(context.getString(R.string.withdrew_a_message));
+            MessageEvent messageEvent = new MessageEvent(EventBusUtil.withdrew_a_message);
             messageEvent.setId(messageInfo.getBetId());
             EventBus.getDefault().post(messageEvent);
         }
 
-        MessageEvent messageEvent = new MessageEvent(context.getString(R.string.change_msg_state));
+        MessageEvent messageEvent = new MessageEvent(EventBusUtil.change_msg_state);
         messageEvent.setId(id);
         mgr.updateMessageStatus(id, 1);
         mgr.deleteSingleMsgId(id);
@@ -612,7 +613,7 @@ public class SocketListener {
                     }
                     goChat(from, redpacket, roomType);
 
-                    MessageEvent messageEvent = new MessageEvent(context.getString(R.string.withdrew_a_message));
+                    MessageEvent messageEvent = new MessageEvent(EventBusUtil.withdrew_a_message);
                     messageEvent.setId(messageInfo.getBetId());
                     EventBus.getDefault().post(messageEvent);
                     break;
@@ -661,10 +662,10 @@ public class SocketListener {
             mgr.addMessage(messageInfo);
 
             setConversation(messageInfo, from, isMe, friend, createTime, time, roomType, redpacket, isBurnReading);
-            MessageEvent messageEvent = new MessageEvent(context.getString(R.string.msg_database_update));
+            MessageEvent messageEvent = new MessageEvent(EventBusUtil.msg_database_update);
             messageEvent.setId(msgId);
             EventBus.getDefault().post(messageEvent);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.dispose_unread_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.dispose_unread_msg));
             bellJudgment(from, isPlayHint);
         } catch (Exception e) {
             e.printStackTrace();
@@ -899,7 +900,7 @@ public class SocketListener {
         mgr.deleteConversation(roomId);
         mgr.deleteMessage(roomId, 0);
         mdbRoomMember.deleteRoom(roomId);
-        MessageEvent messageEvent = new MessageEvent(context.getString(R.string.kick_out_success));
+        MessageEvent messageEvent = new MessageEvent(EventBusUtil.kick_out_success);
         messageEvent.setId(roomId);
         EventBus.getDefault().post(messageEvent);
     }
@@ -914,7 +915,7 @@ public class SocketListener {
         new GroupPresenter(context).selectGroupMember(Integer.parseInt(roomId), mdbRoomMember, false, mdbRoomManage, mgr, new GroupPresenter.CallBack() {
             @Override
             public void send() {
-                MessageEvent messageEvent = new MessageEvent(context.getString(R.string.refresh_group_room));
+                MessageEvent messageEvent = new MessageEvent(EventBusUtil.refresh_group_room);
                 messageEvent.setId(roomId);
                 EventBus.getDefault().post(messageEvent);
             }
@@ -975,8 +976,8 @@ public class SocketListener {
             public void send() {
             }
         });
-        EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
-        EventBus.getDefault().post(new MessageEvent(context.getString(R.string.refresh_group_members)));
+        EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
+        EventBus.getDefault().post(new MessageEvent(EventBusUtil.refresh_group_members));
     }
 
     /**
@@ -1002,7 +1003,7 @@ public class SocketListener {
         new GroupPresenter(context).selectGroupMember(Integer.parseInt(roomId), mdbRoomMember, false, mdbRoomManage, mgr, new GroupPresenter.CallBack() {
             @Override
             public void send() {
-                EventBus.getDefault().post(new MessageEvent(context.getString(R.string.refresh_group_members)));
+                EventBus.getDefault().post(new MessageEvent(EventBusUtil.refresh_group_members));
             }
         });
     }
@@ -1019,10 +1020,10 @@ public class SocketListener {
             new GroupPresenter(context).selectGroupMember(Integer.parseInt(roomId), mdbRoomMember, false, mdbRoomManage, mgr, new GroupPresenter.CallBack() {
                 @Override
                 public void send() {
-                    EventBus.getDefault().post(new MessageEvent(context.getString(R.string.refresh_group_members)));
+                    EventBus.getDefault().post(new MessageEvent(EventBusUtil.refresh_group_members));
                 }
             });
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
             return;
         }
         createConversation(roomId, roomName);
@@ -1194,7 +1195,7 @@ public class SocketListener {
         }
         messageInfo.setStatus((Integer) messageMap.get("status"));
         addMessage(messageInfo);
-        EventBus.getDefault().post(new MessageEvent(context.getString(R.string.real_name_verify)));//发送更新未读消息通知
+        EventBus.getDefault().post(new MessageEvent(EventBusUtil.real_name_verify));//发送更新未读消息通知
     }
 
     /**
@@ -1279,7 +1280,7 @@ public class SocketListener {
                 intent.putExtra("alertSubName", (String) messageMap.get("user_name"));
                 intent.setAction("com.bclould.tea.addfriend");
                 context.sendBroadcast(intent);
-                EventBus.getDefault().post(new MessageEvent(context.getString(R.string.receive_add_request)));
+                EventBus.getDefault().post(new MessageEvent(EventBusUtil.receive_add_request));
             }
         } else if (type == BC_FRIEND_COMMIT) {
             String from = (String) messageMap.get("toco_id");
@@ -1296,7 +1297,7 @@ public class SocketListener {
                 userInfo.setUserName(" ");
                 userInfo.setRemark(" ");
                 mgr.addUser(userInfo);
-                EventBus.getDefault().post(new MessageEvent(context.getString(R.string.new_friend)));
+                EventBus.getDefault().post(new MessageEvent(EventBusUtil.new_friend));
                 context.sendBroadcast(intent);
             } else if ("2".equals(messageMap.get("status") + "")) {
                 //发送广播传递response字符串
@@ -1305,7 +1306,7 @@ public class SocketListener {
                 mgr.deleteUser(from);
                 mgr.deleteConversation(from);
                 mgr.deleteMessage(from, 0);
-                EventBus.getDefault().post(new MessageEvent(context.getString(R.string.delete_friend)));
+                EventBus.getDefault().post(new MessageEvent(EventBusUtil.delete_friend));
                 Intent intent = new Intent();
                 intent.putExtra("response", response);
                 intent.setAction("com.bclould.tea.addfriend");
@@ -1317,7 +1318,7 @@ public class SocketListener {
             mgr.deleteUser(from);
             mgr.deleteConversation(from);
             mgr.deleteMessage(from, 0);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.delete_friend)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.delete_friend));
             UtilTool.Log("fengjian", "删除成功！");
         }
     }
@@ -1354,8 +1355,8 @@ public class SocketListener {
             info.setCreateTime(messageInfo.getCreateTime());
             mgr.addConversation(info);
         }
-        EventBus.getDefault().post(new MessageEvent(context.getString(R.string.msg_database_update)));
-        EventBus.getDefault().post(new MessageEvent(context.getString(R.string.dispose_unread_msg)));
+        EventBus.getDefault().post(new MessageEvent(EventBusUtil.msg_database_update));
+        EventBus.getDefault().post(new MessageEvent(EventBusUtil.dispose_unread_msg));
     }
 
     /**

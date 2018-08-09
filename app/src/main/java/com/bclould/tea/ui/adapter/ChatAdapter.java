@@ -60,11 +60,13 @@ import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.ui.widget.LodingCircleView;
 import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.ui.widget.MyYAnimation;
+import com.bclould.tea.ui.widget.RedDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.ChatTimeUtil;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.CustomLinkMovementMethod;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.HyperLinkUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -90,9 +92,7 @@ import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.net.SocketTimeoutException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -102,18 +102,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.github.rockerhieu.emojicon.EmojiconTextView;
 
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_DOC;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_DOCX;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_LOG;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PDF;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PPT;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_PPTX;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_RAR;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_RTF;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_TXT;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_XLS;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_XLSX;
-import static com.bclould.tea.topperchat.WsContans.FILE_TYPE_ZIP;
 import static com.bclould.tea.ui.activity.SystemSetActivity.AUTOMATICALLY_DOWNLOA;
 import static com.bclould.tea.utils.UtilTool.Log;
 
@@ -171,7 +159,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private String mName;
     private RelativeLayout mrlTitle;
     private DBRoomMember mDBRoomMember;
-    private CurrencyDialog mCurrencyDialog;
+    private RedDialog mRedDialog;
 
     public ChatAdapter(Context context, List<MessageInfo> messageList, String roomId, DBManager mgr, MediaPlayer mediaPlayer, String name, String roomType, RelativeLayout rlTitle, DBRoomMember mDBRoomMember
     ) {
@@ -471,7 +459,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                     }
                     mMessageList.remove(messageInfo);
                     notifyDataSetChanged();
-                    EventBus.getDefault().post(new MessageEvent(mContext.getString(R.string.dispose_unread_msg)));
+                    EventBus.getDefault().post(new MessageEvent(EventBusUtil.dispose_unread_msg));
                     deleteCacheDialog.dismiss();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -487,10 +475,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
             list.add(mContext.getString(R.string.copy));
         if (isTransmit)
             list.add(mContext.getString(R.string.transmit));
-//        if(isWithdraw&&messageInfo.getSendStatus()==1&&
-//                (messageInfo.getCreateTime()+(3*60*1000)>System.currentTimeMillis())){
-//            list.add(mContext.getString(R.string.withdrew));
-//        }
+        if(isWithdraw&&messageInfo.getSendStatus()==1&&
+                (messageInfo.getCreateTime()+(3*60*1000)>System.currentTimeMillis())){
+            list.add(mContext.getString(R.string.withdrew));
+        }
         if(isCollect){
             list.add(mContext.getString(R.string.collect));
         }
@@ -693,9 +681,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 @Override
                 public boolean onLongClick(View view) {
                     if(!StringUtils.isEmpty(hyperLinkUtil.getHtmlUrl(messageInfo.getMessage()))){
-                        showCopyDialog(messageInfo.getMsgType(), messageInfo, true, true, true,true);
+                        showCopyDialog(messageInfo.getMsgType(), messageInfo, true, true, false,true);
                     }else{
-                        showCopyDialog(messageInfo.getMsgType(), messageInfo, true, true, true,false);
+                        showCopyDialog(messageInfo.getMsgType(), messageInfo, true, true, false,false);
                     }
                     return false;
                 }
@@ -908,13 +896,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
     }
 
-    ImageView touxiang ;
-    TextView tvDetail;
-    TextView from ;
-    TextView name ;
-    TextView tvRemark;
-    ImageView bark ;
-    Button open;
     //显示币种弹框
     private void showDialog(final MessageInfo messageInfo, boolean isGrabThe, boolean isOverdue, final GrabRedInfo grabRedInfo) {
         //暫無群聊，所以沒有考慮群聊情況
@@ -932,101 +913,59 @@ public class ChatAdapter extends RecyclerView.Adapter {
             mName = mUser;
         }
         if(!ActivityUtil.isActivityOnTop(mContext))return;
-        if(mCurrencyDialog==null){
-            mCurrencyDialog = new CurrencyDialog(R.layout.dialog_redpacket, mContext, R.style.dialog);
-            Window window = mCurrencyDialog.getWindow();
-            window.setWindowAnimations(R.style.CustomDialog);
-            mCurrencyDialog.show();
-            mCurrencyDialog.setCanceledOnTouchOutside(false);
-            touxiang = (ImageView) mCurrencyDialog.findViewById(R.id.iv_touxiang);
-            tvDetail= (TextView) mCurrencyDialog.findViewById(R.id.tv_detail);
-            from = (TextView) mCurrencyDialog.findViewById(R.id.tv_from);
-            name = (TextView) mCurrencyDialog.findViewById(R.id.tv_name);
-            tvRemark = (TextView) mCurrencyDialog.findViewById(R.id.tv_remark);
-            bark = (ImageView) mCurrencyDialog.findViewById(R.id.iv_bark);
-            open = (Button) mCurrencyDialog.findViewById(R.id.btn_open);
-        }else{
-            mCurrencyDialog.show();
-            mCurrencyDialog.setCanceledOnTouchOutside(false);
-        }
-        if(isGrabThe){
-            from.setVisibility(View.GONE);
-            open.setVisibility(View.GONE);
-            tvRemark.setText(mContext.getString(R.string.hand_slow_red_envelope_over));
-            tvDetail.setVisibility(View.VISIBLE);
-        }else if(isOverdue){
-            open.setVisibility(View.GONE);
-            from.setVisibility(View.GONE);
-            tvRemark.setText(mContext.getString(R.string.red_envelope_expired));
-            tvDetail.setVisibility(View.VISIBLE);
-        }else{
-            from.setVisibility(View.VISIBLE);
-            open.setVisibility(View.VISIBLE);
-            tvRemark.setText(messageInfo.getRemark());
-            tvDetail.setVisibility(View.GONE);
-        }
 
-        final MyYAnimation myYAnimation = new MyYAnimation();
-        myYAnimation.setRepeatCount(Animation.INFINITE);
-        from.setText(mContext.getString(R.string.red_package_hint) + messageInfo.getCoin() + mContext.getString(R.string.red_package));
-        name.setText(mName);
-
-//        touxiang.setImageBitmap(mFromBitmap);
-        UtilTool.getImage(mContext, touxiang, mDBRoomMember, mMgr, mUser);
-        bark.setOnClickListener(new View.OnClickListener() {
+        if(mRedDialog==null){
+            mRedDialog=new RedDialog(mContext);
+        }
+        mRedDialog.show();
+        mRedDialog.setCoin(isGrabThe,isOverdue,messageInfo,mName,mDBRoomMember,mMgr);
+        final String finalMName1 = mName;
+        final String finalMUser1 = mUser;
+        mRedDialog.setOnClickListener(new RedDialog.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                mCurrencyDialog.dismiss();
-            }
-        });
-        final String finalMUser = mUser;
-        final String finalMName = mName;
-        open.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                open.startAnimation(myYAnimation);
+            public void onOpen() {
                 mGrabRedPresenter.grabRedPacket(false, messageInfo.getRedId(), new GrabRedPresenter.CallBack() {
                     @Override
                     public void send(GrabRedInfo info) {
-                        open.clearAnimation();
-                        myYAnimation.cancel();
+                        mRedDialog.stopAnimation();
                         mMgr.updateMessageState(messageInfo.getId() + "", 1);
                         messageInfo.setStatus(1);
                         notifyDataSetChanged();
                         if (info.getStatus() == 4) {
-                            mCurrencyDialog.dismiss();
+                            mRedDialog.dismiss();
                             Toast.makeText(mContext, info.getMessage(), Toast.LENGTH_SHORT).show();
                         }  else if(info.getStatus()==2){
                             showDialog(messageInfo,true,false,info);
                         }else if(info.getStatus()==5){
                             showDialog(messageInfo,false,true,info);
                         }else {
-                            mCurrencyDialog.dismiss();
+                            mRedDialog.dismiss();
 //                            skip(info, mFromBitmap, mUser, 1);
-                            skip(info, finalMUser, 1, finalMName);
+                            skip(info, finalMUser1, 1, finalMName1);
                         }
 
                     }
 
                     @Override
                     public void error() {
-                        mCurrencyDialog.dismiss();
+                        mRedDialog.dismiss();
                     }
                 });
+            }
 
-            }
-        });
-        tvDetail.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onDetail() {
                 if (RoomManage.ROOM_TYPE_SINGLE.equals(mRoomType)&&messageInfo.getMsgType()==TO_RED_MSG) {
-                    skip(grabRedInfo, finalMUser, 0, finalMName);
+                    skip(grabRedInfo, finalMUser1, 0, finalMName1);
                 }else{
-                    skip(grabRedInfo, finalMUser, 1, finalMName);
+                    skip(grabRedInfo, finalMUser1, 1, finalMName1);
                 }
-                mCurrencyDialog.dismiss();
+            }
+            @Override
+            public void onBreak() {
             }
         });
+
     }
 
     class ToVoiceHolder extends RecyclerView.ViewHolder {

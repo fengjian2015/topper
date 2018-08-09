@@ -29,6 +29,7 @@ import com.bclould.tea.topperchat.MessageManage;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.topperchat.WsContans;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
@@ -243,7 +244,7 @@ public class SingleManage implements Room {
             messageInfo.setSend(UtilTool.getTocoId());
             messageInfo.setId(mMgr.addMessage(messageInfo));
             changeConversationInfo(time, message, createTime);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
             refreshAddData(messageInfo);
             return messageInfo;
         } catch (Exception e) {
@@ -266,7 +267,7 @@ public class SingleManage implements Room {
             messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
             changeConversationInfo(time, message, UtilTool.createChatCreatTime());
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
             refreshAddData(messageInfo);
             return messageInfo;
         }
@@ -355,7 +356,7 @@ public class SingleManage implements Room {
             messageInfo.setId(mMgr.addMessage(messageInfo));
             changeConversationInfo(time, message, messageInfo.getCreateTime());
             refreshAddData(messageInfo);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
@@ -382,7 +383,7 @@ public class SingleManage implements Room {
             messageInfo.setId(mMgr.addMessage(messageInfo));
             changeConversationInfo(time, message, messageInfo.getCreateTime());
             refreshAddData(messageInfo);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
         }
         return messageInfo;
     }
@@ -538,7 +539,7 @@ public class SingleManage implements Room {
             messageInfo.setId(mMgr.addMessage(messageInfo));
             changeConversationInfo(time, message, messageInfo.getCreateTime());
             refreshAddData(messageInfo);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(context, context.getString(R.string.send_error), Toast.LENGTH_SHORT).show();
@@ -577,7 +578,7 @@ public class SingleManage implements Room {
             messageInfo.setId(mMgr.addMessage(messageInfo));
             changeConversationInfo(time, message, messageInfo.getCreateTime());
             refreshAddData(messageInfo);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
         }
         return messageInfo;
     }
@@ -635,7 +636,7 @@ public class SingleManage implements Room {
             //给聊天列表更新消息
             changeConversationInfo(time, converstaion, createTime);
             //发送消息通知
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
             sendFileResults(newFile.getAbsolutePath(), true);
             return;
         } catch (Exception e) {
@@ -663,7 +664,7 @@ public class SingleManage implements Room {
             messageInfo.setId(mId);
             refreshAddData(messageInfo);
             changeConversationInfo(time, converstaion, UtilTool.createChatCreatTime());
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
 
             mMgr.updateMessageHint(mId, 2);
             sendFileResults(newFile.getAbsolutePath(), false);
@@ -704,7 +705,7 @@ public class SingleManage implements Room {
             messageInfo.setCreateTime(createTime);
             messageInfo.setId(mMgr.addMessage(messageInfo));
             changeConversationInfo(time, converstaion, createTime);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
             refreshAddData(messageInfo);
 
             return true;
@@ -727,7 +728,7 @@ public class SingleManage implements Room {
             messageInfo.setId(mMgr.addMessage(messageInfo));
 
             changeConversationInfo(time, converstaion, UtilTool.createChatCreatTime());
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
             refreshAddData(messageInfo);
             return false;
         }
@@ -764,7 +765,7 @@ public class SingleManage implements Room {
             messageInfo.setCreateTime(createTime);
             messageInfo.setId(mMgr.addMessage(messageInfo));
             changeConversationInfo(time, converstaion, createTime);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
             refreshAddData(messageInfo);
 
             return true;
@@ -786,7 +787,7 @@ public class SingleManage implements Room {
             messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
             changeConversationInfo(time, converstaion, UtilTool.createChatCreatTime());
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
             refreshAddData(messageInfo);
             return false;
         }
@@ -821,7 +822,7 @@ public class SingleManage implements Room {
             messageInfo.setCreateTime(createTime);
             messageInfo.setId(mMgr.addMessage(messageInfo));
             changeConversationInfo(time, converstaion, createTime);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
             refreshAddData(messageInfo);
 
             return true;
@@ -843,7 +844,7 @@ public class SingleManage implements Room {
             messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
             changeConversationInfo(time, converstaion, UtilTool.createChatCreatTime());
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
             refreshAddData(messageInfo);
             return false;
         }
@@ -897,7 +898,7 @@ public class SingleManage implements Room {
             //给聊天列表更新消息
             changeConversationInfo(time, converstaion, createTime);
             //发送消息通知
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
         } catch (Exception e) {
             //发送失败处理
             e.printStackTrace();
@@ -922,7 +923,7 @@ public class SingleManage implements Room {
             messageInfo.setId(mMgr.addMessage(messageInfo));
             refreshAddData(messageInfo);
             changeConversationInfo(time, converstaion, UtilTool.createChatCreatTime());
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
         }
 
     }
@@ -962,7 +963,7 @@ public class SingleManage implements Room {
             MessageEvent messageEvent = new MessageEvent(context.getString(R.string.transfer));
             messageEvent.setId(msgId);
             EventBus.getDefault().post(messageEvent);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1004,10 +1005,10 @@ public class SingleManage implements Room {
             messageInfo.setCreateTime(createTime);
             mMgr.addMessage(messageInfo);
             changeConversationInfo(time, converstaion, createTime);
-            MessageEvent messageEvent = new MessageEvent(context.getString(R.string.send_red_packet_le));
+            MessageEvent messageEvent = new MessageEvent(EventBusUtil.send_red_packet_le);
             messageEvent.setId(msgId);
             EventBus.getDefault().post(messageEvent);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1035,7 +1036,7 @@ public class SingleManage implements Room {
             messageInfo.setIsBurnReading(isBurnReading);
             messageInfo.setId(mMgr.addMessage(messageInfo));
             changeConversationInfo(time,converstaion,createTime);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
             refreshAddData(messageInfo);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1055,7 +1056,7 @@ public class SingleManage implements Room {
             messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
             changeConversationInfo(time,converstaion,UtilTool.createChatCreatTime());
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
             refreshAddData(messageInfo);
         }
     }
@@ -1082,7 +1083,7 @@ public class SingleManage implements Room {
             messageInfo.setCreateTime(createTime);
             messageInfo.setId(mMgr.addMessage(messageInfo));
             changeConversationInfo(time,converstaion,createTime);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
             refreshAddData(messageInfo);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1102,7 +1103,7 @@ public class SingleManage implements Room {
             messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
             changeConversationInfo(time,converstaion,UtilTool.createChatCreatTime());
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
             refreshAddData(messageInfo);
         }
     }
@@ -1129,7 +1130,7 @@ public class SingleManage implements Room {
             messageInfo.setCreateTime(createTime);
             messageInfo.setId(mMgr.addMessage(messageInfo));
             changeConversationInfo(time, converstaion, createTime);
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
             refreshAddData(messageInfo);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1149,7 +1150,7 @@ public class SingleManage implements Room {
             messageInfo.setCreateTime(UtilTool.createChatCreatTime());
             messageInfo.setId(mMgr.addMessage(messageInfo));
             changeConversationInfo(time, converstaion, UtilTool.createChatCreatTime());
-            EventBus.getDefault().post(new MessageEvent(context.getString(R.string.oneself_send_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.oneself_send_msg));
             refreshAddData(messageInfo);
         }
     }

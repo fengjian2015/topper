@@ -24,6 +24,7 @@ import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
@@ -297,7 +298,7 @@ public class IndividualDetailsActivity extends BaseActivity {
         bundle.putString("user", mUser);
         intent.putExtras(bundle);
         mMgr.updateNumber(mUser, 0);
-        EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));
+        EventBus.getDefault().post(new MessageEvent(EventBusUtil.dispose_unread_msg));
         startActivity(intent);
         finish();
     }
@@ -399,7 +400,7 @@ public class IndividualDetailsActivity extends BaseActivity {
                             mMgr.deleteConversation(roomId);
                             mMgr.deleteMessage(roomId,0);
                             mMgr.deleteUser(mUser);
-                            EventBus.getDefault().post(new MessageEvent(getString(R.string.delete_friend)));
+                            EventBus.getDefault().post(new MessageEvent(EventBusUtil.delete_friend));
                             finish();
                         }
                     });
@@ -415,7 +416,7 @@ public class IndividualDetailsActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        if (msg.equals(getString(R.string.new_friend))) {
+        if (msg.equals(EventBusUtil.new_friend)) {
             if (ActivityUtil.isActivityOnTop(IndividualDetailsActivity.this)) {
                 init();
             }

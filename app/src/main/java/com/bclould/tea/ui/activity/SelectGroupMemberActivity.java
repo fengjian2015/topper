@@ -21,6 +21,7 @@ import com.bclould.tea.model.RoomMemberInfo;
 import com.bclould.tea.ui.adapter.SelectGroupMemberAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
@@ -128,7 +129,7 @@ public class SelectGroupMemberActivity extends BaseActivity implements SelectGro
                 for (RoomMemberInfo roomMemberInfo : oldList) {
                     mDBRoomMember.deleteRoomMember(roomId, roomMemberInfo.getJid());
                 }
-                MessageEvent messageEvent = new MessageEvent(getString(R.string.refresh_group_room));
+                MessageEvent messageEvent = new MessageEvent(EventBusUtil.refresh_group_room);
                 messageEvent.setId(roomId);
                 EventBus.getDefault().post(messageEvent);
                 finish();
@@ -160,7 +161,7 @@ public class SelectGroupMemberActivity extends BaseActivity implements SelectGro
                         @Override
                         public void send() {
                             mDBRoomManage.updateOwner(roomId, roomMemberInfo.getJid());
-                            MessageEvent messageEvent = new MessageEvent(getString(R.string.refresh_group_room));
+                            MessageEvent messageEvent = new MessageEvent(EventBusUtil.refresh_group_room);
                             messageEvent.setId(roomId);
                             EventBus.getDefault().post(messageEvent);
                             finish();

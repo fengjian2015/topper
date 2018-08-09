@@ -48,6 +48,7 @@ import com.bclould.tea.ui.fragment.DiscoverFragment;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.IMUtils;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
@@ -233,7 +234,7 @@ public class MainActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        if (msg.equals(getString(R.string.refresh_msg_number))) {
+        if (msg.equals(EventBusUtil.refresh_msg_number)) {
             refreshNumber();
         }
     }

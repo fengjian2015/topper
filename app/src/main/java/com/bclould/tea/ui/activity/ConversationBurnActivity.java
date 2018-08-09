@@ -50,6 +50,7 @@ import com.bclould.tea.ui.widget.SimpleAppsGridView;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.AudioModeManger;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.RecordUtil;
@@ -166,7 +167,7 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
         setBackgound();
 
         mDBConversationBurnManage.updateNumber(roomId, 0);//更新未读消息条数
-        EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));//发送更新未读消息通知
+        EventBus.getDefault().post(new MessageEvent(EventBusUtil.dispose_unread_msg));//发送更新未读消息通知
         if (audioModeManger == null) {
             audioModeManger = new AudioModeManger();
         }
@@ -479,10 +480,10 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        if (msg.equals(getString(R.string.msg_database_update))) {
+        if (msg.equals(EventBusUtil.msg_database_update)) {
             initData(event.getId(), false);
             mMgr.updateNumber(roomId, 0);
-            EventBus.getDefault().post(new MessageEvent(getString(R.string.dispose_unread_msg)));
+            EventBus.getDefault().post(new MessageEvent(EventBusUtil.dispose_unread_msg));
         }else if (msg.equals(getString(R.string.open_shooting))) {
             openShooting();
         } else if (msg.equals(getString(R.string.open_photo_album))) {
@@ -492,7 +493,7 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
             changeUrl(id, event.getFilepath());
         } else if (msg.equals(getString(R.string.otr_isopen))) {
             mEkbEmoticonsKeyboard.changeOTR(OtrChatListenerManager.getInstance().getOTRState(roomId.toString()));
-        } else if (msg.equals(getString(R.string.delete_friend))) {
+        } else if (msg.equals(EventBusUtil.delete_friend)) {
             finish();
         } else if (msg.equals(getString(R.string.change_friend_remark))) {
             setTitleName();
@@ -502,12 +503,12 @@ public class ConversationBurnActivity extends BaseActivity implements FuncLayout
         } else if (msg.equals(getString(R.string.start_otr))) {
             mEkbEmoticonsKeyboard.startOTR();
             UtilTool.Log("fengjian---", "开启加密");
-        } else if (msg.equals(getString(R.string.change_msg_state))) {
+        } else if (msg.equals(EventBusUtil.change_msg_state)) {
             changeMsgState(event.getId());
             UtilTool.Log("fengjian---", "改變消息狀態");
         }  else if (msg.equals(getString(R.string.update_file_message))) {
             changeMsgFile(event.getId(), event.getFilepath());
-        } else if (msg.equals(getString(R.string.withdrew_a_message))) {
+        } else if (msg.equals(EventBusUtil.withdrew_a_message)) {
             deleteMsg(event.getId());
         }else if(msg.equals(getString(R.string.conversation_backgound))){
             setBackgound();

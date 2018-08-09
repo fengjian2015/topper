@@ -23,6 +23,7 @@ import com.bclould.tea.model.GroupInfo;
 import com.bclould.tea.model.RoomManageInfo;
 import com.bclould.tea.ui.adapter.GroupListRVAdapter;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -99,7 +100,7 @@ public class GroupListActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        if (msg.equals(getString(R.string.quit_group))) {
+        if (msg.equals(EventBusUtil.quit_group)) {
             updataRecyclerView();
         }else if(msg.equals(getString(R.string.create_group_chat))){
             finish();

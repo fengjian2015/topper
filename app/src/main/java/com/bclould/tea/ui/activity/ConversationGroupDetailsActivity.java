@@ -39,6 +39,7 @@ import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.ui.widget.MyGridView;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.EventBusUtil;
 import com.bclould.tea.utils.MessageEvent;
 import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
@@ -278,7 +279,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                             @Override
                             public void send() {
                                 initView();
-                                MessageEvent messageEvent = new MessageEvent(getString(R.string.refresh_group_room));
+                                MessageEvent messageEvent = new MessageEvent(EventBusUtil.refresh_group_room);
                                 messageEvent.setId(roomId);
                                 EventBus.getDefault().post(messageEvent);
                             }
@@ -555,7 +556,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
         new GroupPresenter(this).updateLogoGroup(mDBRoomManage, Integer.parseInt(roomId), Base64Image, new CallBack() {
             @Override
             public void send() {
-                MessageEvent messageEvent = new MessageEvent(getString(R.string.refresh_group_room));
+                MessageEvent messageEvent = new MessageEvent(EventBusUtil.refresh_group_room);
                 messageEvent.setId(roomId);
                 EventBus.getDefault().post(messageEvent);
             }
@@ -592,7 +593,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String msg = event.getMsg();
-        if (msg.equals(getString(R.string.quit_group))) {
+        if (msg.equals(EventBusUtil.quit_group)) {
             if (roomId.equals(event.getId())) {
                 finish();
             }
@@ -600,15 +601,15 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
             setMemberName();
         } else if (msg.equals(getString(R.string.modify_group_name))) {
             setGroupName();
-        } else if (msg.equals(getString(R.string.refresh_group_members))) {
+        } else if (msg.equals(EventBusUtil.refresh_group_members)) {
             initView();
             setGroupMember(false);
-        } else if (msg.equals(getString(R.string.refresh_group_room))) {
+        } else if (msg.equals(EventBusUtil.refresh_group_room)) {
             if (roomId.equals(event.getId())) {
                 initView();
                 setGroupMember(false);
             }
-        } else if (msg.equals(getString(R.string.kick_out_success))) {
+        } else if (msg.equals(EventBusUtil.kick_out_success)) {
             if (roomId.equals(event.getId())) {
                 finish();
             }
@@ -719,7 +720,7 @@ public class ConversationGroupDetailsActivity extends BaseActivity {
                     mMgr.deleteMessage(roomId,0);
                     mMgr.updateConversationMessage(roomId, "");
                     Toast.makeText(ConversationGroupDetailsActivity.this, getString(R.string.empty_success), Toast.LENGTH_SHORT).show();
-                    EventBus.getDefault().post(new MessageEvent(getString(R.string.msg_database_update)));
+                    EventBus.getDefault().post(new MessageEvent(EventBusUtil.msg_database_update));
                     deleteCacheDialog.dismiss();
                 } catch (Exception e) {
                     e.printStackTrace();
