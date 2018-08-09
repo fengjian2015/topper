@@ -75,10 +75,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
@@ -1560,11 +1559,11 @@ public class UtilTool {
         return resId;
     }
 
-    public static void createNomedia(String file){
+    public static void createNomedia(String file) {
         File cacheDir = new File(file);
         if (!cacheDir.exists())
             cacheDir.mkdirs();
-        File nomedia = new File(file+ "/.nomedia");
+        File nomedia = new File(file + "/.nomedia");
         if (!nomedia.exists())
             try {
                 nomedia.createNewFile();
@@ -1575,6 +1574,7 @@ public class UtilTool {
 
     /**
      * make true current connect service is wifi
+     *
      * @param mContext
      * @return
      */
@@ -1587,5 +1587,24 @@ public class UtilTool {
             return true;
         }
         return false;
+    }
+
+    public static File getSaveFile(Context context) {
+        File file = new File(context.getFilesDir(), "pic.jpg");
+        return file;
+    }
+
+    public static String getLanguage(Context context) {
+        String languageKind = MySharedPreferences.getInstance().getString(context.getString(R.string.language_pref_key));
+        String language = null;
+        if (languageKind.equals("zh-hant")) {
+            language = "zh-hk";
+        } else if (languageKind.equals("zh")) {
+            language = "zh-cn";
+        } else if (languageKind.equals("")) {
+            Locale locale = context.getResources().getConfiguration().locale;
+            language = (locale.getLanguage() + "-" + locale.getCountry()).toLowerCase();
+        }
+        return language;
     }
 }

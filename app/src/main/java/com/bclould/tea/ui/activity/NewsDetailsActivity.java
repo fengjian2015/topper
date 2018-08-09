@@ -32,11 +32,14 @@ import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.UtilTool;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -101,7 +104,7 @@ public class NewsDetailsActivity extends BaseActivity {
         mLlLoadError.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mWebView.loadUrl( mUrl);
+                mWebView.loadUrl(mUrl);
             }
         });
     }

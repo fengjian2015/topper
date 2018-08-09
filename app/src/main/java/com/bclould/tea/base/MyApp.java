@@ -8,6 +8,10 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 
+import com.baidu.ocr.sdk.OCR;
+import com.baidu.ocr.sdk.OnResultListener;
+import com.baidu.ocr.sdk.exception.OCRError;
+import com.baidu.ocr.sdk.model.AccessToken;
 import com.bclould.tea.R;
 import com.bclould.tea.alipay.AlipayClient;
 import com.bclould.tea.listener.CrashHandler;
@@ -82,6 +86,17 @@ public class MyApp extends Application {
 
         RoomMemberManage.getInstance().setContext(this);
 
+        OCR.getInstance(this).initAccessTokenWithAkSk(new OnResultListener<AccessToken>() {
+            @Override
+            public void onResult(AccessToken result) {
+
+            }
+
+            @Override
+            public void onError(OCRError error) {
+                error.printStackTrace();
+            }
+        }, getApplicationContext(), "kwPFq1qEMF7Uu9XQ1eYXuza8", "GlhguubBaj0XGKYYOpNVZHCYquokpdIj");
         AlipayClient.getInstance().init(this);
     }
 

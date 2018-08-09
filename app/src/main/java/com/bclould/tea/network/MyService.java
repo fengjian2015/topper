@@ -935,7 +935,8 @@ public interface MyService {
     Observable<NewsListInfo> getNewsList(
             @Header("Authorization") String token,
             @Field("page_id") int page_id,
-            @Field("page_size") int page_size
+            @Field("page_size") int page_size,
+            @Field("lang") String lang
     );
 
     //我發佈的新聞列表
