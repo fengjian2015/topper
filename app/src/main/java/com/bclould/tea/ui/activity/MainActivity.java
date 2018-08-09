@@ -372,6 +372,7 @@ public class MainActivity extends BaseActivity {
 
 
     private void getGroup() {
+        UtilTool.Log("token",UtilTool.getToken());
         new GroupPresenter(this).getGroup(mDBRoomMember, mDBRoomManage, mMgr, false, new GroupPresenter.CallBack1() {
             @Override
             public void send(GroupInfo baseInfo) {
@@ -395,6 +396,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getMyImage() {
+        UtilTool.Log("token",UtilTool.getToken());
         if (!mMgr.findUser(UtilTool.getTocoId())) {
             IndividualDetailsPresenter personalDetailsPresenter = new IndividualDetailsPresenter(this);
             personalDetailsPresenter.getIndividual(UtilTool.getTocoId(), false, new IndividualDetailsPresenter.CallBack() {
@@ -422,6 +424,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getMessageTop() {
+        UtilTool.Log("token",UtilTool.getToken());
         new GroupPresenter(this).getTopMessage(new GroupPresenter.CallBack5() {
             @Override
             public void send(MessageTopInfo baseInfo) {
@@ -456,6 +459,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getChatBackGround() {
+        UtilTool.Log("token",UtilTool.getToken());
         new GroupPresenter(this).getBackgound(new GroupPresenter.CallBack2() {
             @Override
             public void send(String url) {

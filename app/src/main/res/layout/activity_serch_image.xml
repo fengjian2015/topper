@@ -58,7 +58,6 @@
             android:hint="@string/search_image"
             android:imeOptions="actionSearch"
             android:singleLine="true"
-            android:textColor="@color/black"
             android:textColorHint="@color/secondary_text_color"
             />
     </RelativeLayout>

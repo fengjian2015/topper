@@ -1,7 +1,10 @@
 package sj.keyboard.widget;
 
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 
 import java.util.ArrayList;
@@ -10,6 +13,8 @@ import java.util.List;
 import sj.keyboard.interfaces.EmoticonFilter;
 
 public class EmoticonsEditText extends android.support.v7.widget.AppCompatEditText {
+
+    private final int ID_PASTE=16908322;
 
     private List<EmoticonFilter> mFilterList;
 
@@ -73,6 +78,24 @@ public class EmoticonsEditText extends android.support.v7.widget.AppCompatEditTe
         }
     }
 
+    @Override
+    public boolean onTextContextMenuItem(int id) {
+        ClipboardManager clip = (ClipboardManager)getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+        switch (id) {
+            case ID_PASTE:
+                Uri uri= clip.getPrimaryClip().getItemAt(0).getUri();
+                if(uri!=null){
+                    // TODO: 2018/8/9 處理文件發送操作
+
+                    return true;
+                }else{
+                    return super.onTextContextMenuItem(id);
+                }
+
+        }
+        return super.onTextContextMenuItem(id);
+    }
+
     public void addEmoticonFilter(EmoticonFilter emoticonFilter){
         if(mFilterList == null){
             mFilterList = new ArrayList<>();
@@ -112,6 +135,11 @@ public class EmoticonsEditText extends android.support.v7.widget.AppCompatEditTe
 
     public void setOnSizeChangedListener(OnSizeChangedListener i) {
         onSizeChangedListener = i;
+    }
+
+//    OnTextContextMenuItem
+    public void setOnTextContextMenuItem(){
+
     }
 
 }

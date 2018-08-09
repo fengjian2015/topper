@@ -943,9 +943,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 //                            skip(info, mFromBitmap, mUser, 1);
                             skip(info, finalMUser1, 1, finalMName1);
                         }
-
                     }
-
                     @Override
                     public void error() {
                         mRedDialog.dismiss();

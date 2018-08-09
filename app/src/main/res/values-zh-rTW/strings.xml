@@ -1159,4 +1159,5 @@
     <string name="authenticated">已認證</string>
     <string name="check_pending_hint">系統審核中......</string>
     <string name="submitted_realname">您已提交實名驗證信息</string>
+    <string name="cell_phone_store">手機存儲</string>
 </resources>

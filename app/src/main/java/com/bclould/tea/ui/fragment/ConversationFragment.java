@@ -255,8 +255,8 @@ public class ConversationFragment extends Fragment implements IConnectStateChang
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_search:
-//                startActivity(new Intent(getActivity(), SearchActivity.class));
-                startActivity(new Intent(getActivity(), SendRedAlipaylActivity.class));
+                startActivity(new Intent(getActivity(), SearchActivity.class));
+//                startActivity(new Intent(getActivity(), SendRedAlipaylActivity.class));
 //                startActivity(new Intent(getActivity(), ConversationBurnListActivity.class));
                 break;
             case R.id.iv_more:

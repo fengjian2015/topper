@@ -197,7 +197,7 @@ public class WsConnection {
             goMainActivity();
             return;
         }
-        if(UtilTool.compareTokenTime(MySharedPreferences.getInstance().getLong(TOKEN_TIME))){
+        if(UtilTool.compareTokenTime(MySharedPreferences.getInstance().getLong(TOKEN_TIME))&&!isOutConnection){
             UtilTool.Log("fengjian","登錄token過期");
             new Handler(Looper.getMainLooper()){
                 @Override

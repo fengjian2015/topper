@@ -68,7 +68,8 @@ public class SendRedAlipaylActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.btn_send:
-                AlipayClient.getInstance().payV2(SendRedAlipaylActivity.this);
+//                AlipayClient.getInstance().payV2(SendRedAlipaylActivity.this);
+                AlipayClient.getInstance().authV2(SendRedAlipaylActivity.this);
                 break;
         }
     }

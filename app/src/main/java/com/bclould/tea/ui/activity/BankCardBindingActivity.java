@@ -193,7 +193,7 @@ public class BankCardBindingActivity extends BaseActivity {
         mStateId = id;
         mTvState.setText(name);
         if (mStateId == 44) {
-            mIvScan.setVisibility(View.VISIBLE);
+            mIvScan.setVisibility(View.GONE);
         } else {
             mIvScan.setVisibility(View.GONE);
         }
