@@ -94,6 +94,7 @@ public class LogoutPresenter {
     }
 
     public void imLogout(final String message) {
+        if (WsConnection.getInstance().getOutConnection())return;
         UtilTool.Log("fengjian", "退出成功");
         new Handler(Looper.getMainLooper()){
             @Override

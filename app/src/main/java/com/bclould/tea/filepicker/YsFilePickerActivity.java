@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +13,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,11 +49,18 @@ import android.widget.Toast;
 
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
+import com.bclould.tea.model.MessageInfo;
+import com.bclould.tea.ui.activity.AddCollectActivity;
+import com.bclould.tea.ui.activity.SelectConversationActivity;
+import com.bclould.tea.ui.widget.MenuListPopWindow;
 import com.bclould.tea.ui.widget.PoppyViewHelper;
 import com.bclould.tea.ui.widget.TextViewDoubleClickable;
+import com.bclould.tea.utils.Constants;
+import com.bclould.tea.utils.HyperLinkUtil;
 import com.bclould.tea.utils.StringUtils;
 import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
+import com.bclould.tea.xmpp.RoomManage;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -99,6 +109,8 @@ public class YsFilePickerActivity extends BaseActivity implements OnLongClickLis
     private Button btnSend;
     private TextView tvSizeSum;
     private View flFooterBar;
+    private View flFooterSelect;
+    private TextView tvSelect;
 
 
     @SuppressLint("StringFormatMatches")
@@ -131,28 +143,12 @@ public class YsFilePickerActivity extends BaseActivity implements OnLongClickLis
 
         mEmptyView = getLayoutInflater().inflate(R.layout.ys_filepicker_empty, null);
         addContentView(mEmptyView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-
+        mHeaderTitle = (TextView) findViewById(R.id.title);
+        mHeaderTitle2 = (TextView) findViewById(R.id.title2);
         setAbsListView();
         showSecondHeader(false);
 
-        File path = null;
-        if (intent.hasExtra(YsFilePicker.SET_START_DIRECTORY)) {
-            String startPath = intent.getStringExtra(YsFilePicker.SET_START_DIRECTORY);
-            if (startPath != null && startPath.length() > 0) {
-                File tmp = new File(startPath);
-                if (tmp.exists() && tmp.isDirectory()) path = tmp;
-            }
-        }
-        if (path == null) {
-            path = new File("/");
-            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
-                path = Environment.getExternalStorageDirectory();
-        }
-        readDirectory(path);
-
-        mHeaderTitle = (TextView) findViewById(R.id.title);
-        mHeaderTitle2 = (TextView) findViewById(R.id.title2);
-        updateTitle();
+        setFilePath(false);
 
         ImageButton sort2 = (ImageButton) findViewById(R.id.menu_sort2);
         if (!intent.getBooleanExtra(YsFilePicker.DISABLE_SORT_BUTTON, false)) {
@@ -225,6 +221,7 @@ public class YsFilePickerActivity extends BaseActivity implements OnLongClickLis
                 complete(null);
             }
         });
+
 //        cancel2.setOnLongClickListener(this);
 
 //        if (mOptOnlyOneItem && mOptChoiceType == YsFilePicker.CHOICE_TYPE_DIRECTORIES) {
@@ -324,6 +321,14 @@ public class YsFilePickerActivity extends BaseActivity implements OnLongClickLis
             }
         });
         toPre.setOnLongClickListener(this);
+        tvSelect= (TextView) findViewById(R.id.tv_select);
+        flFooterSelect=findViewById(R.id.fl_footer_select);
+        flFooterSelect.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialogSelectFile();
+            }
+        });
         //底部bar绑定事件
         flFooterBar = findViewById(R.id.fl_footer_bar);
         btnSend = (Button) findViewById(R.id.btn_send);
@@ -364,6 +369,57 @@ public class YsFilePickerActivity extends BaseActivity implements OnLongClickLis
 //                return false;
 //            }
 //        });
+    }
+
+    private void showDialogSelectFile(){
+        final List<String> list = new ArrayList<>();
+        list.add(getString(R.string.cell_phone_store));
+        list.add(getString(R.string.app_name)+getString(R.string.file));
+        final MenuListPopWindow menu = new MenuListPopWindow(this, list);
+        menu.setListOnClick(new MenuListPopWindow.ListOnClick() {
+            @Override
+            public void onclickitem(int position) {
+                position = position - 1;
+                if (position < 0) {
+                    menu.dismiss();
+                } else if (getString(R.string.cell_phone_store).equals(list.get(position))) {
+                    menu.dismiss();
+                    setFilePath(false);
+                    tvSelect.setText(getString(R.string.cell_phone_store));
+                }else if((getString(R.string.app_name)+getString(R.string.file)).equals(list.get(position))){
+                    menu.dismiss();
+                    setFilePath(true);
+                    tvSelect.setText(getString(R.string.app_name)+getString(R.string.file));
+                }else {
+                    menu.dismiss();
+                }
+            }
+        });
+        menu.setColor(Color.BLACK);
+        menu.showAtLocation();
+    }
+
+    private void setFilePath(boolean isApp){
+        Intent intent=getIntent();
+        File path = null;
+        if(!isApp){
+            if (intent.hasExtra(YsFilePicker.SET_START_DIRECTORY)) {
+                String startPath = intent.getStringExtra(YsFilePicker.SET_START_DIRECTORY);
+                if (startPath != null && startPath.length() > 0) {
+                    File tmp = new File(startPath);
+                    if (tmp.exists() && tmp.isDirectory()) path = tmp;
+                }
+            }
+            if (path == null) {
+                path = new File("/");
+                if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+                    path = Environment.getExternalStorageDirectory();
+            }
+        }else {
+            path= new File(Constants.DOWNLOAD);
+        }
+        readDirectory(path);
+        updateTitle();
     }
 
     private void selectAll() {
@@ -505,6 +561,7 @@ public class YsFilePickerActivity extends BaseActivity implements OnLongClickLis
         hideOrShowPopNoticeByColorChange(true);
         //隐藏底部bar
         flFooterBar.setVisibility(View.GONE);
+        flFooterSelect.setVisibility(View.VISIBLE);
         if (poppyView != null) poppyView.setVisibility(View.VISIBLE);
         mSelected.clear();
         tvSizeSum.setText(YsFilePickerActivity.this.getResources().
@@ -574,7 +631,6 @@ public class YsFilePickerActivity extends BaseActivity implements OnLongClickLis
                 mFilesList.add(files[i]);
             }
         }
-
         sort();
     }
 
@@ -718,6 +774,7 @@ public class YsFilePickerActivity extends BaseActivity implements OnLongClickLis
                                                                 btnSend.setEnabled(false);
                                                                 //-----------初始化--------------------
                                                                 flFooterBar.setVisibility(View.VISIBLE);
+                                                                flFooterSelect.setVisibility(View.GONE);
                                                                 mIsMultiChoice = true;
                                                                 File file1 = mFilesList.get(position);
                                                                 if (file1.isFile()) {

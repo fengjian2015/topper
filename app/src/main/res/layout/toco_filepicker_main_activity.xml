@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:src="@mipmap/icon_nav_return"
+                android:src="@mipmap/icon_nav_left"
                 android:padding="@dimen/x20"
                 />
 
@@ -230,11 +230,60 @@
         android:layout_marginTop="48dp"
         android:background="@color/ys__header_line_color" />-->
 
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/headers"
+        android:layout_marginBottom="48dp"
+        tools:listitem="@layout/ys__list_item" />
+
+    <GridView
+        android:id="@+id/gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/headers"
+        android:layout_marginBottom="48dp"
+        android:columnWidth="64dp"
+        android:horizontalSpacing="4dp"
+        android:numColumns="4"
+        android:verticalSpacing="15dp"
+        android:visibility="gone"
+        tools:listitem="@layout/ys__grid_item" />
+
+    <FrameLayout
+        android:id="@+id/fl_footer_select"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignTop="@+id/fl_footer_bar"
+        >
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_gravity="top"
+            style="@style/HorizontalBoundaryStyle"
+            android:layout_below="@+id/rl_title"/>
+
+        <TextView
+            android:id="@+id/tv_select"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/cell_phone_store"
+            android:textColor="@color/gray3"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+
+    </FrameLayout>
+
     <FrameLayout
         android:id="@+id/fl_footer_bar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
+        android:visibility="gone"
         >
 
         <View
@@ -274,26 +323,4 @@
             android:textSize="13sp" />
 
     </FrameLayout>
-
-    <ListView
-        android:id="@+id/listview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/fl_footer_bar"
-        android:layout_below="@id/headers"
-        tools:listitem="@layout/ys__list_item" />
-
-    <GridView
-        android:id="@+id/gridview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/fl_footer_bar"
-        android:layout_below="@id/headers"
-        android:columnWidth="64dp"
-        android:horizontalSpacing="4dp"
-        android:numColumns="4"
-        android:verticalSpacing="15dp"
-        android:visibility="gone"
-        tools:listitem="@layout/ys__grid_item" />
-
 </RelativeLayout>

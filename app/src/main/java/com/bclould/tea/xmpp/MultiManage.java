@@ -475,7 +475,7 @@ public class MultiManage implements Room{
                     OSSAsyncTask<PutObjectResult> task = ossClient.asyncPutObject(put, new OSSCompletedCallback<PutObjectRequest, PutObjectResult>() {
                         @Override
                         public void onSuccess(PutObjectRequest putObjectRequest, PutObjectResult putObjectResult) {
-                            sendFileAfterMessage(key, postfix, newFile.getPath(), messageInfo.getId(),messageInfo.getMsgId(),messageInfo.getCreateTime());
+                                sendFileAfterMessage(key, postfix, newFile.getPath(), messageInfo.getId(),messageInfo.getMsgId(),messageInfo.getCreateTime());
                         }
 
                         @Override

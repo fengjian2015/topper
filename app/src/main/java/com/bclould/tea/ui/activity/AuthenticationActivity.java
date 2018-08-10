@@ -136,7 +136,7 @@ public class AuthenticationActivity extends LoginBaseActivity {
         int left = location[0];
         int top = location[1];
         int right = left + view.getMeasuredWidth();
-        int bottom = top + view.getMeasuredHeight();
+        int bottom = top + view.getMeasuredHeight()-20;
 
         if (left >= leftTarget && top >= topTarget && right <= rightTarget && bottom <= bottomTarget) {
             return true;

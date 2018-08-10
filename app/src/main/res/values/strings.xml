@@ -2259,4 +2259,5 @@
     <string name="my_no_login_hint">立即登录，认识更多币圈好友吧！</string>
     <string name="qi_login">请登录</string>
     <string name="ocr_error">识别失败</string>
+    <string name="cell_phone_store">手机存储</string>
 </resources>

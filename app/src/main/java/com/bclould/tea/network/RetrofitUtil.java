@@ -82,7 +82,7 @@ public class RetrofitUtil {
             int code = originalResponse.code();
             String message = originalResponse.message();
             if (code == 200) {
-            } else if (code == 401||code==400) {
+            } else if (code == 401) {
                 LogoutPresenter logoutPresenter = new LogoutPresenter((Activity) mContext);
                 logoutPresenter.imLogout(mContext.getString(R.string.token_stale_dated));
             } else if (code == 500) {

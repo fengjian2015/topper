@@ -27,10 +27,10 @@ public class OrderInfoUtil2_0 {
 		Map<String, String> keyValues = new HashMap<String, String>();
 
 		// 商户签约拿到的app_id，如：2013081700024223
-		keyValues.put("app_id", app_id);
+		keyValues.put("app_id", "2013081700024223");
 
 		// 商户签约拿到的pid，如：2088102123816631
-		keyValues.put("pid", pid);
+		keyValues.put("pid", "2088102123816631");
 
 		// 服务接口名称， 固定值
 		keyValues.put("apiname", "com.alipay.account.auth");
@@ -48,7 +48,7 @@ public class OrderInfoUtil2_0 {
 		keyValues.put("scope", "kuaijie");
 
 		// 商户唯一标识，如：kkkkk091125
-		keyValues.put("target_id", target_id);
+		keyValues.put("target_id", "kkkkk091125");
 
 		// 授权类型， 固定值
 		keyValues.put("auth_type", "AUTHACCOUNT");
@@ -73,7 +73,7 @@ public class OrderInfoUtil2_0 {
 
 //		keyValues.put("biz_content", "{\"timeout_express\":\"30m\",\"product_code\":\"QUICK_MSECURITY_PAY\",\"total_amount\":\"0.01\",\"subject\":\"紅包\",\"body\":\"我是测试数据\",\"out_trade_no\":\"" + getOutTradeNo() +  "\"}");
 
-		keyValues.put("biz_content", "{\"pay_timeout\":\"30m\",\"amount\":\"0.01\",\"order_title\":\"恭喜发财\",\"out_request_no\":\""+getOutTradeNo()+"\",\"out_order_no\":\""+getOutTradeNo()+"\"}");
+		keyValues.put("biz_content", "{\"pay_timeout\":\"30m\",\"amount\":\"0.01\",\"order_title\":\"恭喜发财\",\"out_request_no\":\""+"8077735255938025"+"\",\"out_order_no\":\""+"8077735255634080"+"\"}");
 
 		keyValues.put("charset", "utf-8");
 
@@ -81,7 +81,7 @@ public class OrderInfoUtil2_0 {
 
 		keyValues.put("method", "alipay.fund.coupon.order.app.pay");
 
-		keyValues.put("sign","");
+//		keyValues.put("sign","");
 
 		keyValues.put("sign_type", rsa2 ? "RSA2" : "RSA");
 
