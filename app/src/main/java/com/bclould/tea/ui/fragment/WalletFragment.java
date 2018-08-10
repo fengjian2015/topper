@@ -18,8 +18,10 @@ import android.widget.TextView;
 
 import com.bclould.tea.R;
 import com.bclould.tea.model.CardInfo;
+import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.BlockchainGambleActivity;
 import com.bclould.tea.ui.activity.CoinExchangeActivity;
+import com.bclould.tea.ui.activity.InitialActivity;
 import com.bclould.tea.ui.activity.NewsManagerActivity;
 import com.bclould.tea.ui.activity.OtcActivity;
 import com.bclould.tea.ui.adapter.WalletPVAdapter;
@@ -141,16 +143,32 @@ public class WalletFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_otc:
-                startActivity(new Intent(getActivity(), OtcActivity.class));
+                if (!WsConnection.getInstance().getOutConnection()) {
+                    startActivity(new Intent(getActivity(), OtcActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), InitialActivity.class));
+                }
                 break;
             case R.id.rl_guess:
-                startActivity(new Intent(getActivity(), BlockchainGambleActivity.class));
+                if (!WsConnection.getInstance().getOutConnection()) {
+                    startActivity(new Intent(getActivity(), BlockchainGambleActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), InitialActivity.class));
+                }
                 break;
             case R.id.rl_exchange:
-                startActivity(new Intent(getActivity(), CoinExchangeActivity.class));
+                if (!WsConnection.getInstance().getOutConnection()) {
+                    startActivity(new Intent(getActivity(), CoinExchangeActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), InitialActivity.class));
+                }
                 break;
             case R.id.rl_my_ad:
-                startActivity(new Intent(getActivity(), NewsManagerActivity.class));
+                if (!WsConnection.getInstance().getOutConnection()) {
+                    startActivity(new Intent(getActivity(), NewsManagerActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), InitialActivity.class));
+                }
                 break;
         }
     }

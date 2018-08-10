@@ -2252,4 +2252,11 @@
     <string name="authenticated">已认证</string>
     <string name="check_pending_hint">系统审核中......</string>
     <string name="submitted_realname">您已提交实名验证信息</string>
+    <string name="message_list_no_login">赶快登陆和您的好友一起交流吧</string>
+    <string name="login_topperchat">登录Topperchat</string>
+    <string name="no_message">您还没有任何消息</string>
+    <string name="register_topperchat">注册Topperchat</string>
+    <string name="my_no_login_hint">立即登录，认识更多币圈好友吧！</string>
+    <string name="qi_login">请登录</string>
+    <string name="ocr_error">识别失败</string>
 </resources>

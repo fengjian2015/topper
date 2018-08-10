@@ -127,6 +127,50 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_no_login"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/MainTextShallowStyle36"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20"
+                android:text="@string/no_message"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y30"
+                android:src="@mipmap/icon_notlogin_img"/>
+
+            <TextView
+                style="@style/SecondaryTextStyle28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y30"
+                android:text="@string/message_list_no_login"/>
+
+            <Button
+                android:id="@+id/btn_login"
+                style="@style/ShortBtnStyle"
+                android:layout_marginTop="@dimen/y40"
+                android:text="@string/login_topperchat"/>
+
+            <TextView
+                android:id="@+id/tv_register"
+                style="@style/BlueTextStyle36"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y40"
+                android:text="@string/register_topperchat"/>
+
+        </LinearLayout>
+
     </RelativeLayout>
 
 </LinearLayout>

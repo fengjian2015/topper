@@ -387,7 +387,7 @@ public class WsConnection {
         if(getIsCheckActvity()) {
             setIsCheckActvity(false);
             Intent intent = new Intent(mContext, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.putExtra("whence", 2);
             mContext.startActivity(intent);
         }

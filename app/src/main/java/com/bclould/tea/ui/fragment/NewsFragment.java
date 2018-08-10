@@ -26,8 +26,10 @@ import com.bclould.tea.Presenter.NewsNoticePresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.model.NewsListInfo;
 import com.bclould.tea.model.QrRedInfo;
+import com.bclould.tea.topperchat.WsConnection;
 import com.bclould.tea.ui.activity.AddFriendActivity;
 import com.bclould.tea.ui.activity.GrabQRCodeRedActivity;
+import com.bclould.tea.ui.activity.InitialActivity;
 import com.bclould.tea.ui.activity.NewsDetailsActivity;
 import com.bclould.tea.ui.activity.ReceiptPaymentActivity;
 import com.bclould.tea.ui.activity.ScanQRCodeActivity;
@@ -364,21 +366,37 @@ public class NewsFragment extends Fragment implements OnBannerListener {
 
                     switch (index) {
                         case 0:
-                            Intent intent = new Intent(getActivity(), ScanQRCodeActivity.class);
-                            intent.putExtra("code", QRCODE);
-                            startActivityForResult(intent, 0);
+                            if (!WsConnection.getInstance().getOutConnection()) {
+                                Intent intent = new Intent(getActivity(), ScanQRCodeActivity.class);
+                                intent.putExtra("code", QRCODE);
+                                startActivityForResult(intent, 0);
+                            } else {
+                                startActivity(new Intent(getActivity(), InitialActivity.class));
+                            }
                             mPopupWindow.dismiss();
                             break;
                         case 1:
-                            startActivity(new Intent(getActivity(), ReceiptPaymentActivity.class));
+                            if (!WsConnection.getInstance().getOutConnection()) {
+                                startActivity(new Intent(getActivity(), ReceiptPaymentActivity.class));
+                            } else {
+                                startActivity(new Intent(getActivity(), InitialActivity.class));
+                            }
                             mPopupWindow.dismiss();
                             break;
                         case 2:
-                            startActivity(new Intent(getActivity(), SendQRCodeRedActivity.class));
+                            if (!WsConnection.getInstance().getOutConnection()) {
+                                startActivity(new Intent(getActivity(), SendQRCodeRedActivity.class));
+                            } else {
+                                startActivity(new Intent(getActivity(), InitialActivity.class));
+                            }
                             mPopupWindow.dismiss();
                             break;
                         case 3:
-                            startActivity(new Intent(getActivity(), AddFriendActivity.class));
+                            if (!WsConnection.getInstance().getOutConnection()) {
+                                startActivity(new Intent(getActivity(), AddFriendActivity.class));
+                            } else {
+                                startActivity(new Intent(getActivity(), InitialActivity.class));
+                            }
                             mPopupWindow.dismiss();
                             break;
                     }

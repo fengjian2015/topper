@@ -556,17 +556,17 @@ public class MainActivity extends BaseActivity {
                 @Override
                 public void onClick(View view) {
                     int index = mMainBottomMenu.indexOfChild(childAt);
-                    if (!WsConnection.getInstance().getOutConnection()) {
+//                    if (!WsConnection.getInstance().getOutConnection()) {
 
                         changeFragment(index);
 
                         setSelector(index);
                         converstonTop(index);
-                    } else {
+                    /*} else {
                         if (index != 0) {
                             startActivity(new Intent(MainActivity.this, InitialActivity.class));
                         }
-                    }
+                    }*/
                 }
             });
         }

@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.baidu.ocr.sdk.OCR;
 import com.baidu.ocr.sdk.OnResultListener;
 import com.baidu.ocr.sdk.exception.OCRError;
+import com.baidu.ocr.sdk.model.AccessToken;
 import com.baidu.ocr.sdk.model.BankCardParams;
 import com.baidu.ocr.sdk.model.BankCardResult;
 import com.bclould.tea.Presenter.BankCardPresenter;
@@ -38,6 +39,7 @@ import com.bclould.tea.ui.adapter.BottomDialogRVAdapter3;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.AnimatorTool;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.ToastShow;
 import com.bclould.tea.utils.UtilTool;
 
 import java.io.File;
@@ -86,6 +88,21 @@ public class BankCardBindingActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         mBankCardPresenter = new BankCardPresenter(this);
         initData();
+        initORC();
+    }
+
+    private void initORC() {
+        OCR.getInstance(this).initAccessTokenWithAkSk(new OnResultListener<AccessToken>() {
+            @Override
+            public void onResult(AccessToken result) {
+                UtilTool.Log("bank", result.getAccessToken());
+            }
+
+            @Override
+            public void onError(OCRError error) {
+                error.printStackTrace();
+            }
+        }, getApplicationContext(), "kwPFq1qEMF7Uu9XQ1eYXuza8", "dob8UR9rhU8G6iIB5T16YrAiNyYbPZbG");
     }
 
     @Override
@@ -141,10 +158,11 @@ public class BankCardBindingActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.iv_scan:
-                Intent intent = new Intent(BankCardBindingActivity.this, com.baidu.ocr.ui.camera.CameraActivity.class);
+                Intent intent = new Intent(BankCardBindingActivity.this, CameraActivity.class);
                 intent.putExtra(com.baidu.ocr.ui.camera.CameraActivity.KEY_OUTPUT_FILE_PATH,
                         UtilTool.getSaveFile(getApplication()).getAbsolutePath());
-                intent.putExtra(com.baidu.ocr.ui.camera.CameraActivity.KEY_CONTENT_TYPE, com.baidu.ocr.ui.camera.CameraActivity.CONTENT_TYPE_BANK_CARD);
+                intent.putExtra(com.baidu.ocr.ui.camera.CameraActivity.KEY_CONTENT_TYPE,
+                        com.baidu.ocr.ui.camera.CameraActivity.CONTENT_TYPE_BANK_CARD);
                 startActivityForResult(intent, REQUEST_CODE_CAMERA);
                 break;
             case R.id.rl_selector_state:
@@ -161,7 +179,6 @@ public class BankCardBindingActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == REQUEST_CODE_CAMERA && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 String contentType = data.getStringExtra(com.baidu.ocr.ui.camera.CameraActivity.KEY_CONTENT_TYPE);
@@ -191,6 +208,7 @@ public class BankCardBindingActivity extends BaseActivity {
             public void onError(OCRError error) {
                 // 调用失败，返回OCRError对象
                 UtilTool.Log("bank", error.getCause().getMessage());
+                ToastShow.showToast(BankCardBindingActivity.this, getString(R.string.ocr_error));
             }
         });
     }
@@ -292,6 +310,11 @@ public class BankCardBindingActivity extends BaseActivity {
                 startActivity(new Intent(BankCardBindingActivity.this, RealNameC1Activity.class));
             }
         });
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        OCR.getInstance(this).release();
     }
 }
