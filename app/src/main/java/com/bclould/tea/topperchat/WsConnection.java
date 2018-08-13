@@ -366,11 +366,11 @@ public class WsConnection {
      */
     public synchronized void closeConnection() {
         senLogout();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         LoginThread.isStartExReconnect = false;
         close();
         setLoginConnection(false);

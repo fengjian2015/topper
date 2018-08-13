@@ -136,6 +136,8 @@ public class WalletFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mViews.clear();
+        mDataList.clear();
         ButterKnife.unbind(this);
     }
 

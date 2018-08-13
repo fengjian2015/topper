@@ -36,6 +36,63 @@
         android:gravity="center_vertical"
         android:text="@string/please_bind_the_cardholders_bank_card"/>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y30"
+        android:background="@drawable/bg_shallow_shape">
+
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="@dimen/x150"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/x30"
+            android:text="@string/cardholder"/>
+
+        <EditText
+            android:id="@+id/et_cardholder"
+            android:background="@android:color/transparent"
+            style="@style/MainTextShallowStyle30"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingRight="@dimen/x20"
+            android:layout_gravity="center_vertical"
+            android:hint="@string/et_card_holder"
+            android:textColorHint="@color/secondary_text_color"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
+        android:layout_marginTop="@dimen/y30"
+        android:background="@drawable/bg_shallow_shape">
+
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="@dimen/x150"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/x30"
+            android:text="@string/card_number"/>
+
+        <TextView
+            android:id="@+id/tv_bank_number"
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text=""/>
+
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y120"
@@ -65,7 +122,6 @@
             android:textColorHint="@color/secondary_text_color"/>
 
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -97,34 +153,7 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y120"
-        android:layout_marginLeft="@dimen/x30"
-        android:layout_marginRight="@dimen/x30"
-        android:layout_marginTop="@dimen/y30"
-        android:background="@drawable/bg_shallow_shape">
-
-        <TextView
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="@dimen/x150"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/x30"
-            android:text="@string/cardholder"/>
-
-        <TextView
-            android:id="@+id/tv_cardholder"
-            style="@style/MainTextShallowStyle30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text=""/>
-
-    </LinearLayout>
-
-
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x30"
@@ -148,7 +177,7 @@
             android:layout_gravity="center_vertical"
             android:text=""/>
 
-    </LinearLayout>
+    </LinearLayout>-->
 
     <Button
         android:id="@+id/btn_next"

@@ -17,6 +17,8 @@ public class Constants {
     public static final String NEW_BASE_URL = isDebug ? "https://www.bclould.com:8112/" : "https://www.cnblocklink.com/";
     public static final String DOMAINNAME3 = isDebug ? "wss://socket.bclould.com:8179/toco_server" : "wss://socket.cnblocklink.com:2087/toco_server";
     public static final String MSG_OFFLINE = isDebug ? "wss://socket.bclould.com:8180/users_offline_msg" : "wss://offline.cnblocklink.com:8443/users_offline_msg";
+    public static final String ORC_AK = isDebug ? "eNRbHUkGgFWlY89XGHsiQ36X" : "s6coTxHIryO2whcVmkkfwCSf";
+    public static final String ORC_SK = isDebug ? "dob8UR9rhU8G6iIB5T16YrAiNyYbPZbG" : "TGMfYGkWvglX5KSzB9DgxKCbBFy0MYDz";
 
     public static final String CHUANCODE = "爨^(&";
     public static final String REDBAG = "[redBag]";

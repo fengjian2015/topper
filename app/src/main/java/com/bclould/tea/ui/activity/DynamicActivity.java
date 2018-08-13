@@ -519,11 +519,15 @@ public class DynamicActivity extends BaseActivity {
         });
     }
 
-    @OnClick({R.id.bark, R.id.rl_push_dynamic_status, R.id.iv_push_dynamic, R.id.iv_my_dynamic, R.id.send})
+    @OnClick({R.id.bark, R.id.rl_push_dynamic_status, R.id.iv_push_dynamic, R.id.iv_my_dynamic, R.id.send, R.id.tv_title})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
                 finish();
+                break;
+            case R.id.tv_title:
+                mRecyclerView.scrollToPosition(0);
+                initData(PULL_DOWN);
                 break;
             case R.id.rl_push_dynamic_status:
                 startActivity(new Intent(this, FileUploadingActivity.class));

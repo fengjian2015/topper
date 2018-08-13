@@ -1167,4 +1167,7 @@
     <string name="qi_login">請登錄</string>
     <string name="ocr_error">識別失敗</string>
     <string name="cell_phone_store">手機存儲</string>
+    <string name="discern">識別中</string>
+    <string name="et_card_holder">輸入持卡人姓名</string>
+    <string name="toast_card_holder">持卡人不能為空</string>
 </resources>

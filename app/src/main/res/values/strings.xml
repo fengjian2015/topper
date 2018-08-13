@@ -2260,4 +2260,7 @@
     <string name="qi_login">请登录</string>
     <string name="ocr_error">识别失败</string>
     <string name="cell_phone_store">手机存储</string>
+    <string name="discern">识别中</string>
+    <string name="et_card_holder">输入持卡人姓名</string>
+    <string name="toast_card_holder">持卡人不能为空</string>
 </resources>
