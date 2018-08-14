@@ -283,7 +283,6 @@ public class CoinExchangeActivity extends BaseActivity {
 
     List<CoinListInfo.DataBean> mCoinList = new ArrayList<>();
     List<String> mCoin = new ArrayList<>();
-    private int mCount = 0;
 
     private void initCoin() {
         mCoinList.clear();

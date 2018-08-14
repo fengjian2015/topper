@@ -709,7 +709,7 @@
         
     <string name="disclaimer">免责声明</string>
         
-    <string name="otc_disclaimer">\t\t\t\t比特币等数字货币系特殊的虚拟商品，作为互联网上的商品买卖行为，普通民众在自担风险的前提下拥有参与自由的权利。 \n\t\t\t\t数字货币行业目前存在很多不确定性，不可控的风险因素（如预挖，暴涨暴跌，庄家操控，团队解散，技术缺陷等），导致交易具有极高的风险。 \n\t\t\t\tTopperChat APP平台不承担任何审查，担保，赔偿的法律条款，责任。 </string>
+    <string name="otc_disclaimer">\t\t\t\t数字货币属特殊的虚拟商品，作为互联网上的商品买卖行为，普通民众在自担风险的前提下拥有参与的权利。\n\t\t\t\t数字货币行业目前存在很多不确定性，不可控的风险因素（如预挖，暴涨暴跌，庄家操控，团队解散，技术缺陷等），导致交易具有极高的风险。\n\t\t\t\tTopperChat APP平台不承担任何审查，担保，赔偿的法律条款，责任。 </string>
         
     <string name="show_hide">记住选择，不再提示</string>
         

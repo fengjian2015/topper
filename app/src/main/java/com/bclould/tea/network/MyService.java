@@ -77,7 +77,8 @@ public interface MyService {
             @Field("password") String password,
             @Field("code") String code,
             @Field("device") int device,
-            @Field("lang") String lang
+            @Field("lang") String lang,
+            @Field("captcha") String captcha
     );
 
     //图形验证码
@@ -1383,6 +1384,7 @@ public interface MyService {
             @Header("Authorization") String token,
             @Field("lang") String lang
     );
+
     //更換聊天背景
     @FormUrlEncoded
     @POST("chat/update/chat_bg")
@@ -1454,5 +1456,12 @@ public interface MyService {
     @POST("chat/del/chat_bg")
     Observable<BaseInfo> deleteBackgound(
             @Header("Authorization") String token
+    );//重置聊天背景
+
+    @POST("api/image/coordinate")
+    @FormUrlEncoded
+    Observable<BaseInfo> coordinate(
+            @Field("email") String email,
+            @Field("coordinate") String coordinate
     );
 }

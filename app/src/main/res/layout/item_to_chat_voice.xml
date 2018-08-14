@@ -28,7 +28,7 @@
             android:layout_marginRight="@dimen/x20"
             android:layout_toLeftOf="@+id/rl_voice"
             android:text="5''"
-            android:textSize="@dimen/x24"/>
+            style="@style/SecondaryTextStyle24"/>
         <ImageView
             android:id="@+id/iv_warning"
             android:layout_width="@dimen/x60"

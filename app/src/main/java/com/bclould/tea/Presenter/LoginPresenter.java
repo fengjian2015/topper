@@ -19,8 +19,6 @@ import com.bclould.tea.model.LoginRecordInfo;
 import com.bclould.tea.model.UserCodeInfo;
 import com.bclould.tea.network.RetrofitUtil;
 import com.bclould.tea.topperchat.WsConnection;
-import com.bclould.tea.ui.activity.AuthenticationActivity;
-import com.bclould.tea.ui.activity.LoginActivity;
 import com.bclould.tea.ui.activity.LoginSetActivity;
 import com.bclould.tea.ui.activity.MainActivity;
 import com.bclould.tea.ui.activity.SelectorLanguageActivity;
@@ -52,7 +50,7 @@ public class LoginPresenter {
 
     public static final String TOCOID = "toco_id";
     public static final String TOKEN = "token";
-    public static final String TOKEN_TIME="token_time";
+    public static final String TOKEN_TIME = "token_time";
     public static final String USERID = "user_id";
     public static final String LOGINPW = "login_pw";
     public static final String LOGINSET = "login_set";
@@ -84,11 +82,11 @@ public class LoginPresenter {
         }
     }
 
-    public void Login(final String email, final String password, final String code, final DBUserCode dbUserCode, final String language) {
+    public void Login(final String email, final String password, final String code, final DBUserCode dbUserCode, final String language, final String coordinate) {
         showDialog();
         RetrofitUtil.getInstance(mContext)
                 .getServer()
-                .login(email, password, code, 1, language)
+                .login(email, password, code, 1, language, coordinate)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
                 .subscribe(new Observer<LoginInfo>() {
@@ -104,9 +102,9 @@ public class LoginPresenter {
                             if (baseInfo.getData() != null) {
                                 if (baseInfo.getData().getValidate_type() == 1) {
                                     sendVcode(email);
-                                    showEmailDialog(email, password, dbUserCode, language);
+                                    showEmailDialog(email, password, dbUserCode, language, coordinate);
                                 } else {
-                                    showGoogleDialog(email, password, dbUserCode, language);
+                                    showGoogleDialog(email, password, dbUserCode, language, coordinate);
                                 }
                             } else {
                                 if (baseInfo.getType() == 7) {
@@ -118,7 +116,7 @@ public class LoginPresenter {
                         } else if (baseInfo.getStatus() == 1) {
                             UtilTool.Log("日志", baseInfo.getData().getName());
                             MySharedPreferences.getInstance().setString(TOKEN, baseInfo.getMessage());
-                            MySharedPreferences.getInstance().setLong(TOKEN_TIME,System.currentTimeMillis());
+                            MySharedPreferences.getInstance().setLong(TOKEN_TIME, System.currentTimeMillis());
                             MySharedPreferences.getInstance().setString(TOCOID, baseInfo.getData().getToco_id());
                             MySharedPreferences.getInstance().setInteger(USERID, baseInfo.getData().getUser_id());
                             MySharedPreferences.getInstance().setString(MYUSERNAME, baseInfo.getData().getName());
@@ -214,7 +212,7 @@ public class LoginPresenter {
                 });
     }
 
-    private void showGoogleDialog(final String email, final String password, final DBUserCode dbUserCode, final String language) {
+    private void showGoogleDialog(final String email, final String password, final DBUserCode dbUserCode, final String language, final String coordinate) {
         DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_google_code, mContext, R.style.dialog);
         deleteCacheDialog.show();
         final EditText etGoogle = (EditText) deleteCacheDialog.findViewById(R.id.et_google_code);
@@ -226,13 +224,13 @@ public class LoginPresenter {
                 if (googleCode.isEmpty()) {
                     Toast.makeText(mContext, mContext.getString(R.string.toast_vcode), Toast.LENGTH_SHORT).show();
                 } else {
-                    Login(email, password, googleCode, dbUserCode, language);
+                    Login(email, password, googleCode, dbUserCode, language, coordinate);
                 }
             }
         });
     }
 
-    private void showEmailDialog(final String email, final String password, final DBUserCode dbUserCode, final String language) {
+    private void showEmailDialog(final String email, final String password, final DBUserCode dbUserCode, final String language, final String coordinate) {
         DeleteCacheDialog deleteCacheDialog = new DeleteCacheDialog(R.layout.dialog_google_code, mContext, R.style.dialog);
         deleteCacheDialog.show();
         final EditText etGoogle = (EditText) deleteCacheDialog.findViewById(R.id.et_google_code);
@@ -247,7 +245,7 @@ public class LoginPresenter {
                 if (googleCode.isEmpty()) {
                     Toast.makeText(mContext, mContext.getString(R.string.toast_vcode), Toast.LENGTH_SHORT).show();
                 } else {
-                    Login(email, password, googleCode, dbUserCode, language);
+                    Login(email, password, googleCode, dbUserCode, language, coordinate);
                 }
             }
         });
@@ -360,6 +358,40 @@ public class LoginPresenter {
                 });
     }
 
+    public void coordinate(String coordinate, String email, final CallBack4 callBack4) {
+        showDialog();
+        RetrofitUtil.getInstance(mContext)
+                .getServer()
+                .coordinate(email, coordinate)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
+                .subscribe(new Observer<BaseInfo>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseInfo baseInfo) {
+                        hideDialog();
+                        if (baseInfo.getStatus() == 1) {
+                            callBack4.send(baseInfo.getData().getCoordinate());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        hideDialog();
+                        callBack4.error();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
     //定义接口
     public interface CallBack {
         void send(List<LoginRecordInfo.DataBean> data);
@@ -375,5 +407,12 @@ public class LoginPresenter {
     //定义接口
     public interface CallBack3 {
         void send();
+    }
+
+    //定义接口
+    public interface CallBack4 {
+        void send(String coordinate);
+
+        void error();
     }
 }

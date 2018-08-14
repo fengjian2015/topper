@@ -42,6 +42,7 @@
 
     <LinearLayout
         android:id="@+id/ll_data"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -100,7 +101,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:padding="@dimen/x25"
-                android:src="@mipmap/ico_nav_add"/>
+                android:src="@mipmap/icon_nav_add"/>
 
         </LinearLayout>
 
