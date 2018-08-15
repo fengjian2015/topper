@@ -131,7 +131,6 @@ public class AuthenticationActivity extends LoginBaseActivity {
     }
 
     public void setLayout(View view, int x, int y) {
-
         ViewGroup.MarginLayoutParams margin = new ViewGroup.MarginLayoutParams(view.getLayoutParams());
         margin.setMargins(x, y, mWidthPixels - x - mTargetWidth, mTargetHeight - y - mTargetHeight);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(margin);

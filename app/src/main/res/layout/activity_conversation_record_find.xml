@@ -93,7 +93,7 @@
         android:layout_marginTop="@dimen/y20"
         android:visibility="gone">
 
-        <com.scwang.smartrefresh.header.WaterDropHeader
+        <com.scwang.smartrefresh.header.MaterialHeader
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/light"/>
@@ -122,7 +122,7 @@
         android:layout_marginTop="@dimen/y20"
         android:visibility="gone">
 
-        <com.scwang.smartrefresh.header.WaterDropHeader
+        <com.scwang.smartrefresh.header.MaterialHeader
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/light"/>

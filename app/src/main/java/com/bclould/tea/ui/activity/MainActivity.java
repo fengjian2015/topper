@@ -514,6 +514,11 @@ public class MainActivity extends BaseActivity {
             public void error() {
 
             }
+
+            @Override
+            public void finishRefresh() {
+
+            }
         });
     }
 

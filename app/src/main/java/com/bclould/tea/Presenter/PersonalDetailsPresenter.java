@@ -180,6 +180,7 @@ public class PersonalDetailsPresenter {
                     @Override
                     public void onError(Throwable e) {
                         hideDialog();
+                        callBack2.error();
                     }
 
                     @Override
@@ -441,6 +442,8 @@ public class PersonalDetailsPresenter {
         void send(List<AuatarListInfo.DataBean> data);
 
         void error();
+
+        void finishRefresh();
     }
 
     public interface CallBack3 {

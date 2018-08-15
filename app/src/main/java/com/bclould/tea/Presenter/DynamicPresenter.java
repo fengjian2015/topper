@@ -98,7 +98,9 @@ public class DynamicPresenter {
 
     public void dynamicList(final int page, int pageSize, String userList, final CallBack2 callBack2) {
         UtilTool.Log("动态", userList);
-        showDialog();
+        if (mCount == 1) {
+            showDialog();
+        }
         RetrofitUtil.getInstance(mContext)
                 .getServer()
                 .dynamicList(UtilTool.getToken(), page, pageSize, userList)
