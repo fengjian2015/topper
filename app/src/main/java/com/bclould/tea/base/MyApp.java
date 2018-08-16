@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
+import android.support.multidex.MultiDex;
 
 import com.bclould.tea.R;
 import com.bclould.tea.alipay.AlipayClient;
@@ -157,6 +158,7 @@ public class MyApp extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(AppLanguageUtils.attachBaseContext(base, getAppLanguage(base)));
+        MultiDex.install(base);
     }
 
     /**

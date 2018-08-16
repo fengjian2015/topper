@@ -459,7 +459,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void getChatBackGround() {
-        UtilTool.Log("token",UtilTool.getToken());
+        UtilTool.Log("fengjiantoken",UtilTool.getToken());
         new GroupPresenter(this).getBackgound(new GroupPresenter.CallBack2() {
             @Override
             public void send(String url) {

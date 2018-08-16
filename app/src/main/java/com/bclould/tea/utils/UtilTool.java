@@ -767,7 +767,7 @@ public class UtilTool {
     }
 
     public static String getToken() {
-
+        UtilTool.Log("fengjiantoken","bearer" + MySharedPreferences.getInstance().getString(TOKEN));
         return "bearer" + MySharedPreferences.getInstance().getString(TOKEN);
 
     }
