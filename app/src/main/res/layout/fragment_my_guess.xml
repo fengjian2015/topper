@@ -16,21 +16,12 @@
         android:layout_marginTop="@dimen/y30"
         android:background="@drawable/bg_shallow_shape">
 
-        <ImageView
-            android:id="@+id/iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x30"
-            android:src="@mipmap/icon_g_start"/>
-
         <TextView
             style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_toRightOf="@+id/iv"
+            android:layout_marginLeft="@dimen/x30"
             android:text="@string/start_guess"/>
 
         <ImageView
@@ -52,21 +43,12 @@
         android:layout_marginTop="@dimen/y30"
         android:background="@drawable/bg_shallow_shape">
 
-        <ImageView
-            android:id="@+id/iv2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x30"
-            android:src="@mipmap/icon_g_in"/>
-
         <TextView
             style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_toRightOf="@+id/iv2"
+            android:layout_marginLeft="@dimen/x30"
             android:text="@string/my_join"/>
 
         <ImageView
@@ -88,21 +70,12 @@
         android:layout_marginTop="@dimen/y30"
         android:background="@drawable/bg_shallow_shape">
 
-        <ImageView
-            android:id="@+id/iv3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x30"
-            android:src="@mipmap/icon_g_me"/>
-
         <TextView
             style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/x20"
-            android:layout_toRightOf="@+id/iv3"
+            android:layout_marginLeft="@dimen/x30"
             android:text="@string/my_start"/>
 
         <ImageView

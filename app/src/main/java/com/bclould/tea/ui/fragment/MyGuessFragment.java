@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bclould.tea.R;
@@ -24,16 +23,12 @@ import butterknife.OnClick;
  */
 
 public class MyGuessFragment extends Fragment {
-    @Bind(R.id.iv)
-    ImageView mIv;
+
+
     @Bind(R.id.rl_start_guess)
     RelativeLayout mRlStartGuess;
-    @Bind(R.id.iv2)
-    ImageView mIv2;
     @Bind(R.id.rl_my_join)
     RelativeLayout mRlMyJoin;
-    @Bind(R.id.iv3)
-    ImageView mIv3;
     @Bind(R.id.rl_my_start)
     RelativeLayout mRlMyStart;
 
