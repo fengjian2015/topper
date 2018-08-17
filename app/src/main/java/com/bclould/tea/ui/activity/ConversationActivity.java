@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,6 +49,7 @@ import com.bclould.tea.history.DBRoomManage;
 import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.adapter.ChatAdapter;
+import com.bclould.tea.ui.widget.ImageDialog;
 import com.bclould.tea.ui.widget.SimpleAppsGridView;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AppLanguageUtils;
@@ -272,6 +274,19 @@ public class ConversationActivity extends BaseActivity implements FuncLayout.OnF
             @Override
             public void onSizeChanged(int w, int h, int oldw, int oldh) {
                 scrollToBottom();
+            }
+        });
+        mEkbEmoticonsKeyboard.getEtChat().setOnTextContextMenuItem(new EmoticonsEditText.OnTextContextMenuItem() {
+            @Override
+            public void onCopyUri(Uri uri) {
+                final ImageDialog imageDialog=new ImageDialog(ConversationActivity.this);
+                imageDialog.setImage(uri);
+                imageDialog.setOnClickListener(new ImageDialog.OnClickListener() {
+                    @Override
+                    public void onClick(String path) {
+                        roomManage.Upload(path);
+                    }
+                });
             }
         });
 
