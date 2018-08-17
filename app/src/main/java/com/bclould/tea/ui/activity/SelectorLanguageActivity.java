@@ -12,16 +12,14 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bclould.tea.Presenter.LoginPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
-import com.bclould.tea.service.IMService;
-import com.bclould.tea.topperchat.SocketListener;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MySharedPreferences;
-import com.bclould.tea.xmpp.RoomManage;
 
 import java.util.Locale;
 
@@ -49,6 +47,12 @@ public class SelectorLanguageActivity extends BaseActivity {
     CheckBox mCbTraditional;
     @Bind(R.id.rl_chinese_traditional)
     RelativeLayout mRlChineseTraditional;
+    @Bind(R.id.tv_save)
+    TextView mTvSave;
+    @Bind(R.id.cb_english)
+    CheckBox mCbEnglish;
+    @Bind(R.id.rl_english)
+    RelativeLayout mRlEnglish;
     private String mLanguageKind = "";
 
     @Override
@@ -64,7 +68,7 @@ public class SelectorLanguageActivity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     private void init() {
@@ -74,19 +78,27 @@ public class SelectorLanguageActivity extends BaseActivity {
             mCbSystem.setChecked(true);
             mCbSimplified.setChecked(false);
             mCbTraditional.setChecked(false);
+            mCbEnglish.setChecked(false);
         } else if ("zh".equals(mLanguageKind)) {
             mCbSystem.setChecked(false);
             mCbSimplified.setChecked(true);
             mCbTraditional.setChecked(false);
-        } else if ("zh-hant".equals(mLanguageKind)) {
+            mCbEnglish.setChecked(false);
+        } else if ("zh-hk".equals(mLanguageKind)) {
             mCbSystem.setChecked(false);
             mCbSimplified.setChecked(false);
             mCbTraditional.setChecked(true);
+            mCbEnglish.setChecked(false);
+        } else if ("en".equals(mLanguageKind)) {
+            mCbSystem.setChecked(false);
+            mCbSimplified.setChecked(false);
+            mCbTraditional.setChecked(false);
+            mCbEnglish.setChecked(true);
         }
     }
 
 
-    @OnClick({R.id.bark, R.id.rl_follow_system, R.id.rl_simplified_chinese, R.id.rl_chinese_traditional, R.id.tv_save})
+    @OnClick({R.id.bark, R.id.rl_follow_system, R.id.rl_simplified_chinese, R.id.rl_chinese_traditional, R.id.rl_english, R.id.tv_save})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bark:
@@ -100,31 +112,39 @@ public class SelectorLanguageActivity extends BaseActivity {
                 mCbSystem.setChecked(true);
                 mCbSimplified.setChecked(false);
                 mCbTraditional.setChecked(false);
+                mCbEnglish.setChecked(false);
                 break;
             case R.id.rl_simplified_chinese:
                 mLanguageKind = "zh";
                 mCbSystem.setChecked(false);
                 mCbSimplified.setChecked(true);
                 mCbTraditional.setChecked(false);
+                mCbEnglish.setChecked(false);
                 break;
             case R.id.rl_chinese_traditional:
-                mLanguageKind = "zh-hant";
+                mLanguageKind = "zh-hk";
                 mCbSystem.setChecked(false);
                 mCbSimplified.setChecked(false);
                 mCbTraditional.setChecked(true);
+                mCbEnglish.setChecked(false);
+                break;
+            case R.id.rl_english:
+                mLanguageKind = "en";
+                mCbSystem.setChecked(false);
+                mCbSimplified.setChecked(false);
+                mCbTraditional.setChecked(false);
+                mCbEnglish.setChecked(true);
                 break;
         }
     }
 
     private void saveSettings() {
         String language = null;
-        if (mLanguageKind.equals("zh-hant")) {
-            language = "zh-hk";
-        } else if (mLanguageKind.equals("zh")) {
-            language = "zh-cn";
-        } else if (mLanguageKind.equals("")) {
+        if (mLanguageKind.equals("")) {
             Locale locale = getResources().getConfiguration().locale;
             language = (locale.getLanguage() + "-" + locale.getCountry()).toLowerCase();
+        } else {
+            language = mLanguageKind;
         }
         new LoginPresenter(this).postLanguage(language, new LoginPresenter.CallBack3() {
             @Override

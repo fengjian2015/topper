@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -7,7 +8,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,6 +28,7 @@ import com.bclould.tea.ui.widget.PWDDialog;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
+import com.maning.pswedittextlibrary.MNPasswordEditText;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -405,6 +409,12 @@ public class OrderDetailsActivity extends BaseActivity {
                 break;
         }
     }
+
+    private Dialog mRedDialog;
+    private Animation mEnterAnim;
+    private Animation mExitAnim;
+    private MNPasswordEditText mEtPassword;
+    private GridView mGridView;
 
     private void showPWDialog(final int type) {
         pwdDialog=new PWDDialog(this);

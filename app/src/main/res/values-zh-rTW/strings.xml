@@ -1110,7 +1110,7 @@
     <string name="have_deposited_my_assets">已存入我的資產，可用於交易</string>
     <string name="language">語言</string>
     <string name="follow_the_system">跟隨系統</string>
-    <string name="simplified_chinese">簡體中文</string>
+    <string name="simplified_chinese">简体中文</string>
     <string name="chinese_traditional">繁體中文</string>
     <string name="send_red_envelope">發紅包</string>
     <string name="person1">人</string>
@@ -1170,4 +1170,5 @@
     <string name="discern">識別中</string>
     <string name="et_card_holder">輸入持卡人姓名</string>
     <string name="toast_card_holder">持卡人不能為空</string>
+    <string name="english">English</string>
 </resources>

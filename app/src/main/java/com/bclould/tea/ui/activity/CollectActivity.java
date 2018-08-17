@@ -22,7 +22,6 @@ import com.bclould.tea.Presenter.CollectPresenter;
 import com.bclould.tea.R;
 import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.model.CollectInfo;
-import com.bclould.tea.model.DynamicListInfo;
 import com.bclould.tea.model.MessageInfo;
 import com.bclould.tea.ui.adapter.CollectRVAdapter;
 import com.bclould.tea.utils.ActivityUtil;
@@ -114,7 +113,7 @@ public class CollectActivity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     private void initView() {

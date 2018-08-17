@@ -17,21 +17,21 @@
             android:src="@mipmap/icon_nav_return"/>
 
         <TextView
+            style="@style/MainTextShallowStyle36"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/language"
-            style="@style/MainTextShallowStyle36"/>
+            android:text="@string/language"/>
 
         <TextView
             android:id="@+id/tv_save"
+            style="@style/BlueTextStyle28"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:paddingRight="@dimen/x20"
-            android:text="@string/save"
-            style="@style/BlueTextStyle28"/>
+            android:text="@string/save"/>
 
     </RelativeLayout>
 
@@ -51,11 +51,11 @@
         android:gravity="center_vertical">
 
         <TextView
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x30"
-            android:text="@string/follow_the_system"
-            style="@style/MainTextShallowStyle30"/>
+            android:text="@string/follow_the_system"/>
 
 
         <CheckBox
@@ -80,11 +80,11 @@
         android:gravity="center_vertical">
 
         <TextView
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x30"
-            android:text="@string/simplified_chinese"
-            style="@style/MainTextShallowStyle30"/>
+            android:text="@string/simplified_chinese"/>
 
 
         <CheckBox
@@ -110,11 +110,11 @@
         android:gravity="center_vertical">
 
         <TextView
+            style="@style/MainTextShallowStyle30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x30"
-            android:text="@string/chinese_traditional"
-            style="@style/MainTextShallowStyle30"/>
+            android:text="@string/chinese_traditional"/>
 
 
         <CheckBox
@@ -130,5 +130,30 @@
 
     <TextView
         style="@style/HorizontalBoundaryStyle"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_english"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:gravity="center_vertical">
+
+        <TextView
+            style="@style/MainTextShallowStyle30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x30"
+            android:text="@string/english"/>
+
+
+        <CheckBox
+            android:id="@+id/cb_english"
+            style="@style/CustomCheckboxTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x30"
+            android:clickable="false"/>
+
+    </RelativeLayout>
 
 </LinearLayout>

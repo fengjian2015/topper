@@ -21,13 +21,10 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
 import okhttp3.CacheControl;
-import okhttp3.Connection;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
-import okhttp3.internal.http.RealResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -42,24 +39,24 @@ public class RetrofitUtil {
     private static final long DEFAULT_DIR_CACHE = 2000;
     private Context mContext;
 
-    private static int timeOut=20;
+    private static int timeOut = 20;
 
     GsonConverterFactory factory = GsonConverterFactory.create(new GsonBuilder().create());
     private static RetrofitUtil instance = null;
     private Retrofit mRetrofit = null;
 
     public static RetrofitUtil getInstance(Context context) {
-        if (instance == null||timeOut!=20) {
-            timeOut=20;
+        if (instance == null || timeOut != 20) {
+            timeOut = 20;
             instance = new RetrofitUtil(context);
         }
         return instance;
     }
 
-    public static RetrofitUtil getInstance(Context context,int time) {
-        if (instance == null||timeOut==20) {
-            timeOut=time;
-            instance = new RetrofitUtil(context,time);
+    public static RetrofitUtil getInstance(Context context, int time) {
+        if (instance == null || timeOut == 20) {
+            timeOut = time;
+            instance = new RetrofitUtil(context, time);
         }
         return instance;
     }
@@ -133,7 +130,7 @@ public class RetrofitUtil {
                 .build();
     }
 
-    private RetrofitUtil(Context Context,int time) {
+    private RetrofitUtil(Context Context, int time) {
         mContext = Context;//设置缓存路径
         File cacheFile = new File(mContext.getCacheDir(), "caheData");
         //设置缓存大小

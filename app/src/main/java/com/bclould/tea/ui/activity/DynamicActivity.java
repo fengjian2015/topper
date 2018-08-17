@@ -32,7 +32,9 @@ import com.bclould.tea.model.UserInfo;
 import com.bclould.tea.ui.adapter.DynamicRVAdapter;
 import com.bclould.tea.ui.widget.DeleteCacheDialog;
 import com.bclould.tea.utils.ActivityUtil;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.compress.Luban;
@@ -190,6 +192,11 @@ public class DynamicActivity extends BaseActivity {
         } else if (msg.equals(getString(R.string.destroy_service))) {
             mRlPushDynamicStatus.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     private void showDeleteCommentDialog() {

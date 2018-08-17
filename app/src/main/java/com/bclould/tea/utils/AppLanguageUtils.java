@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
-import android.os.LocaleList;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
@@ -34,16 +33,15 @@ public class AppLanguageUtils {
         if (!newLanguage.isEmpty()) {
             if (newLanguage.equals("zh")) {
                 locale = Locale.SIMPLIFIED_CHINESE;
-            } else {
+            } else if (newLanguage.equals("zh-hk")) {
                 locale = Locale.TRADITIONAL_CHINESE;
+            } else if (newLanguage.equals("en")) {
+                locale = Locale.ENGLISH;
+            } else {
+                locale = Locale.SIMPLIFIED_CHINESE;
             }
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                locale = LocaleList.getDefault().get(0);
-            } else {
-                locale = Locale.getDefault();
-            }
-            locale = new Locale(locale.getLanguage(), locale.getCountry());
+            locale = new Locale(MySharedPreferences.getInstance().getString(Constants.LANGUAGE), MySharedPreferences.getInstance().getString(Constants.COUNTRY));
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -105,13 +103,21 @@ public class AppLanguageUtils {
         Locale locale = null;
         if (language.equals("zh")) {
             locale = Locale.SIMPLIFIED_CHINESE;
-        } else {
+        } else if (language.equals("zh-hk")) {
             locale = Locale.TRADITIONAL_CHINESE;
+        } else if (language.equals("en")) {
+            locale = Locale.ENGLISH;
+        } else {
+            locale = new Locale(MySharedPreferences.getInstance().getString(Constants.LANGUAGE), MySharedPreferences.getInstance().getString(Constants.COUNTRY));
         }
-
         Configuration configuration = resources.getConfiguration();
-        configuration.setLocale(locale);
-        configuration.setLocales(new LocaleList(locale));
-        return context.createConfigurationContext(configuration);
+        if (Build.VERSION.SDK_INT >= 17) {
+            configuration.setLocale(locale);
+            context = context.createConfigurationContext(configuration);
+        } else {
+            configuration.locale = locale;
+            resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+        }
+        return context;
     }
 }

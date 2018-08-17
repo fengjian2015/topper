@@ -19,6 +19,8 @@ import com.bclould.tea.base.BaseActivity;
 import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.PublicInfo;
 import com.bclould.tea.ui.adapter.SearchPublicAdapter;
+import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.MySharedPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +50,11 @@ public class SearchPublicActivity extends BaseActivity {
         MyApp.getInstance().addActivity(this);
         init();
         initRecyclerView();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     private void initRecyclerView() {

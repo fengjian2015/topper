@@ -19,6 +19,7 @@ import com.bclould.tea.base.MyApp;
 import com.bclould.tea.model.UpdateLogInfo;
 import com.bclould.tea.ui.adapter.UpdateLogRVAdapter;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.MySharedPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class UpdateLogActivity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     List<UpdateLogInfo.DataBean> mDataList = new ArrayList<>();

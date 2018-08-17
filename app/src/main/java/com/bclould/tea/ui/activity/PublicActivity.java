@@ -1,5 +1,6 @@
 package com.bclould.tea.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,7 +19,9 @@ import com.bclould.tea.history.DBPublicManage;
 import com.bclould.tea.model.PublicInfo;
 import com.bclould.tea.topperchat.RoomMemberManage;
 import com.bclould.tea.ui.adapter.PublicListRVAdapter;
+import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.gjiazhe.wavesidebar.WaveSideBar;
 
 import org.greenrobot.eventbus.EventBus;
@@ -98,6 +101,11 @@ public class PublicActivity extends BaseActivity implements PublicListRVAdapter.
         mPublicListRVAdapter.setOnClickListener(this);
         mRecyclerView.setAdapter(mPublicListRVAdapter);
         mRecyclerView.setNestedScrollingEnabled(false);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     private void updateList(){

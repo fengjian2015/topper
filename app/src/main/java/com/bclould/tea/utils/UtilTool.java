@@ -1553,9 +1553,9 @@ public class UtilTool {
             resId = R.mipmap.type_zip;
         } else if (FILE_TYPE_RAR.equals(fileType)) {
             resId = R.mipmap.type_rar;
-        } else if(FILE_TYPE_MP3.endsWith(fileType)){
+        } else if (FILE_TYPE_MP3.endsWith(fileType)) {
             resId = R.mipmap.type_mp3;
-        }else {
+        } else {
             resId = R.mipmap.type_unknown;
         }
         return resId;
@@ -1603,9 +1603,12 @@ public class UtilTool {
             language = "zh-hk";
         } else if (languageKind.equals("zh")) {
             language = "zh-cn";
+        } else if (languageKind.equals("en")) {
+            language = "en";
         } else if (languageKind.equals("")) {
-            Locale locale = context.getResources().getConfiguration().locale;
-            language = (locale.getLanguage() + "-" + locale.getCountry()).toLowerCase();
+            String lang = MySharedPreferences.getInstance().getString(Constants.LANGUAGE);
+            String country = MySharedPreferences.getInstance().getString(Constants.COUNTRY);
+            language = lang + "-" + country.toLowerCase();
         }
         return language;
     }

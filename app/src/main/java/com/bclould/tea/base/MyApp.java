@@ -5,7 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
-import android.preference.PreferenceManager;
+import android.os.LocaleList;
 import android.support.annotation.RequiresApi;
 
 import com.bclould.tea.R;
@@ -21,12 +21,14 @@ import com.bclould.tea.utils.Constants;
 import com.bclould.tea.utils.GlideImgLoader;
 import com.bclould.tea.utils.MyLifecycleHandler;
 import com.bclould.tea.utils.MySharedPreferences;
+import com.bclould.tea.utils.UtilTool;
 import com.danikula.videocache.HttpProxyCacheServer;
 import com.previewlibrary.ZoomMediaLoader;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Stack;
 
 
@@ -61,8 +63,6 @@ public class MyApp extends Application {
         super.onCreate();
 
         context = this;
-
-        onLanguageChange();
 
         new MyHostnameVerifier();
 
@@ -156,7 +156,20 @@ public class MyApp extends Application {
 
     @Override
     protected void attachBaseContext(Context base) {
+        getSystemLanguage(base);//获取系统语言并保存
         super.attachBaseContext(AppLanguageUtils.attachBaseContext(base, getAppLanguage(base)));
+    }
+
+    private void getSystemLanguage(Context base) {
+        MySharedPreferences.getInstance().init(base);
+        Locale locale;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            locale = LocaleList.getDefault().get(0);
+        } else {
+            locale = Locale.getDefault();
+        }
+        MySharedPreferences.getInstance().setString(Constants.COUNTRY, locale.getCountry());
+        MySharedPreferences.getInstance().setString(Constants.LANGUAGE, locale.getLanguage());
     }
 
     /**
@@ -175,8 +188,9 @@ public class MyApp extends Application {
     }
 
     private String getAppLanguage(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(context.getString(R.string.language_pref_key), "");
+        String language = MySharedPreferences.getInstance().getString(context.getString(R.string.language_pref_key));
+        UtilTool.Log("language", language);
+        return language;
     }
 
 }

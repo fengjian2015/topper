@@ -19,6 +19,7 @@ import com.bclould.tea.model.LoginRecordInfo;
 import com.bclould.tea.ui.adapter.LoginRecordRVAdapter;
 import com.bclould.tea.utils.ActivityUtil;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.MySharedPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +57,7 @@ public class LoginRecordActivity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     private void initData() {

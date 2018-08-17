@@ -137,24 +137,24 @@ public class RecordIndicator {
                                 }
                             }
                             break;
-                        case MotionEvent.ACTION_UP:
+                            case MotionEvent.ACTION_UP:
                             start_record = false;
-                            recordButton.setText(mContext.getString(R.string.btn_text_speak));
+                            recordButton.setText(mContext.getString(R.string.long_click_record));
                             long intervalTime = onRecordListener.getRecordTime();
                             if (cancel_record) {
                                 cancelRecord(true);
-                            } else if (intervalTime < minRecordTime) {
+                            } else if (intervalTime < minRecordTime || intervalTime > 100000) {
                                 recordTooShort();
                             } else {
                                 finishRecord();
                             }
                             break;
                         case MotionEvent.ACTION_CANCEL:
-                            recordButton.setText(mContext.getString(R.string.btn_text_speak));
+                            recordButton.setText(mContext.getString(R.string.long_click_record));
                             long intervalTime2 = onRecordListener.getRecordTime();
                             if (cancel_record) {
                                 cancelRecord(true);
-                            } else if (intervalTime2 < minRecordTime) {
+                            } else if (intervalTime2 < minRecordTime|| intervalTime2 > 100000) {
                                 recordTooShort();
                             } else {
                                 finishRecord();

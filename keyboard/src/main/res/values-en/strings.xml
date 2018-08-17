@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+            <string name="btn_text_send">send </string>
+            <string name="btn_text_speak">press and hold the recording</string>
+            <string name="btn_text_speak_over">release the end </string>
+            <string name="up_for_cancel">Slip on the finger, cancel sending </string>
+            <string name="want_to_cancle"> Release your finger and cancel sending </string>
+            <string name="time_too_short">The recording time is too short</string>
+            <string name="long_click_record">long press recording</string>
+            <string name="hang_up_finsh">release end </string>
+            <string name="release_cancel">release cancel </string>
+            <string name="str_recorder_normal">hold and talk </string>
+            <string name="str_recorder_recording">release end </string>
+            <string name="str_recorder_want_cancel"> Release your finger to cancel sending </string>
+            <string name="tip_record_cancel"> Release your finger and cancel recording </string>
+            <string name="tip_record_cancel_top">Slide on the finger, cancel the recording </string>
+            <string name="tip_record_short">The recording time is too short</string>
+            <string name="intput_otr_ch">Enter OTR encrypted information...</string>
+            <string name="intput_otr_no">Enter unencrypted information...</string>
+            <string name="start_otr"> ready to open OTR encryption </string>
+            <string name="cancel">Cancel </string>
+            <string name="image">image </string>
+            <string name="video">video</string>
+            <string name="file">file </string>
+            <string name="transfer">transfer </string>
+            <string name="red_package"> red envelope </string>
+            <string name="location">location</string>
+            <string name="shooting">shooting</string>
+            <string name="collect">collection </string>
+            <string name="business_card">business card </string>
+</resources>

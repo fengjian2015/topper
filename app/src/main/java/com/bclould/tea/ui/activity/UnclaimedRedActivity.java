@@ -18,6 +18,7 @@ import com.bclould.tea.history.DBRoomMember;
 import com.bclould.tea.model.UnclaimedRedInfo;
 import com.bclould.tea.ui.adapter.UnclaimedRedListAdapter;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.MySharedPreferences;
 
 import java.util.ArrayList;
 
@@ -54,7 +55,7 @@ public class UnclaimedRedActivity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     @Override

@@ -74,4 +74,5 @@ public class Constants {
     public static final String ENGLISH = "en";
     // 繁体中文
     public static final String TRADITIONAL_CHINESE = "zh-hant";
+    public static final String COUNTRY = "country";
 }

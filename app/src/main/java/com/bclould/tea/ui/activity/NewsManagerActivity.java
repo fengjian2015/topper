@@ -25,6 +25,7 @@ import com.bclould.tea.ui.adapter.NewsManagerPVAdapter;
 import com.bclould.tea.ui.adapter.PayManageGVAdapter;
 import com.bclould.tea.utils.AppLanguageUtils;
 import com.bclould.tea.utils.MessageEvent;
+import com.bclould.tea.utils.MySharedPreferences;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -81,7 +82,7 @@ public class NewsManagerActivity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     private void initFiltrate() {

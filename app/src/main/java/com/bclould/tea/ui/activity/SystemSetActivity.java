@@ -59,7 +59,7 @@ import static com.luck.picture.lib.config.PictureMimeType.ofImage;
 public class SystemSetActivity extends BaseActivity {
     public static final String INFORM = "inform";
     public static final String PRIVATE = UtilTool.getUserId() + "private";
-    public static final String AUTOMATICALLY_DOWNLOA= UtilTool.getUserId() + "Dautomatically_download";
+    public static final String AUTOMATICALLY_DOWNLOA = UtilTool.getUserId() + "Dautomatically_download";
     @Bind(R.id.bark)
     ImageView mBark;
     @Bind(R.id.tv_inform)
@@ -109,7 +109,7 @@ public class SystemSetActivity extends BaseActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     @Override
@@ -134,8 +134,10 @@ public class SystemSetActivity extends BaseActivity {
             mTvLanguageHint.setText(getString(R.string.follow_the_system));
         } else if (language.equals("zh")) {
             mTvLanguageHint.setText(getString(R.string.simplified_chinese));
-        } else if (language.equals("zh-hant")) {
+        } else if (language.equals("zh-hk")) {
             mTvLanguageHint.setText(getString(R.string.chinese_traditional));
+        } else if (language.equals("en")) {
+            mTvLanguageHint.setText(getString(R.string.english));
         }
         mOnOffPrivate.setSelected(privateStatus);
         isOnOff2 = privateStatus;
@@ -190,7 +192,8 @@ public class SystemSetActivity extends BaseActivity {
 
     boolean isOnOff = false;
     boolean isOnOff2 = false;
-    @OnClick({R.id.btn_brak, R.id.bark, R.id.rl_inform, R.id.rl_private, R.id.rl_help, R.id.rl_cache, R.id.rl_language, R.id.rl_backgound,R.id.rl_download,R.id.on_off_download})
+
+    @OnClick({R.id.btn_brak, R.id.bark, R.id.rl_inform, R.id.rl_private, R.id.rl_help, R.id.rl_cache, R.id.rl_language, R.id.rl_backgound, R.id.rl_download, R.id.on_off_download})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_brak:
@@ -231,20 +234,20 @@ public class SystemSetActivity extends BaseActivity {
         }
     }
 
-    private void setDownOnOff(){
-        if(MySharedPreferences.getInstance().getBoolean(AUTOMATICALLY_DOWNLOA)){
+    private void setDownOnOff() {
+        if (MySharedPreferences.getInstance().getBoolean(AUTOMATICALLY_DOWNLOA)) {
             mOnOffDownload.setSelected(true);
-        }else{
+        } else {
             mOnOffDownload.setSelected(false);
         }
     }
 
     private void changeDownOnOff() {
-        if(MySharedPreferences.getInstance().getBoolean(AUTOMATICALLY_DOWNLOA)){
-            MySharedPreferences.getInstance().setBoolean(AUTOMATICALLY_DOWNLOA,false);
+        if (MySharedPreferences.getInstance().getBoolean(AUTOMATICALLY_DOWNLOA)) {
+            MySharedPreferences.getInstance().setBoolean(AUTOMATICALLY_DOWNLOA, false);
             mOnOffDownload.setSelected(false);
-        }else{
-            MySharedPreferences.getInstance().setBoolean(AUTOMATICALLY_DOWNLOA,true);
+        } else {
+            MySharedPreferences.getInstance().setBoolean(AUTOMATICALLY_DOWNLOA, true);
             mOnOffDownload.setSelected(true);
         }
 

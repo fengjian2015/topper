@@ -27,6 +27,7 @@ import com.bclould.tea.ui.adapter.LocationListAdapter;
 import com.bclould.tea.ui.widget.AppTitle;
 import com.bclould.tea.ui.widget.CenterIcon;
 import com.bclould.tea.utils.AppLanguageUtils;
+import com.bclould.tea.utils.MySharedPreferences;
 import com.bclould.tea.utils.UtilTool;
 import com.bclould.tea.xmpp.RoomManage;
 import com.jude.easyrecyclerview.EasyRecyclerView;
@@ -107,7 +108,7 @@ public class LocationActivity extends AppCompatActivity implements
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, newBase.getString(R.string.language_pref_key)));
+        super.attachBaseContext(AppLanguageUtils.attachBaseContext(newBase, MySharedPreferences.getInstance().getString(newBase.getString(R.string.language_pref_key))));
     }
 
     @Override
