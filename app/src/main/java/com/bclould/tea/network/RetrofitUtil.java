@@ -80,6 +80,7 @@ public class RetrofitUtil {
             String message = originalResponse.message();
             if (code == 200) {
             } else if (code == 401) {
+                UtilTool.Log("fengjiantoken","登錄token過期"+request.url()+"    "+request.body().toString());
                 LogoutPresenter logoutPresenter = new LogoutPresenter((Activity) mContext);
                 logoutPresenter.imLogout(mContext.getString(R.string.token_stale_dated));
             } else if (code == 500) {

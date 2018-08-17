@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.LocaleList;
 import android.support.annotation.RequiresApi;
+import android.support.multidex.MultiDex;
 
 import com.bclould.tea.R;
 import com.bclould.tea.alipay.AlipayClient;
@@ -158,6 +159,7 @@ public class MyApp extends Application {
     protected void attachBaseContext(Context base) {
         getSystemLanguage(base);//获取系统语言并保存
         super.attachBaseContext(AppLanguageUtils.attachBaseContext(base, getAppLanguage(base)));
+        MultiDex.install(base);
     }
 
     private void getSystemLanguage(Context base) {
